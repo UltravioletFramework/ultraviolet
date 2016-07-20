@@ -151,6 +151,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\WrapPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.Mouse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.Touch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTrackerTouchCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingGetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingSetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceExpressionBuilder.cs" />
@@ -212,6 +214,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\Mouse.MouseState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButtonState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\Touch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletDisplayExtensions.cs" />
@@ -284,6 +287,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourcedTextIconDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedTextStyleDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TouchesCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TouchesCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIElementInstanceFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />

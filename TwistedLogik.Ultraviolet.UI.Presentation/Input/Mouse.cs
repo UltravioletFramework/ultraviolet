@@ -168,6 +168,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             IInputElementHelper.AddHandler(element, QueryCursorEvent, handler);
         }
+        
+        /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, GotMouseCaptureEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, LostMouseCaptureEvent, handler);
+        }
 
         /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>
@@ -254,34 +282,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
-        /// attached event to the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to add the handler.</param>
-        /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.AddHandler(element, GotMouseCaptureEvent, handler);
-        }
-
-        /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
-        /// attached event to the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to add the handler.</param>
-        /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.AddHandler(element, LostMouseCaptureEvent, handler);
-        }
-
-        /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>
         /// attached event to the specified element.
         /// </summary>
@@ -293,34 +293,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MouseMoveEvent, handler);
-        }
-
-        /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
-        /// attached event to the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to add the handler.</param>
-        /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddMouseEnterHandler(DependencyObject element, UpfMouseEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.AddHandler(element, MouseEnterEvent, handler);
-        }
-
-        /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
-        /// attached event to the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to add the handler.</param>
-        /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddMouseLeaveHandler(DependencyObject element, UpfMouseEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.AddHandler(element, MouseLeaveEvent, handler);
         }
 
         /// <summary>
@@ -392,6 +364,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             IInputElementHelper.AddHandler(element, MouseWheelEvent, handler);
         }
+        
+        /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddMouseEnterHandler(DependencyObject element, UpfMouseEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, MouseEnterEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddMouseLeaveHandler(DependencyObject element, UpfMouseEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, MouseLeaveEvent, handler);
+        }
 
         /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.QueryCursor"/>
@@ -405,6 +405,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, QueryCursorEvent, handler);
+        }
+        
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, GotMouseCaptureEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, LostMouseCaptureEvent, handler);
         }
 
         /// <summary>
@@ -492,38 +520,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
-        /// attached event from the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
-        /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.RemoveHandler(element, GotMouseCaptureEvent, handler);
-        }
-
-        /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
-        /// attached event from the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
-        /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.RemoveHandler(element, LostMouseCaptureEvent, handler);
-        }
-
-        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>
         /// attached event from the specified element.
         /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
+        /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseMoveHandler(DependencyObject element, MouseMoveEventHandler handler)
         {
@@ -534,38 +534,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/>
-        /// attached event from the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
-        /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveMouseEnterHandler(DependencyObject element, UpfMouseEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.RemoveHandler(element, MouseEnterEvent, handler);
-        }
-
-        /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/>
-        /// attached event from the specified element.
-        /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
-        /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveMouseLeaveHandler(DependencyObject element, UpfMouseEventHandler handler)
-        {
-            Contract.Require(element, nameof(element));
-            Contract.Require(handler, nameof(handler));
-
-            IInputElementHelper.RemoveHandler(element, MouseLeaveEvent, handler);
-        }
-
-        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>
         /// attached event from the specified element.
         /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
+        /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseUpHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
@@ -579,7 +551,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>
         /// attached event from the specified element.
         /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
+        /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseDownHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
@@ -593,7 +565,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>
         /// attached event from the specified element.
         /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
+        /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
@@ -607,7 +579,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/>
         /// attached event from the specified element.
         /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
+        /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseDoubleClickHandler(DependencyObject element, UpfMouseButtonEventHandler handler)
         {
@@ -621,7 +593,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/>
         /// attached event from the specified element.
         /// </summary>
-        /// <param name="element">The element to which to Remove the handler.</param>
+        /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
         public static void RemoveMouseWheelHandler(DependencyObject element, UpfMouseWheelEventHandler handler)
         {
@@ -629,6 +601,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MouseWheelEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveMouseEnterHandler(DependencyObject element, UpfMouseEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, MouseEnterEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveMouseLeaveHandler(DependencyObject element, UpfMouseEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, MouseLeaveEvent, handler);
         }
 
         /// <summary>
@@ -894,50 +894,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
-        /// attached routed event.
-        /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
-        /// attached routed event.</value>
-        /// <AttachedEventComments>
-        /// <summary>
-        /// Occurs when the mouse cursor enters the element.
-        /// </summary>
-        /// <remarks>
-        /// <revt>
-        ///     <revtField><see cref="MouseEnterEvent"/></revtField>
-        ///     <revtStylingName>mouse-enter</revtStylingName>
-        ///     <revtStrategy>Direct</revtStrategy>
-        ///     <revtDelegate><see cref="UpfMouseEventHandler"/></revtDelegate>
-        /// </revt>
-        /// </remarks>
-        /// </AttachedEventComments>
-        public static readonly RoutedEvent MouseEnterEvent = EventManager.RegisterRoutedEvent("MouseEnter", RoutingStrategy.Direct,
-            typeof(UpfMouseEventHandler), typeof(Mouse));
-
-        /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
-        /// attached routed event.
-        /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
-        /// attached routed event.</value>
-        /// <AttachedEventComments>
-        /// <summary>
-        /// Occurs when the mouse cursor leaves the element.
-        /// </summary>
-        /// <remarks>
-        /// <revt>
-        ///     <revtField><see cref="MouseLeaveEvent"/></revtField>
-        ///     <revtStylingName>mouse-leave</revtStylingName>
-        ///     <revtStrategy>Direct</revtStrategy>
-        ///     <revtDelegate><see cref="UpfMouseEventHandler"/></revtDelegate>
-        /// </revt>
-        /// </remarks>
-        /// </AttachedEventComments>
-        public static readonly RoutedEvent MouseLeaveEvent = EventManager.RegisterRoutedEvent("MouseLeave", RoutingStrategy.Direct,
-            typeof(UpfMouseEventHandler), typeof(Mouse));
-
-        /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/> 
         /// attached routed event.
         /// </summary>
@@ -1076,6 +1032,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent MouseWheelEvent = EventManager.RegisterRoutedEvent("MouseWheel", RoutingStrategy.Bubble,
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
+        /// attached routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the mouse cursor enters the element.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="MouseEnterEvent"/></revtField>
+        ///     <revtStylingName>mouse-enter</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfMouseEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
+        /// </AttachedEventComments>
+        public static readonly RoutedEvent MouseEnterEvent = EventManager.RegisterRoutedEvent("MouseEnter", RoutingStrategy.Direct,
+            typeof(UpfMouseEventHandler), typeof(Mouse));
+
+        /// <summary>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
+        /// attached routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the mouse cursor leaves the element.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="MouseLeaveEvent"/></revtField>
+        ///     <revtStylingName>mouse-leave</revtStylingName>
+        ///     <revtStrategy>Direct</revtStrategy>
+        ///     <revtDelegate><see cref="UpfMouseEventHandler"/></revtDelegate>
+        /// </revt>
+        /// </remarks>
+        /// </AttachedEventComments>
+        public static readonly RoutedEvent MouseLeaveEvent = EventManager.RegisterRoutedEvent("MouseLeave", RoutingStrategy.Direct,
+            typeof(UpfMouseEventHandler), typeof(Mouse));
 
         /// <summary>
         /// Gets the primary mouse input device.

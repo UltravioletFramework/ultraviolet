@@ -1,5 +1,4 @@
-﻿using System.IO;
-using TwistedLogik.Nucleus;
+﻿using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -22,7 +21,7 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
 
             this.uiScreenService = uiScreenService;
 
-            this.font         = LocalContent.Load<SpriteFont>("SegoeUI");
+            this.font = LocalContent.Load<SpriteFont>("SegoeUI");
             this.blankTexture = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.textRenderer = new TextRenderer();
         }
@@ -31,9 +30,9 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
         {
             if (IsReadyForInput)
             {
-                var input    = Ultraviolet.GetInput();
+                var input = Ultraviolet.GetInput();
                 var keyboard = input.GetKeyboard();
-                var touch    = input.GetTouchDevice();
+                var touch = input.GetPrimaryTouchDevice();
 
                 if (keyboard.IsKeyPressed(Key.Right) || (touch != null && touch.WasTapped()))
                 {

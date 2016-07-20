@@ -67,7 +67,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
         protected override void OnUpdating(UltravioletTime time)
         {
             // ACTION: Save Image
-            if (Ultraviolet.GetInput().GetActions().SaveImage.IsPressed() || (Ultraviolet.GetInput().GetTouchDevice()?.WasTapped() ?? false))
+            if (Ultraviolet.GetInput().GetActions().SaveImage.IsPressed() || (Ultraviolet.GetInput().GetPrimaryTouchDevice()?.WasTapped() ?? false))
             {
                 content.Load<SoundEffect>(GlobalSoundEffectID.Shutter).Play();
 
@@ -75,10 +75,10 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
                 // data to streams. We can pass a render target directly to the SaveAsPng() or SaveAsJpg() methods.
                 var saver = SurfaceSaver.Create();
 
-				// The Android and iOS platforms have restrictions on where you can save files, so we'll just
-				// save to the photo gallery on those devices. We'll use a partial method to implement
-				// this platform-specific behavior.
-				SaveImage(saver, rtarget);
+                // The Android and iOS platforms have restrictions on where you can save files, so we'll just
+                // save to the photo gallery on those devices. We'll use a partial method to implement
+                // this platform-specific behavior.
+                SaveImage(saver, rtarget);
 
                 // Alternatively, we could populate an array with the target's data using the GetData() method...
                 //     var data = new Color[rtarget.Width * rtarget.Height];

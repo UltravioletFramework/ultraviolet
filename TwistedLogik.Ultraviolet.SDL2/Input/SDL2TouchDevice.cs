@@ -297,6 +297,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var touchInfo = new TouchInfo(timestamp, touchID, evt.tfinger.fingerId, 
                 evt.tfinger.x, evt.tfinger.y, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);
 
+            touches.Add(touchInfo);
+
             OnTouchDown(touchID, touchInfo.FingerID, touchInfo.CurrentX, touchInfo.CurrentY, touchInfo.Pressure);        
         }
 
@@ -320,7 +322,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         var vDelta = vCurrent - vOrigin;
                         if (vDelta.Length() <= MaximumTapDistance)
                         {
-                            EndTap(touch.FingerID, touch.OriginX, touch.OriginY);
+                            EndTap(touch.TouchID, touch.FingerID, touch.OriginX, touch.OriginY);
                         }
                     }
                     break;
@@ -331,12 +333,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <summary>
         /// Ends a tap.
         /// </summary>
-        private void EndTap(Int64 fingerID, Single x, Single y)
+        private void EndTap(Int64 touchID, Int64 fingerID, Single x, Single y)
         {
-            var tapInfo = new TouchTapInfo(fingerID, x, y);
+            var tapInfo = new TouchTapInfo(touchID, fingerID, x, y);
             taps.Add(tapInfo);
 
-            OnTap(fingerID, x, y);
+            OnTap(touchID, fingerID, x, y);
         }
 
         /// <summary>

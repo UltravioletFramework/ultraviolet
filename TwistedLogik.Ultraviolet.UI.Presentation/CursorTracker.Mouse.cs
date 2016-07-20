@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Represents an object which tracks the mouse cursor.
         /// </summary>
-        private class Mouse : CursorTracker
+        public sealed class Mouse : CursorTracker
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="Mouse"/> class.

@@ -26,11 +26,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="view">The view for which to create the tracker.</param>
         /// <returns>The <see cref="CursorTracker"/> instance which was created.</returns>
-        public static CursorTracker ForMouse(PresentationFoundationView view)
+        public static Mouse ForMouse(PresentationFoundationView view)
         {
             Contract.Require(view, nameof(view));
 
             return new Mouse(view, Input.Mouse.PrimaryDevice);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="CursorTracker"/> which tracks touches.
+        /// </summary>
+        /// <param name="view">The view for which to create the tracker.</param>
+        /// <returns>The <see cref="CursorTracker"/> instance which was created.</returns>
+        public static Touch ForTouch(PresentationFoundationView view)
+        {
+            Contract.Require(view, nameof(view));
+            
+            return new Touch(view, Input.Touch.PrimaryDevice);
         }
 
         /// <summary>
@@ -53,14 +65,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Updates the cursor's relationship to the view's elements.
         /// </summary>
-        public void Update()
+        /// <param name="forceNullPosition">A value indicating whether to force the tracker's position to <see langword="null"/>,
+        /// regardless of the physical device state.</param>
+        public void Update(Boolean forceNullPosition = false)
         {
-            Position = UpdatePosition();
+            Position = forceNullPosition ? null : UpdatePosition();
 
             underCursorPopupPrev = underCursorPopup;
             underCursorPrev = underCursor;
 
-            underCursor = HasPosition ? View.HitTestInternal(Position.Value, out underCursorPopup) as UIElement : null;
+            underCursor = HasPosition ? View.HitTestInternal(Position.Value, out underCursorPopup) as UIElement : null;            
             underCursor = RedirectInput(underCursor);
 
             underCursorBeforeValidityCheckPrev = underCursorBeforeValidityCheck;

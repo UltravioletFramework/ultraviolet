@@ -48,6 +48,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             internal set { SetValue(IsMouseDirectlyOverPropertyKey, value); }
         }
 
+        /// <inheritdoc/>
+        public Boolean AreAnyTouchesCaptured
+        {
+            get { return GetValue<Boolean>(AreAnyTouchesCapturedProperty); }
+            internal set { SetValue(AreAnyTouchesCapturedPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreAnyTouchesCapturedWithin
+        {
+            get { return GetValue<Boolean>(AreAnyTouchesCapturedWithinProperty); }
+            internal set { SetValue(AreAnyTouchesCapturedWithinPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreAnyTouchesOver
+        {
+            get { return GetValue<Boolean>(AreAnyTouchesOverProperty); }
+            internal set { SetValue(AreAnyTouchesOverPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreAnyTouchesDirectlyOver
+        {
+            get { return GetValue<Boolean>(AreAnyTouchesDirectlyOverProperty); }
+            internal set { SetValue(AreAnyTouchesDirectlyOverPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public TouchesCollection TouchesCaptured => touchesCaptured;
+
+        /// <inheritdoc/>
+        public TouchesCollection TouchesCapturedWithin => touchesCapturedWithin;
+
+        /// <inheritdoc/>
+        public TouchesCollection TouchesOver => touchesOver;
+
+        /// <inheritdoc/>
+        public TouchesCollection TouchesDirectlyOver => touchesDirectlyOver;
+
         /// <summary>
         /// The private access key for the <see cref="IsKeyboardFocused"/> read-only dependency property.
         /// </summary>
@@ -121,6 +161,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty IsMouseDirectlyOverProperty = IsMouseDirectlyOverPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesCaptured"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-captured'.</remarks>
+        public static readonly DependencyPropertyKey AreAnyTouchesCapturedPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesCaptured", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyTouchesCapturedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesCaptured"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-captured'.</remarks>
+        public static readonly DependencyProperty AreAnyTouchesCapturedProperty = AreAnyTouchesCapturedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesCapturedWithin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-captured-within'.</remarks>
+        public static readonly DependencyPropertyKey AreAnyTouchesCapturedWithinPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesCapturedWithin", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyTouchesCapturedWithinChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesCapturedWithin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-captured-within'.</remarks>
+        public static readonly DependencyProperty AreAnyTouchesCapturedWithinProperty = AreAnyTouchesCapturedWithinPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-over'.</remarks>
+        public static readonly DependencyPropertyKey AreAnyTouchesOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesOver", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyTouchesOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-over'.</remarks>
+        public static readonly DependencyProperty AreAnyTouchesOverProperty = AreAnyTouchesOverPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesDirectlyOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-directly-over'.</remarks>
+        public static readonly DependencyPropertyKey AreAnyTouchesDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesDirectlyOver", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyTouchesDirectlyOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyTouchesDirectlyOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-touches-directly-over'.</remarks>
+        public static readonly DependencyProperty AreAnyTouchesDirectlyOverProperty = AreAnyTouchesDirectlyOverPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsKeyboardFocused"/> property changes.
         /// </summary>
         public event UpfEventHandler IsKeyboardFocusedChanged;
@@ -149,6 +241,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="IsMouseDirectlyOver"/> property changes.
         /// </summary>
         public event UpfEventHandler IsMouseDirectlyOverChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesCaptured"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyTouchesCapturedChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesCapturedWithin"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyTouchesCapturedWithinChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyTouchesOverChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesDirectlyOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyTouchesDirectlyOverChanged;
 
         /// <inheritdoc/>
         public event UpfRoutedEventHandler PreviewGotKeyboardFocus
@@ -235,7 +347,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
-        public event UpfMouseEventHandler GotMouseCapture
+        public event UpfRoutedEventHandler GotMouseCapture
         {
             add { AddHandler(Mouse.GotMouseCaptureEvent, value); }
             remove { RemoveHandler(Mouse.GotMouseCaptureEvent, value); }
@@ -388,6 +500,90 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             remove { RemoveHandler(GamePad.ButtonUpEvent, value); }
         }
 
+        /// <inheritdoc/>
+        public event UpfTouchEventHandler GotTouchCapture
+        {
+            add { AddHandler(Touch.GotTouchCaptureEvent, value); }
+            remove { RemoveHandler(Touch.LostTouchCaptureEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchEventHandler LostTouchCapture
+        {
+            add { AddHandler(Touch.LostTouchCaptureEvent, value); }
+            remove { RemoveHandler(Touch.LostTouchCaptureEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchMoveEventHandler PreviewTouchMove
+        {
+            add { AddHandler(Touch.PreviewTouchMoveEvent, value); }
+            remove { RemoveHandler(Touch.PreviewTouchMoveEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchDownEventHandler PreviewTouchDown
+        {
+            add { AddHandler(Touch.PreviewTouchDownEvent, value); }
+            remove { RemoveHandler(Touch.PreviewTouchDownEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchUpEventHandler PreviewTouchUp
+        {
+            add { AddHandler(Touch.PreviewTouchUpEvent, value); }
+            remove { RemoveHandler(Touch.PreviewTouchUpEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchTapEventHandler PreviewTouchTap
+        {
+            add { AddHandler(Touch.PreviewTouchTapEvent, value); }
+            remove { RemoveHandler(Touch.PreviewTouchTapEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfMultiGestureEventHandler PreviewMultiGesture
+        {
+            add { AddHandler(Touch.PreviewMultiGestureEvent, value); }
+            remove { RemoveHandler(Touch.PreviewMultiGestureEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchMoveEventHandler TouchMove
+        {
+            add { AddHandler(Touch.TouchMoveEvent, value); }
+            remove { RemoveHandler(Touch.TouchMoveEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchDownEventHandler TouchDown
+        {
+            add { AddHandler(Touch.TouchDownEvent, value); }
+            remove { RemoveHandler(Touch.TouchDownEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchUpEventHandler TouchUp
+        {
+            add { AddHandler(Touch.TouchUpEvent, value); }
+            remove { RemoveHandler(Touch.TouchUpEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchTapEventHandler TouchTap
+        {
+            add { AddHandler(Touch.TouchTapEvent, value); }
+            remove { RemoveHandler(Touch.TouchTapEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfMultiGestureEventHandler MultiGesture
+        {
+            add { AddHandler(Touch.MultiGestureEvent, value); }
+            remove { RemoveHandler(Touch.MultiGestureEvent, value); }
+        }
+
         /// <summary>
         /// Raises the <see cref="IsKeyboardFocusedChanged"/> event.
         /// </summary>
@@ -423,7 +619,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void OnIsMouseDirectlyOverChanged() =>
             IsMouseDirectlyOverChanged?.Invoke(this);
-        
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyTouchesCapturedChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyTouchesCapturedChanged() =>
+            AreAnyTouchesCapturedChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyTouchesCapturedWithinChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyTouchesCapturedWithinChanged() =>
+            AreAnyTouchesCapturedWithinChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyTouchesOverChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyTouchesOverChanged() =>
+            AreAnyTouchesOverChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyTouchesDirectlyOverChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyTouchesDirectlyOverChanged() =>
+            AreAnyTouchesDirectlyOverChanged?.Invoke(this);
+
         /// <summary>
         /// Invoked when the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.
         /// </summary>
@@ -646,7 +866,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
-        /// Invokes by the <see cref="GamePad.AxisChangedEvent"/> attached routed event.
+        /// Invoked by the <see cref="GamePad.AxisChangedEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The game pad device.</param>
         /// <param name="axis">The axis that was changed.</param>
@@ -658,7 +878,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes by the <see cref="GamePad.AxisDownEvent"/> attached routed event.
+        /// Invoked by the <see cref="GamePad.AxisDownEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The game pad device.</param>
         /// <param name="axis">The axis that was pressed.</param>
@@ -671,7 +891,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes by the <see cref="GamePad.AxisUpEvent"/> attached routed event.
+        /// Invoked by the <see cref="GamePad.AxisUpEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The game pad device.</param>
         /// <param name="axis">The axis that was released.</param>
@@ -682,7 +902,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes by the <see cref="GamePad.ButtonDownEvent"/> attached routed event.
+        /// Invoked by the <see cref="GamePad.ButtonDownEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The game pad device.</param>
         /// <param name="button">The button that was pressed.</param>
@@ -694,12 +914,132 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes by the <see cref="GamePad.ButtonUpEvent"/> attached routed event.
+        /// Invoked by the <see cref="GamePad.ButtonUpEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The game pad device.</param>
         /// <param name="button">The button that was released.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnGamePadButtonUp(GamePadDevice device, GamePadButton button, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.GotTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch that was captured.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGotTouchCapture(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.LostTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch that was captured.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnLostTouchCapture(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.TouchEnterEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch that was captured.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchEnter(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.TouchLeaveEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch that was captured.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchLeave(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.TouchMoveEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the touch's 
+        /// current position and the x-coordinate of the touch's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the touch's 
+        /// current position and the y-coordinate of the touch's previous position.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchMove(TouchDevice device, 
+            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.TouchDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchDown(TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.TouchUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchUp(TouchDevice device,
+            Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.TouchTapEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchTap(TouchDevice device,
+            Int64 id, Double x, Double y, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.MultiGestureEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="x">The x-coordinate of the gesture's centroid in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the gesture's centroid in device-independent screen coordinates.</param>
+        /// <param name="theta">The amount that the fingers rotated during the gesture.</param>
+        /// <param name="distance">The amount that the fingers pinched during the gesture.</param>
+        /// <param name="fingers">The number of fingers involved in the gesture.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnMultiGesture(TouchDevice device,
+            Double x, Double y, Single theta, Single distance, Int32 fingers, RoutedEventData data)
         {
 
         }
@@ -736,8 +1076,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisUpEvent, new UpfGamePadAxisUpEventHandler(OnGamePadAxisUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonDownEvent, new UpfGamePadButtonDownEventHandler(OnGamePadButtonDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonUpEvent, new UpfGamePadButtonUpEventHandler(OnGamePadButtonUpProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.GotTouchCaptureEvent, new UpfTouchEventHandler(OnGotTouchCaptureProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.LostTouchCaptureEvent, new UpfTouchEventHandler(OnLostTouchCaptureProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchMoveEvent, new UpfTouchMoveEventHandler(OnTouchMoveProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchDownEvent, new UpfTouchDownEventHandler(OnTouchDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchUpEvent, new UpfTouchUpEventHandler(OnTouchUpProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchTapEvent, new UpfTouchTapEventHandler(OnTouchTapProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.MultiGestureEvent, new UpfMultiGestureEventHandler(OnMultiGestureProxy));
         }
-        
+
         /// <summary>
         /// Invokes the <see cref="OnPreviewGotKeyboardFocus"/> method.
         /// </summary>
@@ -925,6 +1273,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <summary>
+        /// Invokes the <see cref="Touch.GotTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        private static void OnGotTouchCaptureProxy(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            ((UIElement)element).OnGotTouchCapture(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.LostTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        private static void OnLostTouchCaptureProxy(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            ((UIElement)element).OnLostTouchCapture(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchEnterEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchEnterProxy(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchEnter(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchLeaveEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchLeaveProxy(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchLeave(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchMoveEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchMoveProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchMove(device, id, x, y, dx, dy, pressure, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchDownEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchDownProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchUpEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchUpProxy(DependencyObject element, TouchDevice device,
+            Int64 id, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchUp(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchTapEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchTapProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchTap(device, id, x, y, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.MultiGestureEvent"/> attached routed event.
+        /// </summary>
+        private static void OnMultiGestureProxy(DependencyObject element, TouchDevice device,
+            Double x, Double y, Single theta, Single distance, Int32 fingers, RoutedEventData data)
+        {
+            ((UIElement)element).OnMultiGesture(device, x, y, theta, distance, fingers, data);
+        }
+        
+        /// <summary>
         /// Occurs when the value of the <see cref="IsKeyboardFocused"/> dependency property changes.
         /// </summary>
         private static void HandleIsKeyboardFocusedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
@@ -970,6 +1395,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void HandleIsMouseDirectlyOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             ((UIElement)dobj).OnIsMouseDirectlyOverChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesCaptured"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyTouchesCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyTouchesCapturedChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesCapturedWithin"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyTouchesCapturedWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyTouchesCapturedWithinChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesOver"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyTouchesOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyTouchesOverChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyTouchesDirectlyOver"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyTouchesDirectlyOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyTouchesDirectlyOverChanged();
         }
     }
 }

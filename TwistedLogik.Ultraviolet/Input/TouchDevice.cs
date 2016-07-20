@@ -42,11 +42,12 @@ namespace TwistedLogik.Ultraviolet.Input
     /// Represents the method that is called when a touch is interpreted as a tap.
     /// </summary>
     /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+    /// <param name="touchID">The unique identifier of the touch which caused the tap.</param>
     /// <param name="fingerID">The unique identifier of the finger which caused the tap.</param>
     /// <param name="x">The normalized x-coordinate of the tap.</param>
     /// <param name="y">The normalized y-coordinate of the tap.</param>
     public delegate void TouchTapEventHandler(TouchDevice device,
-        Int64 fingerID, Single x, Single y);
+        Int64 touchID, Int64 fingerID, Single x, Single y);
 
     /// <summary>
     /// Represents the method that is called when a multiple-finger touch gesture is performed.
@@ -257,12 +258,13 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <summary>
         /// Raises the <see cref="Tap"/> event.
         /// </summary>
+        /// <param name="touchID">The unique identifier of the touch which caused the tap.</param>
         /// <param name="fingerID">The unique identifier of the finger which caused the tap.</param>
         /// <param name="x">The normalized x-coordinate of the tap.</param>
         /// <param name="y">The normalized y-coordinate of the tap.</param>
-        protected virtual void OnTap(Int64 fingerID, Single x, Single y)
+        protected virtual void OnTap(Int64 touchID, Int64 fingerID, Single x, Single y)
         {
-            Tap?.Invoke(this, fingerID, x, y);
+            Tap?.Invoke(this, touchID, fingerID, x, y);
         }
 
         /// <summary>

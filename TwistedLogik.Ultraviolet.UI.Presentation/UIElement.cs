@@ -68,6 +68,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.uv = uv;
             this.classes = new UIElementClassCollection(this);
             this.uvmlName = (attr == null || attr.Name == null) ? GetType().Name : attr.Name;
+
+            this.touchesCaptured = new TouchesCollection(this, AreAnyTouchesCapturedPropertyKey);
+            this.touchesCapturedWithin = new TouchesCollection(this, AreAnyTouchesCapturedWithinPropertyKey);
+            this.touchesOver = new TouchesCollection(this, AreAnyTouchesOverPropertyKey);
+            this.touchesDirectlyOver = new TouchesCollection(this, AreAnyTouchesDirectlyOverPropertyKey);
         }
         
         /// <summary>
@@ -3040,6 +3045,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private RectangleD? transformedVisualBounds;
         private RectangleD? clipRectangle;
         private event EventHandler layoutUpdated;
+
+        // Touch tracking.
+        private TouchesCollection touchesCaptured;
+        private TouchesCollection touchesCapturedWithin;
+        private TouchesCollection touchesOver;
+        private TouchesCollection touchesDirectlyOver;
 
         // Layout parameters.
         private UvssDocument mostRecentStyleSheet;
