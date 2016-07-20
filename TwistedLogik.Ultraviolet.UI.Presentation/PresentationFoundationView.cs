@@ -49,6 +49,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.layoutRoot.CacheLayoutParameters();
             this.layoutRoot.InvalidateMeasure();
 
+            this.mouseCursorTracker = CursorTracker.ForMouse(this);
+
             HookKeyboardEvents();
             HookMouseEvents();
             HookGamePadEvents();
@@ -273,7 +275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var cursor = default(Cursor);
 
-            var uiElementUnderMouse = elementUnderMouse as UIElement;
+            var uiElementUnderMouse = mouseCursorTracker.ElementUnderCursor as UIElement;
             if (uiElementUnderMouse != null)
             {
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfQueryCursorEventHandler>(Mouse.QueryCursorEvent);
@@ -355,7 +357,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UpdateIsDefaulted();
 
-            focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+            wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
 
             return true;
         }
@@ -387,7 +389,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             UpdateIsDefaulted();
 
-            focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+            wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
         }
 
         /// <summary>
@@ -395,27 +397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void ReleaseMouse()
         {
-            if (elementWithMouseCapture == null)
-                return;
-
-            var elementHadMouseCapture = elementWithMouseCapture;
-            elementWithMouseCapture = null;
-            mouseCaptureMode = CaptureMode.None;
-
-            var uiElement = elementHadMouseCapture as UIElement;
-            if (uiElement != null)
-            {
-                uiElement.IsMouseCaptured = false;
-                UpdateIsMouseCaptureWithin(uiElement, false);
-                UpdateIsMouseOver(uiElement);
-            }
-
-            var dobj = elementHadMouseCapture as DependencyObject;
-            if (dobj != null)
-            {
-                var lostMouseCaptureData = RoutedEventData.Retrieve(dobj);
-                Mouse.RaiseLostMouseCapture(dobj, lostMouseCaptureData);
-            }
+            mouseCursorTracker.Release();
         }
 
         /// <summary>
@@ -426,44 +408,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the mouse was successfully captured; otherwise, <see langword="false"/>.</returns>
         public Boolean CaptureMouse(IInputElement element, CaptureMode mode)
         {
-            Contract.Require(element, nameof(element));
-
-            if (element == null || mode == CaptureMode.None)
-            {
-                element = null;
-                mode = CaptureMode.None;
-            }
-
-            if (elementWithMouseCapture == element)
-                return true;
-
-            if (element != null && !IsElementValidForInput(element))
-                return false;
-
-            if (elementWithMouseCapture != null)
-            {
-                ReleaseMouse();
-            }
-
-            elementWithMouseCapture = element;
-            mouseCaptureMode = mode;
-
-            var uiElement = elementWithMouseCapture as UIElement;
-            if (uiElement != null)
-            {
-                uiElement.IsMouseCaptured = true;
-                UpdateIsMouseCaptureWithin(uiElement, true);
-                UpdateIsMouseOver(uiElement);
-            }
-
-            var dobj = elementWithMouseCapture as DependencyObject;
-            if (dobj != null)
-            {
-                var gotMouseCaptureData = RoutedEventData.Retrieve(dobj);
-                Mouse.RaiseGotMouseCapture(dobj, gotMouseCaptureData);
-            }
-
-            return true;
+            return mouseCursorTracker.Capture(element, mode);
         }
 
         /// <summary>
@@ -795,7 +740,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public IInputElement ElementUnderMouse
         {
-            get { return elementUnderMouse; }
+            get { return mouseCursorTracker.ElementUnderCursor; }
         }
 
         /// <summary>
@@ -811,7 +756,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public IInputElement ElementWithMouseCapture
         {
-            get { return elementWithMouseCapture; }
+            get { return mouseCursorTracker.ElementWithCapture; }
         }
 
         /// <summary>
@@ -828,6 +773,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public PresentationFoundationViewResources Resources
         {
             get { return resources; }
+        }
+        
+        /// <summary>
+        /// Performs a hit test against the layout root and any active popup windows.
+        /// </summary>
+        /// <param name="point">The point in device-independent screen space to test.</param>
+        /// <param name="popup">The popup that contains the resulting visual.</param>
+        /// <returns>The topmost <see cref="Visual"/> that contains the specified point, 
+        /// or <see langword="null"/> if none of the items in the layout contain the point.</returns>
+        internal Visual HitTestInternal(Point2D point, out Popup popup)
+        {
+            var popupMatch = popupQueue.HitTest(point, out popup);
+            if (popupMatch != null)
+            {
+                return popupMatch;
+            }
+
+            popup = null;
+            return LayoutRoot.HitTest(point);
+        }
+
+        /// <summary>
+        /// Updates the element for which the view is displaying a tool tip.
+        /// </summary>
+        /// <param name="element">The element for which the view should display a tool tip</param>
+        internal void UpdateToolTipElement(IInputElement element)
+        {
+            toolTipElementPrev = toolTipElement;
+            toolTipElement = GetToolTipElement(element);
+
+            if (toolTipElement != toolTipElementPrev)
+                HandleToolTipElementChanged(toolTipElementPrev as UIElement, toolTipElement as UIElement);
         }
 
         /// <summary>
@@ -930,7 +907,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         internal Boolean FocusWasMostRecentlyChangedByKeyboardOrGamePad
         {
-            get { return focusWasMostRecentlyChangedByKeyboardOrGamePad; }
+            get { return wasFocusMostRecentlyChangedByKeyboardOrGamePad; }
         }
 
         /// <inheritdoc/>
@@ -1103,25 +1080,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 RaiseViewModelChangedEvent(child);
             });
-        }
-
-        /// <summary>
-        /// Performs a hit test against the layout root and any active popup windows.
-        /// </summary>
-        /// <param name="point">The point in device-independent screen space to test.</param>
-        /// <param name="popup">The popup that contains the resulting visual.</param>
-        /// <returns>The topmost <see cref="Visual"/> that contains the specified point, 
-        /// or <see langword="null"/> if none of the items in the layout contain the point.</returns>
-        private Visual HitTestInternal(Point2D point, out Popup popup)
-        {
-            var popupMatch = popupQueue.HitTest(point, out popup);
-            if (popupMatch != null)
-            {
-                return popupMatch;
-            }
-
-            popup = null;
-            return LayoutRoot.HitTest(point);
         }
 
         /// <summary>
@@ -1421,7 +1379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void HandleMouseInput(UltravioletTime time)
         {
-            UpdateElementUnderMouse();
+            mouseCursorTracker.Update();
             UpdateToolTip(time);
         }
 
@@ -1432,153 +1390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             CloseToolTip();
         }
-
-        /// <summary>
-        /// Updates the value of the <see cref="UIElement.IsMouseOver"/> property for ancestors
-        /// of the specified element.
-        /// </summary>
-        /// <param name="root">The element to update.</param>
-        /// <param name="unset">A value indicating whether to forcibly unset the property value.</param>
-        private void UpdateIsMouseOver(UIElement root, Boolean unset = false)
-        {
-            if (root == null)
-                return;
-
-            var mouse = Ultraviolet.GetInput().GetMouse();
-            if (mouse == null)
-                return;
-
-            isMouseOverSet.Clear();
-
-            var mousePosInWindow = mouse.GetPositionInWindow(Window);
-            var mouseElement = mousePosInWindow == null ? null :
-                (DependencyObject)HitTestScreenPixel((Point2)mousePosInWindow.Value);
-
-            while (mouseElement != null)
-            {
-                isMouseOverSet.Add(mouseElement);
-                mouseElement = VisualTreeHelper.GetParent(mouseElement);
-            }
-
-            var current = root as DependencyObject;
-            while (current != null)
-            {
-                var uiElement = current as UIElement;
-                if (uiElement != null)
-                {
-                    var oldValue = uiElement.IsMouseOver;
-                    var newValue = isMouseOverSet.Contains(uiElement) && !unset;
-                    if (oldValue != newValue)
-                    {
-                        uiElement.IsMouseOver = newValue;
-                        if (newValue)
-                        {
-                            var dobj = uiElement as DependencyObject;
-                            if (dobj != null)
-                            {
-                                var mouseEnterData = RoutedEventData.Retrieve(dobj);
-                                Mouse.RaiseMouseEnter(dobj, mouse, mouseEnterData);
-                            }
-                        }
-                        else
-                        {
-                            var dobj = uiElement as DependencyObject;
-                            if (dobj != null)
-                            {
-                                var mouseLeaveData = RoutedEventData.Retrieve(dobj);
-                                Mouse.RaiseMouseLeave(dobj, mouse, mouseLeaveData);
-                            }
-                        }
-                    }
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-
-            isMouseOverSet.Clear();
-        }
-
-        /// <summary>
-        /// Updates the value of the <see cref="UIElement.IsMouseCaptureWithin"/> property for ancestors
-        /// of the specified element.
-        /// </summary>
-        /// <param name="root">The element to update.</param>
-        /// <param name="value">The value to set on the specified tree.</param>
-        private void UpdateIsMouseCaptureWithin(UIElement root, Boolean value)
-        {
-            if (root == null)
-                return;
-
-            var current = root as DependencyObject;
-            while (current != null)
-            {
-                var uiElement = current as UIElement;
-                if (uiElement != null)
-                {
-                    uiElement.IsMouseCaptureWithin = value;
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-        }
-
-        /// <summary>
-        /// Determines which element is currently under the mouse cursor.
-        /// </summary>
-        private void UpdateElementUnderMouse()
-        {
-            var mouse = Ultraviolet.GetInput().GetMouse();
-
-            // Determine which element is currently under the mouse cursor.
-            var mousePosInWindow = mouse.GetPositionInWindow(Window) ?? Point2.Zero;
-            var mousePos = Display.PixelsToDips((Point2D)mousePosInWindow);
-            var mouseView = mouse.Window == Window ? this : null;
-
-            elementUnderMousePopupPrev = elementUnderMousePopup;
-            elementUnderMousePrev = elementUnderMouse;
-            elementUnderMouse = (mouseView == null) ? null : mouseView.HitTestInternal(mousePos, out elementUnderMousePopup) as UIElement;
-            elementUnderMouse = RedirectMouseInput(elementUnderMouse);
-
-            elementUnderMouseBeforeValidityCheckPrev = elementUnderMouseBeforeValidityCheck;
-            elementUnderMouseBeforeValidityCheck = elementUnderMouse;
-
-            if (!IsElementValidForInput(elementUnderMouse))
-                elementUnderMouse = null;
-
-            if (mouseCaptureMode != CaptureMode.None && !IsElementValidForInput(elementWithMouseCapture))
-                ReleaseMouse();
-
-            // Handle tooltips.
-            if (elementUnderMouseBeforeValidityCheck != elementUnderMouseBeforeValidityCheckPrev)
-            {
-                toolTipElementPrev = toolTipElement;
-                toolTipElement = GetToolTipElement(elementUnderMouseBeforeValidityCheck);
-
-                if (toolTipElement != toolTipElementPrev)
-                    HandleToolTipElementChanged(toolTipElementPrev as UIElement, toolTipElement as UIElement);
-            }
-
-            // Handle mouse motion events
-            if (elementUnderMouse != elementUnderMousePrev)
-            {
-                UpdateIsMouseOver(elementUnderMousePrev as UIElement, elementUnderMousePopup != elementUnderMousePopupPrev);
-
-                if (elementUnderMousePrev != null)
-                {
-                    var uiElement = elementUnderMousePrev as UIElement;
-                    if (uiElement != null)
-                        uiElement.IsMouseDirectlyOver = false;
-                }
-
-                if (elementUnderMouse != null)
-                {
-                    var uiElement = elementUnderMouse as UIElement;
-                    if (uiElement != null)
-                        uiElement.IsMouseDirectlyOver = true;
-                }
-
-                UpdateIsMouseOver(elementUnderMouse as UIElement);
-            }
-        }
-
+        
         /// <summary>
         /// Updates the display state of the view's tooltip.
         /// </summary>
@@ -1771,25 +1583,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void CleanupInput()
         {
-            if (elementUnderMouse != null)
-                UpdateIsMouseOver(elementUnderMouse as UIElement, true);
-
-            if (elementWithMouseCapture != null)
-                ReleaseMouse();
+            mouseCursorTracker.Release();
+            mouseCursorTracker.Cleanup();
 
             if (elementWithFocus != null)
                 BlurElement(elementWithFocus);
 
-            elementUnderMousePrev = null;
-            elementUnderMouse = null;
-            elementUnderMouseBeforeValidityCheckPrev = null;
-            elementUnderMouseBeforeValidityCheck = null;
-            elementWithMouseCapture = null;
-            elementWithFocus = null;
-
-            mouseCaptureMode = CaptureMode.None;
             wasInputPossibleLastFrame = false;
-            focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+            wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
         }
 
         /// <summary>
@@ -1841,50 +1642,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return (Point2D)Display.PixelsToDips(new Vector2(xPixels, yPixels));
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified element is valid for receiving input.
-        /// </summary>
-        /// <param name="element">The element to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified element is valid for input; otherwise, <see langword="false"/>.</returns>
-        private Boolean IsElementValidForInput(IInputElement element)
-        {
-            var uiElement = element as UIElement;
-            if (uiElement == null)
-                return false;
-
-            return uiElement.IsHitTestVisible && uiElement.IsVisible && element.IsEnabled;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the specified element has captured the mouse
-        /// or is within the capture subtree.
-        /// </summary>
-        /// <param name="element">The element to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified element has captured the mouse; otherwise, <see langword="false"/>.</returns>
-        private Boolean IsMouseCapturedByElement(IInputElement element)
-        {
-            var uiElement = element as UIElement;
-            if (uiElement == null)
-                return false;
-
-            if (mouseCaptureMode == CaptureMode.None)
-                return false;
-
-            if (mouseCaptureMode == CaptureMode.Element)
-                return uiElement == elementWithMouseCapture;
-
-            var current = (DependencyObject)element;
-            while (current != null)
-            {
-                if (current == elementWithMouseCapture)
-                    return true;
-
-                current = VisualTreeHelper.GetParent(current) ?? LogicalTreeHelper.GetParent(current);
-            }
-            return false;
-        }
-
+        
         /// <summary>
         /// Displays the specified element's tooltip.
         /// </summary>
@@ -1950,20 +1708,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return null;
         }
-
-        /// <summary>
-        /// Redirects mouse input to the element with mouse capture, if necessary.
-        /// </summary>
-        /// <param name="recipient">The element that will be the target of the input event prior to considering mouse capture.</param>
-        /// <returns>The element that will be the target of the input event after considering mouse capture.</returns>
-        private IInputElement RedirectMouseInput(IInputElement recipient)
-        {
-            if (mouseCaptureMode == CaptureMode.None)
-                return recipient;
-
-            return IsMouseCapturedByElement(recipient) ? recipient : elementWithMouseCapture;
-        }
-
+        
         /// <summary>
         /// Navigates the visual tree starting at the specified element until an element is found which has a valid tooltip.
         /// </summary>
@@ -2089,7 +1834,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             if (originalFocus != elementWithFocus)
-                focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
         }
 
         /// <summary>
@@ -2114,7 +1859,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2140,7 +1885,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2166,7 +1911,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2178,7 +1923,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var recipient = elementUnderMouse;
+            var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2198,7 +1943,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
 
             InvalidateCursor();
@@ -2214,10 +1959,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             CloseToolTip();
 
-            UpdateElementUnderMouse();
+            mouseCursorTracker.Update();
 
             var handled = false;
-            var recipient = elementUnderMouse;
+            var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2236,7 +1981,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
 
             if (!handled)
@@ -2251,7 +1996,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var recipient = elementUnderMouse;
+            var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2266,7 +2011,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -2278,7 +2023,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var recipient = elementUnderMouse;
+            var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2293,7 +2038,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -2305,7 +2050,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var recipient = elementUnderMouse;
+            var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2320,7 +2065,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
         }
 
@@ -2332,7 +2077,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (window != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var recipient = elementUnderMouse;
+            var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
                 var originalFocus = elementWithFocus;
@@ -2350,17 +2095,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = false;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IUltravioletInput.TouchDeviceRegistered"/> event.
-        /// </summary>
-        private void Input_TouchDeviceRegistered(TouchDevice device)
-        {
-            Ultraviolet.GetInput().TouchDeviceRegistered -= Input_TouchDeviceRegistered;
-            HookTouchEvents();
         }
 
         /// <summary>
@@ -2404,7 +2140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 gamePadAxisChangedData.Release();
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2434,7 +2170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 FocusNavigator.PerformNavigation(this, device, axis);
 
             if (originalFocus != elementWithFocus)
-                focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
         }
 
         /// <summary>
@@ -2456,7 +2192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 gamePadAxisPressedData.Release();
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
         }
 
@@ -2501,7 +2237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             if (originalFocus != elementWithFocus)
-                focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
         }
 
         /// <summary>
@@ -2523,8 +2259,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 gamePadAxisChangedData.Release();
 
                 if (originalFocus != elementWithFocus)
-                    focusWasMostRecentlyChangedByKeyboardOrGamePad = true;
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+        }
+        
+        /// <summary>
+        /// Handles the <see cref="IUltravioletInput.TouchDeviceRegistered"/> event.
+        /// </summary>
+        private void Input_TouchDeviceRegistered(TouchDevice device)
+        {
+            Ultraviolet.GetInput().TouchDeviceRegistered -= Input_TouchDeviceRegistered;
+            HookTouchEvents();
         }
 
         /// <summary>
@@ -2543,25 +2288,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private PresentationFoundationViewRoot layoutRoot;
 
         // State values.
-        private readonly HashSet<DependencyObject> isMouseOverSet = new HashSet<DependencyObject>();
+        private readonly PopupQueue popupQueue = new PopupQueue();
         private readonly DrawingContext drawingContext;
-        private IInputElement elementUnderMousePrev;
-        private IInputElement elementUnderMouse;
-        private IInputElement elementUnderMouseBeforeValidityCheckPrev;
-        private IInputElement elementUnderMouseBeforeValidityCheck;
-        private IInputElement elementWithMouseCapture;
+        private CursorTracker mouseCursorTracker;
         private IInputElement elementWithFocus;
-        private CaptureMode mouseCaptureMode;
         private Boolean viewIsOpen;
         private Boolean hookedGlobalStyleSheetChanged;
         private Boolean hookedFirstPlayerGamePad;
         private Boolean wasInputPossibleLastFrame;
-        private Boolean focusWasMostRecentlyChangedByKeyboardOrGamePad;
-
-        // Popup handling.
-        private readonly PopupQueue popupQueue = new PopupQueue();
-        private Popup elementUnderMousePopupPrev;
-        private Popup elementUnderMousePopup;
+        private Boolean wasFocusMostRecentlyChangedByKeyboardOrGamePad;
 
         // Tooltip handling.
         private readonly DropShadowEffect toolTipDropShadow = new DropShadowEffect();

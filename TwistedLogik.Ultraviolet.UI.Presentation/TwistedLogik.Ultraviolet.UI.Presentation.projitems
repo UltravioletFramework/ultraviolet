@@ -149,6 +149,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\VSlider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\WrapPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.Mouse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingGetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingSetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceExpressionBuilder.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDependencyPropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IIndexable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IInputElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IInputElementExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CaptureMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CursorQueryData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusManager.cs" />
