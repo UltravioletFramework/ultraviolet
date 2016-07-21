@@ -403,6 +403,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public event UpfMouseEventHandler MouseEnter
+        {
+            add { AddHandler(Mouse.MouseEnterEvent, value); }
+            remove { RemoveHandler(Mouse.MouseEnterEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfMouseEventHandler MouseLeave
+        {
+            add { AddHandler(Mouse.MouseLeaveEvent, value); }
+            remove { RemoveHandler(Mouse.MouseLeaveEvent, value); }
+        }
+
+        /// <inheritdoc/>
         public event UpfMouseMoveEventHandler MouseMove
         {
             add { AddHandler(Mouse.MouseMoveEvent, value); }
@@ -443,7 +457,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             add { AddHandler(Mouse.MouseWheelEvent, value); }
             remove { RemoveHandler(Mouse.MouseWheelEvent, value); }
         }
-        
+
         /// <inheritdoc/>
         public event UpfGamePadAxisChangedEventHandler PreviewGamePadAxisChanged
         {
@@ -547,6 +561,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             add { AddHandler(Touch.PreviewMultiGestureEvent, value); }
             remove { RemoveHandler(Touch.PreviewMultiGestureEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchEventHandler TouchEnter
+        {
+            add { AddHandler(Touch.TouchEnterEvent, value); }
+            remove { RemoveHandler(Touch.TouchEnterEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchEventHandler TouchLeave
+        {
+            add { AddHandler(Touch.TouchLeaveEvent, value); }
+            remove { RemoveHandler(Touch.TouchLeaveEvent, value); }
         }
 
         /// <inheritdoc/>

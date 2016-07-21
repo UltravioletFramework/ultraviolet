@@ -209,6 +209,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         event UpfMouseWheelEventHandler PreviewMouseWheel;
 
         /// <summary>
+        /// Occurs when the mouse cursor enters the element.
+        /// </summary>
+        event UpfMouseEventHandler MouseEnter;
+
+        /// <summary>
+        /// Occurs when the mouse cursor leaves the element.
+        /// </summary>
+        event UpfMouseEventHandler MouseLeave;
+
+        /// <summary>
         /// Occurs when the mouse cursor moves over the element.
         /// </summary>
         event UpfMouseMoveEventHandler MouseMove;
@@ -312,6 +322,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when a multiple-finger gesture is performed over the element.
         /// </summary>
         event UpfMultiGestureEventHandler PreviewMultiGesture;
+
+        /// <summary>
+        /// Occurs when a touch enters the element.
+        /// </summary>
+        event UpfTouchEventHandler TouchEnter;
+
+        /// <summary>
+        /// Occurs when a touch leaves the element.
+        /// </summary>
+        event UpfTouchEventHandler TouchLeave;
 
         /// <summary>
         /// Occurs when a touch moves over the element.
