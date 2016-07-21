@@ -718,6 +718,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Captures a touch to this element.
+        /// </summary>
+        /// <param name="touchID">The unique identifier of the touch to capture.</param>
+        /// <returns><see langword="true"/> if the touch was successfully captured; otherwise, <see langword="false"/>.</returns>
+        public Boolean CaptureTouch(Int64 touchID)
+        {
+            return View != null && Touch.Capture(View, this, touchID);
+        }
+
+        /// <summary>
+        /// Releases touch capture from this element.
+        /// </summary>
+        /// <param name="touchID">The unique identifier of the touch to release.</param>
+        public void ReleaseTouchCapture(Int64 touchID)
+        {
+            if (View != null && Touch.GetCaptured(View, touchID) == this)
+            {
+                Touch.Capture(View, null, touchID);
+            }
+        }
+
+        /// <summary>
         /// Gets the Ultraviolet context that created this element.
         /// </summary>
         public UltravioletContext Ultraviolet
