@@ -927,11 +927,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var oldValueContent = definitions[i].MeasuredContentDimension;
                 var oldValue = definitions[i].MeasuredDimension;
 
-                definitions[i].MeasuredContentDimension = PerformLayoutRounding(oldValueContent);
-                definitions[i].MeasuredDimension = PerformLayoutRounding(oldValue);
+                if (!Double.IsInfinity(oldValueContent))
+                {
+                    definitions[i].MeasuredContentDimension = PerformLayoutRounding(oldValueContent);
+                    errorContent += (definitions[i].MeasuredContentDimension - oldValueContent);
+                }
 
-                errorContent += (definitions[i].MeasuredContentDimension - oldValueContent);
-                error += (definitions[i].MeasuredDimension - oldValue);
+                if (!Double.IsInfinity(oldValue))
+                {
+                    definitions[i].MeasuredDimension = PerformLayoutRounding(oldValue);
+                    error += (definitions[i].MeasuredDimension - oldValue);
+                }
             }
 
             definitions[definitions.Count - 1].MeasuredContentDimension += errorContent;
