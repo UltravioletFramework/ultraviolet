@@ -858,22 +858,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var undistributed = dimension - CalculateUsedDimension(definitions);
 
             var starCombinedWeight = 0.0;
-            var starCount          = 0;
 
             for (int i = 0; i < definitions.Count; i++)
             {
                 var def = definitions[i];
                 if (def.AssumedUnitType == GridUnitType.Star)
                 {
-                    starCount++;
                     starCombinedWeight += def.Dimension.Value;
                 }
             }
 
-            if (starCount == 0 || starCombinedWeight == 0)
+            if (starCombinedWeight <= 0)
                 return;
 
-            var starCountVisited = 0;
+            var starCountVisited = 0.0;
 
             for (int i = 0; i < definitions.Count; i++)
             {
@@ -881,13 +879,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (def.AssumedUnitType != GridUnitType.Star)
                     continue;
 
-                var defShare          = undistributed / (starCount - starCountVisited);
-                var defDimension      = Math.Max(0, Math.Min(defShare, def.MaxDimension));
+                var defShare = def.Dimension.Value * (undistributed / (starCombinedWeight - starCountVisited));
+                var defDimension = Math.Max(0, Math.Min(defShare, def.MaxDimension));
                 def.MeasuredDimension = defDimension;
 
                 undistributed -= defDimension;
 
-                starCountVisited++;
+                starCountVisited += def.Dimension.Value;
             }
         }
 
