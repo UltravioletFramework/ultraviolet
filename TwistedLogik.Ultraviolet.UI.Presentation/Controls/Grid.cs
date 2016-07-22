@@ -873,20 +873,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var starCountVisited = 0.0;
 
-            for (int i = 0; i < definitions.Count; i++)
+            var buffer = EnumerateDefinitionsByMinArrangedSize(definitions);
+            for (int i = 0; i < buffer.Count; i++)
             {
-                var def = definitions[i];
+                var def = buffer[i];
                 if (def.AssumedUnitType != GridUnitType.Star)
                     continue;
 
                 var defShare = def.Dimension.Value * (undistributed / (starCombinedWeight - starCountVisited));
-                var defDimension = Math.Max(0, Math.Min(defShare, def.MaxDimension));
-                def.MeasuredDimension = defDimension;
+                var defMinSize = Math.Max(def.MinDimension, def.MeasuredContentDimension);
+                var defDimension = Math.Max(defMinSize, Math.Max(0, Math.Min(defShare, def.MaxDimension)));
+                def.MeasuredDimension = Math.Min(undistributed, defDimension);
 
                 undistributed -= defDimension;
 
                 starCountVisited += def.Dimension.Value;
             }
+            buffer.Clear();
         }
 
         /// <summary>
@@ -1123,10 +1126,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             return buffer;
         }
 
+        /// <summary>
+        /// Retrieves a buffer containing all of the specified definitions, sorted by their minimum arranged size.
+        /// </summary>
+        private List<DefinitionBase> EnumerateDefinitionsByMinArrangedSize(IDefinitionBaseCollection definitions)
+        {
+            spanEnumerationBuffer.Clear();
+            for (int i = 0; i < definitions.Count; i++)
+                spanEnumerationBuffer.Add(definitions[i]);
+
+            spanEnumerationBuffer.Sort((def1, def2) =>
+            {
+                var def1Min = Math.Max(def1.MinDimension, def1.MeasuredContentDimension);
+                var def2Min = Math.Max(def2.MinDimension, def2.MeasuredContentDimension);
+                return def2Min.CompareTo(def1Min);
+            });
+
+            return spanEnumerationBuffer;
+        }
+
         // A buffer used to sort spanned definitions during measurement.
         [ThreadStatic]
         private readonly List<DefinitionBase> spanEnumerationBuffer = new List<DefinitionBase>(8);
-
+        
         // Property values.
         private readonly RowDefinitionCollection rowDefinitions;
         private readonly ColumnDefinitionCollection columnDefinitions;
