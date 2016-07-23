@@ -1107,6 +1107,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.GotTouchCaptureEvent, new UpfTouchEventHandler(OnGotTouchCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.LostTouchCaptureEvent, new UpfTouchEventHandler(OnLostTouchCaptureProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchEnterEvent, new UpfTouchEventHandler(OnTouchEnterProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchLeaveEvent, new UpfTouchEventHandler(OnTouchLeaveProxy));
+
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchMoveEvent, new UpfTouchMoveEventHandler(OnTouchMoveProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchDownEvent, new UpfTouchDownEventHandler(OnTouchDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchUpEvent, new UpfTouchUpEventHandler(OnTouchUpProxy));
