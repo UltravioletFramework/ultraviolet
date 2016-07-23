@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 {
                     case SDL_EventType.MOUSEMOTION:
                         {
-                            if (!isRegistered)
+                            if (!isRegistered && evt.motion.which != SDL_TOUCH_MOUSEID)
                                 Register();
 
                             OnMouseMotion(ref evt.motion);
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     case SDL_EventType.MOUSEBUTTONDOWN:
                         {
-                            if (!isRegistered)
+                            if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
                                 Register();
 
                             OnMouseButtonDown(ref evt.button);
@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     case SDL_EventType.MOUSEBUTTONUP:
                         {
-                            if (!isRegistered)
+                            if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
                                 Register();
 
                             OnMouseButtonUp(ref evt.button);
@@ -66,7 +66,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     case SDL_EventType.MOUSEWHEEL:
                         {
-                            if (!isRegistered)
+                            if (!isRegistered && evt.wheel.which != SDL_TOUCH_MOUSEID)
                                 Register();
 
                             OnMouseWheel(ref evt.wheel);
