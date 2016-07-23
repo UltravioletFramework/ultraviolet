@@ -352,6 +352,17 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public Boolean IsMouseCursorAvailable
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return mouse.IsRegistered || (EmulateMouseWithTouchInput && IsTouchDeviceRegistered());
+            }
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <inheritdoc/>

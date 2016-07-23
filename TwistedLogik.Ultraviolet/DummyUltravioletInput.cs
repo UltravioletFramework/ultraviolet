@@ -261,6 +261,17 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public Boolean IsMouseCursorAvailable
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <inheritdoc/>

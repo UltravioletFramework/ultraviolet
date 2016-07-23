@@ -218,7 +218,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
         {
-            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
             {
                 if (device.IsFirstTouchInGesture(id))
                 {
@@ -232,7 +232,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnTouchUp(TouchDevice device, Int64 id, RoutedEventData data)
         {
-            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
             {
                 if (device.IsFirstTouchInGesture(id))
                 {
@@ -246,7 +246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnTouchTap(TouchDevice device, Int64 id, Double x, Double y, RoutedEventData data)
         {
-            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
             {
                 if (device.IsFirstTouchInGesture(id))
                 {
@@ -260,7 +260,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnTouchEnter(TouchDevice device, Int64 id, RoutedEventData data)
         {
-            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
             {
                 if (device.IsFirstTouchInGesture(id) && ClickMode == ClickMode.Hover)
                 {
@@ -274,7 +274,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnTouchLeave(TouchDevice device, Int64 id, RoutedEventData data)
         {
-            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
             {
                 if (device.IsFirstTouchInGesture(id))
                 {

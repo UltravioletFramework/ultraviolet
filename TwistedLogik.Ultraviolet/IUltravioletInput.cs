@@ -271,6 +271,15 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether a mouse cursor is available, either from a physical
+        /// device or from touch emulation.
+        /// </summary>
+        Boolean IsMouseCursorAvailable
+        {
+            get;            
+        }
+
+        /// <summary>
         /// Occurs when a keyboard device is registered as a result of receiving
         /// user input for the first time.
         /// </summary>
