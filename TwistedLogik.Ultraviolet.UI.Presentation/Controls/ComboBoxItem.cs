@@ -38,18 +38,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             if (button == MouseButton.Left && !data.Handled)
             {
-                var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
-                if (comboBox != null)
-                {
-                    comboBox.HandleItemClicked(this);
-                    OnSelected();
-                    OnSelectedByUser();
-                }
+                Select();
+                OnSelectedByUser();
+
                 data.Handled = true;
             }
             base.OnMouseDown(device, button, data);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnTouchTap(TouchDevice device, Int64 id, Double x, Double y, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
+            {
+                if (device.IsFirstTouchInGesture(id) && !data.Handled)
+                {
+                    Select();
+                    OnSelectedByUser();
+
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchTap(device, id, x, y, data);
+        }
+
         /// <inheritdoc/>
         protected override void OnContentChanged(Object oldValue, Object newValue)
         {
@@ -59,6 +71,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.HandleItemChanged(this);
             }
             base.OnContentChanged(oldValue, newValue);
+        }
+
+        /// <summary>
+        /// Selects the item.
+        /// </summary>
+        private void Select()
+        {
+            var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
+            if (comboBox != null)
+            {
+                comboBox.HandleItemClicked(this);
+                OnSelected();
+            }
         }
     }
 }
