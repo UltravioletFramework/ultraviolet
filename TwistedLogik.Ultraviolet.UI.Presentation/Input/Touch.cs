@@ -194,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddGotMouseCaptureHandler(DependencyObject element, UpfTouchEventHandler handler)
+        public static void AddGotTouchCaptureHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -208,7 +208,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddLostMouseCaptureHandler(DependencyObject element, UpfTouchEventHandler handler)
+        public static void AddLostTouchCaptureHandler(DependencyObject element, UpfTouchEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTouchMoveEventHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
+        public static void AddPreviewTouchMoveHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -236,7 +236,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTouchDownEventHandler(DependencyObject element, UpfTouchDownEventHandler handler)
+        public static void AddPreviewTouchDownHandler(DependencyObject element, UpfTouchDownEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -250,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTouchUpEventHandler(DependencyObject element, UpfTouchUpEventHandler handler)
+        public static void AddPreviewTouchUpHandler(DependencyObject element, UpfTouchUpEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTouchTapEventHandler(DependencyObject element, UpfTouchTapEventHandler handler)
+        public static void AddPreviewTouchTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -278,7 +278,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTouchTapEventHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void AddPreviewTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -292,7 +292,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTouchMoveEventHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
+        public static void AddTouchMoveHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -306,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTouchDownEventHandler(DependencyObject element, UpfTouchDownEventHandler handler)
+        public static void AddTouchDownHandler(DependencyObject element, UpfTouchDownEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -320,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTouchUpEventHandler(DependencyObject element, UpfTouchUpEventHandler handler)
+        public static void AddTouchUpHandler(DependencyObject element, UpfTouchUpEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -334,7 +334,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTouchTapEventHandler(DependencyObject element, UpfTouchTapEventHandler handler)
+        public static void AddTouchTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -348,7 +348,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTouchTapEventHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void AddTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -362,7 +362,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveGotMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void RemoveGotTouchCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -376,7 +376,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveLostMouseCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
+        public static void RemoveLostTouchCaptureHandler(DependencyObject element, UpfRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -390,7 +390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTouchMoveEventHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
+        public static void RemovePreviewTouchMoveHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -404,7 +404,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTouchDownEventHandler(DependencyObject element, UpfTouchDownEventHandler handler)
+        public static void RemovePreviewTouchDownHandler(DependencyObject element, UpfTouchDownEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -418,7 +418,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTouchUpEventHandler(DependencyObject element, UpfTouchUpEventHandler handler)
+        public static void RemovePreviewTouchUpHandler(DependencyObject element, UpfTouchUpEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -432,7 +432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTouchTapEventHandler(DependencyObject element, UpfTouchTapEventHandler handler)
+        public static void RemovePreviewTouchTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -446,7 +446,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTouchTapEventHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void RemovePreviewTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -460,7 +460,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTouchMoveEventHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
+        public static void RemoveTouchMoveHandler(DependencyObject element, UpfTouchMoveEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -474,7 +474,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTouchDownEventHandler(DependencyObject element, UpfTouchDownEventHandler handler)
+        public static void RemoveTouchDownHandler(DependencyObject element, UpfTouchDownEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -488,7 +488,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTouchUpEventHandler(DependencyObject element, UpfTouchUpEventHandler handler)
+        public static void RemoveTouchUpHandler(DependencyObject element, UpfTouchUpEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -502,7 +502,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTouchTapEventHandler(DependencyObject element, UpfTouchTapEventHandler handler)
+        public static void RemoveTouchTapHandler(DependencyObject element, UpfTouchTapEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -516,7 +516,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTouchTapEventHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void RemoveTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
