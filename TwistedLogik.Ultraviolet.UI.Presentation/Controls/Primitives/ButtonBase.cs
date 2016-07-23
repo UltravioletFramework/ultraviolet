@@ -216,6 +216,75 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            {
+                if (device.IsFirstTouchInGesture(id))
+                {
+                    HandlePressed();
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchUp(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            {
+                if (device.IsFirstTouchInGesture(id))
+                {
+                    IsPressed = false;
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchUp(device, id, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchTap(TouchDevice device, Int64 id, Double x, Double y, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            {
+                if (device.IsFirstTouchInGesture(id))
+                {
+                    HandleReleased(checkMousePosition: false);
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchTap(device, id, x, y, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchEnter(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            {
+                if (device.IsFirstTouchInGesture(id) && ClickMode == ClickMode.Hover)
+                {
+                    OnClick();
+                    OnClickByUser();
+                }
+            }
+            base.OnTouchEnter(device, id, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchLeave(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput)
+            {
+                if (device.IsFirstTouchInGesture(id))
+                {
+                    IsPressed = false;
+                }
+            }
+            base.OnTouchLeave(device, id, data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             if (key == Key.Return || key == Key.Space)
