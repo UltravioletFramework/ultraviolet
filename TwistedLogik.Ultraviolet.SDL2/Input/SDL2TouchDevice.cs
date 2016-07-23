@@ -337,9 +337,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 var touch = touches[i];
                 if (touch.FingerID == evt.tfinger.fingerId)
                 {
-                    touches.RemoveAt(i);
-                    OnTouchUp(touch.TouchID, touch.FingerID);
-
                     if (timestamp - touch.Timestamp <= TimeSpan.FromMilliseconds(MaximumTapDelay).Ticks)
                     {
                         var vOrigin = new Vector2(touch.OriginX, touch.OriginY);
@@ -350,6 +347,11 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                             EndTap(touch.TouchID, touch.FingerID, touch.OriginX, touch.OriginY);
                         }
                     }
+
+                    OnTouchUp(touch.TouchID, touch.FingerID);
+
+                    touches.RemoveAt(i);
+
                     break;
                 }
             }

@@ -359,8 +359,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             this.states[(int)button].OnUp();
             
-            OnButtonReleased(window, button);
-
             if (evt.clicks == 1)
             {
                 buttonStateClicks |= (uint)SDL_BUTTON(evt.button);
@@ -372,6 +370,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 buttonStateDoubleClicks |= (uint)SDL_BUTTON(evt.button);
                 OnDoubleClick(window, button);
             }
+
+            OnButtonReleased(window, button);
         }
 
         /// <summary>
