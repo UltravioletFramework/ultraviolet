@@ -69,12 +69,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// regardless of the physical device state.</param>
         public void Update(Boolean forceNullPosition = false)
         {
-            Position = forceNullPosition ? null : UpdatePosition();
+            Position = (!IsEnabled || forceNullPosition) ? null : UpdatePosition();
 
             underCursorPopupPrev = underCursorPopup;
             underCursorPrev = underCursor;
 
-            underCursor = HasPosition ? View.HitTestInternal(Position.Value, out underCursorPopup) as UIElement : null;            
+            underCursor = HasPosition ? View.HitTestInternal(Position.Value, out underCursorPopup) as UIElement : null;
             underCursor = RedirectInput(underCursor);
 
             underCursorBeforeValidityCheckPrev = underCursorBeforeValidityCheck;
@@ -293,6 +293,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected abstract void RaiseLeave(UIElement element);
 
         /// <summary>
+        /// Gets a value indicating whether the cursor is currently enabled.
+        /// </summary>
+        protected abstract Boolean IsEnabled { get; }
+
+        /// <summary>
         /// Gets a value indicating whether this cursor causes tool tips to open.
         /// </summary>
         protected abstract Boolean OpensToolTips { get; }
@@ -302,7 +307,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private IInputElement RedirectInput(IInputElement recipient)
         {
-            if (captureMode == CaptureMode.None)
+            if (captureMode == CaptureMode.None || !IsEnabled)
                 return recipient;
 
             return IsCapturedBy(recipient) ? recipient : withCapture;

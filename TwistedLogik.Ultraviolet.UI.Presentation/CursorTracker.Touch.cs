@@ -164,6 +164,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
+            protected override Boolean IsEnabled => device.IsRegistered;
+
+            /// <inheritdoc/>
             protected override Boolean OpensToolTips { get; } = false;
 
             // State values.
