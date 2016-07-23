@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
 
         }
-
+        
         /// <summary>
         /// Handles the <see cref="ButtonBase.Click"/> event for LineLeftButton.
         /// </summary>
