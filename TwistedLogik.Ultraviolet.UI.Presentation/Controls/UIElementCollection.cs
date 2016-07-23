@@ -101,6 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             AddLogicalChild(item);
             visualChildren.Insert(index, item);
+            visualParent.InvalidateMeasure();
         }
 
         /// <inheritdoc/>
@@ -111,6 +112,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             RemoveLogicalChild(existing);
 
             visualChildren.RemoveAt(index);
+            visualParent.InvalidateMeasure();
         }
 
         /// <inheritdoc/>
