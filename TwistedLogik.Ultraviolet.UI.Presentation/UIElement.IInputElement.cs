@@ -77,6 +77,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public Boolean AreAnyCursorsCaptured
+        {
+            get { return GetValue<Boolean>(AreAnyCursorsCapturedProperty); }
+            internal set { SetValue(AreAnyCursorsCapturedPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreAnyCursorsCapturedWithin
+        {
+            get { return GetValue<Boolean>(AreAnyCursorsCapturedWithinProperty); }
+            internal set { SetValue(AreAnyCursorsCapturedWithinPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreAnyCursorsOver
+        {
+            get { return GetValue<Boolean>(AreAnyCursorsOverProperty); }
+            internal set { SetValue(AreAnyCursorsOverPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreAnyCursorsDirectlyOver
+        {
+            get { return GetValue<Boolean>(AreAnyCursorsDirectlyOverProperty); }
+            internal set { SetValue(AreAnyCursorsDirectlyOverPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
         public TouchesCollection TouchesCaptured => touchesCaptured;
 
         /// <inheritdoc/>
@@ -164,7 +192,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="AreAnyTouchesCaptured"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'any-touches-captured'.</remarks>
-        public static readonly DependencyPropertyKey AreAnyTouchesCapturedPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesCaptured", typeof(Boolean), typeof(UIElement),
+        private static readonly DependencyPropertyKey AreAnyTouchesCapturedPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesCaptured", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(HandleAreAnyTouchesCapturedChanged));
 
         /// <summary>
@@ -177,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="AreAnyTouchesCapturedWithin"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'any-touches-captured-within'.</remarks>
-        public static readonly DependencyPropertyKey AreAnyTouchesCapturedWithinPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesCapturedWithin", typeof(Boolean), typeof(UIElement),
+        private static readonly DependencyPropertyKey AreAnyTouchesCapturedWithinPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesCapturedWithin", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(HandleAreAnyTouchesCapturedWithinChanged));
 
         /// <summary>
@@ -190,7 +218,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Identifies the <see cref="AreAnyTouchesOver"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'any-touches-over'.</remarks>
-        public static readonly DependencyPropertyKey AreAnyTouchesOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesOver", typeof(Boolean), typeof(UIElement),
+        private static readonly DependencyPropertyKey AreAnyTouchesOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesOver", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(HandleAreAnyTouchesOverChanged));
 
         /// <summary>
@@ -205,6 +233,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this dependency property is 'any-touches-directly-over'.</remarks>
         public static readonly DependencyPropertyKey AreAnyTouchesDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyTouchesDirectlyOver", typeof(Boolean), typeof(UIElement),
             new PropertyMetadata<Boolean>(HandleAreAnyTouchesDirectlyOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsCaptured"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-captured'.</remarks>
+        private static readonly DependencyPropertyKey AreAnyCursorsCapturedPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyCursorsCaptured", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyCursorsCapturedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsCaptured"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-captured'.</remarks>
+        public static readonly DependencyProperty AreAnyCursorsCapturedProperty = AreAnyCursorsCapturedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsCapturedWithin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-captured-within'.</remarks>
+        private static readonly DependencyPropertyKey AreAnyCursorsCapturedWithinPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyCursorsCapturedWithin", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyCursorsCapturedWithinChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsCapturedWithin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-captured-within'.</remarks>
+        public static readonly DependencyProperty AreAnyCursorsCapturedWithinProperty = AreAnyCursorsCapturedWithinPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-over'.</remarks>
+        private static readonly DependencyPropertyKey AreAnyCursorsOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyCursorsOver", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyCursorsOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-over'.</remarks>
+        public static readonly DependencyProperty AreAnyCursorsOverProperty = AreAnyCursorsOverPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsDirectlyOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-directly-over'.</remarks>
+        private static readonly DependencyPropertyKey AreAnyCursorsDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly("AreAnyCursorsDirectlyOver", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreAnyCursorsDirectlyOverChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreAnyCursorsDirectlyOver"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'any-cursors-directly-over'.</remarks>
+        public static readonly DependencyProperty AreAnyCursorsDirectlyOverProperty = AreAnyCursorsDirectlyOverPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="AreAnyTouchesDirectlyOver"/> dependency property.
@@ -261,6 +341,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="AreAnyTouchesDirectlyOver"/> property changes.
         /// </summary>
         public event UpfEventHandler AreAnyTouchesDirectlyOverChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsCaptured"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyCursorsCapturedChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsCapturedWithin"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyCursorsCapturedWithinChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyCursorsOverChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsDirectlyOver"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreAnyCursorsDirectlyOverChanged;
 
         /// <inheritdoc/>
         public event UpfRoutedEventHandler PreviewGotKeyboardFocus
@@ -671,6 +771,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void OnAreAnyTouchesDirectlyOverChanged() =>
             AreAnyTouchesDirectlyOverChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyCursorsCapturedChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyCursorsCapturedChanged() =>
+            AreAnyCursorsCapturedChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyCursorsCapturedWithinChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyCursorsCapturedWithinChanged() =>
+            AreAnyCursorsCapturedWithinChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyCursorsOverChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyCursorsOverChanged() =>
+            AreAnyCursorsOverChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreAnyCursorsDirectlyOverChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreAnyCursorsDirectlyOverChanged() =>
+            AreAnyCursorsDirectlyOverChanged?.Invoke(this);
 
         /// <summary>
         /// Invoked when the <see cref="FocusManager.GotFocusEvent"/> attached routed event occurs.
@@ -1401,7 +1525,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleIsMouseCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnIsMouseCapturedChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsCaptured();
+            uiElement.OnIsMouseCapturedChanged();
         }
 
         /// <summary>
@@ -1409,7 +1535,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleIsMouseCaptureWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnIsMouseCaptureWithinChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsCapturedWithin();
+            uiElement.OnIsMouseCaptureWithinChanged();
         }
 
         /// <summary>
@@ -1417,7 +1545,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleIsMouseOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnIsMouseOverChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsOver();
+            uiElement.OnIsMouseOverChanged();
         }
 
         /// <summary>
@@ -1425,7 +1555,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleIsMouseDirectlyOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnIsMouseDirectlyOverChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsDirectlyOver();
+            uiElement.OnIsMouseDirectlyOverChanged();
         }
 
         /// <summary>
@@ -1433,7 +1565,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleAreAnyTouchesCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnAreAnyTouchesCapturedChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsCaptured();
+            uiElement.OnAreAnyTouchesCapturedChanged();
         }
 
         /// <summary>
@@ -1441,7 +1575,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleAreAnyTouchesCapturedWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnAreAnyTouchesCapturedWithinChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsCapturedWithin();
+            uiElement.OnAreAnyTouchesCapturedWithinChanged();
         }
 
         /// <summary>
@@ -1449,7 +1585,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleAreAnyTouchesOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnAreAnyTouchesOverChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsOver();
+            uiElement.OnAreAnyTouchesOverChanged();
         }
 
         /// <summary>
@@ -1457,7 +1595,77 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void HandleAreAnyTouchesDirectlyOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
-            ((UIElement)dobj).OnAreAnyTouchesDirectlyOverChanged();
+            var uiElement = (UIElement)dobj;
+            uiElement.UpdateAreAnyCursorsDirectlyOver();
+            uiElement.OnAreAnyTouchesDirectlyOverChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsCaptured"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyCursorsCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyCursorsCapturedChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsCapturedWithin"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyCursorsCapturedWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyCursorsCapturedWithinChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsOver"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyCursorsOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyCursorsOverChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreAnyCursorsDirectlyOver"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreAnyCursorsDirectlyOverChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            ((UIElement)dobj).OnAreAnyCursorsDirectlyOverChanged();
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="AreAnyCursorsCaptured"/> dependency property.
+        /// </summary>
+        private void UpdateAreAnyCursorsCaptured()
+        {
+            var value = IsMouseCaptured || AreAnyTouchesCaptured;
+            SetValue(AreAnyCursorsCapturedPropertyKey, value);
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="AreAnyCursorsCapturedWithin"/> dependency property.
+        /// </summary>
+        private void UpdateAreAnyCursorsCapturedWithin()
+        {
+            var value = IsMouseCaptureWithin || AreAnyTouchesCapturedWithin;
+            SetValue(AreAnyCursorsCapturedWithinPropertyKey, value);
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="AreAnyCursorsOver"/> dependency property.
+        /// </summary>
+        private void UpdateAreAnyCursorsOver()
+        {
+            var value = IsMouseOver || AreAnyTouchesOver;
+            SetValue(AreAnyCursorsOverPropertyKey, value);
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="AreAnyCursorsDirectlyOver"/> dependency property.
+        /// </summary>
+        private void UpdateAreAnyCursorsDirectlyOver()
+        {
+            var value = IsMouseDirectlyOver || AreAnyTouchesDirectlyOver;
+            SetValue(AreAnyCursorsDirectlyOverPropertyKey, value);
         }
     }
 }

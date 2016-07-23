@@ -89,6 +89,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         Boolean AreAnyTouchesDirectlyOver { get; }
 
         /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is captured by this element.
+        /// </summary>
+        Boolean AreAnyCursorsCaptured { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is captured by this element or any of its descendants.
+        /// </summary>
+        Boolean AreAnyCursorsCapturedWithin { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is over this element or any of its descendants.
+        /// </summary>
+        Boolean AreAnyCursorsOver { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is directly over this element.
+        /// </summary>
+        Boolean AreAnyCursorsDirectlyOver { get; }
+
+        /// <summary>
         /// Gets a collection of touches which are captured by this element.
         /// </summary>
         TouchesCollection TouchesCaptured { get; }
