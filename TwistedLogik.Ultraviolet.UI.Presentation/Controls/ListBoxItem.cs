@@ -287,7 +287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (!isHighlit && HighlightOnMouseOver && IsMouseOver)
                 isHighlit = true;
 
-            if (!isHighlit && HighlightOnTouchOver && AreAnyTouchesOver && !Ultraviolet.GetInput().IsMouseCursorAvailable)
+            if (!isHighlit && HighlightOnTouchOver && AreAnyTouchesOver)
             {
                 var touchDevice = Ultraviolet.GetInput().GetFirstRegisteredTouchDevice();
                 if (touchDevice != null)
