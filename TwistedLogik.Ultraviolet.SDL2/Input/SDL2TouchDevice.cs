@@ -251,6 +251,30 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override Boolean IsFirstTouchInGesture(Int64 touchID)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (touches.Count == 0)
+                return false;
+            
+            var first = touches[0];
+            return first.TouchID == touchID && first.TouchIndex == 0;
+        }
+
+        /// <inheritdoc/>
+        public override Int32 GetTouchIndex(Int64 touchID)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            TouchInfo touchInfo;
+            if (!TryGetTouch(touchID, out touchInfo))
+                return -1;
+
+            return touchInfo.TouchIndex;
+        }
+
+        /// <inheritdoc/>
         public override Int32 TouchCount
         {
             get
@@ -294,7 +318,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private void BeginTouch(ref SDL_Event evt)
         {
             var touchID = nextTouchID++;
-            var touchInfo = new TouchInfo(timestamp, touchID, evt.tfinger.fingerId, 
+            var touchIndex = touches.Count == 0 ? 0 : touches[touches.Count - 1].TouchIndex + 1;
+            var touchInfo = new TouchInfo(timestamp, touchID, touchIndex, evt.tfinger.fingerId, 
                 evt.tfinger.x, evt.tfinger.y, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);
 
             touches.Add(touchInfo);
@@ -354,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     var dx = evt.tfinger.x - touch.CurrentX;
                     var dy = evt.tfinger.y - touch.CurrentY;
 
-                    touches[i] = new TouchInfo(touch.Timestamp, touch.TouchID, touch.FingerID,
+                    touches[i] = new TouchInfo(touch.Timestamp, touch.TouchID, touch.TouchIndex, touch.FingerID,
                         touch.OriginX, touch.OriginY, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);
 
                     OnTouchMotion(touch.TouchID, touch.FingerID, 

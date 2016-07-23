@@ -170,6 +170,26 @@ namespace TwistedLogik.Ultraviolet.Input
         public abstract Boolean IsTouchWithin(Int64 touchID, RectangleF area);
 
         /// <summary>
+        /// Gets a value indicating whether the specified touch was the first touch
+        /// in the currently active gesture.
+        /// </summary>
+        /// <remarks>A gesture begins when the first finger is pressed against the device, and only
+        /// ends when all fingers are removed from the device.</remarks>
+        /// <param name="touchID">The unique identifier of the touch to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified touch is the first touch in 
+        /// the currently active gesture; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean IsFirstTouchInGesture(Int64 touchID);
+
+        /// <summary>
+        /// Gets the index of the specified touch within the currently active gesture.
+        /// </summary>
+        /// <remarks>A gesture begins when the first finger is pressed against the device, and only
+        /// ends when all fingers are removed from the device.</remarks>
+        /// <param name="touchID">The unique identifier of the touch to evaluate.</param>
+        /// <returns>The index of the specified touch, or -1 if the touch is not active.</returns>
+        public abstract Int32 GetTouchIndex(Int64 touchID);
+
+        /// <summary>
         /// Gets the number of currently active touches.
         /// </summary>
         public abstract Int32 TouchCount { get; }
