@@ -347,6 +347,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickByUserEvent);
             evtDelegate(this, evtData);
         }
+        
+        /// <summary>
+        /// Called when the value of the of <see cref="IsPressed"/> property changes.
+        /// </summary>
+        protected virtual void OnIsPressedChanged()
+        {
+
+        }
 
         /// <summary>
         /// Occurs when the value of the <see cref="UIElement.IsEnabledChanged"/> dependency property changes.
@@ -364,6 +372,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var buttonBase = (ButtonBase)dobj;
             buttonBase.UpdateCommonState();
+            buttonBase.OnIsPressedChanged();
         }
 
         /// <summary>
