@@ -57,6 +57,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             underCursorBeforeValidityCheck = null;
 
             withCapture = null;
+            captureMode = CaptureMode.None;
 
             underCursorPopupPrev = null;
             underCursorPopup = null;
