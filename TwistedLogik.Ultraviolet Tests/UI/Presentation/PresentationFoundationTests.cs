@@ -94,6 +94,36 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
 
         [Test]
         [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that the Grid container correctly arranges its child elements. [Pt. 2]")]
+        public void UPF_Grid_ArrangesChildrenCorrectly2()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Grid_ArrangesChildrenCorrectly2(content));
+            
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Grid_ArrangesChildrenCorrectly2.png");
+        }
+
+        [Test]
+        [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that the Grid container correctly arranges its child elements when using star-sized cells in various proportions.")]
+        public void UPF_Grid_ArrangesStarCellsCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Grid_ArrangesStarCellsCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Grid_ArrangesStarCellsCorrectly.png");
+        }
+
+        [Test]
+        [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that the Grid container correctly arranges its child elements when using auto-sized cells in various proportions.")]
+        public void UPF_Grid_ArrangesAutoCellsCorrectly()
+        {
+            var result = RunPresentationTestFor(content => new UPF_Grid_ArrangesAutoCellsCorrectly(content));
+
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_Grid_ArrangesAutoCellsCorrectly.png");
+        }
+
+        [Test]
+        [Category("UPF"), Category("Rendering")]
         [Description("Ensures that the StackPanel container correctly arranges its child elements when its Orientation property is set to Vertical.")]
         public void UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation()
         {
