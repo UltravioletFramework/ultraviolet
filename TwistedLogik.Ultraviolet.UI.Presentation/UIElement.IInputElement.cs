@@ -721,6 +721,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public event UpfTouchLongPressEventHandler PreviewTouchLongPress
+        {
+            add { AddHandler(Touch.TouchLongPressEvent, value); }
+            remove { RemoveHandler(Touch.TouchLongPressEvent, value); }
+        }
+
+        /// <inheritdoc/>
         public event UpfMultiGestureEventHandler PreviewMultiGesture
         {
             add { AddHandler(Touch.PreviewMultiGestureEvent, value); }
@@ -767,6 +774,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             add { AddHandler(Touch.TouchTapEvent, value); }
             remove { RemoveHandler(Touch.TouchTapEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchLongPressEventHandler TouchLongPress
+        {
+            add { AddHandler(Touch.TouchLongPressEvent, value); }
+            remove { RemoveHandler(Touch.TouchLongPressEvent, value); }
         }
 
         /// <inheritdoc/>
@@ -1275,6 +1289,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked by the <see cref="Touch.TouchLongPressEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnTouchLongPress(TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked by the <see cref="Touch.MultiGestureEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The touch device.</param>
@@ -1334,6 +1363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchDownEvent, new UpfTouchDownEventHandler(OnTouchDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchUpEvent, new UpfTouchUpEventHandler(OnTouchUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchTapEvent, new UpfTouchTapEventHandler(OnTouchTapProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchLongPressEvent, new UpfTouchLongPressEventHandler(OnTouchLongPressProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.MultiGestureEvent, new UpfMultiGestureEventHandler(OnMultiGestureProxy));
         }
 
@@ -1605,6 +1635,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Int64 id, Double x, Double y, RoutedEventData data)
         {
             ((UIElement)element).OnTouchTap(device, id, x, y, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.TouchLongPressEvent"/> attached routed event.
+        /// </summary>
+        private static void OnTouchLongPressProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            ((UIElement)element).OnTouchLongPress(device, id, x, y, pressure, data);
         }
 
         /// <summary>

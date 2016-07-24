@@ -69,6 +69,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         Int64 id, Double x, Double y, RoutedEventData data);
 
     /// <summary>
+    /// Represents the method that is called when an element is long pressed.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The touch device.</param>
+    /// <param name="id">The unique identifier of the touch.</param>
+    /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+    /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+    /// <param name="pressure">The normalized pressure of the touch.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfTouchLongPressEventHandler(DependencyObject element, TouchDevice device,
+        Int64 id, Double x, Double y, Single pressure, RoutedEventData data);
+
+    /// <summary>
     /// Represents the method that is called when a multi-finger gesture is performed.
     /// </summary>
     /// <param name="element">The element that raised the event.</param>
@@ -380,12 +393,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewTouchLongPressHandler(DependencyObject element, UpfTouchLongPressEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, PreviewTouchTapEvent, handler);
+        }
+
+        /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void AddPreviewMultiGestureHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -448,6 +475,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             IInputElementHelper.AddHandler(element, TouchTapEvent, handler);
         }
+        
+        /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPressEvent"/>
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddTouchLongPressHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, TouchLongPressEvent, handler);
+        }
 
         /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>
@@ -455,7 +496,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void AddMultiGestureHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -576,12 +617,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewTouchLongPressHandler(DependencyObject element, UpfTouchTapEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, PreviewTouchLongPressEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void RemovePreviewMultiGestureHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -646,12 +701,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveTouchLongPressHandler(DependencyObject element, UpfTouchTapEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, TouchLongPressEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveTouchTapHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
+        public static void RemoveMultiGestureHandler(DependencyObject element, UpfMultiGestureEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -860,6 +929,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchTapEventHandler), typeof(Touch));
 
         /// <summary>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongTap"/> 
+        /// attached routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongTap"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs the element is long pressed.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewTouchLongPressEvent"/></revtField>
+        ///     <revtStylingName>preview-touch-long-press</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfTouchLongPressEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
+        public static readonly RoutedEvent PreviewTouchLongPressEvent = EventManager.RegisterRoutedEvent("PreviewTouchLongPress", RoutingStrategy.Tunnel,
+            typeof(UpfTouchLongPressEventHandler), typeof(Touch));
+
+        /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/> 
         /// attached routed event.
         /// </summary>
@@ -998,6 +1095,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent TouchTapEvent = EventManager.RegisterRoutedEvent("TouchTap", RoutingStrategy.Bubble,
             typeof(UpfTouchTapEventHandler), typeof(Touch));
+
+        /// <summary>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/> 
+        /// attached routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when the element is long pressed.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="TouchLongPressEvent"/></revtField>
+        ///     <revtStylingName>touch-long-press</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfTouchLongPressEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
+        public static readonly RoutedEvent TouchLongPressEvent = EventManager.RegisterRoutedEvent("TouchLongPress", RoutingStrategy.Bubble,
+            typeof(UpfTouchLongPressEventHandler), typeof(Touch));
 
         /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/> 
@@ -1170,6 +1295,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>
+        /// attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewTouchLongPress(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            var evt = EventManager.GetInvocationDelegate<UpfTouchLongPressEventHandler>(PreviewTouchLongPressEvent);
+            evt?.Invoke(element, device, id, x, y, pressure, data);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>
         /// attached event for the specified element.
         /// </summary>
@@ -1223,7 +1359,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var evt = EventManager.GetInvocationDelegate<UpfTouchTapEventHandler>(TouchTapEvent);
             evt?.Invoke(element, device, id, x, y, data);
         }
-        
+
+        /// <summary>
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/>
+        /// attached event for the specified element.
+        /// </summary>
+        internal static void RaiseTouchLongPress(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            var evt = EventManager.GetInvocationDelegate<UpfTouchLongPressEventHandler>(TouchLongPressEvent);
+            evt?.Invoke(element, device, id, x, y, pressure, data);
+        }
+
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>
         /// attached event for the specified element.

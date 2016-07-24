@@ -101,6 +101,24 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             timestamp = time.TotalTime.Ticks;
+
+            for (int i = 0; i < touches.Count; i++)
+            {
+                var touchInfo = touches[i];
+                if (touchInfo.IsLongPress)
+                    continue;
+
+                var touchLifetime = TimeSpan.FromTicks(timestamp - touchInfo.Timestamp);
+                if (touchLifetime > TimeSpan.FromMilliseconds(LongPressDelay) && touchInfo.Distance <= LongPressMaximumDistance)
+                {
+                    SetTouchIsLongPress(ref touchInfo, true);
+
+                    touches[i] = touchInfo;
+
+                    OnLongPress(touchInfo.TouchID, touchInfo.FingerID, 
+                        touchInfo.CurrentX, touchInfo.CurrentY, touchInfo.Pressure);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -320,7 +338,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var touchID = nextTouchID++;
             var touchIndex = touches.Count == 0 ? 0 : touches[touches.Count - 1].TouchIndex + 1;
             var touchInfo = new TouchInfo(timestamp, touchID, touchIndex, evt.tfinger.fingerId, 
-                evt.tfinger.x, evt.tfinger.y, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);
+                evt.tfinger.x, evt.tfinger.y, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure, false);
 
             touches.Add(touchInfo);
 
@@ -337,12 +355,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 var touch = touches[i];
                 if (touch.FingerID == evt.tfinger.fingerId)
                 {
-                    if (timestamp - touch.Timestamp <= TimeSpan.FromMilliseconds(MaximumTapDelay).Ticks)
+                    if (timestamp - touch.Timestamp <= TimeSpan.FromMilliseconds(TapDelay).Ticks)
                     {
-                        var vOrigin = new Vector2(touch.OriginX, touch.OriginY);
-                        var vCurrent = new Vector2(touch.CurrentX, touch.CurrentY);
-                        var vDelta = vCurrent - vOrigin;
-                        if (vDelta.Length() <= MaximumTapDistance)
+                        if (touch.Distance <= TapMaximumDistance)
                         {
                             EndTap(touch.TouchID, touch.FingerID, touch.OriginX, touch.OriginY);
                         }
@@ -378,11 +393,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 var touch = touches[i];
                 if (touch.FingerID == evt.tfinger.fingerId)
                 {
-                    var dx = evt.tfinger.x - touch.CurrentX;
-                    var dy = evt.tfinger.y - touch.CurrentY;
+                    Single dx, dy;
+                    SetTouchPosition(ref touch, evt.tfinger.x, evt.tfinger.y, out dx, out dy, evt.tfinger.pressure);
 
-                    touches[i] = new TouchInfo(touch.Timestamp, touch.TouchID, touch.TouchIndex, touch.FingerID,
-                        touch.OriginX, touch.OriginY, evt.tfinger.x, evt.tfinger.y, evt.tfinger.pressure);
+                    touches[i] = touch;
 
                     OnTouchMotion(touch.TouchID, touch.FingerID, 
                         evt.tfinger.x, evt.tfinger.y, dx, dy, evt.tfinger.pressure);

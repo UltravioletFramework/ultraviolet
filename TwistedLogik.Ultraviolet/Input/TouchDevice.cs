@@ -50,6 +50,18 @@ namespace TwistedLogik.Ultraviolet.Input
         Int64 touchID, Int64 fingerID, Single x, Single y);
 
     /// <summary>
+    /// Represents the method that is called when a touch becomes a long press.
+    /// </summary>
+    /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+    /// <param name="touchID">The unique identifier of the touch input.</param>
+    /// <param name="fingerID">The unique identifier of the finger which caused the touch.</param>
+    /// <param name="x">The normalized x-coordinate of the touch.</param>
+    /// <param name="y">The normalized y-coordinate of the touch.</param>
+    /// <param name="pressure">The normalized pressure of the touch.</param>
+    public delegate void TouchLongPressEventHandler(TouchDevice device,
+        Int64 touchID, Int64 fingerID, Single x, Single y, Single pressure);
+
+    /// <summary>
     /// Represents the method that is called when a multiple-finger touch gesture is performed.
     /// </summary>
     /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
@@ -204,13 +216,25 @@ namespace TwistedLogik.Ultraviolet.Input
         /// for the input to be considered a "tap." This value is in normalized units; i.e. a value
         /// of 0.05 means that the finger can move across 5% of the device and still be considered a tap.
         /// </summary>
-        public Single MaximumTapDistance { get; set; } = 0.05f;
+        public Single TapMaximumDistance { get; set; } = 0.02f;
 
         /// <summary>
         /// Gets the maximum delay in milliseconds between a finger's up and down events in order
         /// for the input to be considered a "tap."
         /// </summary>
-        public Double MaximumTapDelay { get; set; } = 500.0;
+        public Double TapDelay { get; set; } = 500.0;
+
+        /// <summary>
+        /// Gets the maximum distance that a finger can move before a touch can no longer be considered a long press.
+        /// This value is in normalized units; i.e. a value of 0.05 means that the finger can move across no more than
+        /// 5% of the device in order to be considered a long press.
+        /// </summary>
+        public Single LongPressMaximumDistance { get; set; } = 0.02f;
+
+        /// <summary>
+        /// Gets the delay in milliseconds before a touch is considered a long tap.
+        /// </summary>
+        public Double LongPressDelay { get; set; } = 1000.0;
 
         /// <summary>
         /// Occurs when a touch input begins.
@@ -228,9 +252,14 @@ namespace TwistedLogik.Ultraviolet.Input
         public event TouchMotionEventHandler TouchMotion;
 
         /// <summary>
-        /// Occurs when atouch input is interpreted as a tap.
+        /// Occurs when a touch input is interpreted as a tap.
         /// </summary>
         public event TouchTapEventHandler Tap;
+
+        /// <summary>
+        /// Occurs when a touch input becomes a long press.
+        /// </summary>
+        public event TouchLongPressEventHandler LongPress;
 
         /// <summary>
         /// Occurs when a multiple-finger touch gesture is performed.
@@ -288,6 +317,19 @@ namespace TwistedLogik.Ultraviolet.Input
         }
 
         /// <summary>
+        /// Raises the <see cref="LongPress"/> event.
+        /// </summary>
+        /// <param name="touchID">The unique identifier of the touch input.</param>
+        /// <param name="fingerID">The unique identifier of the finger which caused the touch.</param>
+        /// <param name="x">The normalized x-coordinate of the touch.</param>
+        /// <param name="y">The normalized y-coordinate of the touch.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        protected virtual void OnLongPress(Int64 touchID, Int64 fingerID, Single x, Single y, Single pressure)
+        {
+            LongPress?.Invoke(this, touchID, fingerID, x, y, pressure);
+        }
+
+        /// <summary>
         /// Raises the <see cref="MultiGesture"/> event.
         /// </summary>
         /// <param name="x">The normalized x-coordinate of the gesture's centroid.</param>
@@ -298,6 +340,36 @@ namespace TwistedLogik.Ultraviolet.Input
         protected virtual void OnMultiGesture(Single x, Single y, Single theta, Single distance, Int32 fingers)
         {
             MultiGesture?.Invoke(this, x, y, theta, distance, fingers);
+        }
+
+        /// <summary>
+        /// Updates the position and pressure of a touch.
+        /// </summary>
+        /// <param name="touch">The touch to update.</param>
+        /// <param name="x">The x-coordinate of the touch.</param>
+        /// <param name="y">The y-coordinate of the touch.</param>
+        /// <param name="dx">The change in the touch's x-coordinate.</param>
+        /// <param name="dy">The change in the touch's y-coordinate.</param>
+        /// <param name="pressure">The pressure of the touch.</param>
+        protected void SetTouchPosition(ref TouchInfo touch, Single x, Single y, out Single dx, out Single dy, Single pressure)
+        {
+            dx = x - touch.CurrentX;
+            dy = y - touch.CurrentY;
+
+            touch.CurrentX = x;
+            touch.CurrentY = y;
+            touch.Pressure = pressure;
+            touch.Distance += (Single)Math.Sqrt((dx * dx) + (dy * dy));
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="TouchInfo.IsLongPress"/> property for a touch.
+        /// </summary>
+        /// <param name="touch">The touch to update.</param>
+        /// <param name="value">The value to set.</param>
+        protected void SetTouchIsLongPress(ref TouchInfo touch, Boolean value)
+        {
+            touch.IsLongPress = value;
         }
     }
 }

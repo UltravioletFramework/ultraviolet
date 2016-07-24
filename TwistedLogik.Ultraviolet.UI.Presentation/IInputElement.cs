@@ -359,6 +359,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         event UpfTouchTapEventHandler PreviewTouchTap;
 
         /// <summary>
+        /// Occurs when the element is long pressed.
+        /// </summary>
+        event UpfTouchLongPressEventHandler PreviewTouchLongPress;
+
+        /// <summary>
         /// Occurs when a multiple-finger gesture is performed over the element.
         /// </summary>
         event UpfMultiGestureEventHandler PreviewMultiGesture;
@@ -392,6 +397,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the element is tapped.
         /// </summary>
         event UpfTouchTapEventHandler TouchTap;
+
+        /// <summary>
+        /// Occurs when the element is long pressed.
+        /// </summary>
+        event UpfTouchLongPressEventHandler TouchLongPress;
 
         /// <summary>
         /// Occurs when a multiple-finger gesture is performed over the element.

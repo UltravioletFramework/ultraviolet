@@ -1338,6 +1338,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 device.TouchDown += touch_TouchDown;
                 device.TouchUp += touch_TouchUp;
                 device.Tap += touch_Tap;
+                device.LongPress += touch_LongPress;
                 device.MultiGesture += touch_MultiGesture;
             }
         }
@@ -1436,6 +1437,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 device.TouchMotion -= touch_TouchMotion;
                 device.TouchDown -= touch_TouchDown;
                 device.TouchUp -= touch_TouchUp;
+                device.Tap -= touch_Tap;
+                device.LongPress -= touch_LongPress;
                 device.MultiGesture -= touch_MultiGesture;
             }
         }
@@ -2571,6 +2574,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     Touch.RaisePreviewTouchTap(dobj, device, touchID, positionDips.X, positionDips.Y, touchTapData);
                     Touch.RaiseTouchTap(dobj, device, touchID, positionDips.X, positionDips.Y, touchTapData);
                     touchTapData.Release();
+                }
+
+                if (originalFocus != elementWithFocus)
+                    wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TouchDevice.LongPress"/> event.
+        /// </summary>
+        private void touch_LongPress(TouchDevice device, Int64 touchID, Int64 fingerID, Single x, Single y, Single pressure)
+        {
+            if (!IsInputEnabledAndAllowed)
+                return;
+
+            var position = device.DenormalizeCoordinates(Window, x, y);
+            var positionDips = Display.PixelsToDips(position);
+
+            var tracker = touchCursorTrackers?.GetTrackerByTouchID(touchID);
+            if (tracker == null)
+                return;
+
+            var recipient = tracker.ElementUnderCursor;
+            if (recipient != null)
+            {
+                var originalFocus = elementWithFocus;
+
+                var dobj = recipient as DependencyObject;
+                if (dobj != null)
+                {
+                    var touchLongPressData = RoutedEventData.Retrieve(dobj, autorelease: false);
+                    Touch.RaisePreviewTouchLongPress(dobj, device, touchID, positionDips.X, positionDips.Y, pressure, touchLongPressData);
+                    Touch.RaiseTouchLongPress(dobj, device, touchID, positionDips.X, positionDips.Y, pressure, touchLongPressData);
+                    touchLongPressData.Release();
                 }
 
                 if (originalFocus != elementWithFocus)
