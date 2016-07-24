@@ -102,30 +102,55 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             timestamp = time.TotalTime.Ticks;
 
+            var window = BoundWindow;
+            if (window == null)
+                return;
+
+            var longPressDelaySpan = TimeSpan.FromMilliseconds(LongPressDelay);
+            var longPressDistanceDips = LongPressMaximumDistance;
+            var longPressDistancePixs = window.Display.DipsToPixels(longPressDistanceDips);
+
             for (int i = 0; i < touches.Count; i++)
             {
                 var touchInfo = touches[i];
                 if (touchInfo.IsLongPress)
                     continue;
+                
+                var touchDistancePixs = touchInfo.Distance;
+                var touchDistanceDips = window.Display.PixelsToDips(touchDistancePixs);
 
                 var touchLifetime = TimeSpan.FromTicks(timestamp - touchInfo.Timestamp);
-                if (touchLifetime > TimeSpan.FromMilliseconds(LongPressDelay) && touchInfo.Distance <= LongPressMaximumDistance)
+                if (touchLifetime > longPressDelaySpan)
                 {
-                    SetTouchIsLongPress(ref touchInfo, true);
+                    if (touchInfo.Distance <= longPressDistancePixs)
+                    {
+                        SetTouchIsLongPress(ref touchInfo, true);
 
-                    touches[i] = touchInfo;
+                        touches[i] = touchInfo;
 
-                    OnLongPress(touchInfo.TouchID, touchInfo.FingerID, 
-                        touchInfo.CurrentX, touchInfo.CurrentY, touchInfo.Pressure);
+                        OnLongPress(touchInfo.TouchID, touchInfo.FingerID,
+                            touchInfo.CurrentX, touchInfo.CurrentY, touchInfo.Pressure);
+                    }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public override Point2F NormalizeCoordinates(IUltravioletWindow window, Point2 coordinates)
+        public override void BindToWindow(IUltravioletWindow window)
         {
-            Contract.Require(window, nameof(window));
             Contract.EnsureNotDisposed(this, Disposed);
+
+            boundWindow = window;
+        }
+
+        /// <inheritdoc/>
+        public override Point2F NormalizeCoordinates(Point2 coordinates)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var window = BoundWindow;
+            if (window == null)
+                throw new InvalidOperationException(UltravioletStrings.TouchDeviceNotBoundToWindow);
 
             return new Point2F(
                 coordinates.X / (Single)window.ClientSize.Width,
@@ -133,10 +158,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override Point2F NormalizeCoordinates(IUltravioletWindow window, Int32 x, Int32 y)
+        public override Point2F NormalizeCoordinates(Int32 x, Int32 y)
         {
-            Contract.Require(window, nameof(window));
             Contract.EnsureNotDisposed(this, Disposed);
+
+            var window = BoundWindow;
+            if (window == null)
+                throw new InvalidOperationException(UltravioletStrings.TouchDeviceNotBoundToWindow);
 
             return new Point2F(
                 x / (Single)window.ClientSize.Width,
@@ -144,10 +172,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override Point2 DenormalizeCoordinates(IUltravioletWindow window, Point2F coordinates)
+        public override Point2 DenormalizeCoordinates(Point2F coordinates)
         {
-            Contract.Require(window, nameof(window));
             Contract.EnsureNotDisposed(this, Disposed);
+
+            var window = BoundWindow;
+            if (window == null)
+                throw new InvalidOperationException(UltravioletStrings.TouchDeviceNotBoundToWindow);
 
             return new Point2(
                 (Int32)(coordinates.X * window.ClientSize.Width),
@@ -155,11 +186,14 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override Point2 DenormalizeCoordinates(IUltravioletWindow window, Single x, Single y)
+        public override Point2 DenormalizeCoordinates(Single x, Single y)
         {
-            Contract.Require(window, nameof(window));
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
+            var window = BoundWindow;
+            if (window == null)
+                throw new InvalidOperationException(UltravioletStrings.TouchDeviceNotBoundToWindow);
+
             return new Point2(
                 (Int32)(x * window.ClientSize.Width),
                 (Int32)(y * window.ClientSize.Height));
@@ -293,6 +327,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override IUltravioletWindow BoundWindow
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return boundWindow ?? Ultraviolet.GetPlatform().Windows.GetPrimary();
+            }
+        }
+
+        /// <inheritdoc/>
         public override Int32 TouchCount
         {
             get
@@ -357,9 +402,15 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 {
                     if (timestamp - touch.Timestamp <= TimeSpan.FromMilliseconds(TapDelay).Ticks)
                     {
-                        if (touch.Distance <= TapMaximumDistance)
+                        var window = BoundWindow;
+                        if (window != null)
                         {
-                            EndTap(touch.TouchID, touch.FingerID, touch.OriginX, touch.OriginY);
+                            var tapDistanceDips = TapMaximumDistance;
+                            var tapDistancePixs = window.Display.DipsToPixels(tapDistanceDips);
+                            if (tapDistancePixs >= touch.Distance)
+                            {
+                                EndTap(touch.TouchID, touch.FingerID, touch.OriginX, touch.OriginY);
+                            }
                         }
                     }
 
@@ -423,5 +474,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Int64 nextTouchID = 1;
         private Int64 timestamp;
         private Boolean isRegistered;
+
+        // Property values.
+        private IUltravioletWindow boundWindow;
     }
 }

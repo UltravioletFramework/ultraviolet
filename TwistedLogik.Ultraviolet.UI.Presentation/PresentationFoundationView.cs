@@ -2443,7 +2443,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_TouchMotion(TouchDevice device, Int64 touchID, Int64 fingerID, Single x, Single y, Single dx, Single dy, Single pressure)
         {
-            if (!IsInputEnabledAndAllowed)
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var tracker = touchCursorTrackers?.GetTrackerByTouchID(touchID);
@@ -2455,10 +2455,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var position = device.DenormalizeCoordinates(Window, x, y);
+                var position = device.DenormalizeCoordinates(x, y);
                 var positionDips = Display.PixelsToDips(position);
 
-                var delta = device.DenormalizeCoordinates(Window, dx, dy);
+                var delta = device.DenormalizeCoordinates(dx, dy);
                 var deltaDips = Display.PixelsToDips(delta);
 
                 var dobj = recipient as DependencyObject;
@@ -2480,7 +2480,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_TouchDown(TouchDevice device, Int64 touchID, Int64 fingerID, Single x, Single y, Single pressure)
         {
-            if (!IsInputEnabledAndAllowed)
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
                 return;
 
             if (!touchCursorTrackers?.StartTracking(touchID, elementWithNewTouchCapture, newTouchCaptureMode) ?? false)
@@ -2493,7 +2493,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var originalFocus = elementWithFocus;
 
-                var position = device.DenormalizeCoordinates(Window, x, y);
+                var position = device.DenormalizeCoordinates(x, y);
                 var positionDips = Display.PixelsToDips(position);
 
                 var dobj = recipient as DependencyObject;
@@ -2515,7 +2515,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_TouchUp(TouchDevice device, Int64 touchID, Int64 fingerID)
         {
-            if (!IsInputEnabledAndAllowed)
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
                 return;
 
             var tracker = touchCursorTrackers?.GetTrackerByTouchID(touchID);
@@ -2556,10 +2556,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_Tap(TouchDevice device, Int64 touchID, Int64 fingerID, Single x, Single y)
         {
-            if (!IsInputEnabledAndAllowed)
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var position = device.DenormalizeCoordinates(Window, x, y);
+            var position = device.DenormalizeCoordinates(x, y);
             var positionDips = Display.PixelsToDips(position);
 
             var recipient = HitTest(positionDips);
@@ -2586,10 +2586,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_LongPress(TouchDevice device, Int64 touchID, Int64 fingerID, Single x, Single y, Single pressure)
         {
-            if (!IsInputEnabledAndAllowed)
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
                 return;
 
-            var position = device.DenormalizeCoordinates(Window, x, y);
+            var position = device.DenormalizeCoordinates(x, y);
             var positionDips = Display.PixelsToDips(position);
 
             var tracker = touchCursorTrackers?.GetTrackerByTouchID(touchID);
@@ -2620,9 +2620,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void touch_MultiGesture(TouchDevice device, Single x, Single y, Single theta, Single distance, Int32 fingers)
         {
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
+                return;
+
             // This isn't associated with any particular touch, so it always goes to whichever
             // element is directly under the centroid.
-            var centroidPixs = device.DenormalizeCoordinates(Window, x, y);
+            var centroidPixs = device.DenormalizeCoordinates(x, y);
             var centroidDips = Display.PixelsToDips(centroidPixs);
 
             var recipient = HitTest(centroidDips);

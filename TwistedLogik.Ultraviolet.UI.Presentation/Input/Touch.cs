@@ -222,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 if (visualRoot == null)
                     return new Point2D(Double.NaN, Double.NaN);
 
-                var positionPixs = PrimaryDevice.DenormalizeCoordinates(uiElement.View.Window, new Point2F(touchInfo.CurrentX, touchInfo.CurrentY));
+                var positionPixs = PrimaryDevice.DenormalizeCoordinates(new Point2F(touchInfo.CurrentX, touchInfo.CurrentY));
                 var positionDips = uiElement.View.Display.PixelsToDips(positionPixs);
 
                 if (visualRoot is PopupRoot)

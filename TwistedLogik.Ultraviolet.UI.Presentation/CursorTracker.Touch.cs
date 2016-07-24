@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (!device.TryGetTouch(TouchID, out touchInfo))
                     return null;
 
-                var coords = device.DenormalizeCoordinates(View.Window, touchInfo.CurrentX, touchInfo.CurrentY);
+                var coords = device.DenormalizeCoordinates(touchInfo.CurrentX, touchInfo.CurrentY);
                 return View.Display.PixelsToDips(coords);
             }
 

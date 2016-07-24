@@ -85,40 +85,43 @@ namespace TwistedLogik.Ultraviolet.Input
         public TouchDevice(UltravioletContext uv) :
             base(uv)
         { }
+
+        /// <summary>
+        /// Binds the touch device to the specified window. This window's coordinate system is used
+        /// to denormalize touch coordinates. If no window is bound to the device, the primary window is used.
+        /// </summary>
+        /// <param name="window">The window to bind to the device.</param>
+        public abstract void BindToWindow(IUltravioletWindow window);
         
         /// <summary>
         /// Converts the specified window coordinates into normalized touch coordinates.
         /// </summary>
-        /// <param name="window">The window for which to perform the conversion.</param>
         /// <param name="coordinates">The window-space coordinates to convert to normalized touch coordinates.</param>
         /// <returns>The normalized touch coordinates which correspond to the specified window-space coordinates.</returns>
-        public abstract Point2F NormalizeCoordinates(IUltravioletWindow window, Point2 coordinates);
+        public abstract Point2F NormalizeCoordinates(Point2 coordinates);
 
         /// <summary>
         /// Converts the specified window coordinates into normalized touch coordinates.
         /// </summary>
-        /// <param name="window">The window for which to perform the conversion.</param>
         /// <param name="x">The window-space x-coordinate to convert to a normalized touch coordinate.</param>
         /// <param name="y">The window-space y-coordinate to convert to a normalized touch coordinate.</param>
         /// <returns>The normalized touch coordinates which correspond to the specified window-space coordinates.</returns>
-        public abstract Point2F NormalizeCoordinates(IUltravioletWindow window, Int32 x, Int32 y);
+        public abstract Point2F NormalizeCoordinates(Int32 x, Int32 y);
 
         /// <summary>
         /// Converts the specified normalized touch coordinates into window-space coordinates.
         /// </summary>
-        /// <param name="window">The window for which to perform the conversion.</param>
         /// <param name="coordinates">The normalized touch coordinates to convert to window-space coordinates.</param>
         /// <returns>The window-space coordinates which correspond to the specified normalized touch coordinates.</returns>
-        public abstract Point2 DenormalizeCoordinates(IUltravioletWindow window, Point2F coordinates);
+        public abstract Point2 DenormalizeCoordinates(Point2F coordinates);
 
         /// <summary>
         /// Converts the specified normalized touch coordinates into window-space coordinates.
         /// </summary>
-        /// <param name="window">The window for which to perform the conversion.</param>
         /// <param name="x">The normalized touch x-coordinate to convert to a window-space coordinate.</param>
         /// <param name="y">The normalized touch y-coordinate to convert to a window-space coordinate.</param>
         /// <returns>The window-space coordinates which correspond to the specified normalized touch coordinates.</returns>
-        public abstract Point2 DenormalizeCoordinates(IUltravioletWindow window, Single x, Single y);
+        public abstract Point2 DenormalizeCoordinates(Single x, Single y);
 
         /// <summary>
         /// Gets a value indicating whether the specified touch is currently active.
@@ -149,7 +152,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// be greater than or equal to 0 and less than <see cref="TouchCount"/>.</param>
         /// <returns>The parameters for the specified touch.</returns>
         public abstract TouchInfo GetTouchByIndex(Int32 index);
-        
+
         /// <summary>
         /// Gets a value indicating whether a tap was performed in the previous frame.
         /// </summary>
@@ -202,6 +205,11 @@ namespace TwistedLogik.Ultraviolet.Input
         public abstract Int32 GetTouchIndex(Int64 touchID);
 
         /// <summary>
+        /// Gets the window which is bound to the device.
+        /// </summary>
+        public abstract IUltravioletWindow BoundWindow { get; }
+
+        /// <summary>
         /// Gets the number of currently active touches.
         /// </summary>
         public abstract Int32 TouchCount { get; }
@@ -213,10 +221,9 @@ namespace TwistedLogik.Ultraviolet.Input
 
         /// <summary>
         /// Gets the maximum distance that a finger can move between its up and down events in order
-        /// for the input to be considered a "tap." This value is in normalized units; i.e. a value
-        /// of 0.05 means that the finger can move across 5% of the device and still be considered a tap.
+        /// for the input to be considered a "tap." This value is in device-independent pixels (1/96 of an inch).
         /// </summary>
-        public Single TapMaximumDistance { get; set; } = 0.02f;
+        public Double TapMaximumDistance { get; set; } = 5.0;
 
         /// <summary>
         /// Gets the maximum delay in milliseconds between a finger's up and down events in order
@@ -226,10 +233,9 @@ namespace TwistedLogik.Ultraviolet.Input
 
         /// <summary>
         /// Gets the maximum distance that a finger can move before a touch can no longer be considered a long press.
-        /// This value is in normalized units; i.e. a value of 0.05 means that the finger can move across no more than
-        /// 5% of the device in order to be considered a long press.
+        /// This value is in device independent pixels (1/96 of an inch).
         /// </summary>
-        public Single LongPressMaximumDistance { get; set; } = 0.02f;
+        public Double LongPressMaximumDistance { get; set; } = 5.0;
 
         /// <summary>
         /// Gets the delay in milliseconds before a touch is considered a long tap.
@@ -359,7 +365,11 @@ namespace TwistedLogik.Ultraviolet.Input
             touch.CurrentX = x;
             touch.CurrentY = y;
             touch.Pressure = pressure;
-            touch.Distance += (Single)Math.Sqrt((dx * dx) + (dy * dy));
+
+            var dpixels = DenormalizeCoordinates(dx, dy);
+            var distance = (Single)Math.Sqrt((dpixels.X * dpixels.X) + (dpixels.Y * dpixels.Y));
+
+            touch.Distance += distance;
         }
 
         /// <summary>
