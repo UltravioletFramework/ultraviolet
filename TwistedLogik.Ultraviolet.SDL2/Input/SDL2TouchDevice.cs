@@ -120,17 +120,14 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 var touchDistanceDips = window.Display.PixelsToDips(touchDistancePixs);
 
                 var touchLifetime = TimeSpan.FromTicks(timestamp - touchInfo.Timestamp);
-                if (touchLifetime > longPressDelaySpan)
+                if (touchLifetime > longPressDelaySpan && touchDistanceDips <= longPressDistancePixs)
                 {
-                    if (touchInfo.Distance <= longPressDistancePixs)
-                    {
-                        SetTouchIsLongPress(ref touchInfo, true);
+                    SetTouchIsLongPress(ref touchInfo, true);
 
-                        touches[i] = touchInfo;
+                    touches[i] = touchInfo;
 
-                        OnLongPress(touchInfo.TouchID, touchInfo.FingerID,
-                            touchInfo.CurrentX, touchInfo.CurrentY, touchInfo.Pressure);
-                    }
+                    OnLongPress(touchInfo.TouchID, touchInfo.FingerID,
+                        touchInfo.CurrentX, touchInfo.CurrentY, touchInfo.Pressure);
                 }
             }
         }
