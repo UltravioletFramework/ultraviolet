@@ -123,6 +123,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
+            {
+                if (!data.Handled && device.IsFirstTouchInGesture(id))
+                {
+                    Focus();
+                    OnSelectedByUser();
+
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
         protected override void OnContentChanged(Object oldValue, Object newValue)
         {
             var tabControl = ItemsControl.ItemsControlFromItemContainer(this) as TabControl;
