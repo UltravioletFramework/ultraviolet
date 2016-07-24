@@ -28,7 +28,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="touchID">The unique identifier of the touch to track.</param>
             /// <param name="captureElement">The element which is capturing the touch.</param>
             /// <param name="captureMode">The capture mode for the touch.</param>
-            public void OnRetrieve(Int64 touchID, IInputElement captureElement, CaptureMode captureMode)
+            public void OnRetrieveFromPool(Int64 touchID, IInputElement captureElement, CaptureMode captureMode)
             {
                 if (this.touchID > 0)
                     Update(forceNullPosition: true);
@@ -51,8 +51,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <summary>
             /// Called when the tracker is released back into its pool.
             /// </summary>
-            public void OnRelease()
+            public void OnReleaseIntoPool()
             {
+                Release();
+
                 if (this.touchID > 0)
                     Update(forceNullPosition: true);
 

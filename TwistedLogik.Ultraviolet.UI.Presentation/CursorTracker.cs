@@ -367,6 +367,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             isOverSet.Clear();
 
             var cursorElement = HasPosition ? (DependencyObject)View.HitTest(Position.Value) : null;
+            cursorElement = RedirectInput(cursorElement as IInputElement) as DependencyObject;
+
             while (cursorElement != null)
             {
                 isOverSet.Add(cursorElement);

@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             pool = new ExpandingPool<CursorTracker.Touch>(5,
                 () => CursorTracker.ForTouch(view),
-                (tracker) => tracker.OnRelease());
+                (tracker) => tracker.OnReleaseIntoPool());
             active = new Dictionary<Int64, CursorTracker.Touch>(5);
         }
 
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return false;
 
             var tracker = pool.Retrieve();
-            tracker.OnRetrieve(touchID, captureElement, captureMode);
+            tracker.OnRetrieveFromPool(touchID, captureElement, captureMode);
 
             active.Add(touchID, tracker);
             tracker.Update();
