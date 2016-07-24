@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -22,30 +23,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
-            /// Gets or sets the identifier of the touch associated with this tracker.
+            /// Called when the tracker is retrieved from its pool.
+            /// </summary>
+            /// <param name="touchID">The unique identifier of the touch to track.</param>
+            /// <param name="captureElement">The element which is capturing the touch.</param>
+            /// <param name="captureMode">The capture mode for the touch.</param>
+            public void OnRetrieve(Int64 touchID, IInputElement captureElement, CaptureMode captureMode)
+            {
+                if (this.touchID > 0)
+                    Update(forceNullPosition: true);
+
+                this.touchID = touchID;
+
+                if (this.touchID > 0)
+                {
+                    if (captureMode != CaptureMode.None)
+                        Capture(captureElement, captureMode);
+
+                    Update();
+                }
+                else
+                {
+                    Cleanup();
+                }
+            }
+
+            /// <summary>
+            /// Called when the tracker is released back into its pool.
+            /// </summary>
+            public void OnRelease()
+            {
+                if (this.touchID > 0)
+                    Update(forceNullPosition: true);
+
+                this.touchID = 0;
+                Cleanup();
+            }
+            
+            /// <summary>
+            /// Gets the identifier of the touch associated with this tracker.
             /// </summary>
             public Int64 TouchID
             {
                 get { return touchID; }
-                set
-                {
-                    if (touchID == value)
-                        return;
-
-                    if (touchID > 0)
-                        Update(forceNullPosition: true);
-
-                    touchID = value;
-
-                    if (touchID > 0)
-                    {
-                        Update();
-                    }
-                    else
-                    {
-                        Cleanup();
-                    }
-                }
             }
 
             /// <inheritdoc/>

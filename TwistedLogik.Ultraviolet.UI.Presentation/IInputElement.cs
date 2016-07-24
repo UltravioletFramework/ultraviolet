@@ -79,6 +79,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         Boolean AreAnyTouchesCapturedWithin { get; }
 
         /// <summary>
+        /// Gets a value indicating whether new touches are captured by this element.
+        /// </summary>
+        Boolean AreNewTouchesCaptured { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether new touches are captured by this element or any of its descendants.
+        /// </summary>
+        Boolean AreNewTouchesCapturedWithin { get; }
+
+        /// <summary>
         /// Gets a value indicating whether at least one touch is over this element or any of its descendants.
         /// </summary>
         Boolean AreAnyTouchesOver { get; }
@@ -312,11 +322,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the element gains touch capture.
         /// </summary>
         event UpfTouchEventHandler GotTouchCapture;
-        
+
+        /// <summary>
+        /// Occurs when the element gains new touch capture.
+        /// </summary>
+        event UpfTouchEventHandler GotNewTouchCapture;
+
         /// <summary>
         /// Occurs when the element loses touch capture.
         /// </summary>
         event UpfTouchEventHandler LostTouchCapture;
+
+        /// <summary>
+        /// Occurs when the element loses new touch capture.
+        /// </summary>
+        event UpfTouchEventHandler LostNewTouchCapture;
 
         /// <summary>
         /// Occurs when a touch moves over the element.

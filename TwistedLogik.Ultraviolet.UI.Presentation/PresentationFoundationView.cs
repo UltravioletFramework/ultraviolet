@@ -433,6 +433,82 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Releases all active touches from the elements that are currently capturing them.
+        /// </summary>
+        public void ReleaseAllTouches()
+        {
+            touchCursorTrackers?.ReleaseAll();
+        }
+
+        /// <summary>
+        /// Assigns touch capture for all active touches to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to assign touch capture.</param>
+        /// <param name="mode">The touch capture mode to apply.</param>
+        /// <returns><see langword="true"/> if all active touches were successfully captured; otherwise, <see langword="false"/>.</returns>
+        public Boolean CaptureAllTouches(IInputElement element, CaptureMode mode)
+        {
+            return touchCursorTrackers?.CaptureAll(element, mode) ?? false;
+        }
+
+        /// <summary>
+        /// Releases new touch capture from the element that is currently capturing it.
+        /// </summary>
+        public void ReleaseNewTouches()
+        {
+            if (elementWithNewTouchCapture == null)
+                return;
+
+            var hadCapture = elementWithNewTouchCapture;
+            elementWithNewTouchCapture = null;
+            newTouchCaptureMode = CaptureMode.None;
+
+            var uiElement = hadCapture as UIElement;
+            if (uiElement != null)
+            {
+                SetAreNewTouchesCapturedWithin(uiElement, false);
+
+                var lostNewTouchCaptureData = RoutedEventData.Retrieve(uiElement);
+                Touch.RaiseLostNewTouchCapture(uiElement, lostNewTouchCaptureData);
+            }
+        }
+
+        /// <summary>
+        /// Assigns new touch capture to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to assign new touch capture.</param>
+        /// <param name="mode">The touch capture mode to apply.</param>
+        /// <returns><see langword="true"/> if new touches were successfully captured; otherwise, <see langword="false"/>.</returns>
+        public Boolean CaptureNewTouches(IInputElement element, CaptureMode mode)
+        {
+            if ((element != null && mode == CaptureMode.None) || (element == null && mode != CaptureMode.None))
+                throw new ArgumentException(nameof(mode));
+
+            if (elementWithNewTouchCapture == element)
+                return true;
+
+            if (!(element?.IsValidForInput() ?? false))
+                return false;
+
+            if (elementWithNewTouchCapture != null)
+                ReleaseNewTouches();
+
+            elementWithNewTouchCapture = element;
+            newTouchCaptureMode = mode;
+
+            var uiElement = elementWithNewTouchCapture as UIElement;
+            if (uiElement != null)
+            {
+                SetAreNewTouchesCapturedWithin(uiElement, true);
+
+                var gotNewTouchCaptureData = RoutedEventData.Retrieve(uiElement);
+                Touch.RaiseGotNewTouchCapture(uiElement, gotNewTouchCaptureData);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets the element within the view which has the specified identifying name.
         /// </summary>
         /// <param name="name">The identifying name of the element to retrieve.</param>
@@ -792,6 +868,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public IInputElement ElementWithMouseCapture
         {
             get { return mouseCursorTracker.ElementWithCapture; }
+        }
+
+        /// <summary>
+        /// Gets the element that currently has new touch capture.
+        /// </summary>
+        public IInputElement ElementWithNewTouchCapture
+        {
+            get { return elementWithNewTouchCapture; }
         }
 
         /// <summary>
@@ -1442,6 +1526,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private void HandleTouchInput()
         {
+            if (!(elementWithNewTouchCapture?.IsValidForInput() ?? false))
+                ReleaseNewTouches();
+
             touchCursorTrackers?.Update();
         }
 
@@ -1837,21 +1924,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="value">The value to set on the element and its ancestors.</param>
         private void SetIsKeyboardFocusWithin(IInputElement element, Boolean value)
         {
-            var visual = element as Visual;
-
             var focused = element as UIElement;
             if (focused != null)
                 focused.IsKeyboardFocused = value;
 
-            while (visual != null)
+            var current = element as DependencyObject;
+            while (current != null)
             {
-                var uiElement = visual as UIElement;
+                var uiElement = current as UIElement;
                 if (uiElement != null)
-                {
                     uiElement.IsKeyboardFocusWithin = value;
-                }
 
-                visual = VisualTreeHelper.GetParent(visual) as Visual;
+                current = VisualTreeHelper.GetParent(current);
+            }
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="IInputElement.AreNewTouchesCapturedWithin"/> property on the specified element
+        /// and all of its ancestors to the specified value.
+        /// </summary>
+        /// <param name="element">The element on which to set the property value.</param>
+        /// <param name="value">The value to set on the element and its ancestors.</param>
+        private void SetAreNewTouchesCapturedWithin(IInputElement element, Boolean value)
+        {
+            var captured = element as UIElement;
+            if (captured != null)
+                captured.AreNewTouchesCaptured = value;
+
+            var current = element as DependencyObject;
+            while (current != null)
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null)
+                    uiElement.AreNewTouchesCapturedWithin = value;
+
+                current = VisualTreeHelper.GetParent(current);
             }
         }
 
@@ -2373,7 +2480,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!IsInputEnabledAndAllowed)
                 return;
 
-            if (!touchCursorTrackers?.StartTracking(touchID) ?? false)
+            if (!touchCursorTrackers?.StartTracking(touchID, elementWithNewTouchCapture, newTouchCaptureMode) ?? false)
                 return;
 
             var tracker = touchCursorTrackers.GetTrackerByTouchID(touchID);
@@ -2521,6 +2628,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private CursorTracker mouseCursorTracker;
         private CursorTrackerTouchCollection touchCursorTrackers;
         private IInputElement elementWithFocus;
+        private IInputElement elementWithNewTouchCapture;
+        private CaptureMode newTouchCaptureMode;
         private Boolean viewIsOpen;
         private Boolean hookedGlobalStyleSheetChanged;
         private Boolean hookedFirstPlayerGamePad;

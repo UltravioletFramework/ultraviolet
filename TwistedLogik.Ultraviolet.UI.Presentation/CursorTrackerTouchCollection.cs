@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -21,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             pool = new ExpandingPool<CursorTracker.Touch>(5,
                 () => CursorTracker.ForTouch(view),
-                (tracker) => tracker.TouchID = 0);
+                (tracker) => tracker.OnRelease());
             active = new Dictionary<Int64, CursorTracker.Touch>(5);
         }
 
@@ -48,17 +49,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Releases capture on all cursors in the collection.
+        /// </summary>
+        /// <returns><see langword="true"/> if all cursors were released; otherwise, <see langword="false"/>.</returns>
+        public Boolean ReleaseAll()
+        {
+            if (active.Count == 0)
+                return false;
+
+            var failed = false;
+
+            foreach (var kvp in active)
+            {
+                if (!kvp.Value.Release())
+                    failed = true;
+            }
+
+            return !failed;
+        }
+
+        /// <summary>
+        /// Capturesall cursors in the collection.
+        /// </summary>
+        /// <returns><see langword="true"/> if all cursors were captured; otherwise, <see langword="false"/>.</returns>
+        public Boolean CaptureAll(IInputElement element, CaptureMode mode)
+        {
+            if (active.Count == 0)
+                return false;
+
+            var failed = false;
+
+            foreach (var kvp in active)
+            {
+                if (!kvp.Value.Capture(element, mode))
+                    failed = true;
+            }
+
+            return !failed;
+        }
+
+        /// <summary>
         /// Begins tracking the specified touch.
         /// </summary>
-        /// <param name="touchID">The unique identifier of the touch to start track.</param>
+        /// <param name="touchID">The unique identifier of the touch to start tracking.</param>
+        /// <param name="captureElement">The element which is capturing the new touch.</param>
+        /// <param name="captureMode">The capture mode for the new touch.</param>
         /// <returns><see langword="true"/> if tracking started successfully; otherwise, <see langword="false"/>.</returns>
-        public Boolean StartTracking(Int64 touchID)
+        public Boolean StartTracking(Int64 touchID, IInputElement captureElement, CaptureMode captureMode)
         {
             if (active.ContainsKey(touchID))
                 return false;
 
             var tracker = pool.Retrieve();
-            tracker.TouchID = touchID;
+            tracker.OnRetrieve(touchID, captureElement, captureMode);
 
             active.Add(touchID, tracker);
             tracker.Update();

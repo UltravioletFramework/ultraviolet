@@ -122,13 +122,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns><see langword="true"/> if the cursor was captured; otherwise, <see langword="false"/>.</returns>
         public Boolean Capture(IInputElement element, CaptureMode mode)
         {
-            Contract.Require(element, nameof(element));
-
-            if (element == null || mode == CaptureMode.None)
-            {
-                element = null;
-                mode = CaptureMode.None;
-            }
+            if ((element != null && mode == CaptureMode.None) || (element == null && mode != CaptureMode.None))
+                throw new ArgumentException(nameof(mode));
 
             if (withCapture == element)
                 return true;

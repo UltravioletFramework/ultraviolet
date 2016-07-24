@@ -63,6 +63,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <inheritdoc/>
+        public Boolean AreNewTouchesCaptured
+        {
+            get { return GetValue<Boolean>(AreNewTouchesCapturedProperty); }
+            internal set { SetValue(AreNewTouchesCapturedPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
+        public Boolean AreNewTouchesCapturedWithin
+        {
+            get { return GetValue<Boolean>(AreNewTouchesCapturedWithinProperty); }
+            internal set { SetValue(AreNewTouchesCapturedWithinPropertyKey, value); }
+        }
+
+        /// <inheritdoc/>
         public Boolean AreAnyTouchesOver
         {
             get { return GetValue<Boolean>(AreAnyTouchesOverProperty); }
@@ -215,6 +229,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly DependencyProperty AreAnyTouchesCapturedWithinProperty = AreAnyTouchesCapturedWithinPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// Identifies the <see cref="AreNewTouchesCaptured"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'new-touches-captured'.</remarks>
+        private static readonly DependencyPropertyKey AreNewTouchesCapturedPropertyKey = DependencyProperty.RegisterReadOnly("AreNewTouchesCaptured", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreNewTouchesCapturedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreNewTouchesCaptured"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'new-touches-captured'.</remarks>
+        public static readonly DependencyProperty AreNewTouchesCapturedProperty = AreNewTouchesCapturedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="AreNewTouchesCapturedWithin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'new-touches-captured-within'.</remarks>
+        private static readonly DependencyPropertyKey AreNewTouchesCapturedWithinPropertyKey = DependencyProperty.RegisterReadOnly("AreNewTouchesCapturedWithin", typeof(Boolean), typeof(UIElement),
+            new PropertyMetadata<Boolean>(HandleAreNewTouchesCapturedWithinChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="AreNewTouchesCapturedWithin"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'new-touches-captured-within'.</remarks>
+        public static readonly DependencyProperty AreNewTouchesCapturedWithinProperty = AreNewTouchesCapturedWithinPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// Identifies the <see cref="AreAnyTouchesOver"/> dependency property.
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'any-touches-over'.</remarks>
@@ -331,6 +371,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the value of the <see cref="AreAnyTouchesCapturedWithin"/> property changes.
         /// </summary>
         public event UpfEventHandler AreAnyTouchesCapturedWithinChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreNewTouchesCaptured"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreNewTouchesCapturedChanged;
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreNewTouchesCapturedWithin"/> property changes.
+        /// </summary>
+        public event UpfEventHandler AreNewTouchesCapturedWithinChanged;
 
         /// <summary>
         /// Occurs when the value of the <see cref="AreAnyTouchesOver"/> property changes.
@@ -618,7 +668,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public event UpfTouchEventHandler GotTouchCapture
         {
             add { AddHandler(Touch.GotTouchCaptureEvent, value); }
-            remove { RemoveHandler(Touch.LostTouchCaptureEvent, value); }
+            remove { RemoveHandler(Touch.GotTouchCaptureEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchEventHandler GotNewTouchCapture
+        {
+            add { AddHandler(Touch.GotNewTouchCaptureEvent, value); }
+            remove { RemoveHandler(Touch.GotNewTouchCaptureEvent, value); }
         }
 
         /// <inheritdoc/>
@@ -626,6 +683,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             add { AddHandler(Touch.LostTouchCaptureEvent, value); }
             remove { RemoveHandler(Touch.LostTouchCaptureEvent, value); }
+        }
+
+        /// <inheritdoc/>
+        public event UpfTouchEventHandler LostNewTouchCapture
+        {
+            add { AddHandler(Touch.LostNewTouchCaptureEvent, value); }
+            remove { RemoveHandler(Touch.LostNewTouchCaptureEvent, value); }
         }
 
         /// <inheritdoc/>
@@ -759,6 +823,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected virtual void OnAreAnyTouchesCapturedWithinChanged() =>
             AreAnyTouchesCapturedWithinChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreNewTouchesCapturedChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreNewTouchesCapturedChanged() =>
+            AreNewTouchesCapturedChanged?.Invoke(this);
+
+        /// <summary>
+        /// Raises the <see cref="AreNewTouchesCapturedWithinChanged"/> event.
+        /// </summary>
+        protected virtual void OnAreNewTouchesCapturedWithinChanged() =>
+            AreNewTouchesCapturedWithinChanged?.Invoke(this);
 
         /// <summary>
         /// Raises the <see cref="AreAnyTouchesOverChanged"/> event.
@@ -1088,12 +1164,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked by the <see cref="Touch.GotNewTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnGotNewTouchCapture(RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked by the <see cref="Touch.LostTouchCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The touch device.</param>
         /// <param name="id">The unique identifier of the touch that was captured.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnLostTouchCapture(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.LostNewTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnLostNewTouchCapture(RoutedEventData data)
         {
 
         }
@@ -1230,7 +1324,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.ButtonUpEvent, new UpfGamePadButtonUpEventHandler(OnGamePadButtonUpProxy));
 
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.GotTouchCaptureEvent, new UpfTouchEventHandler(OnGotTouchCaptureProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.GotNewTouchCaptureEvent, new UpfRoutedEventHandler(OnGotNewTouchCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.LostTouchCaptureEvent, new UpfTouchEventHandler(OnLostTouchCaptureProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.LostNewTouchCaptureEvent, new UpfRoutedEventHandler(OnLostNewTouchCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchEnterEvent, new UpfTouchEventHandler(OnTouchEnterProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchLeaveEvent, new UpfTouchEventHandler(OnTouchLeaveProxy));
 
@@ -1436,11 +1532,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invokes the <see cref="Touch.GotNewTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        private static void OnGotNewTouchCaptureProxy(DependencyObject element, RoutedEventData data)
+        {
+            ((UIElement)element).OnGotNewTouchCapture(data);
+        }
+
+        /// <summary>
         /// Invokes the <see cref="Touch.LostTouchCaptureEvent"/> attached routed event.
         /// </summary>
         private static void OnLostTouchCaptureProxy(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
         {
             ((UIElement)element).OnLostTouchCapture(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.LostNewTouchCaptureEvent"/> attached routed event.
+        /// </summary>
+        private static void OnLostNewTouchCaptureProxy(DependencyObject element, RoutedEventData data)
+        {
+            ((UIElement)element).OnLostNewTouchCapture(data);
         }
 
         /// <summary>
@@ -1578,6 +1690,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var uiElement = (UIElement)dobj;
             uiElement.UpdateAreAnyCursorsCapturedWithin();
             uiElement.OnAreAnyTouchesCapturedWithinChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreNewTouchesCaptured"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreNewTouchesCapturedChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var uiElement = (UIElement)dobj;
+            uiElement.OnAreNewTouchesCapturedChanged();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AreNewTouchesCapturedWithin"/> dependency property changes.
+        /// </summary>
+        private static void HandleAreNewTouchesCapturedWithinChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var uiElement = (UIElement)dobj;
+            uiElement.OnAreNewTouchesCapturedWithinChanged();
         }
 
         /// <summary>
