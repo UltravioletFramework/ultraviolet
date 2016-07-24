@@ -621,7 +621,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnGamePadButtonDown(device, button, repeat, data);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (!data.Handled && device.IsFirstTouchInGesture(id))
+            {
+                Touch.Capture(View, this, id, CaptureMode.SubTree);
+                data.Handled = true;
+            }
+            base.OnTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchMove(TouchDevice device, Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            if (!data.Handled && device.IsFirstTouchInGesture(id))
+            {
+                if (dx != 0 && PART_HScroll != null)
+                {
+                    PART_HScroll.Value -= dx;
+                }
+                if (dy != 0 && PART_VScroll != null)
+                {
+                    PART_VScroll.Value -= dy;
+                }
+                data.Handled = true;
+            }
+            base.OnTouchMove(device, id, x, y, dx, dy, pressure, data);
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="ContentClipped"/> dependency property changes.
         /// </summary>
