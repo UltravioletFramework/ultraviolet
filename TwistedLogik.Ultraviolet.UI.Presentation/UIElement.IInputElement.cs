@@ -953,26 +953,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-
+        
         /// <summary>
-        /// Invoked when a <see cref="Keyboard.KeyDownEvent"/> attached routed event occurs.
+        /// Invoked when a <see cref="Keyboard.PreviewTextInputEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        protected virtual void OnPreviewTextInput(KeyboardDevice device, RoutedEventData data)
         {
 
         }
 
         /// <summary>
-        /// Invoked when a <see cref="Keyboard.KeyUpEvent"/> attached routed event occurs.
+        /// Invoked when a <see cref="Keyboard.PreviewTextEditingEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewTextEditing(KeyboardDevice device, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="Keyboard.PreviewKeyDownEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="Keyboard.PreviewKeyUpEvent"/> attached routed event occurs.
         /// </summary>
         /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
         /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
         /// <param name="data">The routed event metadata for this event invocation.</param>
-        protected virtual void OnKeyUp(KeyboardDevice device, Key key, RoutedEventData data)
+        protected virtual void OnPreviewKeyUp(KeyboardDevice device, Key key, RoutedEventData data)
         {
 
         }
@@ -998,6 +1018,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked when a <see cref="Keyboard.KeyDownEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked when a <see cref="Keyboard.KeyUpEvent"/> attached routed event occurs.
+        /// </summary>
+        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
+        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnKeyUp(KeyboardDevice device, Key key, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked by the <see cref="Mouse.GotMouseCaptureEvent"/> attached routed event.
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
@@ -1011,6 +1054,78 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="data">The routed event metadata for this event invocation.</param>
         protected virtual void OnLostMouseCapture(RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.PreviewMouseMoveEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The x-coordinate of the cursor in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the cursor in device-independent screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the mouse's 
+        /// current position and the x-coordinate of the mouse's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the mouse's 
+        /// current position and the y-coordinate of the mouse's previous position.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
+        {
+
+        }
+        
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.PreviewMouseUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.PreviewMouseDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.PreviewMouseClickEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMouseClick(MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.PreviewMouseDoubleClickEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="button">The mouse button that was pressed or released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Mouse.PreviewMouseWheelEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The mouse device.</param>
+        /// <param name="x">The amount that the wheel was scrolled along the x-axis.</param>
+        /// <param name="y">The amount that the wheel was scrolled along the y-axis.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data)
         {
 
         }
@@ -1106,7 +1221,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-        
+
+        /// <summary>
+        /// Invoked by the <see cref="GamePad.PreviewAxisChangedEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="axis">The axis that was changed.</param>
+        /// <param name="value">The value to which the axis was changed.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewGamePadAxisChanged(GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="GamePad.PreviewAxisDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="axis">The axis that was pressed.</param>
+        /// <param name="value">The axis' value when it was pressed.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated axis press.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="GamePad.PreviewAxisUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="axis">The axis that was released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewGamePadAxisUp(GamePadDevice device, GamePadAxis axis, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="GamePad.PreviewButtonDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="button">The button that was pressed.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="GamePad.PreviewButtonUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="button">The button that was released.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewGamePadButtonUp(GamePadDevice device, GamePadButton button, RoutedEventData data)
+        {
+
+        }
+
         /// <summary>
         /// Invoked by the <see cref="GamePad.AxisChangedEvent"/> attached routed event.
         /// </summary>
@@ -1229,6 +1403,97 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Invoked by the <see cref="Touch.PreviewTouchMoveEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the touch's 
+        /// current position and the x-coordinate of the touch's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the touch's 
+        /// current position and the y-coordinate of the touch's previous position.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewTouchMove(TouchDevice device,
+            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.PreviewTouchDownEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewTouchDown(TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.PreviewTouchUpEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewTouchUp(TouchDevice device,
+            Int64 id, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.PreviewTouchTapEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewTouchTap(TouchDevice device,
+            Int64 id, Double x, Double y, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.PreviewTouchLongPressEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewTouchLongPress(TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
+        /// Invoked by the <see cref="Touch.PreviewMultiGestureEvent"/> attached routed event.
+        /// </summary>
+        /// <param name="device">The touch device.</param>
+        /// <param name="x">The x-coordinate of the gesture's centroid in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the gesture's centroid in device-independent screen coordinates.</param>
+        /// <param name="theta">The amount that the fingers rotated during the gesture.</param>
+        /// <param name="distance">The amount that the fingers pinched during the gesture.</param>
+        /// <param name="fingers">The number of fingers involved in the gesture.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        protected virtual void OnPreviewMultiGesture(TouchDevice device,
+            Double x, Double y, Single theta, Single distance, Int32 fingers, RoutedEventData data)
+        {
+
+        }
+
+        /// <summary>
         /// Invoked by the <see cref="Touch.TouchMoveEvent"/> attached routed event.
         /// </summary>
         /// <param name="device">The touch device.</param>
@@ -1328,24 +1593,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewLostKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnPreviewLostKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.GotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnGotKeyboardFocusProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.LostKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(OnLostKeyboardFocusProxy));
-            
-            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UpfKeyEventHandler(OnKeyUpProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewTextInputEvent, new UpfKeyboardEventHandler(OnPreviewTextInputProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewTextEditingEvent, new UpfKeyboardEventHandler(OnPreviewTextEditingProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewKeyDownEvent, new UpfKeyDownEventHandler(OnPreviewKeyDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.PreviewKeyUpEvent, new UpfKeyEventHandler(OnPreviewKeyUpProxy));
+
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.TextInputEvent, new UpfKeyboardEventHandler(OnTextInputProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.TextEditingEvent, new UpfKeyboardEventHandler(OnTextEditingProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyDownEvent, new UpfKeyDownEventHandler(OnKeyDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Keyboard.KeyUpEvent, new UpfKeyEventHandler(OnKeyUpProxy));
 
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.GotMouseCaptureEvent, new UpfRoutedEventHandler(OnGotMouseCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(OnLostMouseCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseEnterEvent, new UpfMouseEventHandler(OnMouseEnterProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseLeaveEvent, new UpfMouseEventHandler(OnMouseLeaveProxy));
-            
+
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.PreviewMouseMoveEvent, new UpfMouseMoveEventHandler(OnPreviewMouseMoveProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.PreviewMouseDownEvent, new UpfMouseButtonEventHandler(OnPreviewMouseDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.PreviewMouseUpEvent, new UpfMouseButtonEventHandler(OnPreviewMouseUpProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.PreviewMouseClickEvent, new UpfMouseButtonEventHandler(OnPreviewMouseClickProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.PreviewMouseDoubleClickEvent, new UpfMouseButtonEventHandler(OnPreviewMouseDoubleClickProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Mouse.PreviewMouseWheelEvent, new UpfMouseWheelEventHandler(OnPreviewMouseWheelProxy));
+
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseMoveEvent, new UpfMouseMoveEventHandler(OnMouseMoveProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseDownEvent, new UpfMouseButtonEventHandler(OnMouseDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseUpEvent, new UpfMouseButtonEventHandler(OnMouseUpProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseClickEvent, new UpfMouseButtonEventHandler(OnMouseClickProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseDoubleClickEvent, new UpfMouseButtonEventHandler(OnMouseDoubleClickProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.MouseWheelEvent, new UpfMouseWheelEventHandler(OnMouseWheelProxy));
-            
+
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.PreviewAxisChangedEvent, new UpfGamePadAxisChangedEventHandler(OnPreviewGamePadAxisChangedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.PreviewAxisDownEvent, new UpfGamePadAxisDownEventHandler(OnPreviewGamePadAxisDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.PreviewAxisUpEvent, new UpfGamePadAxisUpEventHandler(OnPreviewGamePadAxisUpProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.PreviewButtonDownEvent, new UpfGamePadButtonDownEventHandler(OnPreviewGamePadButtonDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), GamePad.PreviewButtonUpEvent, new UpfGamePadButtonUpEventHandler(OnPreviewGamePadButtonUpProxy));
+
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisChangedEvent, new UpfGamePadAxisChangedEventHandler(OnGamePadAxisChangedProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisDownEvent, new UpfGamePadAxisDownEventHandler(OnGamePadAxisDownProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), GamePad.AxisUpEvent, new UpfGamePadAxisUpEventHandler(OnGamePadAxisUpProxy));
@@ -1358,6 +1641,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.LostNewTouchCaptureEvent, new UpfRoutedEventHandler(OnLostNewTouchCaptureProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchEnterEvent, new UpfTouchEventHandler(OnTouchEnterProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchLeaveEvent, new UpfTouchEventHandler(OnTouchLeaveProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.PreviewTouchMoveEvent, new UpfTouchMoveEventHandler(OnPreviewTouchMoveProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.PreviewTouchDownEvent, new UpfTouchDownEventHandler(OnPreviewTouchDownProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.PreviewTouchUpEvent, new UpfTouchUpEventHandler(OnPreviewTouchUpProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.PreviewTouchTapEvent, new UpfTouchTapEventHandler(OnPreviewTouchTapProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.PreviewTouchLongPressEvent, new UpfTouchLongPressEventHandler(OnPreviewTouchLongPressProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), Touch.PreviewMultiGestureEvent, new UpfMultiGestureEventHandler(OnPreviewMultiGestureProxy));
 
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchMoveEvent, new UpfTouchMoveEventHandler(OnTouchMoveProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Touch.TouchDownEvent, new UpfTouchDownEventHandler(OnTouchDownProxy));
@@ -1400,19 +1690,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Invokes the <see cref="OnKeyDown"/> method.
+        /// Invokes the <see cref="OnPreviewTextInput"/> method.
         /// </summary>
-        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        private static void OnPreviewTextInputProxy(DependencyObject element, KeyboardDevice device, RoutedEventData data)
         {
-            ((UIElement)element).OnKeyDown(device, key, modifiers, data);
+            ((UIElement)element).OnPreviewTextInput(device, data);
         }
 
         /// <summary>
-        /// Invokes the <see cref="OnKeyUp"/> method.
+        /// Invokes the <see cref="OnPreviewTextEditing"/> method.
         /// </summary>
-        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, RoutedEventData data)
+        private static void OnPreviewTextEditingProxy(DependencyObject element, KeyboardDevice device, RoutedEventData data)
         {
-            ((UIElement)element).OnKeyUp(device, key, data);
+            ((UIElement)element).OnPreviewTextEditing(device, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewKeyDown"/> method.
+        /// </summary>
+        private static void OnPreviewKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewKeyDown(device, key, modifiers, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewKeyUp"/> method.
+        /// </summary>
+        private static void OnPreviewKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewKeyUp(device, key, data);
         }
 
         /// <summary>
@@ -1429,6 +1735,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnTextEditingProxy(DependencyObject element, KeyboardDevice device, RoutedEventData data)
         {
             ((UIElement)element).OnTextEditing(device, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnKeyDown"/> method.
+        /// </summary>
+        private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            ((UIElement)element).OnKeyDown(device, key, modifiers, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnKeyUp"/> method.
+        /// </summary>
+        private static void OnKeyUpProxy(DependencyObject element, KeyboardDevice device, Key key, RoutedEventData data)
+        {
+            ((UIElement)element).OnKeyUp(device, key, data);
         }
 
         /// <summary>
@@ -1463,6 +1785,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var uiElement = ((UIElement)element);
             uiElement.OnMouseLeave(device, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewMouseMove"/> method.
+        /// </summary>
+        private static void OnPreviewMouseMoveProxy(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMouseMove(device, x, y, dx, dy, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewMouseDown"/> method.
+        /// </summary>
+        private static void OnPreviewMouseDownProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMouseDown(device, button, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewMouseUp"/> method.
+        /// </summary>
+        private static void OnPreviewMouseUpProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMouseUp(device, button, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewMouseClick"/> method.
+        /// </summary>
+        private static void OnPreviewMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMouseClick(device, button, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewMouseDoubleClick"/> method.
+        /// </summary>
+        private static void OnPreviewMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMouseDoubleClick(device, button, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewMouseWheel"/> method.
+        /// </summary>
+        private static void OnPreviewMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMouseWheel(device, x, y, data);
         }
 
         /// <summary>
@@ -1512,7 +1882,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             ((UIElement)element).OnMouseWheel(device, x, y, data);
         }
-        
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGamePadAxisChanged"/> method.
+        /// </summary>
+        private static void OnPreviewGamePadAxisChangedProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewGamePadAxisChanged(device, axis, value, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGamePadAxisDown"/> method.
+        /// </summary>
+        private static void OnPreviewGamePadAxisDownProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewGamePadAxisDown(device, axis, value, repeat, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGamePadAxisUp"/> method.
+        /// </summary>
+        private static void OnPreviewGamePadAxisUpProxy(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewGamePadAxisUp(device, axis, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGamePadButtonDown"/> method.
+        /// </summary>
+        private static void OnPreviewGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewGamePadButtonDown(device, button, repeat, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="OnPreviewGamePadButtonUp"/> method.
+        /// </summary>
+        private static void OnPreviewGamePadButtonUpProxy(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewGamePadButtonUp(device, button, data);
+        }
+
         /// <summary>
         /// Invokes the <see cref="OnGamePadAxisChanged"/> method.
         /// </summary>
@@ -1599,6 +2009,60 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnTouchLeaveProxy(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
         {
             ((UIElement)element).OnTouchLeave(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.PreviewTouchMoveEvent"/> attached routed event.
+        /// </summary>
+        private static void OnPreviewTouchMoveProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewTouchMove(device, id, x, y, dx, dy, pressure, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.PreviewTouchDownEvent"/> attached routed event.
+        /// </summary>
+        private static void OnPreviewTouchDownProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.PreviewTouchUpEvent"/> attached routed event.
+        /// </summary>
+        private static void OnPreviewTouchUpProxy(DependencyObject element, TouchDevice device,
+            Int64 id, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewTouchUp(device, id, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.PreviewTouchTapEvent"/> attached routed event.
+        /// </summary>
+        private static void OnPreviewTouchTapProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewTouchTap(device, id, x, y, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.PreviewTouchLongPressEvent"/> attached routed event.
+        /// </summary>
+        private static void OnPreviewTouchLongPressProxy(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewTouchLongPress(device, id, x, y, pressure, data);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="Touch.PreviewMultiGestureEvent"/> attached routed event.
+        /// </summary>
+        private static void OnPreviewMultiGestureProxy(DependencyObject element, TouchDevice device,
+            Double x, Double y, Single theta, Single distance, Int32 fingers, RoutedEventData data)
+        {
+            ((UIElement)element).OnPreviewMultiGesture(device, x, y, theta, distance, fingers, data);
         }
 
         /// <summary>
