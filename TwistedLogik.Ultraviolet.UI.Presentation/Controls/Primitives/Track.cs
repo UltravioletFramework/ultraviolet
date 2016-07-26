@@ -476,7 +476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (Ultraviolet.GetInput().IsMouseCursorAvailable)
                 return;
 
-            var relativeTouchPosition = Touch.GetPosition(id, this);
+            var relativeTouchPosition = Touch.GetPosition(id, Thumb);
             HandleCursorDown(id, relativeTouchPosition);
         }
 
