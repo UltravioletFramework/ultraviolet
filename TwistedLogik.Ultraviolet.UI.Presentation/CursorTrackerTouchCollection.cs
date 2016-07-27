@@ -31,8 +31,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public void Clear()
         {
-            foreach (var tracker in active)
-                pool.Release(tracker);
+            foreach (var kvp in active)
+                pool.Release(kvp.Value);
 
             active.Clear();
         }

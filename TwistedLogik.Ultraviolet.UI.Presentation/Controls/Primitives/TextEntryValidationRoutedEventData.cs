@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         // The global pool of text entry validation data objects.
-        private static readonly IPool<TextEntryValidationRoutedEventData> pool =
+        private static readonly Pool<TextEntryValidationRoutedEventData> pool =
             new ExpandingPool<TextEntryValidationRoutedEventData>(1, 4, () => new TextEntryValidationRoutedEventData());        
     }
 }
