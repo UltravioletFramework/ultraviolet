@@ -609,60 +609,133 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (IsKeyboardFocused)
                 UpdateTextInputRegion();
         }
-        
+
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
+        protected override void OnQueryCursor(MouseDevice device, CursorQueryRoutedEventData data)
+        {
+            if (IsMouseCaptured && IsMouseWithinEditor())
+            {
+                data.Cursor = TextEditor?.Cursor.Resource.Cursor ?? data.Cursor;
+                data.Handled = true;
+            }
+            base.OnQueryCursor(device, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
-            {
                 Focus();
+            
+            if (TextEditor != null && IsMouseWithinEditor())
+            {
                 CaptureMouse();
-
-                UpdateTextInputRegion();
-                Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode);
+                TextEditor.HandleMouseDown(device, button, data);
+                data.Handled = true;
             }
 
-            if (TextEditor != null && IsMouseWithinEditor())
-                TextEditor.HandleMouseDown(device, button, data);
-
-            data.Handled = true;
-            base.OnMouseDown(device, button, data);
+            base.OnPreviewMouseDown(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
+        protected override void OnPreviewMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
-            {
                 ReleaseMouseCapture();
-            }
 
             if (TextEditor != null && IsMouseWithinEditor())
+            {
                 TextEditor.HandleMouseUp(device, button, data);
+                data.Handled = true;
+            }
 
-            data.Handled = true;
-            base.OnMouseUp(device, button, data);
+            base.OnPreviewMouseUp(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
+        protected override void OnPreviewMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            if (IsMouseWithinEditor() && TextEditor != null)
+            if (TextEditor != null && IsMouseWithinEditor())
+            {
                 TextEditor.HandleMouseDoubleClick(device, button, data);
+                data.Handled = true;
+            }
 
-            base.OnMouseDoubleClick(device, button, data);
+            base.OnPreviewMouseDoubleClick(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
+        protected override void OnPreviewMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             if (TextEditor != null)
-                TextEditor.HandleMouseMove(device, data);
+            {
+                var capture = Mouse.GetCaptured(View);
+                if (capture == null || capture == this)
+                {
+                    TextEditor.HandleMouseMove(device, data);
+                    data.Handled = true;
+                }
+            }
 
-            data.Handled = true;
-            base.OnMouseMove(device, x, y, dx, dy, data);
+            base.OnPreviewMouseMove(device, x, y, dx, dy, data);
         }
 
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable && device.IsFirstTouchInGesture(id))
+                Focus();
+
+            if (TextEditor != null && IsTouchWithinEditor(id))
+            {
+                CaptureTouch(id);
+                TextEditor.HandleTouchDown(device, id, x, y, pressure, data);
+                data.Handled = true;
+            }
+
+            base.OnPreviewTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchUp(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            if (TextEditor != null && IsTouchWithinEditor(id))
+            {
+                TextEditor.HandleTouchUp(device, id, data);
+                data.Handled = true;
+            }
+
+            base.OnPreviewTouchUp(device, id, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchLongPress(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (TextEditor != null && IsTouchWithinEditor(id))
+            {
+                TextEditor.HandleTouchLongPress(device, id, x, y, pressure, data);
+                data.Handled = true;
+            }
+
+            base.OnPreviewTouchLongPress(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchMove(TouchDevice device, Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            if (TextEditor != null)
+            {
+                var capture = Touch.GetCaptured(View, id);
+                if (capture == this || capture == null)
+                {
+                    TextEditor.HandleTouchMove(device, id, x, y, dx, dy, pressure, data);
+                    data.Handled = true;
+                }
+            }
+
+            base.OnPreviewTouchMove(device, id, x, y, dx, dy, pressure, data);
+        }
+        
         /// <inheritdoc/>
         protected override void OnLostMouseCapture(RoutedEventData data)
         {
@@ -817,10 +890,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private Boolean IsMouseWithinEditor()
         {
-            var mouseTarget = (Control)TextEditorScrollViewer ?? this;
+            var mouseTarget = (UIElement)TextEditor ?? this;
             var mouseBounds = mouseTarget.Bounds;
 
             return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
+        }
+        
+        /// <summary>
+        /// Gets a value indicating whether the specified touch is currently inside of the editor.
+        /// </summary>
+        private Boolean IsTouchWithinEditor(Int64 id)
+        {
+            var touchTarget = (UIElement)TextEditor ?? this;
+            var touchBounds = touchTarget.Bounds;
+
+            return touchBounds.Contains(Touch.GetPosition(id, touchTarget));
         }
 
         /// <summary>
@@ -881,6 +965,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var service = SoftwareKeyboardService.Create();
             service.TextInputRegion = clear ? (Ultraviolet.Rectangle?)null :
                 (Ultraviolet.Rectangle)Display.DipsToPixels(CalculateTransformedVisualBounds());
-        }
+        }        
     }
 }

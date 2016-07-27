@@ -2136,7 +2136,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             mouseCursorTracker.Update();
 
-            var handled = false;
             var recipient = mouseCursorTracker.ElementUnderCursor;
             if (recipient != null)
             {
@@ -2148,19 +2147,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var mouseDownData = RoutedEventData.Retrieve(dobj, autorelease: false);
                     Mouse.RaisePreviewMouseDown(dobj, device, button, mouseDownData);
                     Mouse.RaiseMouseDown(dobj, device, button, mouseDownData);
-
-                    if (mouseDownData.Handled)
-                        handled = true;
-
                     mouseDownData.Release();                    
                 }
 
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
-
-            if (!handled)
-                Ultraviolet.GetInput().HideSoftwareKeyboard();
         }
 
         /// <summary>
@@ -2522,7 +2514,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (tracker == null)
                 return;
 
-            var handled = false;
             var recipient = tracker.ElementUnderCursor;
             if (recipient != null)
             {
@@ -2534,10 +2525,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     var touchUpData = RoutedEventData.Retrieve(dobj, autorelease: false);
                     Touch.RaisePreviewTouchUp(dobj, device, touchID, touchUpData);
                     Touch.RaiseTouchUp(dobj, device, touchID, touchUpData);
-
-                    if (touchUpData.Handled)
-                        handled = true;
-
                     touchUpData.Release();
                 }
 
@@ -2546,9 +2533,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             touchCursorTrackers.FinishTracking(touchID);
-
-            if (!handled)
-                Ultraviolet.GetInput().HideSoftwareKeyboard();
         }
 
         /// <summary>
