@@ -74,7 +74,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.touchesOver = new TouchesCollection(this, AreAnyTouchesOverPropertyKey);
             this.touchesDirectlyOver = new TouchesCollection(this, AreAnyTouchesDirectlyOverPropertyKey);
         }
-        
+
         /// <summary>
         /// Initializes the element's dependency properties and the dependency properties
         /// of any children of this element.
@@ -306,7 +306,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public void Update(UltravioletTime time)
         {
             Digest(time);
-            
+
             UpdateCore(time);
             OnUpdating(time);
         }
@@ -347,7 +347,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var view = View;
-            
+
             CacheLayoutDepth();
             CacheView();
 
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.mostRecentAvailableSize = availableSize;
 
             var desiredSizeChanged = false;
-            var desiredSize        = Size2D.Zero;
+            var desiredSize = Size2D.Zero;
 
             isMeasuring = true;
             try
@@ -439,7 +439,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (!this.desiredSize.Equals(desiredSize))
                 desiredSizeChanged = true;
 
-            this.desiredSize    = desiredSize;
+            this.desiredSize = desiredSize;
             this.isMeasureValid = true;
 
             InvalidateArrange();
@@ -523,12 +523,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.PerformanceStats.PositionCount++;
 
-            var parent         = VisualTreeHelper.GetParent(this) as UIElement;
+            var parent = VisualTreeHelper.GetParent(this) as UIElement;
             var parentPosition = (parent == null) ? Point2D.Zero : parent.UntransformedAbsolutePosition;
 
             var totalOffsetX = mostRecentFinalRect.X + RenderOffset.X + offset.Width;
             var totalOffsetY = mostRecentFinalRect.Y + RenderOffset.Y + offset.Height;
-            var totalOffset  = new Size2D(totalOffsetX, totalOffsetY);
+            var totalOffset = new Size2D(totalOffsetX, totalOffsetY);
 
             this.untransformedRelativeBounds = new RectangleD(Point2D.Zero + totalOffset, RenderSize);
             this.untransformedAbsoluteBounds = new RectangleD(parentPosition + totalOffset, RenderSize);
@@ -696,7 +696,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             return true;
         }
-        
+
         /// <summary>
         /// Captures the mouse to this element.
         /// </summary>
@@ -913,7 +913,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return untransformedAbsoluteBounds.Location; }
         }
-        
+
         /// <summary>
         /// Gets or sets the offset from the top-left corner of the element's layout
         /// area to the top-left corner of the element itself.
@@ -953,7 +953,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return desiredSize;
             }
         }
-        
+
         /// <summary>
         /// Gets the element's bounds in client space.
         /// </summary>
@@ -994,7 +994,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return visualBounds.Value;
             }
         }
-        
+
         /// <summary>
         /// Gets the element's transformed visual bounds in screen space.
         /// </summary>
@@ -1282,7 +1282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
             CacheLayoutParameters();
-            
+
             if (VisualParent != null)
             {
                 InvalidateStyle();
@@ -1296,7 +1296,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             base.OnVisualParentChangedInternal(oldParent, newParent);
         }
-        
+
         /// <summary>
         /// Applies a visual state transition to the element.
         /// </summary>
@@ -1305,7 +1305,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-        
+
         /// <summary>
         /// Performs a union between the specified visual bounds and the visual bounds of the element's children, then
         /// applies the element's clipping rectangle, if it has one.
@@ -1442,7 +1442,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             UpfPool<StoryboardInstance>.PooledObject existingInstance;
             storyboardInstances.TryGetValue(storyboard, out existingInstance);
-            
+
             var storyboardInstance = StoryboardInstancePool.Instance.Retrieve(this);
             var storyboardClock = StoryboardClockPool.Instance.Retrieve(storyboardInstance.Value);
             storyboardInstance.Value.AssociateWith(storyboard, storyboardClock, this);
@@ -1538,7 +1538,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
             Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
             Matrix.Concat(ref mtxFinal, ref mtxParentTransform, out mtxFinal);
-            
+
             return mtxFinal;
         }
 
@@ -1567,7 +1567,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return GetVisualTransformMatrix(ref mtxParentTransform);
         }
-        
+
         /// <summary>
         /// Gets the element's list of event handlers for the specified routed event.
         /// </summary>
@@ -1626,7 +1626,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return mostRecentPositionOffset; }
         }
-        
+
         /// <summary>
         /// Gets the element's depth within the layout tree.
         /// </summary>
@@ -1682,14 +1682,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return !Transform.IsIdentityTransform(RenderTransform); }
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether this element has a non-identity transform.
         /// </summary>
         internal Boolean HasNonIdentityTransform
         {
             get { return HasLayoutTransform || HasRenderTransform; }
-        }        
+        }
 
         /// <inheritdoc/>
         internal override Object DependencyDataSource
@@ -1723,7 +1723,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             InvalidateVisualBounds();
             base.OnVisualBoundsAffectingPropertyChanged();
         }
-        
+
         /// <inheritdoc/>
         protected internal sealed override void ApplyStyles(UvssDocument document)
         {
@@ -1773,7 +1773,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 visualBounds = null;
                 invalidated = true;
             }
-            
+
             if (transformedVisualBounds.HasValue)
             {
                 transformedVisualBounds = null;
@@ -1812,7 +1812,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
 
         }
-        
+
         /// <summary>
         /// Called when the desired size of one of the element's children is changed.
         /// </summary>
@@ -1878,7 +1878,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var thisElementIsTransformed = HasNonIdentityTransform;
 
             InvalidateVisualBounds();
-            
+
             VisualTreeHelper.ForEachChild<UIElement>(this, CommonBoxedValues.Boolean.FromValue(thisElementIsTransformed), (child, state) =>
             {
                 child.OnAncestorTransformChanged((Boolean)state);
@@ -1933,7 +1933,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return Bounds.Contains(point) ? this : null;
         }
-        
+
         /// <inheritdoc/>
         protected override Matrix GetTransformMatrix(Boolean inDevicePixels = false)
         {
@@ -2248,12 +2248,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The element's transformed visual bounds in screen space.</returns>
         protected virtual RectangleD CalculateTransformedVisualBounds()
         {
-            var visualBounds = Bounds;            
+            var visualBounds = Bounds;
 
             var parent = VisualTreeHelper.GetParent(this) as UIElement;
             if (parent == null)
                 return visualBounds;
-            
+
             var visualTreeRoot = VisualTreeHelper.GetRoot(parent) as UIElement;
             if (visualTreeRoot == null)
                 return visualBounds;
@@ -2265,6 +2265,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Loads the specified asset from the specified content manager.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <param name="source">An <see cref="AssetSource"/> value which identifies the
+        /// content manager from which to load the asset.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected TOutput LoadContent<TOutput>(AssetID asset, AssetSource source)
+        {
+            return (source == AssetSource.Global) ?
+                LoadGlobalContent<TOutput>(asset) : 
+                LoadLocalContent<TOutput>(asset);
+        }
+
+        /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -2272,10 +2287,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The asset that was loaded.</returns>
         protected TOutput LoadGlobalContent<TOutput>(AssetID asset)
         {
-            if (View == null)
-                return default(TOutput);
-
-            return View.LoadLocalContent<TOutput>(asset);
+            return (View == null) ? default(TOutput) : View.LoadLocalContent<TOutput>(asset);
         }
 
         /// <summary>
@@ -2286,10 +2298,41 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The asset that was loaded.</returns>
         protected TOutput LoadLocalContent<TOutput>(AssetID asset)
         {
-            if (View == null)
-                return default(TOutput);
+            return (View == null) ? default(TOutput) : View.LoadLocalContent<TOutput>(asset);
+        }
 
-            return View.LoadLocalContent<TOutput>(asset);
+        /// <summary>
+        /// Loads the specified animation from the specified content manager.
+        /// </summary>
+        /// <param name="animation">The identifier of the animation to load.</param>
+        /// <param name="source">An <see cref="AssetSource"/> value which identifies the
+        /// content manager from which to load the asset.</param>
+        /// <returns>The asset that was loaded.</returns>
+        protected SpriteAnimation LoadContent(SpriteAnimationID animation, AssetSource source)
+        {
+            return (source == AssetSource.Global) ?
+                LoadGlobalContent(animation) : 
+                LoadLocalContent(animation);
+        }
+
+        /// <summary>
+        /// Loads the specified animation from the global content manager.
+        /// </summary>
+        /// <param name="animation">The identifier of the animation to load.</param>
+        /// <returns>The animation that was loaded.</returns>
+        protected SpriteAnimation LoadGlobalContent(SpriteAnimationID animation)
+        {
+            return (View == null) ? default(SpriteAnimation) : View.LoadGlobalContent(animation);
+        }
+
+        /// <summary>
+        /// Loads the specified animation from the local content manager.
+        /// </summary>
+        /// <param name="animation">The identifier of the animation to load.</param>
+        /// <returns>The animation that was loaded.</returns>
+        protected SpriteAnimation LoadLocalContent(SpriteAnimationID animation)
+        {
+            return (View == null) ? default(SpriteAnimation) : View.LoadLocalContent(animation);
         }
 
         /// <summary>
@@ -2299,10 +2342,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="image">The image to load.</param>
         protected void LoadGlobalImage<TImage>(TImage image) where TImage : TextureImage
         {
-            if (View == null)
-                return;
-
-            View.LoadGlobalImage(image);
+            if (View != null)
+                View.LoadGlobalImage(image);
         }
 
         /// <summary>
@@ -2312,10 +2353,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="image">The image to load.</param>
         protected void LoadLocalImage<TImage>(TImage image) where TImage : TextureImage
         {
-            if (View == null)
-                return;
-
-            View.LoadLocalImage(image);
+            if (View != null)
+                View.LoadLocalImage(image);
         }
 
         /// <summary>
@@ -2326,10 +2365,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
         protected void LoadGlobalResource<TResource>(FrameworkResource<TResource> resource, AssetID asset) where TResource : class
         {
-            if (View == null)
-                return;
-
-            View.LoadGlobalResource(resource, asset);
+            if (View != null)
+                View.LoadGlobalResource(resource, asset);
         }
 
         /// <summary>
@@ -2340,34 +2377,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
         protected void LoadLocalResource<TResources>(FrameworkResource<TResources> resource, AssetID asset) where TResources : class
         {
-            if (View == null)
-                return;
-
-            View.LoadLocalResource(resource, asset);
+            if (View != null)
+                View.LoadLocalResource(resource, asset);
         }
 
         /// <summary>
         /// Loads the specified sourced image.
         /// </summary>
         /// <param name="image">The sourced image to load.</param>
-        protected void LoadImage(SourcedImage image)
+        protected void LoadResource(SourcedImage image)
         {
-            if (View == null)
-                return;
-
-            View.LoadImage(image);
+            if (View != null)
+                View.LoadImage(image);
         }
 
         /// <summary>
         /// Loads the specified sourced cursor.
         /// </summary>
         /// <param name="cursor">The sourced cursor to load.</param>
-        protected void LoadCursor(SourcedCursor cursor)
+        protected void LoadResource(SourcedCursor cursor)
         {
-            if (View == null)
-                return;
-
-            View.LoadCursor(cursor);
+            if (View != null)
+                View.LoadCursor(cursor);
         }
 
         /// <summary>
@@ -2377,12 +2408,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="resource">The sourced resource to load.</param>
         protected void LoadResource<TResource>(SourcedResource<TResource> resource) where TResource : class
         {
-            if (View == null)
-                return;
-
-            View.LoadResource(resource);
+            if (View != null)
+                View.LoadResource(resource);
         }
-
+        
         /// <summary>
         /// Draws an image that fills the entire element.
         /// </summary>

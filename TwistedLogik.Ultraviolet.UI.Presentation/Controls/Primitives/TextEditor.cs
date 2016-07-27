@@ -1485,7 +1485,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadCaretInsertImage()
         {
-            LoadImage(CaretInsertImage);
+            LoadResource(CaretInsertImage);
         }
 
         /// <summary>
@@ -1493,7 +1493,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadCaretOverwriteImage()
         {
-            LoadImage(CaretOverwriteImage);
+            LoadResource(CaretOverwriteImage);
         }
 
         /// <summary>
@@ -1501,7 +1501,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadSelectionImage()
         {
-            LoadImage(SelectionImage);
+            LoadResource(SelectionImage);
         }
 
         /// <summary>

@@ -1012,7 +1012,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected void ReloadCursor()
         {
-            LoadCursor(Cursor);
+            LoadResource(Cursor);
         }
         
         /// <summary>
