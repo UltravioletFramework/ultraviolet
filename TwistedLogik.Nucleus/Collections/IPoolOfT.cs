@@ -32,5 +32,15 @@ namespace TwistedLogik.Nucleus.Collections
         /// </summary>
         /// <param name="instance">The object to release.</param>
         void ReleaseRef(ref T instance);
+
+        /// <summary>
+        /// Gets the number of objects in the pool that are currently in use.
+        /// </summary>
+        Int32 Count { get; }
+
+        /// <summary>
+        /// Gets the total number of objects in the pool.
+        /// </summary>
+        Int32 Capacity { get; }
     }
 }
