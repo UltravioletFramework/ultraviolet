@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         // The global pool of cursor query data objects.
-        private static readonly IPool<CursorQueryRoutedEventData> pool =
+        private static readonly Pool<CursorQueryRoutedEventData> pool =
             new ExpandingPool<CursorQueryRoutedEventData>(1, 4, () => new CursorQueryRoutedEventData());
     }
 }

@@ -39,10 +39,20 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 {
                     case SDL_EventType.MOUSEMOTION:
                         {
-                            if (!isRegistered && evt.motion.which != SDL_TOUCH_MOUSEID)
-                                Register();
+                            // HACK: On iOS, for some goddamn reason, SDL2 sends us a spurious motion event
+                            // with mouse ID 0 when you first touch the screen. This only seems to happen once
+                            // so let's just ignore it.
+                            if (!ignoredFirstMouseMotionEvent)
+                            {
+                                ignoredFirstMouseMotionEvent = true;
+                            }
+                            else
+                            {
+                                if (!isRegistered && evt.motion.which != SDL_TOUCH_MOUSEID)
+                                    Register();
 
-                            OnMouseMotion(ref evt.motion);
+                                OnMouseMotion(ref evt.motion);
+                            }
                         }
                         break;
 
@@ -413,5 +423,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private InternalButtonState[] states;
         private UInt32 buttonStateClicks;
         private UInt32 buttonStateDoubleClicks;
+        private Boolean ignoredFirstMouseMotionEvent;
     }
 }
