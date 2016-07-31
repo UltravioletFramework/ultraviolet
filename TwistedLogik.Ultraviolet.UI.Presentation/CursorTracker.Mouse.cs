@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <inheritdoc/>
-            protected override Boolean IsEnabled => device.IsRegistered;
+            protected override Boolean IsEnabled => device.IsRegistered || device.Ultraviolet.GetInput().EmulateMouseWithTouchInput;
 
             /// <inheritdoc/>
             protected override Boolean OpensToolTips { get; } = true;
