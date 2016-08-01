@@ -110,16 +110,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(UpfRoutedEventHandler), typeof(TabItem));
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            if (!data.Handled)
+            if (button == MouseButton.Left && !data.Handled)
             {
                 Focus();
                 OnSelectedByUser();
 
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, data);
+            base.OnMouseDown(device, button, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
+            {
+                if (!data.Handled && device.IsFirstTouchInGesture(id))
+                {
+                    Focus();
+                    OnSelectedByUser();
+
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchDown(device, id, x, y, pressure, data);
         }
 
         /// <inheritdoc/>

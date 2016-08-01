@@ -326,13 +326,13 @@ CheckBox! >> .toggle-focus-image
     TextBox!,
 PasswordBox!
 {
-    cursor: #Global:Cursors:Cursors IBeam;
     padding: 6 4 6 4;
 }
 
     TextBox! >>     TextEditor!,
 PasswordBox! >> PasswordEditor!
 {
+    cursor: #Global:Cursors:Cursors IBeam;
     caret-insert-color: #ffffffff;
     caret-insert-topmost: true;
     caret-overwrite-color: #ffffffff;

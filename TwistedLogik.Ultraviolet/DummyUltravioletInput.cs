@@ -4,6 +4,7 @@ using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet
 {
+#pragma warning disable 67
     /// <summary>
     /// Represents a dummy implementation of <see cref="IUltravioletInput"/>.
     /// </summary>
@@ -53,6 +54,14 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public Boolean IsKeyboardRegistered()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
         public KeyboardDevice GetKeyboard()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -62,6 +71,14 @@ namespace TwistedLogik.Ultraviolet
 
         /// <inheritdoc/>
         public Boolean IsMouseSupported()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsMouseRegistered()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -93,7 +110,31 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public Boolean IsGamePadConnected()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
         public Boolean IsGamePadConnected(Int32 playerIndex)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsGamePadRegistered()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsGamePadRegistered(Int32 playerIndex)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -117,6 +158,22 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public GamePadDevice GetFirstRegisteredGamePad()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public GamePadDevice GetPrimaryGamePad()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         public Boolean IsTouchSupported()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -133,14 +190,6 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Boolean IsTouchDeviceAvailable(Int32 index)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return false;
-        }
-
-        /// <inheritdoc/>
         public Boolean IsTouchDeviceConnected(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -149,7 +198,23 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
-        public TouchDevice GetTouchDevice()
+        public Boolean IsTouchDeviceRegistered()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsTouchDeviceRegistered(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return false;
+        }
+        
+        /// <inheritdoc/>
+        public TouchDevice GetTouchDevice(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -157,7 +222,23 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
-        public TouchDevice GetTouchDeviceByIndex(Int32 index)
+        public TouchDevice GetFirstConnectedTouchDevice()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetFirstRegisteredTouchDevice()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetPrimaryTouchDevice()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -180,27 +261,36 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public Boolean IsMouseCursorAvailable
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <inheritdoc/>
-        public event GamePadConnectionEventHandler GamePadConnected
-        {
-            add { }
-            remove { }
-        }
+        public event KeyboardRegistrationEventHandler KeyboardRegistered;
 
         /// <inheritdoc/>
-        public event GamePadConnectionEventHandler GamePadDisconnected
-        {
-            add { }
-            remove { }
-        }
+        public event MouseRegistrationEventHandler MouseRegistered;
+                
+        /// <inheritdoc/>
+        public event GamePadConnectionEventHandler GamePadConnected;
 
         /// <inheritdoc/>
-        public event TouchDeviceConnectionEventHandler TouchDeviceConnected
-        {
-            add { }
-            remove { }
-        }
+        public event GamePadConnectionEventHandler GamePadDisconnected;
+
+        /// <inheritdoc/>
+        public event GamePadRegistrationEventHandler GamePadRegistered;
+
+        /// <inheritdoc/>
+        public event TouchDeviceRegistrationEventHandler TouchDeviceRegistered;
     }
+#pragma warning restore 67
 }

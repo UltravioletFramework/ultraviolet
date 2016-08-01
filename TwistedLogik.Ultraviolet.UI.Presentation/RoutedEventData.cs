@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected internal Boolean AutoRelease => autorelease;
 
         // The global pool of routed event data objects.
-        private static readonly IPool<RoutedEventData> pool =
+        private static readonly Pool<RoutedEventData> pool =
             new ExpandingPool<RoutedEventData>(8, 16, () => new RoutedEventData());
 
         // Property values.

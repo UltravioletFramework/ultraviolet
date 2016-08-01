@@ -623,9 +623,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        protected override void OnTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
         {
-            if (!data.Handled && device.GetIndexFromFingerID(fingerID) == 0)
+            if (!data.Handled && device.IsFirstTouchInGesture(id))
+            {
+                Touch.Capture(View, this, id, CaptureMode.SubTree);
+                data.Handled = true;
+            }
+            base.OnTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnTouchMove(TouchDevice device, Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            if (!data.Handled && device.IsFirstTouchInGesture(id))
             {
                 if (dx != 0 && PART_HScroll != null)
                 {
@@ -637,7 +648,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 }
                 data.Handled = true;
             }
-            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, data);
+            base.OnTouchMove(device, id, x, y, dx, dy, pressure, data);
         }
 
         /// <summary>

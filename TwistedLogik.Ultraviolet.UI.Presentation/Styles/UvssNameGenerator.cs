@@ -15,9 +15,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <returns>The UVSS styling name that was generated from the specified property name.</returns>
         public static String GenerateUvssName(String name)
         {
-            var sb     = new StringBuilder();
-            var offset = name.StartsWith("Is", StringComparison.InvariantCultureIgnoreCase) && 
+            var sb = new StringBuilder();
+            var offset = 0;
+
+            if (offset == 0)
+            {
+                offset = name.StartsWith("Is", StringComparison.InvariantCultureIgnoreCase) &&
                 name.Length > 2 && Char.IsUpper(name[2]) ? 2 : 0;
+            }
+
+            if (offset == 0)
+            {
+                offset = name.StartsWith("Are", StringComparison.InvariantCultureIgnoreCase) &&
+                name.Length > 3 && Char.IsUpper(name[3]) ? 3 : 0;
+            }
 
             for (int i = offset; i < name.Length; i++)
             {

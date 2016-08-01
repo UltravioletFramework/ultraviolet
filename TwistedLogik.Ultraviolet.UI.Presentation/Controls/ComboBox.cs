@@ -25,6 +25,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             EventManager.RegisterClassHandler(typeof(ComboBox), Mouse.LostMouseCaptureEvent, new UpfRoutedEventHandler(HandleLostMouseCapture));
             EventManager.RegisterClassHandler(typeof(ComboBox), Mouse.MouseDownEvent, new UpfMouseButtonEventHandler(HandleMouseDown));
 
+            EventManager.RegisterClassHandler(typeof(ComboBox), Touch.LostNewTouchCaptureEvent, new UpfRoutedEventHandler(HandleLostNewTouchCapture));
+            EventManager.RegisterClassHandler(typeof(ComboBox), Touch.TouchDownEvent, new UpfTouchDownEventHandler(HandleTouchDown));
+
             IsEnabledProperty.OverrideMetadata(typeof(ComboBox), new PropertyMetadata<Boolean>(HandleIsEnabledChanged));
         }
 
@@ -676,7 +679,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                         comboBox.viewSize = comboBox.View.Area.Size;
 
                     comboBox.UpdateActualMaxDropDownHeight();
-                    comboBox.UpdateMouseCapture(true);
+                    comboBox.UpdateInputCapture(true);
                 }
 
                 if (comboBox.PART_Arrow != null)
@@ -695,7 +698,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             else
             {
-                comboBox.UpdateMouseCapture(false);
+                comboBox.UpdateInputCapture(false);
 
                 if (comboBox.PART_Arrow != null)
                 {
@@ -724,7 +727,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             var comboBox = (ComboBox)dobj;
             comboBox.viewSize = (comboBox.View == null) ? Size2.Zero : comboBox.View.Area.Size;
-            comboBox.UpdateMouseCapture(comboBox.IsDropDownOpen);
+            comboBox.UpdateInputCapture(comboBox.IsDropDownOpen);
             comboBox.UpdateActualMaxDropDownHeight();
         }
 
@@ -756,6 +759,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     if (Mouse.GetCaptured(comboBox.View) == null)
                     {
                         Mouse.Capture(comboBox.View, comboBox, CaptureMode.SubTree);
+                        data.Handled = true;
+                    }
+                }
+                else
+                {
+                    comboBox.IsDropDownOpen = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the control handles a <see cref="Touch.TouchDownEvent"/> routed event.
+        /// </summary>
+        private static void HandleTouchDown(DependencyObject dobj, TouchDevice device, Int64 touchID, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            var comboBox = (ComboBox)dobj;
+            if (comboBox.Ultraviolet.GetInput().IsMouseCursorAvailable)
+                return;
+
+            if (comboBox == Touch.GetCapturedNew(comboBox.View) && comboBox == data.OriginalSource)
+            {
+                comboBox.IsDropDownOpen = false;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the control handles a <see cref="Touch.LostNewTouchCaptureEvent"/> routed event.
+        /// </summary>
+        private static void HandleLostNewTouchCapture(DependencyObject dobj, RoutedEventData data)
+        {
+            var comboBox = (ComboBox)dobj;
+            if (comboBox.Ultraviolet.GetInput().IsMouseCursorAvailable)
+                return;
+
+            if (comboBox != data.OriginalSource)
+            {
+                if (comboBox.ContainsDescendant(data.OriginalSource as DependencyObject))
+                {
+                    if (Touch.GetCapturedNew(comboBox.View) == null)
+                    {
+                        Touch.CaptureNew(comboBox.View, comboBox, CaptureMode.SubTree);
                         data.Handled = true;
                     }
                 }
@@ -840,18 +884,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Updates the combo box's mouse capture state.
+        /// Updates the combo box's input capture state.
         /// </summary>
-        private void UpdateMouseCapture(Boolean captured)
+        private void UpdateInputCapture(Boolean captured)
         {
             if (captured)
             {
-                Mouse.Capture(View, this, CaptureMode.SubTree);
+                if (Ultraviolet.GetInput().IsMouseCursorAvailable)
+                {
+                    Mouse.Capture(View, this, CaptureMode.SubTree);
+                }
+                else
+                {
+                    Touch.CaptureNew(View, this, CaptureMode.SubTree);
+                }
             }
             else
             {
-                if (IsMouseCaptured)
-                    Mouse.Capture(View, null, CaptureMode.None);
+                if (Ultraviolet.GetInput().IsMouseCursorAvailable)
+                {
+                    if (IsMouseCaptured)
+                        Mouse.Capture(View, null, CaptureMode.None);
+                }
+                else
+                {
+                    if (AreNewTouchesCaptured)
+                        Touch.CaptureNew(View, null, CaptureMode.None);
+                }
             }
         }
 

@@ -147,6 +147,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets a value indicating whether the value of the control can be decreased.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> that represents whether the <see cref="Value"/> property
+        /// can be decreased from its current value.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="CanBeDecreasedProperty"/></dpropField>
+        ///		<dpropStylingName>can-be-decreased</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean CanBeDecreased
+        {
+            get { return GetValue<Boolean>(CanBeDecreasedProperty); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the value of the control can be increased.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> that represents whether the <see cref="Value"/> property
+        /// can be increased from its current value.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="CanBeIncreasedProperty"/></dpropField>
+        ///		<dpropStylingName>can-be-increased</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean CanBeIncreased
+        {
+            get { return GetValue<Boolean>(CanBeIncreasedProperty); }
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="Value"/> property changes.
         /// </summary>
         /// <remarks>
@@ -197,6 +231,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>The identifier for the <see cref="LargeChange"/> dependency property.</value>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("LargeChange", typeof(Double), typeof(RangeBase),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.One));
+        
+        /// <summary>
+        /// The private access key for the <see cref="CanBeDecreased"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey CanBeDecreasedPropertyKey = DependencyProperty.RegisterReadOnly("CanBeDecreased", typeof(Boolean), typeof(RangeBase),
+            new PropertyMetadata<Boolean>());
+
+        /// <summary>
+        /// Identifies the <see cref="CanBeDecreased"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="CanBeDecreased"/> dependency property.</value>
+        public static readonly DependencyProperty CanBeDecreasedProperty = CanBeDecreasedPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="CanBeIncreased"/> read-only dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey CanBeIncreasedPropertyKey = DependencyProperty.RegisterReadOnly("CanBeIncreased", typeof(Boolean), typeof(RangeBase),
+            new PropertyMetadata<Boolean>());
+
+        /// <summary>
+        /// Identifies the <see cref="CanBeIncreased"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="CanBeIncreased"/> dependency property.</value>
+        public static readonly DependencyProperty CanBeIncreasedProperty = CanBeIncreasedPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Identifies the <see cref="ValueChanged"/> routed event.
@@ -238,6 +296,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var range = (RangeBase)dobj;
             range.OnValueChanged();
+            range.UpdateCanBeIncreasedAndDecreased();
         }
 
         /// <summary>
@@ -249,6 +308,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             range.CoerceValue(ValueProperty);
             range.CoerceValue(MaximumProperty);
             range.OnMinimumChanged();
+            range.UpdateCanBeIncreasedAndDecreased();
         }
 
         /// <summary>
@@ -259,6 +319,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var range = (RangeBase)dobj;
             range.CoerceValue(ValueProperty);
             range.OnMaximumChanged();
+            range.UpdateCanBeIncreasedAndDecreased();
         }
 
         /// <summary>
@@ -293,6 +354,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return min;
 
             return value;
+        }
+
+        /// <summary>
+        /// Updates the value of the <see cref="CanBeIncreased"/> and <see cref="CanBeDecreased"/> dependency properties.
+        /// </summary>
+        private void UpdateCanBeIncreasedAndDecreased()
+        {
+            SetValue(CanBeIncreasedPropertyKey, Value < Maximum);
+            SetValue(CanBeDecreasedPropertyKey, Value > Minimum);
         }
     }
 }

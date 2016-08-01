@@ -54,9 +54,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.DecreaseButton.ChangeLogicalAndVisualParents(this, this);
             KeyboardNavigation.SetIsTabStop(this.DecreaseButton, false);
 
+            Mouse.AddLostMouseCaptureHandler(this.Thumb, HandleThumbLostMouseCapture);
             Mouse.AddPreviewMouseMoveHandler(this.Thumb, HandleThumbPreviewMouseMove);
             Mouse.AddPreviewMouseDownHandler(this.Thumb, HandleThumbPreviewMouseDown);
             Mouse.AddPreviewMouseUpHandler(this.Thumb, HandleThumbPreviewMouseUp);
+
+            Touch.AddLostTouchCaptureHandler(this.Thumb, HandleThumbLostTouchCapture);
+            Touch.AddPreviewTouchMoveHandler(this.Thumb, HandleThumbPreviewTouchMove);
+            Touch.AddPreviewTouchDownHandler(this.Thumb, HandleThumbPreviewTouchDown);
+            Touch.AddPreviewTouchUpHandler(this.Thumb, HandleThumbPreviewTouchUp);
         }
 
         /// <summary>
@@ -399,63 +405,150 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseMoveEvent"/> routed event for the Thumb button.
+        /// Handles the <see cref="Mouse.LostMouseCaptureEvent"/> routed event for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleThumbLostMouseCapture(DependencyObject element, RoutedEventData data)
+        {
+            HandleCursorUp(0);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Mouse.PreviewMouseMoveEvent"/> routed event for the <see cref="Thumb"/> button.
         /// </summary>
         private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             var button = element as Button;
-            if (button != null && button.IsMouseCaptured)
+            if (button != null && thumbDragCursorID == 0)
             {
                 var relativeMousePosition = Mouse.GetPosition(this);
-
-                var oldValue = Value;
-                if (Orientation == Orientation.Vertical)
-                {
-                    var relY = relativeMousePosition.Y - thumbDragOffset;
-                    Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
-                }
-                else
-                {
-                    var relX = relativeMousePosition.X - thumbDragOffset;
-                    Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
-                }
-
-                if (Value != oldValue)
-                {
-                    var scrollbar = TemplatedParent as ScrollBarBase;
-                    if (scrollbar != null)
-                    {
-                        scrollbar.RaiseScrollEvent(ScrollEventType.ThumbTrack);
-                    }
-                }
+                HandleCursorMove(0, relativeMousePosition);
             }
         }
 
         /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/> routed event for the Thumb button.
+        /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/> routed event for the <see cref="Thumb"/> button.
         /// </summary>
         private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, RoutedEventData data)
         {
             var relativeMousePosition = Mouse.GetPosition(Thumb);
-
-            if (Orientation == Orientation.Vertical)
-            {
-                thumbDragging   = true;
-                thumbDragOffset = relativeMousePosition.Y;
-            }
-            else
-            {
-                thumbDragging   = true;
-                thumbDragOffset = relativeMousePosition.X;
-            }
+            HandleCursorDown(0, relativeMousePosition);
         }
         
         /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseUpEvent"/> routed event for the Thumb button.
+        /// Handles the <see cref="Mouse.PreviewMouseUpEvent"/> routed event for the <see cref="Thumb"/> button.
         /// </summary>
         private void HandleThumbPreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton pressed, RoutedEventData data)
         {
-            if (!thumbDragging)
+            HandleCursorUp(0);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Touch.LostTouchCaptureEvent"/> routed event for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleThumbLostTouchCapture(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            HandleCursorUp(id);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Touch.PreviewTouchMoveEvent"/> routed event for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleThumbPreviewTouchMove(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            if (Ultraviolet.GetInput().IsMouseCursorAvailable)
+                return;
+
+            var button = element as Button;
+            if (button != null && thumbDragCursorID == id)
+            {
+                var relativeTouchPosition = Touch.GetPosition(id, this);
+                HandleCursorMove(id, relativeTouchPosition);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Touch.PreviewTouchDownEvent"/> routed event for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleThumbPreviewTouchDown(DependencyObject element, TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (Ultraviolet.GetInput().IsMouseCursorAvailable)
+                return;
+
+            var relativeTouchPosition = Touch.GetPosition(id, Thumb);
+            HandleCursorDown(id, relativeTouchPosition);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="Touch.PreviewTouchUpEvent"/> routed event for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleThumbPreviewTouchUp(DependencyObject element, TouchDevice device,
+            Int64 id, RoutedEventData data)
+        {
+            HandleCursorUp(id);
+        }
+
+        /// <summary>
+        /// Handles <see cref="Mouse.MouseMoveEvent"/> and <see cref="Touch.TouchMoveEvent"/> events for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleCursorMove(Int64 cursorID, Point2D relativeCursorPosition)
+        {
+            if (!thumbDragging || thumbDragCursorID != cursorID)
+                return;
+
+            var oldValue = Value;
+            if (Orientation == Orientation.Vertical)
+            {
+                var relY = relativeCursorPosition.Y - thumbDragOffset;
+                Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
+            }
+            else
+            {
+                var relX = relativeCursorPosition.X - thumbDragOffset;
+                Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
+            }
+
+            if (Value != oldValue)
+            {
+                var scrollbar = TemplatedParent as ScrollBarBase;
+                if (scrollbar != null)
+                {
+                    scrollbar.RaiseScrollEvent(ScrollEventType.ThumbTrack);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles <see cref="Mouse.MouseDownEvent"/> and <see cref="Touch.TouchDownEvent"/> events for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleCursorDown(Int64 cursorID, Point2D relativeCursorPosition)
+        {
+            if (thumbDragging)
+                return;
+
+            if (Orientation == Orientation.Vertical)
+            {
+                thumbDragOffset = relativeCursorPosition.Y;
+            }
+            else
+            {
+                thumbDragOffset = relativeCursorPosition.X;
+            }
+
+            thumbDragging = true;
+            thumbDragCursorID = cursorID;
+
+            if (cursorID > 0)
+                Thumb?.CaptureTouch(cursorID);
+        }
+
+        /// <summary>
+        /// Handles <see cref="Mouse.MouseUpEvent"/> and <see cref="Touch.TouchUpEvent"/> events for the <see cref="Thumb"/> button.
+        /// </summary>
+        private void HandleCursorUp(Int64 cursorID)
+        {
+            if (!thumbDragging || thumbDragCursorID != cursorID)
                 return;
 
             var scrollbar = TemplatedParent as ScrollBarBase;
@@ -475,5 +568,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         // State values.
         private Boolean thumbDragging;
         private Double thumbDragOffset;
+        private Int64 thumbDragCursorID;
     }
 }

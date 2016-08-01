@@ -66,7 +66,7 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
             foreach (var soundEffectPlayer in soundEffectPlayers)
                 soundEffectPlayer.Update(time);
 
-            var touch = Ultraviolet.GetInput().GetTouchDevice();
+            var touch = Ultraviolet.GetInput().GetPrimaryTouchDevice();
             if (touch != null && touch.WasTapped())
             {
                 soundEffectPlayers[nextPlayerInSequence].Play(soundEffect);

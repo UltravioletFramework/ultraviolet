@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadSource()
         {
-            LoadImage(Source);
+            LoadResource(Source);
         }
 
         /// <summary>

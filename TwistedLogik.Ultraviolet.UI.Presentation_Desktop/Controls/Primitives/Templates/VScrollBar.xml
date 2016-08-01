@@ -9,7 +9,7 @@
       </Grid.RowDefinitions>
 
       <RepeatButton Class="scroll-button scroll-button-up" Grid.Row="0" HorizontalAlignment="Stretch"
-                    Click="HandleClickLineUp" KeyboardNavigation.IsTabStop="false">
+                    Click="HandleClickLineUp" IsEnabled="{{CanBeDecreased}}" Focusable="false" KeyboardNavigation.IsTabStop="false">
 
         <Image Class="scroll-button-up-arrow"/>
 
@@ -20,7 +20,7 @@
              Class="scroll-track" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" />
 
       <RepeatButton Class="scroll-button scroll-button-down" Grid.Row="2" HorizontalAlignment="Stretch"
-                    Click="HandleClickLineDown" KeyboardNavigation.IsTabStop="false">
+                    Click="HandleClickLineDown" IsEnabled="{{CanBeIncreased}}" Focusable="false" KeyboardNavigation.IsTabStop="false">
 
         <Image Class="scroll-button-down-arrow"/>
 

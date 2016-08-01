@@ -31,6 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
             HighlightOnSelect = true;
+            HighlightOnTouchOver = true;
         }
 
         /// <summary>
@@ -145,49 +146,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(UpfRoutedEventHandler), typeof(ListBoxItem));
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            if (!data.Handled)
+            if (button == MouseButton.Left && !data.Handled)
             {
                 Select();
                 OnSelectedByUser();
 
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, data);
+            base.OnMouseDown(device, button, data);
+        }
+                
+        /// <inheritdoc/>       
+        protected override void OnIsMouseOverChanged()
+        {
+            UpdateHighlightOpacity();
+            base.OnIsMouseOverChanged();
+        }
+
+        /// <inheritdoc/>       
+        protected override void OnAreAnyTouchesOverChanged()
+        {
+            UpdateHighlightOpacity();
+            base.OnAreAnyTouchesOverChanged();
         }
         
         /// <inheritdoc/>
-        protected override void OnMouseEnter(MouseDevice device, RoutedEventData data)
+        protected override void OnTouchTap(TouchDevice device, Int64 id, Double x, Double y, RoutedEventData data)
         {
-            if (HighlightOnMouseOver)
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
             {
-                HighlightOpacity = 1.0;
+                if (device.IsFirstTouchInGesture(id) && !data.Handled)
+                {
+                    Select();
+                    OnSelectedByUser();
+
+                    data.Handled = true;
+                }
             }
-            base.OnMouseEnter(device, data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnMouseLeave(MouseDevice device, RoutedEventData data)
-        {
-            if (!HighlightOnSelect || !IsSelected)
-                HighlightOpacity = 0.0;
-
-            base.OnMouseLeave(device, data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnFingerDown(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            HighlightOpacity = 1.0;
-            base.OnFingerDown(device, fingerID, x, y, pressure, data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnFingerUp(TouchDevice device, Int64 fingerID, Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            HighlightOpacity = (HighlightOnSelect && IsSelected) || (HighlightOnMouseOver && IsMouseDirectlyOver) ? 1.0 : 0.0;
-            base.OnFingerUp(device, fingerID, x, y, pressure, data);
+            base.OnTouchTap(device, id, x, y, data);
         }
 
         /// <summary>
@@ -211,7 +209,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this list box is highlighted when it is selected.
+        /// Gets or sets a value indicating whether this list box item is highlighted when it is selected.
         /// </summary>
         protected Boolean HighlightOnSelect
         {
@@ -220,7 +218,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this list box is highlighted when the mouse enters its bounds.
+        /// Gets or sets a value indicating whether this list box item is highlighted when the mouse enters its bounds.
         /// </summary>
         protected Boolean HighlightOnMouseOver
         {
@@ -228,6 +226,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             set;
         }
         
+        /// <summary>
+        /// Gets or sets a value indicating whether this list box item is highlighted when a touch enters its bounds.
+        /// </summary>
+        protected Boolean HighlightOnTouchOver
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="IsSelected"/> dependency property changes.
         /// </summary>
@@ -247,8 +254,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 evtDelegate(dobj, evtData);
             }
 
-            if (item.HighlightOnSelect)
-                item.HighlightOpacity = newValue ? 1.0 : 0.0;
+            item.UpdateHighlightOpacity();
         }
 
         /// <summary>
@@ -266,6 +272,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 list.HandleItemClicked(this);
                 OnSelected();
             }
+        }
+
+        /// <summary>
+        /// Updates the opacity of the item's highlight.
+        /// </summary>
+        private void UpdateHighlightOpacity()
+        {
+            var isHighlit = false;
+
+            if (!isHighlit && HighlightOnSelect && IsSelected)
+                isHighlit = true;
+
+            if (!isHighlit && HighlightOnMouseOver && IsMouseOver)
+                isHighlit = true;
+
+            if (!isHighlit && HighlightOnTouchOver && AreAnyTouchesOver)
+            {
+                var touchDevice = Ultraviolet.GetInput().GetFirstRegisteredTouchDevice();
+                if (touchDevice != null)
+                {
+                    foreach (var touch in TouchesOver)
+                    {
+                        if (touchDevice.IsFirstTouchInGesture(touch))
+                        {
+                            isHighlit = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            HighlightOpacity = isHighlit ? 1.0 : 0.0;
         }
     }
 }

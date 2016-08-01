@@ -281,6 +281,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputActionCollection.InputBindingGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\InputDeviceOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadJoystick.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadJoystickDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Key.cs" />
@@ -291,9 +292,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseInputBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchTapInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Scancode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\SoftwareKeyboardService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\TouchInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InvalidCompatibilityShimException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletAudio.cs" />
