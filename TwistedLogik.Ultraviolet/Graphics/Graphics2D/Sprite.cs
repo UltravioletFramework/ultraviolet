@@ -34,6 +34,43 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified animation index is valid for this sprite.
+        /// </summary>
+        /// <param name="index">The animation index to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified animation index is valid; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsValidAnimationIndex(Int32 index)
+        {
+            return index >= 0 && index < animations.Count;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified animation name is valid for this sprite.
+        /// </summary>
+        /// <param name="name">The animation name to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified animation name is valid; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsValidAnimationName(String name)
+        {
+            return animationCacheByName.ContainsKey(name);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified animation name is valid for this sprite.
+        /// </summary>
+        /// <param name="name">The animation name to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified animation name is valid; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsValidAnimationName(SpriteAnimationName name)
+        {
+            if (name.IsName)
+            {
+                return IsValidAnimationName((String)name);
+            }
+            else
+            {
+                return IsValidAnimationIndex((Int32)name);
+            }
+        }
+
+        /// <summary>
         /// Retrieves the animation with the specified index.
         /// </summary>
         /// <param name="i">The index of the animation to retrieve.</param>
