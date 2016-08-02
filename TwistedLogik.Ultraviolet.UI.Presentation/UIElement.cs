@@ -2476,7 +2476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
                     (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
 
-                dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
+                dc.RawDrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                     color, 0f, originPix, SpriteEffects.None, 0f);
             }
         }
@@ -2530,7 +2530,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
                 (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
 
-            dc.DrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
+            dc.RawDrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                 color, 0f, originPix, SpriteEffects.None, 0f);
         }
 

@@ -1156,7 +1156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var width = (Int32)display.DipsToPixels(bounds.Width);
                 var height = (Int32)display.DipsToPixels(bounds.Height);
                 var color = Diagnostics.GetDrawVisualBoundsColor(element);
-                drawingContext.DrawImage(Diagnostics.BoundingBoxImage, position, width, height, color);
+                drawingContext.RawDrawImage(Diagnostics.BoundingBoxImage, position, width, height, color);
             }
 
             var popup = element as Popup;
