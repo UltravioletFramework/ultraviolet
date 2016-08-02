@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var sprite = Source;
                 var spriteAnimation = SourceAnimation;
-                if (sprite != null && sprite.IsLoaded && sprite.Resource.Value != null && sprite.Resource.Value.IsValidAnimationName(spriteAnimation))
+                if (sprite.IsLoaded && sprite.Resource.Value != null && sprite.Resource.Value.IsValidAnimationName(spriteAnimation))
                 {
                     var globalAnimationController = sprite.Resource.Value[spriteAnimation].Controller;
                     DrawSprite(dc, globalAnimationController, Point2D.Zero, null, null, SourceColor, 0f);
@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var sprite = Source;
             var spriteAnimationName = SourceAnimation;
-            if (sprite == null || !sprite.IsLoaded || sprite.Resource.Value == null || !sprite.Resource.Value.IsValidAnimationName(spriteAnimationName))
+            if (!sprite.IsLoaded || sprite.Resource.Value == null || !sprite.Resource.Value.IsValidAnimationName(spriteAnimationName))
             {
                 localAnimationController.StopAnimation();
             }
