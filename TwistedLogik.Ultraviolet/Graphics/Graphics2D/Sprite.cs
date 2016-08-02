@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="i">The index of the animation to retrieve.</param>
         /// <returns>The <see cref="SpriteAnimation"/> with the specified index.</returns>
-        public SpriteAnimation this[int i]
+        public SpriteAnimation this[Int32 i]
         {
             get
             {
@@ -51,13 +51,35 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="name">The name of the animation to retrieve.</param>
         /// <returns>The <see cref="SpriteAnimation"/> with the specified name, or <see langword="null"/> if no such animation exists.</returns>
-        public SpriteAnimation this[string name]
+        public SpriteAnimation this[String name]
         {
             get
             {
                 SpriteAnimation animation;
                 animationCacheByName.TryGetValue(name, out animation);
                 return animation;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the animation with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the animation to retrieve.</param>
+        /// <returns>The <see cref="SpriteAnimation"/> with the specified name, or <see langword="null"/> if no such animation exists.</returns>
+        public SpriteAnimation this[SpriteAnimationName name]
+        {
+            get
+            {
+                if (name.IsIndex)
+                {
+                    return animations[(Int32)name];
+                }
+                else
+                {
+                    SpriteAnimation animation;
+                    animationCacheByName.TryGetValue((String)name, out animation);
+                    return animation;
+                }
             }
         }
 
