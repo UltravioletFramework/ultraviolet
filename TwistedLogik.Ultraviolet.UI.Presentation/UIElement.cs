@@ -2275,7 +2275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected TOutput LoadContent<TOutput>(AssetID asset, AssetSource source)
         {
             return (source == AssetSource.Global) ?
-                LoadGlobalContent<TOutput>(asset) : 
+                LoadGlobalContent<TOutput>(asset) :
                 LoadLocalContent<TOutput>(asset);
         }
 
@@ -2311,7 +2311,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected SpriteAnimation LoadContent(SpriteAnimationID animation, AssetSource source)
         {
             return (source == AssetSource.Global) ?
-                LoadGlobalContent(animation) : 
+                LoadGlobalContent(animation) :
                 LoadLocalContent(animation);
         }
 
@@ -2411,7 +2411,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (View != null)
                 View.LoadResource(resource);
         }
-        
+
         /// <summary>
         /// Draws an image that fills the entire element.
         /// </summary>
@@ -2454,7 +2454,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         protected void DrawImage(DrawingContext dc, SourcedImage image, RectangleD? area, Point2D origin, Color color, Boolean drawBlank = false)
         {
             Contract.Require(dc, nameof(dc));
-            
+
             var imageResource = image.Resource;
             if (imageResource == null || !imageResource.IsLoaded)
             {
@@ -2472,13 +2472,177 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var imageAreaPix = (RectangleF)Display.DipsToPixels(imageAreaAbs);
 
                 var positionIsRounded = !dc.IsTransformed;
-                var position = new Vector2(
+                var positionRaw = new Vector2(
                     (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
                     (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
 
-                dc.RawDrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
+                dc.RawDrawImage(imageResource, positionRaw, imageAreaPix.Width, imageAreaPix.Height,
                     color, 0f, originPix, SpriteEffects.None, 0f);
             }
+        }
+
+        /// <summary>
+        /// Draws the specified sprite animation.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="position">The position, relative to the element, at which to draw the sprite animation.</param>
+        protected void DrawSprite(DrawingContext dc, SpriteAnimationController animation, Point2D position)
+        {
+            Contract.Require(dc, nameof(dc));
+
+            var positionAbs = position + UntransformedAbsolutePosition;
+            var positionPix = (Vector2)Display.DipsToPixels(positionAbs);
+
+            var positionIsRounded = !dc.IsTransformed;
+            var positionRaw = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+
+            dc.RawDrawSprite(animation, positionRaw);
+        }
+
+        /// <summary>
+        /// Draws the specified sprite animation.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="position">The position, relative to the element, at which to draw the sprite animation.</param>
+        /// <param name="color">The animation's tint color.</param>
+        /// <param name="rotation">The animation's rotation in radians.</param>
+        protected void DrawSprite(DrawingContext dc, SpriteAnimationController animation, Point2D position,
+            Color color, Single rotation)
+        {
+            Contract.Require(dc, nameof(dc));
+
+            var positionAbs = position + UntransformedAbsolutePosition;
+            var positionPix = (Vector2)Display.DipsToPixels(positionAbs);
+
+            var positionIsRounded = !dc.IsTransformed;
+            var positionRaw = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+
+            dc.RawDrawSprite(animation, positionRaw, null, null, color, rotation);
+        }
+        
+        /// <summary>
+        /// Draws the specified sprite animation.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="position">The position, relative to the element, at which to draw the sprite animation.</param>
+        /// <param name="color">The animation's tint color.</param>
+        /// <param name="rotation">The animation's rotation in radians.</param>
+        /// <param name="effects">The animation's rendering effects.</param>
+        /// <param name="layerDepth">The animation's layer depth.</param>
+        protected void DrawSprite(DrawingContext dc, SpriteAnimationController animation, Point2D position,
+            Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            Contract.Require(dc, nameof(dc));
+
+            var positionAbs = position + UntransformedAbsolutePosition;
+            var positionPix = (Vector2)Display.DipsToPixels(positionAbs);
+
+            var positionIsRounded = !dc.IsTransformed;
+            var positionRaw = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+            
+            dc.RawDrawSprite(animation, positionRaw, null, null, color, rotation, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws the specified sprite animation.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="position">The position, relative to the element, at which to draw the sprite animation.</param>
+        /// <param name="width">The width of the animation in device-independent pixels, 
+        /// or <see langword="null"/> to indicate that the animation should be stretched to fill the element.</param>
+        /// <param name="height">The height of the animation in device-independent pixels, 
+        /// or <see langword="null"/> to indicate that the animation should be stretched to fill the element.</param>
+        protected void DrawSprite(DrawingContext dc, SpriteAnimationController animation, Point2D position,
+            Double? width, Double? height)
+        {
+            Contract.Require(dc, nameof(dc));
+
+            var positionAbs = position + UntransformedAbsolutePosition;
+            var positionPix = (Vector2)Display.DipsToPixels(positionAbs);
+
+            var positionIsRounded = !dc.IsTransformed;
+            var positionRaw = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+
+            var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
+            var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
+
+            dc.RawDrawSprite(animation, positionRaw, widthRaw, heightRaw);
+        }
+
+        /// <summary>
+        /// Draws the specified sprite animation.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="position">The position, relative to the element, at which to draw the sprite animation.</param>
+        /// <param name="width">The width of the animation in device-independent pixels, 
+        /// or <see langword="null"/> to indicate that the animation should be stretched to fill the element.</param>
+        /// <param name="height">The height of the animation in device-independent pixels, 
+        /// or <see langword="null"/> to indicate that the animation should be stretched to fill the element.</param>
+        /// <param name="color">The animation's tint color.</param>
+        /// <param name="rotation">The animation's rotation in radians.</param>
+        protected void DrawSprite(DrawingContext dc, SpriteAnimationController animation, Point2D position,
+            Double? width, Double? height, Color color, Single rotation)
+        {
+            Contract.Require(dc, nameof(dc));
+
+            var positionAbs = position + UntransformedAbsolutePosition;
+            var positionPix = (Vector2)Display.DipsToPixels(positionAbs);
+
+            var positionIsRounded = !dc.IsTransformed;
+            var positionRaw = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+
+            var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
+            var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
+
+            dc.RawDrawSprite(animation, positionRaw, widthRaw, heightRaw, color, rotation);
+        }
+
+        /// <summary>
+        /// Draws the specified sprite animation.
+        /// </summary>
+        /// <param name="dc">The drawing context that describes the current rendering state.</param>
+        /// <param name="animation">The sprite animation to draw.</param>
+        /// <param name="position">The position, relative to the element, at which to draw the sprite animation.</param>
+        /// <param name="width">The width of the animation in device-independent pixels, 
+        /// or <see langword="null"/> to indicate that the animation should be stretched to fill the element.</param>
+        /// <param name="height">The height of the animation in device-independent pixels, 
+        /// or <see langword="null"/> to indicate that the animation should be stretched to fill the element.</param>
+        /// <param name="color">The animation's tint color.</param>
+        /// <param name="rotation">The animation's rotation in radians.</param>
+        /// <param name="effects">The animation's rendering effects.</param>
+        /// <param name="layerDepth">The animation's layer depth.</param>
+        protected void DrawSprite(DrawingContext dc, SpriteAnimationController animation, Point2D position, 
+            Double? width, Double? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            Contract.Require(dc, nameof(dc));
+
+            var positionAbs = position + UntransformedAbsolutePosition;
+            var positionPix = (Vector2)Display.DipsToPixels(positionAbs);
+
+            var positionIsRounded = !dc.IsTransformed;
+            var positionRaw = new Vector2(
+                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+
+            var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
+            var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
+
+            dc.RawDrawSprite(animation, positionRaw, widthRaw, heightRaw, color, rotation, effects, layerDepth);
         }
 
         /// <summary>
