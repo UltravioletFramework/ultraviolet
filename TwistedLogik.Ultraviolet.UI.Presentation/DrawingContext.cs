@@ -134,6 +134,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the 
+        /// screen, in device-independent coordinates, the sprite will be drawn.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, RectangleD destinationRectangle, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawDestinationRectangle = (RectangleF)display.DipsToPixels(destinationRectangle);
+            SpriteBatch.Draw(texture, rawDestinationRectangle, color * Opacity);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the 
         /// screen, in device-dependent coordinates, the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         public void RawDraw(Texture2D texture, RectangleF destinationRectangle, Color color)
@@ -143,7 +159,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.Draw(texture, destinationRectangle, color * Opacity);
         }
-        
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the 
+        /// screen, in device-independent coordinates, the sprite will be drawn.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, RectangleD destinationRectangle, Rectangle? sourceRectangle, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawDestinationRectangle = (RectangleF)display.DipsToPixels(destinationRectangle);
+            SpriteBatch.Draw(texture, rawDestinationRectangle, sourceRectangle, color * Opacity);
+        }
+
         /// <summary>
         /// Adds a sprite to the batch.
         /// </summary>
@@ -158,6 +191,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color * Opacity);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the 
+        /// screen, in device-independent coordinates, the sprite will be drawn.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="origin">The sprite's origin point in device-independent coordinates.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void Draw(Texture2D texture, RectangleD destinationRectangle, Rectangle? sourceRectangle, Color color, Single rotation, Point2D origin, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawDestinationRectangle = (RectangleF)display.DipsToPixels(destinationRectangle);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.Draw(texture, rawDestinationRectangle, sourceRectangle, color * Opacity, rotation, rawOrigin, effects, layerDepth);
         }
 
         /// <summary>
@@ -184,6 +239,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Adds a sprite to the batch.
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, Point2D position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.Draw(texture, rawPosition, color * Opacity);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
         /// <param name="color">The sprite's tint color.</param>
         public void RawDraw(Texture2D texture, Vector2 position, Color color)
@@ -192,6 +262,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.Draw(texture, position, color * Opacity);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.Draw(texture, rawPosition, sourceRectangle, color * Opacity);
         }
 
         /// <summary>
@@ -207,6 +293,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.Draw(texture, position, sourceRectangle, color * Opacity);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="origin">The sprite's origin point in device-independent coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void Draw(Texture2D texture, Point2D position, Rectangle? sourceRectangle, Color color, Single rotation, Point2D origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.Draw(texture, rawPosition, sourceRectangle, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -233,6 +341,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Adds a sprite to the batch.
         /// </summary>
         /// <param name="texture">The sprite's texture.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="origin">The sprite's origin point in device-independent coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void Draw(Texture2D texture, Point2D position, Rectangle? sourceRectangle, Color color, Single rotation, Point2D origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.Draw(texture, rawPosition, sourceRectangle, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Adds a sprite to the batch.
+        /// </summary>
+        /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
         /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
@@ -248,7 +378,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.Draw(texture, position, sourceRectangle, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
-        
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        public void DrawSprite(SpriteAnimationController animation, Point2D position)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawSprite(animation, rawPosition, null, null, Color.White * Opacity, 0f);
+        }
+
         /// <summary>
         /// Draws a sprite animation.
         /// </summary>
@@ -266,9 +410,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws a sprite animation.
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="width">The width in device-independent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-independent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        public void DrawSprite(SpriteAnimationController animation, Point2D position, Double? width, Double? height)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawWidth = (width == null) ? null : (Single?)display.DipsToPixels(width.GetValueOrDefault());
+            var rawHeight = (height == null) ? null : (Single?)display.DipsToPixels(height.GetValueOrDefault());
+            SpriteBatch.DrawSprite(animation, rawPosition, rawWidth, rawHeight, Color.White * Opacity, 0f);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="width">The width in device-dependent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-dependent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         public void RawDrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height)
         {
             if (SpriteBatch == null)
@@ -281,9 +447,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws a sprite animation.
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="width">The width in device-independent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-independent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        public void DrawSprite(SpriteAnimationController animation, Point2D position, Double? width, Double? height, Color color, Single rotation)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawWidth = (width == null) ? null : (Single?)display.DipsToPixels(width.GetValueOrDefault());
+            var rawHeight = (height == null) ? null : (Single?)display.DipsToPixels(height.GetValueOrDefault());
+            SpriteBatch.DrawSprite(animation, rawPosition, rawWidth, rawHeight, color * Opacity, rotation);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="width">The width in device-dependent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-dependent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         public void RawDrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation)
@@ -298,9 +488,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws a sprite animation.
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="width">The width in device-independent pixels of the destination
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-independent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawSprite(SpriteAnimationController animation, Point2D position, Double? width, Double? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawWidth = (width == null) ? null : (Single?)display.DipsToPixels(width.GetValueOrDefault());
+            var rawHeight = (height == null) ? null : (Single?)display.DipsToPixels(height.GetValueOrDefault());
+            SpriteBatch.DrawSprite(animation, rawPosition, rawWidth, rawHeight, color * Opacity, rotation, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
-        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
-        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="width">The width in device-dependent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-dependent pixels of the destination 
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
@@ -312,7 +528,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.DrawSprite(animation, position, width, height, color * Opacity, rotation, effects, layerDepth);
         }
-        
+
+        /// <summary>
+        /// Draws a sprite animation with the specified scaling factor.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        public void DrawScaledSprite(SpriteAnimationController animation, Point2D position, Vector2 scale)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawScaledSprite(animation, rawPosition, scale, Color.White * Opacity, 0f);
+        }
+
         /// <summary>
         /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
@@ -325,6 +556,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.DrawScaledSprite(animation, position, scale, Color.White * Opacity, 0f);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation with the specified scaling factor.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        public void DrawScaledSprite(SpriteAnimationController animation, Point2D position, Vector2 scale, Color color, Single rotation)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawScaledSprite(animation, rawPosition, scale, color * Opacity, rotation);
         }
 
         /// <summary>
@@ -347,6 +595,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-independent screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="color">The sprite's color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawScaledSprite(SpriteAnimationController animation, Point2D position, Vector2 scale, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawScaledSprite(animation, rawPosition, scale, color * Opacity, rotation, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation with the specified scaling factor.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="color">The sprite's color.</param>
@@ -360,7 +627,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.DrawScaledSprite(animation, position, scale, color * Opacity, rotation, effects, layerDepth);
         }
-        
+
+        /// <summary>
+        /// Draws a single animation frame.
+        /// </summary>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the 
+        /// screen, in device-independent coordinates, the sprite will be drawn.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        public void DrawFrame(SpriteFrame frame, RectangleD destinationRectangle, Color color, Single rotation)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawDestinationRectangle = (Rectangle)display.DipsToPixels(destinationRectangle);
+            SpriteBatch.DrawFrame(frame, rawDestinationRectangle, color * Opacity, rotation);
+        }
+
         /// <summary>
         /// Draws a single animation frame.
         /// </summary>
@@ -382,6 +666,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the
+        /// screen, in device-independent coordinates, the sprite will be drawn.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawDestinationRectangle = (Rectangle)display.DipsToPixels(destinationRectangle);
+            SpriteBatch.DrawFrame(frame, rawDestinationRectangle, color * Opacity, rotation, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a single animation frame.
+        /// </summary>
+        /// <param name="frame">The <see cref="SpriteFrame"/> to draw.</param>
+        /// <param name="destinationRectangle">A rectangle which indicates where on the
         /// screen, in device-dependent coordinates, the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
@@ -394,7 +697,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.DrawFrame(frame, destinationRectangle, color * Opacity, rotation, effects, layerDepth);
         }
-        
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        public void DrawString(SpriteFontFace fontFace, String text, Point2D position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity);
+        }
+
         /// <summary>
         /// Draws a string of text.
         /// </summary>
@@ -408,6 +727,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.DrawString(fontFace, text, position, color * Opacity);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin in device-independent coordinates relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, String text, Point2D position, Color color, Single rotation, Point2D origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -435,6 +776,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin in device-independent coordinates relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, String text, Point2D position, Color color, Single rotation, Point2D origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position in device-dependent coordinates.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="rotation">The text's rotation in radians.</param>
@@ -449,7 +812,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
-        
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Point2D position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity);
+        }
+
         /// <summary>
         /// Draws a string of text.
         /// </summary>
@@ -463,6 +842,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.DrawString(fontFace, text, position, color * Opacity);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin in device-independent coordinates relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Point2D position, Color color, Single rotation, Point2D origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -490,6 +891,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin in device-independent coordinates relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Point2D position, Color color, Single rotation, Point2D origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position in device-dependent coordinates.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="rotation">The text's rotation in radians.</param>
@@ -504,7 +927,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             SpriteBatch.DrawString(fontFace, text, position, color * Opacity, rotation, origin, scale, effects, layerDepth);
         }
-        
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        public void DrawString(SpriteFontFace fontFace, StringSegment text, Point2D position, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity);
+        }
+
         /// <summary>
         /// Draws a string of text.
         /// </summary>
@@ -518,6 +957,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.DrawString(fontFace, text, position, color * Opacity);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin in device-independent coordinates relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringSegment text, Point2D position, Color color, Single rotation, Point2D origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
         }
 
         /// <summary>
@@ -545,6 +1006,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position in device-independent coordinates.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin in device-independent coordinates relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        public void DrawString(SpriteFontFace fontFace, StringSegment text, Point2D position, Color color, Single rotation, Point2D origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawString(fontFace, text, rawPosition, color * Opacity, rotation, rawOrigin, scale, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a string of text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position in device-dependent coordinates.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="rotation">The text's rotation in radians.</param>
@@ -564,6 +1047,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Draws an image.
         /// </summary>
         /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image in device-independent coordinates.</param>
+        /// <param name="width">The width of the image in device-independent pixels.</param>
+        /// <param name="height">The height of the image in device-independent pixels.</param>
+        /// <param name="color">The image's color.</param>
+        public void DrawImage(TextureImage image, Point2D position, Double width, Double height, Color color)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawWidth = (Single)display.DipsToPixels(width);
+            var rawHeight = (Single)display.DipsToPixels(height);
+            SpriteBatch.DrawImage(image, rawPosition, rawWidth, rawHeight, color * Opacity);
+        }
+
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
         /// <param name="position">The position at which to draw the image in device-dependent coordinates.</param>
         /// <param name="width">The width of the image in device-dependent pixels.</param>
         /// <param name="height">The height of the image in device-dependent pixels.</param>
@@ -574,6 +1076,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.DrawImage(image, position, width, height, color * Opacity);
+        }
+
+        /// <summary>
+        /// Draws an image.
+        /// </summary>
+        /// <param name="image">An <see cref="TextureImage"/> that represents the image to draw.</param>
+        /// <param name="position">The position at which to draw the image in device-independent coordinates.</param>
+        /// <param name="width">The width of the image in device-independent pixels.</param>
+        /// <param name="height">The height of the image in device-independent pixels.</param>
+        /// <param name="color">The image's color.</param>
+        /// <param name="rotation">The image's rotation in radians.</param>
+        /// <param name="origin">The image's point of origin in device-independent coordinates.</param>
+        /// <param name="effects">The image's rendering effects.</param>
+        /// <param name="layerDepth">The image's layer depth.</param>
+        public void DrawImage(TextureImage image, Point2D position, Double width, Double height, Color color, Single rotation, Point2D origin, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            var rawPosition = (Vector2)display.DipsToPixels(position);
+            var rawWidth = (Single)display.DipsToPixels(width);
+            var rawHeight = (Single)display.DipsToPixels(height);
+            var rawOrigin = (Vector2)display.DipsToPixels(origin);
+            SpriteBatch.DrawImage(image, rawPosition, rawWidth, rawHeight, color * Opacity, rotation, rawOrigin, effects, layerDepth);
         }
 
         /// <summary>
