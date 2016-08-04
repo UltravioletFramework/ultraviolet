@@ -150,6 +150,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromMem")]
         public static extern IntPtr RWFromMem(IntPtr mem, Int32 size);
+        
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AllocRW")]
+        public static extern IntPtr AllocRW();
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeRW")]
         public static extern void FreeRW(IntPtr area);
