@@ -78,6 +78,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets the sprite's set of rendering effects.
+        /// </summary>
+        /// <value>A <see cref="SpriteEffects"/> value that specifies the sprite's rendering effects.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="SourceEffectsProperty"/></dpropField>
+        ///     <dpropStylingName>source-effects</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public SpriteEffects SourceEffects
+        {
+            get { return GetValue<SpriteEffects>(SourceEffectsProperty); }
+            set { SetValue(SourceEffectsProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the name of the animation which is drawn.
         /// </summary>
         /// <value>A <see cref="Boolean"/> value that specifies whether to use the display animation's
@@ -93,6 +110,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return GetValue<Boolean>(UseGlobalAnimationControllerProperty); }
             set { SetValue(UseGlobalAnimationControllerProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the control performs clipping.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value that specifies whether the control performs clipping.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ClippingEnabledProperty"/></dpropField>
+        ///     <dpropStylingName>clipping-enabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean ClippingEnabled
+        {
+            get { return GetValue<Boolean>(ClippingEnabledProperty); }
+            set { SetValue(ClippingEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the rendered sprite within the control.
+        /// </summary>
+        /// <value>A <see cref="HorizontalAlignment"/> value which specifies the horizontal alignment of
+        /// the control's rendered sprite. The default value is <see cref="HorizontalAlignment.Left"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="HorizontalContentAlignmentProperty"/></dpropField>
+        ///		<dpropStylingName>content-halign</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.None"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public HorizontalAlignment HorizontalContentAlignment
+        {
+            get { return GetValue<HorizontalAlignment>(HorizontalContentAlignmentProperty); }
+            set { SetValue(HorizontalContentAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of the rendered sprite within the control.
+        /// </summary>
+        /// <value>A <see cref="VerticalAlignment"/> value which specifies the vertical alignment of
+        /// the control's rendered sprite. The default value is <see cref="VerticalAlignment.Top"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="VerticalContentAlignmentProperty"/></dpropField>
+        ///		<dpropStylingName>content-valign</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.None"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public VerticalAlignment VerticalContentAlignment
+        {
+            get { return GetValue<VerticalAlignment>(VerticalContentAlignmentProperty); }
+            set { SetValue(VerticalContentAlignmentProperty, value); }
         }
 
         /// <summary>
@@ -117,11 +187,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<SpriteAnimationName>(HandleSourceAnimationChanged));
 
         /// <summary>
+        /// Identifies the <see cref="SourceEffects"/> property.
+        /// </summary>
+        /// <value>The identifier of the <see cref="SourceEffects"/> dependency property.</value>
+        public static readonly DependencyProperty SourceEffectsProperty = DependencyProperty.Register("SourceEffects", typeof(SpriteEffects), typeof(Sprite),
+            new PropertyMetadata<SpriteEffects>());
+
+        /// <summary>
         /// Identifies the <see cref="UseGlobalAnimationController"/> property.
         /// </summary>
         /// <value>The identifier of the <see cref="UseGlobalAnimationController"/> dependency property.</value>
         public static readonly DependencyProperty UseGlobalAnimationControllerProperty = DependencyProperty.Register("UseGlobalAnimationController", typeof(Boolean), typeof(Sprite),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleUseGlobalAnimationControllerChanged));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, HandleUseGlobalAnimationControllerChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="ClippingEnabled"/> property.
+        /// </summary>
+        /// <value>The identifier of the <see cref="ClippingEnabled"/> dependency property.</value>
+        public static readonly DependencyProperty ClippingEnabledProperty = DependencyProperty.Register("ClippingEnabled", typeof(Boolean), typeof(Sprite),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleClippingEnabledChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="HorizontalContentAlignment"/> dependency property.</value>
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register("HorizontalContentAlignment", "content-halign",
+            typeof(HorizontalAlignment), typeof(Sprite), new PropertyMetadata<HorizontalAlignment>(PresentationBoxedValues.HorizontalAlignment.Center));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalContentAlignment"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="VerticalContentAlignment"/> dependency property.</value>
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register("VerticalContentAlignment", "content-valign",
+            typeof(VerticalAlignment), typeof(Sprite), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Center));
 
         /// <inheritdoc/>
         protected override void ReloadContentOverride(Boolean recursive)
@@ -133,11 +231,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
+        protected override void UpdateOverride(UltravioletTime time)
         {
             if (localAnimationController != null)
+                localAnimationController.Update(time);
+
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
+        protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
+        {
+            var position = Point2D.Zero;
+            var width = 0.0;
+            var height = 0.0;
+
+            if (localAnimationController != null)
             {
-                DrawSprite(dc, localAnimationController, Point2D.Zero, null, null, SourceColor, 0f);
+                CalculateSpritePosition(localAnimationController, out position, out width, out height);
+                DrawSprite(dc, localAnimationController, position, width, height, SourceColor, 0f, SourceEffects, 0f);
             }
             else
             {
@@ -146,10 +258,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 if (sprite.IsLoaded && sprite.Resource.Value != null && sprite.Resource.Value.IsValidAnimationName(spriteAnimation))
                 {
                     var globalAnimationController = sprite.Resource.Value[spriteAnimation].Controller;
-                    DrawSprite(dc, globalAnimationController, Point2D.Zero, null, null, SourceColor, 0f);
+                    CalculateSpritePosition(globalAnimationController, out position, out width, out height);
+                    DrawSprite(dc, globalAnimationController, position, width, height, SourceColor, 0f, SourceEffects, 0f);
                 }
             }
             base.DrawOverride(time, dc);
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleD? ClipOverride()
+        {
+            if (ClippingEnabled)
+                return UntransformedAbsoluteBounds;
+
+            return base.ClipOverride();
         }
 
         /// <summary>
@@ -184,8 +306,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleUseGlobalAnimationControllerChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
         {
             var sprite = (Sprite)dobj;
-            sprite.localAnimationController = newValue ? new SpriteAnimationController() : null;
+            sprite.localAnimationController = newValue ? null : new SpriteAnimationController();
             sprite.ResetAnimationController();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ClippingEnabled"/> dependency property changes.
+        /// </summary>
+        private static void HandleClippingEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            var sprite = (Sprite)dobj;
+            sprite.Clip();
         }
 
         /// <summary>
@@ -207,6 +338,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var animation = sprite.Resource.Value[spriteAnimationName];
                 localAnimationController.PlayAnimation(animation);
             }
+        }
+
+        /// <summary>
+        /// Calculates the position and size of the control's sprite based on the control's current property values.
+        /// </summary>
+        private void CalculateSpritePosition(SpriteAnimationController animation, out Point2D position, out Double width, out Double height)
+        {
+            var x = 0.0;
+            var y = 0.0;
+
+            var frame = animation.GetFrame();
+            width = Display.PixelsToDips(frame.Width);
+            height = Display.PixelsToDips(frame.Height);
+
+            switch (HorizontalContentAlignment)
+            {
+                case HorizontalAlignment.Left:
+                    x = 0.0;
+                    break;
+
+                case HorizontalAlignment.Right:
+                    x = RenderSize.Width;
+                    break;
+
+                case HorizontalAlignment.Center:
+                    x = RenderSize.Width / 2.0;
+                    break;
+
+                case HorizontalAlignment.Stretch:
+                    x = RenderSize.Width / 2.0;
+                    width = RenderSize.Width;
+                    break;
+            }
+
+            switch (VerticalContentAlignment)
+            {
+                case VerticalAlignment.Top:
+                    y = 0.0;
+                    break;
+
+                case VerticalAlignment.Bottom:
+                    y = RenderSize.Height;
+                    break;
+
+                case VerticalAlignment.Center:
+                    y = RenderSize.Height / 2.0;
+                    break;
+
+                case VerticalAlignment.Stretch:
+                    y = RenderSize.Width / 2.0;
+                    height = RenderSize.Height;
+                    break;
+            }
+
+            position = new Point2D(x, y);
         }
 
         // State values.
