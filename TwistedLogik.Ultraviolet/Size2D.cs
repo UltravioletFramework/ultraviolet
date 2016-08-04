@@ -75,6 +75,122 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Multiplies a <see cref="Size2D"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="size">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size2D operator *(Size2D size, Int32 multiplier)
+        {
+            return new Size2D(size.Width * multiplier, size.Height * multiplier);
+        }
+
+        /// <summary>
+        /// Multiplies a <see cref="Size2D"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="size">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size2D operator *(Size2D size, Single multiplier)
+        {
+            return new Size2D(size.Width * multiplier, size.Height * multiplier);
+        }
+
+        /// <summary>
+        /// Multiplies a <see cref="Size2D"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="size">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size2D operator *(Size2D size, Double multiplier)
+        {
+            return new Size2D(size.Width * multiplier, size.Height * multiplier);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size2D"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="size">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size2D operator /(Size2D size, Int32 divisor)
+        {
+            return new Size2D(size.Width / divisor, size.Height / divisor);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size2D"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="size">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size2D operator /(Size2D size, Single divisor)
+        {
+            return new Size2D(size.Width / divisor, size.Height / divisor);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size2D"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="size">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size2D operator /(Size2D size, Double divisor)
+        {
+            return new Size2D(size.Width / divisor, size.Height / divisor);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Vector2"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Vector2(Size2D size)
+        {
+            return new Vector2((Single)size.Width, (Single)size.Height);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Point2"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Point2(Size2D size)
+        {
+            return new Point2((Int32)size.Width, (Int32)size.Height);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Point2F"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Point2F(Size2D size)
+        {
+            return new Point2F((Single)size.Width, (Single)size.Height);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Point2D"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Point2D(Size2D size)
+        {
+            return new Point2D(size.Width, size.Height);
+        }
+
+        /// <summary>
         /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Size2"/> structure.
         /// </summary>
         /// <param name="size">The structure to convert.</param>
@@ -84,18 +200,7 @@ namespace TwistedLogik.Ultraviolet
         {
             return new Size2((Int32)size.width, (Int32)size.height);
         }
-
-        /// <summary>
-        /// Implicitly converts a <see cref="Size2"/> structure to a <see cref="Size2D"/> structure.
-        /// </summary>
-        /// <param name="size">The structure to convert.</param>
-        /// <returns>The converted structure.</returns>
-        [Preserve]
-        public static implicit operator Size2D(Size2 size)
-        {
-            return new Size2D(size.Width, size.Height);
-        }
-
+        
         /// <summary>
         /// Explicitly converts a <see cref="Size2D"/> structure to a <see cref="Size2F"/> structure.
         /// </summary>
@@ -105,17 +210,6 @@ namespace TwistedLogik.Ultraviolet
         public static explicit operator Size2F(Size2D size)
         {
             return new Size2F((Single)size.width, (Single)size.height);
-        }
-
-        /// <summary>
-        /// Implicitly converts a <see cref="Size2D"/> structure to a <see cref="Size2F"/> structure.
-        /// </summary>
-        /// <param name="size">The structure to convert.</param>
-        /// <returns>The converted structure.</returns>
-        [Preserve]
-        public static implicit operator Size2D(Size2F size)
-        {
-            return new Size2D(size.Width, size.Height);
         }
 
         /// <summary>

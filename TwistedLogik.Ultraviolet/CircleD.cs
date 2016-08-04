@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="position">The position of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
         [Preserve]
-        public CircleD(Point2D position, Single radius)
+        public CircleD(Point2D position, Double radius)
             : this(position.X, position.Y, radius)
         {
 
@@ -65,6 +65,78 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Offsets the specified <see cref="CircleD"/> by adding the specified <see cref="Point2D"/> to its location.
+        /// </summary>
+        /// <param name="circle">The <see cref="CircleD"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2"/> by which to offset the Circle.</param>
+        /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static CircleD operator +(CircleD circle, Point2 point)
+        {
+            return new CircleD(circle.Position + point, circle.Radius);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="CircleD"/> by subtracting the specified <see cref="Point2D"/> from its location.
+        /// </summary>
+        /// <param name="circle">The <see cref="CircleD"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2"/> by which to offset the Circle.</param>
+        /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static CircleD operator -(CircleD circle, Point2 point)
+        {
+            return new CircleD(circle.Position - point, circle.Radius);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="CircleD"/> by adding the specified <see cref="Point2D"/> to its location.
+        /// </summary>
+        /// <param name="circle">The <see cref="CircleD"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the Circle.</param>
+        /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static CircleD operator +(CircleD circle, Point2F point)
+        {
+            return new CircleD(circle.Position + point, circle.Radius);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="CircleD"/> by subtracting the specified <see cref="Point2D"/> from its location.
+        /// </summary>
+        /// <param name="circle">The <see cref="CircleD"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the Circle.</param>
+        /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static CircleD operator -(CircleD circle, Point2F point)
+        {
+            return new CircleD(circle.Position - point, circle.Radius);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="CircleD"/> by adding the specified <see cref="Point2D"/> to its location.
+        /// </summary>
+        /// <param name="circle">The <see cref="CircleD"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2D"/> by which to offset the Circle.</param>
+        /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static CircleD operator +(CircleD circle, Point2D point)
+        {
+            return new CircleD(circle.Position + point, circle.Radius);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="CircleD"/> by subtracting the specified <see cref="Point2D"/> from its location.
+        /// </summary>
+        /// <param name="circle">The <see cref="CircleD"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2D"/> by which to offset the Circle.</param>
+        /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static CircleD operator -(CircleD circle, Point2D point)
+        {
+            return new CircleD(circle.Position - point, circle.Radius);
+        }
+
+        /// <summary>
         /// Explicitly converts a <see cref="CircleD"/> structure to a <see cref="Circle"/> structure.
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
@@ -76,17 +148,6 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Implicitly converts a <see cref="Circle"/> structure to a <see cref="CircleD"/> structure.
-        /// </summary>
-        /// <param name="circle">The structure to convert.</param>
-        /// <returns>The converted structure.</returns>
-        [Preserve]
-        public static implicit operator CircleD(Circle circle)
-        {
-            return new CircleD(circle.X, circle.Y, circle.Radius);
-        }
-
-        /// <summary>
         /// Explicitly converts a <see cref="CircleD"/> structure to a <see cref="CircleF"/> structure.
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
@@ -95,17 +156,6 @@ namespace TwistedLogik.Ultraviolet
         public static explicit operator CircleF(CircleD circle)
         {
             return new CircleF((Single)circle.x, (Single)circle.y, (Single)circle.radius);
-        }
-
-        /// <summary>
-        /// Implicitly converts a <see cref="CircleF"/> structure to a <see cref="CircleD"/> structure.
-        /// </summary>
-        /// <param name="circle">The structure to convert.</param>
-        /// <returns>The converted structure.</returns>
-        [Preserve]
-        public static implicit operator CircleD(CircleF circle)
-        {
-            return new CircleD(circle.X, circle.Y, circle.Radius);
         }
 
         /// <summary>

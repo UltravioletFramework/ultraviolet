@@ -194,6 +194,39 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Explicitly converts a <see cref="Vector3"/> structure to a <see cref="Size3"/> structure.
+        /// </summary>
+        /// <param name="vector">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Size3(Vector3 vector)
+        {
+            return new Size3((Int32)vector.X, (Int32)vector.Y, (Int32)vector.Z);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Vector3"/> structure to a <see cref="Size3F"/> structure.
+        /// </summary>
+        /// <param name="vector">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Size3F(Vector3 vector)
+        {
+            return new Size3F(vector.X, vector.Y, vector.Z);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Vector3"/> structure to a <see cref="Size3D"/> structure.
+        /// </summary>
+        /// <param name="vector">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Size3D(Vector3 vector)
+        {
+            return new Size3D(vector.X, vector.Y, vector.Z);
+        }
+
+        /// <summary>
         /// Converts the string representation of a vector into an instance of the <see cref="Vector3"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>

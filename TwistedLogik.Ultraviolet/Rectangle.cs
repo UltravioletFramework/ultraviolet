@@ -67,6 +67,54 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Offsets the specified <see cref="Rectangle"/> by adding the specified <see cref="Point2F"/> to its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleF"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static RectangleF operator +(Rectangle rect, Point2F point)
+        {
+            return new RectangleF(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="Rectangle"/> by subtracting the specified <see cref="Point2F"/> from its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleF"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static RectangleF operator -(Rectangle rect, Point2F point)
+        {
+            return new RectangleF(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="Rectangle"/> by adding the specified <see cref="Point2D"/> to its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2D"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static RectangleD operator +(Rectangle rect, Point2D point)
+        {
+            return new RectangleD(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Offsets the specified <see cref="Rectangle"/> by subtracting the specified <see cref="Point2D"/> from its location.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> to offset.</param>
+        /// <param name="point">The <see cref="Point2D"/> by which to offset the rectangle.</param>
+        /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
+        [Preserve]
+        public static RectangleD operator -(Rectangle rect, Point2D point)
+        {
+            return new RectangleD(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
         /// Compares two rectangles for equality.
         /// </summary>
         /// <param name="r1">The first <see cref="Rectangle"/> to compare.</param>
@@ -88,6 +136,28 @@ namespace TwistedLogik.Ultraviolet
         public static Boolean operator !=(Rectangle r1, Rectangle r2)
         {
             return !r1.Equals(r2);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleF"/> structure.
+        /// </summary>
+        /// <param name="rect">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static implicit operator RectangleF(Rectangle rect)
+        {
+            return new RectangleF(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleD"/> structure.
+        /// </summary>
+        /// <param name="rect">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static implicit operator RectangleD(Rectangle rect)
+        {
+            return new RectangleD(rect.X, rect.Y, rect.Width, rect.Height);
         }
 
         /// <summary>
