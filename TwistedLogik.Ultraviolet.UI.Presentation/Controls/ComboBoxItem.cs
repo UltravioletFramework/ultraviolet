@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
@@ -28,27 +29,39 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public ComboBoxItem(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            HighlightOnSelect    = false;
-            HighlightOnMouseOver = !Generic.IsTouchDeviceAvailable;
+            HighlightOnSelect = false;
+            HighlightOnMouseOver = true;
         }
 
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
+        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            if (!data.Handled)
+            if (button == MouseButton.Left && !data.Handled)
             {
-                var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
-                if (comboBox != null)
-                {
-                    comboBox.HandleItemClicked(this);
-                    OnSelected();
-                    OnSelectedByUser();
-                }
+                Select();
+                OnSelectedByUser();
+
                 data.Handled = true;
             }
-            base.OnGenericInteraction(device, data);
+            base.OnMouseDown(device, button, data);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnTouchTap(TouchDevice device, Int64 id, Double x, Double y, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable)
+            {
+                if (device.IsFirstTouchInGesture(id) && !data.Handled)
+                {
+                    Select();
+                    OnSelectedByUser();
+
+                    data.Handled = true;
+                }
+            }
+            base.OnTouchTap(device, id, x, y, data);
+        }
+
         /// <inheritdoc/>
         protected override void OnContentChanged(Object oldValue, Object newValue)
         {
@@ -58,6 +71,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 comboBox.HandleItemChanged(this);
             }
             base.OnContentChanged(oldValue, newValue);
+        }
+
+        /// <summary>
+        /// Selects the item.
+        /// </summary>
+        private void Select()
+        {
+            var comboBox = ItemsControl.ItemsControlFromItemContainer(this) as ComboBox;
+            if (comboBox != null)
+            {
+                comboBox.HandleItemClicked(this);
+                OnSelected();
+            }
         }
     }
 }

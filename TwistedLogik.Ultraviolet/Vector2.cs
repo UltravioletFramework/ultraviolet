@@ -205,36 +205,36 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Vector2"/> structure.
+        /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Size2"/> structure.
         /// </summary>
-        /// <param name="point">The structure to convert.</param>
+        /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         [Preserve]
-        public static explicit operator Vector2(Point2 point)
+        public static explicit operator Size2(Vector2 vector)
         {
-            return new Vector2(point.X, point.Y);
+            return new Size2((Int32)vector.X, (Int32)vector.Y);
         }
 
         /// <summary>
-        /// Explicitly converts a <see cref="Point2F"/> structure to a <see cref="Vector2"/> structure.
+        /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Size2F"/> structure.
         /// </summary>
-        /// <param name="point">The structure to convert.</param>
+        /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         [Preserve]
-        public static explicit operator Vector2(Point2F point)
+        public static explicit operator Size2F(Vector2 vector)
         {
-            return new Vector2(point.X, point.Y);
+            return new Size2F(vector.X, vector.Y);
         }
 
         /// <summary>
-        /// Explicitly converts a <see cref="Point2D"/> structure to a <see cref="Vector2"/> structure.
+        /// Explicitly converts a <see cref="Vector2"/> structure to a <see cref="Size2D"/> structure.
         /// </summary>
-        /// <param name="point">The structure to convert.</param>
+        /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
         [Preserve]
-        public static explicit operator Vector2(Point2D point)
+        public static explicit operator Size2D(Vector2 vector)
         {
-            return new Vector2((Single)point.X, (Single)point.Y);
+            return new Size2D(vector.X, vector.Y);
         }
 
         /// <summary>

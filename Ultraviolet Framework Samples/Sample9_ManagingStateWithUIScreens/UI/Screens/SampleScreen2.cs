@@ -1,13 +1,12 @@
 ﻿using System;
-using System.IO;
-using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet;
+using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI;
-using TwistedLogik.Ultraviolet.Content;
 using UltravioletSample.Sample9_ManagingStateWithUIScreens.Assets;
 
 namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
@@ -21,7 +20,7 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
 
             IsOpaque = true;
 
-            this.font         = LocalContent.Load<SpriteFont>("Garamond");
+            this.font = LocalContent.Load<SpriteFont>("Garamond");
             this.blankTexture = GlobalContent.Load<Texture2D>(GlobalTextureID.Blank);
             this.textRenderer = new TextRenderer();
         }
@@ -30,9 +29,9 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
         {
             if (IsReadyForInput)
             {
-                var input    = Ultraviolet.GetInput();
+                var input = Ultraviolet.GetInput();
                 var keyboard = input.GetKeyboard();
-                var touch    = input.GetTouchDevice();
+                var touch = input.GetPrimaryTouchDevice();
 
                 if (keyboard.IsKeyPressed(Key.Left) || (touch != null && touch.WasTapped()))
                 {
@@ -71,7 +70,7 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens
             }
             return 0;
         }
-            
+
         private readonly SpriteFont font;
         private readonly Texture2D blankTexture;
         private readonly TextRenderer textRenderer;

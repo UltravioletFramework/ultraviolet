@@ -126,15 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             base.OnValueChanged();
         }
-
-        /// <inheritdoc/>
-        protected override void OnFingerMotion(TouchDevice device, Int64 fingerID, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
-        {
-            data.Handled = true;
-
-            base.OnFingerMotion(device, fingerID, x, y, dx, dy, pressure, data);
-        }
-
+        
         /// <summary>
         /// Raises the <see cref="Scroll"/> event.
         /// </summary>

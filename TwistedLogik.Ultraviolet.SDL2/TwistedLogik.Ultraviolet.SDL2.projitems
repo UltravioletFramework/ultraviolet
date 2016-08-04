@@ -16,7 +16,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\SDL2MouseDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\SDL2TouchDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDeviceInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\TouchTapData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SDL2EventMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\IntPtrExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL.cs" />

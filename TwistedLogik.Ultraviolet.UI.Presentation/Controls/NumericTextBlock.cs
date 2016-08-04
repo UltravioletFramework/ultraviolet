@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var positionY = dc.IsTransformed ? positionRaw.Y : Math.Round(positionRaw.Y, MidpointRounding.AwayFromZero);
                 var position = new Vector2((Single)positionX, (Single)positionY);
 
-                dc.DrawString(face, View.Resources.StringBuffer, position, Foreground);
+                dc.RawDrawString(face, View.Resources.StringBuffer, position, Foreground);
             }
             base.DrawOverride(time, dc);
         }

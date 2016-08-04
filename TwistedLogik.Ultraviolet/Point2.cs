@@ -99,6 +99,144 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Multiplies a <see cref="Point2"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="point">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Point2"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Point2 operator *(Point2 point, Int32 multiplier)
+        {
+            return new Point2(point.X * multiplier, point.Y * multiplier);
+        }
+
+        /// <summary>
+        /// Multiplies a <see cref="Point2"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="point">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Point2F"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Point2F operator *(Point2 point, Single multiplier)
+        {
+            return new Point2F(point.X * multiplier, point.Y * multiplier);
+        }
+
+        /// <summary>
+        /// Multiplies a <see cref="Point2"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="point">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Point2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Point2D operator *(Point2 point, Double multiplier)
+        {
+            return new Point2D(point.X * multiplier, point.Y * multiplier);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Point2"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="point">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Point2"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Point2 operator /(Point2 point, Int32 divisor)
+        {
+            return new Point2(point.X / divisor, point.Y / divisor);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Point2"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="point">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Point2F"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Point2F operator /(Point2 point, Single divisor)
+        {
+            return new Point2F(point.X / divisor, point.Y / divisor);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size2"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="point">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Point2D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Point2D operator /(Point2 point, Double divisor)
+        {
+            return new Point2D(point.X / divisor, point.Y / divisor);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Vector2"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Vector2(Point2 point)
+        {
+            return new Vector2(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Size2"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Size2(Point2 point)
+        {
+            return new Size2(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Size2F"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Size2F(Point2 point)
+        {
+            return new Size2F(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Point2"/> structure to a <see cref="Size2D"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Size2D(Point2 point)
+        {
+            return new Size2D(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Point2"/> structure to a <see cref="Point2F"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static implicit operator Point2F(Point2 point)
+        {
+            return new Point2F(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Point2"/> structure to a <see cref="Point2D"/> structure.
+        /// </summary>
+        /// <param name="point">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static implicit operator Point2D(Point2 point)
+        {
+            return new Point2D(point.X, point.Y);
+        }
+
+        /// <summary>
         /// Converts the string representation of a point into an instance of the <see cref="Point2"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>

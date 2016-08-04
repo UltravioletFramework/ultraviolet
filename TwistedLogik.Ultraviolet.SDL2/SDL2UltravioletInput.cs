@@ -1,9 +1,9 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.SDL2.Native;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.SDL2.Input;
+using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.SDL2
 {
@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
             this.gamePadInfo.Update(time);
             this.touchInfo.Update(time);
 
-            OnUpdating(time);
+            Updating?.Invoke(this, time);
         }
 
         /// <inheritdoc/>
@@ -119,6 +119,14 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public Boolean IsKeyboardRegistered()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return keyboard.IsRegistered;
+        }
+
+        /// <inheritdoc/>
         public KeyboardDevice GetKeyboard()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -132,6 +140,14 @@ namespace TwistedLogik.Ultraviolet.SDL2
             Contract.EnsureNotDisposed(this, Disposed);
 
             return true;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsMouseRegistered()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return mouse.IsRegistered;
         }
 
         /// <inheritdoc/>
@@ -159,11 +175,43 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
-        public Boolean IsGamePadConnected(Int32 playerIndex)
+        public Boolean IsGamePadConnected()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            return gamePadInfo.Count > 0;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsGamePadConnected(Int32 playerIndex)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(playerIndex >= 0, nameof(playerIndex));
+
             return gamePadInfo.GetGamePadForPlayer(playerIndex) != null;
+        }
+        
+        /// <inheritdoc/>
+        public Boolean IsGamePadRegistered()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            for (int i = 0; i < gamePadInfo.Count; i++)
+            {
+                if (gamePadInfo.GetGamePadForPlayer(i)?.IsRegistered ?? false)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsGamePadRegistered(Int32 playerIndex)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(playerIndex >= 0, nameof(playerIndex));
+
+            return gamePadInfo.GetGamePadForPlayer(playerIndex)?.IsRegistered ?? false;
         }
 
         /// <inheritdoc/>
@@ -183,6 +231,22 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public GamePadDevice GetFirstRegisteredGamePad()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return gamePadInfo.GetFirstRegisteredGamePad();
+        }
+
+        /// <inheritdoc/>
+        public GamePadDevice GetPrimaryGamePad()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return primaryGamePad;
+        }
+
+        /// <inheritdoc/>
         public Boolean IsTouchSupported()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -195,33 +259,79 @@ namespace TwistedLogik.Ultraviolet.SDL2
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return touch != null;
+            return touchInfo.Count > 0;
         }
 
         /// <inheritdoc/>
-        public Boolean IsTouchDeviceAvailable(Int32 index)
+        public Boolean IsTouchDeviceConnected(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(index >= 0, nameof(index));
 
-            return GetTouchDeviceByIndex(index) != null;
+            return touchInfo.Count > index;
         }
 
         /// <inheritdoc/>
-        public TouchDevice GetTouchDevice()
+        public Boolean IsTouchDeviceRegistered()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return touch;
+            for (int i = 0; i < touchInfo.Count; i++)
+            {
+                if (touchInfo.GetTouchDeviceByIndex(i).IsRegistered)
+                    return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc/>
-        public TouchDevice GetTouchDeviceByIndex(Int32 index)
+        public Boolean IsTouchDeviceRegistered(Int32 index)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(index >= 0, nameof(index));
+
+            return touchInfo.GetTouchDeviceByIndex(index).IsRegistered;
+        }
+        
+        /// <inheritdoc/>
+        public TouchDevice GetTouchDevice(Int32 index)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(index >= 0, nameof(index));
 
             return index >= touchInfo.Count ? null : touchInfo.GetTouchDeviceByIndex(index);
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetFirstConnectedTouchDevice()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return touchInfo.Count > 0 ? touchInfo.GetTouchDeviceByIndex(0) : null;
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetFirstRegisteredTouchDevice()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            for (int i = 0; i < touchInfo.Count; i++)
+            {
+                var device = touchInfo.GetTouchDeviceByIndex(i);
+                if (device.IsRegistered)
+                    return device;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public TouchDevice GetPrimaryTouchDevice()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return primaryTouchDevice;
         }
 
         /// <inheritdoc/>
@@ -242,7 +352,24 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
+        public Boolean IsMouseCursorAvailable
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return mouse.IsRegistered || (EmulateMouseWithTouchInput && IsTouchDeviceRegistered());
+            }
+        }
+
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
+
+        /// <inheritdoc/>
+        public event KeyboardRegistrationEventHandler KeyboardRegistered;
+
+        /// <inheritdoc/>
+        public event MouseRegistrationEventHandler MouseRegistered;
 
         /// <inheritdoc/>
         public event GamePadConnectionEventHandler GamePadConnected;
@@ -251,22 +378,70 @@ namespace TwistedLogik.Ultraviolet.SDL2
         public event GamePadConnectionEventHandler GamePadDisconnected;
 
         /// <inheritdoc/>
-        public event TouchDeviceConnectionEventHandler TouchDeviceConnected;
+        public event GamePadRegistrationEventHandler GamePadRegistered;
+
+        /// <inheritdoc/>
+        public event TouchDeviceRegistrationEventHandler TouchDeviceRegistered;
 
         /// <summary>
-        /// Registers the specified touch device as the primary device, if no primary device
-        /// has already been registered.
+        /// Registers the specified device as having received user input.
         /// </summary>
-        /// <param name="device">The device to register as primary.</param>
-        /// <returns><see langword="true"/> if the device became the primary device; otherwise, <see langword="false"/>.</returns>
-        internal Boolean RegisterTouchDevice(SDL2TouchDevice device)
+        /// <param name="device">The device to register.</param>
+        /// <returns><see langword="true"/> if the device was registered; otherwise, <see langword="false"/>.</returns>
+        internal Boolean RegisterKeyboardDevice(SDL2KeyboardDevice device)
         {
-            if (touch != null)
+            if (device.IsRegistered)
                 return false;
 
-            touch = device;
-            OnTouchDeviceConnected(device);
+            KeyboardRegistered?.Invoke(device);
+            return true;
+        }
 
+        /// <summary>
+        /// Registers the specified device as having received user input.
+        /// </summary>
+        /// <param name="device">The device to register.</param>
+        /// <returns><see langword="true"/> if the device was registered; otherwise, <see langword="false"/>.</returns>
+        internal Boolean RegisterMouseDevice(SDL2MouseDevice device)
+        {
+            if (device.IsRegistered)
+                return false;
+
+            MouseRegistered?.Invoke(device);            
+            return true;
+        }
+
+        /// <summary>
+        /// Registers the specified device as having received user input.
+        /// </summary>
+        /// <param name="device">The device to register.</param>
+        /// <returns><see langword="true"/> if the device was registered; otherwise, <see langword="false"/>.</returns>
+        internal Boolean RegisterGamePadDevice(SDL2GamePadDevice device)
+        {
+            if (primaryGamePad == null)
+                primaryGamePad = device;
+
+            if (device.IsRegistered)
+                return false;
+
+            GamePadRegistered?.Invoke(device, device.PlayerIndex);
+            return true;
+        }
+
+        /// <summary>
+        /// Registers the specified device as having received user input.
+        /// </summary>
+        /// <param name="device">The device to register.</param>
+        /// <returns><see langword="true"/> if the device was registered; otherwise, <see langword="false"/>.</returns>
+        internal Boolean RegisterTouchDevice(SDL2TouchDevice device)
+        {
+            if (primaryTouchDevice == null)
+                primaryTouchDevice = device;
+
+            if (device.IsRegistered)
+                return false;
+
+            TouchDeviceRegistered?.Invoke(device);
             return true;
         }
 
@@ -289,46 +464,41 @@ namespace TwistedLogik.Ultraviolet.SDL2
 
             base.Dispose(disposing);
         }
-
-        /// <summary>
-        /// Raises the Updating event.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
-        private void OnUpdating(UltravioletTime time) =>
-            Updating?.Invoke(this, time);
-
+                
         /// <summary>
         /// Raises the <see cref="GamePadConnected"/> event.
         /// </summary>
         /// <param name="device">The device that was connected.</param>
         /// <param name="playerIndex">The player index associated with the game pad.</param>
-        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex) =>
+        private void OnGamePadConnected(GamePadDevice device, Int32 playerIndex)
+        {
             GamePadConnected?.Invoke(device, playerIndex);
+        }
 
         /// <summary>
         /// Raises the <see cref="GamePadDisconnected"/> event.
         /// </summary>
         /// <param name="device">The device that was disconnected.</param>
         /// <param name="playerIndex">The player index associated with the game pad.</param>
-        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex) =>
+        private void OnGamePadDisconnected(GamePadDevice device, Int32 playerIndex)
+        {
+            if (primaryGamePad == device)
+                primaryGamePad = null;
+
             GamePadDisconnected?.Invoke(device, playerIndex);
-
-        /// <summary>
-        /// Raises the <see cref="TouchDeviceConnected"/> event.
-        /// </summary>
-        private void OnTouchDeviceConnected(TouchDevice device) =>
-            TouchDeviceConnected?.Invoke(device);
-
+        }
+        
         // Platform services.
         private readonly SoftwareKeyboardService softwareKeyboardService;
 
         // Input devices.
         private SDL2KeyboardDevice keyboard;
         private SDL2MouseDevice mouse;
-        private SDL2TouchDevice touch;
         private GamePadDeviceInfo gamePadInfo;
+        private SDL2GamePadDevice primaryGamePad;
         private TouchDeviceInfo touchInfo;
-
+        private SDL2TouchDevice primaryTouchDevice;
+        
         // Property values.
         private Boolean emulateMouseWithTouchInput = true;
     }

@@ -75,6 +75,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Compiler (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Compiler (Desktop).csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet", "TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.projitems*{f95ff829-661d-4809-8150-145114b787aa}*SharedItemsImports = 13
@@ -95,6 +97,7 @@ Global
 		TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.projitems*{ca57b4bc-a395-4c1c-a4cf-6286fa7b9c80}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
+		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{f071abe3-05e5-4df9-a929-cf71b01ec50a}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{50aefa93-fe53-414a-89fc-c061c165c673}*SharedItemsImports = 4

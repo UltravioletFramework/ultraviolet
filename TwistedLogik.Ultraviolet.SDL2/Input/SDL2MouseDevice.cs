@@ -38,19 +38,49 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 switch (evt.type)
                 {
                     case SDL_EventType.MOUSEMOTION:
-                        OnMouseMotion(ref evt.motion);
+                        {
+                            // HACK: On iOS, for some goddamn reason, SDL2 sends us a spurious motion event
+                            // with mouse ID 0 when you first touch the screen. This only seems to happen once
+                            // so let's just ignore it.
+                            if (!ignoredFirstMouseMotionEvent)
+                            {
+                                ignoredFirstMouseMotionEvent = true;
+                            }
+                            else
+                            {
+                                if (!isRegistered && evt.motion.which != SDL_TOUCH_MOUSEID)
+                                    Register();
+
+                                OnMouseMotion(ref evt.motion);
+                            }
+                        }
                         break;
 
                     case SDL_EventType.MOUSEBUTTONDOWN:
-                        OnMouseButtonDown(ref evt.button);
+                        {
+                            if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
+                                Register();
+
+                            OnMouseButtonDown(ref evt.button);
+                        }
                         break;
 
                     case SDL_EventType.MOUSEBUTTONUP:
-                        OnMouseButtonUp(ref evt.button);
+                        {
+                            if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
+                                Register();
+
+                            OnMouseButtonUp(ref evt.button);
+                        }
                         break;
 
                     case SDL_EventType.MOUSEWHEEL:
-                        OnMouseWheel(ref evt.wheel);
+                        {
+                            if (!isRegistered && evt.wheel.which != SDL_TOUCH_MOUSEID)
+                                Register();
+
+                            OnMouseWheel(ref evt.wheel);
+                        }
                         break;
                 }
             }
@@ -205,6 +235,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override Boolean IsRegistered => isRegistered;
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -336,8 +369,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
             this.states[(int)button].OnUp();
             
-            OnButtonReleased(window, button);
-
             if (evt.clicks == 1)
             {
                 buttonStateClicks |= (uint)SDL_BUTTON(evt.button);
@@ -349,6 +380,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 buttonStateDoubleClicks |= (uint)SDL_BUTTON(evt.button);
                 OnDoubleClick(window, button);
             }
+
+            OnButtonReleased(window, button);
         }
 
         /// <summary>
@@ -365,6 +398,16 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             OnWheelScrolled(window, evt.x, evt.y);
         }
 
+        /// <summary>
+        /// Flags the device as registered.
+        /// </summary>
+        private void Register()
+        {
+            var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
+            if (input.RegisterMouseDevice(this))
+                isRegistered = true;
+        }
+
         // The device identifier of the touch-based mouse emulator.
         private const UInt32 SDL_TOUCH_MOUSEID = unchecked((UInt32)(-1));
 
@@ -373,11 +416,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Int32 y;
         private Int32 wheelDeltaX;
         private Int32 wheelDeltaY;
+        private Boolean isRegistered;
         private IUltravioletWindow window;
 
         // State values.
         private InternalButtonState[] states;
         private UInt32 buttonStateClicks;
         private UInt32 buttonStateDoubleClicks;
+        private Boolean ignoredFirstMouseMotionEvent;
     }
 }

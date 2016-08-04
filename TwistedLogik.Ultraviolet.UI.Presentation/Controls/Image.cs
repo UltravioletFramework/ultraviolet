@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         protected void ReloadSource()
         {
-            LoadImage(Source);
+            LoadResource(Source);
         }
 
         /// <summary>

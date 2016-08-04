@@ -34,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
 
             var position = (Vector2)element.View.Display.DipsToPixels(target.VisualBounds.Location);
             var positionRounded = new Vector2((Int32)position.X, (Int32)position.Y);
-            dc.Draw(target.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.RawDraw(target.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
 
             dc.End();
             dc.Begin(state);

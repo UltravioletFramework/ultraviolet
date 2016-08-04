@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
@@ -20,11 +21,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         static RoutedEventInvocation()
         {
 #if CODE_GEN_ENABLED
-            miShouldEventBeRaisedForElement = typeof(RoutedEventInvocation).GetMethod("ShouldEventBeRaisedForElement", BindingFlags.NonPublic | BindingFlags.Static);
-            miShouldContinueBubbling = typeof(RoutedEventInvocation).GetMethod("ShouldContinueBubbling", BindingFlags.NonPublic | BindingFlags.Static);
-            miShouldContinueTunnelling = typeof(RoutedEventInvocation).GetMethod("ShouldContinueTunnelling", BindingFlags.NonPublic | BindingFlags.Static);
-            miGetEventHandler = typeof(RoutedEventInvocation).GetMethod("GetEventHandler", BindingFlags.NonPublic | BindingFlags.Static);
-            miRaiseRaisedNotification = typeof(RoutedEvent).GetMethod("RaiseRaisedNotification", BindingFlags.NonPublic | BindingFlags.Instance);
+            miShouldEventBeRaisedForElement = typeof(RoutedEventInvocation).GetMethod(
+                nameof(ShouldEventBeRaisedForElement), BindingFlags.NonPublic | BindingFlags.Static);
+            miShouldContinueBubbling = typeof(RoutedEventInvocation).GetMethod(
+                nameof(ShouldContinueBubbling), BindingFlags.NonPublic | BindingFlags.Static);
+            miShouldContinueTunnelling = typeof(RoutedEventInvocation).GetMethod(
+                nameof(ShouldContinueTunnelling), BindingFlags.NonPublic | BindingFlags.Static);
+            miReleaseTunnellingStack = typeof(RoutedEventInvocation).GetMethod(
+                nameof(ReleaseTunnellingStack), BindingFlags.NonPublic | BindingFlags.Static);
+            miGetEventHandler = typeof(RoutedEventInvocation).GetMethod(
+                nameof(GetEventHandler), BindingFlags.NonPublic | BindingFlags.Static);
+            miRaiseRaisedNotification = typeof(RoutedEvent).GetMethod(
+                nameof(RoutedEvent.RaiseRaisedNotification), BindingFlags.NonPublic | BindingFlags.Instance);
 #endif
         }
 
@@ -241,8 +249,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *      var index    = 0;
              *      var current  = default(DependencyObject);
              *      var handlers = default(List<RoutedEventHandlerMetadata>);
+             *      var stack    = default(Stack<DependencyObject>);
              *      
-             *      while (ShouldContinueTunnelling(element, ref current))
+             *      while (ShouldContinueTunnelling(element, ref current, ref stack))
              *      {
              *          index = 0;
              *          while (GetEventHandler(current, RoutedEventID, index, out handler))
@@ -255,6 +264,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
              *          
              *          RoutedEventID.RaiseRaisedNotification(current, data);     
              *      }
+             *      
+             *      ReleaseTunnellingStack(stack);
              *      
              *      if (data.AutoRelease)
              *          data.Release();
@@ -281,6 +292,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
             expVars.Add(varCurrent);
 
+            var varStack = Expression.Variable(typeof(Stack<DependencyObject>), "stack");
+            expVars.Add(varStack);
+
             var innerEventHandlerParams = new List<ParameterExpression>();
             innerEventHandlerParams.Add(varCurrent);
             innerEventHandlerParams.AddRange(expParams.Skip(1));
@@ -290,7 +304,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var expWhileTunnel = Expression.Loop(
                 Expression.IfThenElse(
-                    Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent),
+                    Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent, varStack),
                     Expression.Block(
                         Expression.Assign(varIndex, Expression.Constant(0)),
                         Expression.Loop(
@@ -311,6 +325,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 expWhileTunnelBreakOuter
             );
             expParts.Add(expWhileTunnel);
+
+            expParts.Add(Expression.Call(miReleaseTunnellingStack, varStack));
 
             expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
                 Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
@@ -408,8 +424,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var element = (DependencyObject)parameters[0];
             var current = default(DependencyObject);
             var data = (RoutedEventData)parameters[parameters.Length - 1];
+            var stack = default(Stack<DependencyObject>);
 
-            while (ShouldContinueTunnelling(element, ref current))
+            while (ShouldContinueTunnelling(element, ref current, ref stack))
             {
                 index = 0;
                 while (GetEventHandler(current, evt, ref index, ref handler))
@@ -423,6 +440,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 evt.RaiseRaisedNotification(current, data);
             }
+            
+            ReleaseTunnellingStack(stack);
 
             if (data.AutoRelease)
                 data.Release();
@@ -500,15 +519,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="first">The first element to process.</param>
         /// <param name="current">The element that is currently being processed.</param>
+        /// <param name="stack">The tunnelling stack for this invocation.</param>
         /// <returns><see langword="true"/> if the event should continue tunnelling; otherwise, <see langword="false"/>.</returns>
-        private static Boolean ShouldContinueTunnelling(DependencyObject first, ref DependencyObject current)
+        private static Boolean ShouldContinueTunnelling(DependencyObject first, ref DependencyObject current, ref Stack<DependencyObject> stack)
         {
             if (current == null)
-                PrepareTunnellingStack(first);
+                PrepareTunnellingStack(first, ref stack);
 
-            if (tunnellingStack.Count > 0)
+            if (stack.Count > 0)
             {
-                var next = tunnellingStack.Pop();
+                var next = stack.Pop();
                 current = next;
                 return true;
             }
@@ -519,17 +539,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Prepares the tunnelling stack to process a tunnelled event.
         /// </summary>
         /// <param name="element">The element which raised the event.</param>
-        private static void PrepareTunnellingStack(DependencyObject element)
+        /// <param name="stack">The stack which was prepared.</param>
+        private static void PrepareTunnellingStack(DependencyObject element, ref Stack<DependencyObject> stack)
         {
-            if (tunnellingStack == null)
-                tunnellingStack = new Stack<DependencyObject>();
-
-            tunnellingStack.Clear();
-
+            if (stack == null)
+                stack = tunnellingStackPool.Retrieve();
+            
             for (var current = element; current != null; current = current.DependencyContainer)
             {
-                tunnellingStack.Push(current);
+                stack.Push(current);
             }
+        }
+
+        /// <summary>
+        /// Releases the specified tunnelling stack back into the internal pool.
+        /// </summary>
+        /// <param name="stack">The stack to release.</param>
+        private static void ReleaseTunnellingStack(Stack<DependencyObject> stack)
+        {
+            if (stack == null)
+                return;
+
+            tunnellingStackPool.Release(stack);
         }
 
         /// <summary>
@@ -589,12 +620,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static readonly MethodInfo miShouldEventBeRaisedForElement;
         private static readonly MethodInfo miShouldContinueBubbling;
         private static readonly MethodInfo miShouldContinueTunnelling;
+        private static readonly MethodInfo miReleaseTunnellingStack;
         private static readonly MethodInfo miGetEventHandler;
         private static readonly MethodInfo miRaiseRaisedNotification;
 #endif
 
         // The stack used to track the tunnelling path for tunnelled events.
-        [ThreadStatic]
-        private static Stack<DependencyObject> tunnellingStack;
+        private static readonly IPool<Stack<DependencyObject>> tunnellingStackPool =
+            new ExpandingPool<Stack<DependencyObject>>(1, () => new Stack<DependencyObject>(), item => item.Clear());
     }
 }

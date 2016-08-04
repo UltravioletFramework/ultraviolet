@@ -66,6 +66,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PasswordBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\PasswordEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ProgressBarFill.cs" />
@@ -149,6 +150,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\UIElementCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\VSlider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\WrapPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.Mouse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTracker.Touch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorTrackerTouchCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingGetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingSetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceExpressionBuilder.cs" />
@@ -193,12 +198,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDependencyPropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IIndexable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IInputElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IInputElementExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CaptureMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CursorQueryData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\FocusNavigationDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePad.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\Generic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\IInputElementHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Keyboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Keyboard.KeyboardState.cs" />
@@ -211,7 +216,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButtonState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Touch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Input\Touch.TouchState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletDisplayExtensions.cs" />
@@ -284,6 +288,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourcedTextIconDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedTextStyleDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextWrapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TouchesCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TouchesCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIElementInstanceFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPool.IPooledObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpfPoolList.cs" />

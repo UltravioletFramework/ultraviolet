@@ -68,7 +68,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             effect.Value.Direction = BlurDirection.Horizontal;
 
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
-            dc.Draw(target.ColorBuffer, Vector2.Zero, Color.White);
+            dc.RawDraw(target.ColorBuffer, Vector2.Zero, Color.White);
             dc.End();
         }
 
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
 
             var shadowTexture = target.Next.ColorBuffer;
-            dc.Draw(shadowTexture, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.RawDraw(shadowTexture, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             
             dc.End();
             dc.Begin(state);

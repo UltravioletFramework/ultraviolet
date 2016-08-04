@@ -1,7 +1,5 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -85,74 +83,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
         {
-            UpdateRepetitions(time);
+            if (IsPressed && AreAnyCursorsOver)
+            {
+                repeatTimer += time.ElapsedTime.TotalMilliseconds;
+                if (repeating)
+                {
+                    var interval = Interval;
+                    if (repeatTimer >= interval)
+                    {
+                        repeatTimer %= interval;
+                        OnClick();
+                        OnClickByUser();
+                    }
+                }
+                else
+                {
+                    var delay = Delay;
+                    if (repeatTimer >= delay)
+                    {
+                        repeatTimer %= delay;
+                        repeating = true;
+                        OnClick();
+                        OnClickByUser();
+                    }
+                }
+            }
 
             base.OnUpdating(time);
         }
-
-        /// <inheritdoc/>
-        protected override void OnLostMouseCapture(RoutedEventData data)
-        {
-            repeating   = false;
-            repeatTimer = 0;
-
-            base.OnLostMouseCapture(data);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
-        {
-            if (button == MouseButton.Left)
-            {
-                repeating   = false;
-                repeatTimer = 0;
-
-                data.Handled = true;
-            }
-            base.OnMouseDown(device, button, data);
-        }
         
-        /// <summary>
-        /// Updates the button's repetition state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Draw(UltravioletTime)"/>.</param>
-        private void UpdateRepetitions(UltravioletTime time)
+        /// <inheritdoc/>
+        protected override void OnIsPressedChanged()
         {
-            if (!IsPressed)
-                return;
-
-            var input = Ultraviolet.GetInput();
-            if (input.IsMouseSupported())
+            if (IsPressed)
             {
-                var position = Mouse.GetPosition(this);
-                if (!Bounds.Contains(position))
-                {
-                    return;
-                }
+                repeating = false;
+                repeatTimer = 0;
             }
-
-            repeatTimer += time.ElapsedTime.TotalMilliseconds;
-            if (repeating)
-            {
-                var interval = Interval;
-                if (repeatTimer >= interval)
-                {
-                    repeatTimer %= interval;
-                    OnClick();
-                    OnClickByUser();
-                }
-            }
-            else
-            {
-                var delay = Delay;
-                if (repeatTimer >= delay)
-                {
-                    repeatTimer %= delay;
-                    repeating = true;
-                    OnClick();
-                    OnClickByUser();
-                }
-            }
+            base.OnIsPressedChanged();
         }
 
         // State values.

@@ -52,19 +52,39 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 switch (evt.type)
                 {
                     case SDL_EventType.KEYDOWN:
-                        OnKeyDown(ref evt.key);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnKeyDown(ref evt.key);
+                        }
                         break;
 
                     case SDL_EventType.KEYUP:
-                        OnKeyUp(ref evt.key);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnKeyUp(ref evt.key);
+                        }
                         break;
 
                     case SDL_EventType.TEXTEDITING:
-                        OnTextEditing(ref evt.edit);
+                        {
+                            if (!isRegistered)
+                                Register();
+
+                            OnTextEditing(ref evt.edit);
+                        }
                         break;
 
                     case SDL_EventType.TEXTINPUT:
-                        OnTextInput(ref evt.text);
+                        {
+                            if (isRegistered)
+                                Register();
+
+                            OnTextInput(ref evt.text);
+                        }
                         break;
                 }
             }
@@ -206,6 +226,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override Boolean IsRegistered => isRegistered;
+
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -321,9 +344,20 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             return true;
         }
 
+        /// <summary>
+        /// Flags the device as registered.
+        /// </summary>
+        private void Register()
+        {
+            var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
+            if (input.RegisterKeyboardDevice(this))
+                isRegistered = true;
+        }
+
         // State values.
         private readonly InternalButtonState[] states;
         private readonly Char[] textUtf16 = new Char[32];
         private Int32 textInputLength;
+        private Boolean isRegistered;
     }
 }

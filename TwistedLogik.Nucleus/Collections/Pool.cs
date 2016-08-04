@@ -10,7 +10,7 @@ namespace TwistedLogik.Nucleus.Collections
     /// Represents the base class for pools.
     /// </summary>
     /// <typeparam name="T">The type of item contained by the pool.</typeparam>
-    public abstract class Pool<T> : IPool<T>, IPool
+    public abstract class Pool<T> : IPool<T>, IPool, IDisposable
     {
         /// <inheritdoc/>
         public void Dispose()

@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             effect.Value.Direction = BlurDirection.Horizontal;
 
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
-            dc.Draw(target.ColorBuffer, Vector2.Zero, Color);
+            dc.RawDraw(target.ColorBuffer, Vector2.Zero, Color);
             dc.End();
 
             // Draw the vertical blur pass
@@ -143,12 +143,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             effect.Value.Direction = BlurDirection.Vertical;
 
             dc.Begin(SpriteSortMode.Immediate, effect, Matrix.Identity);
-            dc.Draw(pass1Target.ColorBuffer, shadowVector, null, Color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.RawDraw(pass1Target.ColorBuffer, shadowVector, null, Color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             dc.End();
 
             // Draw the element on top of the shadow
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
-            dc.Draw(target.ColorBuffer, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            dc.RawDraw(target.ColorBuffer, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             dc.End();
         }
 
@@ -163,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             dc.End();
 
             dc.Begin(SpriteSortMode.Immediate, null, Matrix.Identity);
-            dc.Draw(target.Next.Next.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);            
+            dc.RawDraw(target.Next.Next.ColorBuffer, positionRounded, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);            
             dc.End();
 
             dc.Begin(state);

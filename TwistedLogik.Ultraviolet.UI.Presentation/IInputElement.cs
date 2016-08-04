@@ -69,6 +69,76 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         Boolean IsMouseDirectlyOver { get; }
 
         /// <summary>
+        /// Gets a value indicating whether at least one touch is captured by this element.
+        /// </summary>
+        Boolean AreAnyTouchesCaptured { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one touch is captured by this element or any of its descendants.
+        /// </summary>
+        Boolean AreAnyTouchesCapturedWithin { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether new touches are captured by this element.
+        /// </summary>
+        Boolean AreNewTouchesCaptured { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether new touches are captured by this element or any of its descendants.
+        /// </summary>
+        Boolean AreNewTouchesCapturedWithin { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one touch is over this element or any of its descendants.
+        /// </summary>
+        Boolean AreAnyTouchesOver { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one touch is directly over this element.
+        /// </summary>
+        Boolean AreAnyTouchesDirectlyOver { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is captured by this element.
+        /// </summary>
+        Boolean AreAnyCursorsCaptured { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is captured by this element or any of its descendants.
+        /// </summary>
+        Boolean AreAnyCursorsCapturedWithin { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is over this element or any of its descendants.
+        /// </summary>
+        Boolean AreAnyCursorsOver { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether at least one cursor (mouse or touch) is directly over this element.
+        /// </summary>
+        Boolean AreAnyCursorsDirectlyOver { get; }
+
+        /// <summary>
+        /// Gets a collection of touches which are captured by this element.
+        /// </summary>
+        TouchesCollection TouchesCaptured { get; }
+
+        /// <summary>
+        /// Gets a collection of touches which are captured by this element or any of its descendants.
+        /// </summary>
+        TouchesCollection TouchesCapturedWithin { get; }
+
+        /// <summary>
+        /// Gets a collection of touches which are over this element or any of its descendants.
+        /// </summary>
+        TouchesCollection TouchesOver { get; }
+
+        /// <summary>
+        /// Gets a collection of touches which are directly over this element.
+        /// </summary>
+        TouchesCollection TouchesDirectlyOver { get; }
+
+        /// <summary>
         /// Occurs when the element gains keyboard focus.
         /// </summary>
         event UpfRoutedEventHandler PreviewGotKeyboardFocus;
@@ -131,7 +201,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Occurs when the element gains mouse capture.
         /// </summary>
-        event UpfMouseEventHandler GotMouseCapture;
+        event UpfRoutedEventHandler GotMouseCapture;
 
         /// <summary>
         /// Occurs when the element loses mouse capture.
@@ -169,6 +239,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         event UpfMouseWheelEventHandler PreviewMouseWheel;
 
         /// <summary>
+        /// Occurs when the mouse cursor enters the element.
+        /// </summary>
+        event UpfMouseEventHandler MouseEnter;
+
+        /// <summary>
+        /// Occurs when the mouse cursor leaves the element.
+        /// </summary>
+        event UpfMouseEventHandler MouseLeave;
+
+        /// <summary>
         /// Occurs when the mouse cursor moves over the element.
         /// </summary>
         event UpfMouseMoveEventHandler MouseMove;
@@ -197,46 +277,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Occurs when the mouse wheel is scrolled while the cursor is over the element.
         /// </summary>
         event UpfMouseWheelEventHandler MouseWheel;
-
-        /// <summary>
-        /// Occurs when the element is tapped via a touch device.
-        /// </summary>
-        event UpfTouchTapEventHandler PreviewTap;
-
-        /// <summary>
-        /// Occurs when a finger is pressed against the element via a touch device.
-        /// </summary>
-        event UpfTouchEventHandler PreviewFingerDown;
-
-        /// <summary>
-        /// Occurs when a finger is removed from the element via a touch device.
-        /// </summary>
-        event UpfTouchEventHandler PreviewFingerUp;
-
-        /// <summary>
-        /// Occurs when a finger moves across the element via a touch device.
-        /// </summary>
-        event UpfTouchMotionEventHandler PreviewFingerMotion;
-
-        /// <summary>
-        /// Occurs when the element is tapped via a touch device.
-        /// </summary>
-        event UpfTouchTapEventHandler Tap;
-
-        /// <summary>
-        /// Occurs when a finger is pressed against the element via a touch device.
-        /// </summary>
-        event UpfTouchEventHandler FingerDown;
-
-        /// <summary>
-        /// Occurs when a finger is removed from the element via a touch device.
-        /// </summary>
-        event UpfTouchEventHandler FingerUp;
-
-        /// <summary>
-        /// Occurs when a finger moves across the element via a touch device.
-        /// </summary>
-        event UpfTouchMotionEventHandler FingerMotion;
 
         /// <summary>
         /// Occurs when a game pad axis changes value while the element has focus.
@@ -279,15 +319,93 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         event UpfGamePadButtonUpEventHandler GamePadButtonUp;
 
         /// <summary>
-        /// Occurs when the element is tapped (if a touch device is connected) or the primary 
-        /// mouse button is pressed (if not).
+        /// Occurs when the element gains touch capture.
         /// </summary>
-        event UpfGenericInteractionEventHandler PreviewGenericInteraction;
+        event UpfTouchEventHandler GotTouchCapture;
 
         /// <summary>
-        /// Occurs when the element is tapped (if a touch device is connected) or the primary 
-        /// mouse button is pressed (if not).
+        /// Occurs when the element gains new touch capture.
         /// </summary>
-        event UpfGenericInteractionEventHandler GenericInteraction;
+        event UpfTouchEventHandler GotNewTouchCapture;
+
+        /// <summary>
+        /// Occurs when the element loses touch capture.
+        /// </summary>
+        event UpfTouchEventHandler LostTouchCapture;
+
+        /// <summary>
+        /// Occurs when the element loses new touch capture.
+        /// </summary>
+        event UpfTouchEventHandler LostNewTouchCapture;
+
+        /// <summary>
+        /// Occurs when a touch moves over the element.
+        /// </summary>
+        event UpfTouchMoveEventHandler PreviewTouchMove;
+
+        /// <summary>
+        /// Occurs when a touch begins over the element.
+        /// </summary>
+        event UpfTouchDownEventHandler PreviewTouchDown;
+
+        /// <summary>
+        /// Occurs when a touch ends over the element.
+        /// </summary>
+        event UpfTouchUpEventHandler PreviewTouchUp;
+
+        /// <summary>
+        /// Occurs when the element is tapped.
+        /// </summary>
+        event UpfTouchTapEventHandler PreviewTouchTap;
+
+        /// <summary>
+        /// Occurs when the element is long pressed.
+        /// </summary>
+        event UpfTouchLongPressEventHandler PreviewTouchLongPress;
+
+        /// <summary>
+        /// Occurs when a multiple-finger gesture is performed over the element.
+        /// </summary>
+        event UpfMultiGestureEventHandler PreviewMultiGesture;
+
+        /// <summary>
+        /// Occurs when a touch enters the element.
+        /// </summary>
+        event UpfTouchEventHandler TouchEnter;
+
+        /// <summary>
+        /// Occurs when a touch leaves the element.
+        /// </summary>
+        event UpfTouchEventHandler TouchLeave;
+
+        /// <summary>
+        /// Occurs when a touch moves over the element.
+        /// </summary>
+        event UpfTouchMoveEventHandler TouchMove;
+
+        /// <summary>
+        /// Occurs when a touch begins over the element.
+        /// </summary>
+        event UpfTouchDownEventHandler TouchDown;
+
+        /// <summary>
+        /// Occurs when a touch ends over the element.
+        /// </summary>
+        event UpfTouchUpEventHandler TouchUp;
+
+        /// <summary>
+        /// Occurs when the element is tapped.
+        /// </summary>
+        event UpfTouchTapEventHandler TouchTap;
+
+        /// <summary>
+        /// Occurs when the element is long pressed.
+        /// </summary>
+        event UpfTouchLongPressEventHandler TouchLongPress;
+
+        /// <summary>
+        /// Occurs when a multiple-finger gesture is performed over the element.
+        /// </summary>
+        event UpfMultiGestureEventHandler MultiGesture;
     }
 }

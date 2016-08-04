@@ -269,66 +269,131 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="PasswordChanged"/> routed event.</value>
         public static readonly RoutedEvent PasswordChangedEvent = EventManager.RegisterRoutedEvent("PasswordChanged",
             RoutingStrategy.Bubble, typeof(UpfRoutedEventHandler), typeof(PasswordBox));
-
+        
         /// <inheritdoc/>
-        protected override void OnGenericInteraction(UltravioletResource device, RoutedEventData data)
+        protected override void OnQueryCursor(MouseDevice device, CursorQueryRoutedEventData data)
         {
-            UpdateTextInputRegion();
-            Ultraviolet.GetInput().ShowSoftwareKeyboard(KeyboardMode.Text);
-
-            data.Handled = true;
-
-            base.OnGenericInteraction(device, data);
+            if (IsMouseCaptured && IsMouseWithinEditor())
+            {
+                data.Cursor = PART_Editor?.Cursor.Resource.Cursor ?? data.Cursor;
+                data.Handled = true;
+            }
+            base.OnQueryCursor(device, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
+        protected override void OnPreviewMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
-            {
                 Focus();
-                CaptureMouse();
-            }
 
             if (PART_Editor != null && IsMouseWithinEditor())
+            {
+                CaptureMouse();
                 PART_Editor.HandleMouseDown(device, button, data);
+                data.Handled = true;
+            }
 
-            data.Handled = true;
-            base.OnMouseDown(device, button, data);
+            base.OnPreviewMouseDown(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
+        protected override void OnPreviewMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
-            {
                 ReleaseMouseCapture();
+
+            if (PART_Editor != null && IsMouseWithinEditor())
+            {
+                PART_Editor.HandleMouseUp(device, button, data);
+                data.Handled = true;
             }
 
-            if (PART_Editor != null && IsMouseWithinEditor())
-                PART_Editor.HandleMouseUp(device, button, data);
-
-            data.Handled = true;
-            base.OnMouseUp(device, button, data);
+            base.OnPreviewMouseUp(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
+        protected override void OnPreviewMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (PART_Editor != null && IsMouseWithinEditor())
+            {
                 PART_Editor.HandleMouseDoubleClick(device, button, data);
+                data.Handled = true;
+            }
 
-            base.OnMouseDoubleClick(device, button, data);
+            base.OnPreviewMouseDoubleClick(device, button, data);
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
+        protected override void OnPreviewMouseMove(MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
         {
             if (PART_Editor != null)
-                PART_Editor.HandleMouseMove(device, data);
+            {
+                var capture = Mouse.GetCaptured(View);
+                if (capture == null || capture == this)
+                {
+                    PART_Editor.HandleMouseMove(device, data);
+                    data.Handled = true;
+                }
+            }
 
-            data.Handled = true;
-            base.OnMouseMove(device, x, y, dx, dy, data);
+            base.OnPreviewMouseMove(device, x, y, dx, dy, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchDown(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (!Ultraviolet.GetInput().IsMouseCursorAvailable && device.IsFirstTouchInGesture(id))
+                Focus();
+
+            if (PART_Editor != null && IsTouchWithinEditor(id))
+            {
+                CaptureTouch(id);
+                PART_Editor.HandleTouchDown(device, id, x, y, pressure, data);
+                data.Handled = true;
+            }
+
+            base.OnPreviewTouchDown(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchUp(TouchDevice device, Int64 id, RoutedEventData data)
+        {
+            if (PART_Editor != null && IsTouchWithinEditor(id))
+            {
+                PART_Editor.HandleTouchUp(device, id, data);
+                data.Handled = true;
+            }
+
+            base.OnPreviewTouchUp(device, id, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchLongPress(TouchDevice device, Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (PART_Editor != null && IsTouchWithinEditor(id))
+            {
+                PART_Editor.HandleTouchLongPress(device, id, x, y, pressure, data);
+                data.Handled = true;
+            }
+
+            base.OnPreviewTouchLongPress(device, id, x, y, pressure, data);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPreviewTouchMove(TouchDevice device, Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            if (PART_Editor != null)
+            {
+                var capture = Touch.GetCaptured(View, id);
+                if (capture == this || capture == null)
+                {
+                    PART_Editor.HandleTouchMove(device, id, x, y, dx, dy, pressure, data);
+                    data.Handled = true;
+                }
+            }
+
+            base.OnPreviewTouchMove(device, id, x, y, dx, dy, pressure, data);
         }
 
         /// <inheritdoc/>
@@ -416,18 +481,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (passwordBox.PART_Editor != null)
                 passwordBox.PART_Editor.ReplaceTextWithMask(newValue);
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether the mouse is currently inside of the editor.
         /// </summary>
         private Boolean IsMouseWithinEditor()
         {
-            var scrollViewer = (PART_Editor == null) ? null : PART_Editor.Parent as ScrollViewer;
-
-            var mouseTarget = (Control)scrollViewer ?? this;
+            var mouseTarget = (UIElement)PART_Editor ?? this;
             var mouseBounds = mouseTarget.Bounds;
 
             return mouseBounds.Contains(Mouse.GetPosition(mouseTarget));
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified touch is currently inside of the editor.
+        /// </summary>
+        private Boolean IsTouchWithinEditor(Int64 id)
+        {
+            var touchTarget = (UIElement)PART_Editor ?? this;
+            var touchBounds = touchTarget.Bounds;
+
+            return touchBounds.Contains(Touch.GetPosition(id, touchTarget));
         }
 
         /// <summary>

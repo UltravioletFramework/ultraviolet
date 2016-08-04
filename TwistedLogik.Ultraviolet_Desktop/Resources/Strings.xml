@@ -570,4 +570,9 @@
       <Variant>WARNING: The application received an instruction to quit, but this is not valid on iOS. Applications can only be terminated by the operating system or the user.</Variant>
     </en-US>
   </String>
+  <String Key="TOUCH_DEVICE_NOT_BOUND_TO_WINDOW">
+    <en-US>
+      <Variant>Coordinates for this device cannot be converted because it is not bound to a window and there is no primary window.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

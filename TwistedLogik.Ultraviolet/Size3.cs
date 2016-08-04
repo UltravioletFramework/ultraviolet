@@ -77,6 +77,111 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Multiplies a <see cref="Size3"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="size">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Size3"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size3 operator *(Size3 size, Int32 multiplier)
+        {
+            return new Size3(size.Width * multiplier, size.Height * multiplier, size.Depth * multiplier);
+        }
+
+        /// <summary>
+        /// Multiplies a <see cref="Size3"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="size">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Size3F"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size3F operator *(Size3 size, Single multiplier)
+        {
+            return new Size3F(size.Width * multiplier, size.Height * multiplier, size.Depth * multiplier);
+        }
+
+        /// <summary>
+        /// Multiplies a <see cref="Size3"/> by a scalar multiplier.
+        /// </summary>
+        /// <param name="size">The size to multiply.</param>
+        /// <param name="multiplier">The multiplier to apply to the size.</param>
+        /// <returns>A <see cref="Size3D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size3D operator *(Size3 size, Double multiplier)
+        {
+            return new Size3D(size.Width * multiplier, size.Height * multiplier, size.Depth * multiplier);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size3"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="size">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Size3"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size3 operator /(Size3 size, Int32 divisor)
+        {
+            return new Size3(size.Width / divisor, size.Height / divisor, size.Depth / divisor);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size3"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="size">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Size3F"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size3F operator /(Size3 size, Single divisor)
+        {
+            return new Size3F(size.Width / divisor, size.Height / divisor, size.Depth / divisor);
+        }
+
+        /// <summary>
+        /// Divides a <see cref="Size3"/> by a scalar divisor.
+        /// </summary>
+        /// <param name="size">The size to divide.</param>
+        /// <param name="divisor">The divisor to apply to the size.</param>
+        /// <returns>A <see cref="Size3D"/> which is the result of the muliplication.</returns>
+        [Preserve]
+        public static Size3D operator /(Size3 size, Double divisor)
+        {
+            return new Size3D(size.Width / divisor, size.Height / divisor, size.Depth / divisor);
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="Size3"/> structure to a <see cref="Vector3"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static explicit operator Vector3(Size3 size)
+        {
+            return new Vector3(size.Width, size.Height, size.Depth);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Size3"/> structure to a <see cref="Size3F"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static implicit operator Size3F(Size3 size)
+        {
+            return new Size3F(size.Width, size.Height, size.Depth);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Size3"/> structure to a <see cref="Size3D"/> structure.
+        /// </summary>
+        /// <param name="size">The structure to convert.</param>
+        /// <returns>The converted structure.</returns>
+        [Preserve]
+        public static implicit operator Size3D(Size3 size)
+        {
+            return new Size3D(size.Width, size.Height, size.Depth);
+        }
+
+        /// <summary>
         /// Converts the string representation of a size into an instance of the <see cref="Size3"/> structure.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>

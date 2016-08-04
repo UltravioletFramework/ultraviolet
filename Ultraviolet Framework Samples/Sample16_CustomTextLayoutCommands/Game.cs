@@ -73,7 +73,7 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
                 this.textBlock.Update(time);
             }
 
-            if (Ultraviolet.GetInput().GetActions().ResetScrollingText.IsPressed() || (Ultraviolet.GetInput().GetTouchDevice()?.WasTapped() ?? false))
+            if (Ultraviolet.GetInput().GetActions().ResetScrollingText.IsPressed() || (Ultraviolet.GetInput().GetPrimaryTouchDevice()?.WasTapped() ?? false))
                 textBlock.Reset();
 
             if (Ultraviolet.GetInput().GetActions().ExitApplication.IsPressed())

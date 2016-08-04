@@ -1010,15 +1010,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (button == MouseButton.Left)
             {
-                BeginTrackingSelectionChanges();
-
-                MoveCaretToMouse();
-
-                selectionPosition = caretPosition;
-                selectionFollowingMouse = true;
-                UpdateSelectionAndCaret();
-
-                EndTrackingSelectionChanges();
+                BeginSelectionWithCursor(0, Mouse.GetPosition(this));
             }
         }
 
@@ -1061,9 +1053,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="data">The routed event metadata for this event.</param>
         internal void HandleMouseMove(MouseDevice device, RoutedEventData data)
         {
-            if (selectionFollowingMouse)
+            if (selectionFollowingCursor && selectionFollowingCursorID == 0)
             {
-                MoveCaretToMouse();
+                MoveCaretToCursor(Mouse.GetPosition(this));
             }
         }
 
@@ -1073,6 +1065,92 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         internal void HandleLostMouseCapture()
         {
             FinishSelection();
+        }
+
+        /// <summary>
+        /// Called when the editor should process a touch beginning over the editor.
+        /// </summary>
+        /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event.</param>
+        internal void HandleTouchDown(TouchDevice device, 
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (Ultraviolet.GetInput().IsMouseCursorAvailable || textLayoutStream.Count == 0)
+                return;
+
+            if (device.IsFirstTouchInGesture(id))
+            {
+                BeginSelectionWithCursor(id, Touch.GetPosition(id, this));
+            }
+        }
+
+        /// <summary>
+        /// Called when the editor should process a touch ending over the editor.
+        /// </summary>
+        /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+        /// <param name="id">The unique identifier of the touch that was released.</param>
+        /// <param name="data">The routed event metadata for this event.</param>
+        internal void HandleTouchUp(TouchDevice device,
+            Int64 id, RoutedEventData data)
+        {
+            if (Ultraviolet.GetInput().IsMouseCursorAvailable || textLayoutStream.Count == 0)
+                return;
+
+            if (device.IsFirstTouchInGesture(id))
+            {
+                FinishSelection();
+            }
+        }
+
+        /// <summary>
+        /// Called when the editor should press a long press on the editor.
+        /// </summary>
+        /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event.</param>
+        internal void HandleTouchLongPress(TouchDevice device,
+            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
+        {
+            if (Ultraviolet.GetInput().IsMouseCursorAvailable)
+                return;
+
+            if (device.IsFirstTouchInGesture(id))
+            {
+                SelectCurrentToken();
+                ScrollToCaret(true, false, false);
+            }
+        }
+
+        /// <summary>
+        /// Called when the editor should process a touch being moved.
+        /// </summary>
+        /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+        /// <param name="id">The unique identifier of the touch.</param>
+        /// <param name="x">The x-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="y">The y-coordinate of the touch in device-independent screen coordinates.</param>
+        /// <param name="dx">The difference between the x-coordinate of the touch's 
+        /// current position and the x-coordinate of the touch's previous position.</param>
+        /// <param name="dy">The difference between the y-coordinate of the touch's 
+        /// current position and the y-coordinate of the touch's previous position.</param>
+        /// <param name="pressure">The normalized pressure of the touch.</param>
+        /// <param name="data">The routed event metadata for this event.</param>
+        internal void HandleTouchMove(TouchDevice device, 
+            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
+        {
+            if (Ultraviolet.GetInput().IsMouseCursorAvailable)
+                return;
+
+            if (selectionFollowingCursor && selectionFollowingCursorID == id)
+            {
+                MoveCaretToCursor(Touch.GetPosition(id, this));
+            }
         }
 
         /// <summary>
@@ -1283,7 +1361,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             base.OnViewChanged(oldView, newView);
         }
-
+        
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
@@ -1407,7 +1485,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadCaretInsertImage()
         {
-            LoadImage(CaretInsertImage);
+            LoadResource(CaretInsertImage);
         }
 
         /// <summary>
@@ -1415,7 +1493,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadCaretOverwriteImage()
         {
-            LoadImage(CaretOverwriteImage);
+            LoadResource(CaretOverwriteImage);
         }
 
         /// <summary>
@@ -1423,7 +1501,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         protected void ReloadSelectionImage()
         {
-            LoadImage(SelectionImage);
+            LoadResource(SelectionImage);
         }
 
         /// <summary>
@@ -1718,7 +1796,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (isReadOnly && !isReadOnlyCaretVisible)
                 return;
 
-            if (selectionFollowingMouse || !owner.IsKeyboardFocusWithin)
+            if (selectionFollowingCursor || !owner.IsKeyboardFocusWithin)
                 return;
 
             caretBlinkTimer = (caretBlinkTimer + time.ElapsedTime.TotalMilliseconds) % 1000.0;
@@ -1734,17 +1812,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <summary>
-        /// Moves the caret to the current mouse position.
+        /// Moves the caret to the specified cursor position.
         /// </summary>
-        private void MoveCaretToMouse()
+        private void MoveCaretToCursor(Point2D position)
         {
             BeginTrackingSelectionChanges();
-
-            var mousePosDips = Mouse.GetPosition(this);
-            var mousePosPixs = (Point2)Display.DipsToPixels(mousePosDips);
+            
+            var positionPixs = (Point2)Display.DipsToPixels(position);
 
             caretBlinkTimer = 0;
-            caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, mousePosPixs);
+            caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, positionPixs);
 
             UpdateSelectionAndCaret();
             ScrollToCaret(true, false, false);
@@ -2193,7 +2270,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (caretPosition == selectionPosition)
                 selectionPosition = null;
 
-            selectionFollowingMouse = false;
+            selectionFollowingCursor = false;
 
             UpdateCaret();
             UpdateSelection();
@@ -2648,6 +2725,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Starts a new selection that tracks the specified cursor.
+        /// </summary>
+        private void BeginSelectionWithCursor(Int64 id, Point2D position)
+        {
+            BeginTrackingSelectionChanges();
+
+            MoveCaretToCursor(position);
+
+            selectionPosition = caretPosition;
+            selectionFollowingCursor = true;
+            selectionFollowingCursorID = id;
+            UpdateSelectionAndCaret();
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
         /// Begins tracking changes to the selection state.
         /// </summary>
         private void BeginTrackingSelectionChanges()
@@ -2739,9 +2833,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private Int32? selectionPosition;
         private Int32 selectionLineStart;
         private Int32 selectionLineCount;
+        private Int64 selectionFollowingCursorID;
+        private Boolean selectionFollowingCursor;
         private Ultraviolet.Rectangle selectionTop;
         private Ultraviolet.Rectangle selectionBottom;
-        private Boolean selectionFollowingMouse;
 
         // Cached values for selection change tracking.
         private Int32 selectionTrackingCounter;

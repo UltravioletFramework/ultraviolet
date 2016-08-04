@@ -127,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI
             if (viewSizeChanged)
                 OnViewSizeChanged();
         }
-
+        
         /// <summary>
         /// Loads the specified asset from the global content manager.
         /// </summary>
@@ -154,6 +154,32 @@ namespace TwistedLogik.Ultraviolet.UI
                 return default(TOutput);
 
             return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset);
+        }
+
+        /// <summary>
+        /// Loads the specified animation from the global content manager.
+        /// </summary>
+        /// <param name="animation">The identifier of the animation to load.</param>
+        /// <returns>The animation that was loaded.</returns>
+        public SpriteAnimation LoadGlobalContent(SpriteAnimationID animation)
+        {
+            if (!animation.IsValid || globalContent == null)
+                return null;
+
+            return globalContent.Load(animation);
+        }
+
+        /// <summary>
+        /// Loads the specified animation from the local content manager.
+        /// </summary>
+        /// <param name="animation">The identifier of the animation to load.</param>
+        /// <returns>The animation that was loaded.</returns>
+        public SpriteAnimation LoadLocalContent(SpriteAnimationID animation)
+        {
+            if (!animation.IsValid || localContent == null)
+                return null;
+
+            return localContent.Load(animation);
         }
 
         /// <summary>

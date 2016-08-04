@@ -96,7 +96,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Double Width
         {
             get { return GetValue<Double>(WidthProperty); }
-            set { SetValue<Double>(WidthProperty, value); }
+            set { SetValue(WidthProperty, value); }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Double MinWidth
         {
             get { return GetValue<Double>(MinWidthProperty); }
-            set { SetValue<Double>(MinWidthProperty, value); }
+            set { SetValue(MinWidthProperty, value); }
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Double MaxWidth
         {
             get { return GetValue<Double>(MaxWidthProperty); }
-            set { SetValue<Double>(MaxWidthProperty, value); }
+            set { SetValue(MaxWidthProperty, value); }
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Double Height
         {
             get { return GetValue<Double>(HeightProperty); }
-            set { SetValue<Double>(HeightProperty, value); }
+            set { SetValue(HeightProperty, value); }
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Double MinHeight
         {
             get { return GetValue<Double>(MinHeightProperty); }
-            set { SetValue<Double>(MinHeightProperty, value); }
+            set { SetValue(MinHeightProperty, value); }
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Double MaxHeight
         {
             get { return GetValue<Double>(MaxHeightProperty); }
-            set { SetValue<Double>(MaxHeightProperty, value); }
+            set { SetValue(MaxHeightProperty, value); }
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Thickness Margin
         {
             get { return GetValue<Thickness>(MarginProperty); }
-            set { SetValue<Thickness>(MarginProperty, value); }
+            set { SetValue(MarginProperty, value); }
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Thickness Padding
         {
             get { return GetValue<Thickness>(PaddingProperty); }
-            set { SetValue<Thickness>(PaddingProperty, value); }
+            set { SetValue(PaddingProperty, value); }
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public HorizontalAlignment HorizontalAlignment
         {
             get { return GetValue<HorizontalAlignment>(HorizontalAlignmentProperty); }
-            set { SetValue<HorizontalAlignment>(HorizontalAlignmentProperty, value); }
+            set { SetValue(HorizontalAlignmentProperty, value); }
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public VerticalAlignment VerticalAlignment
         {
             get { return GetValue<VerticalAlignment>(VerticalAlignmentProperty); }
-            set { SetValue<VerticalAlignment>(VerticalAlignmentProperty, value); }
+            set { SetValue(VerticalAlignmentProperty, value); }
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Transform LayoutTransform
         {
             get { return GetValue<Transform>(LayoutTransformProperty); }
-            set { SetValue<Transform>(LayoutTransformProperty, value); }
+            set { SetValue(LayoutTransformProperty, value); }
         }
 
         /// <summary>
@@ -1012,7 +1012,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         protected void ReloadCursor()
         {
-            LoadCursor(Cursor);
+            LoadResource(Cursor);
         }
         
         /// <summary>
