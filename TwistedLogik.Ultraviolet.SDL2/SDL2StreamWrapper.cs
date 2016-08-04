@@ -39,6 +39,15 @@ namespace TwistedLogik.Ultraviolet.SDL2
         }
 
         /// <summary>
+        /// Gets a <see cref="IntPtr"/> which represents the wrapper's underlying SDL_RWops structure.
+        /// </summary>
+        /// <returns>A pointer to the native RWops structure which this object represents.</returns>
+        public IntPtr ToIntPtr()
+        {
+            return (IntPtr)rwops;
+        }
+
+        /// <summary>
         /// Implements the size() callback for this stream.
         /// </summary>
         [MonoPInvokeCallback(typeof(RWops_size))]
@@ -162,13 +171,7 @@ namespace TwistedLogik.Ultraviolet.SDL2
         {
             if (disposed)
                 return;
-
-            if (disposing)
-            {
-                if (stream != null)
-                    stream.Dispose();
-            }
-
+            
             if (rwops != null)
             {
                 SDL.FreeRW((IntPtr)rwops);
