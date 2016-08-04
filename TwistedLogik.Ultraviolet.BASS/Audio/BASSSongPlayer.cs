@@ -18,15 +18,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         public BASSSongPlayer(UltravioletContext uv)
             : base(uv)
         {
-            gcHandle = GCHandle.Alloc(this, GCHandleType.Normal);
-        }
-
-        /// <summary>
-        /// Finalizes the object by releasing unmanaged resources.
-        /// </summary>
-        ~BASSSongPlayer()
-        {
-            Dispose(false);
+            gcHandle = GCHandle.Alloc(this, GCHandleType.Weak);
         }
 
         /// <inheritdoc/>
@@ -328,7 +320,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
 
             if (gcHandle.IsAllocated)
                 gcHandle.Free();
-
+            
             base.Dispose(disposing);
         }
 
@@ -349,7 +341,7 @@ namespace TwistedLogik.Ultraviolet.BASS.Audio
         private static void SyncEndThunk(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
         {
             var gcHandle = GCHandle.FromIntPtr(user);
-            ((BASSSongPlayer)gcHandle.Target).SyncEnd(handle, channel, data, IntPtr.Zero);
+            ((BASSSongPlayer)gcHandle.Target)?.SyncEnd(handle, channel, data, IntPtr.Zero);
         }
 
         /// <summary>
