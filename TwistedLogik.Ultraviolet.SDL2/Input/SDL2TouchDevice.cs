@@ -109,7 +109,8 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                         if (!isRegistered)
                             Register();
 
-                        OnDollarGesture(evt.dgesture.gestureId, evt.dgesture.error, (Int32)evt.dgesture.numFingers);
+                        OnDollarGesture(evt.dgesture.gestureId, 
+                            evt.dgesture.x, evt.dgesture.y, evt.dgesture.error, (Int32)evt.dgesture.numFingers);
                     }
                     break;
             }

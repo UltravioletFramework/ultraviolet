@@ -88,10 +88,12 @@ namespace TwistedLogik.Ultraviolet.Input
     /// </summary>
     /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
     /// <param name="gestureID">The unique identifier of the gesture which was performed.</param>
+    /// <param name="x">The normalized x-coordinate of the gesture's centroid.</param>
+    /// <param name="y">The normalized y-coordinate of the gesture's centroid.</param>
     /// <param name="error">The difference between the gesture template and the actual performed gesture; lower is better.</param>
     /// <param name="fingers">The number of fingers used to perform the gesture.</param>
     public delegate void DollarGestureEventHandler(TouchDevice device,
-        Int64 gestureID, Single error, Int32 fingers);
+        Int64 gestureID, Single x, Single y, Single error, Int32 fingers);
 
     /// <summary>
     /// Represents a touch input device.
@@ -420,11 +422,13 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Raises the <see cref="DollarGesture"/> event.
         /// </summary>
         /// <param name="gestureID">The unique identifier of the gesture which was performed.</param>
+        /// <param name="x">The normalized x-coordinate of the gesture's centroid.</param>
+        /// <param name="y">The normalized y-coordinate of the gesture's centroid.</param>
         /// <param name="error">The difference between the gesture template and the actual performed gesture; lower is better.</param>
         /// <param name="fingers">The number of fingers used to perform the gesture.</param>
-        protected virtual void OnDollarGesture(Int64 gestureID, Single error, Int32 fingers)
+        protected virtual void OnDollarGesture(Int64 gestureID, Single x, Single y, Single error, Int32 fingers)
         {
-            DollarGesture?.Invoke(this, gestureID, error, fingers);
+            DollarGesture?.Invoke(this, gestureID, x, y, error, fingers);
         }
 
         /// <summary>
