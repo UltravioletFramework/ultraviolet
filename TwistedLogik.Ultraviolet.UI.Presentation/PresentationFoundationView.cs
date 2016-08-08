@@ -1340,6 +1340,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 device.Tap += touch_Tap;
                 device.LongPress += touch_LongPress;
                 device.MultiGesture += touch_MultiGesture;
+                device.DollarGesture += touch_DollarGesture;
             }
         }
 
@@ -1440,6 +1441,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 device.Tap -= touch_Tap;
                 device.LongPress -= touch_LongPress;
                 device.MultiGesture -= touch_MultiGesture;
+                device.DollarGesture -= touch_DollarGesture;
             }
         }
 
@@ -2619,6 +2621,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Touch.RaisePreviewMultiGesture(recipient, device, centroidDips.X, centroidDips.Y, theta, distance, fingers, multiGestureData);
                 Touch.RaiseMultiGesture(recipient, device, centroidDips.X, centroidDips.Y, theta, distance, fingers, multiGestureData);
                 multiGestureData.Release();
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TouchDevice.DollarGesture"/> event.
+        /// </summary>
+        private void touch_DollarGesture(TouchDevice device, Int64 gestureID, Single x, Single y, Single error, Int32 fingers)
+        {
+            if (device.BoundWindow != Window || !IsInputEnabledAndAllowed)
+                return;
+
+            // This isn't associated with any particular touch, so it always goes to whichever
+            // element is directly under the centroid.
+            var centroidPixs = device.DenormalizeCoordinates(x, y);
+            var centroidDips = Display.PixelsToDips(centroidPixs);
+
+            var recipient = HitTest(centroidDips);
+            if (recipient != null)
+            {
+                var dollarGestureData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                Touch.RaisePreviewDollarGesture(recipient, device, gestureID, centroidDips.X, centroidDips.Y, error, fingers, dollarGestureData);
+                Touch.RaiseDollarGesture(recipient, device, gestureID, centroidDips.X, centroidDips.Y, error, fingers, dollarGestureData);
+                dollarGestureData.Release();
             }
         }
 
