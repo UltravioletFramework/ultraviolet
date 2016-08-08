@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Input
@@ -74,6 +76,24 @@ namespace TwistedLogik.Ultraviolet.Input
         Single x, Single y, Single theta, Single distance, Int32 fingers);
 
     /// <summary>
+    /// Represents the method that is called when a $1 gesture is recorded.
+    /// </summary>
+    /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+    /// <param name="gestureID">The unique identifier of the recorded gesture.</param>
+    public delegate void DollarGestureRecordedEventHandler(TouchDevice device,
+        Int64 gestureID);
+
+    /// <summary>
+    /// Represents the method that is called when a $1 gesture is performed.
+    /// </summary>
+    /// <param name="device">The <see cref="TouchDevice"/> that raised the event.</param>
+    /// <param name="gestureID">The unique identifier of the gesture which was performed.</param>
+    /// <param name="error">The difference between the gesture template and the actual performed gesture; lower is better.</param>
+    /// <param name="fingers">The number of fingers used to perform the gesture.</param>
+    public delegate void DollarGestureEventHandler(TouchDevice device,
+        Int64 gestureID, Single error, Int32 fingers);
+
+    /// <summary>
     /// Represents a touch input device.
     /// </summary>
     public abstract class TouchDevice : InputDevice
@@ -92,7 +112,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <param name="window">The window to bind to the device.</param>
         public abstract void BindToWindow(IUltravioletWindow window);
-        
+
         /// <summary>
         /// Converts the specified window coordinates into normalized touch coordinates.
         /// </summary>
@@ -205,9 +225,38 @@ namespace TwistedLogik.Ultraviolet.Input
         public abstract Int32 GetTouchIndex(Int64 touchID);
 
         /// <summary>
+        /// Instructs the device to begin recording a $1 gesture.
+        /// </summary>
+        /// <returns>A <see cref="Task{TResult}"/> which produces the identifier of the recorded gesture.</returns>
+        public abstract Task<Int64> RecordDollarGestureAsync();
+
+        /// <summary>
+        /// Instructs the device to begin recording a $1 gesture.
+        /// </summary>
+        /// <returns><see langword="true"/> if recording started successfully; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean RecordDollarGesture();
+
+        /// <summary>
+        /// Loads $1 gestures for the device from the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream from which to load the device's $1 gestures.</param>
+        public abstract void LoadDollarGestures(Stream stream);
+
+        /// <summary>
+        /// Saves $1 gestures for the device to the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream to which to save the device's $1 gestures.</param>
+        public abstract void SaveDollarGestures(Stream stream);
+
+        /// <summary>
         /// Gets the window which is bound to the device.
         /// </summary>
         public abstract IUltravioletWindow BoundWindow { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the device is recording a $1 gesture.
+        /// </summary>
+        public abstract Boolean IsRecordingDollarGesture { get; }
 
         /// <summary>
         /// Gets the number of currently active touches.
@@ -241,7 +290,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Gets the delay in milliseconds before a touch is considered a long tap.
         /// </summary>
         public Double LongPressDelay { get; set; } = 1000.0;
-
+        
         /// <summary>
         /// Occurs when a touch input begins.
         /// </summary>
@@ -271,6 +320,16 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Occurs when a multiple-finger touch gesture is performed.
         /// </summary>
         public event MultiGestureEventHandler MultiGesture;
+
+        /// <summary>
+        /// Occurs when a $1 gesture is recorded.
+        /// </summary>
+        public event DollarGestureRecordedEventHandler DollarGestureRecorded;
+
+        /// <summary>
+        /// Occurs when a $1 gesture is performed.
+        /// </summary>
+        public event DollarGestureEventHandler DollarGesture;
 
         /// <summary>
         /// Raises the <see cref="TouchDown"/> event.
@@ -346,6 +405,26 @@ namespace TwistedLogik.Ultraviolet.Input
         protected virtual void OnMultiGesture(Single x, Single y, Single theta, Single distance, Int32 fingers)
         {
             MultiGesture?.Invoke(this, x, y, theta, distance, fingers);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="DollarGestureRecorded"/> event.
+        /// </summary>
+        /// <param name="gestureID">The unique identifier of the recorded gesture.</param>
+        protected virtual void OnDollarGestureRecorded(Int64 gestureID)
+        {
+            DollarGestureRecorded?.Invoke(this, gestureID);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="DollarGesture"/> event.
+        /// </summary>
+        /// <param name="gestureID">The unique identifier of the gesture which was performed.</param>
+        /// <param name="error">The difference between the gesture template and the actual performed gesture; lower is better.</param>
+        /// <param name="fingers">The number of fingers used to perform the gesture.</param>
+        protected virtual void OnDollarGesture(Int64 gestureID, Single error, Int32 fingers)
+        {
+            DollarGesture?.Invoke(this, gestureID, error, fingers);
         }
 
         /// <summary>
