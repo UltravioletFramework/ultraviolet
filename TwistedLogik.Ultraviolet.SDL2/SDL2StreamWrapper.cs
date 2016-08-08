@@ -7,7 +7,7 @@ using TwistedLogik.Ultraviolet.SDL2.Native;
 namespace TwistedLogik.Ultraviolet.SDL2
 {
     /// <summary>
-    /// Represents a wrapper around a <see cref="Stream"/> which is compatible with SDL2's RWops API.
+    /// Represents a wrapper around a <see cref="System.IO.Stream"/> which is compatible with SDL2's RWops API.
     /// </summary>
     public sealed unsafe partial class SDL2StreamWrapper : IDisposable
     {
