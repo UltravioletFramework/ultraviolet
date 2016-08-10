@@ -74,6 +74,41 @@ namespace TwistedLogik.Gluon
             {
                 glTextureStorage3D(texture, levels, internalformat, width, height, depth);
             }
+
+            public override void* MapNamedBuffer(uint buffer, uint target, uint access)
+            {
+                return glMapNamedBuffer(buffer, access).ToPointer();
+            }
+
+            public override void* MapNamedBufferRange(uint buffer, uint target, int* offset, uint* length, uint access)
+            {
+                return glMapNamedBufferRange(buffer, (IntPtr)offset, (IntPtr)length, access).ToPointer();
+            }
+
+            public override bool UnmapNamedBuffer(uint buffer, uint target)
+            {
+                return glUnmapNamedBuffer(buffer);
+            }
+
+            public override void FlushMappedNamedBufferRange(uint buffer, uint target, int* offset, uint* length)
+            {
+                glFlushMappedNamedBufferRange(buffer, (IntPtr)offset, (IntPtr)length);
+            }
+
+            public override void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params)
+            {
+                glGetNamedBufferParameteriv(buffer, pname, (IntPtr)@params);
+            }
+
+            public override void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params)
+            {
+                glGetNamedBufferPointerv(buffer, pname, (IntPtr)@params);
+            }
+
+            public override void GetNamedBufferSubData(uint buffer, uint target, int* offset, uint* size, void* data)
+            {
+                glGetNamedBufferSubData(buffer, (IntPtr)offset, (IntPtr)size, (IntPtr)data);
+            }
         }
     }
 }

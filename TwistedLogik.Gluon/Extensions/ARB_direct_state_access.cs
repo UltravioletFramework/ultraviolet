@@ -144,5 +144,40 @@ namespace TwistedLogik.Gluon
                 return renderbuffers;
             }
         }
+
+        [MonoNativeFunctionWrapper]
+        private delegate IntPtr glMapNamedBufferDelegate(uint buffer, uint access);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glMapNamedBufferDelegate glMapNamedBuffer = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate IntPtr glMapNamedBufferRangeDelegate(uint buffer, IntPtr offset, IntPtr length, uint access);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glMapNamedBufferRangeDelegate glMapNamedBufferRange = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate bool glUnmapNamedBufferDelegate(uint buffer);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glUnmapNamedBufferDelegate glUnmapNamedBuffer = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glFlushMappedNamedBufferRangeDelegate(uint buffer, IntPtr offset, IntPtr length);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glFlushMappedNamedBufferRangeDelegate glFlushMappedNamedBufferRange = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetNamedBufferParameterivDelegate(uint buffer, uint pname, IntPtr @params);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glGetNamedBufferParameterivDelegate glGetNamedBufferParameteriv = null;
+        
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetNamedBufferPointervDelegate(uint buffer, uint pname, IntPtr @params);
+        [Require(MinVersion = "4.5", Extension = "GL_ARB_direct_state_access")]
+        private static readonly glGetNamedBufferPointervDelegate glGetNamedBufferPointerv = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetNamedBufferSubDataDelegate(uint buffer, IntPtr offset, IntPtr size, IntPtr data);
+        [Require(MinVersion = "4.5", Extension = "GL_ARGB_direct_state_access")]
+        private static readonly glGetNamedBufferSubDataDelegate glGetNamedBufferSubData = null;
     }
 }

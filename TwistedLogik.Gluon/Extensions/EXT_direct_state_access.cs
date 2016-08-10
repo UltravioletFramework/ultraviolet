@@ -54,5 +54,40 @@ namespace TwistedLogik.Gluon
         private delegate void glTextureSubImage2DEXTDelegate(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, IntPtr pixels);
         [Require(Extension = "GL_EXT_direct_state_access")]
         private static readonly glTextureSubImage2DEXTDelegate glTextureSubImage2DEXT = null;
+        
+        [MonoNativeFunctionWrapper]
+        private delegate IntPtr glMapNamedBufferEXTDelegate(uint buffer, uint access);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glMapNamedBufferEXTDelegate glMapNamedBufferEXT = null;
+        
+        [MonoNativeFunctionWrapper]
+        private delegate IntPtr glMapNamedBufferEXTRangeDelegate(uint buffer, IntPtr offset, IntPtr length, uint access);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glMapNamedBufferEXTRangeDelegate glMapNamedBufferRangeEXT = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate bool glUnmapNamedBufferEXTDelegate(uint buffer);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glUnmapNamedBufferEXTDelegate glUnmapNamedBufferEXT = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glFlushMappedNamedBufferRangeEXTDelegate(uint buffer, IntPtr offset, IntPtr length);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glFlushMappedNamedBufferRangeEXTDelegate glFlushMappedNamedBufferRangeEXT = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetNamedBufferParameterivEXTDelegate(uint buffer, uint pname, IntPtr @params);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glGetNamedBufferParameterivEXTDelegate glGetNamedBufferParameterivEXT = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetNamedBufferPointervEXTDelegate(uint buffer, uint pname, IntPtr @params);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glGetNamedBufferPointervEXTDelegate glGetNamedBufferPointervEXT = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glGetNamedBufferSubDataEXTDelegate(uint buffer, IntPtr offset, IntPtr size, IntPtr data);
+        [Require(Extension = "GL_EXT_direct_state_access")]
+        private static readonly glGetNamedBufferSubDataEXTDelegate glGetNamedBufferSubDataEXT = null;
     }
 }
