@@ -7,7 +7,7 @@ namespace TwistedLogik.Gluon
     {
         [MonoNativeFunctionWrapper]
         private delegate IntPtr glMapBufferRangeDelegate(uint target, IntPtr offset, IntPtr length, uint access);
-        [Require(MinVersion = "3.0")]
+        [Require(MinVersion = "3.0", MinVersionES = "3.0")]
         [Require(Extension = "GL_ARB_map_buffer_range")]
         [Require(Extension = "GL_EXT_map_buffer_range", ExtensionFunction = "glMapBufferRangeEXT")]
         private static readonly glMapBufferRangeDelegate glMapBufferRange = null;
@@ -17,7 +17,7 @@ namespace TwistedLogik.Gluon
 
         [MonoNativeFunctionWrapper]
         private delegate void glFlushMappedBufferRangeDelegate(uint target, IntPtr offset, IntPtr length);
-        [Require(MinVersion = "3.0")]
+        [Require(MinVersion = "3.0", MinVersionES = "3.0")]
         [Require(Extension = "GL_ARB_map_buffer_range")]
         [Require(Extension = "GL_EXT_map_buffer_range", ExtensionFunction = "glFlushMappedBufferRangeEXT")]
         private static readonly glFlushMappedBufferRangeDelegate glFlushMappedBufferRange = null;
