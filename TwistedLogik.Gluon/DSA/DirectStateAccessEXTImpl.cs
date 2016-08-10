@@ -79,9 +79,9 @@ namespace TwistedLogik.Gluon
                 return glMapNamedBufferEXT(buffer, access).ToPointer();
             }
 
-            public override void* MapNamedBufferRange(uint buffer, uint target, int* offset, uint* length, uint access)
+            public override void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access)
             {
-                return glMapNamedBufferRangeEXT(buffer, (IntPtr)offset, (IntPtr)length, access).ToPointer();
+                return glMapNamedBufferRangeEXT(buffer, offset, length, access).ToPointer();
             }
 
             public override bool UnmapNamedBuffer(uint buffer, uint target)
@@ -89,9 +89,9 @@ namespace TwistedLogik.Gluon
                 return glUnmapNamedBufferEXT(buffer);
             }
 
-            public override void FlushMappedNamedBufferRange(uint buffer, uint target, int* offset, uint* length)
+            public override void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length)
             {
-                glFlushMappedNamedBufferRangeEXT(buffer, (IntPtr)offset, (IntPtr)length);
+                glFlushMappedNamedBufferRangeEXT(buffer, offset, length);
             }
 
             public override void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params)
@@ -104,9 +104,9 @@ namespace TwistedLogik.Gluon
                 glGetNamedBufferPointervEXT(buffer, pname, (IntPtr)@params);
             }
 
-            public override void GetNamedBufferSubData(uint buffer, uint target, int* offset, uint* size, void* data)
+            public override void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
             {
-                glGetNamedBufferSubDataEXT(buffer, (IntPtr)offset, (IntPtr)size, (IntPtr)data);
+                glGetNamedBufferSubDataEXT(buffer, offset, size, (IntPtr)data);
             }
         }
     }

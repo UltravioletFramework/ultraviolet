@@ -6,7 +6,7 @@ namespace TwistedLogik.Gluon
     /// <summary>
     /// Represents an attribute indicating that an OpenGL function requires a specified OpenGL version or extension to exist.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public sealed class RequireAttribute : Attribute
     {
         /// <summary>

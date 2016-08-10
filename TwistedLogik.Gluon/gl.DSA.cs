@@ -86,6 +86,41 @@ namespace TwistedLogik.Gluon
             dsaimpl.TextureStorage3D(texture, target, levels, internalformat, width, height, depth);
         }
 
+        public static void* MapNamedBuffer(uint buffer, uint target, uint access)
+        {
+            return dsaimpl.MapNamedBuffer(buffer, target, access);
+        }
+
+        public static void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access)
+        {
+            return dsaimpl.MapNamedBufferRange(buffer, target, offset, length, access);
+        }
+
+        public static bool UnmapNamedBuffer(uint buffer, uint target)
+        {
+            return dsaimpl.UnmapNamedBuffer(buffer, target);
+        }
+
+        public static void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length)
+        {
+            dsaimpl.FlushMappedNamedBufferRange(buffer, target, offset, length);
+        }
+
+        public static void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params)
+        {
+            dsaimpl.GetNamedBufferParameteriv(buffer, target, pname, @params);
+        }
+
+        public static void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params)
+        {
+            dsaimpl.GetNamedBufferPointerv(buffer, target, pname, @params);
+        }
+
+        public static void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
+        {
+            dsaimpl.GetNamedBufferSubData(buffer, target, offset, size, data);
+        }
+
         public static Boolean IsTextureStorageAvailable
         {
             get;

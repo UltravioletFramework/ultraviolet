@@ -348,24 +348,28 @@ namespace TwistedLogik.Gluon
         private static Boolean LoadFunction(IOpenGLInitializer initializer, FieldInfo field, Boolean checkRequirements = true)
         {
             var name = field.Name.StartsWith("gl") ? field.Name : "gl" + field.Name;
-            var reqs = checkRequirements ? field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault() : null;
+            var reqs = checkRequirements ? field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>() : null;
 
             // If this isn't a core function, attempt to load it as an extension.
-            if (reqs != null && !reqs.IsCore(majorVersion, minorVersion, isGLES))
+            if (reqs != null && reqs.Any())
             {
-                if (!IsExtensionSupported(reqs.Extension))
+                foreach (var req in reqs)
                 {
-                    LoadDefaultDelegate(field, reqs);
-                    return false;
+                    if (!req.IsCore(majorVersion, minorVersion, isGLES))
+                    {
+                        if (!IsExtensionSupported(req.Extension))
+                            continue;
+
+                        name = req.ExtensionFunction ?? name;
+                    }
                 }
-                name = reqs.ExtensionFunction ?? name;
             }
 
             // Load the function pointer from the OpenGL initializer.
             var fnptr = initializer.GetProcAddress(name);
             if (fnptr == IntPtr.Zero)
             {
-                LoadDefaultDelegate(field, reqs);
+                LoadDefaultDelegate(field, reqs?.FirstOrDefault());
                 return false;
             }
             var fndel = Marshal.GetDelegateForFunctionPointer(fnptr, field.FieldType);

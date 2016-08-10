@@ -39,17 +39,17 @@ namespace TwistedLogik.Gluon
 
             public abstract void* MapNamedBuffer(uint buffer, uint target, uint access);
 
-            public abstract void* MapNamedBufferRange(uint buffer, uint target, int* offset, uint* length, uint access);
+            public abstract void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access);
 
             public abstract bool UnmapNamedBuffer(uint buffer, uint target);
 
-            public abstract void FlushMappedNamedBufferRange(uint buffer, uint target, int* offset, uint* length);
+            public abstract void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length);
 
             public abstract void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params);
 
             public abstract void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params);
 
-            public abstract void GetNamedBufferSubData(uint buffer, uint target, int* offset, uint* size, void* data);
+            public abstract void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data);
         }
     }
 }
