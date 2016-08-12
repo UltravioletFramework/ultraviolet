@@ -72,11 +72,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             bufferSize = vdecl.VertexStride * dataCount;
 
-            var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                if (caps.MinMapBufferAlignment > 0)
+                var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
+                if (caps.SupportsMapBufferRange && caps.MinMapBufferAlignment > 0)
                     bufferSize = Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize));
 
                 using (OpenGLState.ScopedBindArrayBuffer(buffer))
@@ -97,18 +97,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         }
                     }
 
-                    var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
+                    if (caps.SupportsMapBufferRange)
+                    {
+                        var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
                         gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
-                    gl.ThrowIfError();
+                        gl.ThrowIfError();
 
-                    var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
-                    var sourceSizeInBytes = dataCount * vdecl.VertexStride;
+                        var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
+                        var sourceSizeInBytes = dataCount * vdecl.VertexStride;
 
-                    for (int i = 0; i < sourceSizeInBytes; i++)
-                        *bufferRangePtr++ = *sourceRangePtr++;
+                        for (int i = 0; i < sourceSizeInBytes; i++)
+                            *bufferRangePtr++ = *sourceRangePtr++;
 
-                    gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
-                    gl.ThrowIfError();
+                        gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
+                        gl.ThrowIfError();
+                    }
+                    else
+                    {
+                        gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER,
+                            (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * vdecl.VertexStride));
+                        gl.ThrowIfError();
+                    }
                 }
             }
             finally

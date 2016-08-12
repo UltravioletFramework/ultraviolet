@@ -44,6 +44,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.SupportsIndependentSamplerState = (gl.IsGLES ? gl.IsVersionAtLeast(3, 0) : gl.IsVersionAtLeast(3, 3)) ||
                 gl.IsExtensionSupported("GL_ARB_sampler_objects");
 
+            this.SupportsMapBufferRange = true;
+            if (gl.IsGLES2)
+            {
+                this.SupportsMapBufferRange =
+                    gl.IsExtensionSupported("GL_ARB_map_buffer_range") ||
+                    gl.IsExtensionSupported("GL_EXT_map_buffer_range");
+            };
+
             this.MinMapBufferAlignment = gl.IsExtensionSupported("GL_ARB_map_buffer_alignment") ?
                 gl.GetInteger(gl.GL_MIN_MAP_BUFFER_ALIGNMENT) : 0;
         }
@@ -74,6 +82,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public override Boolean SupportsIndependentSamplerState { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the OpenGL context supports glMapBufferRange().
+        /// </summary>
+        public Boolean SupportsMapBufferRange { get; }
 
         /// <inheritdoc/>
         public override Int32 MaximumTextureSize
