@@ -60,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             SetDataInternal(data, offset * vdecl.VertexStride, count * vdecl.VertexStride, options);
         }
-        
+
         /// <inheritdoc/>
         public override void SetDataAligned<T>(T[] data, Int32 dataOffset, Int32 dataCount, Int32 bufferOffset, out Int32 bufferSize, SetDataOptions options)
         {
@@ -73,53 +73,47 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             bufferSize = vdecl.VertexStride * dataCount;
 
             var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
-            if (caps.MinMapBufferAlignment == 0 || options == SetDataOptions.None)
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
             {
-                SetDataInternal(data, vdecl.VertexStride * dataOffset, bufferSize, options);
-            }
-            else
-            {
-                var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-                try
-                {
+                if (caps.MinMapBufferAlignment > 0)
                     bufferSize = Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize));
 
-                    using (OpenGLState.ScopedBindArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindArrayBuffer(buffer))
+                {
+                    if (options == SetDataOptions.Discard)
                     {
-                        if (options == SetDataOptions.Discard)
-                        {
-                            gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, null, usage);
-                            gl.ThrowIfError();
-
-                            /* FIX: 
-                             * I have no idea why the following code is necessary, but
-                             * it seems to fix flickering sprites on Intel HD 4000 devices. */
-                            if (OpenGLState.SupportsVertexArrayObjects)
-                            {
-                                var vao = (uint)OpenGLState.GL_VERTEX_ARRAY_BINDING;
-                                gl.BindVertexArray(vao);
-                                gl.ThrowIfError();
-                            }
-                        }
-
-                        var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize, 
-                            gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
+                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, null, usage);
                         gl.ThrowIfError();
 
-                        var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
-                        var sourceSizeInBytes = dataCount * vdecl.VertexStride;
-
-                        for (int i = 0; i < sourceSizeInBytes; i++)
-                            *bufferRangePtr++ = *sourceRangePtr++;
-
-                        gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
-                        gl.ThrowIfError();                        
+                        /* FIX: 
+                         * I have no idea why the following code is necessary, but
+                         * it seems to fix flickering sprites on Intel HD 4000 devices. */
+                        if (OpenGLState.SupportsVertexArrayObjects)
+                        {
+                            var vao = (uint)OpenGLState.GL_VERTEX_ARRAY_BINDING;
+                            gl.BindVertexArray(vao);
+                            gl.ThrowIfError();
+                        }
                     }
+
+                    var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
+                        gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
+                    gl.ThrowIfError();
+
+                    var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
+                    var sourceSizeInBytes = dataCount * vdecl.VertexStride;
+
+                    for (int i = 0; i < sourceSizeInBytes; i++)
+                        *bufferRangePtr++ = *sourceRangePtr++;
+
+                    gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
+                    gl.ThrowIfError();
                 }
-                finally
-                {
-                    handle.Free();
-                }
+            }
+            finally
+            {
+                handle.Free();
             }
         }
 

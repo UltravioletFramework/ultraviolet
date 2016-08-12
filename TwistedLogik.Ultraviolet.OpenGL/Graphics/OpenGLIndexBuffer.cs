@@ -84,43 +84,37 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             bufferSize = indexStride * dataCount;
 
             var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
-            if (caps.MinMapBufferAlignment == 0 || options == SetDataOptions.None)
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
             {
-                SetDataInternal(data, indexStride * dataOffset, bufferSize, options);
-            }
-            else
-            {
-                var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-                try
-                {
+                if (caps.MinMapBufferAlignment > 0)
                     bufferSize = Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize));
 
-                    using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
+                {
+                    if (options == SetDataOptions.Discard)
                     {
-                        if (options == SetDataOptions.Discard)
-                        {
-                            gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
-                            gl.ThrowIfError();
-                        }
-
-                        var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
-                            gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
-                        gl.ThrowIfError();
-
-                        var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * indexStride);
-                        var sourceSizeInBytes = dataCount * indexStride;
-
-                        for (int i = 0; i < sourceSizeInBytes; i++)
-                            *bufferRangePtr++ = *sourceRangePtr++;
-
-                        gl.UnmapNamedBuffer(buffer, gl.GL_ELEMENT_ARRAY_BUFFER);
+                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
                         gl.ThrowIfError();
                     }
+
+                    var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
+                        gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
+                    gl.ThrowIfError();
+
+                    var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * indexStride);
+                    var sourceSizeInBytes = dataCount * indexStride;
+
+                    for (int i = 0; i < sourceSizeInBytes; i++)
+                        *bufferRangePtr++ = *sourceRangePtr++;
+
+                    gl.UnmapNamedBuffer(buffer, gl.GL_ELEMENT_ARRAY_BUFFER);
+                    gl.ThrowIfError();
                 }
-                finally
-                {
-                    handle.Free();
-                }
+            }
+            finally
+            {
+                handle.Free();
             }
         }
 
@@ -200,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                using (OpenGLState.ScopedBindArrayBuffer(buffer))
+                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
                     if (options == SetDataOptions.Discard)
                     {
