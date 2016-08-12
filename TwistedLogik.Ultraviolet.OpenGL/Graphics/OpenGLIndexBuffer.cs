@@ -92,32 +92,37 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
-                    if (options == SetDataOptions.Discard)
+                    var isPartialUpdate = (bufferOffset > 0 || bufferSize < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
+                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
                         gl.ThrowIfError();
                     }
 
-                    if (caps.SupportsMapBufferRange)
+                    if (isPartialUpdate)
                     {
-                        var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
-                            gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
-                        gl.ThrowIfError();
+                        if (caps.SupportsMapBufferRange)
+                        {
+                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
+                                gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
+                            gl.ThrowIfError();
 
-                        var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * indexStride);
-                        var sourceSizeInBytes = dataCount * indexStride;
+                            var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * indexStride);
+                            var sourceSizeInBytes = dataCount * indexStride;
 
-                        for (int i = 0; i < sourceSizeInBytes; i++)
-                            *bufferRangePtr++ = *sourceRangePtr++;
+                            for (int i = 0; i < sourceSizeInBytes; i++)
+                                *bufferRangePtr++ = *sourceRangePtr++;
 
-                        gl.UnmapNamedBuffer(buffer, gl.GL_ELEMENT_ARRAY_BUFFER);
-                        gl.ThrowIfError();
-                    }
-                    else
-                    {
-                        gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER,
-                            (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * indexStride));
-                        gl.ThrowIfError();
+                            gl.UnmapNamedBuffer(buffer, gl.GL_ELEMENT_ARRAY_BUFFER);
+                            gl.ThrowIfError();
+                        }
+                        else
+                        {
+                            gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER,
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * indexStride));
+                            gl.ThrowIfError();
+                        }
                     }
                 }
             }
@@ -205,14 +210,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
-                    if (options == SetDataOptions.Discard)
+                    var isPartialUpdate = (offsetInBytes > 0 || countInBytes < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
+                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
                         gl.ThrowIfError();
                     }
-                    
-                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
-                    gl.ThrowIfError();
+
+                    if (isPartialUpdate)
+                    {
+                        gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
+                        gl.ThrowIfError();
+                    }
                 }
             }
             finally

@@ -81,9 +81,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
-                    if (options == SetDataOptions.Discard)
+                    var isPartialUpdate = (bufferOffset > 0 || bufferSize < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, null, usage);
+                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
                         gl.ThrowIfError();
 
                         /* FIX: 
@@ -97,26 +99,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         }
                     }
 
-                    if (caps.SupportsMapBufferRange)
+                    if (isPartialUpdate)
                     {
-                        var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
-                        gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
-                        gl.ThrowIfError();
+                        if (caps.SupportsMapBufferRange)
+                        {
+                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
+                            gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
+                            gl.ThrowIfError();
 
-                        var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
-                        var sourceSizeInBytes = dataCount * vdecl.VertexStride;
+                            var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
+                            var sourceSizeInBytes = dataCount * vdecl.VertexStride;
 
-                        for (int i = 0; i < sourceSizeInBytes; i++)
-                            *bufferRangePtr++ = *sourceRangePtr++;
+                            for (int i = 0; i < sourceSizeInBytes; i++)
+                                *bufferRangePtr++ = *sourceRangePtr++;
 
-                        gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
-                        gl.ThrowIfError();
-                    }
-                    else
-                    {
-                        gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER,
-                            (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * vdecl.VertexStride));
-                        gl.ThrowIfError();
+                            gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
+                            gl.ThrowIfError();
+                        }
+                        else
+                        {
+                            gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER,
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * vdecl.VertexStride));
+                            gl.ThrowIfError();
+                        }
                     }
                 }
             }
@@ -197,9 +202,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
-                    if (options == SetDataOptions.Discard)
+                    var isPartialUpdate = (offsetInBytes > 0 || countInBytes < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, null, usage);
+                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
                         gl.ThrowIfError();
 
                         /* FIX: 
@@ -212,9 +219,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                             gl.ThrowIfError();
                         }
                     }
-                    
-                    gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
-                    gl.ThrowIfError();
+
+                    if (isPartialUpdate)
+                    {
+                        gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
+                        gl.ThrowIfError();
+                    }
                 }
             }
             finally
