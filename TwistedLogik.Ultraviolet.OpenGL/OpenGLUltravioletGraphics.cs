@@ -542,16 +542,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
+            DrawPrimitives(type, 0, start, count);
+        }
+
+        /// <inheritdoc/>
+        public void DrawPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(offset >= 0, nameof(offset));
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
             Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
-            
+
             Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM, (UInt32)offset);
 
             var glVerts = 0;
             var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
@@ -562,6 +569,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
+            DrawIndexedPrimitives(type, 0, start, count);
+        }
+
+        /// <inheritdoc/>
+        public void DrawIndexedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(offset >= 0, nameof(offset));
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -572,7 +586,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM, (UInt32)offset);
 
             unsafe
             {
@@ -586,14 +600,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.ThrowIfError();
             }
         }
-        
+
         /// <inheritdoc/>
-        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0)
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances)
         {
+            DrawInstancedPrimitives(type, 0, start, count, instances, 0);
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance)
+        {
+            DrawInstancedPrimitives(type, 0, start, count, instances, baseInstance);
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count, Int32 instances, Int32 baseInstance)
+        {
+            Contract.EnsureRange(offset >= 0, nameof(offset));
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
             Contract.Ensure<NotSupportedException>(Capabilities.SupportsInstancedRendering);
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
             Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
@@ -601,7 +628,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM, (UInt32)offset);
 
             unsafe
             {

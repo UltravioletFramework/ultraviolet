@@ -208,13 +208,41 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void DrawPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
         public void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }
 
         /// <inheritdoc/>
-        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0)
+        public void DrawIndexedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            throw new NotSupportedException();
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            throw new NotSupportedException();
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count, Int32 instances, Int32 baseInstance)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 

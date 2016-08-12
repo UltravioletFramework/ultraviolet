@@ -2244,38 +2244,46 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var options = SetDataOptions.NoOverwrite;
             while (count > 0)
             {
-                // Limit the number of sprites being drawn to our maximum batch size and
-                // determine whether we need to reset to the beginning of the vertex buffer.
+                // Determine whether we need to reset to the beginning of our vertex buffer.
                 var drawn = count;
-                if (vertexBufferPosition >= batchSize)
+                var drawnSizeInBytes = vertexBuffer.GetAlignedSize(drawn * 4);
+                if (drawnSizeInBytes + vertexBufferOffset > vertexBuffer.SizeInBytes)
                 {
                     options = SetDataOptions.Discard;
+                    vertexBufferOffset = 0;
+                }
+                else
+                {
+                    options = SetDataOptions.NoOverwrite;
+                }
+
+                // Determine whether we need to reset to the beginning of our vertex array.
+                if (vertexBufferPosition >= batchSize)
+                {
                     drawn = (count > batchSize) ? batchSize : count;
                     vertexBufferPosition = 0;
                 }
                 else
                 {
-                    options = SetDataOptions.NoOverwrite;
                     if (vertexBufferPosition + drawn > batchSize)
-                    {
                         drawn = batchSize - vertexBufferPosition;
-                    }
                 }
 
                 // Generate vertices for the current set of sprites and dispatch them to the graphics device.
                 var spriteMetadata = batchInfo.GetHeaders();
                 var spriteCustomData = batchInfo.GetData();
                 GenerateVertices(texture, spriteMetadata, vertices, spriteCustomData, offset, drawn);
-                vertexBuffer.SetData(vertices, vertexBufferPosition * 4, drawn * 4, options);
+                vertexBuffer.SetDataAligned(vertices, 0, drawn * 4, vertexBufferOffset, out drawnSizeInBytes, options);
 
                 foreach (var pass in customEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
-                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, vertexBufferPosition * 6, drawn * 2);
+                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, vertexBufferOffset, 0, drawn * 2);
                 }
 
                 // Advance the batch position.
                 vertexBufferPosition += drawn;
+                vertexBufferOffset += drawnSizeInBytes;
                 offset += drawn;
                 count -= drawn;
             }
@@ -2302,6 +2310,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         private DynamicVertexBuffer vertexBuffer;
         private DynamicIndexBuffer indexBuffer;
         private Int32 vertexBufferPosition;
+        private Int32 vertexBufferOffset;
 
         // Cached values used during standard vertex generation.
         private Single cachedU;

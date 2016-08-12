@@ -43,6 +43,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             this.SupportsIndependentSamplerState = (gl.IsGLES ? gl.IsVersionAtLeast(3, 0) : gl.IsVersionAtLeast(3, 3)) ||
                 gl.IsExtensionSupported("GL_ARB_sampler_objects");
+
+            this.MinMapBufferAlignment = gl.IsExtensionSupported("GL_ARB_map_buffer_alignment") ?
+                gl.GetInteger(gl.GL_MIN_MAP_BUFFER_ALIGNMENT) : 0;
         }
 
         /// <inheritdoc/>
@@ -89,6 +92,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             get { return maximumViewportHeight; }
         }
+
+        /// <summary>
+        /// Gets the value of GL_MIN_MAP_BUFFER_ALIGNMENT.
+        /// </summary>
+        public Int32 MinMapBufferAlignment { get; private set; }
 
         // Property values.
         private readonly Boolean supportsDepthStencilTextures;
