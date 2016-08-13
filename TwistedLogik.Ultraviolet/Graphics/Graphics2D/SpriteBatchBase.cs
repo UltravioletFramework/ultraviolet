@@ -1870,9 +1870,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                 y = 1f - y;
 
-            var uu = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
-            var vv = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
-
             *u = (UInt16)(metadata->SourceX + x * metadata->SourceWidth);
             *v = (UInt16)(metadata->SourceY + y * metadata->SourceHeight);
         }
@@ -1903,9 +1900,6 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                 y = 1f - y;
-
-            var foo = ((metadata->SourceX + x * metadata->SourceWidth) * cachedU);
-            var bar = (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV));
 
             *u = (UInt16)(metadata->SourceX + x * metadata->SourceWidth);
             *v = (UInt16)(metadata->SourceY + y * metadata->SourceHeight);
