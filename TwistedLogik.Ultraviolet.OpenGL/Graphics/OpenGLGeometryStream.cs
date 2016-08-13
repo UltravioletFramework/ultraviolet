@@ -296,6 +296,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     integer = true;
                     return gl.GL_SHORT;
 
+                case VertexFormat.NormalizedUnsignedShort2:
+                    size = 2;
+                    stride = size * sizeof(ushort);
+                    normalize = true;
+                    integer = true;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexFormat.NormalizedUnsignedShort4:
+                    size = 4;
+                    stride = size * sizeof(ushort);
+                    normalize = true;
+                    integer = true;
+                    return gl.GL_UNSIGNED_SHORT;
+
                 case VertexFormat.Short2:
                     size = 2;
                     stride = size * sizeof(short);
@@ -309,6 +323,20 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     normalize = false;
                     integer = true;
                     return gl.GL_SHORT;
+
+                case VertexFormat.UnsignedShort2:
+                    size = 2;
+                    stride = size * sizeof(ushort);
+                    normalize = false;
+                    integer = true;
+                    return gl.GL_UNSIGNED_SHORT;
+
+                case VertexFormat.UnsignedShort4:
+                    size = 4;
+                    stride = size * sizeof(ushort);
+                    normalize = false;
+                    integer = true;
+                    return gl.GL_UNSIGNED_SHORT;
 
                 default:
                     throw new NotSupportedException(OpenGLStrings.UnsupportedVertexFormat);
@@ -409,7 +437,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                     unsafe
                     {
-                        if (integer && !gl.IsGLES2)
+                        if (integer && !normalize && !gl.IsGLES2)
                         {
                             gl.VertexAttribIPointer((uint)location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                             gl.ThrowIfError();

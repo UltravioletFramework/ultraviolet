@@ -90,12 +90,16 @@ namespace TwistedLogik.Ultraviolet.Graphics
                         break;
 
                     case VertexFormat.Short2:
+                    case VertexFormat.UnsignedShort2:
                     case VertexFormat.NormalizedShort2:
+                    case VertexFormat.NormalizedUnsignedShort2:
                         value += sizeof(Int16) * 2;
                         break;
 
                     case VertexFormat.Short4:
+                    case VertexFormat.UnsignedShort4:
                     case VertexFormat.NormalizedShort4:
+                    case VertexFormat.NormalizedUnsignedShort4:
                         value += sizeof(Int16) * 4;
                         break;
 

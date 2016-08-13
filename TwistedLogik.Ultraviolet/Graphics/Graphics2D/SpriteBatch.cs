@@ -15,7 +15,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// specify position, color, and texture data.
     /// </summary>
     [SecuritySafeCritical]
-    public sealed class SpriteBatch : SpriteBatchBase<VertexPositionColorTexture, SpriteBatchData>
+    public sealed class SpriteBatch : SpriteBatchBase<SpriteVertex, SpriteBatchData>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteBatch"/> class.
@@ -50,13 +50,13 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <returns>The vertex stride.</returns>
         [SecuritySafeCritical]
         protected override unsafe void GenerateVertices(Texture2D texture, SpriteHeader[] sprites,
-            VertexPositionColorTexture[] vertices, SpriteBatchData[] data, Int32 offset, Int32 count)
+            SpriteVertex[] vertices, SpriteBatchData[] data, Int32 offset, Int32 count)
         {
             CalculateUV(texture);
 
             fixed (SpriteHeader* pSprites1 = &sprites[offset])
             fixed (SpriteBatchData* pData1 = &data[offset])
-            fixed (VertexPositionColorTexture* pVertices1 = &vertices[0])
+            fixed (SpriteVertex* pVertices1 = &vertices[0])
             {
                 var pSprites = pSprites1;
                 var pData = pData1;
@@ -70,8 +70,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     for (int v = 0; v < 4; v++)
                     {
                         CalculatePositionAndTextureCoordinates(pSprites, v,
-                            (MutableVector3*)&pVertices->Position,
-                            (MutableVector2*)&pVertices->TextureCoordinate);
+                            (MutableVector2*)&pVertices->Position, &pVertices->U, &pVertices->V);
 
                         pVertices->Color = pSprites->Color;
                         pVertices++;

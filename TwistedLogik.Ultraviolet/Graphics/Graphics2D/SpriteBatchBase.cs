@@ -1644,6 +1644,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        [CLSCompliant(false)]
+        protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, MutableVector2* position)
+        {
+            var x = xCoords[ix];
+            var y = yCoords[ix];
+
+            var scaledX = (x - cachedOriginX) * metadata->DestinationWidth;
+            var scaledY = (y - cachedOriginY) * metadata->DestinationHeight;
+
+            position->X = metadata->DestinationX + scaledX * cachedCos - scaledY * cachedSin;
+            position->Y = metadata->DestinationY + scaledX * cachedSin + scaledY * cachedCos;
+        }
+
+        /// <summary>
+        /// Calculates the position of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
         /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector3"/>.</param>
         [CLSCompliant(false)]
         protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, MutableVector3* position)
@@ -1657,6 +1676,21 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             position->X = metadata->DestinationX + scaledX * cachedCos - scaledY * cachedSin;
             position->Y = metadata->DestinationY + scaledX * cachedSin + scaledY * cachedCos;
             position->Z = 0;
+        }
+
+        /// <summary>
+        /// Calculates the position of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex.</param>
+        [CLSCompliant(false)]
+        protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, ref Vector2 position)
+        {
+            fixed (Vector2* pPosition = &position)
+            {
+                CalculatePosition(metadata, ix, (MutableVector2*)pPosition);
+            }
         }
 
         /// <summary>
@@ -1680,12 +1714,49 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
         /// <param name="position">The position of the current vertex.</param>
+        protected void CalculatePosition(IntPtr metadata, Int32 ix, ref Vector2 position)
+        {
+            fixed (Vector2* pPosition = &position)
+            {
+                CalculatePosition((SpriteHeader*)metadata, ix, (MutableVector2*)pPosition);
+            }
+        }
+
+        /// <summary>
+        /// Calculates the position of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex.</param>
         protected void CalculatePosition(IntPtr metadata, Int32 ix, ref Vector3 position)
         {
             fixed (Vector3* pPosition = &position)
             {
                 CalculatePosition((SpriteHeader*)metadata, ix, (MutableVector3*)pPosition);
             }
+        }
+
+        /// <summary>
+        /// Calculates the texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">The sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="u">The u component of the texture coordinate.</param>
+        /// <param name="v">The v component of the texture coordinate.</param>
+        [CLSCompliant(false)]
+        protected void CalculateTextureCoordinates(SpriteHeader* metadata, Int32 ix, UInt16* u, UInt16* v)
+        {
+            var x = xCoords[ix];
+            var y = yCoords[ix];
+
+            if ((metadata->Effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally)
+                x = 1f - x;
+
+            if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
+                y = 1f - y;
+
+            *u = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
+            *v = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
         }
 
         /// <summary>
@@ -1715,6 +1786,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">The sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="u">The u component of the texture coordinate.</param>
+        /// <param name="v">The v component of the texture coordinate.</param>
+        [CLSCompliant(false)]
+        protected void CalculateTextureCoordinates(SpriteHeader* metadata, Int32 ix, ref UInt16 u, ref UInt16 v)
+        {
+            fixed (UInt16* pU = &u)
+            fixed (UInt16* pV = &v)
+            {
+                CalculateTextureCoordinates(metadata, ix, pU, pV);
+            }
+        }
+
+        /// <summary>
+        /// Calculates the texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">The sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
         /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
         [CLSCompliant(false)]
         protected void CalculateTextureCoordinates(SpriteHeader* metadata, Int32 ix, ref Vector2 textureCoordinates)
@@ -1730,6 +1818,23 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="u">The u component of the texture coordinate.</param>
+        /// <param name="v">The v component of the texture coordinate.</param>
+        [CLSCompliant(false)]
+        protected void CalculateTextureCoordinates(IntPtr metadata, Int32 ix, ref UInt16 u, ref UInt16 v)
+        {
+            fixed (UInt16* pU = &u)
+            fixed (UInt16* pV = &v)
+            {
+                CalculateTextureCoordinates((SpriteHeader*)metadata, ix, pU, pV);
+            }
+        }
+
+        /// <summary>
+        /// Calculates the texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
         /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
         protected void CalculateTextureCoordinates(IntPtr metadata, Int32 ix, ref Vector2 textureCoordinates)
         {
@@ -1737,6 +1842,96 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             {
                 CalculateTextureCoordinates((SpriteHeader*)metadata, ix, (MutableVector2*)pTextureCoordinates);
             }
+        }
+
+        /// <summary>
+        /// Calculates the position and texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
+        /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
+        [CLSCompliant(false)]
+        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* position, UInt16* u, UInt16* v)
+        {
+            var x = xCoords[ix];
+            var y = yCoords[ix];
+
+            var scaledX = (x - cachedOriginX) * metadata->DestinationWidth;
+            var scaledY = (y - cachedOriginY) * metadata->DestinationHeight;
+
+            position->X = metadata->DestinationX + scaledX * cachedCos - scaledY * cachedSin;
+            position->Y = metadata->DestinationY + scaledX * cachedSin + scaledY * cachedCos;
+
+            if ((metadata->Effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally)
+                x = 1f - x;
+
+            if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
+                y = 1f - y;
+
+            *u = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
+            *v = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
+        }
+
+        /// <summary>
+        /// Calculates the position and texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
+        /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
+        [CLSCompliant(false)]
+        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector3* position, UInt16* u, UInt16* v)
+        {
+            var x = xCoords[ix];
+            var y = yCoords[ix];
+
+            var scaledX = (x - cachedOriginX) * metadata->DestinationWidth;
+            var scaledY = (y - cachedOriginY) * metadata->DestinationHeight;
+
+            position->X = metadata->DestinationX + scaledX * cachedCos - scaledY * cachedSin;
+            position->Y = metadata->DestinationY + scaledX * cachedSin + scaledY * cachedCos;
+            position->Z = 0;
+
+            if ((metadata->Effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally)
+                x = 1f - x;
+
+            if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
+                y = 1f - y;
+
+            *u = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
+            *v = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
+        }
+
+        /// <summary>
+        /// Calculates the position and texture coordinates of a sprite vertex.
+        /// </summary>
+        /// <param name="metadata">A pointer to the sprite metadata.</param>
+        /// <param name="ix">The index of the current vertex.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector3"/>.</param>
+        /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
+        [CLSCompliant(false)]
+        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* position, MutableVector2* textureCoordinates)
+        {
+            var x = xCoords[ix];
+            var y = yCoords[ix];
+
+            var scaledX = (x - cachedOriginX) * metadata->DestinationWidth;
+            var scaledY = (y - cachedOriginY) * metadata->DestinationHeight;
+
+            position->X = metadata->DestinationX + scaledX * cachedCos - scaledY * cachedSin;
+            position->Y = metadata->DestinationY + scaledX * cachedSin + scaledY * cachedCos;
+
+            if ((metadata->Effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally)
+                x = 1f - x;
+
+            if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
+                y = 1f - y;
+
+            textureCoordinates->X = (metadata->SourceX + x * metadata->SourceWidth) * cachedU;
+            textureCoordinates->Y = 1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV);
         }
 
         /// <summary>
