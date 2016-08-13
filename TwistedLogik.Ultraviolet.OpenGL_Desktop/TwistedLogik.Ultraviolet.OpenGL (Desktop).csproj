@@ -196,9 +196,7 @@
     <EmbeddedResource Include="Resources\BasicEffectTexturedES.frag" />
     <EmbeddedResource Include="Resources\BasicEffectTexturedES.vert" />
     <EmbeddedResource Include="Resources\BlurEffect.frag" />
-    <EmbeddedResource Include="Resources\BlurEffect.vert" />
     <EmbeddedResource Include="Resources\BlurEffectES.frag" />
-    <EmbeddedResource Include="Resources\BlurEffectES.vert" />
     <EmbeddedResource Include="Resources\SpriteBatchEffect.frag" />
     <EmbeddedResource Include="Resources\SpriteBatchEffect.vert" />
     <EmbeddedResource Include="Resources\SpriteBatchEffectES.frag" />

@@ -22,10 +22,11 @@ namespace TwistedLogik.Ultraviolet.Graphics
         protected BlurEffect(EffectImplementation impl)
             : base(impl)
         {
-            this.epWorld      = Parameters["World"];
-            this.epView       = Parameters["View"];
+            this.epWorld = Parameters["World"];
+            this.epView = Parameters["View"];
             this.epProjection = Parameters["Projection"];
-            this.epMix        = Parameters["Mix"];
+            this.epMix = Parameters["Mix"];
+            this.epTextureSize = Parameters["TextureSize"];
 
             this.Radius = 5f;
         }
@@ -108,6 +109,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
                 if (textureSize != value)
                 {
                     textureSize = value;
+                    epTextureSize.SetValue((Vector2)value);
                     OnTextureSizeChanged();
                 }
             }
@@ -213,5 +215,6 @@ namespace TwistedLogik.Ultraviolet.Graphics
         private readonly EffectParameter epView;
         private readonly EffectParameter epProjection;
         private readonly EffectParameter epMix;
+        private readonly EffectParameter epTextureSize;
     }
 }

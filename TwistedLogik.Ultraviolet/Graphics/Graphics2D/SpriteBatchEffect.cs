@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents the <see cref="Effect"/> used by <see cref="SpriteBatchBase{VertexType, SpriteData}"/> to render sprites.
     /// </summary>
-    public abstract class SpriteBatchEffect : Effect, ISpriteBatchEffect
+    public abstract class SpriteBatchEffect : Effect, ISpriteBatchEffect, IEffectTextureSize
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteBatchEffect"/> class.
@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             : base(impl)
         {
             this.epMatrixTransform = Parameters["MatrixTransform"];
+            this.epTextureSize = Parameters["TextureSize"];
         }
 
         /// <summary>
@@ -34,9 +35,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return uv.GetFactoryMethod<SpriteBatchEffectFactory>()(uv);
         }
 
-        /// <summary>
-        /// Gets or sets the effect's transformation matrix.
-        /// </summary>
+        /// <inheritdoc/>
         public Matrix MatrixTransform
         {
             get
@@ -53,7 +52,25 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
         }
 
+        /// <inheritdoc/>
+        public Size2 TextureSize
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return (Size2)epTextureSize.GetValueVector2();
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                epTextureSize.SetValue((Vector2)value);
+            }
+        }
+
         // Cached effect parameters.
         private readonly EffectParameter epMatrixTransform;
+        private readonly EffectParameter epTextureSize;
     }
 }

@@ -41,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new[] {
             new VertexElement(0, VertexFormat.Vector2, VertexUsage.Position, 0),
             new VertexElement(sizeof(Single) * 2, VertexFormat.Color, VertexUsage.Color, 0),
-            new VertexElement(sizeof(Single) * 2 + sizeof(Byte) * 4, VertexFormat.NormalizedUnsignedShort2, VertexUsage.TextureCoordinate, 0),
+            new VertexElement(sizeof(Single) * 2 + sizeof(Byte) * 4, VertexFormat.UnsignedShort2, VertexUsage.TextureCoordinate, 0),
         });
 
         /// <summary>

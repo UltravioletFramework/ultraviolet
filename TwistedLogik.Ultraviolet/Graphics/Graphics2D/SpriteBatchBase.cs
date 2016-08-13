@@ -1755,8 +1755,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                 y = 1f - y;
 
-            *u = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
-            *v = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
+            *u = (UInt16)(metadata->SourceX + x * metadata->SourceWidth);
+            *v = (UInt16)(metadata->SourceY + y * metadata->SourceHeight);
         }
 
         /// <summary>
@@ -1870,8 +1870,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                 y = 1f - y;
 
-            *u = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
-            *v = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
+            var uu = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
+            var vv = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
+
+            *u = (UInt16)(metadata->SourceX + x * metadata->SourceWidth);
+            *v = (UInt16)(metadata->SourceY + y * metadata->SourceHeight);
         }
 
         /// <summary>
@@ -1901,8 +1904,11 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             if ((metadata->Effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically)
                 y = 1f - y;
 
-            *u = (UInt16)(UInt16.MaxValue * ((metadata->SourceX + x * metadata->SourceWidth) * cachedU));
-            *v = (UInt16)(UInt16.MaxValue * (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV)));
+            var foo = ((metadata->SourceX + x * metadata->SourceWidth) * cachedU);
+            var bar = (1f - ((metadata->SourceY + y * metadata->SourceHeight) * cachedV));
+
+            *u = (UInt16)(metadata->SourceX + x * metadata->SourceWidth);
+            *v = (UInt16)(metadata->SourceY + y * metadata->SourceHeight);
         }
 
         /// <summary>
@@ -2384,7 +2390,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
                 matrixTransformParam.SetValue(projection * transformMatrix);
             }
-
+            
             customEffect.CurrentTechnique.Passes[0].Apply();
         }
 
@@ -2434,7 +2440,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 effectTextureSizes.TextureSize = (texture == null) ? Size2.Zero : 
                     new Size2(texture.Width, texture.Height);
             }
-
+            
             // Draw the sprites in this batch.
             var options = SetDataOptions.NoOverwrite;
             while (count > 0)
