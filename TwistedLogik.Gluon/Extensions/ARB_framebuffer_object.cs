@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -174,6 +175,7 @@ namespace TwistedLogik.Gluon
         public static void GetRenderbufferParameteriv(uint target, uint pname, int* @params) { glGetRenderbufferParameteriv(target, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsFramebufferDelegate(uint framebuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
         private static readonly glIsFramebufferDelegate glIsFramebuffer = null;
@@ -181,6 +183,7 @@ namespace TwistedLogik.Gluon
         public static bool IsFramebuffer(uint framebuffer) { return glIsFramebuffer(framebuffer); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsRenderbufferDelegate(uint renderbuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
         private static readonly glIsRenderbufferDelegate glIsRenderbuffer = null;

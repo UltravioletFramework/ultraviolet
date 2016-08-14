@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -188,6 +189,7 @@ namespace TwistedLogik.Gluon
         private static readonly glMapNamedBufferRangeDelegate glMapNamedBufferRange = null;
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glUnmapNamedBufferDelegate(uint buffer);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]

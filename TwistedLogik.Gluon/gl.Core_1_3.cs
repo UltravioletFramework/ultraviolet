@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -321,7 +322,7 @@ namespace TwistedLogik.Gluon
         public static void MultiTexCoord4sv(uint target, short* v) { glMultiTexCoord4sv(target, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glSampleCoverageDelegate(float value, bool invert);
+        private delegate void glSampleCoverageDelegate(float value, [MarshalAs(UnmanagedType.I1)] bool invert);
         [Require(MinVersion = "1.3")]
         private static readonly glSampleCoverageDelegate glSampleCoverage = null;
 

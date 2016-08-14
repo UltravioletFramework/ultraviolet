@@ -7,7 +7,7 @@ namespace TwistedLogik.Gluon
     public static unsafe partial class gl
     {
         [MonoNativeFunctionWrapper]
-        private delegate void glColorMaskiDelegate(uint buf, bool red, bool green, bool blue, bool alpha);
+        private delegate void glColorMaskiDelegate(uint buf, [MarshalAs(UnmanagedType.I1)] bool red, [MarshalAs(UnmanagedType.I1)] bool green, [MarshalAs(UnmanagedType.I1)] bool blue, [MarshalAs(UnmanagedType.I1)] bool alpha);
         [Require(MinVersion = "3.0")]
         private static readonly glColorMaskiDelegate glColorMaski = null;
 
@@ -42,6 +42,7 @@ namespace TwistedLogik.Gluon
         public static void Disablei(uint cap, uint index) { glDisablei(cap, index); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsEnablediDelegate(uint cap, uint index);
         [Require(MinVersion = "3.0")]
         private static readonly glIsEnablediDelegate glIsEnabledi = null;

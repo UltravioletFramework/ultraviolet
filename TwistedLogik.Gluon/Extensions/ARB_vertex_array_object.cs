@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -55,6 +56,7 @@ namespace TwistedLogik.Gluon
         public static void BindVertexArray(uint array) { glBindVertexArray(array); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsVertexArrayDelegate(uint array);
         [Require(MinVersion = "3.0", Extension = "GL_ARB_vertex_array_object")]
         private static readonly glIsVertexArrayDelegate glIsVertexArray = null;

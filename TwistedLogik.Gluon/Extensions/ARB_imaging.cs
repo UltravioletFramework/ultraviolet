@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -146,7 +147,7 @@ namespace TwistedLogik.Gluon
         public static void GetConvolutionParameteriv(uint target, uint pname, int* @params) { glGetConvolutionParameteriv(target, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glGetHistogramDelegate(uint target, bool reset, uint format, uint type, IntPtr values);
+        private delegate void glGetHistogramDelegate(uint target, [MarshalAs(UnmanagedType.I1)] bool reset, uint format, uint type, IntPtr values);
         [Require(Extension = "GL_ARB_imaging")]
         private static readonly glGetHistogramDelegate glGetHistogram = null;
 
@@ -167,7 +168,7 @@ namespace TwistedLogik.Gluon
         public static void GetHistogramParameteriv(uint target, uint pname, int* @params) { glGetHistogramParameteriv(target, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glGetMinmaxDelegate(uint target, bool reset, uint format, uint types, IntPtr values);
+        private delegate void glGetMinmaxDelegate(uint target, [MarshalAs(UnmanagedType.I1)] bool reset, uint format, uint types, IntPtr values);
         [Require(Extension = "GL_ARB_imaging")]
         private static readonly glGetMinmaxDelegate glGetMinmax = null;
 
@@ -195,14 +196,14 @@ namespace TwistedLogik.Gluon
         public static void GetSeparableFilter(uint target, uint format, uint type, void* row, void* column, void* span) { glGetSeparableFilter(target, format, type, (IntPtr)row, (IntPtr)column, (IntPtr)span); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glHistogramDelegate(uint target, int width, uint internalformat, bool sink);
+        private delegate void glHistogramDelegate(uint target, int width, uint internalformat, [MarshalAs(UnmanagedType.I1)] bool sink);
         [Require(Extension = "GL_ARB_imaging")]
         private static readonly glHistogramDelegate glHistogram = null;
 
         public static void Histogram(uint target, int width, uint internalformat, bool sink) { glHistogram(target, width, internalformat, sink); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glMinmaxDelegate(uint target, uint internalformat, bool sink);
+        private delegate void glMinmaxDelegate(uint target, uint internalformat, [MarshalAs(UnmanagedType.I1)] bool sink);
         [Require(Extension = "GL_ARB_imaging")]
         private static readonly glMinmaxDelegate glMinmax = null;
 

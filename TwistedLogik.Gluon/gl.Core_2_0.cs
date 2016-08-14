@@ -316,6 +316,7 @@ namespace TwistedLogik.Gluon
         public static void GetVertexAttribPointerv(uint index, uint pname, void** pointer) { glGetVertexAttribPointerv(index, pname, (IntPtr)pointer); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsProgramDelegate(uint program);
         [Require(MinVersion = "2.0")]
         private static readonly glIsProgramDelegate glIsProgram = null;
@@ -323,6 +324,7 @@ namespace TwistedLogik.Gluon
         public static bool IsProgram(uint program) { return glIsProgram(program); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsShaderDelegate(uint shader);
         [Require(MinVersion = "2.0")]
         private static readonly glIsShaderDelegate glIsShader = null;
@@ -463,21 +465,21 @@ namespace TwistedLogik.Gluon
         public static void Uniform4iv(int location, int count, int* value) { glUniform4iv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glUniformMatrix2fvDelegate(int location, int count, bool transpose, IntPtr value);
+        private delegate void glUniformMatrix2fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.0")]
         private static readonly glUniformMatrix2fvDelegate glUniformMatrix2fv = null;
 
         public static void UniformMatrix2fv(int location, int count, bool transpose, float* value) { glUniformMatrix2fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glUniformMatrix3fvDelegate(int location, int count, bool transpose, IntPtr value);
+        private delegate void glUniformMatrix3fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.0")]
         private static readonly glUniformMatrix3fvDelegate glUniformMatrix3fv = null;
 
         public static void UniformMatrix3fv(int location, int count, bool transpose, float* value) { glUniformMatrix3fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glUniformMatrix4fvDelegate(int location, int count, bool transpose, IntPtr value);
+        private delegate void glUniformMatrix4fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.0")]
         private static readonly glUniformMatrix4fvDelegate glUniformMatrix4fv = null;
 
@@ -743,7 +745,7 @@ namespace TwistedLogik.Gluon
         public static void VertexAttrib4usv(uint index, ushort* v) { glVertexAttrib4usv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glVertexAttribPointerDelegate(uint index, int size, uint type, bool normalized, int stride, IntPtr pointer);
+        private delegate void glVertexAttribPointerDelegate(uint index, int size, uint type, [MarshalAs(UnmanagedType.I1)] bool normalized, int stride, IntPtr pointer);
         [Require(MinVersion = "2.0")]
         private static readonly glVertexAttribPointerDelegate glVertexAttribPointer = null;
 

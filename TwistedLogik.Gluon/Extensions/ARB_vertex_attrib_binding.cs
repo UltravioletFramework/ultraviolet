@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -25,7 +24,7 @@ namespace TwistedLogik.Gluon
         }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glVertexAttribFormatDelegate(uint attribindex, int size, uint type, bool normalized, uint relativeoffset);
+        private delegate void glVertexAttribFormatDelegate(uint attribindex, int size, uint type, [MarshalAs(UnmanagedType.I1)] bool normalized, uint relativeoffset);
         [Require(MinVersion = "4.3", MinVersionES = "3.1")]
         [Require(Extension = "GL_ARB_vertex_attrib_binding")]
         private static readonly glVertexAttribFormatDelegate glVertexAttribFormat = null;
@@ -87,7 +86,7 @@ namespace TwistedLogik.Gluon
         private static readonly glVertexArrayVertexBufferDelegate glVertexArrayVertexBuffer = null;
 
         [MonoNativeFunctionWrapper]
-        private delegate void glVertexArrayAttribFormatDelegate(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativeoffset);
+        private delegate void glVertexArrayAttribFormatDelegate(uint vaobj, uint attribindex, int size, uint type, [MarshalAs(UnmanagedType.I1)] bool normalized, uint relativeoffset);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access && GL_ARB_vertex_attrib_binding", ExtensionFunction = "glVertexArrayVertexAttribFormatEXT")]
