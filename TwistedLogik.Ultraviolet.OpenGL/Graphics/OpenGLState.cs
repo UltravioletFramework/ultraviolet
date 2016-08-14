@@ -6,6 +6,7 @@ using System.Reflection;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
+using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -60,15 +61,49 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Resets the values that are stored in the OpenGL state cache to their defaults.
         /// </summary>
-        public static void ResetCache()
+        public static unsafe void ResetCache()
         {
             foreach (var glCachedInteger in glCachedIntegers)
                 glCachedInteger.Reset();
-            
+
             glTextureBinding2DByTextureUnit.Clear();
 
             GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
             GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
+
+            var clearColorComponents = stackalloc float[4];
+            gl.GetFloatv(gl.GL_COLOR_CLEAR_VALUE, clearColorComponents);
+            clearColor = new Color(
+                (Byte)(clearColorComponents[0] * Byte.MaxValue),
+                (Byte)(clearColorComponents[1] * Byte.MaxValue),
+                (Byte)(clearColorComponents[2] * Byte.MaxValue),
+                (Byte)(clearColorComponents[3] * Byte.MaxValue));
+            clearDepth = gl.GetDouble(gl.GL_DEPTH_CLEAR_VALUE);
+            clearStencil = gl.GetInteger(gl.GL_STENCIL_CLEAR_VALUE);
+
+            var colorMaskComponents = stackalloc bool[4];
+            gl.GetBooleanv(gl.GL_COLOR_WRITEMASK, colorMaskComponents);
+            colorMask =
+                (colorMaskComponents[0] ? ColorWriteChannels.Red : ColorWriteChannels.None) |
+                (colorMaskComponents[1] ? ColorWriteChannels.Green : ColorWriteChannels.None) |
+                (colorMaskComponents[2] ? ColorWriteChannels.Blue : ColorWriteChannels.None) |
+                (colorMaskComponents[3] ? ColorWriteChannels.Alpha : ColorWriteChannels.None);
+
+            depthTestEnabled = gl.IsEnabled(gl.GL_DEPTH_TEST);
+            depthMask = gl.GetBoolean(gl.GL_DEPTH_WRITEMASK);            
+            depthFunc = (UInt32)gl.GetInteger(gl.GL_DEPTH_FUNC);
+
+            stencilTestEnabled = gl.IsEnabled(gl.GL_STENCIL_TEST);
+
+            blendEnabled = gl.IsEnabled(gl.GL_BLEND);
+
+            var blendColorComponents = stackalloc float[4];
+            gl.GetFloatv(gl.GL_BLEND_COLOR, blendColorComponents);
+            blendColor = new Color(
+                (Byte)(blendColorComponents[0] * Byte.MaxValue),
+                (Byte)(blendColorComponents[1] * Byte.MaxValue),
+                (Byte)(blendColorComponents[2] * Byte.MaxValue),
+                (Byte)(blendColorComponents[3] * Byte.MaxValue));
         }
 
         /// <summary>
@@ -107,6 +142,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="texture">The texture unit to activate.</param>
         public static void ActiveTexture(UInt32 texture)
         {
+            if (GL_ACTIVE_TEXTURE == texture)
+                return;
+
             gl.ActiveTexture(texture);
             gl.ThrowIfError();
 
@@ -144,6 +182,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="texture">The texture to bind to the context.</param>
         public static void BindTexture2D(UInt32 texture)
         {
+            if (GL_TEXTURE_BINDING_2D == texture)
+                return;
+
             gl.BindTexture(gl.GL_TEXTURE_2D, texture);
             gl.ThrowIfError();
 
@@ -218,6 +259,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="arrayBuffer">The array buffer to bind to the OpenGL context.</param>
         public static void BindArrayBuffer(UInt32 arrayBuffer)
         {
+            if (gl.GL_ARRAY_BUFFER_BINDING == arrayBuffer)
+                return;
+
             gl.BindBuffer(gl.GL_ARRAY_BUFFER, arrayBuffer);
             gl.ThrowIfError();
 
@@ -250,6 +294,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="elementArrayBuffer">The element array buffer to bind to the OpenGL context.</param>
         public static void BindElementArrayBuffer(UInt32 elementArrayBuffer)
         {
+            if (gl.GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
+                return;
+
             gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
             gl.ThrowIfError();
 
@@ -282,6 +329,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="framebuffer">The framebuffer to bind to the OpenGL context.</param>
         public static void BindFramebuffer(UInt32 framebuffer)
         {
+            if (gl.GL_FRAMEBUFFER_BINDING == framebuffer)
+                return;
+
             gl.BindFramebuffer(gl.GL_FRAMEBUFFER, framebuffer);
             gl.ThrowIfError();
 
@@ -314,6 +364,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="renderbuffer">The renderbuffer to bind to the OpenGL context.</param>
         public static void BindRenderbuffer(UInt32 renderbuffer)
         {
+            if (GL_RENDERBUFFER_BINDING == renderbuffer)
+                return;
+
             gl.BindRenderbuffer(gl.GL_RENDERBUFFER, renderbuffer);
             gl.ThrowIfError();
 
@@ -325,13 +378,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Creates an instance of <see cref="OpenGLState"/> which activates a shader program.
         /// </summary>
         /// <param name="program">The program to bind to the OpenGL context.</param>
-        public static OpenGLState ScopedUseProgram(UInt32 program)
+        public static OpenGLState ScopedUseProgram(OpenGLShaderProgram program)
         {
             var state = pool.Retrieve();
 
-            state.stateType             = OpenGLStateType.UseProgram;
-            state.disposed              = false;
-            state.newGL_CURRENT_PROGRAM = program;
+            state.stateType = OpenGLStateType.UseProgram;
+            state.disposed = false;
+            state.newGL_CURRENT_PROGRAM = program?.OpenGLName ?? 0;
+            state.newCurrentProgram = program;
 
             state.Apply();
 
@@ -342,12 +396,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Immediately activates a shader program and updates the state cache.
         /// </summary>
         /// <param name="program">The program to bind to the OpenGL context.</param>
-        public static void UseProgram(UInt32 program)
+        public static void UseProgram(OpenGLShaderProgram program)
         {
-            gl.UseProgram(program);
+            var oglname = program?.OpenGLName ?? 0;
+            if (GL_CURRENT_PROGRAM == oglname)
+                return;
+
+            gl.UseProgram(oglname);
             gl.ThrowIfError();
 
-            GL_CURRENT_PROGRAM.Update(program);
+            currentProgram = program;
+
+            GL_CURRENT_PROGRAM.Update(oglname);
             VerifyCache();
         }
         
@@ -598,6 +658,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.UseProgram(newGL_CURRENT_PROGRAM);
             gl.ThrowIfError();
+
+            oldCurrentProgram = currentProgram;
+            currentProgram = newCurrentProgram;
 
             oldGL_CURRENT_PROGRAM = OpenGLState.GL_CURRENT_PROGRAM.Update(newGL_CURRENT_PROGRAM);
         }
@@ -877,6 +940,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.UseProgram(oldGL_CURRENT_PROGRAM);
             gl.ThrowIfError();
 
+            currentProgram = oldCurrentProgram;
+
             OpenGLState.GL_CURRENT_PROGRAM.Update(oldGL_CURRENT_PROGRAM);
         }
 
@@ -936,6 +1001,192 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
+        /// <summary>
+        /// Gets the current shader program, if any is currently active.
+        /// </summary>
+        public static OpenGLShaderProgram CurrentProgram
+        {
+            get { return currentProgram; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value to which the color buffer is cleared.
+        /// </summary>
+        public static Color ClearColor
+        {
+            get { return clearColor; }
+            set
+            {
+                if (clearColor == value)
+                    return;
+
+                clearColor = value;
+                gl.ClearColor(value.R / 255f, value.G / 255f, value.B / 255f, value.A / 255f);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value to which the depth buffer is cleared.
+        /// </summary>
+        public static Double ClearDepth
+        {
+            get { return clearDepth; }
+            set
+            {
+                if (clearDepth == value)
+                    return;
+
+                clearDepth = value;
+                gl.ClearDepth(value);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value to which the stencil buffer is cleared.
+        /// </summary>
+        public static Int32 ClearStencil
+        {
+            get { return clearStencil; }
+            set
+            {
+                if (clearStencil == value)
+                    return;
+
+                clearStencil = value;
+                gl.ClearStencil(value);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating which color channels are enabled for writing.
+        /// </summary>
+        public static ColorWriteChannels ColorMask
+        {
+            get { return colorMask; }
+            set
+            {
+                if (colorMask == value)
+                    return;
+
+                colorMask = value;
+                gl.ColorMask(
+                    (value & ColorWriteChannels.Red) == ColorWriteChannels.Red,
+                    (value & ColorWriteChannels.Green) == ColorWriteChannels.Green,
+                    (value & ColorWriteChannels.Blue) == ColorWriteChannels.Blue,
+                    (value & ColorWriteChannels.Alpha) == ColorWriteChannels.Alpha);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether GL_DEPTH_TEST is enabled.
+        /// </summary>
+        public static Boolean DepthTestEnabled
+        {
+            get { return depthTestEnabled; }
+            set
+            {
+                if (depthTestEnabled == value)
+                    return;
+
+                depthTestEnabled = value;
+                gl.Enable(gl.GL_DEPTH_TEST, value);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether writing into the depth buffer is enabled.
+        /// </summary>
+        public static Boolean DepthMask
+        {
+            get { return depthMask; }
+            set
+            {
+                if (depthMask == value)
+                    return;
+
+                depthMask = value;
+                gl.DepthMask(value);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the depth comparison function.
+        /// </summary>
+        public static UInt32 DepthFunc
+        {
+            get { return depthFunc; }
+            set
+            {
+                if (depthFunc == value)
+                    return;
+
+                depthFunc = value;
+                gl.DepthFunc(value);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether GL_STENCIL_TEST is enabled.
+        /// </summary>
+        public static Boolean StencilTestEnabled
+        {
+            get { return stencilTestEnabled; }
+            set
+            {
+                if (stencilTestEnabled == value)
+                    return;
+
+                stencilTestEnabled = value;
+                gl.Enable(gl.GL_STENCIL_TEST, value);
+                gl.ThrowIfError();
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether GL_BLEND is enabled.
+        /// </summary>
+        public static Boolean BlendEnabled
+        {
+            get { return blendEnabled; }
+            set
+            {
+                if (blendEnabled == value)
+                    return;
+
+                blendEnabled = value;
+                gl.Enable(gl.GL_BLEND, value);
+                gl.ThrowIfError();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the blending color.
+        /// </summary>
+        public static Color BlendColor
+        {
+            get { return blendColor; }
+            set
+            {
+                if (blendColor == value)
+                    return;
+
+                blendColor = value;
+                gl.BlendColor(
+                    value.R / (Single)Byte.MaxValue,
+                    value.G / (Single)Byte.MaxValue,
+                    value.B / (Single)Byte.MaxValue,
+                    value.A / (Single)Byte.MaxValue);
+                gl.ThrowIfError();
+            }
+        }
+        
         /// <summary>
         /// Gets the cached value of GL_ACTIVE_TEXTURE.
         /// </summary>
@@ -1000,6 +1251,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 newGL_FRAMEBUFFER_BINDING;
         private UInt32 newGL_RENDERBUFFER_BINDING;
         private UInt32 newGL_CURRENT_PROGRAM;
+        private OpenGLShaderProgram newCurrentProgram;
 
         private UInt32 oldGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
         private UInt32 oldGL_TEXTURE_BINDING_2D;
@@ -1009,6 +1261,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 oldGL_FRAMEBUFFER_BINDING;
         private UInt32 oldGL_RENDERBUFFER_BINDING;
         private UInt32 oldGL_CURRENT_PROGRAM;
+        private OpenGLShaderProgram oldCurrentProgram;
         
         // Cached OpenGL state values.
         private static readonly OpenGLStateInteger[] glCachedIntegers;
@@ -1020,6 +1273,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private static readonly OpenGLStateInteger glFramebufferBinding        = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
         private static readonly OpenGLStateInteger glRenderbufferBinding       = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
         private static readonly OpenGLStateInteger glCurrentProgram            = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
+
+        private static OpenGLShaderProgram currentProgram;
+
+        private static Color clearColor;
+        private static Double clearDepth;
+        private static Int32 clearStencil;
+
+        private static ColorWriteChannels colorMask;
+
+        private static Boolean depthTestEnabled;
+        private static Boolean depthMask;
+        private static UInt32 depthFunc;
+
+        private static Boolean stencilTestEnabled;
+
+        private static Boolean blendEnabled;
+        private static Color blendColor;
 
         private static readonly Dictionary<UInt32, UInt32> glTextureBinding2DByTextureUnit = 
             new Dictionary<UInt32, UInt32>();

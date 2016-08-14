@@ -69,17 +69,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            gl.Enable(gl.GL_DEPTH_TEST, DepthBufferEnable);
-            gl.ThrowIfError();
+            OpenGLState.DepthTestEnabled = DepthBufferEnable;
+            OpenGLState.DepthMask = DepthBufferWriteEnable;
+            OpenGLState.DepthFunc = GetCompareFunctionGL(DepthBufferFunction);
 
-            gl.DepthMask(DepthBufferWriteEnable);
-            gl.ThrowIfError();
-
-            gl.DepthFunc(GetCompareFunctionGL(DepthBufferFunction));
-            gl.ThrowIfError();
-
-            gl.Enable(gl.GL_STENCIL_TEST, StencilEnable);
-            gl.ThrowIfError();
+            OpenGLState.StencilTestEnabled = StencilEnable;
 
             if (TwoSidedStencilMode)
             {

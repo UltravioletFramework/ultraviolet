@@ -131,13 +131,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (blendState.ColorWriteChannels != ColorWriteChannels.All)
                 {
                     resetColorWriteChannels = true;
-                    gl.ColorMask(true, true, true, true);
-                    gl.ThrowIfError();
+                    OpenGLState.ColorMask = ColorWriteChannels.All;
                 }
 
-                gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-                gl.ThrowIfError();
-
+                OpenGLState.ClearColor = color;
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
@@ -146,15 +143,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (!depthStencilState.DepthBufferEnable)
                 {
                     resetDepthTest = true;
-
-                    gl.Enable(gl.GL_DEPTH_TEST);
-                    gl.ThrowIfError();
-
-                    gl.DepthMask(true);
-                    gl.ThrowIfError();
+                    OpenGLState.DepthTestEnabled = true;
+                    OpenGLState.DepthMask = true;
                 }
 
-                gl.ClearDepth(depth);
+                OpenGLState.ClearDepth = depth;
                 mask |= gl.GL_DEPTH_BUFFER_BIT;
             }
 
@@ -163,13 +156,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 if (!depthStencilState.StencilEnable)
                 {
                     resetStencilTest = true;
-                    gl.Enable(gl.GL_STENCIL_TEST);
-                    gl.ThrowIfError();
+                    OpenGLState.StencilTestEnabled = true;
                 }
-
-                gl.ClearStencil(stencil);
-                gl.ThrowIfError();
-
+                
+                OpenGLState.ClearStencil = stencil;
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
             }
 
@@ -177,29 +167,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             gl.ThrowIfError();
 
             if (resetColorWriteChannels)
-            {
-                gl.ColorMask(
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Red) == ColorWriteChannels.Red, 
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Green) == ColorWriteChannels.Green, 
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Blue) == ColorWriteChannels.Blue, 
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Alpha) == ColorWriteChannels.Alpha);
-                gl.ThrowIfError();
-            }
+                OpenGLState.ColorMask = blendState.ColorWriteChannels;
 
             if (resetDepthTest)
             {
-                gl.Enable(gl.GL_DEPTH_TEST, depthStencilState.DepthBufferEnable);
-                gl.ThrowIfError();
-
-                gl.DepthMask(depthStencilState.DepthBufferWriteEnable);
-                gl.ThrowIfError();
+                OpenGLState.DepthTestEnabled = depthStencilState.DepthBufferEnable;
+                OpenGLState.DepthMask = depthStencilState.DepthBufferWriteEnable;
             }
 
             if (resetStencilTest)
-            {
-                gl.Enable(gl.GL_STENCIL_TEST, depthStencilState.StencilEnable);
-                gl.ThrowIfError();                
-            }
+                OpenGLState.StencilTestEnabled = depthStencilState.StencilEnable;
         }
 
         /// <inheritdoc/>
@@ -458,6 +435,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     var samplerObject = this.samplerObjects[sampler];
                     samplerObject.ApplySamplerState(state);
+                    this.samplerStates[sampler] = state;
                 }
                 else
                 {

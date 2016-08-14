@@ -105,15 +105,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            gl.Enable(gl.GL_BLEND);
-            gl.ThrowIfError();
-
-            gl.BlendColor(
-                BlendFactor.R / (Single)Byte.MaxValue,
-                BlendFactor.G / (Single)Byte.MaxValue,
-                BlendFactor.B / (Single)Byte.MaxValue,
-                BlendFactor.A / (Single)Byte.MaxValue);
-            gl.ThrowIfError();
+            OpenGLState.BlendEnabled = true;
+            OpenGLState.BlendColor = BlendFactor;
 
             if (IsSeparateBlend)
             {
@@ -145,8 +138,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var writeGreen = (ColorWriteChannels & ColorWriteChannels.Green) != 0;
             var writeBlue = (ColorWriteChannels & ColorWriteChannels.Blue) != 0;
             var writeAlpha = (ColorWriteChannels & ColorWriteChannels.Alpha) != 0;
-            gl.ColorMask(writeRed, writeGreen, writeBlue, writeAlpha);
-            gl.ThrowIfError();
+            OpenGLState.ColorMask = ColorWriteChannels;
         }
 
         /// <summary>

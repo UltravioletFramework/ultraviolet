@@ -33,9 +33,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
 
             var program = programs[programIndex];
-            var programID = program.OpenGLName;
-
-            OpenGLState.UseProgram(programID);
+            OpenGLState.UseProgram(program);
 
             foreach (var uniform in program.Uniforms)
             {

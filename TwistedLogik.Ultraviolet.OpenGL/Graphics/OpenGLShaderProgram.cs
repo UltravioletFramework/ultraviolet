@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
+using System.Runtime.InteropServices;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -52,12 +53,52 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var status = gl.GetProgrami(program, gl.GL_LINK_STATUS);
                 gl.ThrowIfError();
 
+                var attributeCount = gl.GetProgrami(program, gl.GL_ACTIVE_ATTRIBUTES);
+                gl.ThrowIfError();
+
+                unsafe
+                {
+                    var namebuf = Marshal.AllocHGlobal(256);
+                    try
+                    {
+                        for (int i = 0; i < attributeCount; i++)
+                        {
+                            var attrNameLen = 0;
+                            var attrName = default(String);
+                            var attrSize = 0;
+                            var attrType = 0u;
+                            gl.GetActiveAttrib(program, (uint)i, 256, &attrNameLen, &attrSize, &attrType, (sbyte*)namebuf);
+                            gl.ThrowIfError();
+
+                            attrName = Marshal.PtrToStringAnsi(namebuf);
+
+                            var location = gl.GetAttribLocation(program, attrName);
+                            gl.ThrowIfError();
+
+                            attributeLocations[attrName] = location;
+                        }
+                    }
+                    finally { Marshal.FreeHGlobal(namebuf); }
+                }
+
                 if (status == 0)
                     throw new InvalidOperationException(log);
             });
 
             this.program = program;
             this.uniforms = CreateUniformCollection();
+        }
+        
+        /// <summary>
+        /// Gets the location of the specified attribute within the shader program's list of attributes.
+        /// </summary>
+        /// <param name="name">The name of the attribute to evaluate.</param>
+        /// <returns>The location of the specified attribute, or -1 if the attribute does not exist within the program.</returns>
+        public Int32 GetAttribLocation(String name)
+        {
+            var location = -1;
+            attributeLocations.TryGetValue(name, out location);
+            return location;
         }
 
         /// <summary>
@@ -185,5 +226,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly OpenGLFragmentShader fragmentShader;
         private readonly OpenGLShaderUniformCollection uniforms;
         private readonly Boolean programOwnsShaders;
+
+        // Attrib cache.
+        private readonly Dictionary<String, Int32> attributeLocations =
+            new Dictionary<String, Int32>();
     }
 }

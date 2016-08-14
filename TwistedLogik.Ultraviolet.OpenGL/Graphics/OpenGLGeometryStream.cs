@@ -124,13 +124,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(IsValid, OpenGLStrings.InvalidGeometryStream);
 
-            if (!SwitchCachedProgram(program) && this.offset == offset)
-                return;
+            var switchedProgram = SwitchCachedProgram(program);
+            if (switchedProgram || this.offset != offset)
+            {
+                BindBuffers(offset, switchedProgram);
 
-            BindBuffers(offset);
-
-            this.program = program;
-            this.offset = offset;
+                this.program = program;
+                this.offset = offset;
+            }
         }
 
         /// <summary>
@@ -392,17 +393,18 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Binds the geometry stream's buffers to the device in preparation for rendering.
         /// </summary>
-        private void BindBuffers(UInt32 offset)
+        private void BindBuffers(UInt32 offset, Boolean switchedProgram)
         {
             unsafe
             {
                 var previousBuffer = (uint)OpenGLState.GL_ARRAY_BUFFER_BINDING;
 
-                DisableVertexAttributesOnCachedProgram();
+                if (switchedProgram)
+                    DisableVertexAttributesOnCachedProgram();
 
                 foreach (var binding in vbuffers)
                 {
-                    BindVertexAttributesForBuffer(binding.VertexBuffer, (UInt32)binding.InstanceFrequency, offset);
+                    BindVertexAttributesForBuffer(binding.VertexBuffer, (UInt32)binding.InstanceFrequency, offset, switchedProgram);
                 }
 
                 gl.BindBuffer(gl.GL_ARRAY_BUFFER, previousBuffer);
@@ -413,12 +415,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Binds the specified buffer's vertex attributes to the currently cached program.
         /// </summary>
-        private void BindVertexAttributesForBuffer(OpenGLVertexBuffer vbuffer, UInt32 instanceFrequency, UInt32 offset)
+        private void BindVertexAttributesForBuffer(OpenGLVertexBuffer vbuffer, UInt32 instanceFrequency, UInt32 offset, Boolean switchedProgram)
         {
             gl.BindBuffer(gl.GL_ARRAY_BUFFER, vbuffer.OpenGLName);
             gl.ThrowIfError();
 
             var position = offset;
+            var program = OpenGLState.CurrentProgram;
 
             foreach (var element in vbuffer.VertexDeclaration)
             {
@@ -429,11 +432,17 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var integer = false;
                 var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize, out integer);
 
-                var location = gl.GetAttribLocation(program, name);
+                var location = program.GetAttribLocation(name);
                 if (location >= 0)
                 {
-                    gl.VertexAttribDivisor((uint)location, instanceFrequency);
-                    gl.ThrowIfError();
+                    if (switchedProgram)
+                    {
+                        gl.VertexAttribDivisor((uint)location, instanceFrequency);
+                        gl.ThrowIfError();
+
+                        gl.EnableVertexAttribArray((uint)location);
+                        gl.ThrowIfError();
+                    }
 
                     unsafe
                     {
@@ -448,9 +457,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                             gl.ThrowIfError();
                         }
                     }
-
-                    gl.EnableVertexAttribArray((uint)location);
-                    gl.ThrowIfError();
                 }
 
                 position += (uint)stride;
