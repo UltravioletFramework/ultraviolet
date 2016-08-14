@@ -107,7 +107,37 @@ namespace TwistedLogik.Gluon
 
             public override void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
             {
-                glGetBufferSubData(target, (IntPtr)offset, (IntPtr)size, (IntPtr)data);
+                glGetBufferSubData(target, offset, size, (IntPtr)data);
+            }
+
+            public override void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, int stride)
+            {
+                glBindVertexBuffer(bindingindex, buffer, offset, stride);
+            }
+
+            public override void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativesize)
+            {
+                glVertexAttribFormat(attribindex, size, type, normalized, relativesize);
+            }
+
+            public override void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+            {
+                glVertexAttribIFormat(attribindex, size, type, relativesize);
+            }
+
+            public override void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+            {
+                glVertexAttribLFormat(attribindex, size, type, relativesize);
+            }
+
+            public override void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex)
+            {
+                glVertexAttribBinding(attribindex, bindingindex);
+            }
+
+            public override void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor)
+            {
+                glVertexBindingDivisor(bindingindex, divisor);
             }
         }
     }

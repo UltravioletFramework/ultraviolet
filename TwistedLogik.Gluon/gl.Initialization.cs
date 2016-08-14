@@ -45,8 +45,9 @@ namespace TwistedLogik.Gluon
 
             gl.InitializeDSA();
 
-            gl.IsTextureStorageAvailable       = IsVersionAtLeast(4, 2) || IsExtensionSupported("GL_ARB_texture_storage");
+            gl.IsTextureStorageAvailable = IsVersionAtLeast(4, 2) || IsExtensionSupported("GL_ARB_texture_storage");
             gl.IsAnisotropicFilteringAvailable = IsExtensionSupported("GL_EXT_texture_filter_anisotropic");
+            gl.IsVertexAttribBindingAvailable = IsExtensionSupported("GL_ARB_vertex_attrib_binding");
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -56,7 +57,7 @@ namespace TwistedLogik.Gluon
                     VerboseLog(GluonStrings.CouldNotLoadFunction.Format(function));
                 }
             }
-            
+
             gl.DefaultFramebuffer = (UInt32)gl.GetInteger(gl.GL_FRAMEBUFFER_BINDING);
             gl.ThrowIfError();
 
@@ -86,10 +87,11 @@ namespace TwistedLogik.Gluon
             gl.minorVersion = 0;
             gl.extensions.Clear();
 
-            gl.dsaimpl                         = null;
+            gl.dsaimpl = null;
             gl.IsARBDirectStateAccessAvailable = false;
             gl.IsEXTDirectStateAccessAvailable = false;
-            gl.IsTextureStorageAvailable       = false;
+            gl.IsTextureStorageAvailable = false;
+            gl.IsVertexAttribBindingAvailable = false;
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -357,7 +359,8 @@ namespace TwistedLogik.Gluon
                 {
                     if (!req.IsCore(majorVersion, minorVersion, isGLES))
                     {
-                        if (!IsExtensionSupported(req.Extension))
+                        var extensions = req.Extension.Split(new[] { "&&" }, StringSplitOptions.None);
+                        if (!extensions.All(IsExtensionSupported))
                             continue;
 
                         name = req.ExtensionFunction ?? name;

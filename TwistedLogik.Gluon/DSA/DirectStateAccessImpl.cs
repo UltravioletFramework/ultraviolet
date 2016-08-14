@@ -50,6 +50,18 @@ namespace TwistedLogik.Gluon
             public abstract void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params);
 
             public abstract void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data);
+
+            public abstract void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, int stride);
+
+            public abstract void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativesize);
+
+            public abstract void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize);
+
+            public abstract void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize);
+
+            public abstract void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex);
+
+            public abstract void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor);
         }
     }
 }

@@ -121,6 +121,36 @@ namespace TwistedLogik.Gluon
             dsaimpl.GetNamedBufferSubData(buffer, target, offset, size, data);
         }
 
+        public static void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, int stride)
+        {
+            dsaimpl.VertexArrayVertexBuffer(vaobj, bindingindex, buffer, offset, stride);
+        }
+
+        public static void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativesize)
+        {
+            dsaimpl.VertexArrayAttribFormat(vaobj, attribindex, size, type, normalized, relativesize);
+        }
+
+        public static void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+        {
+            dsaimpl.VertexArrayAttribIFormat(vaobj, attribindex, size, type, relativesize);
+        }
+
+        public static void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+        {
+            dsaimpl.VertexArrayAttribLFormat(vaobj, attribindex, size, type, relativesize);
+        }
+
+        public static void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex)
+        {
+            dsaimpl.VertexArrayAttribBinding(vaobj, attribindex, bindingindex);
+        }
+
+        public static void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor)
+        {
+            dsaimpl.VertexArrayBindingDivisor(vaobj, bindingindex, divisor);
+        }
+
         public static Boolean IsTextureStorageAvailable
         {
             get;
