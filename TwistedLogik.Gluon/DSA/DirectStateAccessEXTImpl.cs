@@ -11,37 +11,37 @@ namespace TwistedLogik.Gluon
         {
             public override void NamedBufferData(uint buffer, uint target, IntPtr size, void* data, uint usage)
             {
-                glNamedBufferDataEXT(buffer, size, (IntPtr)data, usage);
+                glNamedBufferData(buffer, size, (IntPtr)data, usage);
             }
 
             public override void NamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
             {
-                glNamedBufferSubDataEXT(buffer, offset, size, (IntPtr)data);
+                glNamedBufferSubData(buffer, offset, size, (IntPtr)data);
             }
 
             public override void NamedFramebufferTexture(uint framebuffer, uint target, uint attachment, uint texture, int level)
             {
-                glNamedFramebufferTextureEXT(framebuffer, attachment, texture, level);
+                glNamedFramebufferTexture(framebuffer, attachment, texture, level);
             }
 
             public override void NamedFramebufferRenderbuffer(uint framebuffer, uint target, uint attachment, uint renderbuffertarget, uint renderbuffer)
             {
-                glNamedFramebufferRenderbufferEXT(framebuffer, attachment, renderbuffertarget, renderbuffer);
+                glNamedFramebufferRenderbuffer(framebuffer, attachment, renderbuffertarget, renderbuffer);
             }
 
             public override void NamedFramebufferDrawBuffer(uint framebuffer, uint mode)
             {
-                glFramebufferDrawBufferEXT(framebuffer, mode);
+                glNamedFramebufferDrawBuffer(framebuffer, mode);
             }
 
             public override unsafe void NamedFramebufferDrawBuffers(uint framebuffer, int n, uint* bufs)
             {
-                glFramebufferDrawBuffersEXT(framebuffer, n, (IntPtr)bufs);
+                glNamedFramebufferDrawBuffers(framebuffer, n, (IntPtr)bufs);
             }
 
             public override uint CheckNamedFramebufferStatus(uint framebuffer, uint target)
             {
-                return glCheckNamedFramebufferStatusEXT(framebuffer, target);
+                return glCheckNamedFramebufferStatus(framebuffer, target);
             }
 
             public override void TextureParameteri(uint texture, uint target, uint pname, int param)
@@ -76,37 +76,37 @@ namespace TwistedLogik.Gluon
 
             public override void* MapNamedBuffer(uint buffer, uint target, uint access)
             {
-                return glMapNamedBufferEXT(buffer, access).ToPointer();
+                return glMapNamedBuffer(buffer, access).ToPointer();
             }
 
             public override void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access)
             {
-                return glMapNamedBufferRangeEXT(buffer, offset, length, access).ToPointer();
+                return glMapNamedBufferRange(buffer, offset, length, access).ToPointer();
             }
 
             public override bool UnmapNamedBuffer(uint buffer, uint target)
             {
-                return glUnmapNamedBufferEXT(buffer);
+                return glUnmapNamedBuffer(buffer);
             }
 
             public override void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length)
             {
-                glFlushMappedNamedBufferRangeEXT(buffer, offset, length);
+                glFlushMappedNamedBufferRange(buffer, offset, length);
             }
 
             public override void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params)
             {
-                glGetNamedBufferParameterivEXT(buffer, pname, (IntPtr)@params);
+                glGetNamedBufferParameteriv(buffer, pname, (IntPtr)@params);
             }
 
             public override void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params)
             {
-                glGetNamedBufferPointervEXT(buffer, pname, (IntPtr)@params);
+                glGetNamedBufferPointerv(buffer, pname, (IntPtr)@params);
             }
 
             public override void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
             {
-                glGetNamedBufferSubDataEXT(buffer, offset, size, (IntPtr)data);
+                glGetNamedBufferSubData(buffer, offset, size, (IntPtr)data);
             }
         }
     }
