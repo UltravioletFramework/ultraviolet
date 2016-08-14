@@ -242,5 +242,19 @@ namespace TwistedLogik.Gluon
                 return arrays;
             }
         }
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glEnableVertexArrayAttribDelegate(uint vaobj, uint index);
+        [Require(MinVersion = "4.5")]
+        [Require(Extension = "GL_ARB_direct_state_access")]
+        [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glEnableVertexArrayAttribEXT")]
+        private static readonly glEnableVertexArrayAttribDelegate glEnableVertexArrayAttrib = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glDisableVertexArrayAttribDelegate(uint vaobj, uint index);
+        [Require(MinVersion = "4.5")]
+        [Require(Extension = "GL_ARB_direct_state_access")]
+        [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glDisableVertexArrayAttribEXT")]
+        private static readonly glDisableVertexArrayAttribDelegate glDisableVertexArrayAttrib = null;
     }
 }

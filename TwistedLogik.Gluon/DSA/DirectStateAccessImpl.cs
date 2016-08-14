@@ -62,6 +62,10 @@ namespace TwistedLogik.Gluon
             public abstract void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex);
 
             public abstract void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor);
+
+            public abstract void EnableVertexArrayAttrib(uint vaobj, uint index);
+
+            public abstract void DisableVertexArrayAttrib(uint vaobj, uint index);
         }
     }
 }

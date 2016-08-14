@@ -151,6 +151,16 @@ namespace TwistedLogik.Gluon
             dsaimpl.VertexArrayBindingDivisor(vaobj, bindingindex, divisor);
         }
 
+        public static void EnableVertexArrayAttrib(uint vaobj, uint index)
+        {
+            dsaimpl.EnableVertexArrayAttrib(vaobj, index);
+        }
+
+        public static void DisableVertexArrayAttrib(uint vaobj, uint index)
+        {
+            dsaimpl.DisableVertexArrayAttrib(vaobj, index);
+        }
+
         public static Boolean IsTextureStorageAvailable
         {
             get;

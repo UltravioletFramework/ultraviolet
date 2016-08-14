@@ -139,6 +139,16 @@ namespace TwistedLogik.Gluon
             {
                 glVertexArrayBindingDivisor(vaobj, bindingindex, divisor);
             }
+
+            public override void EnableVertexArrayAttrib(uint vaobj, uint index)
+            {
+                glEnableVertexArrayAttrib(vaobj, index);
+            }
+
+            public override void DisableVertexArrayAttrib(uint vaobj, uint index)
+            {
+                glDisableVertexArrayAttrib(vaobj, index);
+            }
         }
     }
 }
