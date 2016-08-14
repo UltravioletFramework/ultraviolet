@@ -10,6 +10,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendEquation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedCapability.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearDepth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearStencil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedColorMask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedCulledFace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedDepthFunc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedDepthMask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedFrontFace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedPolygonMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedPolygonOffset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedStencilFunc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedStencilOp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectImplementationProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteBatchEffect.cs" />

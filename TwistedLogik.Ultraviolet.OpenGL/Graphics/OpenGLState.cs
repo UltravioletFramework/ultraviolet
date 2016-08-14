@@ -7,6 +7,7 @@ using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
 using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -71,39 +72,29 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
             GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
 
-            var clearColorComponents = stackalloc float[4];
-            gl.GetFloatv(gl.GL_COLOR_CLEAR_VALUE, clearColorComponents);
-            clearColor = new Color(
-                (Byte)(clearColorComponents[0] * Byte.MaxValue),
-                (Byte)(clearColorComponents[1] * Byte.MaxValue),
-                (Byte)(clearColorComponents[2] * Byte.MaxValue),
-                (Byte)(clearColorComponents[3] * Byte.MaxValue));
-            clearDepth = gl.GetDouble(gl.GL_DEPTH_CLEAR_VALUE);
-            clearStencil = gl.GetInteger(gl.GL_STENCIL_CLEAR_VALUE);
-
-            var colorMaskComponents = stackalloc bool[4];
-            gl.GetBooleanv(gl.GL_COLOR_WRITEMASK, colorMaskComponents);
-            colorMask =
-                (colorMaskComponents[0] ? ColorWriteChannels.Red : ColorWriteChannels.None) |
-                (colorMaskComponents[1] ? ColorWriteChannels.Green : ColorWriteChannels.None) |
-                (colorMaskComponents[2] ? ColorWriteChannels.Blue : ColorWriteChannels.None) |
-                (colorMaskComponents[3] ? ColorWriteChannels.Alpha : ColorWriteChannels.None);
-
-            depthTestEnabled = gl.IsEnabled(gl.GL_DEPTH_TEST);
-            depthMask = gl.GetBoolean(gl.GL_DEPTH_WRITEMASK);            
-            depthFunc = (UInt32)gl.GetInteger(gl.GL_DEPTH_FUNC);
-
-            stencilTestEnabled = gl.IsEnabled(gl.GL_STENCIL_TEST);
-
-            blendEnabled = gl.IsEnabled(gl.GL_BLEND);
-
-            var blendColorComponents = stackalloc float[4];
-            gl.GetFloatv(gl.GL_BLEND_COLOR, blendColorComponents);
-            blendColor = new Color(
-                (Byte)(blendColorComponents[0] * Byte.MaxValue),
-                (Byte)(blendColorComponents[1] * Byte.MaxValue),
-                (Byte)(blendColorComponents[2] * Byte.MaxValue),
-                (Byte)(blendColorComponents[3] * Byte.MaxValue));
+            cachedClearColor = CachedClearColor.FromDevice();
+            cachedClearDepth = CachedClearDepth.FromDevice();
+            cachedClearStencil = CachedClearStencil.FromDevice();
+            cachedColorMask = CachedColorMask.FromDevice();
+            cachedDepthTestEnabled = CachedCapability.FromDevice(gl.GL_DEPTH_TEST);
+            cachedDepthMask = CachedDepthMask.FromDevice();
+            cachedDepthFunc = CachedDepthFunc.FromDevice();
+            cachedStencilTestEnabled = CachedCapability.FromDevice(gl.GL_STENCIL_TEST);
+            cachedStencilFuncFront = CachedStencilFunc.FromDevice(gl.GL_FRONT);
+            cachedStencilFuncBack = CachedStencilFunc.FromDevice(gl.GL_BACK);
+            cachedStencilOpFront = CachedStencilOp.FromDevice(gl.GL_FRONT);
+            cachedStencilOpBack = CachedStencilOp.FromDevice(gl.GL_BACK);
+            cachedBlendEnabled = CachedCapability.FromDevice(gl.GL_BLEND);
+            cachedBlendColor = CachedBlendColor.FromDevice();
+            cachedBlendEquation = CachedBlendEquation.FromDevice();
+            cachedBlendFunction = CachedBlendFunction.FromDevice();
+            cachedCullingEnabled = CachedCapability.FromDevice(gl.GL_CULL_FACE);
+            cachedCulledFace = CachedCulledFace.FromDevice();
+            cachedFrontFace = CachedFrontFace.FromDevice();
+            cachedPolygonOffsetFillEnabled = CachedCapability.FromDevice(gl.GL_POLYGON_OFFSET_FILL);
+            cachedPolygonOffset = CachedPolygonOffset.FromDevice();
+            cachedPolygonMode = CachedPolygonMode.FromDevice();
+            cachedScissorTestEnabled = CachedCapability.FromDevice(gl.GL_SCISSOR_TEST);
         }
 
         /// <summary>
@@ -126,10 +117,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public static OpenGLState ScopedActiveTexture(UInt32 texture)
         {
             var state = pool.Retrieve();
-            
-            state.stateType                = OpenGLStateType.ActiveTexture;
-            state.disposed                 = false;
-            state.newGL_ACTIVE_TEXTURE     = texture;
+
+            state.stateType = OpenGLStateType.ActiveTexture;
+            state.disposed = false;
+            state.newGL_ACTIVE_TEXTURE = texture;
 
             state.Apply();
 
@@ -166,9 +157,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType                = OpenGLStateType.BindTexture2D;
-            state.disposed                 = false;
-            state.forced                   = force;
+            state.stateType = OpenGLStateType.BindTexture2D;
+            state.disposed = false;
+            state.forced = force;
             state.newGL_TEXTURE_BINDING_2D = texture;
 
             state.Apply();
@@ -205,11 +196,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType                          = OpenGLStateType.BindVertexArrayObject;
-            state.disposed                           = false;
-            state.forced                             = force;
-            state.newGL_VERTEX_ARRAY_BINDING         = vertexArrayObject;
-            state.newGL_ARRAY_BUFFER_BINDING         = arrayBuffer;
+            state.stateType = OpenGLStateType.BindVertexArrayObject;
+            state.disposed = false;
+            state.forced = force;
+            state.newGL_VERTEX_ARRAY_BINDING = vertexArrayObject;
+            state.newGL_ARRAY_BUFFER_BINDING = arrayBuffer;
             state.newGL_ELEMENT_ARRAY_BUFFER_BINDING = elementArrayBuffer;
 
             state.Apply();
@@ -243,9 +234,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType                  = OpenGLStateType.BindArrayBuffer;
-            state.disposed                   = false;
-            state.forced                     = force;
+            state.stateType = OpenGLStateType.BindArrayBuffer;
+            state.disposed = false;
+            state.forced = force;
             state.newGL_ARRAY_BUFFER_BINDING = arrayBuffer;
 
             state.Apply();
@@ -278,9 +269,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType                          = OpenGLStateType.BindElementArrayBuffer;
-            state.disposed                           = false;
-            state.forced                             = force;
+            state.stateType = OpenGLStateType.BindElementArrayBuffer;
+            state.disposed = false;
+            state.forced = force;
             state.newGL_ELEMENT_ARRAY_BUFFER_BINDING = elementArrayBuffer;
 
             state.Apply();
@@ -313,9 +304,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType                 = OpenGLStateType.BindFramebuffer;
-            state.disposed                  = false;
-            state.forced                    = force;
+            state.stateType = OpenGLStateType.BindFramebuffer;
+            state.disposed = false;
+            state.forced = force;
             state.newGL_FRAMEBUFFER_BINDING = framebuffer;
 
             state.Apply();
@@ -410,7 +401,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             GL_CURRENT_PROGRAM.Update(oglname);
             VerifyCache();
         }
-        
+
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates an array buffer.
         /// </summary>
@@ -419,14 +410,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType             = OpenGLStateType.CreateArrayBuffer;
-            state.disposed              = false;
+            state.stateType = OpenGLStateType.CreateArrayBuffer;
+            state.disposed = false;
 
             state.Apply_CreateArrayBuffer(out buffer);
 
             return state;
         }
-        
+
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates an element array buffer.
         /// </summary>
@@ -435,14 +426,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType             = OpenGLStateType.CreateElementArrayBuffer;
-            state.disposed              = false;
+            state.stateType = OpenGLStateType.CreateElementArrayBuffer;
+            state.disposed = false;
 
             state.Apply_CreateElementArrayBuffer(out buffer);
 
             return state;
         }
-        
+
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a 2D texture.
         /// </summary>
@@ -451,14 +442,14 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var state = pool.Retrieve();
 
-            state.stateType             = OpenGLStateType.CreateTexture2D;
-            state.disposed              = false;
+            state.stateType = OpenGLStateType.CreateTexture2D;
+            state.disposed = false;
 
             state.Apply_CreateTexture2D(out texture);
 
             return state;
         }
-        
+
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a framebuffer.
         /// </summary>
@@ -468,13 +459,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.CreateFramebuffer;
-            state.disposed  = false;
+            state.disposed = false;
 
             state.Apply_CreateFramebuffer(out framebuffer);
 
             return state;
         }
-        
+
         /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a renderbuffer.
         /// </summary>
@@ -571,7 +562,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             OpenGLState.VerifyCache();
         }
-        
+
         private void Apply_ActiveTexture()
         {
             gl.ActiveTexture(newGL_ACTIVE_TEXTURE);
@@ -604,8 +595,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.BindVertexArray(newGL_VERTEX_ARRAY_BINDING);
                 gl.ThrowIfError();
 
-                oldGL_VERTEX_ARRAY_BINDING         = OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(newGL_VERTEX_ARRAY_BINDING);
-                oldGL_ARRAY_BUFFER_BINDING         = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(newGL_ARRAY_BUFFER_BINDING);
+                oldGL_VERTEX_ARRAY_BINDING = OpenGLState.GL_VERTEX_ARRAY_BINDING.Update(newGL_VERTEX_ARRAY_BINDING);
+                oldGL_ARRAY_BUFFER_BINDING = OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(newGL_ARRAY_BUFFER_BINDING);
                 oldGL_ELEMENT_ARRAY_BUFFER_BINDING = OpenGLState.GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(newGL_ELEMENT_ARRAY_BUFFER_BINDING);
             }
         }
@@ -754,7 +745,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     newGL_FRAMEBUFFER_BINDING = framebuffer;
                     oldGL_FRAMEBUFFER_BINDING = OpenGLState.GL_FRAMEBUFFER_BINDING.Update(framebuffer);
                 }
-            }            
+            }
         }
 
         private void Apply_CreateRenderbuffer(out UInt32 renderbuffer)
@@ -1014,16 +1005,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Color ClearColor
         {
-            get { return clearColor; }
-            set
-            {
-                if (clearColor == value)
-                    return;
-
-                clearColor = value;
-                gl.ClearColor(value.R / 255f, value.G / 255f, value.B / 255f, value.A / 255f);
-                gl.ThrowIfError();
-            }
+            get { return (Color)cachedClearColor; }
+            set { CachedClearColor.TryUpdate(ref cachedClearColor, value); }
         }
 
         /// <summary>
@@ -1031,16 +1014,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Double ClearDepth
         {
-            get { return clearDepth; }
-            set
-            {
-                if (clearDepth == value)
-                    return;
-
-                clearDepth = value;
-                gl.ClearDepth(value);
-                gl.ThrowIfError();
-            }
+            get { return (Double)cachedClearDepth; }
+            set { CachedClearDepth.TryUpdate(ref cachedClearDepth, value); }
         }
 
         /// <summary>
@@ -1048,16 +1023,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Int32 ClearStencil
         {
-            get { return clearStencil; }
-            set
-            {
-                if (clearStencil == value)
-                    return;
-
-                clearStencil = value;
-                gl.ClearStencil(value);
-                gl.ThrowIfError();
-            }
+            get { return (Int32)cachedClearStencil; }
+            set { CachedClearStencil.TryUpdate(ref cachedClearStencil, value); }
         }
 
         /// <summary>
@@ -1065,20 +1032,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static ColorWriteChannels ColorMask
         {
-            get { return colorMask; }
-            set
-            {
-                if (colorMask == value)
-                    return;
-
-                colorMask = value;
-                gl.ColorMask(
-                    (value & ColorWriteChannels.Red) == ColorWriteChannels.Red,
-                    (value & ColorWriteChannels.Green) == ColorWriteChannels.Green,
-                    (value & ColorWriteChannels.Blue) == ColorWriteChannels.Blue,
-                    (value & ColorWriteChannels.Alpha) == ColorWriteChannels.Alpha);
-                gl.ThrowIfError();
-            }
+            get { return (ColorWriteChannels)cachedColorMask; }
+            set { CachedColorMask.TryUpdate(ref cachedColorMask, value); }
         }
 
         /// <summary>
@@ -1086,16 +1041,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Boolean DepthTestEnabled
         {
-            get { return depthTestEnabled; }
-            set
-            {
-                if (depthTestEnabled == value)
-                    return;
-
-                depthTestEnabled = value;
-                gl.Enable(gl.GL_DEPTH_TEST, value);
-                gl.ThrowIfError();
-            }
+            get { return (Boolean)cachedDepthTestEnabled; }
+            set { CachedCapability.TryUpdate(gl.GL_DEPTH_TEST, ref cachedDepthTestEnabled, value); }
         }
 
         /// <summary>
@@ -1103,16 +1050,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Boolean DepthMask
         {
-            get { return depthMask; }
-            set
-            {
-                if (depthMask == value)
-                    return;
-
-                depthMask = value;
-                gl.DepthMask(value);
-                gl.ThrowIfError();
-            }
+            get { return (Boolean)cachedDepthMask; }
+            set { CachedDepthMask.TryUpdate(ref cachedDepthMask, value); }
         }
 
         /// <summary>
@@ -1120,16 +1059,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static UInt32 DepthFunc
         {
-            get { return depthFunc; }
-            set
-            {
-                if (depthFunc == value)
-                    return;
-
-                depthFunc = value;
-                gl.DepthFunc(value);
-                gl.ThrowIfError();
-            }
+            get { return (UInt32)cachedDepthFunc; }
+            set { CachedDepthFunc.TryUpdate(ref cachedDepthFunc, value); }
         }
 
         /// <summary>
@@ -1137,33 +1068,71 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Boolean StencilTestEnabled
         {
-            get { return stencilTestEnabled; }
-            set
-            {
-                if (stencilTestEnabled == value)
-                    return;
+            get { return (Boolean)cachedStencilTestEnabled; }
+            set { CachedCapability.TryUpdate(gl.GL_STENCIL_TEST, ref cachedStencilTestEnabled, value); }
+        }
 
-                stencilTestEnabled = value;
-                gl.Enable(gl.GL_STENCIL_TEST, value);
-                gl.ThrowIfError();
-            }
+        /// <summary>
+        /// Gets or sets the combined stencil function.
+        /// </summary>
+        public static CachedStencilFunc StencilFuncCombined
+        {
+            get { return cachedStencilFuncFront; }
+            set { CachedStencilFunc.TryUpdateCombined(ref cachedStencilFuncFront, ref cachedStencilFuncBack, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the front stencil function.
+        /// </summary>
+        public static CachedStencilFunc StencilFuncFront
+        {
+            get { return cachedStencilFuncFront; }
+            set { CachedStencilFunc.TryUpdate(gl.GL_FRONT, ref cachedStencilFuncFront, value); }
         }
         
+        /// <summary>
+        /// Gets or sets the back stencil function.
+        /// </summary>
+        public static CachedStencilFunc StencilFuncBack
+        {
+            get { return cachedStencilFuncFront; }
+            set { CachedStencilFunc.TryUpdate(gl.GL_BACK, ref cachedStencilFuncBack, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the combined stencil operation.
+        /// </summary>
+        public static CachedStencilOp StencilOpCombined
+        {
+            get { return cachedStencilOpFront; }
+            set { CachedStencilOp.TryUpdateCombined(ref cachedStencilOpFront, ref cachedStencilOpBack, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the front stencil operation.
+        /// </summary>
+        public static CachedStencilOp StencilOpFront
+        {
+            get { return cachedStencilOpFront; }
+            set { CachedStencilOp.TryUpdate(gl.GL_FRONT, ref cachedStencilOpFront, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the back stencil operation.
+        /// </summary>
+        public static CachedStencilOp StencilOpBack
+        {
+            get { return cachedStencilOpBack; }
+            set { CachedStencilOp.TryUpdate(gl.GL_BACK, ref cachedStencilOpBack, value); }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether GL_BLEND is enabled.
         /// </summary>
         public static Boolean BlendEnabled
         {
-            get { return blendEnabled; }
-            set
-            {
-                if (blendEnabled == value)
-                    return;
-
-                blendEnabled = value;
-                gl.Enable(gl.GL_BLEND, value);
-                gl.ThrowIfError();
-            }
+            get { return (Boolean)cachedBlendEnabled; }
+            set { CachedCapability.TryUpdate(gl.GL_BLEND, ref cachedBlendEnabled, value); }
         }
 
         /// <summary>
@@ -1171,22 +1140,91 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         public static Color BlendColor
         {
-            get { return blendColor; }
-            set
-            {
-                if (blendColor == value)
-                    return;
-
-                blendColor = value;
-                gl.BlendColor(
-                    value.R / (Single)Byte.MaxValue,
-                    value.G / (Single)Byte.MaxValue,
-                    value.B / (Single)Byte.MaxValue,
-                    value.A / (Single)Byte.MaxValue);
-                gl.ThrowIfError();
-            }
+            get { return (Color)cachedBlendColor; }
+            set { CachedBlendColor.TryUpdate(ref cachedBlendColor, value); }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the blending equation.
+        /// </summary>
+        public static CachedBlendEquation BlendEquation
+        {
+            get { return cachedBlendEquation; }
+            set { CachedBlendEquation.TryUpdate(ref cachedBlendEquation, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the blending function.
+        /// </summary>
+        public static CachedBlendFunction BlendFunction
+        {
+            get { return cachedBlendFunction; }
+            set { CachedBlendFunction.TryUpdate(ref cachedBlendFunction, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether face culling is enabled.
+        /// </summary>
+        public static Boolean CullingEnabled
+        {
+            get { return (Boolean)cachedCullingEnabled;  }
+            set { CachedCapability.TryUpdate(gl.GL_CULL_FACE, ref cachedCullingEnabled, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the polygon face which is being culled.
+        /// </summary>
+        public static UInt32 CulledFace
+        {
+            get { return (UInt32)cachedCulledFace; }
+            set { CachedCulledFace.TryUpdate(ref cachedCulledFace, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the front face of polygons.
+        /// </summary>
+        public static UInt32 FrontFace
+        {
+            get { return (UInt32)cachedFrontFace; }
+            set { CachedFrontFace.TryUpdate(ref cachedFrontFace, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether polygon offsets are enabled.
+        /// </summary>
+        public static Boolean PolygonOffsetEnabled
+        {
+            get { return (Boolean)cachedPolygonOffsetFillEnabled; }
+            set { CachedCapability.TryUpdate(gl.GL_POLYGON_OFFSET_FILL, ref cachedPolygonOffsetFillEnabled, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the polygon offset values.
+        /// </summary>
+        public static CachedPolygonOffset PolygonOffset
+        {
+            get { return cachedPolygonOffset; }
+            set { CachedPolygonOffset.TryUpdate(ref cachedPolygonOffset, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the polygon rasterization mode.
+        /// </summary>
+        public static UInt32 PolygonMode
+        {
+            get { return (UInt32)cachedPolygonMode; }
+            set { CachedPolygonMode.TryUpdate(ref cachedPolygonMode, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the scissor test is enabled.
+        /// </summary>
+        public static Boolean ScissorTestEnabled
+        {
+            get { return (Boolean)cachedScissorTestEnabled; }
+            set { CachedCapability.TryUpdate(gl.GL_SCISSOR_TEST, ref cachedScissorTestEnabled, value); }
+        }
+
         /// <summary>
         /// Gets the cached value of GL_ACTIVE_TEXTURE.
         /// </summary>
@@ -1262,36 +1300,45 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private UInt32 oldGL_RENDERBUFFER_BINDING;
         private UInt32 oldGL_CURRENT_PROGRAM;
         private OpenGLShaderProgram oldCurrentProgram;
-        
+
         // Cached OpenGL state values.
         private static readonly OpenGLStateInteger[] glCachedIntegers;
-        private static readonly OpenGLStateInteger glActiveTexture             = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE, (int)gl.GL_TEXTURE0);
-        private static readonly OpenGLStateInteger glTextureBinding2D          = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
-        private static readonly OpenGLStateInteger glVertexArrayBinding        = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
-        private static readonly OpenGLStateInteger glArrayBufferBinding        = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
+        private static readonly OpenGLStateInteger glActiveTexture = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE, (int)gl.GL_TEXTURE0);
+        private static readonly OpenGLStateInteger glTextureBinding2D = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
+        private static readonly OpenGLStateInteger glVertexArrayBinding = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
+        private static readonly OpenGLStateInteger glArrayBufferBinding = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
         private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", gl.GL_ELEMENT_ARRAY_BUFFER_BINDING);
-        private static readonly OpenGLStateInteger glFramebufferBinding        = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
-        private static readonly OpenGLStateInteger glRenderbufferBinding       = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
-        private static readonly OpenGLStateInteger glCurrentProgram            = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
+        private static readonly OpenGLStateInteger glFramebufferBinding = new OpenGLStateInteger("GL_FRAMEBUFFER_BINDING", gl.GL_FRAMEBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glRenderbufferBinding = new OpenGLStateInteger("GL_RENDERBUFFER_BINDING", gl.GL_RENDERBUFFER_BINDING);
+        private static readonly OpenGLStateInteger glCurrentProgram = new OpenGLStateInteger("GL_CURRENT_PROGRAM", gl.GL_CURRENT_PROGRAM);
 
         private static OpenGLShaderProgram currentProgram;
 
-        private static Color clearColor;
-        private static Double clearDepth;
-        private static Int32 clearStencil;
+        private static CachedClearColor cachedClearColor;
+        private static CachedClearDepth cachedClearDepth;
+        private static CachedClearStencil cachedClearStencil;
+        private static CachedColorMask cachedColorMask;
+        private static CachedCapability cachedDepthTestEnabled;
+        private static CachedDepthMask cachedDepthMask;
+        private static CachedDepthFunc cachedDepthFunc;
+        private static CachedCapability cachedStencilTestEnabled;
+        private static CachedStencilFunc cachedStencilFuncFront;
+        private static CachedStencilFunc cachedStencilFuncBack;
+        private static CachedStencilOp cachedStencilOpFront;
+        private static CachedStencilOp cachedStencilOpBack;
+        private static CachedCapability cachedBlendEnabled;
+        private static CachedBlendColor cachedBlendColor;
+        private static CachedBlendEquation cachedBlendEquation;
+        private static CachedBlendFunction cachedBlendFunction;
+        private static CachedCapability cachedCullingEnabled;
+        private static CachedCulledFace cachedCulledFace;
+        private static CachedFrontFace cachedFrontFace;
+        private static CachedCapability cachedPolygonOffsetFillEnabled;
+        private static CachedPolygonOffset cachedPolygonOffset;
+        private static CachedPolygonMode cachedPolygonMode;
+        private static CachedCapability cachedScissorTestEnabled;
 
-        private static ColorWriteChannels colorMask;
-
-        private static Boolean depthTestEnabled;
-        private static Boolean depthMask;
-        private static UInt32 depthFunc;
-
-        private static Boolean stencilTestEnabled;
-
-        private static Boolean blendEnabled;
-        private static Color blendColor;
-
-        private static readonly Dictionary<UInt32, UInt32> glTextureBinding2DByTextureUnit = 
+        private static readonly Dictionary<UInt32, UInt32> glTextureBinding2DByTextureUnit =
             new Dictionary<UInt32, UInt32>();
 
         // The pool of state objects.

@@ -28,11 +28,11 @@ namespace TwistedLogik.Gluon
         public static void StencilOpSeparate(uint face, uint sfail, uint dpfail, uint dppass) { glStencilOpSeparate(face, sfail, dpfail, dppass); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glStencilFuncSeparateDelegate(uint frontfunc, uint backfunc, int @ref, uint mask);
+        private delegate void glStencilFuncSeparateDelegate(uint face, uint func, int @ref, uint mask);
         [Require(MinVersion = "2.0")]
         private static readonly glStencilFuncSeparateDelegate glStencilFuncSeparate = null;
 
-        public static void StencilFuncSeparate(uint frontfunc, uint backfunc, int @ref, uint mask) { glStencilFuncSeparate(frontfunc, backfunc, @ref, mask); }
+        public static void StencilFuncSeparate(uint face, uint func, int @ref, uint mask) { glStencilFuncSeparate(face, func, @ref, mask); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glStencilMaskSeparateDelegate(uint face, uint mask);

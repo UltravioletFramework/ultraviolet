@@ -36,11 +36,21 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.Require(state, nameof(state));
 
-            gl.SamplerParameteri(sampler, gl.GL_TEXTURE_WRAP_S, OpenGLSamplerState.GetTextureAddressModeGL(state.AddressU));
-            gl.ThrowIfError();
+            var textureWrapS = OpenGLSamplerState.GetTextureAddressModeGL(state.AddressU);
+            if (textureWrapS != cachedTextureWrapS)
+            {
+                cachedTextureWrapS = textureWrapS;
+                gl.SamplerParameteri(sampler, gl.GL_TEXTURE_WRAP_S, textureWrapS);
+                gl.ThrowIfError();
+            }
 
-            gl.SamplerParameteri(sampler, gl.GL_TEXTURE_WRAP_T, OpenGLSamplerState.GetTextureAddressModeGL(state.AddressV));
-            gl.ThrowIfError();
+            var textureWrapT = OpenGLSamplerState.GetTextureAddressModeGL(state.AddressV);
+            if (textureWrapT != cachedTextureWrapT)
+            {
+                cachedTextureWrapT = textureWrapT;
+                gl.SamplerParameteri(sampler, gl.GL_TEXTURE_WRAP_T, textureWrapT);
+                gl.ThrowIfError();
+            }
 
             if (gl.IsGLES)
             {
@@ -49,49 +59,90 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
             else
             {
-                gl.SamplerParameterf(sampler, gl.GL_TEXTURE_LOD_BIAS, state.MipMapLevelOfDetailBias);
-                gl.ThrowIfError();
+                if (cachedMipMapLODBias != state.MipMapLevelOfDetailBias)
+                {
+                    cachedMipMapLODBias = state.MipMapLevelOfDetailBias;
+                    gl.SamplerParameterf(sampler, gl.GL_TEXTURE_LOD_BIAS, state.MipMapLevelOfDetailBias);
+                    gl.ThrowIfError();
+                }
             }
 
             switch (state.Filter)
             {
                 case TextureFilter.Point:
-                    gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
-                    gl.ThrowIfError();
+                    if (cachedMaxAnisotropy != 1f)
+                    {
+                        cachedMaxAnisotropy = 1f;
+                        gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                        gl.ThrowIfError();
+                    }
 
-                    gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
-                    gl.ThrowIfError();
+                    if (cachedMinFilter != gl.GL_NEAREST)
+                    {
+                        cachedMinFilter = gl.GL_NEAREST;
+                        gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
+                        gl.ThrowIfError();
+                    }
 
-                    gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
-                    gl.ThrowIfError();
+                    if (cachedMagFilter != gl.GL_NEAREST)
+                    {
+                        cachedMagFilter = gl.GL_NEAREST;
+                        gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
+                        gl.ThrowIfError();
+                    }
                     break;
 
                 case TextureFilter.Linear:
                     if (gl.IsAnisotropicFilteringAvailable)
                     {
-                        gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                        if (cachedMaxAnisotropy != 1f)
+                        {
+                            cachedMaxAnisotropy = 1f;
+                            gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                            gl.ThrowIfError();
+                        }
+                    }
+
+                    if (cachedMinFilter != gl.GL_LINEAR)
+                    {
+                        cachedMinFilter = gl.GL_LINEAR;
+                        gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                         gl.ThrowIfError();
                     }
 
-                    gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
-
-                    gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    if (cachedMagFilter != gl.GL_LINEAR)
+                    {
+                        cachedMagFilter = gl.GL_LINEAR;
+                        gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                        gl.ThrowIfError();
+                    }
                     break;
 
                 case TextureFilter.Anisotropic:
                     if (gl.IsAnisotropicFilteringAvailable)
                     {
-                        gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, state.MaxAnisotropy));
+                        var maxAnisotropy = Math.Min(1f, state.MaxAnisotropy);
+                        if (maxAnisotropy != cachedMaxAnisotropy)
+                        {
+                            cachedMaxAnisotropy = maxAnisotropy;
+                            gl.SamplerParameterf(sampler, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
+                            gl.ThrowIfError();
+                        }
+                    }
+
+                    if (cachedMinFilter != gl.GL_LINEAR)
+                    {
+                        cachedMinFilter = gl.GL_LINEAR;
+                        gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                         gl.ThrowIfError();
                     }
 
-                    gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
-
-                    gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
-                    gl.ThrowIfError();
+                    if (cachedMagFilter != gl.GL_LINEAR)
+                    {
+                        cachedMagFilter = gl.GL_LINEAR;
+                        gl.SamplerParameteri(sampler, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                        gl.ThrowIfError();
+                    }
                     break;
 
                 default:
@@ -145,5 +196,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
         // Property values.
         private UInt32 sampler;
+
+        // Cached state values.
+        private Int32 cachedTextureWrapS = (int)gl.GL_REPEAT;
+        private Int32 cachedTextureWrapT = (int)gl.GL_REPEAT;
+        private Single cachedMipMapLODBias = 0.0f;
+        private Single cachedMaxAnisotropy = 1.0f;
+        private UInt32 cachedMinFilter = gl.GL_NEAREST_MIPMAP_LINEAR;
+        private UInt32 cachedMagFilter = gl.GL_LINEAR;
     }
 }

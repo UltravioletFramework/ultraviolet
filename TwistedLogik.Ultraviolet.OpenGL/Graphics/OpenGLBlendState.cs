@@ -2,6 +2,7 @@
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -107,37 +108,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             OpenGLState.BlendEnabled = true;
             OpenGLState.BlendColor = BlendFactor;
+            OpenGLState.BlendEquation = new CachedBlendEquation(
+                GetBlendFunctionGL(ColorBlendFunction),
+                GetBlendFunctionGL(AlphaBlendFunction));
+            OpenGLState.BlendFunction = new CachedBlendFunction(
+                GetBlendGL(ColorSourceBlend, false),
+                GetBlendGL(AlphaSourceBlend, true),
+                GetBlendGL(ColorDestinationBlend, false),
+                GetBlendGL(AlphaDestinationBlend, true));
 
-            if (IsSeparateBlend)
-            {
-                var modeRGB = GetBlendFunctionGL(ColorBlendFunction);
-                var modeAlpha = GetBlendFunctionGL(AlphaBlendFunction);
-                gl.BlendEquationSeparate(modeRGB, modeAlpha);
-                gl.ThrowIfError();
-
-                var srcRGB = GetBlendGL(ColorSourceBlend, false);
-                var dstRGB = GetBlendGL(ColorDestinationBlend, false);
-                var srcAlpha = GetBlendGL(AlphaSourceBlend, true);
-                var dstAlpha = GetBlendGL(AlphaDestinationBlend, true);
-                gl.BlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                var mode = GetBlendFunctionGL(ColorBlendFunction);
-                gl.BlendEquation(mode);
-                gl.ThrowIfError();
-
-                var src = GetBlendGL(ColorSourceBlend, false);
-                var dst = GetBlendGL(ColorDestinationBlend, false);
-                gl.BlendFunc(src, dst);
-                gl.ThrowIfError();
-            }
-
-            var writeRed = (ColorWriteChannels & ColorWriteChannels.Red) != 0;
-            var writeGreen = (ColorWriteChannels & ColorWriteChannels.Green) != 0;
-            var writeBlue = (ColorWriteChannels & ColorWriteChannels.Blue) != 0;
-            var writeAlpha = (ColorWriteChannels & ColorWriteChannels.Alpha) != 0;
             OpenGLState.ColorMask = ColorWriteChannels;
         }
 
