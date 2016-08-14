@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -14,6 +15,86 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public OpenGLEffectParameterData()
         {
             valData = new Byte[16 * sizeof(Single)];
+        }
+        
+        /// <summary>
+        /// Gets a value indicating whether this instance contains the same data as the specified instance.
+        /// </summary>
+        /// <param name="other">The instance to compare to this instance.</param>
+        /// <returns><see langword="true"/> if both instances contain the same data; otherwise, <see langword="false"/>.</returns>
+        public Boolean ContainsSameData(OpenGLEffectParameterData other)
+        {
+            Contract.Require(other, nameof(other));
+
+            if (other.DataType != this.DataType)
+                return false;
+
+            switch (DataType)
+            {
+                case OpenGLEffectParameterDataType.None:
+                    return true;
+
+                case OpenGLEffectParameterDataType.Boolean:
+                    return this.valData[0] == other.valData[0];
+
+                case OpenGLEffectParameterDataType.Int32:
+                case OpenGLEffectParameterDataType.UInt32:
+                case OpenGLEffectParameterDataType.Single:
+                case OpenGLEffectParameterDataType.Color:
+                    return
+                        this.valData[0] == other.valData[0] &&
+                        this.valData[1] == other.valData[1] &&
+                        this.valData[2] == other.valData[2] &&
+                        this.valData[3] == other.valData[3];
+
+                case OpenGLEffectParameterDataType.Double:
+                case OpenGLEffectParameterDataType.Vector2:
+                    for (int i = 0; i < sizeof(Vector2); i++)
+                    {
+                        if (this.valData[i] != other.valData[i])
+                            return false;
+                    }
+                    return true;
+
+                case OpenGLEffectParameterDataType.Vector3:
+                    for (int i = 0; i < sizeof(Vector3); i++)
+                    {
+                        if (this.valData[i] != other.valData[i])
+                            return false;
+                    }
+                    return true;
+
+                case OpenGLEffectParameterDataType.Vector4:
+                    for (int i = 0; i < sizeof(Vector4); i++)
+                    {
+                        if (this.valData[i] != other.valData[i])
+                            return false;
+                    }
+                    return true;
+
+                case OpenGLEffectParameterDataType.Matrix:
+                    for (int i = 0; i < sizeof(Matrix); i++)
+                    {
+                        if (this.valData[i] != other.valData[i])
+                            return false;
+                    }
+                    return true;
+
+                case OpenGLEffectParameterDataType.Int32Array:
+                case OpenGLEffectParameterDataType.UInt32Array:
+                case OpenGLEffectParameterDataType.SingleArray:
+                case OpenGLEffectParameterDataType.DoubleArray:
+                case OpenGLEffectParameterDataType.Vector2Array:
+                case OpenGLEffectParameterDataType.Vector3Array:
+                case OpenGLEffectParameterDataType.Vector4Array:
+                case OpenGLEffectParameterDataType.ColorArray:
+                case OpenGLEffectParameterDataType.MatrixArray:
+                case OpenGLEffectParameterDataType.Texture2D:
+                    return this.refData == other.refData;
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         /// <summary>
