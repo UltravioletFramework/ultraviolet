@@ -231,8 +231,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             current.Resize(rtarget.Width, rtarget.Height);
                     }
 
-                    graphics.SetRenderTarget(rtarget.RenderTarget, Color.Transparent);
-
                     var popup = element as Popup;
                     if (popup != null)
                     {
@@ -244,6 +242,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     if (!element.TransformedVisualBounds.IsEmpty && !IsVisuallyDisconnectedFromRoot(element))
                     {
+                        graphics.SetRenderTarget(rtarget.RenderTarget, Color.Transparent);
                         drawingContext.Reset(element.View.Display);
 
                         var visualParent = VisualTreeHelper.GetParent(element) as UIElement;
