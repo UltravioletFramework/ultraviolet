@@ -353,7 +353,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             WriteLine("[{0}(@\"{1}\", SimpleDependencyPropertyOwner = {2}, SimpleDependencyPropertyName = {3})]", typeof(CompiledBindingExpressionAttribute).FullName, expressionInfo.Expression.Replace("\"", "\"\""),
                 isSimpleDependencyProperty ? "typeof(" + GetCSharpTypeName(dprop.OwnerType) + ")" : "null",
                 isSimpleDependencyProperty ? "\"" + dprop.Name + "\"" : "null");
-
+            
             WriteLine("public {0} __UPF_Expression{1}", GetCSharpTypeName(expressionInfo.Type), id);
             WriteLine("{");
 
@@ -460,8 +460,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
                 expressionInfo.SetterLineEnd = LineCount - 1;
             }
-            
+
             WriteLine("}");
+            WriteLine();
+            
+            if (expressionInfo.GenerateGetter)
+            {
+                WriteLine("public static readonly DataBindingGetter<{0}> Get__UPF_Expression{1} = new DataBindingGetter<{0}>(vm => (({2})vm).__UPF_Expression{1});",
+                    GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
+                WriteLine();
+            }
+
+            if (expressionInfo.GenerateSetter)
+            {
+                WriteLine("public static readonly DataBindingSetter<{0}> Set__UPF_Expression{1} = new DataBindingSetter<{0}>((vm, value) => (({2})vm).__UPF_Expression{1} = value);",
+                    GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
+                WriteLine();
+            }
         }
 
         /// <summary>

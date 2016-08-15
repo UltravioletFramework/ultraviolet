@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <param name="value1">The first value to compare.</param>
     /// <param name="value2">The second value to compare.</param>
     /// <returns><see langword="true"/> if the specified values are equal; otherwise, <see langword="false"/>.</returns>
-    internal delegate Boolean DataBindingComparer<T>(T value1, T value2);
+    public delegate Boolean DataBindingComparer<T>(T value1, T value2);
 
     /// <summary>
     /// Represents a method which is used to retrieve the value of a data bound dependency property.
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <typeparam name="T">The type of the property which was bound.</typeparam>
     /// <param name="model">The model object for the current binding context.</param>
     /// <returns>The current value of the bound property.</returns>
-    internal delegate T DataBindingGetter<T>(Object model);
+    public delegate T DataBindingGetter<T>(Object model);
 
     /// <summary>
     /// Represents a method which is used to set the value of a data bound dependency property.
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// <typeparam name="T">The type of the property which was bound.</typeparam>
     /// <param name="model">The model object for the current binding context.</param>
     /// <param name="value">The value to set on the bound property.</param>
-    internal delegate void DataBindingSetter<T>(Object model, T value);
+    public delegate void DataBindingSetter<T>(Object model, T value);
 
     /// <summary>
     /// Contains methods for creating and manipulating binding expressions.
@@ -238,12 +238,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     return cached;
             }
 
-            var builder = new DataBindingGetterBuilder(boundType, dataSourceType, expression);
-            var result = builder.Compile();
+            var result = default(Delegate);
+            var precompiledDelegate = dataSourceType.GetField("Get" + GetBindingMemberPathPart(expression));
+            if (precompiledDelegate != null && precompiledDelegate.FieldType == typeof(DataBindingGetter<>).MakeGenericType(boundType) && precompiledDelegate.IsStatic)
+                result = (Delegate)precompiledDelegate.GetValue(null);
+
+            if (result == null)
+                result = new DataBindingGetterBuilder(boundType, dataSourceType, expression).Compile();
+
             lock (cachedExpressionGetters)
-            {
                 cachedExpressionGetters[key] = result;
-            }
+
             return result;
         }
 
@@ -259,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(boundType, nameof(boundType));
             Contract.Require(dataSourceType, nameof(dataSourceType));
             Contract.RequireNotEmpty(expression, nameof(expression));
-            
+
             var key = new BindingExpressionAccessorKey(boundType, dataSourceType, expression);
             lock (cachedExpressionSetters)
             {
@@ -267,13 +272,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (cachedExpressionSetters.TryGetValue(key, out cached))
                     return cached;
             }
-            
-            var builder = new DataBindingSetterBuilder(boundType, dataSourceType, expression);
-            var result = builder.Compile();
+
+            var result = default(Delegate);
+            var precompiledDelegate = dataSourceType.GetField("Set" + GetBindingMemberPathPart(expression));
+            if (precompiledDelegate != null && precompiledDelegate.FieldType == typeof(DataBindingSetter<>).MakeGenericType(boundType) && precompiledDelegate.IsStatic)
+                result = (Delegate)precompiledDelegate.GetValue(null);
+
+            if (result == null)
+                result = new DataBindingSetterBuilder(boundType, dataSourceType, expression).Compile();
+
             lock (cachedExpressionSetters)
-            {
                 cachedExpressionSetters[key] = result;
-            }
+
             return result;
         }
 
