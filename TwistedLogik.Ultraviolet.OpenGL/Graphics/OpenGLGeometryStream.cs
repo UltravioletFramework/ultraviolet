@@ -438,8 +438,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                             (UInt32)i, (UInt32)binding.InstanceFrequency, program, offset);
                     }
 
-                    gl.BindBuffer(gl.GL_ARRAY_BUFFER, previousBuffer);
-                    gl.ThrowIfError();
+                    OpenGLState.BindArrayBuffer(previousBuffer);
                 }
             }
         }
@@ -449,8 +448,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         private unsafe void BindVertexAttributesForBuffer_OldAPI(OpenGLVertexBuffer vbuffer, UInt32 binding, UInt32 frequency, UInt32? program, UInt32? offset)
         {
-            gl.BindBuffer(gl.GL_ARRAY_BUFFER, vbuffer.OpenGLName);
-            gl.ThrowIfError();
+            OpenGLState.BindArrayBuffer(vbuffer.OpenGLName);
 
             var position = offset ?? this.offset;
 
