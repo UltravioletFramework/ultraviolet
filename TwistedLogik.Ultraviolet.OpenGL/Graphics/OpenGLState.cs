@@ -116,6 +116,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="texture">The texture unit to activate.</param>
         public static OpenGLState ScopedActiveTexture(UInt32 texture)
         {
+            if (GL_ACTIVE_TEXTURE == texture)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.ActiveTexture;
@@ -155,6 +158,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="force">A value indicating whether to force-bind the texture, even if DSA is available.</param>
         public static OpenGLState ScopedBindTexture2D(UInt32 texture, Boolean force = false)
         {
+            if (GL_TEXTURE_BINDING_2D == texture)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.BindTexture2D;
@@ -194,6 +200,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="force">A value indicating whether to force-bind the vertex array object, even if DSA is available.</param>
         public static OpenGLState ScopedBindVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer, Boolean force = false)
         {
+            if (GL_VERTEX_ARRAY_BINDING == vertexArrayObject &&
+                GL_ARRAY_BUFFER_BINDING == arrayBuffer &&
+                GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
+            {
+                return null;
+            }
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.BindVertexArrayObject;
@@ -216,6 +229,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="elementArrayBuffer">The vertex array's associated element array buffer.</param>
         public static void BindVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer)
         {
+            if (GL_VERTEX_ARRAY_BINDING == vertexArrayObject &&
+                GL_ARRAY_BUFFER_BINDING == arrayBuffer &&
+                GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
+            {
+                return;
+            }
+
             gl.BindVertexArray(vertexArrayObject);
             gl.ThrowIfError();
 
@@ -232,6 +252,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
         public static OpenGLState ScopedBindArrayBuffer(UInt32 arrayBuffer, Boolean force = false)
         {
+            if (GL_ARRAY_BUFFER_BINDING == arrayBuffer)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.BindArrayBuffer;
@@ -267,6 +290,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="force">A value indicating whether to force-bind the array buffer, even if DSA is available.</param>
         public static OpenGLState ScopedBindElementArrayBuffer(UInt32 elementArrayBuffer, Boolean force = false)
         {
+            if (GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.BindElementArrayBuffer;
@@ -302,6 +328,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="force">A value indicating whether to force-bind the framebuffer, even if DSA is available.</param>
         public static OpenGLState ScopedBindFramebuffer(UInt32 framebuffer, Boolean force = false)
         {
+            if (GL_FRAMEBUFFER_BINDING == framebuffer)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.BindFramebuffer;
@@ -337,6 +366,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="force">A value indicating whether to force-bind the renderbuffer, even if DSA is available.</param>
         public static OpenGLState ScopedBindRenderbuffer(UInt32 renderbuffer, Boolean force = false)
         {
+            if (GL_RENDERBUFFER_BINDING == renderbuffer)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.BindRenderbuffer;
@@ -371,11 +403,15 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="program">The program to bind to the OpenGL context.</param>
         public static OpenGLState ScopedUseProgram(OpenGLShaderProgram program)
         {
+            var oglname = program?.OpenGLName ?? 0;
+            if (GL_CURRENT_PROGRAM == oglname)
+                return null;
+
             var state = pool.Retrieve();
 
             state.stateType = OpenGLStateType.UseProgram;
             state.disposed = false;
-            state.newGL_CURRENT_PROGRAM = program?.OpenGLName ?? 0;
+            state.newGL_CURRENT_PROGRAM = oglname;
             state.newCurrentProgram = program;
 
             state.Apply();
