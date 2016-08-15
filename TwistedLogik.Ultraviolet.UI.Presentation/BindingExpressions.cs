@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Audio;
+using TwistedLogik.Ultraviolet.Content;
+using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.Platform;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -48,6 +57,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 #if CODE_GEN_ENABLED
             miNullableEquals = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
 #endif
+
+            RegisterPrecompiledComparisonDelegates();
         }
 
         /// <summary>
@@ -273,6 +284,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The comparison function for the specified type.</returns>
         public static Delegate GetComparisonFunction(Type type)
         {
+            if (!type.IsValueType && type != typeof(String))
+                type = typeof(Object);
+
             lock (comparerRegistry)
             {
                 var typeComparer = default(Delegate);
@@ -318,6 +332,272 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Creates and registers comparer delegates for common types.
+        /// </summary>
+        private static void RegisterPrecompiledComparisonDelegates()
+        {
+            // System
+            comparerRegistry[typeof(Object)] = new DataBindingComparer<Object>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(String)] = GetStringComparisonFunction();
+            comparerRegistry[typeof(Boolean)] = new DataBindingComparer<Boolean>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Boolean?)] = new DataBindingComparer<Boolean?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Char)] = new DataBindingComparer<Char>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Char?)] = new DataBindingComparer<Char?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Byte)] = new DataBindingComparer<Byte>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Byte?)] = new DataBindingComparer<Byte?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SByte)] = new DataBindingComparer<SByte>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SByte?)] = new DataBindingComparer<SByte?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Int16)] = new DataBindingComparer<Int16>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Int16?)] = new DataBindingComparer<Int16?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UInt16)] = new DataBindingComparer<UInt16>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UInt16?)] = new DataBindingComparer<UInt16?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Int32)] = new DataBindingComparer<Int32>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Int32?)] = new DataBindingComparer<Int32?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UInt32)] = new DataBindingComparer<UInt32>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UInt32?)] = new DataBindingComparer<UInt32?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Int64)] = new DataBindingComparer<Int64>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Int64?)] = new DataBindingComparer<Int64?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UInt64)] = new DataBindingComparer<UInt64>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UInt64?)] = new DataBindingComparer<UInt64?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Single)] = new DataBindingComparer<Single>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Single?)] = new DataBindingComparer<Single?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Double)] = new DataBindingComparer<Double>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Double?)] = new DataBindingComparer<Double?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet
+            comparerRegistry[typeof(Circle)] = new DataBindingComparer<Circle>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Circle?)] = new DataBindingComparer<Circle?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CircleF)] = new DataBindingComparer<CircleF>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CircleF?)] = new DataBindingComparer<CircleF?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CircleD)] = new DataBindingComparer<CircleD>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CircleD?)] = new DataBindingComparer<CircleD?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Color)] = new DataBindingComparer<Color>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Color?)] = new DataBindingComparer<Color?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Matrix)] = new DataBindingComparer<Matrix>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Matrix?)] = new DataBindingComparer<Matrix?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Point2)] = new DataBindingComparer<Point2>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Point2?)] = new DataBindingComparer<Point2?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Point2F)] = new DataBindingComparer<Point2F>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Point2F?)] = new DataBindingComparer<Point2F?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Point2D)] = new DataBindingComparer<Point2D>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Point2D?)] = new DataBindingComparer<Point2D?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Radians)] = new DataBindingComparer<Radians>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Radians?)] = new DataBindingComparer<Radians?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Rectangle)] = new DataBindingComparer<Rectangle>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Rectangle?)] = new DataBindingComparer<Rectangle?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RectangleF)] = new DataBindingComparer<RectangleF>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RectangleF?)] = new DataBindingComparer<RectangleF?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RectangleD)] = new DataBindingComparer<RectangleD>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RectangleD?)] = new DataBindingComparer<RectangleD?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size2)] = new DataBindingComparer<Size2>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size2?)] = new DataBindingComparer<Size2?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size2F)] = new DataBindingComparer<Size2F>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size2F?)] = new DataBindingComparer<Size2F?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size2D)] = new DataBindingComparer<Size2D>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size2D?)] = new DataBindingComparer<Size2D?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size3)] = new DataBindingComparer<Size3>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size3?)] = new DataBindingComparer<Size3?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size3F)] = new DataBindingComparer<Size3F>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size3F?)] = new DataBindingComparer<Size3F?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size3D)] = new DataBindingComparer<Size3D>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Size3D?)] = new DataBindingComparer<Size3D?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Vector2)] = new DataBindingComparer<Vector2>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Vector2?)] = new DataBindingComparer<Vector2?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Vector3)] = new DataBindingComparer<Vector3>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Vector3?)] = new DataBindingComparer<Vector3?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Vector4)] = new DataBindingComparer<Vector4>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Vector4?)] = new DataBindingComparer<Vector4?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CurveContinuity)] = new DataBindingComparer<CurveContinuity>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CurveContinuity?)] = new DataBindingComparer<CurveContinuity?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CurveLoopType)] = new DataBindingComparer<CurveLoopType>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CurveLoopType?)] = new DataBindingComparer<CurveLoopType?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UltravioletPlatform)] = new DataBindingComparer<UltravioletPlatform>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UltravioletPlatform?)] = new DataBindingComparer<UltravioletPlatform?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UltravioletSingletonFlags)] = new DataBindingComparer<UltravioletSingletonFlags>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UltravioletSingletonFlags?)] = new DataBindingComparer<UltravioletSingletonFlags?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Audio
+            comparerRegistry[typeof(PlaybackState)] = new DataBindingComparer<PlaybackState>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(PlaybackState?)] = new DataBindingComparer<PlaybackState?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Content
+            comparerRegistry[typeof(AssetID)] = new DataBindingComparer<AssetID>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(AssetID?)] = new DataBindingComparer<AssetID?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(AssetFlags)] = new DataBindingComparer<AssetFlags>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(AssetFlags?)] = new DataBindingComparer<AssetFlags?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Input
+            comparerRegistry[typeof(ButtonState)] = new DataBindingComparer<ButtonState>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ButtonState?)] = new DataBindingComparer<ButtonState?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadAxis)] = new DataBindingComparer<GamePadAxis>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadAxis?)] = new DataBindingComparer<GamePadAxis?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadButton)] = new DataBindingComparer<GamePadButton>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadButton?)] = new DataBindingComparer<GamePadButton?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadJoystick)] = new DataBindingComparer<GamePadJoystick>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadJoystick?)] = new DataBindingComparer<GamePadJoystick?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadJoystickDirection)] = new DataBindingComparer<GamePadJoystickDirection>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GamePadJoystickDirection?)] = new DataBindingComparer<GamePadJoystickDirection?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Key)] = new DataBindingComparer<Key>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Key?)] = new DataBindingComparer<Key?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(KeyboardMode)] = new DataBindingComparer<KeyboardMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(KeyboardMode?)] = new DataBindingComparer<KeyboardMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MouseButton)] = new DataBindingComparer<MouseButton>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MouseButton?)] = new DataBindingComparer<MouseButton?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Scancode)] = new DataBindingComparer<Scancode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Scancode?)] = new DataBindingComparer<Scancode?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Graphics
+            comparerRegistry[typeof(Blend)] = new DataBindingComparer<Blend>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Blend?)] = new DataBindingComparer<Blend?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(BlendFunction)] = new DataBindingComparer<BlendFunction>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(BlendFunction?)] = new DataBindingComparer<BlendFunction?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(BlurDirection)] = new DataBindingComparer<BlurDirection>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(BlurDirection?)] = new DataBindingComparer<BlurDirection?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ColorWriteChannels)] = new DataBindingComparer<ColorWriteChannels>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ColorWriteChannels?)] = new DataBindingComparer<ColorWriteChannels?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CompareFunction)] = new DataBindingComparer<CompareFunction>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CompareFunction?)] = new DataBindingComparer<CompareFunction?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CompositionContext)] = new DataBindingComparer<CompositionContext>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CompositionContext?)] = new DataBindingComparer<CompositionContext?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CullMode)] = new DataBindingComparer<CullMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CullMode?)] = new DataBindingComparer<CullMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(FillMode)] = new DataBindingComparer<FillMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(FillMode?)] = new DataBindingComparer<FillMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(PrimitiveType)] = new DataBindingComparer<PrimitiveType>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(PrimitiveType?)] = new DataBindingComparer<PrimitiveType?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RenderBufferFormat)] = new DataBindingComparer<RenderBufferFormat>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RenderBufferFormat?)] = new DataBindingComparer<RenderBufferFormat?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RenderBufferOptions)] = new DataBindingComparer<RenderBufferOptions>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RenderBufferOptions?)] = new DataBindingComparer<RenderBufferOptions?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RenderTargetUsage)] = new DataBindingComparer<RenderTargetUsage>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(RenderTargetUsage?)] = new DataBindingComparer<RenderTargetUsage?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SetDataOptions)] = new DataBindingComparer<SetDataOptions>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SetDataOptions?)] = new DataBindingComparer<SetDataOptions?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SetDataOrigin)] = new DataBindingComparer<SetDataOrigin>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SetDataOrigin?)] = new DataBindingComparer<SetDataOrigin?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(StencilOperation)] = new DataBindingComparer<StencilOperation>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(StencilOperation?)] = new DataBindingComparer<StencilOperation?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SurfaceSourceDataFormat)] = new DataBindingComparer<SurfaceSourceDataFormat>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SurfaceSourceDataFormat?)] = new DataBindingComparer<SurfaceSourceDataFormat?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextureAddressMode)] = new DataBindingComparer<TextureAddressMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextureAddressMode?)] = new DataBindingComparer<TextureAddressMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextureDataFormat)] = new DataBindingComparer<TextureDataFormat>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextureDataFormat?)] = new DataBindingComparer<TextureDataFormat?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextureFilter)] = new DataBindingComparer<TextureFilter>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextureFilter?)] = new DataBindingComparer<TextureFilter?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexFormat)] = new DataBindingComparer<VertexFormat>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexFormat?)] = new DataBindingComparer<VertexFormat?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexUsage)] = new DataBindingComparer<VertexUsage>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexUsage?)] = new DataBindingComparer<VertexUsage?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Viewport)] = new DataBindingComparer<Viewport>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Viewport?)] = new DataBindingComparer<Viewport?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Graphics.Graphics2D
+            comparerRegistry[typeof(SpriteFontStyle)] = new DataBindingComparer<SpriteFontStyle>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SpriteFontStyle?)] = new DataBindingComparer<SpriteFontStyle?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SpriteAnimationID)] = new DataBindingComparer<SpriteAnimationID>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SpriteAnimationID?)] = new DataBindingComparer<SpriteAnimationID?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SpriteAnimationName)] = new DataBindingComparer<SpriteAnimationName>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SpriteAnimationName?)] = new DataBindingComparer<SpriteAnimationName?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+            comparerRegistry[typeof(TextFlags)] = new DataBindingComparer<TextFlags>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextFlags?)] = new DataBindingComparer<TextFlags?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextLayoutCommandType)] = new DataBindingComparer<TextLayoutCommandType>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextLayoutCommandType?)] = new DataBindingComparer<TextLayoutCommandType?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextLayoutOptions)] = new DataBindingComparer<TextLayoutOptions>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextLayoutOptions?)] = new DataBindingComparer<TextLayoutOptions?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextParserOptions)] = new DataBindingComparer<TextParserOptions>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextParserOptions?)] = new DataBindingComparer<TextParserOptions?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextParserTokenType)] = new DataBindingComparer<TextParserTokenType>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextParserTokenType?)] = new DataBindingComparer<TextParserTokenType?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.Platform
+            comparerRegistry[typeof(ScreenDensityBucket)] = new DataBindingComparer<ScreenDensityBucket>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ScreenDensityBucket?)] = new DataBindingComparer<ScreenDensityBucket?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ScreenRotation)] = new DataBindingComparer<ScreenRotation>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ScreenRotation?)] = new DataBindingComparer<ScreenRotation?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(WindowFlags)] = new DataBindingComparer<WindowFlags>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(WindowFlags?)] = new DataBindingComparer<WindowFlags?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(WindowMode)] = new DataBindingComparer<WindowMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(WindowMode?)] = new DataBindingComparer<WindowMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(WindowState)] = new DataBindingComparer<WindowState>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(WindowState?)] = new DataBindingComparer<WindowState?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.UI.Presentation
+            comparerRegistry[typeof(GridLength)] = new DataBindingComparer<GridLength>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GridLength?)] = new DataBindingComparer<GridLength?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedAssetID)] = new DataBindingComparer<SourcedAssetID>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedAssetID?)] = new DataBindingComparer<SourcedAssetID?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedCursor)] = new DataBindingComparer<SourcedCursor>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedCursor?)] = new DataBindingComparer<SourcedCursor?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedImage)] = new DataBindingComparer<SourcedImage>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedImage?)] = new DataBindingComparer<SourcedImage?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedResource<Graphics.Graphics2D.Sprite>)] = new DataBindingComparer<SourcedResource<Graphics.Graphics2D.Sprite>>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedResource<Graphics.Graphics2D.Sprite>?)] = new DataBindingComparer<SourcedResource<Graphics.Graphics2D.Sprite>?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedResource<SpriteFont>)] = new DataBindingComparer<SourcedResource<SpriteFont>>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedResource<SpriteFont>?)] = new DataBindingComparer<SourcedResource<SpriteFont>?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedSpriteAnimationID)] = new DataBindingComparer<SourcedSpriteAnimationID>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedSpriteAnimationID?)] = new DataBindingComparer<SourcedSpriteAnimationID?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Thickness)] = new DataBindingComparer<Thickness>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Thickness?)] = new DataBindingComparer<Thickness?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VersionedStringSource)] = new DataBindingComparer<VersionedStringSource>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VersionedStringSource?)] = new DataBindingComparer<VersionedStringSource?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+            comparerRegistry[typeof(PlacementMode)] = new DataBindingComparer<PlacementMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(PlacementMode?)] = new DataBindingComparer<PlacementMode?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.UI.Presentation.Controls
+            comparerRegistry[typeof(CharacterCasing)] = new DataBindingComparer<CharacterCasing>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CharacterCasing?)] = new DataBindingComparer<CharacterCasing?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ClickMode)] = new DataBindingComparer<ClickMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ClickMode?)] = new DataBindingComparer<ClickMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Dock)] = new DataBindingComparer<Dock>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Dock?)] = new DataBindingComparer<Dock?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Orientation)] = new DataBindingComparer<Orientation>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Orientation?)] = new DataBindingComparer<Orientation?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ScrollBarVisibility)] = new DataBindingComparer<ScrollBarVisibility>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ScrollBarVisibility?)] = new DataBindingComparer<ScrollBarVisibility?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SelectionMode)] = new DataBindingComparer<SelectionMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SelectionMode?)] = new DataBindingComparer<SelectionMode?>((v1, v2) => v1 == v2);
+
+            // TwistedLogik.Ultraviolet.UI.Presentation.Input
+            comparerRegistry[typeof(CaptureMode)] = new DataBindingComparer<CaptureMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(CaptureMode?)] = new DataBindingComparer<CaptureMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(FocusNavigationDirection)] = new DataBindingComparer<FocusNavigationDirection?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(FocusNavigationDirection?)] = new DataBindingComparer<FocusNavigationDirection?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(KeyboardNavigationMode)] = new DataBindingComparer<KeyboardNavigationMode>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(KeyboardNavigationMode?)] = new DataBindingComparer<KeyboardNavigationMode?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ModifierKeys)] = new DataBindingComparer<ModifierKeys>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ModifierKeys?)] = new DataBindingComparer<ModifierKeys?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MouseButtonState)] = new DataBindingComparer<MouseButtonState>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MouseButtonState?)] = new DataBindingComparer<MouseButtonState?>((v1, v2) => v1 == v2);
+
+            // Ultraviolet Presentation Foundation types
+            comparerRegistry[typeof(ArrangeOptions)] = new DataBindingComparer<ArrangeOptions>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(ArrangeOptions?)] = new DataBindingComparer<ArrangeOptions?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GridUnitType)] = new DataBindingComparer<GridUnitType>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(GridUnitType?)] = new DataBindingComparer<GridUnitType?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(HorizontalAlignment)] = new DataBindingComparer<HorizontalAlignment>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(HorizontalAlignment?)] = new DataBindingComparer<HorizontalAlignment?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MessageBoxButton)] = new DataBindingComparer<MessageBoxButton>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MessageBoxButton?)] = new DataBindingComparer<MessageBoxButton?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MessageBoxImage)] = new DataBindingComparer<MessageBoxImage>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MessageBoxImage?)] = new DataBindingComparer<MessageBoxImage?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MessageBoxResult)] = new DataBindingComparer<MessageBoxResult>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(MessageBoxResult?)] = new DataBindingComparer<MessageBoxResult?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextAlignment)] = new DataBindingComparer<TextAlignment>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextAlignment?)] = new DataBindingComparer<TextAlignment?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextWrapping)] = new DataBindingComparer<TextWrapping>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(TextWrapping?)] = new DataBindingComparer<TextWrapping?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VerticalAlignment)] = new DataBindingComparer<VerticalAlignment>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VerticalAlignment?)] = new DataBindingComparer<VerticalAlignment?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Visibility)] = new DataBindingComparer<Visibility>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(Visibility?)] = new DataBindingComparer<Visibility?>((v1, v2) => v1 == v2);
+        }
+
+        /// <summary>
         /// Gets the type of the specified member.
         /// </summary>
         /// <param name="member">The member to evaluate.</param>
@@ -342,28 +622,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <returns>The comparison function for strings.</returns>
         public static Delegate GetStringComparisonFunction()
         {
-            return new DataBindingComparer<String>((o1, o2) => String.Equals(o1, o2, StringComparison.Ordinal));
-        }
-
-        /// <summary>
-        /// Gets a comparison function for string builders.
-        /// </summary>
-        /// <returns>The comparison function for string builders.</returns>
-        public static Delegate GetStringBuilderComparisonFunction()
-        {
-            return new DataBindingComparer<StringBuilder>((o1, o2) =>
-            {
-                if (o1.Length != o2.Length)
-                    return false;
-
-                for (int i = 0; i < o1.Length; i++)
-                {
-                    if (o1[i] != o2[i])
-                        return false;
-                }
-
-                return true;
-            });
+            return new DataBindingComparer<Object>((o1, o2) => String.Equals((String)o1, (String)o2, StringComparison.Ordinal));
         }
         
         /// <summary>
