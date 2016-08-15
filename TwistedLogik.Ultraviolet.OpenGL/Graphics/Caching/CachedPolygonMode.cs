@@ -25,10 +25,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching
             }
             else
             {
-                var mode = (UInt32)gl.GetInteger(gl.GL_POLYGON_MODE);
+                var modes = stackalloc int[2];
+                gl.GetIntegerv(gl.GL_POLYGON_MODE, modes);
                 gl.ThrowIfError();
 
-                return new CachedPolygonMode(mode);
+                return new CachedPolygonMode((UInt32)modes[0]);
             }
         }
 
