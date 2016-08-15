@@ -83,10 +83,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (IsUsingVertexArrayObject)
             {
-                using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, true))
+                using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, force: true))
                 {
-                    gl.BindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, sdlIndexBufferName);
-                    gl.ThrowIfError();
+                    OpenGLState.BindElementArrayBuffer(sdlIndexBufferName);
                 }
             }
 
