@@ -301,6 +301,39 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean HasColorBuffer
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return colorAttachments > 0;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean HasDepthBuffer
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return depthAttachments > 0;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean HasStencilBuffer
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return stencilAttachments > 0;
+            }
+        }
+
+        /// <inheritdoc/>
         public override RenderTargetUsage RenderTargetUsage
         {
             get

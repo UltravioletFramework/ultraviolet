@@ -126,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             var resetDepthTest = false;
             var resetStencilTest = false;
 
-            if ((options & ClearOptions.Target) == ClearOptions.Target)
+            if ((options & ClearOptions.Target) == ClearOptions.Target && (renderTarget == null || renderTarget.HasColorBuffer))
             {
                 if (blendState.ColorWriteChannels != ColorWriteChannels.All)
                 {
@@ -138,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
+            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer))
             {
                 if (!depthStencilState.DepthBufferEnable)
                 {
@@ -151,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 mask |= gl.GL_DEPTH_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
+            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer))
             {
                 if (!depthStencilState.StencilEnable)
                 {
