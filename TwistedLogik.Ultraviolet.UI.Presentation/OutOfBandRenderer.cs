@@ -231,8 +231,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                             current.Resize(rtarget.Width, rtarget.Height);
                     }
 
-                    graphics.SetRenderTarget(rtarget.RenderTarget);
-                    graphics.Clear(Color.Transparent);
+                    graphics.SetRenderTarget(rtarget.RenderTarget, Color.Transparent);
 
                     var popup = element as Popup;
                     if (popup != null)
@@ -283,8 +282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
             deadReferences.Clear();
 
-            graphics.SetRenderTarget(null);
-            graphics.Clear(Color.Transparent);
+            graphics.SetRenderTarget(null, Color.Transparent);
 
             upf.PerformanceStats.EndDraw();
         }

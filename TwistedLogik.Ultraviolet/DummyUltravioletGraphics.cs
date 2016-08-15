@@ -52,7 +52,31 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void SetRenderTarget(RenderTarget2D rt, Color clearColor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTarget(RenderTarget2D rt, Color clearColor, Double clearDepth, Int32 clearStencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
         public void SetRenderTargetToBackBuffer()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer(Color clearColor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer(Color clearColor, Double clearDepth, Int32 clearStencil)
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }

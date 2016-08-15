@@ -124,8 +124,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
 
             // Draw the horizontal blur pass
             var pass1Target = target.Next;
-            gfx.SetRenderTarget(pass1Target.RenderTarget);
-            gfx.Clear(Color.Transparent);
+            gfx.SetRenderTarget(pass1Target.RenderTarget, Color.Transparent);
 
             effect.Value.Radius = GetBlurRadiusInPixels(element);
             effect.Value.Direction = BlurDirection.Horizontal;
@@ -136,8 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
 
             // Draw the vertical blur pass
             var pass2Target = target.Next.Next;
-            gfx.SetRenderTarget(pass2Target.RenderTarget);
-            gfx.Clear(Color.Transparent);
+            gfx.SetRenderTarget(pass2Target.RenderTarget, Color.Transparent);
 
             effect.Value.Radius = GetBlurRadiusInPixels(element);
             effect.Value.Direction = BlurDirection.Vertical;

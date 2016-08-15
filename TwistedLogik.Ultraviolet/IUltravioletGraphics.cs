@@ -34,14 +34,50 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Sets the render target.
         /// </summary>
-        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to t
-        /// he default render target for the current window's compositor.</param>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to
+        /// the default render target for the current window's compositor.</param>
         void SetRenderTarget(RenderTarget2D rt);
+
+        /// <summary>
+        /// Sets the render target and clears it to the specified values (if it is 
+        /// set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to
+        /// the default render target for the current window's compositor.</param>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        void SetRenderTarget(RenderTarget2D rt, Color clearColor);
+
+        /// <summary>
+        /// Sets the render target and clears it to the specified values (if it is 
+        /// set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to
+        /// the default render target for the current window's compositor.</param>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        /// <param name="clearDepth">The depth to which to clear the render target.</param>
+        /// <param name="clearStencil">The stencil value to which to clear the render target.</param>
+        void SetRenderTarget(RenderTarget2D rt, Color clearColor, Double clearDepth, Int32 clearStencil);
 
         /// <summary>
         /// Sets the render target to the back buffer, bypassing any window compositors.
         /// </summary>
         void SetRenderTargetToBackBuffer();
+
+        /// <summary>
+        /// Sets the render target to the back buffer, bypassing any window compositors, and clears
+        /// it to the specified values (if it is set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        void SetRenderTargetToBackBuffer(Color clearColor);
+
+        /// <summary>
+        /// Sets the render target to the back buffer, bypassing any window compositors, and clears
+        /// it to the specified values (if it is set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        /// <param name="clearDepth">The depth to which to clear the render target.</param>
+        /// <param name="clearStencil">The stencil value to which to clear the render target.</param>
+        void SetRenderTargetToBackBuffer(Color clearColor, Double clearDepth, Int32 clearStencil);
 
         /// <summary>
         /// Gets the device's current render target.

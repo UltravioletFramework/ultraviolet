@@ -166,15 +166,39 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public void SetRenderTarget(RenderTarget2D renderTarget)
+        public void SetRenderTarget(RenderTarget2D rt)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-            if (currentWindow != null && renderTarget == null)
-                renderTarget = currentWindow.Compositor.GetRenderTarget();
+            if (currentWindow != null && rt == null)
+                rt = currentWindow.Compositor.GetRenderTarget();
 
-            SetRenderTargetInternal(renderTarget);
+            SetRenderTargetInternal(rt);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTarget(RenderTarget2D rt, Color clearColor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow != null && rt == null)
+                rt = currentWindow.Compositor.GetRenderTarget();
+
+            this.SetRenderTargetInternal(rt, clearColor);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTarget(RenderTarget2D rt, Color clearColor, Double clearDepth, Int32 clearStencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow != null && rt == null)
+                rt = currentWindow.Compositor.GetRenderTarget();
+
+            this.SetRenderTargetInternal(rt, clearColor, clearDepth, clearStencil);
         }
 
         /// <inheritdoc/>
@@ -183,6 +207,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.EnsureNotDisposed(this, Disposed);
 
             SetRenderTargetInternal(null);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer(Color clearColor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetRenderTargetInternal(null, clearColor);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer(Color clearColor, Double clearDepth, Int32 clearStencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetRenderTargetInternal(null, clearColor, clearDepth, clearStencil);
         }
 
         /// <inheritdoc/>
@@ -892,7 +932,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <summary>
         /// Sets the current render target.
         /// </summary>
-        private void SetRenderTargetInternal(RenderTarget2D renderTarget)
+        private void SetRenderTargetInternal(RenderTarget2D renderTarget,
+            Color? clearColor = null, Double? clearDepth = null, Int32? clearStencil = null)
         {
             Ultraviolet.ValidateResource(renderTarget);
 
@@ -939,7 +980,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (usage == RenderTargetUsage.DiscardContents)
                 {
-                    Clear(Color.FromArgb(0xFF442288));
+                    Clear(clearColor ?? Color.FromArgb(0xFF442288), clearDepth ?? 1.0, clearStencil ?? 0);
                 }
             }
         }
