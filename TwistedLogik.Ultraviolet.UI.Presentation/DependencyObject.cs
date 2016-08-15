@@ -1080,8 +1080,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private PooledObjectScope<List<IDependencyPropertyValue>> GetDigestedDependencyPropertiesBuffer()
         {
             var scope = dpValueBufferPool.RetrieveScoped();
-            
-            scope.Object.AddRange(digestedDependencyProperties);
+
+            foreach (var value in digestedDependencyProperties)
+                scope.Object.Add(value);
 
             return scope;
         }
