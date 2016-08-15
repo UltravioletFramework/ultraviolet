@@ -123,8 +123,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             var mask = 0u;
             var resetColorWriteChannels = false;
-            var resetDepthTest = false;
-            var resetStencilTest = false;
+            var resetDepthMask = false;
 
             if ((options & ClearOptions.Target) == ClearOptions.Target && (renderTarget == null || renderTarget.HasColorBuffer))
             {
@@ -142,8 +141,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             {
                 if (!depthStencilState.DepthBufferEnable)
                 {
-                    resetDepthTest = true;
-                    OpenGLState.DepthTestEnabled = true;
+                    resetDepthMask = true;
                     OpenGLState.DepthMask = true;
                 }
 
@@ -153,12 +151,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer))
             {
-                if (!depthStencilState.StencilEnable)
-                {
-                    resetStencilTest = true;
-                    OpenGLState.StencilTestEnabled = true;
-                }
-                
                 OpenGLState.ClearStencil = stencil;
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
             }
@@ -169,14 +161,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (resetColorWriteChannels)
                 OpenGLState.ColorMask = blendState.ColorWriteChannels;
 
-            if (resetDepthTest)
-            {
-                OpenGLState.DepthTestEnabled = depthStencilState.DepthBufferEnable;
+            if (resetDepthMask)
                 OpenGLState.DepthMask = depthStencilState.DepthBufferWriteEnable;
-            }
-
-            if (resetStencilTest)
-                OpenGLState.StencilTestEnabled = depthStencilState.StencilEnable;
         }
 
         /// <inheritdoc/>
