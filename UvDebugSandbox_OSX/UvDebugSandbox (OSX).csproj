@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<IsMac>false</IsMac>
 		<IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
-		<AssemblyName>UltravioletGame</AssemblyName>
+		<AssemblyName>UvDebugSandbox</AssemblyName>
 	</PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,7 +12,7 @@
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>UvDebugSandbox</RootNamespace>
-    <AssemblyName>UvDebugSandbox_OSX</AssemblyName>
+    <AssemblyName>UvDebugSandbox</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <UseXamMacFullFramework>true</UseXamMacFullFramework>
@@ -37,8 +37,8 @@
     <TlsProvider>Default</TlsProvider>
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
-    <AssemblyName>UvDebugSandbox</AssemblyName>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -47,7 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnableCodeSigning>false</EnableCodeSigning>
     <CodeSigningKey>Developer ID Application</CodeSigningKey>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -58,6 +58,8 @@
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
     <XamMacArch></XamMacArch>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -77,6 +79,7 @@
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
     <XamMacArch></XamMacArch>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
