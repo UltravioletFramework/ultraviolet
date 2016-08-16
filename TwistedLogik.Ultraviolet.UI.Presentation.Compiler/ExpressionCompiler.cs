@@ -748,6 +748,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             }
             writer.WriteLine("#endregion");
 
+            // Special-case binding delegates
+            writer.WriteLine("#region Binding Delegates");
+            if (typeof(Controls.ContentControl).IsAssignableFrom(dataSourceWrapperInfo.DataSourceType))
+            {
+                // ContentControl
+                writer.WriteLine("public static readonly DataBindingGetter<System.Object> __GetContent = " +
+                    "new DataBindingGetter<System.Object>(vm => (({0})vm).Content);", dataSourceWrapperInfo.DataSourceWrapperName);
+                writer.WriteLine("public static readonly DataBindingGetter<System.String> __GetContentStringFormat = " +
+                    "new DataBindingGetter<System.String>(vm => (({0})vm).ContentStringFormat);", dataSourceWrapperInfo.DataSourceWrapperName);
+                writer.WriteLine("public static readonly DataBindingSetter<System.Object> __SetContent = " +
+                    "new DataBindingSetter<System.Object>((vm, value) => (({0})vm).Content = value);", dataSourceWrapperInfo.DataSourceWrapperName);
+                writer.WriteLine("public static readonly DataBindingSetter<System.String> __SetContentStringFormat = " +
+                    "new DataBindingSetter<System.String>((vm, value) => (({0})vm).ContentStringFormat = value);", dataSourceWrapperInfo.DataSourceWrapperName);
+            }
+            writer.WriteLine("#endregion");
+
             // Class complete
             writer.WriteLine("}");
         }

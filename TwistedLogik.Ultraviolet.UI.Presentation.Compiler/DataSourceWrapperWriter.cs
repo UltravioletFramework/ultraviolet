@@ -466,14 +466,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             
             if (expressionInfo.GenerateGetter)
             {
-                WriteLine("public static readonly DataBindingGetter<{0}> Get__UPF_Expression{1} = new DataBindingGetter<{0}>(vm => (({2})vm).__UPF_Expression{1});",
+                WriteLine("public static readonly DataBindingGetter<{0}> __Get__UPF_Expression{1} = new DataBindingGetter<{0}>(vm => (({2})vm).__UPF_Expression{1});",
                     GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
                 WriteLine();
             }
 
             if (expressionInfo.GenerateSetter)
             {
-                WriteLine("public static readonly DataBindingSetter<{0}> Set__UPF_Expression{1} = new DataBindingSetter<{0}>((vm, value) => (({2})vm).__UPF_Expression{1} = value);",
+                WriteLine("public static readonly DataBindingSetter<{0}> __Set__UPF_Expression{1} = new DataBindingSetter<{0}>((vm, value) => (({2})vm).__UPF_Expression{1} = value);",
                     GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
                 WriteLine();
             }

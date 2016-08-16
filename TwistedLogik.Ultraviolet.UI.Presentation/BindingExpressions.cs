@@ -239,7 +239,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var result = default(Delegate);
-            var precompiledDelegate = dataSourceType.GetField("Get" + GetBindingMemberPathPart(expression));
+            var precompiledDelegate = dataSourceType.GetField("__Get" + GetBindingMemberPathPart(expression));
             if (precompiledDelegate != null && precompiledDelegate.FieldType == typeof(DataBindingGetter<>).MakeGenericType(boundType) && precompiledDelegate.IsStatic)
                 result = (Delegate)precompiledDelegate.GetValue(null);
 
@@ -274,7 +274,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             var result = default(Delegate);
-            var precompiledDelegate = dataSourceType.GetField("Set" + GetBindingMemberPathPart(expression));
+            var precompiledDelegate = dataSourceType.GetField("__Set" + GetBindingMemberPathPart(expression));
             if (precompiledDelegate != null && precompiledDelegate.FieldType == typeof(DataBindingSetter<>).MakeGenericType(boundType) && precompiledDelegate.IsStatic)
                 result = (Delegate)precompiledDelegate.GetValue(null);
 
