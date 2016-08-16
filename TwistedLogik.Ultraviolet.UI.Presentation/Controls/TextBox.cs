@@ -693,6 +693,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 data.Handled = true;
             }
 
+            UpdateTextInputRegion();
+            Ultraviolet.GetInput().ShowSoftwareKeyboard();
+
             base.OnPreviewTouchDown(device, id, x, y, pressure, data);
         }
 
