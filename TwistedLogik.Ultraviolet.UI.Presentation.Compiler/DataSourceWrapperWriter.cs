@@ -110,8 +110,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         public void WriteConstructor(DataSourceWrapperInfo dataSourceWrapperInfo)
         {
             WriteLine("public {0}({1} dataSource, {2} namescope) : base(namescope)", dataSourceWrapperInfo.DataSourceWrapperName, 
-                GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType),
-                GetCSharpTypeName(typeof(Namescope)));
+                CSharpLanguage.GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType),
+                CSharpLanguage.GetCSharpTypeName(typeof(Namescope)));
             WriteLine("{");
 
             WriteLine("this.value = dataSource;");
@@ -132,7 +132,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             WriteLine("}");
 
-            WriteLine("private readonly {0} value;", GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
+            WriteLine("private readonly {0} value;", CSharpLanguage.GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
         }
         
         /// <summary>
@@ -149,11 +149,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var methodArgumentList = String.Join(", ", parameters.Select(x => GetArgumentText(x)));
             var methodGenericArgumentsList = method.IsGenericMethod ? "<" + String.Join(", ", method.GetGenericArguments().Select(x => x.Name)) + ">" : String.Empty;
                        
-            WriteLine("public {0}{1} {2}{3}({4})", methodStaticQualifier, GetCSharpTypeName(method.ReturnType), method.Name, methodGenericArgumentsList, methodParameterList);
+            WriteLine("public {0}{1} {2}{3}({4})", methodStaticQualifier, CSharpLanguage.GetCSharpTypeName(method.ReturnType), method.Name, methodGenericArgumentsList, methodParameterList);
             WriteGenericMethodConstraints(method);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(method.DeclaringType) : "this.value";
+            var target = isStatic ? CSharpLanguage.GetCSharpTypeName(method.DeclaringType) : "this.value";
             Write(method.ReturnType == typeof(void) ? String.Empty : "return ");
             WriteLine("{0}.{1}{2}({3});", target, method.Name, methodGenericArgumentsList, methodArgumentList);
 
@@ -262,10 +262,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             }
 
             WriteLine("public {0}{1} {2}{3}", propertyStaticQualifier, 
-                GetCSharpTypeName(property.PropertyType), isIndexer ? "this" : property.Name, propertyIndexerParameterList);
+                CSharpLanguage.GetCSharpTypeName(property.PropertyType), isIndexer ? "this" : property.Name, propertyIndexerParameterList);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(property.DeclaringType) : "this.value";
+            var target = isStatic ? CSharpLanguage.GetCSharpTypeName(property.DeclaringType) : "this.value";
 
             if (getter != null)
             {
@@ -291,10 +291,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             var propertyStaticQualifier = isStatic ? "static " : String.Empty;
 
-            WriteLine("public {0}{1} {2}", propertyStaticQualifier, GetCSharpTypeName(field.FieldType), field.Name);
+            WriteLine("public {0}{1} {2}", propertyStaticQualifier, CSharpLanguage.GetCSharpTypeName(field.FieldType), field.Name);
             WriteLine("{");
 
-            var target = isStatic ? GetCSharpTypeName(field.DeclaringType) : "this.value";
+            var target = isStatic ? CSharpLanguage.GetCSharpTypeName(field.DeclaringType) : "this.value";
 
             WriteLine("get {{ return {0}.{1}; }}", target, field.Name);
             if (!field.IsInitOnly && !field.IsLiteral)
@@ -351,10 +351,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             }
 
             WriteLine("[{0}(@\"{1}\", SimpleDependencyPropertyOwner = {2}, SimpleDependencyPropertyName = {3})]", typeof(CompiledBindingExpressionAttribute).FullName, expressionInfo.Expression.Replace("\"", "\"\""),
-                isSimpleDependencyProperty ? "typeof(" + GetCSharpTypeName(dprop.OwnerType) + ")" : "null",
+                isSimpleDependencyProperty ? "typeof(" + CSharpLanguage.GetCSharpTypeName(dprop.OwnerType) + ")" : "null",
                 isSimpleDependencyProperty ? "\"" + dprop.Name + "\"" : "null");
             
-            WriteLine("public {0} __UPF_Expression{1}", GetCSharpTypeName(expressionInfo.Type), id);
+            WriteLine("public {0} __UPF_Expression{1}", CSharpLanguage.GetCSharpTypeName(expressionInfo.Type), id);
             WriteLine("{");
 
             if (expressionInfo.GenerateGetter)
@@ -365,8 +365,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 if (isDependencyProperty)
                 {
                     getexp = String.Format("{0}GetValue<{1}>({2}.{3})", expTarget,
-                       GetCSharpTypeName(dprop.PropertyType),
-                       GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
+                       CSharpLanguage.GetCSharpTypeName(dprop.PropertyType),
+                       CSharpLanguage.GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
                 }
                 else
                 {
@@ -381,12 +381,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                     WriteLine("get");
                     WriteLine("{");
                     WriteLine("var value = {0};", getexp);
-                    WriteLine("return ({0})__UPF_ConvertToString(value, {1});", GetCSharpTypeName(expressionInfo.Type), expFormatString);
+                    WriteLine("return ({0})__UPF_ConvertToString(value, {1});", CSharpLanguage.GetCSharpTypeName(expressionInfo.Type), expFormatString);
                     WriteLine("}");
                 }
                 else
                 {
-                    WriteLine("get {{ return ({0})({1}); }}", GetCSharpTypeName(expressionInfo.Type), getexp);
+                    WriteLine("get {{ return ({0})({1}); }}", CSharpLanguage.GetCSharpTypeName(expressionInfo.Type), getexp);
                 }
 
                 expressionInfo.GetterLineEnd = LineCount - 1;
@@ -408,9 +408,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         WriteLine("set");
                         WriteLine("{");
                         WriteLine("var current = {0}GetValue<{1}>({2}.{3});", 
-                            expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
+                            expTarget, CSharpLanguage.GetCSharpTypeName(dprop.PropertyType), CSharpLanguage.GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
                         WriteLine("{0}SetValue<{1}>({2}.{3}, __UPF_ConvertFromString(value, current));",
-                            expTarget, GetCSharpTypeName(dprop.PropertyType), GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
+                            expTarget, CSharpLanguage.GetCSharpTypeName(dprop.PropertyType), CSharpLanguage.GetCSharpTypeName(dprop.OwnerType), dpropField.Name);
                         WriteLine("}");
                     }
                     else
@@ -419,16 +419,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         {
                             WriteLine(targetTypeSpecified ? "set {{ {0}SetValue<{1}>({2}.{3}, ({4})(value ?? default({1}))); }}" : "set {{ {0}SetValue<{1}>({2}.{3}, value ?? default({1})); }}",
                                 expTarget,
-                                GetCSharpTypeName(dprop.PropertyType),
-                                GetCSharpTypeName(dprop.OwnerType),
+                                CSharpLanguage.GetCSharpTypeName(dprop.PropertyType),
+                                CSharpLanguage.GetCSharpTypeName(dprop.OwnerType),
                                 dpropField.Name, targetTypeName);
                         }
                         else
                         {
                             WriteLine(targetTypeSpecified ? "set {{ {0}SetValue<{1}>({2}.{3}, ({4})(value)); }}" : "set {{ {0}SetValue<{1}>({2}.{3}, value); }}",
                                 expTarget,
-                                GetCSharpTypeName(dprop.PropertyType),
-                                GetCSharpTypeName(dprop.OwnerType),
+                                CSharpLanguage.GetCSharpTypeName(dprop.PropertyType),
+                                CSharpLanguage.GetCSharpTypeName(dprop.OwnerType),
                                 dpropField.Name, targetTypeName);
                         }
                     }
@@ -448,7 +448,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         if (expressionInfo.NullableFixup)
                         {
                             WriteLine(targetTypeSpecified ? "set {{ {0}{1} = ({3})(value ?? default({2})); }}" : "set {{ {0}{1} = value ?? default({2}); }}",
-                                expTarget, expText, GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
+                                expTarget, expText, CSharpLanguage.GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
                         }
                         else
                         {
@@ -467,44 +467,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             if (expressionInfo.GenerateGetter)
             {
                 WriteLine("public static readonly DataBindingGetter<{0}> __Get__UPF_Expression{1} = new DataBindingGetter<{0}>(vm => (({2})vm).__UPF_Expression{1});",
-                    GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
+                    CSharpLanguage.GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
                 WriteLine();
             }
 
             if (expressionInfo.GenerateSetter)
             {
                 WriteLine("public static readonly DataBindingSetter<{0}> __Set__UPF_Expression{1} = new DataBindingSetter<{0}>((vm, value) => (({2})vm).__UPF_Expression{1} = value);",
-                    GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
+                    CSharpLanguage.GetCSharpTypeName(expressionInfo.Type), id, dataSourceWrapperInfo.DataSourceWrapperName);
                 WriteLine();
             }
-        }
-
-        /// <summary>
-        /// Gets the C# name of the specified type, including by-ref specifications.
-        /// </summary>
-        public String GetCSharpTypeName(Type type)
-        {
-            if (type == typeof(void))
-                return "void";
-
-            var isByRef = type.IsByRef;
-            if (isByRef)
-                type = type.GetElementType();
-
-            var name = (type.IsGenericParameter ? type.Name : type.FullName) ?? type.Name;
-            name = name.Replace('+', '.');
-
-            if (type.IsGenericType)
-            {
-                var genericTypeDef = type.GetGenericTypeDefinition();
-                var genericTypeName = genericTypeDef.FullName.Substring(0, genericTypeDef.FullName.IndexOf('`'));
-                var genericArguments = type.GetGenericArguments();
-
-                name = String.Format("{0}<{1}>", genericTypeName,
-                    String.Join(", ", genericArguments.Select(x => GetCSharpTypeName(x))));
-            }
-            
-            return isByRef ? "ref " + name : name;
         }
 
         /// <summary>
@@ -512,7 +484,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         /// </summary>
         public String GetParameterText(ParameterInfo parameter)
         {
-            return GetCSharpTypeName(parameter.ParameterType) + " " + parameter.Name;
+            return CSharpLanguage.GetCSharpTypeName(parameter.ParameterType) + " " + parameter.Name;
         }
 
         /// <summary>
@@ -597,7 +569,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         CompilerStrings.ExpressionTargetIsUnrecognizedType.Format(expOriginal, matchName));
                 }
 
-                expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\").", GetCSharpTypeName(expTargetType), expPartTarget);
+                expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\").", CSharpLanguage.GetCSharpTypeName(expTargetType), expPartTarget);
 
                 return true;
             }

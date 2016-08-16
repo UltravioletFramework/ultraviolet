@@ -317,7 +317,7 @@
   </String>
   <String Key="CANNOT_FIND_VIEW_MODEL_WRAPPER">
     <en-US>
-      <Variant>Cannot locate the view wrapper type named '{0}'. You may need to recompile your application's binding expressions assembly.</Variant>
+      <Variant>Cannot locate the view wrapper for the type named '{0}'. You may need to recompile your application's binding expressions assembly.</Variant>
     </en-US>
   </String>
   <String Key="VERSIONED_STRING_SOURCE_IS_STALE">

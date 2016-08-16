@@ -62,27 +62,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Creates a new view model wrapper instance of the specified type which wraps the specified view model, if such a wrapper exists.
+        /// Creates a data source wrapper instance for a view with the specified view model, if such a wrapper exists.
         /// </summary>
-        /// <param name="name">The name of the view model wrapper type to instantiate.</param>
-        /// <param name="viewModel">The view model instance that will be wrapped by the view model wrapper.</param>
-        /// <param name="namescope">The view model's namescope.</param>
-        /// <returns>The view model wrapper that was created, or a reference to <paramref name="viewModel"/> if no valid wrapper exists.</returns>
-        public Object CreateDataSourceWrapperByName(String name, Object viewModel, Namescope namescope)
+        /// <param name="viewModel">The view model instance that will be wrapped by the data source wrapper.</param>
+        /// <param name="namescope">The view model namescope.</param>
+        /// <returns>The data source wrapper that was created, or a reference to <paramref name="viewModel"/> if no such wrapper exists.</returns>
+        public Object CreateDataSourceWrapperForView(Object viewModel, Namescope namescope)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(name, nameof(name));
             Contract.Require(namescope, nameof(namescope));
 
             if (viewModel == null)
                 return null;
 
             Type wrapperType;
-            if (!compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
+            if (!compiledDataSourceWrappersByWrappedType.TryGetValue(viewModel.GetType(), out wrapperType))
             {
                 var vmWrapperAttr = viewModel.GetType().GetCustomAttributes(typeof(ViewModelWrapperAttribute), false).Cast<ViewModelWrapperAttribute>().SingleOrDefault();
                 wrapperType = (vmWrapperAttr == null) ? null : vmWrapperAttr.WrapperType;
-                compiledDataSourceWrappers[name] = wrapperType;
+                compiledDataSourceWrappersByWrappedType[viewModel.GetType()] = wrapperType;
             }
 
             try
@@ -101,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw;
             }
         }
-
+        
         /// <summary>
         /// Creates a new view model wrapper instance for the specified control's component template.
         /// </summary>
@@ -117,60 +115,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var wrapperType = default(Type);
             var templateType = viewModel.GetType();
-            var templateName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
             var templateInherited = false;
 
             for (var current = templateType; current != null; current = current.BaseType)
             {
-                var nameCurrent = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(current);
-                if (compiledDataSourceWrappers.TryGetValue(nameCurrent, out wrapperType))
+                if (compiledDataSourceWrappersByWrappedType.TryGetValue(current, out wrapperType))
                     break;
 
                 templateInherited = true;
             }
 
             if (wrapperType != null && templateInherited)
-                compiledDataSourceWrappers[templateName] = wrapperType;
+                compiledDataSourceWrappersByWrappedType[templateType] = wrapperType;
 
             return (wrapperType == null) ? viewModel : Activator.CreateInstance(wrapperType, new Object[] { viewModel, viewModel.ComponentTemplateNamescope });
         }
-
+        
         /// <summary>
-        /// Gets the data source wrapper type for the view with the specified asset path.
+        /// Gets the data source wrapper type for the specified wrapped type.
         /// </summary>
-        /// <param name="path">The path to the view for which to retrieve a data source wrapper type.</param>
-        /// <returns>The data source wrapper type for the view with the specified path, or <see langword="null"/> if no such wrapper exists.</returns>
-        public Type GetDataSourceWrapperTypeByViewPath(String path)
+        /// <param name="dataSourceType">The data source type which is wrapped.</param>
+        /// <returns>The data source wrapper type for the specified wrapped type.</returns>
+        public Type GetDataSourceWrapperType(Type dataSourceType)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(path, nameof(path));
-
-            var name = PresentationFoundationView.GetDataSourceWrapperNameForView(path);
+            Contract.Require(dataSourceType, nameof(dataSourceType));
 
             Type wrapperType;
-            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
-            {
-                return wrapperType;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the data source wrapper type with the specified name.
-        /// </summary>
-        /// <param name="name">The name of the data source wrapper type to retrieve.</param>
-        /// <returns>The data source wrapper type with the specified name, or <see langword="null"/> if no such wrapper exists.</returns>
-        public Type GetDataSourceWrapperTypeByName(String name)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.RequireNotEmpty(name, nameof(name));
-
-            Type wrapperType;
-            if (compiledDataSourceWrappers.TryGetValue(name, out wrapperType))
-            {
-                return wrapperType;
-            }
-            return null;
+            compiledDataSourceWrappersByWrappedType.TryGetValue(dataSourceType, out wrapperType);
+            return wrapperType;
         }
 
         /// <summary>
@@ -267,11 +240,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 throw new InvalidOperationException(PresentationStrings.CompiledExpressionsAssemblyNotFound, e);
             }
-
-            compiledDataSourceWrappers.Clear();            
+            
+            compiledDataSourceWrappersByWrappedType.Clear();
             foreach (var dataSourceWrapperType in compiledExpressionsAssembly.GetTypes())
             {
-                compiledDataSourceWrappers.Add(dataSourceWrapperType.Name, dataSourceWrapperType);
+                var wrapperAttr = (WrappedDataSourceAttribute)dataSourceWrapperType.GetCustomAttributes(typeof(WrappedDataSourceAttribute), false).SingleOrDefault();
+                if (wrapperAttr != null)
+                    compiledDataSourceWrappersByWrappedType[wrapperAttr.WrappedType] = dataSourceWrapperType;
             }
         }
 
@@ -1219,8 +1194,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
         // The registry of compiled data source wrappers.
-        private readonly Dictionary<String, Type> compiledDataSourceWrappers =
-            new Dictionary<String, Type>(StringComparer.Ordinal);
+        private readonly Dictionary<Type, Type> compiledDataSourceWrappersByWrappedType =
+            new Dictionary<Type, Type>();
         
         // The out-of-band element renderer.
         private readonly OutOfBandRenderer outOfBandRenderer;

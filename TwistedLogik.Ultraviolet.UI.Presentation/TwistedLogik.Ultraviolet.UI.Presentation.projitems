@@ -419,6 +419,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WeakLinkedList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WeakReferencePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlDefaultPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WrappedDataSourceAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">

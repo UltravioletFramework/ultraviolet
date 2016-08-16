@@ -106,24 +106,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// </summary>
         private void FindCompiledBindingExpressions()
         {
-            var wrapperName = default(String);
             var wrapperType = DataSource is PresentationFoundationView || TemplatedParent == null ? DataSourceType : null;
             if (wrapperType == null)
             {
                 for (var templateType = TemplatedParent.GetType(); templateType != null; templateType = templateType.BaseType)
                 {
-                    wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
-                    wrapperType = Ultraviolet.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(wrapperName);
+                    wrapperType = Ultraviolet.GetUI().GetPresentationFoundation().GetDataSourceWrapperType(templateType);
 
                     if (wrapperType != null)
                         break;
                 }
 
                 if (wrapperType == null)
-                {
-                    wrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(TemplatedParent.GetType());
-                    throw new UvmlException(PresentationStrings.CannotFindViewModelWrapper.Format(wrapperName));
-                }
+                    throw new UvmlException(PresentationStrings.CannotFindViewModelWrapper.Format(TemplatedParent.GetType().Name));
             }
 
             var properties = wrapperType.GetProperties().Where(x => x.Name.StartsWith("__UPF_Expression")).ToList();

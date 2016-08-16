@@ -34,8 +34,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
 
-            this.viewModelWrapperName = viewModelType.Name;
-
             this.combinedStyleSheet = new UvssDocument(uv);
 
             this.namescope = new Namescope();
@@ -94,34 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return view;
         }
-
-        /// <summary>
-        /// Gets the name of the data source wrapper for a view which is defined in a file with the specified asset path.
-        /// </summary>
-        /// <param name="path">The asset path of the UVML file that defines the view.</param>
-        /// <returns>The name of the data source wrapper for the specified view.</returns>
-        public static String GetDataSourceWrapperNameForView(String path)
-        {
-            Contract.RequireNotEmpty(path, nameof(path));
-
-            var pathComponents = path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
-            pathComponents[pathComponents.Length - 1] = Path.GetFileNameWithoutExtension(pathComponents[pathComponents.Length - 1]);
-
-            return String.Format("{0}_VM_Impl", String.Join("_", pathComponents));
-        }
-
-        /// <summary>
-        /// Gets the name of the data source wrapper for a component template which is associated with the specified control type.
-        /// </summary>
-        /// <param name="type">The type of control with which the component template is associated.</param>
-        /// <returns>The name of the data source wrapper for the specified control type.</returns>
-        public static String GetDataSourceWrapperNameForComponentTemplate(Type type)
-        {
-            Contract.Require(type, nameof(type));
-
-            return String.Format("{0}_Template_Impl", type.FullName.Replace('.', '_'));
-        }
-
+        
         /// <summary>
         /// Gets the namespace that contains data source wrappers for views.
         /// </summary>
@@ -206,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public override void SetViewModel(Object viewModel)
         {
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            var wrapper = upf.CreateDataSourceWrapperByName(viewModelWrapperName, viewModel, Namescope);
+            var wrapper = upf.CreateDataSourceWrapperForView(viewModel, Namescope);
 
             base.SetViewModel(wrapper);
 
@@ -2694,9 +2665,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Double timeSinceToolTipWasOpened;
         private Double timeSinceToolTipWasClosed;
         private Boolean toolTipWasShownForCurrentElement;
-
-        // View model wrapping.
-        private String viewModelWrapperName;
 
         // Default/cancel buttons for the view.
         private readonly List<WeakReference> defaultButtons = new List<WeakReference>(0);

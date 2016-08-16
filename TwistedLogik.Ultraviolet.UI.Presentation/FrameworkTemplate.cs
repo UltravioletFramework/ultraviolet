@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             var uv = UltravioletContext.DemandCurrent();
             var namescope = default(Namescope);
-            var wrapper = CreateDataSourceWrapper(dataSource, dataSourceType, out namescope);
+            var wrapper = CreateDataSourceWrapper(dataSource, out namescope);
             var context = new UvmlInstantiationContext(uv, null, wrapper, wrapper?.GetType(), namescope);
             var dobj = (DependencyObject)((UvmlTemplateInstance)template.Instantiate(uv, context)).Finalize();
 
@@ -52,10 +52,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// the template's binding expressions.
         /// </summary>
         /// <param name="dataSource">The object's data source.</param>
-        /// <param name="dataSourceType">The object's data source type.</param>
         /// <param name="namescope">The template's namescope.</param>
         /// <returns>The wrapped data source.</returns>
-        private Object CreateDataSourceWrapper(Object dataSource, Type dataSourceType, out Namescope namescope)
+        private Object CreateDataSourceWrapper(Object dataSource, out Namescope namescope)
         {
             namescope = new Namescope();
 
@@ -63,7 +62,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return dataSource;
 
             var uv = UltravioletContext.DemandCurrent();
-            var wrapper = uv.GetUI().GetPresentationFoundation().CreateDataSourceWrapperByName(dataSourceWrapperName, dataSource, namescope);
+            var wrapper = uv.GetUI().GetPresentationFoundation().CreateDataSourceWrapperForView(dataSource, namescope);
 
             return wrapper;
         }

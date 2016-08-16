@@ -407,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             {
                 try
                 {
-                    var name = PresentationFoundationView.GetDataSourceWrapperNameForView(file);
+                    var name = $"__Wrapper_{Guid.NewGuid().ToString("N")}";
                     var definition = CreateDataSourceDefinitionFromFile(null, name, file);
                     if (definition != null)
                     {
@@ -574,6 +574,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 References = dataSourceReferences,
                 Imports = dataSourceImports,
                 DataSourceDefinition = dataSourceDefinition,
+                DataSourcePath = dataSourceDefinition.DefinitionPath,
                 DataSourceType = dataSourceWrappedType,
                 DataSourceWrapperName = dataSourceWrapperName,
                 Expressions = dataSourceWrapperExpressions,
@@ -685,7 +686,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             // Class declaration
             writer.WriteLine("[System.CLSCompliant(false)]");
             writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
-            writer.WriteLine("public sealed partial class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, writer.GetCSharpTypeName(typeof(CompiledDataSourceWrapper)));
+            writer.WriteLine("[TwistedLogik.Ultraviolet.UI.Presentation.WrappedDataSource(typeof({0}))]", CSharpLanguage.GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
+            writer.WriteLine("public sealed partial class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, CSharpLanguage.GetCSharpTypeName(typeof(CompiledDataSourceWrapper)));
             writer.WriteLine("{");
 
             // Constructors
@@ -747,6 +749,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                 writer.WriteExpressionProperty(state, dataSourceWrapperInfo, expressionInfo, i);
             }
             writer.WriteLine("#endregion");
+            writer.WriteLine();
 
             // Special-case binding delegates
             writer.WriteLine("#region Binding Delegates");
@@ -1029,29 +1032,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var path = Path.ChangeExtension(Path.Combine(Path.GetTempPath(), dataSourceWrapperInfo.UniqueID.ToString()), "cs");
             return path;
         }
-
-        /// <summary>
-        /// Gets the C# name of the specified type, including by-ref specifications.
-        /// </summary>
-        private static String GetCSharpTypeName(Type type)
-        {
-            if (type == typeof(void))
-                return "void";
-
-            if (type.IsByRef)
-            {
-                return "ref " + type.GetElementType().FullName;
-            }
-
-            return type.FullName;
-        }
-
+        
         /// <summary>
         /// Gets the source text for the specified parameter when it is part of a parameter list.
         /// </summary>
         private static String GetParameterText(ParameterInfo parameter)
         {
-            return GetCSharpTypeName(parameter.ParameterType) + " " + parameter.Name;
+            return CSharpLanguage.GetCSharpTypeName(parameter.ParameterType) + " " + parameter.Name;
         }
 
         /// <summary>

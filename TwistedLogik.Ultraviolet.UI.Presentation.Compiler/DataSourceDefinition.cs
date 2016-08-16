@@ -56,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         public static DataSourceDefinition FromComponentTemplate(Type templatedControl, XElement definition)
         {
             var dataSourceIdentifier = templatedControl.Name;
-            var dataSourceWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templatedControl);
+            var dataSourceWrapperName = $"__Wrapper_{Guid.NewGuid().ToString("N")}";
             var dataSourceWrapperNamespace = PresentationFoundationView.DataSourceWrapperNamespaceForComponentTemplates;
 
             return new DataSourceDefinition(templatedControl.FullName,

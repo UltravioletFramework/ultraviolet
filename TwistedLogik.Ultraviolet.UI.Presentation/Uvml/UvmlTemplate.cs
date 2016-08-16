@@ -190,8 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
                 return;
 
             var templateType = contentPresenter.TemplatedParent.GetType();
-            var templateWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForComponentTemplate(templateType);
-            var templateWrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(templateWrapperName);
+            var templateWrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperType(templateType);
 
             var dpAliasedContent = DependencyProperty.FindByName(alias, templateType);
             if (dpAliasedContent != null)
