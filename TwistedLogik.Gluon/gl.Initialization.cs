@@ -359,7 +359,7 @@ namespace TwistedLogik.Gluon
                 {
                     if (!req.IsCore(majorVersion, minorVersion, isGLES))
                     {
-                        var extensions = req.Extension.Split(new[] { "&&" }, StringSplitOptions.None);
+                        var extensions = req.Extension.Split(new[] { "&&" }, StringSplitOptions.None).Select(x => x.Trim());
                         if (!extensions.All(IsExtensionSupported))
                             continue;
 
