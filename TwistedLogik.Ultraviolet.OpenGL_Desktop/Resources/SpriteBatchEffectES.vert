@@ -11,10 +11,11 @@ uniform vec2 TextureSize;
 
     attribute vec4 uv_Position0;
     attribute vec4 uv_Color0;
-    #if GL_EXT_gpu_shader4
+    #ifdef GL_EXT_gpu_shader4
         attribute uvec2 uv_TextureCoordinate0;    
     #else
         attribute vec2 uv_TextureCoordinate0;
+        #define NORMALIZED_TEXCOORDS
     #endif
 
     varying vec4 vColor;
@@ -35,6 +36,9 @@ void main()
 {
     gl_Position = MatrixTransform * uv_Position0;
     vColor = uv_Color0;
+#ifdef NORMALIZED_TEXCOORDS
     vTextureCoordinate = vec2(float(uv_TextureCoordinate0.x) / TextureSize.x, 1.0 - (float(uv_TextureCoordinate0.y) / TextureSize.y));
+#else
+    vTextureCoordinate = uv_TextureCoordinate0;
+#endif
 }
-

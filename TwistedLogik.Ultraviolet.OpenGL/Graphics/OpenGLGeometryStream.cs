@@ -450,6 +450,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             OpenGLState.BindArrayBuffer(vbuffer.OpenGLName);
 
             var position = offset ?? this.offset;
+            var caps = Ultraviolet.GetGraphics().Capabilities;
 
             foreach (var element in vbuffer.VertexDeclaration)
             {
@@ -459,6 +460,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var normalize = false;
                 var integer = false;
                 var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize, out integer);
+
+                if (!caps.SupportsIntegralVertexAttributes)
+                    normalize = true;
 
                 var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name);
                 if (location >= 0)
@@ -472,7 +476,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         gl.ThrowIfError();
                     }
 
-                    if (integer && !normalize && !gl.IsGLES2)
+                    if (integer && !normalize)
                     {
                         gl.VertexAttribIPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                         gl.ThrowIfError();
@@ -493,6 +497,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// </summary>
         private unsafe void BindVertexAttributesForBuffer_NewAPI(OpenGLVertexBuffer vbuffer, UInt32 binding, UInt32 frequency, UInt32? program, UInt32? offset)
         {
+            var caps = Ultraviolet.GetGraphics().Capabilities;
+
             using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0))
             {
                 if (program.HasValue || offset.HasValue)
@@ -516,6 +522,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         var normalize = false;
                         var integer = false;
                         var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize, out integer);
+
+                        if (!caps.SupportsIntegralVertexAttributes)
+                            normalize = true;
 
                         var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name);
                         if (location >= 0)

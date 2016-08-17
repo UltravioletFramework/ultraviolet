@@ -17,7 +17,13 @@ namespace TwistedLogik.Ultraviolet
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             factory.SetFactoryMethod(owner.IsRunningInServiceMode ? 
-                new SpriteBatchFactory((uv) => null) : new SpriteBatchFactory((uv) => new SpriteBatch(uv)));
+                new SpriteBatchFactory((uv) => null) : new SpriteBatchFactory((uv) =>
+                {
+                    var caps = uv.GetGraphics().Capabilities;
+                    return caps.SupportsIntegralVertexAttributes ? 
+                        new SpriteBatch(uv) : 
+                        new SpriteBatchFallback(uv);
+                }));
         }
     }
 }

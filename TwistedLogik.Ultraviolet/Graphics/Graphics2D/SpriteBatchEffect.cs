@@ -55,17 +55,24 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public Size2 TextureSize
         {
+            // NOTE: On OpenGL ES 2.0 we don't support integer vertex attributes and therefore
+            // we don't do the normalization in the GLSL, which means that TextureSize gets
+            // optimized out. So we can just ignore it.
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return (Size2)epTextureSize.GetValueVector2();
+                if (epTextureSize != null)
+                    return (Size2)epTextureSize.GetValueVector2();
+
+                return Size2.Zero;
             }
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                epTextureSize.SetValue((Vector2)value);
+                if (epTextureSize != null)
+                    epTextureSize.SetValue((Vector2)value);
             }
         }
 

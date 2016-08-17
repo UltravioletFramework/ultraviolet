@@ -44,6 +44,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.SupportsIndependentSamplerState = (gl.IsGLES ? gl.IsVersionAtLeast(3, 0) : gl.IsVersionAtLeast(3, 3)) ||
                 gl.IsExtensionSupported("GL_ARB_sampler_objects");
 
+            this.SupportsIntegralVertexAttributes = !gl.IsGLES2 || gl.IsExtensionSupported("GL_EXT_gpu_shader4");
+
             this.SupportsMapBufferRange = true;
             if (gl.IsGLES2)
             {
@@ -57,31 +59,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsDepthStencilTextures
-        {
-            get { return supportsDepthStencilTextures; }
-        }
+        public override Boolean SupportsDepthStencilTextures { get { return supportsDepthStencilTextures; } }
 
         /// <inheritdoc/>
-        public override Boolean SupportsInstancedRendering
-        {
-            get { return !gl.IsGLES2; }
-        }
+        public override Boolean SupportsInstancedRendering { get { return !gl.IsGLES2; } }
 
         /// <inheritdoc/>
-        public override Boolean SupportsNonZeroBaseInstance
-        {
-            get;
-        }
+        public override Boolean SupportsNonZeroBaseInstance { get; }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreservingRenderTargetContentInHardware
-        {
-            get { return true; }
-        }
+        public override Boolean SupportsPreservingRenderTargetContentInHardware { get { return true; } }
 
         /// <inheritdoc/>
         public override Boolean SupportsIndependentSamplerState { get; }
+
+        /// <inheritdoc/>
+        public override Boolean SupportsIntegralVertexAttributes { get; }
 
         /// <summary>
         /// Gets a value indicating whether the OpenGL context supports glMapBufferRange().
@@ -89,22 +82,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public Boolean SupportsMapBufferRange { get; }
 
         /// <inheritdoc/>
-        public override Int32 MaximumTextureSize
-        {
-            get { return maximumTextureSize; }
-        }
+        public override Int32 MaximumTextureSize { get { return maximumTextureSize; } }
 
         /// <inheritdoc/>
-        public override Int32 MaximumViewportWidth
-        {
-            get { return maximumViewportWidth; }
-        }
+        public override Int32 MaximumViewportWidth { get { return maximumViewportWidth; } }
 
         /// <inheritdoc/>
-        public override Int32 MaximumViewportHeight
-        {
-            get { return maximumViewportHeight; }
-        }
+        public override Int32 MaximumViewportHeight { get { return maximumViewportHeight; } }
 
         /// <summary>
         /// Gets the value of GL_MIN_MAP_BUFFER_ALIGNMENT.

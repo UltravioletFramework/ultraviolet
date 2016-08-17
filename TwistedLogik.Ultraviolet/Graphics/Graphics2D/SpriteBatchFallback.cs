@@ -4,40 +4,25 @@ using System.Security;
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents a factory method which constructs instances of the <see cref="SpriteBatch"/> class.
-    /// </summary>
-    /// <param name="uv">The Ultraviolet context.</param>
-    /// <returns>The instance of <see cref="SpriteBatch"/> that was created.</returns>
-    public delegate SpriteBatch SpriteBatchFactory(UltravioletContext uv);
-
-    /// <summary>
     /// Represents a standard implementation of <see cref="SpriteBatchBase{VertexType, SpriteData}"/> using vertices which
-    /// specify position, color, and texture data.
+    /// specify position, color, and texture data. This version of <see cref="SpriteBatch"/> is used on platforms which
+    /// don't support non-integral vertex attributes -- we have to normalize our texture coordinates on the CPU, resulting in
+    /// a loss of precision.
     /// </summary>
     [SecuritySafeCritical]
-    public class SpriteBatch : SpriteBatchBase<SpriteVertex, SpriteBatchData>
+    internal class SpriteBatchFallback : SpriteBatch
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpriteBatch"/> class.
+        /// Initializes a new instance of the <see cref="SpriteBatchFallback"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="batchSize">The maximum number of sprites that can be drawn in a single batch.</param>
-        internal SpriteBatch(UltravioletContext uv, Int32 batchSize = 2048)
+        internal SpriteBatchFallback(UltravioletContext uv, Int32 batchSize = 2048)
             : base(uv, batchSize)
         {
 
         }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="SpriteBatch"/> class.
-        /// </summary>
-        /// <returns>The instance of <see cref="SpriteBatch"/> that was created.</returns>
-        public static SpriteBatch Create()
-        {
-            var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<SpriteBatchFactory>()(uv);
-        }
-
+        
         /// <summary>
         /// Generates vertices for a group of sprites.
         /// </summary>
@@ -52,6 +37,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         protected override unsafe void GenerateVertices(Texture2D texture, SpriteHeader[] sprites,
             SpriteVertex[] vertices, SpriteBatchData[] data, Int32 offset, Int32 count)
         {
+            CalculateUV(texture);
+
             fixed (SpriteHeader* pSprites1 = &sprites[offset])
             fixed (SpriteBatchData* pData1 = &data[offset])
             fixed (SpriteVertex* pVertices1 = &vertices[0])
@@ -67,7 +54,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
                     for (int v = 0; v < 4; v++)
                     {
-                        CalculatePositionAndTextureCoordinates(pSprites, v,
+                        CalculatePositionAndNormalizableTextureCoordinates(pSprites, v,
                             (MutableVector2*)&pVertices->Position, &pVertices->U, &pVertices->V);
 
                         pVertices->Color = pSprites->Color;

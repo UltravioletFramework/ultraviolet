@@ -37,6 +37,12 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Boolean SupportsIndependentSamplerState { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the current decide supports vertex attributes
+        /// which have integral types.
+        /// </summary>
+        public abstract Boolean SupportsIntegralVertexAttributes { get; }
+
+        /// <summary>
         /// Gets the maximum texture size supported by the device.
         /// </summary>
         public abstract Int32 MaximumTextureSize { get; }
