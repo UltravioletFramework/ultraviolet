@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override OpenGLVertexShader Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            var source = ReplaceIncludes(manager, metadata, input);
+            var source = ProcessShaderDirectives(manager, metadata, input);
             return new OpenGLVertexShader(manager.Ultraviolet, new[] { source });
         }
     }
