@@ -2,7 +2,7 @@
 #ifver "es2.0" { #define GLES2 }
 #ifver_gt "es2.0" { #version 300 es }
 #ifver_gt "es2.0" { #define GLES3 }
-#extension EXT_gpu_shader4 : enable
+#extension GL_EXT_gpu_shader4 : enable
 
 uniform mat4 MatrixTransform;
 uniform vec2 TextureSize;
@@ -37,8 +37,8 @@ void main()
     gl_Position = MatrixTransform * uv_Position0;
     vColor = uv_Color0;
 #ifdef NORMALIZED_TEXCOORDS
-    vTextureCoordinate = vec2(float(uv_TextureCoordinate0.x) / TextureSize.x, 1.0 - (float(uv_TextureCoordinate0.y) / TextureSize.y));
-#else
     vTextureCoordinate = uv_TextureCoordinate0;
+#else
+    vTextureCoordinate = vec2(float(uv_TextureCoordinate0.x) / TextureSize.x, 1.0 - (float(uv_TextureCoordinate0.y) / TextureSize.y));
 #endif
 }
