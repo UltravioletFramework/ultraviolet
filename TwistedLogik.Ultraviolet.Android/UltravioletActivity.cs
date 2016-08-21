@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet
                 Contract.EnsureNotDisposed(this, disposed);
 
                 lock (stateSyncObject)
-                    return active && !suspended;
+                    return !suspended;
             }
         }
 
@@ -781,7 +781,6 @@ namespace TwistedLogik.Ultraviolet
         private Boolean created;
         private Boolean running;
         private Boolean finished;
-        private Boolean active;
         private Boolean suspended;
         private Boolean disposed;
         private IUltravioletWindow primary;
