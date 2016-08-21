@@ -2528,12 +2528,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             graphics.SetDepthStencilState(depthStencilState ?? DepthStencilState.None);
             graphics.SetRasterizerState(rasterizerState ?? RasterizerState.CullCounterClockwise);
 
-            var matrixTransformParam = customEffect.Parameters["MatrixTransform"];
-            if (matrixTransformParam != null)
+            var spriteBatchEffect = customEffect as ISpriteBatchEffect;
+            if (spriteBatchEffect != null)
             {
                 var viewport = Ultraviolet.GetGraphics().GetViewport();
                 var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
-                matrixTransformParam.SetValue(projection * transformMatrix);
+                spriteBatchEffect.MatrixTransform = projection * transformMatrix;
+            }
+            else
+            {
+                var matrixTransformParam = customEffect.Parameters["MatrixTransform"];
+                if (matrixTransformParam != null)
+                {
+                    var viewport = Ultraviolet.GetGraphics().GetViewport();
+                    var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
+                    matrixTransformParam.SetValue(projection * transformMatrix);
+                }
             }
             
             customEffect.CurrentTechnique.Passes[0].Apply();
