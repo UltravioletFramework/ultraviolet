@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Sprite>
+  <Animations OriginX="60" OriginY="70" Width="120" Height="140" Texture="HexagonsTexture">
+    <Animation>
+      <Frames>
+        <Frame X="0" Y="0"/>
+      </Frames>
+    </Animation>
+    <Animation>
+      <Frames>
+        <Frame X="120" Y="140"/>
+      </Frames>
+    </Animation>
+    <Animation>
+      <Frames>
+        <Frame X="240" Y="280"/>
+      </Frames>
+    </Animation>
+    <Animation>
+      <Frames>
+        <Frame X="360" Y="420"/>
+      </Frames>
+    </Animation>
+    <Animation>
+      <Frames>
+        <Frame X="480" Y="560"/>
+      </Frames>
+    </Animation>
+  </Animations>
+</Sprite>

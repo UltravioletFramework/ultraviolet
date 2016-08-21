@@ -69,6 +69,7 @@ namespace SAFE_PROJECT_NAME
                 System.Diagnostics.Debug.WriteLine(message);
             };
 #endif
+
             return new OpenGLUltravioletContext(this, configuration);
         }
 
