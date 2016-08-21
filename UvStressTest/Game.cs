@@ -10,7 +10,15 @@ using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace UvStressTest
 {
+#if ANDROID
+    [Android.App.Activity(Label = "UvDebugSandbox", MainLauncher = true, ConfigurationChanges =
+        Android.Content.PM.ConfigChanges.Orientation |
+        Android.Content.PM.ConfigChanges.ScreenSize |
+        Android.Content.PM.ConfigChanges.KeyboardHidden)]
+    public partial class Game : UltravioletActivity
+#else
     public partial class Game : UltravioletApplication
+#endif
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -77,6 +85,19 @@ namespace UvStressTest
             this.blankTexture = Texture2D.Create(1, 1);
             this.blankTexture.SetData(new[] { Color.White });
 
+            this.effect = BasicEffect.Create();
+
+            this.vbuffer = VertexBuffer.Create<VertexPositionColor>(3);
+            this.vbuffer.SetData<VertexPositionColor>(new[]
+            {
+                new VertexPositionColor(new Vector3(0, 1, 0), Color.Red),
+                new VertexPositionColor(new Vector3(1, -1, 0), Color.Lime),
+                new VertexPositionColor(new Vector3(-1, -1, 0), Color.Blue),
+            });
+
+            this.geometryStream = GeometryStream.Create();
+            this.geometryStream.Attach(this.vbuffer);
+
             GC.Collect(2);
 
             base.OnLoadingContent();
@@ -96,18 +117,34 @@ namespace UvStressTest
             Array.Copy(fpsHistory, 1, fpsHistory, 0, fpsHistory.Length - 1);
             fpsHistory[fpsHistory.Length - 1] = fps;
 
+            var gfx = Ultraviolet.GetGraphics();
             var window = Ultraviolet.GetPlatform().Windows.GetPrimary();
             var drawableWidth = window.DrawableSize.Width;
             var drawableHeight = window.DrawableSize.Height;
+            var aspectRatio = drawableWidth / (float)drawableHeight;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 var x = rng.Next(drawableWidth);
                 var y = rng.Next(drawableHeight);
                 spriteBatch.DrawSprite(sprite[rng.Next(sprite.AnimationCount)].Controller, new Vector2(x, y));
             }
             spriteBatch.End();
+
+            effect.World = Matrix.CreateRotationY((float)(2.0 * Math.PI * time.TotalTime.TotalSeconds));
+            effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            effect.Projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f);
+            effect.VertexColorEnabled = true;
+
+            foreach (var pass in this.effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                gfx.SetRasterizerState(RasterizerState.CullNone);
+                gfx.SetGeometryStream(geometryStream);
+                gfx.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+            }
 
             strFormatter.Reset();
             strFormatter.AddArgument(fps);
@@ -151,6 +188,11 @@ namespace UvStressTest
         private SpriteFont spriteFont;
         private SpriteBatch spriteBatch;
         private Texture2D blankTexture;
+        
+        // Triangle geometry.
+        private BasicEffect effect;
+        private VertexBuffer vbuffer;
+        private GeometryStream geometryStream;
 
         // Text formatting.
         private readonly StringBuilder strBuffer = new StringBuilder();
