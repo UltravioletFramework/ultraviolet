@@ -138,8 +138,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private Version minimumOpenGLESVersion;
         private Int32 backBufferDepthSize = 16;
         private Int32 backBufferStencilSize = 1;
-        private Int32 multiSampleBuffers = 1;
-        private Int32 multiSampleSamples = 4;
+        private Int32 multiSampleBuffers = 0;
+        private Int32 multiSampleSamples = 0;
         private Boolean isHardwareInputDisabled;
         private Boolean use32BitFramebuffer;
     }
