@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Int32 GetAlignedSize(Int32 count)
         {
-            Contract.EnsureRange(count >= 0 && count <= IndexCount, nameof(count));
+            Contract.EnsureRange(count >= 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var indexStride = GetElementSize();
