@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 InitializeDebugOutput(configuration);
             }
             
-            this.capabilities = new OpenGLGraphicsCapabilities();
+            this.capabilities = new OpenGLGraphicsCapabilities(configuration);
 
             this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture2D[maxTextureStages];

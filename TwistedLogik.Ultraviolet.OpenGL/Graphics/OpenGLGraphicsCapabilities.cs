@@ -11,7 +11,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenGLGraphicsCapabilities"/> class.
         /// </summary>
-        internal unsafe OpenGLGraphicsCapabilities()
+        /// <param name="configuration">The configuration settings for the Ultraviolet context.</param>
+        internal unsafe OpenGLGraphicsCapabilities(OpenGLUltravioletConfiguration configuration)
         {
             this.maximumTextureSize = gl.GetInteger(gl.GL_MAX_TEXTURE_SIZE);
             gl.ThrowIfError();
@@ -70,10 +71,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var mesaVersion = new Version(mesaMajor, mesaMinor);
                 if (mesaVersion < new Version(12, 1))
                 {
-                    this.SupportsMapBufferRange = false;
-                    this.MinMapBufferAlignment = 0;
+                    configuration.UseBufferMapping = false;
                 }
             }
+
+            // If we've been explicitly told to disable buffer mapping, override the caps from the driver.
+            if (!configuration.UseBufferMapping)
+                this.SupportsMapBufferRange = false;
         }
 
         /// <inheritdoc/>
