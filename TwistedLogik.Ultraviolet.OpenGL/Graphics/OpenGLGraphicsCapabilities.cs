@@ -61,15 +61,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             // There seems to be a bug in the version of Mesa which is distributed
             // with Ubuntu 16.04 that causes long stalls when using glMapBufferRange.
-            // Testing indicates that this is fixed in 12.1.
+            // Testing indicates that this is fixed in 11.2.2.
             var version = gl.GetString(gl.GL_VERSION);
-            var versionMatchMesa = Regex.Match(version, "Mesa (?<major>\\d+).(?<minor>\\d+)");
+            var versionMatchMesa = Regex.Match(version, "Mesa (?<major>\\d+).(?<minor>\\d+).(?<build>\\d+)");
             if (versionMatchMesa != null && versionMatchMesa.Success)
             {
                 var mesaMajor = Int32.Parse(versionMatchMesa.Groups["major"].Value);
                 var mesaMinor = Int32.Parse(versionMatchMesa.Groups["minor"].Value);
-                var mesaVersion = new Version(mesaMajor, mesaMinor);
-                if (mesaVersion < new Version(12, 1))
+                var mesaBuild = Int32.Parse(versionMatchMesa.Groups["build"].Value);
+                var mesaVersion = new Version(mesaMajor, mesaMinor, mesaBuild);
+                if (mesaVersion < new Version(11, 2, 2))
                 {
                     configuration.UseBufferMapping = false;
                 }
