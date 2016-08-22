@@ -124,7 +124,7 @@ namespace UvStressTest
             var aspectRatio = drawableWidth / (float)drawableHeight;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 5000; i++)
             {
                 var x = rng.Next(drawableWidth);
                 var y = rng.Next(drawableHeight);
