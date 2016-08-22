@@ -14,9 +14,15 @@ uniform sampler2D textureSampler;
 #else
 	in vec4 vColor;
 	in vec2 vTextureCoordinate;
+
+	out vec4 fColor;
 #endif
 
 void main()
 {
+#ifdef GLES2
 	gl_FragColor = texture2D(textureSampler, vTextureCoordinate) * vColor;
+#else
+	fColor = texture(textureSampler, vTextureCoordinate) * vColor;
+#endif
 }
