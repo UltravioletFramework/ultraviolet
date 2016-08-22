@@ -195,13 +195,11 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Creates an instance of <see cref="OpenGLState"/> which binds a vertex array object to the context.
         /// </summary>
         /// <param name="vertexArrayObject">The vertex array object to bind to the context.</param>
-        /// <param name="arrayBuffer">The vertex array's associated array buffer.</param>
         /// <param name="elementArrayBuffer">The vertex array's associated element array buffer.</param>
         /// <param name="force">A value indicating whether to force-bind the vertex array object, even if DSA is available.</param>
-        public static OpenGLState ScopedBindVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer, Boolean force = false)
+        public static OpenGLState ScopedBindVertexArrayObject(UInt32 vertexArrayObject, UInt32 elementArrayBuffer, Boolean force = false)
         {
             if (GL_VERTEX_ARRAY_BINDING == vertexArrayObject &&
-                GL_ARRAY_BUFFER_BINDING == arrayBuffer &&
                 GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
             {
                 return null;
@@ -213,7 +211,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             state.disposed = false;
             state.forced = force;
             state.newGL_VERTEX_ARRAY_BINDING = vertexArrayObject;
-            state.newGL_ARRAY_BUFFER_BINDING = arrayBuffer;
             state.newGL_ELEMENT_ARRAY_BUFFER_BINDING = elementArrayBuffer;
 
             state.Apply();
@@ -225,12 +222,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// Immediately binds a vertex array object to the OpenGL context and updates the state cache.
         /// </summary>
         /// <param name="vertexArrayObject">The vertex array object to bind to the context.</param>
-        /// <param name="arrayBuffer">The vertex array's associated array buffer.</param>
         /// <param name="elementArrayBuffer">The vertex array's associated element array buffer.</param>
-        public static void BindVertexArrayObject(UInt32 vertexArrayObject, UInt32 arrayBuffer, UInt32 elementArrayBuffer)
+        public static void BindVertexArrayObject(UInt32 vertexArrayObject, UInt32 elementArrayBuffer)
         {
             if (GL_VERTEX_ARRAY_BINDING == vertexArrayObject &&
-                GL_ARRAY_BUFFER_BINDING == arrayBuffer &&
                 GL_ELEMENT_ARRAY_BUFFER_BINDING == elementArrayBuffer)
             {
                 return;
@@ -240,7 +235,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.ThrowIfError();
 
             GL_VERTEX_ARRAY_BINDING.Update(vertexArrayObject);
-            GL_ARRAY_BUFFER_BINDING.Update(arrayBuffer);
             GL_ELEMENT_ARRAY_BUFFER_BINDING.Update(elementArrayBuffer);
             VerifyCache();
         }

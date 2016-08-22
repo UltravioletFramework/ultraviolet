@@ -83,7 +83,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (IsUsingVertexArrayObject)
             {
-                using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, 0, force: true))
+                using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, force: true))
                 {
                     OpenGLState.BindElementArrayBuffer(sdlIndexBufferName);
                 }
@@ -102,7 +102,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             if (IsUsingVertexArrayObject)
             {
-                OpenGLState.BindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0);
+                OpenGLState.BindVertexArrayObject(vao, glElementArrayBufferBinding ?? 0);
             }
             else
             {
@@ -400,7 +400,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                 if (IsUsingVertexArrayObject)
                 {
-                    using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0, force: !gl.IsVertexAttribBindingAvailable))
+                    using (OpenGLState.ScopedBindVertexArrayObject(vao, glElementArrayBufferBinding ?? 0, force: !gl.IsVertexAttribBindingAvailable))
                     {
                         if (program.HasValue)
                             DisableVertexAttributesOnCachedProgram();
@@ -499,7 +499,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var caps = Ultraviolet.GetGraphics().Capabilities;
 
-            using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, glElementArrayBufferBinding ?? 0))
+            using (OpenGLState.ScopedBindVertexArrayObject(vao, glElementArrayBufferBinding ?? 0))
             {
                 if (program.HasValue || offset.HasValue)
                 {

@@ -355,7 +355,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (stream == null)
             {
                 this.geometryStream = null;
-                OpenGLState.BindVertexArrayObject(0, 0, 0);
+                OpenGLState.BindVertexArrayObject(0, 0);
             }
             else
             {
