@@ -77,7 +77,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             {
                 var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
                 if (caps.SupportsMapBufferRange && caps.MinMapBufferAlignment > 0)
-                    bufferSize = Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize));
+                    bufferSize = Math.Min(Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize)), SizeInBytes - bufferOffset);
 
                 using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
@@ -144,11 +144,12 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureRange(count >= 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
-
+            
             var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
             if (caps.MinMapBufferAlignment == 0 || count == VertexCount)
+            {
                 return count * vdecl.VertexStride;
-
+            }
             return Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(count * vdecl.VertexStride));
         }
 

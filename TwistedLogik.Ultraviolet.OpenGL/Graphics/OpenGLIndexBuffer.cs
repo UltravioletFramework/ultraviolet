@@ -87,8 +87,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             try
             {
                 var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
-                if (caps.MinMapBufferAlignment > 0)
-                    bufferSize = Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize));
+                if (caps.SupportsMapBufferRange && caps.MinMapBufferAlignment > 0)
+                    bufferSize = Math.Min(Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize)), SizeInBytes - bufferOffset);
 
                 using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {

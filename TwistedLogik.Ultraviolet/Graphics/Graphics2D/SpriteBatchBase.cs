@@ -2605,8 +2605,20 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 var drawnSizeInBytes = vertexBuffer.GetAlignedSize(drawn * 4);
                 if (drawnSizeInBytes + vertexBufferOffset > vertexBuffer.SizeInBytes)
                 {
-                    options = SetDataOptions.Discard;
-                    vertexBufferOffset = 0;
+                    // How many sprites can we fit in the remaining space?
+                    var alignmentUnit = vertexBuffer.GetAlignmentUnit();
+                    var spaceRemainingInBytes = ((vertexBuffer.SizeInBytes - vertexBufferOffset) / alignmentUnit) * alignmentUnit;
+                    var spaceRemainingInSprites = spaceRemainingInBytes / (vertexBuffer.VertexDeclaration.VertexStride * 4);
+                    if (spaceRemainingInSprites > 0)
+                    {
+                        options = SetDataOptions.NoOverwrite;
+                        drawn = Math.Min(drawn, spaceRemainingInSprites);
+                    }
+                    else
+                    {
+                        options = SetDataOptions.Discard;
+                        vertexBufferOffset = 0;
+                    }
                 }
                 else
                 {
@@ -2616,7 +2628,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 // Determine whether we need to reset to the beginning of our vertex array.
                 if (vertexBufferPosition >= batchSize)
                 {
-                    drawn = (count > batchSize) ? batchSize : count;
+                    if (drawn > batchSize)
+                        drawn = batchSize;
+
                     vertexBufferPosition = 0;
                 }
                 else
