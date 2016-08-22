@@ -56,10 +56,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 else
                 {
-                    var viewModelWrapperName = PresentationFoundationView.GetDataSourceWrapperNameForView(uiPanelDefinition.AssetFilePath);
-                    var viewModelWrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperTypeByName(viewModelWrapperName);
+                    var viewModelWrapperType = uv.GetUI().GetPresentationFoundation().GetDataSourceWrapperType(viewModelType);
                     if (viewModelWrapperType == null)
-                        throw new UvmlException(PresentationStrings.CannotFindViewModelWrapper.Format(viewModelWrapperName));
+                        throw new UvmlException(PresentationStrings.CannotFindViewModelWrapper.Format(viewModelType.Name));
 
                     viewModelType = viewModelWrapperType;
                 }

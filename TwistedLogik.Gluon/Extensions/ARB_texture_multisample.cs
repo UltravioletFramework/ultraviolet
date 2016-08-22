@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -6,7 +7,7 @@ namespace TwistedLogik.Gluon
     public static unsafe partial class gl
     {
         [MonoNativeFunctionWrapper]
-        private delegate void glTexImage2DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, bool fixedsamplelocations);
+        private delegate void glTexImage2DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, [MarshalAs(UnmanagedType.I1)] bool fixedsamplelocations);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
         private static readonly glTexImage2DMultisampleDelegate glTexImage2DMultisample = null;
 
@@ -16,7 +17,7 @@ namespace TwistedLogik.Gluon
         }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glTexImage3DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, int depth, bool fixedsamplelocations);
+        private delegate void glTexImage3DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, int depth, [MarshalAs(UnmanagedType.I1)] bool fixedsamplelocations);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
         private static readonly glTexImage3DMultisampleDelegate glTexImage3DMultisample = null;
 

@@ -97,6 +97,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", 
 	ProjectSection(SolutionItems) = preProject
 		Version.cs = Version.cs
 		Version.tt = Version.tt
+		VersionString.txt = VersionString.txt
 	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
@@ -117,6 +118,12 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler (Desktop)", "TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler (Desktop).csproj", "{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest (Android)", "UvStressTest_Android\UvStressTest (Android).csproj", "{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest (Desktop)", "UvStressTest_Desktop\UvStressTest (Desktop).csproj", "{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.projitems*{f95ff829-661d-4809-8150-145114b787aa}*SharedItemsImports = 13
@@ -129,8 +136,10 @@ Global
 		TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.projitems*{8f3c2da1-8930-493b-854b-a053bdbf9071}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
 		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
+		UvStressTest\UvStressTest.projitems*{e3e291b3-a2d1-4f64-a1fe-fdd9fa160713}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
+		UvStressTest\UvStressTest.projitems*{97cd0bfb-4bdb-4862-ac0d-153e81a2a9a1}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
@@ -142,6 +151,7 @@ Global
 		TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.projitems*{ca57b4bc-a395-4c1c-a4cf-6286fa7b9c80}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
+		UvStressTest\UvStressTest.projitems*{ab20567c-1d12-4b38-ab86-ad7dc9d769f6}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
 		TwistedLogik.Gluon\TwistedLogik.Gluon.projitems*{49a66667-2355-4755-a3ad-4ef9ca638534}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
@@ -401,6 +411,21 @@ Global
 		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Signed|Any CPU.Deploy.0 = Release|Any CPU
+		{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

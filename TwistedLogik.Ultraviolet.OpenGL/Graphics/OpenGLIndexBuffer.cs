@@ -49,20 +49,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.Require(data, nameof(data));
             Contract.Ensure(data.Length <= IndexCount, OpenGLStrings.DataTooLargeForBuffer);
 
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            try
-            {
-                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
-                {
-                    var size = new IntPtr(GetElementSize() * data.Length);
-                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
-                    gl.ThrowIfError();
-                }
-            }
-            finally
-            {
-                handle.Free();
-            }
+            var indexStride = GetElementSize();
+            SetDataInternal(data, 0, data.Length * indexStride, SetDataOptions.None);
         }
 
         /// <summary>
@@ -79,29 +67,93 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(offset >= 0 && offset + count <= data.Length, nameof(offset));
             Contract.Ensure(count <= IndexCount, OpenGLStrings.DataTooLargeForBuffer);
 
+            var indexStride = GetElementSize();
+            SetDataInternal(data, offset * indexStride, count * indexStride, options);
+        }
+
+        /// <inheritdoc/>
+        public override void SetDataAligned<T>(T[] data, Int32 dataOffset, Int32 dataCount, Int32 bufferOffset, out Int32 bufferSize, SetDataOptions options)
+        {
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(dataCount > 0, nameof(dataCount));
+            Contract.EnsureRange(dataOffset >= 0 && dataOffset + dataCount <= data.Length, nameof(dataOffset));
+            Contract.EnsureRange(bufferOffset >= 0, nameof(bufferOffset));
+            Contract.Ensure(dataCount <= IndexCount, OpenGLStrings.DataTooLargeForBuffer);
+
+            var indexStride = GetElementSize();
+            bufferSize = indexStride * dataCount;
+
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
+                var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
+                if (caps.SupportsMapBufferRange && caps.MinMapBufferAlignment > 0)
+                    bufferSize = Math.Min(Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize)), SizeInBytes - bufferOffset);
+
                 using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
                 {
-                    if (options == SetDataOptions.Discard)
+                    var isPartialUpdate = (bufferOffset > 0 || bufferSize < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, null, usage);
+                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
                         gl.ThrowIfError();
                     }
 
-                    var elementsize = GetElementSize();
-                    var start = new IntPtr(offset * elementsize);
-                    var size = new IntPtr(elementsize * count);
+                    if (isPartialUpdate)
+                    {
+                        if (caps.SupportsMapBufferRange)
+                        {
+                            var bufferRangeAccess = gl.GL_MAP_WRITE_BIT | (options == SetDataOptions.NoOverwrite ? gl.GL_MAP_UNSYNCHRONIZED_BIT : 0);
+                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, 
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, bufferRangeAccess);
+                            gl.ThrowIfError();
 
-                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, start, size, handle.AddrOfPinnedObject().ToPointer());
-                    gl.ThrowIfError();
+                            var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * indexStride);
+                            var sourceSizeInBytes = dataCount * indexStride;
+
+                            for (int i = 0; i < sourceSizeInBytes; i++)
+                                *bufferRangePtr++ = *sourceRangePtr++;
+
+                            gl.UnmapNamedBuffer(buffer, gl.GL_ELEMENT_ARRAY_BUFFER);
+                            gl.ThrowIfError();
+                        }
+                        else
+                        {
+                            gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER,
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * indexStride));
+                            gl.ThrowIfError();
+                        }
+                    }
                 }
             }
             finally
             {
                 handle.Free();
             }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 GetAlignmentUnit()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return Math.Max(1, ((OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities).MinMapBufferAlignment);
+        }
+
+        /// <inheritdoc/>
+        public override Int32 GetAlignedSize(Int32 count)
+        {
+            Contract.EnsureRange(count >= 0, nameof(count));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var indexStride = GetElementSize();
+
+            var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
+            if (caps.MinMapBufferAlignment == 0 || count == IndexCount)
+                return count * indexStride;
+
+            return Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(count * indexStride));
         }
 
         /// <summary>
@@ -147,6 +199,37 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Sets the data contained by the vertex buffer.
+        /// </summary>
+        private void SetDataInternal<T>(T[] data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        {
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
+                {
+                    var isPartialUpdate = (offsetInBytes > 0 || countInBytes < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
+                    {
+                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
+                        gl.ThrowIfError();
+                    }
+
+                    if (isPartialUpdate)
+                    {
+                        gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
+                        gl.ThrowIfError();
+                    }
+                }
+            }
+            finally
+            {
+                handle.Free();
+            }
         }
 
         /// <summary>

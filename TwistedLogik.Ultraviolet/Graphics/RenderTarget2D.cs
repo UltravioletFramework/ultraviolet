@@ -111,7 +111,31 @@ namespace TwistedLogik.Ultraviolet.Graphics
         {
             get;
         }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether the render target has an attached color buffer.
+        /// </summary>
+        public abstract Boolean HasColorBuffer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the render target has an attached depth buffer.
+        /// </summary>
+        public abstract Boolean HasDepthBuffer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the render target has an attached stencil buffer.
+        /// </summary>
+        public abstract Boolean HasStencilBuffer
+        {
+            get;
+        }
+
         /// <summary>
         /// Gets a value indicating whether the render target's data is preserved when
         /// it is bound to the graphics device.

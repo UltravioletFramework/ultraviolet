@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             this.dependencyValue = value;
             this.getter = (DataBindingGetter<T>)BindingExpressions.CreateBindingGetter(expressionType, dataSourceType, expression);
             this.setter = (DataBindingSetter<T>)BindingExpressions.CreateBindingSetter(expressionType, dataSourceType, expression);
-            this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(expressionType);
+            this.comparer = BindingExpressions.GetComparisonFunction(expressionType);
             this.cachedValue = GetUnderlyingValue();
             this.dpropReference = BindingExpressions.GetSimpleDependencyProperty(dataSourceType, expression);
 
@@ -75,7 +75,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public Boolean CheckHasChanged()
         {
             var value = GetUnderlyingValue();
-            if (!comparer(cachedValue, value))
+            var changed = typeof(T).IsValueType ?
+                !((DataBindingComparer<T>)comparer)(cachedValue, value) :
+                !((DataBindingComparer<Object>)comparer)(cachedValue, value);
+
+            if (changed)
             {
                 cachedValue = value;
                 OnCachedValueChanged(value);
@@ -193,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
         // State values.
         private readonly IDependencyPropertyValue dependencyValue;
-        private readonly DataBindingComparer<T> comparer;
+        private readonly Delegate comparer;
         private readonly DataBindingGetter<T> getter;
         private readonly DataBindingSetter<T> setter;
         private T cachedValue;

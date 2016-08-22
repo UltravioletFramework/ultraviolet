@@ -149,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         // Shaders
         private static readonly UltravioletSingleton<OpenGLVertexShader> vertShader = 
             new UltravioletSingleton<OpenGLVertexShader>(UltravioletSingletonFlags.DisabledInServiceMode,
-                uv => new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.vert")));
+                uv => new OpenGLVertexShader(uv, ResourceUtil.ReadShaderResourceString("SpriteBatchEffect.vert")));
         private static readonly UltravioletSingleton<OpenGLFragmentShader> fragShader = 
             new UltravioletSingleton<OpenGLFragmentShader>(UltravioletSingletonFlags.DisabledInServiceMode,
                 uv => IsArbitaryRadiusBlurAvailable ? new OpenGLFragmentShader(uv, ResourceUtil.ReadShaderResourceString("BlurEffect.frag")) : null);

@@ -36,6 +36,36 @@ namespace TwistedLogik.Gluon
             public abstract void TextureStorage2D(uint texture, uint target, int levels, uint internalformat, int width, int height);
 
             public abstract void TextureStorage3D(uint texture, uint target, int levels, uint internalformat, int width, int height, int depth);
+
+            public abstract void* MapNamedBuffer(uint buffer, uint target, uint access);
+
+            public abstract void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access);
+
+            public abstract bool UnmapNamedBuffer(uint buffer, uint target);
+
+            public abstract void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length);
+
+            public abstract void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params);
+
+            public abstract void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params);
+
+            public abstract void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data);
+
+            public abstract void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, int stride);
+
+            public abstract void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativesize);
+
+            public abstract void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize);
+
+            public abstract void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize);
+
+            public abstract void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex);
+
+            public abstract void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor);
+
+            public abstract void EnableVertexArrayAttrib(uint vaobj, uint index);
+
+            public abstract void DisableVertexArrayAttrib(uint vaobj, uint index);
         }
     }
 }

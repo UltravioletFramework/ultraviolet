@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL
 {
@@ -56,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 }
             }
 
-            return ReadResourceString(name);
+            return ShaderCompiler.ProcessShaderDirectives(ReadResourceString(name));
         }
 
         // The manifest resource names for this assembly.

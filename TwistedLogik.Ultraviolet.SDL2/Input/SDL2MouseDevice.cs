@@ -44,12 +44,13 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                             // so let's just ignore it.
                             if (!ignoredFirstMouseMotionEvent)
                             {
+                                SetMousePositionFromDevicePosition(evt.motion.windowID);
                                 ignoredFirstMouseMotionEvent = true;
                             }
                             else
                             {
                                 if (!isRegistered && evt.motion.which != SDL_TOUCH_MOUSEID)
-                                    Register();
+                                    Register(evt.motion.windowID);
 
                                 OnMouseMotion(ref evt.motion);
                             }
@@ -59,7 +60,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     case SDL_EventType.MOUSEBUTTONDOWN:
                         {
                             if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
-                                Register();
+                                Register(evt.button.windowID);
 
                             OnMouseButtonDown(ref evt.button);
                         }
@@ -68,7 +69,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     case SDL_EventType.MOUSEBUTTONUP:
                         {
                             if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
-                                Register();
+                                Register(evt.button.windowID);
 
                             OnMouseButtonUp(ref evt.button);
                         }
@@ -77,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     case SDL_EventType.MOUSEWHEEL:
                         {
                             if (!isRegistered && evt.wheel.which != SDL_TOUCH_MOUSEID)
-                                Register();
+                                Register(evt.wheel.windowID);
 
                             OnMouseWheel(ref evt.wheel);
                         }
@@ -323,20 +324,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
                 return;
 
-            this.window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
-
-            if (Ultraviolet.SupportsHighDensityDisplayModes)
-            {
-                var scale = window.Display.DeviceScale;
-                this.x = (Int32)(evt.x * scale);
-                this.y = (Int32)(evt.y * scale);
-            }
-            else
-            {
-                this.x = evt.x;
-                this.y = evt.y;
-            }
-
+            SetMousePosition(evt.windowID, evt.x, evt.y);
             OnMoved(window, evt.x, evt.y, evt.xrel, evt.yrel);
         }
 
@@ -401,11 +389,43 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         /// <summary>
         /// Flags the device as registered.
         /// </summary>
-        private void Register()
+        private void Register(UInt32 windowID)
         {
             var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
             if (input.RegisterMouseDevice(this))
+            {
                 isRegistered = true;
+            }
+        }
+
+        /// <summary>
+        /// Sets the mouse cursor's position within its window.
+        /// </summary>
+        private void SetMousePosition(UInt32 windowID, Int32 x, Int32 y)
+        {
+            this.window = Ultraviolet.GetPlatform().Windows.GetByID((int)windowID);
+
+            if (Ultraviolet.SupportsHighDensityDisplayModes)
+            {
+                var scale = window.Display.DeviceScale;
+                this.x = (Int32)(x * scale);
+                this.y = (Int32)(y * scale);
+            }
+            else
+            {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        /// <summary>
+        /// Sets the mouse cursor's position based on the device's physical position.
+        /// </summary>
+        private void SetMousePositionFromDevicePosition(UInt32 windowID)
+        {
+            Int32 x, y;
+            SDL.GetMouseState(out x, out y);
+            SetMousePosition(windowID, x, y);
         }
 
         // The device identifier of the touch-based mouse emulator.

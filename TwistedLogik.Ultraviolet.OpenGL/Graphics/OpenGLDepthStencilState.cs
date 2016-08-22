@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -69,50 +70,32 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            gl.Enable(gl.GL_DEPTH_TEST, DepthBufferEnable);
-            gl.ThrowIfError();
+            OpenGLState.DepthTestEnabled = DepthBufferEnable;
+            OpenGLState.DepthMask = DepthBufferWriteEnable;
+            OpenGLState.DepthFunc = GetCompareFunctionGL(DepthBufferFunction);
 
-            gl.DepthMask(DepthBufferWriteEnable);
-            gl.ThrowIfError();
-
-            gl.DepthFunc(GetCompareFunctionGL(DepthBufferFunction));
-            gl.ThrowIfError();
-
-            gl.Enable(gl.GL_STENCIL_TEST, StencilEnable);
-            gl.ThrowIfError();
+            OpenGLState.StencilTestEnabled = StencilEnable;
 
             if (TwoSidedStencilMode)
             {
-                gl.StencilFuncSeparate(gl.GL_FRONT, GetCompareFunctionGL(StencilFunction),
-                    ReferenceStencil, (uint)StencilMask);
-                gl.ThrowIfError();
-
-                gl.StencilFuncSeparate(gl.GL_BACK, GetCompareFunctionGL(CounterClockwiseStencilFunction),
-                    ReferenceStencil, (uint)StencilMask);
-                gl.ThrowIfError();
-
-                gl.StencilOpSeparate(gl.GL_FRONT,
-                    GetStencilOpGL(StencilFail),
+                OpenGLState.StencilFuncFront = new CachedStencilFunc(GetCompareFunctionGL(StencilFunction), ReferenceStencil, StencilMask);
+                OpenGLState.StencilFuncBack = new CachedStencilFunc(GetCompareFunctionGL(StencilFunction), ReferenceStencil, StencilMask);
+                OpenGLState.StencilOpFront = new CachedStencilOp(
+                    GetStencilOpGL(StencilFail), 
                     GetStencilOpGL(StencilDepthBufferFail),
                     GetStencilOpGL(StencilPass));
-                gl.ThrowIfError();
-
-                gl.StencilOpSeparate(gl.GL_BACK,
+                OpenGLState.StencilOpBack = new CachedStencilOp( 
                     GetStencilOpGL(CounterClockwiseStencilFail),
                     GetStencilOpGL(CounterClockwiseStencilDepthBufferFail),
                     GetStencilOpGL(CounterClockwiseStencilPass));
-                gl.ThrowIfError();
             }
             else
             {
-                gl.StencilFunc(GetCompareFunctionGL(StencilFunction), ReferenceStencil, (uint)StencilMask);
-                gl.ThrowIfError();
-
-                gl.StencilOp(
+                OpenGLState.StencilFuncCombined = new CachedStencilFunc(GetCompareFunctionGL(StencilFunction), ReferenceStencil, StencilMask);
+                OpenGLState.StencilOpCombined = new CachedStencilOp(
                     GetStencilOpGL(StencilFail),
                     GetStencilOpGL(StencilDepthBufferFail),
                     GetStencilOpGL(StencilPass));
-                gl.ThrowIfError();
             }
         }
 

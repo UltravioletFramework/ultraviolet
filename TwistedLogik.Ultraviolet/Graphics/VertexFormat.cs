@@ -42,6 +42,16 @@ namespace TwistedLogik.Ultraviolet.Graphics
         NormalizedShort4,
 
         /// <summary>
+        /// Packed vector containing two 16-bit signed normalized integer values ranging from 0 to +1.
+        /// </summary>
+        NormalizedUnsignedShort2,
+
+        /// <summary>
+        /// Packed vector containing four 16-bit signed normalized integer values ranging from 0 to +1.
+        /// </summary>
+        NormalizedUnsignedShort4,
+
+        /// <summary>
         /// Packed vector containing two 16-bit signed normalized integer values.
         /// </summary>
         Short2,
@@ -50,5 +60,15 @@ namespace TwistedLogik.Ultraviolet.Graphics
         /// Packed vector containing two 16-bit signed normalized integer values.
         /// </summary>
         Short4,
+
+        /// <summary>
+        /// Packed vector containing two 16-bit unsigned normalized integer values.
+        /// </summary>
+        UnsignedShort2,
+
+        /// <summary>
+        /// Packed vector containing four 16-bit unsigned normalized integer values.
+        /// </summary>
+        UnsignedShort4,
     }
 }

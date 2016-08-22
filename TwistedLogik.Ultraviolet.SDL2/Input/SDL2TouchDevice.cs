@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Messages;
 using TwistedLogik.Ultraviolet.Input;
@@ -80,6 +82,35 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                         OnMultiGesture(evt.mgesture.x, evt.mgesture.y, 
                             evt.mgesture.dTheta, evt.mgesture.dDist, evt.mgesture.numFingers);
+                    }
+                    break;
+
+                case SDL_EventType.DOLLARRECORD:
+                    if (evt.dgesture.touchId == sdlTouchID)
+                    {
+                        if (!isRegistered)
+                            Register();
+
+                        isRecordingDollarGesture = false;
+
+                        if (dollarGestureTaskCompletionSource != null)
+                        {
+                            dollarGestureTaskCompletionSource.SetResult(evt.dgesture.gestureId);
+                            dollarGestureTaskCompletionSource = null;
+                        }
+
+                        OnDollarGestureRecorded(evt.dgesture.gestureId);
+                    }
+                    break;
+
+                case SDL_EventType.DOLLARGESTURE:
+                    if (evt.dgesture.touchId == sdlTouchID)
+                    {
+                        if (!isRegistered)
+                            Register();
+
+                        OnDollarGesture(evt.dgesture.gestureId, 
+                            evt.dgesture.x, evt.dgesture.y, evt.dgesture.error, (Int32)evt.dgesture.numFingers);
                     }
                     break;
             }
@@ -324,6 +355,68 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
+        public override Task<Int64> RecordDollarGestureAsync()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (dollarGestureTaskCompletionSource != null)
+                return dollarGestureTaskCompletionSource.Task;
+
+            dollarGestureTaskCompletionSource = new TaskCompletionSource<Int64>();
+
+            if (!IsRecordingDollarGesture)
+            {
+                if (SDL.RecordGesture(sdlTouchID) == 0)
+                    throw new SDL2Exception();
+
+                isRecordingDollarGesture = true;
+            }
+
+            return dollarGestureTaskCompletionSource.Task;
+        }
+
+        /// <inheritdoc/>
+        public override Boolean RecordDollarGesture()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (IsRecordingDollarGesture)
+                return false;
+
+            if (SDL.RecordGesture(sdlTouchID) == 0)
+                throw new SDL2Exception();
+
+            isRecordingDollarGesture = true;
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override void LoadDollarGestures(Stream stream)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(stream, nameof(stream));
+
+            using (var streamWrapper = new SDL2StreamWrapper(stream))
+            {
+                if (SDL.LoadDollarTemplates(sdlTouchID, streamWrapper.ToIntPtr()) == 0)
+                    throw new SDL2Exception();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void SaveDollarGestures(Stream stream)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(stream, nameof(stream));
+
+            using (var streamWrapper = new SDL2StreamWrapper(stream))
+            {
+                if (SDL.SaveAllDollarTemplates(streamWrapper.ToIntPtr()) == 0)
+                    throw new SDL2Exception();
+            }
+        }
+
+        /// <inheritdoc/>
         public override IUltravioletWindow BoundWindow
         {
             get
@@ -331,6 +424,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 return boundWindow ?? Ultraviolet.GetPlatform().Windows.GetPrimary();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean IsRecordingDollarGesture
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return isRecordingDollarGesture;
             }
         }
 
@@ -471,8 +575,10 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         private Int64 nextTouchID = 1;
         private Int64 timestamp;
         private Boolean isRegistered;
+        private TaskCompletionSource<Int64> dollarGestureTaskCompletionSource;
 
         // Property values.
         private IUltravioletWindow boundWindow;
+        private Boolean isRecordingDollarGesture;
     }
 }

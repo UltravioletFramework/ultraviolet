@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UvStressTest</RootNamespace>
+    <AssemblyName>UvStressTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\BASS\x64\unix\libbass.so">
+      <Link>x64\unix\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x64\unix\libbass_fx.so">
+      <Link>x64\unix\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\unix\libbass.so">
+      <Link>x86\unix\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\unix\libbass_fx.so">
+      <Link>x86\unix\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x64\unix\libSDL2.so">
+      <Link>x64\unix\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x86\unix\libSDL2.so">
+      <Link>x86\unix\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwistedLogik.Gluon_Desktop\TwistedLogik.Gluon %28Desktop%29.csproj">
+      <Project>{08b2b8d5-152f-45fb-b4eb-8c09010a9908}</Project>
+      <Name>TwistedLogik.Gluon (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Nucleus_Desktop\TwistedLogik.Nucleus %28Desktop%29.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>TwistedLogik.Nucleus (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
+      <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
+      <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
+      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
+      <Name>TwistedLogik.Ultraviolet.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
+      <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
+      <Name>TwistedLogik.Ultraviolet.OpenGL (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
+      <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
+      <Name>TwistedLogik.Ultraviolet.SDL2 (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\BASS\x64\win32nt\bass.dll">
+      <Link>x64\win32nt\bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x64\win32nt\bass_fx.dll">
+      <Link>x64\win32nt\bass_fx.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x64\win32nt\SDL2.dll">
+      <Link>x64\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Sprites\HexagonsTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Hexagons.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\HexagonsLicense.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dependencies\BASS\x86\win32nt\bass.dll">
+      <Link>x86\win32nt\bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\win32nt\bass_fx.dll">
+      <Link>x86\win32nt\bass_fx.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
+      <Link>x86\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Fonts\SegoeUI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\SegoeUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="..\UvStressTest\UvStressTest.projitems" Label="Shared" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

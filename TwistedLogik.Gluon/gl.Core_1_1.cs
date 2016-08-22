@@ -21,6 +21,7 @@ namespace TwistedLogik.Gluon
         public static void AlphaFunc(uint func, float @ref) { glAlphaFunc(func, @ref); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glAreTexturesResidentDelegate(int n, IntPtr textures, IntPtr residences);
         [Require(MinVersion = "1.1")]
         private static readonly glAreTexturesResidentDelegate glAreTexturesResident = null;
@@ -365,7 +366,7 @@ namespace TwistedLogik.Gluon
         public static void Color4usv(ushort* v) { glColor4usv((IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glColorMaskDelegate(bool red, bool green, bool blue, bool alpha);
+        private delegate void glColorMaskDelegate([MarshalAs(UnmanagedType.I1)] bool red, [MarshalAs(UnmanagedType.I1)] bool green, [MarshalAs(UnmanagedType.I1)] bool blue, [MarshalAs(UnmanagedType.I1)] bool alpha);
         [Require(MinVersion = "1.1")]
         private static readonly glColorMaskDelegate glColorMask = null;
 
@@ -462,7 +463,7 @@ namespace TwistedLogik.Gluon
         public static void DepthFunc(uint func) { glDepthFunc(func); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glDepthMaskDelegate(bool flag);
+        private delegate void glDepthMaskDelegate([MarshalAs(UnmanagedType.I1)] bool flag);
         [Require(MinVersion = "1.1")]
         private static readonly glDepthMaskDelegate glDepthMask = null;
 
@@ -518,7 +519,7 @@ namespace TwistedLogik.Gluon
         public static void DrawPixels(int width, int height, uint format, uint type, void* pixels) { glDrawPixels(width, height, format, type, (IntPtr)pixels); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glEdgeFlagDelegate(bool flag);
+        private delegate void glEdgeFlagDelegate([MarshalAs(UnmanagedType.I1)] bool flag);
         [Require(MinVersion = "1.1")]
         private static readonly glEdgeFlagDelegate glEdgeFlag = null;
 
@@ -1074,6 +1075,7 @@ namespace TwistedLogik.Gluon
         public static void InterleavedArrays(uint format, int stride, void* pointer) { glInterleavedArrays(format, stride, (IntPtr)pointer); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsEnabledDelegate(uint cap);
         [Require(MinVersion = "1.1")]
         private static readonly glIsEnabledDelegate glIsEnabled = null;
@@ -1081,6 +1083,7 @@ namespace TwistedLogik.Gluon
         public static bool IsEnabled(uint cap) { return glIsEnabled(cap); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsListDelegate(uint list);
         [Require(MinVersion = "1.1")]
         private static readonly glIsListDelegate glIsList = null;
@@ -1088,6 +1091,7 @@ namespace TwistedLogik.Gluon
         public static bool IsList(uint list) { return glIsList(list); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsTextureDelegate(uint texture);
         [Require(MinVersion = "1.1")]
         private static readonly glIsTextureDelegate glIsTexture = null;

@@ -280,8 +280,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             Contract.Require(target, nameof(target));
 
             var graphics = Ultraviolet.GetGraphics();
-            graphics.SetRenderTarget(target);
-            graphics.Clear(Color.Transparent);
+            graphics.SetRenderTarget(target, Color.Transparent);
 
             var bounds = Display.DipsToPixels(TransformedVisualBounds);
             var x = Math.Round(bounds.X + (bounds.Width - target.Width) / 2.0, MidpointRounding.AwayFromZero);

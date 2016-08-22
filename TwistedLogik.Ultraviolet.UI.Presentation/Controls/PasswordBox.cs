@@ -285,7 +285,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         protected override void OnPreviewMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             if (button == MouseButton.Left)
-                Focus();
+                Focus();                
 
             if (PART_Editor != null && IsMouseWithinEditor())
             {
@@ -352,6 +352,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 PART_Editor.HandleTouchDown(device, id, x, y, pressure, data);
                 data.Handled = true;
             }
+
+            UpdateTextInputRegion();
+            Ultraviolet.GetInput().ShowSoftwareKeyboard();
 
             base.OnPreviewTouchDown(device, id, x, y, pressure, data);
         }

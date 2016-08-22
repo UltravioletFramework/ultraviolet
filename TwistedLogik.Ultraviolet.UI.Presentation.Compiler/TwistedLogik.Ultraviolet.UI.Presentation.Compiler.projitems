@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilerCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilerStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CSharpLanguage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceWrapperInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceWrapperWriter.cs" />

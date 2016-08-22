@@ -40,6 +40,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             if (source == null)
                 throw new InvalidOperationException(OpenGLStrings.ShaderUniformHasNoSource);
 
+            if (cache.ContainsSameData(source))
+                return;
+
             switch (source.DataType)
             {
                 case OpenGLEffectParameterDataType.None:
@@ -132,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="source">The effect parameter which the uniform will use as its data source.</param>
         public void SetDataSource(OpenGLEffectParameterData source)
         {
-            Contract.Require(source, nameof(source)); 
+            Contract.Require(source, nameof(source));
 
             this.source = source;
         }
@@ -145,6 +148,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1i(location, value ? 1 : 0);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -155,6 +160,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1i(location, value);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -176,6 +183,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -186,6 +195,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1ui(location, value);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -207,6 +218,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -217,6 +230,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1f(location, value);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -238,6 +253,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -248,6 +265,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1d(location, value);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -269,6 +288,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -279,6 +300,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform2f(location, value.X, value.Y);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -300,6 +323,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -310,6 +335,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform3f(location, value.X, value.Y, value.Z);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -331,6 +358,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -341,6 +370,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform4f(location, value.X, value.Y, value.Z, value.W);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -362,6 +393,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -384,6 +417,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.Uniform4f(location, nr, ng, nb, na);
             }
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -435,6 +470,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -445,6 +482,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             gl.UniformMatrix4fv(location, 1, false, (float*)&value);
             gl.ThrowIfError();
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -458,6 +497,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 gl.UniformMatrix4fv(location, value.Length, false, (float*)pValue);
                 gl.ThrowIfError();
             }
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -470,6 +511,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             gl.ThrowIfError();
 
             uv.GetGraphics().SetTexture(sampler, value);
+
+            cache.Set(value);
         }
 
         /// <summary>
@@ -506,5 +549,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly Int32 location;
         private readonly Int32 sampler;
         private OpenGLEffectParameterData source;
+        private OpenGLEffectParameterData cache = new OpenGLEffectParameterData();
     }
 }

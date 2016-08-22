@@ -96,6 +96,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         Double x, Double y, Single theta, Single distance, Int32 fingers, RoutedEventData data);
 
     /// <summary>
+    /// Represents the method that is called when a $1 gesture is performed.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="device">The touch device.</param>
+    /// <param name="gestureID">The unique identifier of the gesture which was performed.</param>
+    /// <param name="x">The x-coordinate of the gesture's centroid in device-independent screen coordinates.</param>
+    /// <param name="y">The y-coordinate of the gesture's centroid in device-independent screen coordinates.</param>
+    /// <param name="error">The difference between the gesture template and the actual performed gesture; lower is better.</param>
+    /// <param name="fingers">The number of fingers used to perform the gesture.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfDollarGestureEventHandler(DependencyObject element, TouchDevice device,
+        Int64 gestureID, Double x, Double y, Single error, Int32 fingers, RoutedEventData data);
+
+    /// <summary>
     /// Represents the touch device.
     /// </summary>
     [Preserve(AllMembers = true)]
@@ -421,6 +435,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddPreviewDollarGestureHandler(DependencyObject element, UpfDollarGestureEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, PreviewDollarGestureEvent, handler);
+        }
+
+        /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>
         /// attached event to the specified element.
         /// </summary>
@@ -502,6 +530,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.AddHandler(element, MultiGestureEvent, handler);
+        }
+
+        /// <summary>
+        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>
+        /// attached event to the specified element.
+        /// </summary>
+        /// <param name="element">The element to which to add the handler.</param>
+        /// <param name="handler">The handler to add to the specified element.</param>
+        public static void AddDollarGestureHandler(DependencyObject element, UpfDollarGestureEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.AddHandler(element, DollarGestureEvent, handler);
         }
 
         /// <summary>
@@ -645,6 +687,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemovePreviewDollarGestureHandler(DependencyObject element, UpfDollarGestureEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, PreviewDollarGestureEvent, handler);
+        }
+
+        /// <summary>
         /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>
         /// attached event from the specified element.
         /// </summary>
@@ -726,6 +782,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(handler, nameof(handler));
 
             IInputElementHelper.RemoveHandler(element, MultiGestureEvent, handler);
+        }
+
+        /// <summary>
+        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>
+        /// attached event from the specified element.
+        /// </summary>
+        /// <param name="element">The element from which to remove the handler.</param>
+        /// <param name="handler">The handler to remove from the specified element.</param>
+        public static void RemoveDollarGestureHandler(DependencyObject element, UpfDollarGestureEventHandler handler)
+        {
+            Contract.Require(element, nameof(element));
+            Contract.Require(handler, nameof(handler));
+
+            IInputElementHelper.RemoveHandler(element, DollarGestureEvent, handler);
         }
 
         /// <summary>
@@ -964,7 +1034,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
-        /// Occurs a multiple-finger gesture is performed over an element.
+        /// Occurs when a multiple-finger gesture is performed over an element.
         /// </summary>
         /// <remarks>
         /// <revt>
@@ -983,7 +1053,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewMultiGestureEvent = EventManager.RegisterRoutedEvent("PreviewMultiGesture", RoutingStrategy.Tunnel,
             typeof(UpfMultiGestureEventHandler), typeof(Touch));
-        
+
+        /// <summary>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/> 
+        /// attached routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when a $1 gesture is performed over an element.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="PreviewDollarGestureEvent"/></revtField>
+        ///     <revtStylingName>preview-dollar-gesture</revtStylingName>
+        ///     <revtStrategy>Tunneling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfDollarGestureEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding bubbling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
+        public static readonly RoutedEvent PreviewDollarGestureEvent = EventManager.RegisterRoutedEvent("PreviewDollarGesture", RoutingStrategy.Tunnel,
+            typeof(UpfDollarGestureEventHandler), typeof(Touch));
+
         /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/> 
         /// attached routed event.
@@ -1139,7 +1237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         ///     <revtField><see cref="MultiGestureEvent"/></revtField>
         ///     <revtStylingName>multi-gesture</revtStylingName>
         ///     <revtStrategy>Bubbling</revtStrategy>
-        ///     <revtDelegate><see cref="UpfTouchMoveEventHandler"/></revtDelegate>
+        ///     <revtDelegate><see cref="UpfMultiGestureEventHandler"/></revtDelegate>
         /// </revt>
         /// <list type="bullet">
         ///     <item>
@@ -1151,6 +1249,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent MultiGestureEvent = EventManager.RegisterRoutedEvent("MultiGesture", RoutingStrategy.Bubble,
             typeof(UpfMultiGestureEventHandler), typeof(Touch));
+
+        /// <summary>
+        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/> 
+        /// attached routed event.
+        /// </summary>
+        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/> 
+        /// attached routed event.</value>
+        /// <AttachedEventComments>
+        /// <summary>
+        /// Occurs when a $1 gesture is performed over a view.
+        /// </summary>
+        /// <remarks>
+        /// <revt>
+        ///     <revtField><see cref="DollarGestureEvent"/></revtField>
+        ///     <revtStylingName>dollar-gesture</revtStylingName>
+        ///     <revtStrategy>Bubbling</revtStrategy>
+        ///     <revtDelegate><see cref="UpfDollarGestureEventHandler"/></revtDelegate>
+        /// </revt>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>The corresponding tunneling event is 
+        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        /// </AttachedEventComments>
+        public static readonly RoutedEvent DollarGestureEvent = EventManager.RegisterRoutedEvent("DollarGesture", RoutingStrategy.Bubble,
+            typeof(UpfDollarGestureEventHandler), typeof(Touch));
 
         /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchEnter"/> 
@@ -1317,6 +1443,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>
+        /// attached event for the specified element.
+        /// </summary>
+        internal static void RaisePreviewDollarGesture(DependencyObject element, TouchDevice device,
+            Int64 gestureID, Double x, Double y, Single error, Int32 fingers, RoutedEventData data)
+        {
+            var evt = EventManager.GetInvocationDelegate<UpfDollarGestureEventHandler>(PreviewDollarGestureEvent);
+            evt?.Invoke(element, device, gestureID, x, y, error, fingers, data);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>
         /// attached event for the specified element.
         /// </summary>
@@ -1380,6 +1517,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         {
             var evt = EventManager.GetInvocationDelegate<UpfMultiGestureEventHandler>(MultiGestureEvent);
             evt?.Invoke(element, device, x, y, theta, distance, fingers, data);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>
+        /// attached event for the specified element.
+        /// </summary>
+        internal static void RaiseDollarGesture(DependencyObject element, TouchDevice device,
+            Int64 gestureID, Double x, Double y, Single error, Int32 fingers, RoutedEventData data)
+        {
+            var evt = EventManager.GetInvocationDelegate<UpfDollarGestureEventHandler>(DollarGestureEvent);
+            evt?.Invoke(element, device, gestureID, x, y, error, fingers, data);
         }
 
         /// <summary>

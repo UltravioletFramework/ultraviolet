@@ -61,8 +61,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
             var blurTarget = target.Next.RenderTarget;
 
             var gfx = dc.Ultraviolet.GetGraphics();
-            gfx.SetRenderTarget(blurTarget);
-            gfx.Clear(Color.Transparent);
+            gfx.SetRenderTarget(blurTarget, Color.Transparent);
 
             effect.Value.Radius = GetRadiusInPixels(element);
             effect.Value.Direction = BlurDirection.Horizontal;

@@ -45,8 +45,9 @@ namespace TwistedLogik.Gluon
 
             gl.InitializeDSA();
 
-            gl.IsTextureStorageAvailable       = IsVersionAtLeast(4, 2) || IsExtensionSupported("GL_ARB_texture_storage");
+            gl.IsTextureStorageAvailable = IsVersionAtLeast(4, 2) || IsExtensionSupported("GL_ARB_texture_storage");
             gl.IsAnisotropicFilteringAvailable = IsExtensionSupported("GL_EXT_texture_filter_anisotropic");
+            gl.IsVertexAttribBindingAvailable = IsExtensionSupported("GL_ARB_vertex_attrib_binding");
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -56,7 +57,7 @@ namespace TwistedLogik.Gluon
                     VerboseLog(GluonStrings.CouldNotLoadFunction.Format(function));
                 }
             }
-            
+
             gl.DefaultFramebuffer = (UInt32)gl.GetInteger(gl.GL_FRAMEBUFFER_BINDING);
             gl.ThrowIfError();
 
@@ -86,10 +87,11 @@ namespace TwistedLogik.Gluon
             gl.minorVersion = 0;
             gl.extensions.Clear();
 
-            gl.dsaimpl                         = null;
+            gl.dsaimpl = null;
             gl.IsARBDirectStateAccessAvailable = false;
             gl.IsEXTDirectStateAccessAvailable = false;
-            gl.IsTextureStorageAvailable       = false;
+            gl.IsTextureStorageAvailable = false;
+            gl.IsVertexAttribBindingAvailable = false;
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)
@@ -348,24 +350,29 @@ namespace TwistedLogik.Gluon
         private static Boolean LoadFunction(IOpenGLInitializer initializer, FieldInfo field, Boolean checkRequirements = true)
         {
             var name = field.Name.StartsWith("gl") ? field.Name : "gl" + field.Name;
-            var reqs = checkRequirements ? field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>().FirstOrDefault() : null;
+            var reqs = checkRequirements ? field.GetCustomAttributes(typeof(RequireAttribute), false).Cast<RequireAttribute>() : null;
 
             // If this isn't a core function, attempt to load it as an extension.
-            if (reqs != null && !reqs.IsCore(majorVersion, minorVersion, isGLES))
+            if (reqs != null && reqs.Any())
             {
-                if (!IsExtensionSupported(reqs.Extension))
+                foreach (var req in reqs)
                 {
-                    LoadDefaultDelegate(field, reqs);
-                    return false;
+                    if (!req.IsCore(majorVersion, minorVersion, isGLES))
+                    {
+                        var extensions = req.Extension.Split(new[] { "&&" }, StringSplitOptions.None).Select(x => x.Trim());
+                        if (!extensions.All(IsExtensionSupported))
+                            continue;
+
+                        name = req.ExtensionFunction ?? name;
+                    }
                 }
-                name = reqs.ExtensionFunction ?? name;
             }
 
             // Load the function pointer from the OpenGL initializer.
             var fnptr = initializer.GetProcAddress(name);
             if (fnptr == IntPtr.Zero)
             {
-                LoadDefaultDelegate(field, reqs);
+                LoadDefaultDelegate(field, reqs?.FirstOrDefault());
                 return false;
             }
             var fndel = Marshal.GetDelegateForFunctionPointer(fnptr, field.FieldType);

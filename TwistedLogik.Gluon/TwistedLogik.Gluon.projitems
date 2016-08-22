@@ -14,6 +14,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)DSA\DirectStateAccessImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DSA\DirectStateAccessNullImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_debug_output.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_map_buffer_alignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_map_buffer_range.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_sampler_objects.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_direct_state_access.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_framebuffer_object.cs" />
@@ -24,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_texture_rg.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_texture_storage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_vertex_array_object.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_vertex_attrib_binding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EXT_direct_state_access.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EXT_texture_compression_s3t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EXT_texture_filter_anisotropic.cs" />

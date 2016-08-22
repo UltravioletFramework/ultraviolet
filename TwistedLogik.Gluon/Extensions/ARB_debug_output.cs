@@ -16,11 +16,12 @@ namespace TwistedLogik.Gluon
         public static void DebugMessageCallback(DebugProc callback, IntPtr userParam) { glDebugMessageCallback(callback, userParam); }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glDebugMessageControlDelegate(uint source, uint type, uint severity, int count, IntPtr ids, bool enabled);
+        private delegate void glDebugMessageControlDelegate(uint source, uint type, uint severity, int count, IntPtr ids, [MarshalAs(UnmanagedType.I1)] bool enabled);
         [Require(Extension = "GL_ARB_debug_output", ExtensionFunction = "glDebugMessageControlARB")]
         private static readonly glDebugMessageControlDelegate glDebugMessageControl = null;
 
-        public static void DebugMessageControl(uint source, uint type, uint severity, int count, IntPtr ids, bool enabled) { glDebugMessageControl(source, type, severity, count, ids, enabled); }
+        public static void DebugMessageControl(uint source, uint type, uint severity, int count, IntPtr ids, bool enabled)
+        { glDebugMessageControl(source, type, severity, count, ids, enabled); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDebugMessageInsertDelegate(uint source, uint type, uint id, uint severity, int length, IntPtr buf);

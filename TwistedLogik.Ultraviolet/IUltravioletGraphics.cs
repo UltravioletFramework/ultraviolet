@@ -34,14 +34,50 @@ namespace TwistedLogik.Ultraviolet
         /// <summary>
         /// Sets the render target.
         /// </summary>
-        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to t
-        /// he default render target for the current window's compositor.</param>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to
+        /// the default render target for the current window's compositor.</param>
         void SetRenderTarget(RenderTarget2D rt);
+
+        /// <summary>
+        /// Sets the render target and clears it to the specified values (if it is 
+        /// set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to
+        /// the default render target for the current window's compositor.</param>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        void SetRenderTarget(RenderTarget2D rt, Color clearColor);
+
+        /// <summary>
+        /// Sets the render target and clears it to the specified values (if it is 
+        /// set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="rt">The render target to set, or <see langword="null"/> to revert to
+        /// the default render target for the current window's compositor.</param>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        /// <param name="clearDepth">The depth to which to clear the render target.</param>
+        /// <param name="clearStencil">The stencil value to which to clear the render target.</param>
+        void SetRenderTarget(RenderTarget2D rt, Color clearColor, Double clearDepth, Int32 clearStencil);
 
         /// <summary>
         /// Sets the render target to the back buffer, bypassing any window compositors.
         /// </summary>
         void SetRenderTargetToBackBuffer();
+
+        /// <summary>
+        /// Sets the render target to the back buffer, bypassing any window compositors, and clears
+        /// it to the specified values (if it is set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        void SetRenderTargetToBackBuffer(Color clearColor);
+
+        /// <summary>
+        /// Sets the render target to the back buffer, bypassing any window compositors, and clears
+        /// it to the specified values (if it is set to <see cref="RenderTargetUsage.DiscardContents"/>).
+        /// </summary>
+        /// <param name="clearColor">The color to which to clear the render target.</param>
+        /// <param name="clearDepth">The depth to which to clear the render target.</param>
+        /// <param name="clearStencil">The stencil value to which to clear the render target.</param>
+        void SetRenderTargetToBackBuffer(Color clearColor, Double clearDepth, Int32 clearStencil);
 
         /// <summary>
         /// Gets the device's current render target.
@@ -183,7 +219,16 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="start">The index of the first vertex to render.</param>
         /// <param name="count">The number of primitives to render.</param>
         void DrawPrimitives(PrimitiveType type, Int32 start, Int32 count);
-        
+
+        /// <summary>
+        /// Draws a collection of non-indexed geometric primitives of the specified type from the currently bound buffers.
+        /// </summary>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
+        /// <param name="offset">The offset from the beginning of the vertex buffer, in bytes, at which to begin reading vertex data.</param>
+        /// <param name="start">The index of the first vertex to render.</param>
+        /// <param name="count">The number of primitives to render.</param>
+        void DrawPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count);
+
         /// <summary>
         /// Draws a collection of indexed geometric primitives of the specified type from the currently bound buffers.
         /// </summary>
@@ -193,6 +238,24 @@ namespace TwistedLogik.Ultraviolet
         void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count);
 
         /// <summary>
+        /// Draws a collection of indexed geometric primitives of the specified type from the currently bound buffers.
+        /// </summary>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
+        /// <param name="offset">The offset from the beginning of the vertex buffer, in bytes, at which to begin reading vertex data.</param>
+        /// <param name="start">The index of the first vertex to render.</param>
+        /// <param name="count">The number of primitives to render.</param>
+        void DrawIndexedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count);
+
+        /// <summary>
+        /// Draws a collection of instanced geometric primitives of the specified type from the currently bound buffers.
+        /// </summary>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
+        /// <param name="start">The index of the first vertex to render.</param>
+        /// <param name="count">The number of primitives to render.</param>
+        /// <param name="instances">The number of instances to render.</param>
+        void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances);
+
+        /// <summary>
         /// Draws a collection of instanced geometric primitives of the specified type from the currently bound buffers.
         /// </summary>
         /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
@@ -200,7 +263,18 @@ namespace TwistedLogik.Ultraviolet
         /// <param name="count">The number of primitives to render.</param>
         /// <param name="instances">The number of instances to render.</param>
         /// <param name="baseInstance">The index of the first instance to render.</param>
-        void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0);
+        void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance);
+
+        /// <summary>
+        /// Draws a collection of instanced geometric primitives of the specified type from the currently bound buffers.
+        /// </summary>
+        /// <param name="type">A <see cref="PrimitiveType"/> value representing the type of primitive to render.</param>
+        /// <param name="offset">The offset from the beginning of the vertex buffer, in bytes, at which to begin reading vertex data.</param>
+        /// <param name="start">The index of the first vertex to render.</param>
+        /// <param name="count">The number of primitives to render.</param>
+        /// <param name="instances">The number of instances to render.</param>
+        /// <param name="baseInstance">The index of the first instance to render.</param>
+        void DrawInstancedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count, Int32 instances, Int32 baseInstance);
 
         /// <summary>
         /// Gets the current frame rate.

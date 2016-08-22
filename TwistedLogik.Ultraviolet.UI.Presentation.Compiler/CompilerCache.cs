@@ -102,13 +102,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
 
             var cache = new CompilerCache();
             var types = new HashSet<Type>();
-
+            
             foreach (var dataSourceWrapper in dataSourceWrappers)
             {
-                if (!cache.hashes.ContainsKey(dataSourceWrapper.DataSourceWrapperName))
+                if (!cache.hashes.ContainsKey(dataSourceWrapper.DataSourcePath))
                 {
                     var dataSourceWrapperHash = GenerateHashForXElement(dataSourceWrapper.DataSourceDefinition.Definition);
-                    cache.hashes[dataSourceWrapper.DataSourceWrapperName] = dataSourceWrapperHash;
+                    cache.hashes[dataSourceWrapper.DataSourcePath] = dataSourceWrapperHash;
                 }
                 
                 AddTypeReferences(dataSourceWrapper.DataSourceType, types);
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
                         AddTypeReferences(dependentWrapper.DataSourceType, types);
                 }
             }
-
+            
             foreach (var type in types)
             {
                 var typeHash = GenerateHashForType(type);

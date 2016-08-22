@@ -25,13 +25,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Contract.Require(owner, nameof(owner));
                 Contract.Require(property, nameof(property));
 
-                this.owner    = owner;
+                this.owner = owner;
                 this.property = property;
-                this.comparer = (DataBindingComparer<T>)BindingExpressions.GetComparisonFunction(typeof(T));
+                this.comparer = BindingExpressions.GetComparisonFunction(typeof(T));
 
-                this.metadata        = property.GetMetadataForOwner(owner.GetType());
+                this.metadata = property.GetMetadataForOwner(owner.GetType());
                 this.isReferenceType = typeof(T).IsClass;
-                this.isValueType     = typeof(T).IsValueType;
+                this.isValueType = typeof(T).IsValueType;
 
                 if (metadata.HasDefaultValue)
                 {
@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 var oldCoercedValue = coercedValue;
                 coercedValue = metadata.CoerceValue<T>(owner, GetValueInternal(true, false));
 
-                if (!comparer(coercedValue, oldCoercedValue))
+                if (!Compare(coercedValue, oldCoercedValue))
                 {
                     HandleChanged(oldCoercedValue, coercedValue);
                     previousValue = coercedValue;
@@ -593,11 +593,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Compares two values using the dependency property's comparer function.
+            /// </summary>
+            private Boolean Compare(T value1, T value2)
+            {
+                return typeof(T).IsValueType ?
+                    ((DataBindingComparer<T>)comparer)(value1, value2) :
+                    ((DataBindingComparer<Object>)comparer)(value1, value2);
+            }
+
+            /// <summary>
             /// Gets a value indicating whether the property's coerced value is different from its cached bound value.
             /// </summary>
             private Boolean IsCoercedValueDifferentFromCachedBoundValue()
             {
-                return IsCoerced && !comparer(coercedValue, cachedBoundValue.Get());
+                return IsCoerced && !Compare(coercedValue, cachedBoundValue.Get());
             }
 
             /// <summary>
@@ -643,7 +653,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                     var newValue = GetValue();
 
-                    if (!comparer(oldValue, newValue))
+                    if (!Compare(oldValue, newValue))
                     {
                         HandleChanged(oldValue, newValue);
                     }
@@ -681,7 +691,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 else
                 {
                     value = GetValue();
-                    potentiallyChanged = !comparer(value, previousValue);
+                    potentiallyChanged = !Compare(value, previousValue);
                 }
 
                 if (potentiallyChanged)
@@ -692,7 +702,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (IsCoerced)
                     {
                         coercedValue = metadata.CoerceValue(owner, value);
-                        potentiallyChanged = !comparer(coercedValue, original);
+                        potentiallyChanged = !Compare(coercedValue, original);
                         newValue = coercedValue;
                     }
 
@@ -767,7 +777,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
 
                 var newValue = GetValue();
-                var changed  = !comparer(oldValue, newValue);
+                var changed  = !Compare(oldValue, newValue);
                 
                 if (changed)
                 {
@@ -1014,7 +1024,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private SetTriggerAction triggeredValueSource;
 
             // State values.
-            private readonly DataBindingComparer<T> comparer;
+            private readonly Delegate comparer;
             private Boolean requiresDigest;
             private Boolean bound;
             private IDependencyBoundValue<T> cachedBoundValue;

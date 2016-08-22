@@ -150,6 +150,9 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RWFromMem")]
         public static extern IntPtr RWFromMem(IntPtr mem, Int32 size);
+        
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AllocRW")]
+        public static extern IntPtr AllocRW();
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeRW")]
         public static extern void FreeRW(IntPtr area);
@@ -339,6 +342,18 @@ namespace TwistedLogik.Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTouchFinger")]
         public static extern SDL_Finger* GetTouchFinger(Int64 touchID, Int32 index);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RecordGesture")]
+        public static extern Int32 RecordGesture(Int64 touchID);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SaveAllDollarTemplates")]
+        public static extern Int32 SaveAllDollarTemplates(IntPtr dst);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SaveDollarTemplate")]
+        public static extern Int32 SaveDollarTemplates(Int64 gestureID, IntPtr dst);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LoadDollarTemplates")]
+        public static extern Int32 LoadDollarTemplates(Int64 touchID, IntPtr src);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_StartTextInput")]
         public static extern void StartTextInput();

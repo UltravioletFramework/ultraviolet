@@ -230,14 +230,8 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffect.frag">
       <Link>Resources\BlurEffect.frag</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffect.vert">
-      <Link>Resources\BlurEffect.vert</Link>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffectES.frag">
       <Link>Resources\BlurEffectES.frag</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffectES.vert">
-      <Link>Resources\BlurEffectES.vert</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\SpriteBatchEffect.frag">
       <Link>Resources\SpriteBatchEffect.frag</Link>

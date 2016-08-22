@@ -33,6 +33,7 @@
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -41,9 +42,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnableCodeSigning>false</EnableCodeSigning>
     <CodeSigningKey>Developer ID Application</CodeSigningKey>
-    <CreatePackage>true</CreatePackage>
+    <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
@@ -52,6 +53,8 @@
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
     <XamMacArch></XamMacArch>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -60,9 +63,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnableCodeSigning>false</EnableCodeSigning>
     <CodeSigningKey>Developer ID Application</CodeSigningKey>
-    <CreatePackage>true</CreatePackage>
+    <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
@@ -71,6 +74,8 @@
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
     <XamMacArch></XamMacArch>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

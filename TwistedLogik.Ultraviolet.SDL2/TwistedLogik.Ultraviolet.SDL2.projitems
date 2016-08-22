@@ -89,6 +89,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_WindowFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2PowerManagementService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Exception.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.SDL_RWops.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Strings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletMessages.cs" />

@@ -74,6 +74,81 @@ namespace TwistedLogik.Gluon
             {
                 glTextureStorage3D(texture, levels, internalformat, width, height, depth);
             }
+
+            public override void* MapNamedBuffer(uint buffer, uint target, uint access)
+            {
+                return glMapNamedBuffer(buffer, access).ToPointer();
+            }
+
+            public override void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access)
+            {
+                return glMapNamedBufferRange(buffer, offset, length, access).ToPointer();
+            }
+
+            public override bool UnmapNamedBuffer(uint buffer, uint target)
+            {
+                return glUnmapNamedBuffer(buffer);
+            }
+
+            public override void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length)
+            {
+                glFlushMappedNamedBufferRange(buffer, offset, length);
+            }
+
+            public override void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params)
+            {
+                glGetNamedBufferParameteriv(buffer, pname, (IntPtr)@params);
+            }
+
+            public override void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params)
+            {
+                glGetNamedBufferPointerv(buffer, pname, (IntPtr)@params);
+            }
+
+            public override void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
+            {
+                glGetNamedBufferSubData(buffer, offset, size, (IntPtr)data);
+            }
+
+            public override void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, int stride)
+            {
+                glVertexArrayVertexBuffer(vaobj, bindingindex, buffer, offset, stride);
+            }
+
+            public override void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativesize)
+            {
+                glVertexArrayAttribFormat(vaobj, attribindex, size, type, normalized, relativesize);
+            }
+
+            public override void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+            {
+                glVertexArrayAttribIFormat(vaobj, attribindex, size, type, relativesize);
+            }
+
+            public override void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+            {
+                glVertexArrayAttribLFormat(vaobj, attribindex, size, type, relativesize);
+            }
+
+            public override void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex)
+            {
+                glVertexArrayAttribBinding(vaobj, attribindex, bindingindex);
+            }
+
+            public override void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor)
+            {
+                glVertexArrayBindingDivisor(vaobj, bindingindex, divisor);
+            }
+
+            public override void EnableVertexArrayAttrib(uint vaobj, uint index)
+            {
+                glEnableVertexArrayAttrib(vaobj, index);
+            }
+
+            public override void DisableVertexArrayAttrib(uint vaobj, uint index)
+            {
+                glDisableVertexArrayAttrib(vaobj, index);
+            }
         }
     }
 }

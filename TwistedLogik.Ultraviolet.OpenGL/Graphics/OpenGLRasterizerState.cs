@@ -2,6 +2,7 @@
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Graphics;
+using TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -66,38 +67,26 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            gl.Enable(gl.GL_CULL_FACE, CullMode != CullMode.None);
-            gl.ThrowIfError();
-
-            gl.FrontFace(GetFrontFaceGL(CullMode));
-            gl.ThrowIfError();
-
-            gl.CullFace(gl.GL_BACK);
-            gl.ThrowIfError();
+            OpenGLState.CullingEnabled = (CullMode != CullMode.None);
+            OpenGLState.CulledFace = gl.GL_BACK;
+            OpenGLState.FrontFace = GetFrontFaceGL(CullMode);
 
             if (FillMode != FillMode.Solid)
             {
                 gl.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
-
-                gl.PolygonMode(gl.GL_FRONT_AND_BACK, GetFillModeGL(FillMode));
-                gl.ThrowIfError();
+                OpenGLState.PolygonMode = GetFillModeGL(FillMode);
             }
 
-            gl.Enable(gl.GL_SCISSOR_TEST, ScissorTestEnable);
-            gl.ThrowIfError();
+            OpenGLState.ScissorTestEnabled = ScissorTestEnable;
 
             if (DepthBias != 0f && SlopeScaleDepthBias != 0f)
             {
-                gl.Enable(gl.GL_POLYGON_OFFSET_FILL);
-                gl.ThrowIfError();
-
-                gl.PolygonOffset(SlopeScaleDepthBias, DepthBias);
-                gl.ThrowIfError();
+                OpenGLState.PolygonOffsetEnabled = true;
+                OpenGLState.PolygonOffset = new CachedPolygonOffset(SlopeScaleDepthBias, DepthBias);
             }
             else
             {
-                gl.Disable(gl.GL_POLYGON_OFFSET_FILL);
-                gl.ThrowIfError();
+                OpenGLState.PolygonOffsetEnabled = false;
             }
         }
 

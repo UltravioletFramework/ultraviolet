@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Gluon
@@ -48,6 +49,7 @@ namespace TwistedLogik.Gluon
         }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsQueryDelegate(uint id);
         [Require(MinVersion = "1.5")]
         private static readonly glIsQueryDelegate glIsQuery = null;
@@ -139,6 +141,7 @@ namespace TwistedLogik.Gluon
         }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsBufferDelegate(uint buffer);
         [Require(MinVersion = "1.5")]
         private static readonly glIsBufferDelegate glIsBuffer = null;
@@ -174,6 +177,7 @@ namespace TwistedLogik.Gluon
         public static void* MapBuffer(uint target, uint access) { return glMapBuffer(target, access).ToPointer(); }
 
         [MonoNativeFunctionWrapper]
+        [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glUnmapBufferDelegate(uint target);
         [Require(MinVersion = "1.5")]
         private static readonly glUnmapBufferDelegate glUnmapBuffer = null;

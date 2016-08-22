@@ -161,14 +161,8 @@
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffect.frag">
       <Link>Resources\BlurEffect.frag</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffect.vert">
-      <Link>Resources\BlurEffect.vert</Link>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffectES.frag">
       <Link>Resources\BlurEffectES.frag</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\BlurEffectES.vert">
-      <Link>Resources\BlurEffectES.vert</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\SpriteBatchEffect.frag">
       <Link>Resources\SpriteBatchEffect.frag</Link>
@@ -233,7 +227,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" />
+      <UserProperties ProjectLinkReference="40d272db-90e1-4332-a32f-6effeb44fe87" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

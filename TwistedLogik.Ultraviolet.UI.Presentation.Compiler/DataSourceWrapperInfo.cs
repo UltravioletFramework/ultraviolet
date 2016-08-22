@@ -53,6 +53,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
         }
 
         /// <summary>
+        /// Gets or sets the path to the file that defined the data source.
+        /// </summary>
+        public String DataSourcePath
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the source code that was generated for the data source wrapper.
         /// </summary>
         public String DataSourceWrapperSourceCode

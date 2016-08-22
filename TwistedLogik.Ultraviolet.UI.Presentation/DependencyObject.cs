@@ -94,27 +94,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             lastDigestedCycleID = PresentationFoundation.Instance.DigestCycleID;
 
-            using (var buffer = GetDependencyPropertyValuesOfTypeDependencyObjectBuffer())
+            if (dependencyPropertyValuesOfTypeDependencyObject.Count > 0)
             {
-                foreach (var value in buffer.Object)
+                using (var buffer = GetDependencyPropertyValuesOfTypeDependencyObjectBuffer())
                 {
-                    var dobj = (DependencyObject)value.GetUntypedValue();
-                    if (dobj != null)
+                    foreach (var value in buffer.Object)
                     {
-                        if (dobj.WasInvalidatedLastDigest)
+                        var dobj = (DependencyObject)value.GetUntypedValue();
+                        if (dobj != null)
                         {
-                            value.HandleForcedInvalidation();
+                            if (dobj.WasInvalidatedLastDigest)
+                            {
+                                value.HandleForcedInvalidation();
+                            }
+                            dobj.Digest(time);
                         }
-                        dobj.Digest(time);
                     }
                 }
             }
 
-            using (var buffer = GetDigestedDependencyPropertiesBuffer())
+            if (digestedDependencyProperties.Count > 0)
             {
-                foreach (var value in buffer.Object)
+                using (var buffer = GetDigestedDependencyPropertiesBuffer())
                 {
-                    value.Digest(time);
+                    foreach (var value in buffer.Object)
+                    {
+                        value.Digest(time);
+                    }
                 }
             }
 
@@ -1074,8 +1080,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private PooledObjectScope<List<IDependencyPropertyValue>> GetDigestedDependencyPropertiesBuffer()
         {
             var scope = dpValueBufferPool.RetrieveScoped();
-            
-            scope.Object.AddRange(digestedDependencyProperties);
+
+            foreach (var value in digestedDependencyProperties)
+                scope.Object.Add(value);
 
             return scope;
         }

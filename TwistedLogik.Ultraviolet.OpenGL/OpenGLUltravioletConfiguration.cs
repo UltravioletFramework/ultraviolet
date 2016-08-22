@@ -128,6 +128,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether Ultraviolet should attempt to use buffer mapping when
+        /// rendering geometry, if it is available on the current driver.
+        /// </summary>
+        public Boolean UseBufferMapping
+        {
+            get { return useBufferMapping; }
+            set { useBufferMapping = value; }
+        }
+
+        /// <summary>
         /// The default configuration for the OpenGL/SDL2 implementation.
         /// </summary>
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
@@ -138,9 +148,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         private Version minimumOpenGLESVersion;
         private Int32 backBufferDepthSize = 16;
         private Int32 backBufferStencilSize = 1;
-        private Int32 multiSampleBuffers = 1;
-        private Int32 multiSampleSamples = 4;
+        private Int32 multiSampleBuffers = 0;
+        private Int32 multiSampleSamples = 0;
         private Boolean isHardwareInputDisabled;
         private Boolean use32BitFramebuffer;
+        private Boolean useBufferMapping = true;
     }
 }

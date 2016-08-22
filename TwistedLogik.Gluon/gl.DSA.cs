@@ -86,6 +86,81 @@ namespace TwistedLogik.Gluon
             dsaimpl.TextureStorage3D(texture, target, levels, internalformat, width, height, depth);
         }
 
+        public static void* MapNamedBuffer(uint buffer, uint target, uint access)
+        {
+            return dsaimpl.MapNamedBuffer(buffer, target, access);
+        }
+
+        public static void* MapNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length, uint access)
+        {
+            return dsaimpl.MapNamedBufferRange(buffer, target, offset, length, access);
+        }
+
+        public static bool UnmapNamedBuffer(uint buffer, uint target)
+        {
+            return dsaimpl.UnmapNamedBuffer(buffer, target);
+        }
+
+        public static void FlushMappedNamedBufferRange(uint buffer, uint target, IntPtr offset, IntPtr length)
+        {
+            dsaimpl.FlushMappedNamedBufferRange(buffer, target, offset, length);
+        }
+
+        public static void GetNamedBufferParameteriv(uint buffer, uint target, uint pname, int* @params)
+        {
+            dsaimpl.GetNamedBufferParameteriv(buffer, target, pname, @params);
+        }
+
+        public static void GetNamedBufferPointerv(uint buffer, uint target, uint pname, void** @params)
+        {
+            dsaimpl.GetNamedBufferPointerv(buffer, target, pname, @params);
+        }
+
+        public static void GetNamedBufferSubData(uint buffer, uint target, IntPtr offset, IntPtr size, void* data)
+        {
+            dsaimpl.GetNamedBufferSubData(buffer, target, offset, size, data);
+        }
+
+        public static void VertexArrayVertexBuffer(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, int stride)
+        {
+            dsaimpl.VertexArrayVertexBuffer(vaobj, bindingindex, buffer, offset, stride);
+        }
+
+        public static void VertexArrayAttribFormat(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativesize)
+        {
+            dsaimpl.VertexArrayAttribFormat(vaobj, attribindex, size, type, normalized, relativesize);
+        }
+
+        public static void VertexArrayAttribIFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+        {
+            dsaimpl.VertexArrayAttribIFormat(vaobj, attribindex, size, type, relativesize);
+        }
+
+        public static void VertexArrayAttribLFormat(uint vaobj, uint attribindex, int size, uint type, uint relativesize)
+        {
+            dsaimpl.VertexArrayAttribLFormat(vaobj, attribindex, size, type, relativesize);
+        }
+
+        public static void VertexArrayAttribBinding(uint vaobj, uint attribindex, uint bindingindex)
+        {
+            dsaimpl.VertexArrayAttribBinding(vaobj, attribindex, bindingindex);
+        }
+
+        public static void VertexArrayBindingDivisor(uint vaobj, uint bindingindex, uint divisor)
+        {
+            dsaimpl.VertexArrayBindingDivisor(vaobj, bindingindex, divisor);
+        }
+
+        public static void EnableVertexArrayAttrib(uint vaobj, uint index)
+        {
+            dsaimpl.EnableVertexArrayAttrib(vaobj, index);
+        }
+
+        public static void DisableVertexArrayAttrib(uint vaobj, uint index)
+        {
+            dsaimpl.DisableVertexArrayAttrib(vaobj, index);
+        }
+
         public static Boolean IsTextureStorageAvailable
         {
             get;

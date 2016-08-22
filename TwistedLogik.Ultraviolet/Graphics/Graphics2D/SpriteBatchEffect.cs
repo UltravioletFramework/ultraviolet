@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents the <see cref="Effect"/> used by <see cref="SpriteBatchBase{VertexType, SpriteData}"/> to render sprites.
     /// </summary>
-    public abstract class SpriteBatchEffect : Effect, ISpriteBatchEffect
+    public abstract class SpriteBatchEffect : Effect, ISpriteBatchEffect, IEffectTextureSize
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteBatchEffect"/> class.
@@ -22,6 +22,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             : base(impl)
         {
             this.epMatrixTransform = Parameters["MatrixTransform"];
+            this.epTextureSize = Parameters["TextureSize"];
         }
 
         /// <summary>
@@ -34,9 +35,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             return uv.GetFactoryMethod<SpriteBatchEffectFactory>()(uv);
         }
 
-        /// <summary>
-        /// Gets or sets the effect's transformation matrix.
-        /// </summary>
+        /// <inheritdoc/>
         public Matrix MatrixTransform
         {
             get
@@ -53,7 +52,32 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             }
         }
 
+        /// <inheritdoc/>
+        public Size2 TextureSize
+        {
+            // NOTE: On OpenGL ES 2.0 we don't support integer vertex attributes and therefore
+            // we don't do the normalization in the GLSL, which means that TextureSize gets
+            // optimized out. So we can just ignore it.
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                if (epTextureSize != null)
+                    return (Size2)epTextureSize.GetValueVector2();
+
+                return Size2.Zero;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                if (epTextureSize != null)
+                    epTextureSize.SetValue((Vector2)value);
+            }
+        }
+
         // Cached effect parameters.
         private readonly EffectParameter epMatrixTransform;
+        private readonly EffectParameter epTextureSize;
     }
 }

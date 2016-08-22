@@ -127,6 +127,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteBatchFallback.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationController.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteSortMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteVertex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\OutOfSpaceException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\Packing\ArevaloRectanglePacker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\sspack\Packing\RectanglePacker.cs" />

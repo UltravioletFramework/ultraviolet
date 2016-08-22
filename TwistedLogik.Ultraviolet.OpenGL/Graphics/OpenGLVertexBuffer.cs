@@ -41,38 +41,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.buffer = buffer;
         }
 
-        /// <summary>
-        /// Sets the data contained by the vertex buffer.
-        /// </summary>
-        /// <param name="data">An array containing the data to set in the vertex buffer.</param>
+        /// <inheritdoc/>
         public override void SetData<T>(T[] data)
         {
             Contract.Require(data, nameof(data));
             Contract.Ensure(data.Length <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
-            
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            try
-            {
-                using (OpenGLState.ScopedBindArrayBuffer(buffer))
-                {
-                    var size = new IntPtr(vdecl.VertexStride * data.Length);
-                    gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, IntPtr.Zero, size, handle.AddrOfPinnedObject().ToPointer());
-                    gl.ThrowIfError();
-                }
-            }
-            finally
-            {
-                handle.Free();
-            }
-        }
 
-        /// <summary>
-        /// Sets the data contained by the vertex buffer.
-        /// </summary>
-        /// <param name="data">An array containing the data to set in the vertex buffer.</param>
-        /// <param name="offset">The offset into <paramref name="data"/> at which to begin setting elements into the buffer.</param>
-        /// <param name="count">The number of elements from <paramref name="data"/> to set into the buffer.</param>
-        /// <param name="options">A hint to the underlying driver indicating whether data will be overwritten by this operation.</param>
+            SetDataInternal(data, 0, data.Length * vdecl.VertexStride, SetDataOptions.None);
+        }
+        
+        /// <inheritdoc/>
         public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOptions options)
         {
             Contract.Require(data, nameof(data));
@@ -80,14 +58,34 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(offset >= 0 && offset + count <= data.Length, nameof(offset));
             Contract.Ensure(count <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
 
+            SetDataInternal(data, offset * vdecl.VertexStride, count * vdecl.VertexStride, options);
+        }
+
+        /// <inheritdoc/>
+        public override void SetDataAligned<T>(T[] data, Int32 dataOffset, Int32 dataCount, Int32 bufferOffset, out Int32 bufferSize, SetDataOptions options)
+        {
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(dataCount > 0, nameof(dataCount));
+            Contract.EnsureRange(dataOffset >= 0 && dataOffset + dataCount <= data.Length, nameof(dataOffset));
+            Contract.EnsureRange(bufferOffset >= 0, nameof(bufferOffset));
+            Contract.Ensure(dataCount <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
+
+            bufferSize = vdecl.VertexStride * dataCount;
+
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
+                var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
+                if (caps.SupportsMapBufferRange && caps.MinMapBufferAlignment > 0)
+                    bufferSize = Math.Min(Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize)), SizeInBytes - bufferOffset);
+
                 using (OpenGLState.ScopedBindArrayBuffer(buffer))
                 {
-                    if (options == SetDataOptions.Discard)
+                    var isPartialUpdate = (bufferOffset > 0 || bufferSize < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
                     {
-                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, null, usage);
+                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
                         gl.ThrowIfError();
 
                         /* FIX: 
@@ -101,17 +99,59 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         }
                     }
 
-                    var start = new IntPtr(offset * vdecl.VertexStride);
-                    var size = new IntPtr(vdecl.VertexStride * count);
+                    if (isPartialUpdate)
+                    {
+                        if (caps.SupportsMapBufferRange)
+                        {
+                            var bufferRangeAccess = gl.GL_MAP_WRITE_BIT | (options == SetDataOptions.NoOverwrite ? gl.GL_MAP_UNSYNCHRONIZED_BIT : 0);
+                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER,
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, bufferRangeAccess);
+                            gl.ThrowIfError();
 
-                    gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, start, size, handle.AddrOfPinnedObject().ToPointer());
-                    gl.ThrowIfError();
+                            var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
+                            var sourceSizeInBytes = dataCount * vdecl.VertexStride;
+
+                            for (int i = 0; i < sourceSizeInBytes; i++)
+                                *bufferRangePtr++ = *sourceRangePtr++;
+
+                            gl.UnmapNamedBuffer(buffer, gl.GL_ARRAY_BUFFER);
+                            gl.ThrowIfError();
+                        }
+                        else
+                        {
+                            gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER,
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * vdecl.VertexStride));
+                            gl.ThrowIfError();
+                        }
+                    }
                 }
             }
             finally
             {
                 handle.Free();
             }
+        }
+
+        /// <inheritdoc/>
+        public override Int32 GetAlignmentUnit()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return Math.Max(1, ((OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities).MinMapBufferAlignment);
+        }
+
+        /// <inheritdoc/>
+        public override Int32 GetAlignedSize(Int32 count)
+        {
+            Contract.EnsureRange(count >= 0, nameof(count));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
+            if (caps.MinMapBufferAlignment == 0 || count == VertexCount)
+            {
+                return count * vdecl.VertexStride;
+            }
+            return Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(count * vdecl.VertexStride));
         }
 
         /// <summary>
@@ -127,18 +167,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the buffer's content has been lost.
-        /// </summary>
+        /// <inheritdoc/>
         public override Boolean IsContentLost
         {
             get { return false; }
         }
 
-        /// <summary>
-        /// Releases resources associated with this object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (Disposed)
@@ -159,12 +194,53 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Sets the data contained by the vertex buffer.
+        /// </summary>
+        private void SetDataInternal<T>(T[] data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        {
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                using (OpenGLState.ScopedBindArrayBuffer(buffer))
+                {
+                    var isPartialUpdate = (offsetInBytes > 0 || countInBytes < SizeInBytes);
+                    var isDiscarding = (options == SetDataOptions.Discard);
+                    if (isDiscarding || !isPartialUpdate)
+                    {
+                        gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
+                        gl.ThrowIfError();
+
+                        /* FIX: 
+                         * I have no idea why the following code is necessary, but
+                         * it seems to fix flickering sprites on Intel HD 4000 devices. */
+                        if (OpenGLState.SupportsVertexArrayObjects)
+                        {
+                            var vao = (uint)OpenGLState.GL_VERTEX_ARRAY_BINDING;
+                            gl.BindVertexArray(vao);
+                            gl.ThrowIfError();
+                        }
+                    }
+
+                    if (isPartialUpdate)
+                    {
+                        gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
+                        gl.ThrowIfError();
+                    }
+                }
+            }
+            finally
+            {
+                handle.Free();
+            }
+        }
+        
         // Property values.
         private UInt32 buffer;
 
         // State values.
         private UInt32 usage;
         private IntPtr size;
-        private readonly VertexDeclaration vdecl;
+        private readonly VertexDeclaration vdecl;        
     }
 }

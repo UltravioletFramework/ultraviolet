@@ -76,7 +76,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 InitializeDebugOutput(configuration);
             }
             
-            this.capabilities = new OpenGLGraphicsCapabilities();
+            this.capabilities = new OpenGLGraphicsCapabilities(configuration);
 
             this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture2D[maxTextureStages];
@@ -123,53 +123,35 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             var mask = 0u;
             var resetColorWriteChannels = false;
-            var resetDepthTest = false;
-            var resetStencilTest = false;
+            var resetDepthMask = false;
 
-            if ((options & ClearOptions.Target) == ClearOptions.Target)
+            if ((options & ClearOptions.Target) == ClearOptions.Target && (renderTarget == null || renderTarget.HasColorBuffer))
             {
                 if (blendState.ColorWriteChannels != ColorWriteChannels.All)
                 {
                     resetColorWriteChannels = true;
-                    gl.ColorMask(true, true, true, true);
-                    gl.ThrowIfError();
+                    OpenGLState.ColorMask = ColorWriteChannels.All;
                 }
 
-                gl.ClearColor(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
-                gl.ThrowIfError();
-
+                OpenGLState.ClearColor = color;
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
+            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer))
             {
                 if (!depthStencilState.DepthBufferEnable)
                 {
-                    resetDepthTest = true;
-
-                    gl.Enable(gl.GL_DEPTH_TEST);
-                    gl.ThrowIfError();
-
-                    gl.DepthMask(true);
-                    gl.ThrowIfError();
+                    resetDepthMask = true;
+                    OpenGLState.DepthMask = true;
                 }
 
-                gl.ClearDepth(depth);
+                OpenGLState.ClearDepth = depth;
                 mask |= gl.GL_DEPTH_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
+            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer))
             {
-                if (!depthStencilState.StencilEnable)
-                {
-                    resetStencilTest = true;
-                    gl.Enable(gl.GL_STENCIL_TEST);
-                    gl.ThrowIfError();
-                }
-
-                gl.ClearStencil(stencil);
-                gl.ThrowIfError();
-
+                OpenGLState.ClearStencil = stencil;
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
             }
 
@@ -177,41 +159,46 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             gl.ThrowIfError();
 
             if (resetColorWriteChannels)
-            {
-                gl.ColorMask(
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Red) == ColorWriteChannels.Red, 
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Green) == ColorWriteChannels.Green, 
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Blue) == ColorWriteChannels.Blue, 
-                    (blendState.ColorWriteChannels & ColorWriteChannels.Alpha) == ColorWriteChannels.Alpha);
-                gl.ThrowIfError();
-            }
+                OpenGLState.ColorMask = blendState.ColorWriteChannels;
 
-            if (resetDepthTest)
-            {
-                gl.Enable(gl.GL_DEPTH_TEST, depthStencilState.DepthBufferEnable);
-                gl.ThrowIfError();
-
-                gl.DepthMask(depthStencilState.DepthBufferWriteEnable);
-                gl.ThrowIfError();
-            }
-
-            if (resetStencilTest)
-            {
-                gl.Enable(gl.GL_STENCIL_TEST, depthStencilState.StencilEnable);
-                gl.ThrowIfError();                
-            }
+            if (resetDepthMask)
+                OpenGLState.DepthMask = depthStencilState.DepthBufferWriteEnable;
         }
 
         /// <inheritdoc/>
-        public void SetRenderTarget(RenderTarget2D renderTarget)
+        public void SetRenderTarget(RenderTarget2D rt)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
-            if (currentWindow != null && renderTarget == null)
-                renderTarget = currentWindow.Compositor.GetRenderTarget();
+            if (currentWindow != null && rt == null)
+                rt = currentWindow.Compositor.GetRenderTarget();
 
-            SetRenderTargetInternal(renderTarget);
+            SetRenderTargetInternal(rt);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTarget(RenderTarget2D rt, Color clearColor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow != null && rt == null)
+                rt = currentWindow.Compositor.GetRenderTarget();
+
+            this.SetRenderTargetInternal(rt, clearColor);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTarget(RenderTarget2D rt, Color clearColor, Double clearDepth, Int32 clearStencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var currentWindow = Ultraviolet.GetPlatform().Windows.GetCurrent();
+            if (currentWindow != null && rt == null)
+                rt = currentWindow.Compositor.GetRenderTarget();
+
+            this.SetRenderTargetInternal(rt, clearColor, clearDepth, clearStencil);
         }
 
         /// <inheritdoc/>
@@ -220,6 +207,22 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             Contract.EnsureNotDisposed(this, Disposed);
 
             SetRenderTargetInternal(null);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer(Color clearColor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetRenderTargetInternal(null, clearColor);
+        }
+
+        /// <inheritdoc/>
+        public void SetRenderTargetToBackBuffer(Color clearColor, Double clearDepth, Int32 clearStencil)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetRenderTargetInternal(null, clearColor, clearDepth, clearStencil);
         }
 
         /// <inheritdoc/>
@@ -352,7 +355,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
             if (stream == null)
             {
                 this.geometryStream = null;
-                OpenGLState.BindVertexArrayObject(0, 0, 0);
+                OpenGLState.BindVertexArrayObject(0, 0);
             }
             else
             {
@@ -458,6 +461,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 {
                     var samplerObject = this.samplerObjects[sampler];
                     samplerObject.ApplySamplerState(state);
+                    this.samplerStates[sampler] = state;
                 }
                 else
                 {
@@ -542,16 +546,23 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
+            DrawPrimitives(type, 0, start, count);
+        }
+
+        /// <inheritdoc/>
+        public void DrawPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(offset >= 0, nameof(offset));
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
 
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
             Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
-            
+
             Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM, (UInt32)offset);
 
             var glVerts = 0;
             var glPrimitiveType = GetPrimitiveTypeGL(type, count, out glVerts);
@@ -562,6 +573,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <inheritdoc/>
         public void DrawIndexedPrimitives(PrimitiveType type, Int32 start, Int32 count)
         {
+            DrawIndexedPrimitives(type, 0, start, count);
+        }
+
+        /// <inheritdoc/>
+        public void DrawIndexedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count)
+        {
+            Contract.EnsureRange(offset >= 0, nameof(offset));
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -572,7 +590,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM, (UInt32)offset);
 
             unsafe
             {
@@ -586,14 +604,27 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 gl.ThrowIfError();
             }
         }
-        
+
         /// <inheritdoc/>
-        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance = 0)
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances)
         {
+            DrawInstancedPrimitives(type, 0, start, count, instances, 0);
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 start, Int32 count, Int32 instances, Int32 baseInstance)
+        {
+            DrawInstancedPrimitives(type, 0, start, count, instances, baseInstance);
+        }
+
+        /// <inheritdoc/>
+        public void DrawInstancedPrimitives(PrimitiveType type, Int32 offset, Int32 start, Int32 count, Int32 instances, Int32 baseInstance)
+        {
+            Contract.EnsureRange(offset >= 0, nameof(offset));
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
             Contract.Ensure<NotSupportedException>(Capabilities.SupportsInstancedRendering);
             Contract.Ensure(geometryStream != null, OpenGLStrings.NoGeometryStream);
             Contract.Ensure(geometryStream.IsValid, OpenGLStrings.InvalidGeometryStream);
@@ -601,7 +632,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
             Contract.EnsureNot(OpenGLState.GL_CURRENT_PROGRAM == 0, OpenGLStrings.NoEffect);
 
-            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM);
+            geometryStream.ApplyAttributes(OpenGLState.GL_CURRENT_PROGRAM, (UInt32)offset);
 
             unsafe
             {
@@ -901,7 +932,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL
         /// <summary>
         /// Sets the current render target.
         /// </summary>
-        private void SetRenderTargetInternal(RenderTarget2D renderTarget)
+        private void SetRenderTargetInternal(RenderTarget2D renderTarget,
+            Color? clearColor = null, Double? clearDepth = null, Int32? clearStencil = null)
         {
             Ultraviolet.ValidateResource(renderTarget);
 
@@ -948,7 +980,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
 
                 if (usage == RenderTargetUsage.DiscardContents)
                 {
-                    Clear(Color.FromArgb(0xFF442288));
+                    Clear(clearColor ?? Color.FromArgb(0xFF442288), clearDepth ?? 1.0, clearStencil ?? 0);
                 }
             }
         }

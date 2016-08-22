@@ -33,7 +33,7 @@ namespace TwistedLogik.Ultraviolet.Content
             this.ManifestGroup = group;
             this.Name = name;
             this.RelativePath = path;
-            this.AbsolutePath = Path.Combine(group.Directory, path);
+            this.AbsolutePath = ContentManager.NormalizeAssetPath(Path.Combine(group.Directory, path));
             this.Type = group.Type;
         }
 
