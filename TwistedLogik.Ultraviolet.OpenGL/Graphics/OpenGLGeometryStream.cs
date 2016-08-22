@@ -226,7 +226,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                             gl.DeleteVertexArray(vaoName);
                             gl.ThrowIfError();
 
-                            OpenGLState.DeleteVertexArrayObject(vaoName, 0, glElementArrayBufferBinding ?? 0);
+                            OpenGLState.DeleteVertexArrayObject(vaoName, glElementArrayBufferBinding ?? 0);
                         }, this);
                     }
                 }
