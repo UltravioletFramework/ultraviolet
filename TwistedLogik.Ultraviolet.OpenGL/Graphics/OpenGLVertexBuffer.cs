@@ -103,8 +103,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     {
                         if (caps.SupportsMapBufferRange)
                         {
-                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER, (IntPtr)bufferOffset, (IntPtr)bufferSize,
-                                gl.GL_MAP_WRITE_BIT | gl.GL_MAP_UNSYNCHRONIZED_BIT);
+                            var bufferRangeAccess = gl.GL_MAP_WRITE_BIT | (options == SetDataOptions.NoOverwrite ? gl.GL_MAP_UNSYNCHRONIZED_BIT : 0);
+                            var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER,
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, bufferRangeAccess);
                             gl.ThrowIfError();
 
                             var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
