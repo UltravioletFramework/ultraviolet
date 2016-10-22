@@ -46,18 +46,19 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="TwistedLogik.Nucleus" isExposed="True">
-  <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True">
-  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation" isExposed="True">
-  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel_Impl" filterName="MessageBoxViewModel_Impl" isExposed="False" />
-  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss" isExposed="True">
-  <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss.UvssStrings" filterName="UvssStrings" isExposed="False" />
-</Filter></ApiFilter>
+        <Filter entryType="Class" fullName="TwistedLogik.Nucleus.NucleusStrings" filterName="NucleusStrings" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True">
+        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation" isExposed="True">
+        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel_Impl" filterName="MessageBoxViewModel_Impl" isExposed="False" />
+        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss" isExposed="True">
+        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss.UvssStrings" filterName="UvssStrings" isExposed="False" />
+      </Filter>
+    </ApiFilter>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <TransformComponentArguments>
       <Argument Key="logoFile" Value="" />
@@ -76,6 +77,9 @@
     </PlugInConfigurations>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <ComponentPath>Plugins\</ComponentPath>
+    <FooterText>
+    </FooterText>
+    <HeaderText>&amp;lt%3blink href=&amp;quot%3bhttps://fonts.googleapis.com/css%3ffamily=Heebo&amp;quot%3b rel=&amp;quot%3bstylesheet&amp;quot%3b&amp;gt%3b&amp;lt%3b/link&amp;gt%3b</HeaderText>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
@@ -114,6 +118,7 @@
     <Folder Include="styles\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="styles\branding-Website.css" />
     <Content Include="styles\branding.css" />
   </ItemGroup>
   <ItemGroup>
