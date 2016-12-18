@@ -163,7 +163,7 @@ namespace TwistedLogik.Nucleus.Text
         public override String ToString()
         {
             return this;
-        }    
+        }
 
         /// <summary>
         /// Gets the string's associated culture.
@@ -222,12 +222,14 @@ namespace TwistedLogik.Nucleus.Text
 
             strings.Clear();
 
-            var key = xml.AttributeValueString("Key");
+            var key = (String)xml.Attribute("Key");
             if (String.IsNullOrEmpty(key))
                 throw new InvalidDataException(NucleusStrings.LocalizedStringMissingKey);
 
-            var html   = xml.AttributeValueBoolean("Html") ?? false;
-            var pseudo = xml.AttributeValueBoolean("Pseudo") ?? true;
+            var html = 
+                (Boolean?)xml.Attribute("Html") ?? false;
+            var pseudo = 
+                (Boolean?)xml.Attribute("Pseudo") ?? true;
 
             var cultures = xml.Elements();
             foreach (var culture in cultures)
@@ -245,14 +247,14 @@ namespace TwistedLogik.Nucleus.Text
                     }
                 }
 
-                var variants = culture.Elements("Variant");
+                var variants = culture.Elements().Where(x => x.Name.LocalName == "Variant");
                 foreach (var variant in variants)
                 {
-                    var variantGroup = variant.AttributeValueString("Group") ?? "none";
+                    var variantGroup = (String)variant.Attribute("Group") ?? "none";
                     var variantValue = variant.Value;
-                    var variantProps = (variant.AttributeValueString("Properties") ?? String.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
+                    var variantProps = variant.Attribute("Properties")?.Value?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim());
 
-                    cultureString.variants[variantGroup] = new LocalizedStringVariant(cultureString, variantGroup, variantValue, variantProps);
+                    cultureString.variants[variantGroup] = new LocalizedStringVariant(cultureString, variantGroup, variantValue, variantProps ?? Enumerable.Empty<String>());
                 }
 
                 strings[cultureName] = cultureString;
@@ -305,7 +307,7 @@ namespace TwistedLogik.Nucleus.Text
                         strings[cultureName] = cultureString;
                     }
                 }
-            }            
+            }
 
             return description.Key;
         }
@@ -335,7 +337,7 @@ namespace TwistedLogik.Nucleus.Text
         {
             Contract.Require(source, nameof(source));
 
-            var pseudoString = new LocalizedString(Localization.PseudolocalizedCulture, source.Key, 
+            var pseudoString = new LocalizedString(Localization.PseudolocalizedCulture, source.Key,
                 source.ContainsHtmlEncodedCharacters, source.PseudolocalizationDisabled);
 
             foreach (var variant in source.variants)
@@ -376,7 +378,7 @@ namespace TwistedLogik.Nucleus.Text
 
             // Find any masked segments.
             var masks = new Dictionary<Int32, StringSegment>();
-            
+
             var matchesFormatting = FormatSpecifierRegex.Matches(str);
             foreach (Match match in matchesFormatting)
                 masks[match.Index] = new StringSegment(str, match.Index, match.Length);
@@ -403,7 +405,7 @@ namespace TwistedLogik.Nucleus.Text
                 {
                     break;
                 }
-                
+
                 // Append the current character to the string.
                 var ch = str[i];
                 var ix = RomanAlphabet.IndexOf(ch);

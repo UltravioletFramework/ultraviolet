@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:include schemaLocation="LocalizedString.xsd"/>
+  
+  <xs:complexType name="LocalizationDatabase">
+    <xs:sequence>
+      <xs:element name="String" type="LocalizedString" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>

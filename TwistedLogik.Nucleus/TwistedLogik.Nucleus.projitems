@@ -123,13 +123,21 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt32.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\MaskedUInt64.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizationDatabase.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizedString.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizedStringVariantCollection.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\LocalizedStringVariant.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Nucleus\Text\StringResource.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\MaskedUInt32.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\MaskedUInt64.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\Text\LocalizationDatabase.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\Text\LocalizedString.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\Text\LocalizedStringVariant.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\Text\LocalizedStringVariantCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\json\Nucleus\Text\StringResource.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\Text\LocalizedStrings.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\MaskedUInt32Type.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\MaskedUInt64Type.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\Text\StringResource.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\Text\LocalizedStringVariant.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\Text\LocalizedStringVariantCollection.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\Text\LocalizedString.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\xml\Text\LocalizationDatabase.xsd" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Nucleus.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

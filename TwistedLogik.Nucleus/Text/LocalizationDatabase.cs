@@ -65,7 +65,8 @@ namespace TwistedLogik.Nucleus.Text
             Contract.Require(stream, nameof(stream));
 
             var xml = XDocument.Load(stream);
-            var elements = xml.Element("LocalizedStrings").Elements("String");
+            var root = (xml.Root.Name.LocalName == "LocalizedStrings") ? xml.Root : null;
+            var elements = root.Elements().Where(x => x.Name.LocalName == "String");
             var results = new Dictionary<String, LocalizedString>();
 
             foreach (var element in elements)

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<LocalizedStrings>
+<LocalizedStrings xmlns="http://schema.twistedlogik.net/Nucleus/Text/LocalizedStrings.xsd">
   <String Key="WINDOW_CAPTION">
     <en-US>
       <Variant>My Ultraviolet Game</Variant>

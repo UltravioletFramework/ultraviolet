@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:include schemaLocation="LocalizedStringVariant.xsd"/>
+  
+  <xs:complexType name="LocalizedStringVariantCollection">
+    <xs:sequence>
+      <xs:element name="Variant" type="LocalizedStringVariant" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>

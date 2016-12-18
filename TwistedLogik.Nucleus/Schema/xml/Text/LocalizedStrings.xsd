@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LocalizedStrings"
+    targetNamespace="http://schema.twistedlogik.net/Nucleus/Text/LocalizationDatabase.xsd"
+    xmlns="http://schema.twistedlogik.net/Nucleus/Text/LocalizationDatabase.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="unqualified">
+  <xs:include schemaLocation="LocalizationDatabase.xsd"/>
+  <xs:element name="LocalizedStrings" type="LocalizationDatabase"/>
+</xs:schema>
