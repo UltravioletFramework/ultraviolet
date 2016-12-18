@@ -61,8 +61,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var spriteDescription = new SpriteDescription();
 
             // Get all of the sprite's animation elements.
-            var animationElementsSingle = input.Root.Elements("Animation");
-            var animationElementsGroup = input.Root.Elements("Animations").SelectMany(x => x.Elements("Animation"));
+            var animationElementsSingle = input.Root.Elements().Where(x => x.Name.LocalName == "Animation");
+            var animationElementsGroup = input.Root.Elements().Where(x => x.Name.LocalName == "Animations")
+                .SelectMany(x => x.Elements().Where(y => y.Name.LocalName == "Animation"));
             var animationElements = Enumerable.Union(animationElementsSingle, animationElementsGroup).ToList();
             var animationList = new List<SpriteAnimationDescription>();
 
@@ -74,8 +75,9 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 animationDesc.Repeat = (String)animationElement.Attribute("Repeat");
 
                 // Get all of the animation's frame elements.
-                var frameElementsSingle = animationElement.Elements("Frame");
-                var frameElementsGroup = animationElement.Elements("Frames").SelectMany(x => x.Elements("Frame"));
+                var frameElementsSingle = animationElement.Elements().Where(x => x.Name.LocalName == "Frame");
+                var frameElementsGroup = animationElement.Elements().Where(x => x.Name.LocalName == "Frames")
+                    .SelectMany(x => x.Elements().Where(y => y.Name.LocalName == "Frame"));
                 var frameElements = Enumerable.Union(frameElementsSingle, frameElementsGroup).ToList();
                 var frameList = new List<SpriteFrameDescription>();
                 animationDesc.Frames = new[] { new SpriteFrameBatchDescription() { Items = frameList } };
@@ -112,13 +114,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 }
 
                 // Get all of the animation's frame groups.
-                var frameGroupElementsSingle = animationElement.Elements("FrameGroup");
-                var frameGroupElementsGroup = animationElement.Elements("FrameGroups").SelectMany(x => x.Elements("FrameGroup"));
+                var frameGroupElementsSingle = animationElement.Elements().Where(x => x.Name.LocalName == "FrameGroup");
+                var frameGroupElementsGroup = animationElement.Elements().Where(x => x.Name.LocalName == "FrameGroups")
+                    .SelectMany(x => x.Elements().Where(y => y.Name.LocalName == "FrameGroup"));
                 var frameGroupElements = Enumerable.Union(frameGroupElementsSingle, frameGroupElementsGroup).ToList();
                 var frameGroupList = new List<SpriteFrameGroupDescription>();
                 animationDesc.FrameGroups = new[] { new SpriteFrameGroupBatchDescription() { Items = frameGroupList } };
 
-                // Process eachh frame group.
+                // Process each frame group.
                 foreach (var frameGroupElement in frameGroupElements)
                 {
                     var frameGroupDescription = new SpriteFrameGroupDescription();

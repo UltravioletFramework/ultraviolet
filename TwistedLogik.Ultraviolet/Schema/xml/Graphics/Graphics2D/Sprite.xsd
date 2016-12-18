@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Sprite"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/Sprite.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/Sprite.xsd"
+    xmlns:s="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/Sprite.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+  <xs:attributeGroup name="CommonAttributes">
+    <xs:attribute name="Texture" type="xs:string"/>
+    <xs:attribute name="OriginX" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="OriginY" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="Duration" type="xs:nonNegativeInteger"/>
+  </xs:attributeGroup>
+    
+  <xs:attributeGroup name="FrameAttributes">
+    <xs:attribute name="Atlas" type="xs:string"/>
+    <xs:attribute name="AtlasCell" type="xs:string"/>
+    <xs:attribute name="X" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="Y" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="Width" type="xs:positiveInteger"/>
+    <xs:attribute name="Height" type="xs:positiveInteger"/>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="FrameGroupAttributes">
+    <xs:attribute name="AreaX" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="AreaY" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="AreaWidth" type="xs:positiveInteger"/>
+    <xs:attribute name="AreaHeight" type="xs:positiveInteger"/>
+    <xs:attribute name="FrameWidth" type="xs:positiveInteger"/>
+    <xs:attribute name="FrameHeight" type="xs:positiveInteger"/>
+    <xs:attribute name="FrameCount" type="xs:positiveInteger"/>
+  </xs:attributeGroup>
+  
+  <xs:complexType name="SpriteFrameElement">
+    <xs:attributeGroup ref="CommonAttributes"/>
+    <xs:attributeGroup ref="FrameAttributes"/>
+  </xs:complexType>
+
+  <xs:complexType name="SpriteFrameGroupElement">
+    <xs:attributeGroup ref="CommonAttributes"/>
+    <xs:attributeGroup ref="FrameGroupAttributes"/>
+  </xs:complexType>
+
+  <xs:complexType name="SpriteAnimationElement">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Frame" type="SpriteFrameElement"/>
+      <xs:element name="Frames">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Frame" type="SpriteFrameElement" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attributeGroup ref="CommonAttributes"/>
+          <xs:attributeGroup ref="FrameAttributes"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="FrameGroup" type="SpriteFrameGroupElement"/>
+      <xs:element name="FrameGroups">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="FrameGroup" type="SpriteFrameGroupElement" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attributeGroup ref="CommonAttributes"/>
+          <xs:attributeGroup ref="FrameGroupAttributes"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="Name" type="xs:string"/>
+    <xs:attribute name="Repeat">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="none"/>
+          <xs:enumeration value="loop"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attributeGroup ref="CommonAttributes"/>
+    <xs:attributeGroup ref="FrameAttributes"/>
+    <xs:attributeGroup ref="FrameGroupAttributes"/>
+  </xs:complexType>
+  
+  <xs:element name="Sprite">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Animation" type="SpriteAnimationElement"/>
+        <xs:element name="Animations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Animation" type="SpriteAnimationElement" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="CommonAttributes"/>
+            <xs:attributeGroup ref="FrameAttributes"/>
+            <xs:attributeGroup ref="FrameGroupAttributes"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

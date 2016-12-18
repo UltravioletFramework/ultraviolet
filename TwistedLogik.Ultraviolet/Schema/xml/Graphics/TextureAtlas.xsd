@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TextureAtlas"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/Graphics2D/TextureAtlas.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/Graphics/TextureAtlas.xsd"
+    xmlns:s="http://schema.twistedlogik.net/Ultraviolet/Graphics/TextureAtlas.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">  
+  <xs:element name="TextureAtlas">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="Metadata" minOccurs="0">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="RootDirectory" minOccurs="0" type="xs:string"/>
+              <xs:element name="RequirePowerOfTwo" minOccurs="0" type="xs:boolean"/>
+              <xs:element name="RequireSquare" minOccurs="0" type="xs:boolean"/>
+              <xs:element name="MaximumWidth" minOccurs="0" type="xs:positiveInteger"/>
+              <xs:element name="MaximumHeight" minOccurs="0" type="xs:positiveInteger"/>
+              <xs:element name="Padding" minOccurs="0" type="xs:nonNegativeInteger"/>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Images">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Include" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="Name" type="xs:string"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

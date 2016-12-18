@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TextTableLayout"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/Text/TextTableLayout.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/Text/TextTableLayout.xsd"
+    xmlns:s="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/Text/TextTableLayout.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+  <xs:include schemaLocation="TextFlags.xsd"/>
+  
+  <xs:element name="TextTableLayout">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Row" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Cell" minOccurs="0">
+                <xs:complexType>
+                  <xs:attribute name="TextFlags" type="TextFlags"/>
+                  <xs:attribute name="Format" type="xs:string"/>
+                  <xs:attribute name="Binding" type="xs:string"/>
+                  <xs:attribute name="Width" type="xs:nonNegativeInteger"/>
+                  <xs:attribute name="Height" type="xs:nonNegativeInteger"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Width" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="Height" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>

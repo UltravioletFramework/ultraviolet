@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Cursors Image="CursorsImage">
+<Cursors xmlns="http://schema.twistedlogik.net/Ultraviolet/CursorCollection.xsd" Image="CursorsImage">
   <Cursor Name="Normal" Position="0 0" Size="32 32" Hotspot="0 0" />
   <Cursor Name="NormalDisabled" Position="32 0" Size="32 32" Hotspot="0 0" />
   <Cursor Name="IBeam" Position="64 0" Size="32 32" Hotspot="0 14" />

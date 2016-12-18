@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
@@ -39,24 +40,30 @@ namespace TwistedLogik.Ultraviolet.Graphics
             var atlasMetadata = new TextureAtlasMetadataDescription();
             atlasDesc.Metadata = atlasMetadata;
 
-            var metadataElement = input.Root.Element("Metadata");
+            var metadataElement = input.Root.Elements().Where(x => x.Name.LocalName == "Metadata").SingleOrDefault();
             if (metadataElement != null)
             {
-                atlasMetadata.RootDirectory = (String)metadataElement.Element("RootDirectory") ?? atlasMetadata.RootDirectory;
-                atlasMetadata.RequirePowerOfTwo = (Boolean?)metadataElement.Element("RequirePowerOfTwo") ?? atlasMetadata.RequirePowerOfTwo;
-                atlasMetadata.RequireSquare = (Boolean?)metadataElement.Element("RequireSquare") ?? atlasMetadata.RequireSquare;
-                atlasMetadata.MaximumWidth = (Int32?)metadataElement.Element("MaximumWidth") ?? atlasMetadata.MaximumWidth;
-                atlasMetadata.MaximumHeight = (Int32?)metadataElement.Element("MaximumHeight") ?? atlasMetadata.MaximumHeight;
-                atlasMetadata.Padding = (Int32?)metadataElement.Element("Padding") ?? atlasMetadata.Padding;
+                atlasMetadata.RootDirectory = 
+                    (String)metadataElement.Elements().Where(x => x.Name.LocalName == "RootDirectory").SingleOrDefault() ?? atlasMetadata.RootDirectory;
+                atlasMetadata.RequirePowerOfTwo = 
+                    (Boolean?)metadataElement.Elements().Where(x => x.Name.LocalName == "RequirePowerOfTwo").SingleOrDefault() ?? atlasMetadata.RequirePowerOfTwo;
+                atlasMetadata.RequireSquare = 
+                    (Boolean?)metadataElement.Elements().Where(x => x.Name.LocalName == "RequireSquare").SingleOrDefault() ?? atlasMetadata.RequireSquare;
+                atlasMetadata.MaximumWidth = 
+                    (Int32?)metadataElement.Elements().Where(x => x.Name.LocalName == "MaximumWidth").SingleOrDefault() ?? atlasMetadata.MaximumWidth;
+                atlasMetadata.MaximumHeight = 
+                    (Int32?)metadataElement.Elements().Where(x => x.Name.LocalName == "MaximumHeight").SingleOrDefault() ?? atlasMetadata.MaximumHeight;
+                atlasMetadata.Padding = 
+                    (Int32?)metadataElement.Elements().Where(x => x.Name.LocalName == "Padding").SingleOrDefault() ?? atlasMetadata.Padding;
             }
 
-            var imageRootElement = input.Root.Element("Images");
+            var imageRootElement = input.Root.Elements().Where(x => x.Name.LocalName == "Images").SingleOrDefault();
             if (imageRootElement != null)
             {
                 var imageDescCollection = new List<TextureAtlasImageDescription>();
                 atlasDesc.Images = imageDescCollection;
 
-                var imageElements = imageRootElement.Elements("Include");
+                var imageElements = imageRootElement.Elements().Where(x => x.Name.LocalName == "Include");
                 foreach (var imageElement in imageElements)
                 {
                     var imageDesc = new TextureAtlasImageDescription();

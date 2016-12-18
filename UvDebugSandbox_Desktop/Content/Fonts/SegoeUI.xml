@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SpriteFont>
+<SpriteFont xmlns="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/SpriteFont.xsd">
   <Face Style="Regular">
     <Texture>SegoeUITexture</Texture>
     <TextureRegion>0 0 263 164</TextureRegion>

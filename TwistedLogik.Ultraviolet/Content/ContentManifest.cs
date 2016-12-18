@@ -125,11 +125,11 @@ namespace TwistedLogik.Ultraviolet.Content
 
             var xml = XDocument.Load(stream);
 
-            var name = xml.Root.AttributeValueString("Name");
+            var name = (String)xml.Root.Attribute("Name");
             if (String.IsNullOrEmpty(name))
                 throw new InvalidDataException(UltravioletStrings.InvalidContentManifestName);
 
-            var groups = xml.Root.Elements("ContentGroup") ?? Enumerable.Empty<XElement>();
+            var groups = xml.Root.Elements().Where(x => x.Name.LocalName == "ContentGroup") ?? Enumerable.Empty<XElement>();
             return new ContentManifest(name, groups);
         }
 

@@ -38,7 +38,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
         {
             var spriteFontDesc = new SpriteFontDescription();
 
-            var characterRegionElements = input.Root.Element("CharacterRegions")?.Elements("CharacterRegion")?.ToList();
+            var characterRegionElements = input.Root
+                .Elements().Where(x => x.Name.LocalName == "CharacterRegions").SingleOrDefault()?
+                .Elements().Where(x => x.Name.LocalName == "CharacterRegion")?.ToList();
             if (characterRegionElements != null)
             {
                 var characterRegionsList = new CharacterRegionDescription[characterRegionElements.Count];
@@ -47,9 +49,9 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
                 for (int i = 0; i < characterRegionElements.Count; i++)
                 {
                     var characterRegionElement = characterRegionElements[i];
-                    var startElement = characterRegionElement.Element("Start");
+                    var startElement = characterRegionElement.Elements().Where(x => x.Name.LocalName == "Start").SingleOrDefault();
                     var startValue = (startElement == null) ? default(Char) : Char.Parse(startElement.Value);
-                    var endElement = characterRegionElement.Element("End");
+                    var endElement = characterRegionElement.Elements().Where(x => x.Name.LocalName == "End").SingleOrDefault();
                     var endValue = (endElement == null) ? default(Char) : Char.Parse(endElement.Value);
 
                     var characterRegion = new CharacterRegionDescription();
@@ -63,17 +65,19 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
             var spriteFontFacesDesc = new SpriteFontFacesDescription();
             spriteFontDesc.Faces = spriteFontFacesDesc;
 
-            spriteFontFacesDesc.Regular = CreateSpriteFontFaceDescription(manager, metadata, 
-                input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "Regular", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
+            var spriteFontFaceElements = input.Root.Elements().Where(x => x.Name.LocalName == "Face");
+
+            spriteFontFacesDesc.Regular = CreateSpriteFontFaceDescription(manager, metadata,
+                spriteFontFaceElements.Where(x => String.Equals((String)x.Attribute("Style"), "Regular", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
             spriteFontFacesDesc.Bold = CreateSpriteFontFaceDescription(manager, metadata,
-                input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "Bold", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
+                spriteFontFaceElements.Where(x => String.Equals((String)x.Attribute("Style"), "Bold", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
             spriteFontFacesDesc.Italic = CreateSpriteFontFaceDescription(manager, metadata,
-                input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "Italic", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
+                spriteFontFaceElements.Where(x => String.Equals((String)x.Attribute("Style"), "Italic", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
             spriteFontFacesDesc.BoldItalic = CreateSpriteFontFaceDescription(manager, metadata,
-                input.Root.Elements("Face").Where(x => String.Equals((String)x.Attribute("Style"), "BoldItalic", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
+                spriteFontFaceElements.Where(x => String.Equals((String)x.Attribute("Style"), "BoldItalic", StringComparison.InvariantCultureIgnoreCase)).SingleOrDefault());
 
             return spriteFontDesc;
         }
@@ -88,25 +92,25 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
             var spriteFontFaceDesc = new SpriteFontFaceDescription();
 
-            var textureElement = input.Element("Texture");
+            var textureElement = input.Elements().Where(x => x.Name.LocalName == "Texture").SingleOrDefault();
             spriteFontFaceDesc.Texture = (String)textureElement;
 
-            var textureRegionElement = input.Element("TextureRegion");
+            var textureRegionElement = input.Elements().Where(x => x.Name.LocalName == "TextureRegion").SingleOrDefault();
             spriteFontFaceDesc.TextureRegion = (textureRegionElement == null) ? (Rectangle?)null :
                 Rectangle.Parse((String)textureRegionElement);
 
-            var glyphsElement = input.Element("Glyphs");
+            var glyphsElement = input.Elements().Where(x => x.Name.LocalName == "Glyphs").SingleOrDefault();
             if (glyphsElement != null)
             {
                 var glyphsDesc = new SpriteFontFaceGlyphDescription();
                 spriteFontFaceDesc.Glyphs = glyphsDesc;
                 
-                var substitutionElement = glyphsElement.Element("Substitution");
+                var substitutionElement = glyphsElement.Elements().Where(x => x.Name.LocalName == "Substitution").SingleOrDefault();
                 glyphsDesc.Substitution = (substitutionElement == null) ? (Char?)null :
                     Char.Parse((String)substitutionElement);
             }
 
-            var kerningsElement = input.Element("Kernings");
+            var kerningsElement = input.Elements().Where(x => x.Name.LocalName == "Kernings").SingleOrDefault();
             if (kerningsElement != null)
             {
                 var kernings = new Dictionary<String, Int32>();
@@ -114,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 
                 kernings["default"] = (Int32?)kerningsElement.Attribute("DefaultAdjustment") ?? 0;
 
-                var kerningElements = kerningsElement.Elements("Kerning");
+                var kerningElements = kerningsElement.Elements().Where(x => x.Name.LocalName == "Kerning");
                 foreach (var kerningElement in kerningElements)
                 {
                     var kerningPair = (String)kerningElement.Attribute("Pair");

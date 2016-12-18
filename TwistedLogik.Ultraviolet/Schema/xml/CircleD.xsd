@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:simpleType name="CircleD">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s+){2}([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

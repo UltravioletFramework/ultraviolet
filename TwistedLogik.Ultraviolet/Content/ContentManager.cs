@@ -1127,9 +1127,9 @@ namespace TwistedLogik.Ultraviolet.Content
                 {
                     var xml = XDocument.Load(filename);
 
-                    wrappedFilename = xml.Root.ElementValueString("Asset");
-                    importerMetadata = xml.Root.Element("ImporterMetadata");
-                    processorMetadata = xml.Root.Element("ProcessorMetadata");
+                    wrappedFilename = xml.Root.Elements().Where(x => x.Name.LocalName == "Asset").Single()?.Value;
+                    importerMetadata = xml.Root.Elements().Where(x => x.Name.LocalName == "ImporterMetadata").SingleOrDefault();
+                    processorMetadata = xml.Root.Elements().Where(x => x.Name.LocalName == "ProcessorMetadata").SingleOrDefault();
                 }
                 else
                 {

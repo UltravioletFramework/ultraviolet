@@ -3,7 +3,7 @@
     targetNamespace="http://schema.twistedlogik.net/Nucleus/Text/LocalizationDatabase.xsd"
     xmlns="http://schema.twistedlogik.net/Nucleus/Text/LocalizationDatabase.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="unqualified">
+    elementFormDefault="qualified">
   <xs:include schemaLocation="LocalizationDatabase.xsd"/>
   <xs:element name="LocalizedStrings" type="LocalizationDatabase"/>
 </xs:schema>

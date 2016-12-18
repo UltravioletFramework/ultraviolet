@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CursorCollection"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/CursorCollection.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/CursorCollection.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+  <xs:include schemaLocation="Point2.xsd"/>
+  <xs:include schemaLocation="Size2.xsd"/>
+
+  <xs:element name="Cursors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Cursor" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required"/>
+            <xs:attribute name="Position" type="Point2" use="required"/>
+            <xs:attribute name="Size" type="Size2" use="required"/>
+            <xs:attribute name="Hotspot" type="Point2"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Image" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

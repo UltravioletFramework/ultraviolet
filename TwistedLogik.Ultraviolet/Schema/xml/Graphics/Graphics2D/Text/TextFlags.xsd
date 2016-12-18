@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+  <xs:simpleType name="TextFlagsByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Standard"/>
+      <xs:enumeration value="AlignLeft"/>
+      <xs:enumeration value="AlignCenter"/>
+      <xs:enumeration value="AlignRight"/>
+      <xs:enumeration value="AlignTop"/>
+      <xs:enumeration value="AlignMiddle"/>
+      <xs:enumeration value="AlignBottom"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TextFlagsByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(Standard|AlignLeft|AlignCenter|AlignRight|AlignTop|AlignMiddle|AlignBottom),\s*){1,}(?:Standard|AlignLeft|AlignCenter|AlignRight|AlignTop|AlignMiddle|AlignBottom)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TextFlags">
+    <xs:union memberTypes="TextFlagsByPattern TextFlagsByEnum"/>
+  </xs:simpleType>
+
+</xs:schema>

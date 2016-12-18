@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SpriteFont"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/SpriteFont.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/SpriteFont.xsd"
+    xmlns:sf="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/SpriteFont.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+  <xs:include schemaLocation="../../Rectangle.xsd"/>
+  
+  <xs:element name="SpriteFont">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Face" maxOccurs="4">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="Texture" type="xs:string"/>
+              <xs:element name="TextureRegion" type="Rectangle" minOccurs="0"/>
+              <xs:element name="Glyphs" minOccurs="0">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Substitution">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:length value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Kernings" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence maxOccurs="unbounded">
+                    <xs:element name="Kerning">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:integer">
+                            <xs:attribute name="Pair" use="required">
+                              <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                  <xs:pattern value=".."/>
+                                </xs:restriction>
+                              </xs:simpleType>
+                            </xs:attribute>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+            <xs:attribute name="Style">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="Regular"/>
+                  <xs:enumeration value="Bold"/>
+                  <xs:enumeration value="Italic"/>
+                  <xs:enumeration value="BoldItalic"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CharacterRegions" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="CharacterRegion">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Start">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:length value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="End">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:length value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="UniqueStyle">
+      <xs:selector xpath="sf:Face"/>
+      <xs:field xpath="@Style"/>
+    </xs:unique>
+  </xs:element>
+</xs:schema>

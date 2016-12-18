@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="AssetMetadata"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/Content/AssetMetadata.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/Graphics/Content/AssetMetadata.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+  <xs:element name="AssetMetadata">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="Asset">
+          <xs:simpleType>
+            <xs:restriction base="xs:string"/>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="ImporterMetadata" minOccurs="0">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:any processContents="lax" namespace="##any"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ProcessorMetadata" minOccurs="0">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:any processContents="lax" namespace="##any"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

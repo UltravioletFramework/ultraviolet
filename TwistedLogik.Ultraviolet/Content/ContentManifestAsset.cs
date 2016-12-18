@@ -2,7 +2,6 @@
 using System.IO;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Xml;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -22,7 +21,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.Require(group, nameof(group));
             Contract.Require(element, nameof(element));
 
-            var name = element.AttributeValueString("Name");
+            var name = (String)element.Attribute("Name");
             if (String.IsNullOrEmpty(name))
                 throw new InvalidDataException(UltravioletStrings.InvalidContentManifestAssetName);
 

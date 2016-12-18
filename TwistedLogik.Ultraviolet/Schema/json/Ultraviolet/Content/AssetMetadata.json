@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Ultraviolet Framework Content Metadata Schema",
+  "title": "Ultraviolet Framework Asset Metadata Schema",
   "type": "object",
   "properties": {
     "asset": { "type": "string" },

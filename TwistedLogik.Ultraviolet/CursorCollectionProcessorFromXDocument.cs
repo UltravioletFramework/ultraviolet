@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
@@ -20,22 +21,25 @@ namespace TwistedLogik.Ultraviolet.SDL2
             var collectionDesc = new CursorCollectionDescription();
             var collectionCursors = new List<CursorDescription>();
 
-            var image = input.Root.AttributeValueString("Image");
+            var image = (String)input.Root.Attribute("Image");
             if (String.IsNullOrEmpty(image))
                 throw new InvalidOperationException(UltravioletStrings.InvalidCursorImage);
             
             collectionDesc.Texture = image;
             collectionDesc.Cursors = collectionCursors;
 
-            foreach (var cursorElement in input.Root.Elements("Cursor"))
+            foreach (var cursorElement in input.Root.Elements().Where(x => x.Name.LocalName == "Cursor"))
             {
-                var name = cursorElement.AttributeValueString("Name");
+                var name = (String)cursorElement.Attribute("Name");
                 if (String.IsNullOrEmpty(name))
                     throw new InvalidOperationException(UltravioletStrings.InvalidCursorName);
 
-                var position = cursorElement.AttributeValue<Point2>("Position");
-                var size = cursorElement.AttributeValue<Size2>("Size");
-                var hotspot = cursorElement.AttributeValue<Point2>("Hotspot");
+                var position = 
+                    cursorElement.AttributeValue<Point2>("Position");
+                var size = 
+                    cursorElement.AttributeValue<Size2>("Size");
+                var hotspot = 
+                    cursorElement.AttributeValue<Point2?>("Hotspot") ?? Point2.Zero;
 
                 var cursorDesc = new CursorDescription();
                 cursorDesc.Name = name;

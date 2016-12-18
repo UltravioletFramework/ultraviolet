@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Xml;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -23,13 +23,13 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.Require(manifest, nameof(manifest));
             Contract.Require(element, nameof(element));
 
-            var name = element.AttributeValueString("Name");
+            var name = (String)element.Attribute("Name");
             if (String.IsNullOrEmpty(name))
                 throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupName);
 
-            var directory = element.AttributeValueString("Directory");
+            var directory = (String)element.Attribute("Directory");
 
-            var typeName = element.AttributeValueString("Type");
+            var typeName = (String)element.Attribute("Type");
             if (String.IsNullOrEmpty(typeName))
                 throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupType.Format(name));
 
@@ -42,7 +42,7 @@ namespace TwistedLogik.Ultraviolet.Content
             this.Type = type;
             this.Directory = directory;
 
-            var assets = element.Elements("Asset");
+            var assets = element.Elements().Where(x => x.Name.LocalName == "Asset");
             foreach (var asset in assets)
             {
                 AddInternal(new ContentManifestAsset(this, asset));
