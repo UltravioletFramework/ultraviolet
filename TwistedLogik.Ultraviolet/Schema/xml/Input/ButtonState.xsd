@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="ButtonStateByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Up">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The button is up.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Down">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The button is down.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Pressed">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The button was pressed this frame.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Released">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The button was released this frame.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ButtonStateByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(Up|Down|Pressed|Released),\s*){1,}(?:Up|Down|Pressed|Released)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ButtonState">
+    <xs:union memberTypes="ButtonStateByPattern ButtonStateByEnum"/>
+  </xs:simpleType>
+
+</xs:schema>

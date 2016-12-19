@@ -407,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.Input
         Up = 82,
         
         /// <summary>
-        /// The num lock/clear key.
+        /// The Num Lock/Clear key.
         /// </summary>
         NumLockClear = 83,
         
@@ -642,12 +642,12 @@ namespace TwistedLogik.Ultraviolet.Input
         VolumeDown = 129,
 
         /// <summary>
-        /// The comma key on the keypad.
+        /// The comma (,) key on the keypad.
         /// </summary>
         KeypadComma = 133,
 
         /// <summary>
-        /// The equals key on an AS/400 keypad.
+        /// The equals (=) key on an AS/400 keypad.
         /// </summary>
         KeypadEqualsAS400 = 134,
 
@@ -721,7 +721,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <remarks>
         /// From http://www.usb.org/developers/devclass_docs/Hut1_12v2.pdf:
-        /// Hangul/English toggle key.  This usage is used as an input method editor control key on a Korean language keyboard.
+        /// Hangul/English toggle key. This usage is used as an input method editor control key on a Korean language keyboard.
         /// </remarks>
         Lang1 = 144,
 
@@ -730,7 +730,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// </summary>
         /// <remarks>
         /// From http://www.usb.org/developers/devclass_docs/Hut1_12v2.pdf:
-        /// Hanja conversion key.  This usage is used as an input method editor control key on a Korean language keyboard.
+        /// Hanja conversion key. This usage is used as an input method editor control key on a Korean language keyboard.
         /// </remarks>
         Lang2 = 145,
 

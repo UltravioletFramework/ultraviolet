@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="CurveContinuity">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Smooth">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The curve transitions smoothly from one key to the next.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Step">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The curve transitions in steps.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

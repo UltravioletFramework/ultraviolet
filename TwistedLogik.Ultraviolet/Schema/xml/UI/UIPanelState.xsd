@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="UIPanelState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Opening">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The panel is in the process of opening.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Open">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The panel is open.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Closing">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The panel is in the process of closing.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Closed">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The panel is closed.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

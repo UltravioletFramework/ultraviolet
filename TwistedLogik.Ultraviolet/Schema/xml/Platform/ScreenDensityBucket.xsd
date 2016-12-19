@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="ScreenDensityBucket">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Desktop">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Standard desktop DPI (72 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Low">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Low mobile DPI (~120 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Retina">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">OS X Retina DPI (~144 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Medium">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Medium mobile DPI (~160 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RetinaHD">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">OS X Retina HD DPI (~216 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="High">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">High mobile DPI (~240 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ExtraHigh">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Extra high mobile DPI (~320 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ExtraExtraHigh">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Extra extra high mobile DPI (~480 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ExtraExtraExtraHigh">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Extra extra extra high mobile DPI (~640 dpi).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -422,8 +422,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)WrappedDataSourceAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\PresentationFoundationView.xsd" />
     <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Schema\Controls\Primitives\" />
   </ItemGroup>
 </Project>

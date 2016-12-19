@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="GamePadAxis">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No game pad axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftJoystickX">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left joystick x-axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftJoystickY">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left joystick y-axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightJoystickX">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right joystick x-axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightJoystickY">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right joystick y-axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftTrigger">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left trigger axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightTrigger">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right trigger axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

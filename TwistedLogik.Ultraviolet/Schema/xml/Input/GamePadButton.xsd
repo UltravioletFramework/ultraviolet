@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="GamePadAxis">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No game pad button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The A button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The B button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>    
+      <xs:enumeration value="X">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The X button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Y button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Back">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Back button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Guide">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Guide button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Start">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Start button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftStick">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left joystick button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightStick">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right joystick button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftShoulder">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left shoulder button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightShoulder">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right shoulder button.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DPadUp">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The up button on the directional pad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DPadDown">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The down button on the directional pad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DPadLeft">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left button on the directional pad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DPadRight">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right button on the directional pad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:complexType name="UIPanelDefinitionBase">
+    <xs:sequence>
+      <xs:element name="StyleSheet" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The content resource path to one of the view's style sheets.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Directive" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A directive which specifies how the view should be processed.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="Type" type="xs:string" use="required">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The directive's identifying type.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="DefaultOpenTransitionDuration" type="xs:double"/>
+    <xs:attribute name="DefaultCloseTransitionDuration" type="xs:double"/>
+  </xs:complexType>
+
+</xs:schema>

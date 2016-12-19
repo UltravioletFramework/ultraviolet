@@ -797,7 +797,7 @@ namespace TwistedLogik.Ultraviolet.Input
         Keypad000 = Scancode.Keypad000 | 0x40000000,
 
         /// <summary>
-        /// The thousands separator key
+        /// The thousands separator key.
         /// </summary>
         ThousandsSeparator = Scancode.ThousandsSeparator | 0x40000000,
 

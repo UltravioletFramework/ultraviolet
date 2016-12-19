@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PresentationFoundationView"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/UI/Presentation/PresentationFoundationView.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/UI/Presentation/PresentationFoundationView.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:base="http://schema.twistedlogik.net/Ultraviolet/UI/UIPanelDefinitionBase.xsd"
+    elementFormDefault="qualified">
+
+  <xs:include schemaLocation="http://schema.twistedlogik.net/Ultraviolet/UI/UIPanelDefinitionBase.xsd"/>
+    
+  <xs:element name="UIPanelDefinition">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="UIPanelDefinitionBase">
+          <xs:sequence>
+            <xs:element name="View" minOccurs="1" maxOccurs="1">
+              <xs:complexType>
+                <xs:choice minOccurs="0" maxOccurs="1">
+                  <!-- TODO -->
+                </xs:choice>
+                <xs:attribute name="ViewModelType" type="xs:string"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

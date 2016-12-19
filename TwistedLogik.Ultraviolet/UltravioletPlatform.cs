@@ -7,7 +7,7 @@ namespace TwistedLogik.Ultraviolet
     public enum UltravioletPlatform
     {
         /// <summary>
-        /// Dekstop Windows.
+        /// Desktop Windows.
         /// </summary>
         Windows,
 

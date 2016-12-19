@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="ScreenRotation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Rotation0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The screen is in its default position.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Rotation90">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The screen is rotated 90 degrees from its default position.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Rotation180">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The screen is rotated 180 degrees from its default position.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Rotation240">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The screen is rotated 240 degrees from its default position.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

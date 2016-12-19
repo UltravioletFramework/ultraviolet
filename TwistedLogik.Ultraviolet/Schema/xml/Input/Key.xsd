@@ -1,0 +1,1190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="Key">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Return">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Return/Enter key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Escape">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Escape key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Backspace">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Backspace key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Tab">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Tab key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Space">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The space ( ) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Exclamation">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The exclamation (!) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DoubleQuote">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The double quote (") key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Hash">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The hash (#) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>      
+      <xs:enumeration value="Percent">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The percent (%) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>      
+      <xs:enumeration value="Dollar">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The dollar ($) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Ampersand">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The ampersand (&amp;) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SingleQuote">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The single quote (') key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftParenthesis">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left parenthesis key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightParenthesis">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right parenthesis key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Asterisk">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The asterisk (*) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Plus">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The plus (+) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Comma">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The comma (,) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Minus">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The minus (-) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Period">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The period (.) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Slash">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The slash (/) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 0 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 1 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 2 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 3 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 4 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D5">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 5 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D6">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 6 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D7">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 7 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D8">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 8 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D9">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 9 key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Colon">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The colon (:) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Semicolon">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The semicolon (;) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Less">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The less than (&lt;) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Equals">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The equals (=) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Greater">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The greater than (&gt;) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Question">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The question mark (?) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="At">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The at sign (@) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftBracket">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left bracket ([) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Backslash">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The backslash (\) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightBracket">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right bracket (]) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Caret">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The caret (^) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Underscore">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The underscore (_) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BackQuote">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The back quote (`) key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="A">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The A key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="B">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The B key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="C">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The C key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="D">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The D key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="E">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The E key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="G">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The G key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="H">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The H key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="I">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The I key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="J">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The J key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="K">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The K key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The L key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The M key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="N">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The N key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="O">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The O key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="P">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The P key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Q">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Q key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The R key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="S">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The S key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="T">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The T key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="U">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The U key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="V">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The V key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="W">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The W key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="X">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The X key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Y">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Y key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Z">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Z key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CapsLock">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Caps Lock key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F1 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F2 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F3 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F4 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F5">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F5 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F6">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F6 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F7">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F7 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F8">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F8 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F9">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F9 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F10">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F10 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F11">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F11 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F12">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F12 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PrintScreen">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Print Screen key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ScrollLock">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Scroll Lock key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Pause">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Pause key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Insert">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Insert key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Home">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Home key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PageUp">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Page Up key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Delete">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Delete key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="End">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The End key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PageDown">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Page Down key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Right">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right arrow key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Left">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left arrow key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Down">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The down arrow key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Up">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The up arrow key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NumLockClear">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Num Lock/Clear key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadDivide">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The divide (/) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMultiply">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The multiply (*) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMinus">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The minus (-) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadPlus">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The plus (+) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadEnter">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Enter/Return key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD1">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 1 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 2 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 3 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 4 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD5">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 5 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD6">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 6 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD7">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 7 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD8">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 8 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD9">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 9 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 0 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadPeriod">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The period (.) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Application">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Application key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Power">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Power key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadEquals">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The equals (=) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F13">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F13 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F14">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F14 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F15">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F15 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F16">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F16 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F17">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F17 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F18">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F18 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F19">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F19 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F20">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F20 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F21">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F21 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F22">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F22 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F23">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F23 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="F24">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F24 function key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Execute">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Execute key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Help">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Help key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Menu">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Menu key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Select">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Select key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Stop">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Stop key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Again">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Again key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Undo">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Undo key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Cut">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Cut key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Copy">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Copy key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Paste">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Paste key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Find">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Find key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Mute">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mute key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="VolumeUp">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Volume Up key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Volume Down">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Volume Down key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadComma">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The comma (,) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadEqualsAS400">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The equals key on an AS/400 keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AltErase">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Alternate Erase key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SysReq">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The SysReq key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Cancel">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Cancel key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Clear">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Clear key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Prior">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Prior key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Return2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The second Return/Enter key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Separator">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Separator key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Out">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Out key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Oper">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Oper key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ClearAgain">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Clear/Again key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CrSel">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The CrSel key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ExSel">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The ExSel key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Keypad00">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 00 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Keypad000">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The 000 key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ThousandsSeparator">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The thousands separator key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DecimalSeparator">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The decimal separator key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CurrencyUnit">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The currency unit key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="CurrencySubUnit">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The currency sub-unit key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadLeftParenthesis">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left parenthesis key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadRightParenthesis">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right parenthesis key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadLeftBrace">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left brace ([) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadRightBrace">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right brace (]) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadTab">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Tab key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadBackspace">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Backspace key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadA">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The A key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadB">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The B key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadC">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The C key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadD">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The D key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The E key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadF">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The F key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadXor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The XOR key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadPower">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Power key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadPercent">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The percent (%) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadLess">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The less than (&lt;) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadGreater">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The greater than (&gt;) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadAmpersand">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The ampersand (&amp;) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadDoubleAmpersand">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The double ampersand (&amp;&amp;) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadVerticalBar">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The vertical bar (|) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadDoubleVerticalBar">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The double vertical bar (||) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadColon">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The colon (:) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadHash">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The hash (#) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadSpace">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The space ( ) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadAt">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The at sign (@) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadExclamation">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The exclamation mark (!) key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemStore">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Store key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemRecall">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Recall key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemClear">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Clear key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemAdd">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Add key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemSubtract">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Subtract key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemMultiply">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Multiply key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadMemDivide">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mem Divide key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadPlusMinus">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The plus/minus key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadClear">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Clear key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadClearEntry">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Clear Entry key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadBinary">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Binary key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadOctal">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Octal key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadDecimal">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Decimal key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="KeypadHexadecimal">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Hexadecimal key on the keypad.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftControl">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left Control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftShift">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left Shift key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftAlt">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left Alt key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LeftGui">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The left GUI key (i.e. the Windows key on Windows).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightControl">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right Control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightShift">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right Shift key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightAlt">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right Alt key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RightGui">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The right GUI key (i.e. the Windows key on Windows).</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Mode">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mode key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AudioNext">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Audio Next key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AudioPrev">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Audio Prev key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AudioStop">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Audio Stop key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AudioPlay">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Audio Play key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AudioMute">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Audio Mute key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MediaSelect">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Media Select key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WorldWideWeb">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The World Wide Web key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Mail">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Mail key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Calculator">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Calculator key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Computer">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Computer key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlSearch">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Search application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlHome">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Home application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlBack">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Back application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlForward">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Forward application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlStop">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Stop application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlRefresh">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Refresh application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AppControlBookmarks">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Bookmarks application control key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BrightnessDown">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Brightness Down key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BrightnessUp">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Brightness Up key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DisplaySwitch">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Display Switch key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IlluminationToggle">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Illumination Toggle key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IlluminationDown">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Illumination Down key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IlluminationUp">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Illumination Up key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Eject">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Eject key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Sleep">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Sleep key.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

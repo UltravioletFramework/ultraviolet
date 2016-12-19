@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="GamePadJoystickDirectionByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The joystick is at rest.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Up">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The joystick is pointed up.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Down">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The joystick is pointed down.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Left">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The joystick is pointed left.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Right">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The joystick is pointed right.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GamePadJoystickDirectionByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(None|Up|Down|Left|Right),\s*){1,}(?:None|Up|Down|Left|Right)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GamePadJoystickDirection">
+    <xs:union memberTypes="GamePadJoystickDirectionByPattern GamePadJoystickDirectionByEnum"/>
+  </xs:simpleType>
+  
+</xs:schema>

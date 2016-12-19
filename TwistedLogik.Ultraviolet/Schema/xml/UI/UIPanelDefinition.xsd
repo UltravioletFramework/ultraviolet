@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="UIPanelDefinition"
+    targetNamespace="http://schema.twistedlogik.net/Ultraviolet/UI/UIPanelDefinition.xsd"
+    xmlns="http://schema.twistedlogik.net/Ultraviolet/UI/UIPanelDefinition.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+  <xs:include schemaLocation="UIPanelDefinitionBase.xsd"/>
+  <xs:element name="UIPanelDefinition">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="UIPanelDefinitionBase">
+          <xs:sequence>
+            <xs:element name="View" minOccurs="1" maxOccurs="1">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any processContents="lax" namespace="##any"/>
+                </xs:sequence>
+                <xs:anyAttribute processContents="lax" namespace="##any"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+    
+</xs:schema>

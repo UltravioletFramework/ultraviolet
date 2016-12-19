@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="KeyboardMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Text">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The keyboard will be optimized for text entry.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Number">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The keyboard will be optimized for number entry.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Phone">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The keyboard will be optimized for phone number entry.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Datetime">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The keyboard will be optimized for date/time entry.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

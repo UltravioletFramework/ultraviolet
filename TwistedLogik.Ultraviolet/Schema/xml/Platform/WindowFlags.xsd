@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="WindowFlagsByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No flags.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Resizable">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The window is resizable.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Borderless">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The window is borderless.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Hidden">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The window is initially hidden.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WindowFlagsByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(None|Resizable|Borderless|Hidden),\s*){1,}(?:None|Resizable|Borderless|Hidden)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WindowFlags">
+    <xs:union memberTypes="WindowFlagsByPattern WindowFlagsByEnum"/>
+  </xs:simpleType>
+  
+</xs:schema>
