@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="CompareFunction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Always">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Always pass the test.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Never">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Never pass the test.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Equal">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Pass the test if the new value is equal to the current value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NotEqual">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Pass the test if the new value is not equal to the current value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Greater">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Pass the test if the new value is greater than the current value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="GreaterEqual">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Pass the test if the new value is greater than or equal to the current value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Less">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Pass the test if the new value is less than the current value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LessEqual">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Pass the test if the new value is less than or equal to the current value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

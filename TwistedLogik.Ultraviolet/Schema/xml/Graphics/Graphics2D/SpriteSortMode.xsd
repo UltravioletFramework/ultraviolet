@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="SpriteSortMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Deferred">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Sprites are not drawn until the batch ends, and then are drawn in the order that they were added to the batch.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Immediate">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Sprites are rendered immediately, without any batching.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Texture">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Sprites are sorted according to their texture.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BackToFront">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Sprites are sorted according to their layer depth, from back to front.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FrontToBack">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Sprites are sorted according to the layer depth, from front to back.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

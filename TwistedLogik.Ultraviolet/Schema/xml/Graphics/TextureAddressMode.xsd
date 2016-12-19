@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="TextureAddressMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Clamp">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Clamps texture coordinates to the range [0.0, 1.0].</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Wrap">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Wraps texture coordinates which exceed the range [0.0, 1.0].</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Mirror">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Mirrors texture coordinates at every integer junction.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

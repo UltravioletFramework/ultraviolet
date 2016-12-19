@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:simpleType name="MaskedUInt32">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Represents a 32-bit integer with an associated masking byte used to compress empty data bytes.</xs:documentation>
+    </xs:annotation>
     <xs:restriction base="xs:integer">
       <xs:minInclusive value="0"/>
       <xs:maxInclusive value="4294967295"/>

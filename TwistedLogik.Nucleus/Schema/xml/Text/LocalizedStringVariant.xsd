@@ -1,11 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:complexType name="LocalizedStringVariant">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Represents one of a localized string's variants.</xs:documentation>
+    </xs:annotation>
     <xs:simpleContent>
       <xs:extension base="xs:string">
-        <xs:attribute name="Group" type="xs:string"/>
-        <xs:attribute name="Properties" type="xs:string"/>
+        <xs:attribute name="Group" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">The variant group to which this variant belongs.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Properties" type="xs:string">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">A comma-delimited list of properties associated with this variant.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>

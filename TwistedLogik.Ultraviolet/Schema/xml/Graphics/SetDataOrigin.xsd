@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="SetDataOrigin">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TopLeft">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The buffer being copied contains data with a top-left origin.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TopRight">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The buffer being copied contains data with a top-right origin.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BottomLeft">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The buffer being copied contains data with a bottom-left origin.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BottomRight">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The buffer being copied contains data with a bottom-right origin.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

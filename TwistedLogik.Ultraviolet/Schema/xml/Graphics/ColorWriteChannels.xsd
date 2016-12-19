@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="ColorWriteChannelsByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No color channels.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Red">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The red color channel.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Green">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The green color channel.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Blue">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The blue color channel.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Alpha">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The alpha channel.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="All">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">All color channels, plus alpha.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ColorWriteChannelsByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(None|Red|Green|Blue|Alpha|All),\s*){1,}(?:None|Red|Green|Blue|Alpha|All)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ColorWriteChannels">
+    <xs:union memberTypes="ColorWriteChannelsByPattern ColorWriteChannelsByEnum"/>
+  </xs:simpleType>
+
+</xs:schema>

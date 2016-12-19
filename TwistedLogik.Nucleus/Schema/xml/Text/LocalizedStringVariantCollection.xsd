@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:include schemaLocation="LocalizedStringVariant.xsd"/>
   
   <xs:complexType name="LocalizedStringVariantCollection">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Represents a collection of localized string variants.</xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="Variant" type="LocalizedStringVariant" maxOccurs="unbounded"/>
+      <xs:element name="Variant" type="LocalizedStringVariant" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">One of the collection's string variants.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   

@@ -9,18 +9,51 @@
   <xs:include schemaLocation="TextFlags.xsd"/>
   
   <xs:element name="TextTableLayout">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A document describing the layout of a text table.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
         <xs:element name="Row" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">One of the table's rows.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Cell" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">One of the row's cells.</xs:documentation>
+                </xs:annotation>
                 <xs:complexType>
-                  <xs:attribute name="TextFlags" type="TextFlags"/>
-                  <xs:attribute name="Format" type="xs:string"/>
-                  <xs:attribute name="Binding" type="xs:string"/>
-                  <xs:attribute name="Width" type="xs:nonNegativeInteger"/>
-                  <xs:attribute name="Height" type="xs:nonNegativeInteger"/>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="TextFlags" type="TextFlags">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">The TextFlags values used to draw the cell's text.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                      <xs:attribute name="Format" type="xs:string">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">The cell's format string.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                      <xs:attribute name="Binding" type="xs:string">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">The cell's view model binding string.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                      <xs:attribute name="Width" type="xs:nonNegativeInteger">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">The cell's width in pixels.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                      <xs:attribute name="Height" type="xs:nonNegativeInteger">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">The cell's height in pixels.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                    </xs:extension>
+                  </xs:simpleContent>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>

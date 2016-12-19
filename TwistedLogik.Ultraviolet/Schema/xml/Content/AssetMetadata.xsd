@@ -13,6 +13,9 @@
           </xs:simpleType>
         </xs:element>
         <xs:element name="ImporterMetadata" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">The asset importer's metadata.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:any processContents="lax" namespace="##any"/>
@@ -20,6 +23,9 @@
           </xs:complexType>
         </xs:element>
         <xs:element name="ProcessorMetadata" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">The asset processor's metadata.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:any processContents="lax" namespace="##any"/>

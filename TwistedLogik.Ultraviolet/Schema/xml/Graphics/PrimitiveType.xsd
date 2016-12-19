@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="PrimitiveType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TriangleList">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The vertex data is ordered as a sequence of triangles, with each triangle described by three new vertices.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TriangleStrip">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The vertex data is ordered as a sequence of triangles, with each triangle described by two new vertices and one vertex from the previous triangle.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LineList">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The vertex data is ordered as a sequence of line segments, with each line segment described by two new vertices.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LineStrip">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The vertex data is ordered as a sequence of line segments, with each line segment described by one new vertex and one vertex from the previous line segment.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

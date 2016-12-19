@@ -174,7 +174,8 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 foreach (var animDesc in animBatch.Items)
                 {
                     var animName = animDesc.Name;
-                    var animRepeat = animDesc.Repeat == "none" ? SpriteAnimationRepeat.None : SpriteAnimationRepeat.Loop;
+                    var animRepeat = String.Equals(animDesc.Repeat, "none", StringComparison.InvariantCultureIgnoreCase) ? 
+                        SpriteAnimationRepeat.None : SpriteAnimationRepeat.Loop;
                     var animation = new SpriteAnimation(animName, animRepeat);
 
                     // Process the animation's frame groups.

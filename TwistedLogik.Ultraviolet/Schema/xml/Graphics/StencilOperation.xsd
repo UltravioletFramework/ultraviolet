@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="StencilOperation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Decrement">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Decrements the stencil buffer value, wrapping to the maximum value if the new value is less than 0.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DecrementSaturation">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Decrements the stencil buffer value, clamping to 0.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Increment">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Increments the stencil buffer value, wrapping to the minimum value if the new value exceeds the maximum value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="IncrementSaturation">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Increments the stencil buffer value, clamping to the maximum value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Invert">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Inverts the bits of the stencil buffer value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Keep">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Preserves the stencil buffer value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Replace">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Replaces the stencil buffer value with the reference value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Zero">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Sets the stencil buffer value to zero.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -5,29 +5,70 @@
     xmlns:s="http://schema.twistedlogik.net/Ultraviolet/Graphics/TextureAtlas.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified">  
+
   <xs:element name="TextureAtlas">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A document describing a texture atlas.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:all>
         <xs:element name="Metadata" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Contains metadata describing how the texture atlas should be packed.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:all>
-              <xs:element name="RootDirectory" minOccurs="0" type="xs:string"/>
-              <xs:element name="RequirePowerOfTwo" minOccurs="0" type="xs:boolean"/>
-              <xs:element name="RequireSquare" minOccurs="0" type="xs:boolean"/>
-              <xs:element name="MaximumWidth" minOccurs="0" type="xs:positiveInteger"/>
-              <xs:element name="MaximumHeight" minOccurs="0" type="xs:positiveInteger"/>
-              <xs:element name="Padding" minOccurs="0" type="xs:nonNegativeInteger"/>
+              <xs:element name="RootDirectory" minOccurs="0" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The texture atlas' root directory, relative to the location of the document which defines the atlas.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="RequirePowerOfTwo" minOccurs="0" type="xs:boolean">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">A value indicating whether the atlas' texture must have dimensions which are powers of two.</xs:documentation>
+                </xs:annotation>                
+              </xs:element>
+              <xs:element name="RequireSquare" minOccurs="0" type="xs:boolean">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">A value indicating whether the atlas' texture must be square.</xs:documentation>
+                </xs:annotation>                
+              </xs:element>
+              <xs:element name="MaximumWidth" minOccurs="0" type="xs:positiveInteger">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The maximum width, in pixels, of the atlas' texture.</xs:documentation>
+                </xs:annotation>                
+              </xs:element>
+              <xs:element name="MaximumHeight" minOccurs="0" type="xs:positiveInteger">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The maximum height, in pixels, of the atlas' texture.</xs:documentation>
+                </xs:annotation>                
+              </xs:element>
+              <xs:element name="Padding" minOccurs="0" type="xs:nonNegativeInteger">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The number of pixels of padding between cells in the atlas.</xs:documentation>
+                </xs:annotation>                
+              </xs:element>
             </xs:all>
           </xs:complexType>
         </xs:element>
         <xs:element name="Images">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Contains descriptions of the individual images which make up the texture atlas.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Include" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">An image or group of images which should be included in the atlas.</xs:documentation>
+                </xs:annotation>
                 <xs:complexType>
                   <xs:simpleContent>
                     <xs:extension base="xs:string">
-                      <xs:attribute name="Name" type="xs:string"/>
+                      <xs:attribute name="Name" type="xs:string">
+                        <xs:annotation>
+                          <xs:documentation xml:lang="en">The unique name of the image within the atlas.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
                     </xs:extension>
                   </xs:simpleContent>
                 </xs:complexType>

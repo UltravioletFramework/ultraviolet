@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:include schemaLocation="LocalizedStringVariantCollection.xsd"/>
   
   <xs:complexType name="LocalizedString">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Represents a localized string.</xs:documentation>
+    </xs:annotation>
     <xs:all>
       <xs:element name="af-ZA" type="LocalizedStringVariantCollection" minOccurs="0"/>
       <xs:element name="sq-AL" type="LocalizedStringVariantCollection" minOccurs="0"/>
@@ -142,9 +145,21 @@
       <xs:element name="Lt-uz-UZ" type="LocalizedStringVariantCollection" minOccurs="0"/>
       <xs:element name="vi-VN" type="LocalizedStringVariantCollection" minOccurs="0"/>
     </xs:all>
-    <xs:attribute name="Key" type="xs:string" use="required"/>
-    <xs:attribute name="Html" type="xs:boolean" default="false"/>
-    <xs:attribute name="Pseudo" type="xs:boolean" default="true"/>
+    <xs:attribute name="Key" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The string's localization key.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Html" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">A value indicating whether the string contains HTML encoded characters.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Pseudo" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">A value indicating whether pseudolocalization is enabled for this string.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   
 </xs:schema>

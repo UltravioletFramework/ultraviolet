@@ -5,20 +5,42 @@
     xmlns:sf="http://schema.twistedlogik.net/Ultraviolet/Graphics/Graphics2D/SpriteFont.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified">
+
+  <xs:include schemaLocation="SpriteFontStyle.xsd"/>
   <xs:include schemaLocation="../../Rectangle.xsd"/>
-  
+
   <xs:element name="SpriteFont">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A document describing a sprite font.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
         <xs:element name="Face" maxOccurs="4">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Describes one of the sprite font's faces.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:all>
-              <xs:element name="Texture" type="xs:string"/>
-              <xs:element name="TextureRegion" type="Rectangle" minOccurs="0"/>
+              <xs:element name="Texture" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The content resource path to the font face's texture.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TextureRegion" type="Rectangle" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">A rectangle describing the region on the font face's texture that contains the font face.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
               <xs:element name="Glyphs" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">Contains metadata relating to the font face's special glyphs.</xs:documentation>
+                </xs:annotation>
                 <xs:complexType>
                   <xs:all>
                     <xs:element name="Substitution">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">Specifies the glyph which is drawn in place of glyphs which do not exist in the font face.</xs:documentation>
+                      </xs:annotation>
                       <xs:simpleType>
                         <xs:restriction base="xs:string">
                           <xs:length value="1"/>
@@ -29,13 +51,22 @@
                 </xs:complexType>
               </xs:element>
               <xs:element name="Kernings" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">Contains the list of kerning pairs for this font face.</xs:documentation>
+                </xs:annotation>
                 <xs:complexType>
                   <xs:sequence maxOccurs="unbounded">
                     <xs:element name="Kerning">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">Specifies the kerning value for a particular pair of glyphs.</xs:documentation>
+                      </xs:annotation>
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:integer">
                             <xs:attribute name="Pair" use="required">
+                              <xs:annotation>
+                                <xs:documentation xml:lang="en">The pair of characters to which this kerning value is applied.</xs:documentation>
+                              </xs:annotation>
                               <xs:simpleType>
                                 <xs:restriction base="xs:string">
                                   <xs:pattern value=".."/>
@@ -48,27 +79,35 @@
                     </xs:element>
                   </xs:sequence>
                 </xs:complexType>
+                <xs:unique name="UniqueKerningPair">
+                  <xs:selector xpath="sf:Kerning"/>
+                  <xs:field xpath="@Pair"/>
+                </xs:unique>
               </xs:element>
             </xs:all>
-            <xs:attribute name="Style">
-              <xs:simpleType>
-                <xs:restriction base="xs:string">
-                  <xs:enumeration value="Regular"/>
-                  <xs:enumeration value="Bold"/>
-                  <xs:enumeration value="Italic"/>
-                  <xs:enumeration value="BoldItalic"/>
-                </xs:restriction>
-              </xs:simpleType>
+            <xs:attribute name="Style" type="SpriteFontStyle">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">The font face's style.</xs:documentation>
+              </xs:annotation>
             </xs:attribute>
           </xs:complexType>
         </xs:element>
         <xs:element name="CharacterRegions" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Contains the list of ranges of Unicode characters which are included in the sprite font. If no character regions are specifcied, then a region starting at space (' ') and ending at tilde ('~') is used by default.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:choice maxOccurs="unbounded">
               <xs:element name="CharacterRegion">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">One of the sprite font's Unicode character ranges.</xs:documentation>
+                </xs:annotation>
                 <xs:complexType>
                   <xs:all>
                     <xs:element name="Start">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">The character which defines the start of the range.</xs:documentation>
+                      </xs:annotation>
                       <xs:simpleType>
                         <xs:restriction base="xs:string">
                           <xs:length value="1"/>
@@ -76,6 +115,9 @@
                       </xs:simpleType>
                     </xs:element>
                     <xs:element name="End">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">The character which defines the end of the range.</xs:documentation>
+                      </xs:annotation>
                       <xs:simpleType>
                         <xs:restriction base="xs:string">
                           <xs:length value="1"/>

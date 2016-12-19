@@ -9,18 +9,44 @@
   <xs:include schemaLocation="Size2.xsd"/>
 
   <xs:element name="Cursors">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A document describing a collection of cursor images.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
         <xs:element name="Cursor" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Describes an individual cursor image.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
-            <xs:attribute name="Name" type="xs:string" use="required"/>
-            <xs:attribute name="Position" type="Point2" use="required"/>
-            <xs:attribute name="Size" type="Size2" use="required"/>
-            <xs:attribute name="Hotspot" type="Point2"/>
+            <xs:attribute name="Name" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">The cursor's unique name within the collection.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Position" type="Point2" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">The cursor's position on the collection's texture.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Size" type="Size2" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">The cursor's size in pixels.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Hotspot" type="Point2">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">The position of the cursor's hotspot relative to its top-left corner.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="Image" type="xs:string" use="required"/>
+      <xs:attribute name="Image" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The content resource path to the texture that contains the cursor images.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
 </xs:schema>

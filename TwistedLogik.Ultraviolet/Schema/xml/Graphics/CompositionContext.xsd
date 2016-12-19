@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="CompositionContext">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Scene">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The context containing the basic 2D/3D scene.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Interface">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The context containing the user interface elements.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Overlay">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The context containing graphics which are drawn on top of the interface.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

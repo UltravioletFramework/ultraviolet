@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="SpriteEffectsByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No effects.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FlipHorizontally">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Flips the sprite horizontally across the y-axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FlipVertically">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Flips the sprite vertically across the x-axis.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OriginRelativeToDestination">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates that the sprite's point of origin should be considered relative to its destination rectangle, rather than its source rectangle.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SpriteEffectsByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(None|FlipHorizontally|FlipVertically|OriginRelativeToDestination),\s*){1,}(?:None|FlipHorizontally|FlipVertically|OriginRelativeToDestination)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SpriteEffects">
+    <xs:union memberTypes="SpriteEffectsByPattern SpriteEffectsByEnum"/>
+  </xs:simpleType>
+
+</xs:schema>

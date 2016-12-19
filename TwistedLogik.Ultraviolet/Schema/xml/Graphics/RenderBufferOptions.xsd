@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="RenderBufferOptionsByEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The render buffer has no special options.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ImmutableStorage">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The render buffer should use immutable storage, if it is available.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="WillNotBeSampled">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Specifies that the render buffer will not be sampled. Render buffers which have been created with this flag cannot be bound as a texture or have their data populated via a call to the SetData() method.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RenderBufferOptionsByPattern">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^\s*(?:(None|ImmutableStorage|WillNotBeSampled),\s*){1,}(?:None|ImmutableStorage|WillNotBeSampled)\s*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RenderBufferOptions">
+    <xs:union memberTypes="RenderBufferOptionsByPattern RenderBufferOptionsByEnum"/>
+  </xs:simpleType>
+
+</xs:schema>

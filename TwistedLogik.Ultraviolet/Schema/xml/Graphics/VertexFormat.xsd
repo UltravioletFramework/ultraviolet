@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="VertexFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Single">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">32-bit floating point with one component.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Vector2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">32-bit floating point with two components.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Vector3">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">32-bit floating point with three components.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Vector4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">32-bit floating point with four components.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Color">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">8-bit unsigned byte with four components.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NormalizedShort2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing two 16-bit signed normalized integer values ranging from -1 to +1.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NormalizedShort4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing four 16-bit signed normalized integer values ranging from -1 to +1.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NormalizedUnsignedShort2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing two 16-bit unsigned normalized integer values ranging from 0 to +1.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NormalizedUnsignedShort4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing four 16-bit unsigned normalized integer values ranging from 0 to +1.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Short2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing two 16-bit signed integer values.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Short4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing four 16-bit signed integer values.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UnsignedShort2">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing two 16-bit unsigned integer values.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UnsignedShort4">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Packed vector containing four 16-bit unsigned integer values.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

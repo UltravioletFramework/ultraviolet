@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="IndexBufferElementType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Int16">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indexes are 16-bit integers.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Int32">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indexes are 32-bit integers.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="SpriteFontStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Regular">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Regular.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Bold">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bold.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Italic">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Italic.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BoldItalic">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bold and italic.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

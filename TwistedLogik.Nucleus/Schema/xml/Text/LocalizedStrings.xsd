@@ -5,5 +5,9 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified">
   <xs:include schemaLocation="LocalizationDatabase.xsd"/>
-  <xs:element name="LocalizedStrings" type="LocalizationDatabase"/>
+  <xs:element name="LocalizedStrings" type="LocalizationDatabase">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A document containing a database of localized strings in various languages.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
 </xs:schema>

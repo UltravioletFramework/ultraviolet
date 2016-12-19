@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="TextLayoutCommandType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">No command type.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BlockInfo">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command containing the metadata for a block of text.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LineInfo">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command containing the metadata for a line of text.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Text">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to print a string of text.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Icon">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to print an icon.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ToggleBold">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to toggle the bold font style.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ToggleItalic">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to toggle the italic font style.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PushStyle">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to push a style onto the style stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PushFont">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to push a font onto the font stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PushColor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to push a color onto the color stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PushGlyphShader">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to push a glyph shader onto the glyph shader stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PopStyle">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to pop a style off of the style stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PopFont">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to pop a font off of the font stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PopColor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to pop a color off of the color stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PopGlyphShader">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to pop a glyph shader off of the glyph shader stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ChangeSourceString">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to change the source string.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ChangeSourceStringBuilder">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to change the source string builder.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Hyphen">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to draw a hyphen character.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="LineBreak">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to insert a line break character.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PushLink">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to push a link onto the link stack.</xs:documentation>
+        </xs:annotation>        
+      </xs:enumeration>
+      <xs:enumeration value="PopLink">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a command to pop a link off of the link stack.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Custom">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Represents a custom command.</xs:documentation>
+        </xs:annotation>        
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

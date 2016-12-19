@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="SurfaceSourceDataFormat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RGBA">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The surface source's data is stored in RGBA order.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BGRA">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The surface source's data is stored in BGRA order.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

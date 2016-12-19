@@ -1,15 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:simpleType name="TextFlagsByEnum">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Standard"/>
-      <xs:enumeration value="AlignLeft"/>
-      <xs:enumeration value="AlignCenter"/>
-      <xs:enumeration value="AlignRight"/>
-      <xs:enumeration value="AlignTop"/>
-      <xs:enumeration value="AlignMiddle"/>
-      <xs:enumeration value="AlignBottom"/>
+      <xs:enumeration value="Standard">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Standard alignment.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AlignLeft">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Horizontally aligns the text against the left edge of the layout area.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AlignCenter">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Horizontally aligns the text in the center of the layout area.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AlignRight">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Horizontally aligns the text against the right edge of the layout area.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AlignTop">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Vertically aligns the text against the top edge of the layout area.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AlignMiddle">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Vertically aligns the text in the middle of the layout area.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AlignBottom">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Vertically aligns the text against the bottom of the layout area.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
 

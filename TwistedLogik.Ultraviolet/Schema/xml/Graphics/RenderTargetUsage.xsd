@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="RenderTargetUsage">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DiscardContents">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The render target's data is always discarded when the render target is bound.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PlatformContents">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The render target's data is preserved on platforms which support doing so in hardware, and discarded on platforms which do not provide such support.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PreserveContents">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The render target's data is always preserved when the render target is bound. Some platforms may not support this in hardware, leading to performance issues; check the value of GraphicsCapabilities.SupportsPreservingRenderTargetContentInHardware to determine whether this is the case.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

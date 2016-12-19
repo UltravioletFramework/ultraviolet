@@ -6,30 +6,100 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified">
 
+  <xs:include schemaLocation="SpriteAnimationRepeat.xsd"/>
+
   <xs:attributeGroup name="CommonAttributes">
-    <xs:attribute name="Texture" type="xs:string"/>
-    <xs:attribute name="OriginX" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="OriginY" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="Duration" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="Texture" type="xs:string">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The content resource path to the frame's texture.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OriginX" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The x-coordinate of the frame's point of origin. A value of 0 represents the left edge of the frame.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OriginY" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The y-coordinate of the frame's point of origin. A value of 0 represents the top edge of the frame.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Duration" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The frame's duration in milliseconds.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
     
   <xs:attributeGroup name="FrameAttributes">
-    <xs:attribute name="Atlas" type="xs:string"/>
-    <xs:attribute name="AtlasCell" type="xs:string"/>
-    <xs:attribute name="X" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="Y" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="Width" type="xs:positiveInteger"/>
-    <xs:attribute name="Height" type="xs:positiveInteger"/>
+    <xs:attribute name="Atlas" type="xs:string">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The content resource path to the frame's texture atlas..</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AtlasCell" type="xs:string">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The name of the frame's texture atlas cell.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="X" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The distance between the left edge of the frame's texture and the left edge of the frame, in pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Y" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The distance between the top edge of the frame's texture and the top edge of the frame, in pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Width" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The frame's width in pixels.</xs:documentation>
+      </xs:annotation>      
+    </xs:attribute>
+    <xs:attribute name="Height" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The frame's height in pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
 
   <xs:attributeGroup name="FrameGroupAttributes">
-    <xs:attribute name="AreaX" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="AreaY" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="AreaWidth" type="xs:positiveInteger"/>
-    <xs:attribute name="AreaHeight" type="xs:positiveInteger"/>
-    <xs:attribute name="FrameWidth" type="xs:positiveInteger"/>
-    <xs:attribute name="FrameHeight" type="xs:positiveInteger"/>
-    <xs:attribute name="FrameCount" type="xs:positiveInteger"/>
+    <xs:attribute name="AreaX" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The distance between the left edge of the frame group's texture and the left edge of the frame group, in pixels.</xs:documentation>
+      </xs:annotation>      
+    </xs:attribute>
+    <xs:attribute name="AreaY" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The distance between the top edge of the frame group's texture and the top edge of the frame group, in pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AreaWidth" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The frame group's width in pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AreaHeight" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The frame group's height in pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="FrameWidth" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The width in pixels of one of the frame group's frames.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="FrameHeight" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The height in pixels of one of the frame group's frames.</xs:documentation>
+      </xs:annotation>      
+    </xs:attribute>
+    <xs:attribute name="FrameCount" type="xs:positiveInteger">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The number of frames in the frame group.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:attributeGroup>
   
   <xs:complexType name="SpriteFrameElement">
@@ -44,8 +114,15 @@
 
   <xs:complexType name="SpriteAnimationElement">
     <xs:choice maxOccurs="unbounded">
-      <xs:element name="Frame" type="SpriteFrameElement"/>
+      <xs:element name="Frame" type="SpriteFrameElement">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A single frame of an animation.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="Frames">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A collection of related animation frames.</xs:documentation>
+        </xs:annotation>
         <xs:complexType>
           <xs:sequence>
             <xs:element name="Frame" type="SpriteFrameElement" maxOccurs="unbounded"/>
@@ -54,11 +131,22 @@
           <xs:attributeGroup ref="FrameAttributes"/>
         </xs:complexType>
       </xs:element>
-      <xs:element name="FrameGroup" type="SpriteFrameGroupElement"/>
+      <xs:element name="FrameGroup" type="SpriteFrameGroupElement">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A group of animation frames which are arranged in a regular grid on the source texture.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element name="FrameGroups">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A collection of related frame groups.</xs:documentation>
+        </xs:annotation>
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="FrameGroup" type="SpriteFrameGroupElement" maxOccurs="unbounded"/>
+            <xs:element name="FrameGroup" type="SpriteFrameGroupElement" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">A group of animation frames which are arranged in a regular grid on the source texture.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
           </xs:sequence>
           <xs:attributeGroup ref="CommonAttributes"/>
           <xs:attributeGroup ref="FrameGroupAttributes"/>
@@ -68,10 +156,7 @@
     <xs:attribute name="Name" type="xs:string"/>
     <xs:attribute name="Repeat">
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="none"/>
-          <xs:enumeration value="loop"/>
-        </xs:restriction>
+        <xs:restriction base="SpriteAnimationRepeat"/>
       </xs:simpleType>
     </xs:attribute>
     <xs:attributeGroup ref="CommonAttributes"/>
@@ -80,13 +165,27 @@
   </xs:complexType>
   
   <xs:element name="Sprite">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A document describing the animations which make up a sprite.</xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
-        <xs:element name="Animation" type="SpriteAnimationElement"/>
+        <xs:element name="Animation" type="SpriteAnimationElement">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">A single animation.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
         <xs:element name="Animations">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">A collection of related animations.</xs:documentation>
+          </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Animation" type="SpriteAnimationElement" maxOccurs="unbounded"/>
+              <xs:element name="Animation" type="SpriteAnimationElement" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">A single animation.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
             </xs:sequence>
             <xs:attributeGroup ref="CommonAttributes"/>
             <xs:attributeGroup ref="FrameAttributes"/>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="FillMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Solid">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Draw solid faces for each primitive.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Wireframe">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Draw primitive wireframes.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

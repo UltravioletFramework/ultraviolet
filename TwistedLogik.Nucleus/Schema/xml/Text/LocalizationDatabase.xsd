@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
   <xs:include schemaLocation="LocalizedString.xsd"/>
   
   <xs:complexType name="LocalizationDatabase">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Represents a database of localized strings.</xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="String" type="LocalizedString" maxOccurs="unbounded"/>
+      <xs:element name="String" type="LocalizedString" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">One of the database's localized string resources.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   

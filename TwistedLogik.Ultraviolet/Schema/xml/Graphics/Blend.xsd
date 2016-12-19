@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:simpleType name="Blend">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Zero">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by zero.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="One">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by one.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SourceColor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the source color.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InverseSourceColor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the inverse of the source color.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SourceAlpha">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the source alpha.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InverseSourceAlpha">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the inverse of the source alpha.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DestinationAlpha">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the destination alpha.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InverseDestinationAlpha">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the inverse of the destination alpha.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DestinationColor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the destination color.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InverseDestinationColor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the inverse of the destination color.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SourceAlphaSaturation">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the larger of the alpha of the source color or the inverse of the alpha of the source color.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BlendFactor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by a constant value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InverseBlendFactor">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The components of the blended color are multiplied by the inverse of a constant value.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

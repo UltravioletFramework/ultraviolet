@@ -12,7 +12,7 @@ namespace TwistedLogik.Ultraviolet.Graphics
         TriangleList,
 
         /// <summary>
-        /// The vertex data is ordered as a sequence of triangles, with each triangle described by three new vertices
+        /// The vertex data is ordered as a sequence of triangles, with each triangle described by two new vertices
         /// and one vertex from the previous triangle.
         /// </summary>
         TriangleStrip,
