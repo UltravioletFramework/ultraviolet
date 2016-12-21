@@ -590,7 +590,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 
             var sourceRect = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
             var origin = new Vector2(frame.OriginX, frame.OriginY);
-            DrawInternal(frame.TextureResource, position, sourceRect, color, rotation, origin, scale, SpriteEffects.None, 0f, data);
+            DrawInternal(frame.TextureResource, position, sourceRect, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
