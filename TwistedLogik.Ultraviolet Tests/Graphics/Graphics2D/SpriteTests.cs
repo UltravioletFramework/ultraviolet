@@ -10,6 +10,45 @@ namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
     {
         [Test]
         [Category("Rendering")]
+        [Description("Ensures that sprites can be fully created from program code.")]
+        public void Sprite_CanBeConstructedProgrammatically()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var sprite = default(Sprite);
+            var texture = default(Texture2D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    texture = content.Load<Texture2D>("Textures/HexagonsTexture");
+                    
+                    var anim1 = new SpriteAnimation("anim1", SpriteAnimationRepeat.Loop);
+                    anim1.Frames.Add(new SpriteFrame(texture, 0, 0, 120, 140, 0));
+                    anim1.Controller.PlayAnimation(anim1);
+
+                    var anim2 = new SpriteAnimation("anim2", SpriteAnimationRepeat.Loop);
+                    anim2.Frames.Add(new SpriteFrame(texture, 120, 0, 120, 140, 0));
+                    anim2.Controller.PlayAnimation(anim2);
+
+                    spriteBatch = SpriteBatch.Create();
+                    sprite = new Sprite(new[] { anim1, anim2 });
+                })
+                .Render(uv =>
+                {
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    spriteBatch.DrawSprite(sprite[0].Controller, new Vector2(0, 0));
+                    spriteBatch.DrawSprite(sprite[1].Controller, new Vector2(120, 0));
+
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Sprite_CanBeConstructedProgrammatically.png");
+        }
+
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that sprites can be loaded and rendered correctly from XML files.")]
         public void Sprite_LoadsAndRendersCorrectly_FromXml()
         {
