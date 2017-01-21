@@ -190,6 +190,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                 return 0;
             }
         }
+        
+        /// <summary>
+        /// Gets the current animation.
+        /// </summary>
+        public SpriteAnimation Animation
+        {
+            get { return animation; }
+        }
 
         // Animation properties.
         private Double timer;
