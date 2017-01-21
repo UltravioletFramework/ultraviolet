@@ -138,6 +138,14 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             return frame;
         }
+        
+        /// <summary>
+        /// Gets the current animation.
+        /// </summary>
+        public SpriteAnimation GetAnimation()
+        {
+            return animation;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the controller is currently playing a fire-and-forget animation.
@@ -189,15 +197,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
                     return frame.Height;
                 return 0;
             }
-        }
-        
-        /// <summary>
-        /// Gets the current animation.
-        /// </summary>
-        public SpriteAnimation Animation
-        {
-            get { return animation; }
-        }
+        }        
 
         // Animation properties.
         private Double timer;
