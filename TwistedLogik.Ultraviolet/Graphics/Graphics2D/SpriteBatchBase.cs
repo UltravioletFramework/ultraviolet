@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security;
 using System.Text;
 using TwistedLogik.Nucleus;
@@ -436,6 +436,24 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="originX">Override the originX of the sprite in pixels, or <see langword="null"/> to use the originX of the sprite.</param>
+        /// <param name="originY">Override the originY of the sprite in pixels, or <see langword="null"/> to use the originY of the sprite.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Single? originX, Single? originY, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            DrawSprite(animation, position, width, height,originX, originY, color, rotation, effects, layerDepth, default(SpriteData));
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="data">The sprite's custom data.</param>
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, SpriteData data)
         {
@@ -499,6 +517,44 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
             var scale = new Vector2(scaleX, scaleY);
             var source = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
             var origin = new Vector2(frame.OriginX, frame.OriginY);
+
+            DrawInternal(frame.TextureResource, position, source, color, rotation, origin, scale, effects, layerDepth, data);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in screen coordinates.</param>
+        /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="originX">Override the originX of the sprite in pixels, or <see langword="null"/> to use the originX of the sprite.</param>
+        /// <param name="originY">Override the originY of the sprite in pixels, or <see langword="null"/> to use the originY of the sprite.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        /// <param name="data">The sprite's custom data.</param>
+        public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height,
+            Single? originX, Single? originY, Color color, Single rotation, SpriteEffects effects, Single layerDepth,
+            SpriteData data)
+        {
+            Contract.Require(animation, nameof(animation));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            // Retrieve the current frame.
+            var frame = animation.GetFrame();
+            if (frame == null || frame.TextureResource == null)
+                return;
+
+            // Draw the sprite.
+            var scaleX = (width ?? frame.Width) / frame.Width;
+            var scaleY = (height ?? frame.Height) / frame.Height;
+            var scale = new Vector2(scaleX, scaleY);
+            var source = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            var origin = new Vector2(originX ?? frame.OriginX,originY ?? frame.OriginY);
+
             DrawInternal(frame.TextureResource, position, source, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
