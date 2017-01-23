@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Security;
 using System.Text;
 using TwistedLogik.Nucleus;
@@ -438,8 +438,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
-        /// <param name="originX">Override the originX value of the sprite, or <see langword="null"/> to use the originX value of the sprite.</param>
-        /// <param name="originY">Override the originY value of the sprite, or <see langword="null"/> to use the originY value of the sprite.</param>
+        /// <param name="originX">The distance in pixels between the left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="originY">The distance in pixels between the top edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
@@ -495,8 +497,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
-        /// <param name="originX">Override the originX value of the sprite, or <see langword="null"/> to use the originX value of the sprite.</param>
-        /// <param name="originY">Override the originY value of the sprite, or <see langword="null"/> to use the originY value of the sprite.</param>
+        /// <param name="originX">The distance in pixels between the left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="originY">The distance in pixels between the top edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
@@ -532,22 +536,22 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         {
             DrawScaledSprite(animation, position, scale, null, null, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
         }
-
-
+        
         /// <summary>
         /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
-        /// <param name="originX">Override the originX value of the sprite, or <see langword="null"/> to use the originX value of the sprite.</param>
-        /// <param name="originY">Override the originY value of the sprite, or <see langword="null"/> to use the originY value of the sprite.</param>
+        /// <param name="originX">The distance in pixels between the left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="originY">The distance in pixels between the top edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Single? originX, Single? originY)
         {
             DrawScaledSprite(animation, position, scale, originX, originY, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
         }
-
-
+        
         /// <summary>
         /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
@@ -582,8 +586,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
-        /// <param name="originX">Override the originX value of the sprite, or <see langword="null"/> to use the originX value of the sprite.</param>
-        /// <param name="originY">Override the originY value of the sprite, or <see langword="null"/> to use the originY value of the sprite.</param>
+        /// <param name="originX">The distance in pixels between the left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="originY">The distance in pixels between the top edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
         /// <param name="color">The sprite's color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
@@ -625,8 +631,10 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
-        /// <param name="originX">Override the originX value of the sprite, or <see langword="null"/> to use the originX value of the sprite.</param>
-        /// <param name="originY">Override the originY value of the sprite, or <see langword="null"/> to use the originY value of the sprite.</param>
+        /// <param name="originX">The distance in pixels between the left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="originY">The distance in pixels between the top edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
