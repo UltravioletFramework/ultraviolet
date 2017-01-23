@@ -571,7 +571,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (SpriteBatch == null)
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
-            SpriteBatch.DrawScaledSprite(animation, position, scale, origin?.X ?? null, origin?.Y ?? null, color * Opacity, rotation, effects, layerDepth);
+            SpriteBatch.DrawScaledSprite(animation, position, scale, origin, color * Opacity, rotation, effects, layerDepth);
         }
 
         /// <summary>
