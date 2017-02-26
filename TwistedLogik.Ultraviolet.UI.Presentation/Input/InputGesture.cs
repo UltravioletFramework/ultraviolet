@@ -79,5 +79,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="data">The routed event metadata for this event invocation.</param>
         /// <returns><see langword="true"/> if the gesture matches the event; otherwise, <see langword="false"/>.</returns>
         public virtual Boolean MatchesMouseWheel(Object targetElement, MouseDevice device, Double x, Double y, RoutedEventData data) => false;
+
+        /// <summary>
+        /// Gets the <see cref="ModifierKeys"/> value that corresponds to the specified string.
+        /// </summary>
+        /// <param name="str">The string to evaluate.</param>
+        /// <returns>The <see cref="ModifierKeys"/> value that corresponds to the specified string, or <see langword="null"/>
+        /// if the string does not correspond to any value.</returns>
+        protected internal static ModifierKeys? GetModifierKeyFromString(String str)
+        {
+            switch (str?.ToLowerInvariant())
+            {
+                case "ctrl":
+                    return ModifierKeys.Control;
+
+                case "alt":
+                    return ModifierKeys.Alt;
+
+                case "shift":
+                    return ModifierKeys.Shift;
+            }
+
+            return null;
+        }
     }
 }
