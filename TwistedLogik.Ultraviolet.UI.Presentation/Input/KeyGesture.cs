@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Text;
@@ -119,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 }
             }
 
-            gesture = new KeyGesture(key, modifiers, GenerateCanonicalDisplayString(key, modifiers));
+            gesture = new KeyGesture(key, modifiers);
             return true;
         }
 
@@ -147,6 +148,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Gets a string that represents the gesture. If the gesture has a valid value for 
+        /// the <see cref="DisplayString"/> property, that value is returned; otherwise, a string
+        /// is generated for the specified culture based on the <see cref="Key"/> and <see cref="Modifiers"/> values.
+        /// </summary>
+        /// <param name="culture">The culture for which to retrieve a display string.</param>
+        /// <returns>The display string for the gesture in the context of the specified culture.</returns>
+        public String GetDisplayStringForCulture(CultureInfo culture)
+        {
+            if (!String.IsNullOrEmpty(DisplayString))
+                return DisplayString;
+
+            return GenerateCanonicalDisplayString(culture, Key, Modifiers);
+        }
+
+        /// <summary>
         /// Gets the key associated with this keyboard gesture.
         /// </summary>
         public Key Key { get; private set; }
@@ -164,12 +180,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Generates a canonical display string for the specified key/modifier combination.
         /// </summary>
-        private static String GenerateCanonicalDisplayString(Key key, ModifierKeys modifiers)
+        private static String GenerateCanonicalDisplayString(CultureInfo culture, Key key, ModifierKeys modifiers)
         {
-            var strCtrl = (modifiers & ModifierKeys.Control) != 0 ? Localization.Get("KEY_MODIFIER_CONTROL") : String.Empty;
-            var strAlt = (modifiers & ModifierKeys.Alt) != 0 ? Localization.Get("KEY_MODIFIER_ALT") : String.Empty;
-            var strShift = (modifiers & ModifierKeys.Shift) != 0 ? Localization.Get("KEY_MODIFIER_SHIFT") : String.Empty;
-            var strKey = Localization.Get("KEY_" + key.ToString());
+            var strCtrl = (modifiers & ModifierKeys.Control) != 0 ? 
+                Localization.Get(culture?.Name ?? Localization.CurrentCulture, "KEY_MODIFIER_CONTROL") : String.Empty;
+            var strAlt = (modifiers & ModifierKeys.Alt) != 0 ? 
+                Localization.Get(culture?.Name ?? Localization.CurrentCulture, "KEY_MODIFIER_ALT") : String.Empty;
+            var strShift = (modifiers & ModifierKeys.Shift) != 0 ? 
+                Localization.Get(culture?.Name ?? Localization.CurrentCulture, "KEY_MODIFIER_SHIFT") : String.Empty;
+            var strKey = Localization.Get(culture?.Name ?? Localization.CurrentCulture, "KEY_" + key.ToString());
 
             return String.Join("+", new[] { strCtrl, strAlt, strShift, strKey }.Where(x => !String.IsNullOrEmpty(x)));
         }

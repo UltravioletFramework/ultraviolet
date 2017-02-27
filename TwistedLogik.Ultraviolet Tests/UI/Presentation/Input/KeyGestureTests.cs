@@ -12,29 +12,35 @@ namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
         [Test]
         public void KeyGesture_TryParse_SucceedsForValidStrings()
         {
-            RuntimeHelpers.RunClassConstructor(typeof(UltravioletStrings).TypeHandle);
+            UsingCulture("en-US", () =>
+            {
+                RuntimeHelpers.RunClassConstructor(typeof(UltravioletStrings).TypeHandle);
 
-            var gesture = default(KeyGesture);
-            var result = KeyGesture.TryParse("X", out gesture);
+                var gesture = default(KeyGesture);
+                var result = KeyGesture.TryParse("X", out gesture);
 
-            TheResultingValue(result).ShouldBe(true);
-            TheResultingValue(gesture.Key).ShouldBe(Key.X);
-            TheResultingValue(gesture.Modifiers).ShouldBe(ModifierKeys.None);
-            TheResultingString(gesture.DisplayString).ShouldBe("X");
+                TheResultingValue(result).ShouldBe(true);
+                TheResultingValue(gesture.Key).ShouldBe(Key.X);
+                TheResultingValue(gesture.Modifiers).ShouldBe(ModifierKeys.None);
+                TheResultingString(gesture.GetDisplayStringForCulture(null)).ShouldBe("X");
+            });
         }
 
         [Test]
         public void KeyGesture_TryParse_SucceedsForValidStrings_WithModifierKeys()
         {
-            RuntimeHelpers.RunClassConstructor(typeof(UltravioletStrings).TypeHandle);
+            UsingCulture("en-US", () =>
+            {
+                RuntimeHelpers.RunClassConstructor(typeof(UltravioletStrings).TypeHandle);
 
-            var gesture = default(KeyGesture);
-            var result = KeyGesture.TryParse("Ctrl+Alt+X", out gesture);
+                var gesture = default(KeyGesture);
+                var result = KeyGesture.TryParse("Ctrl+Alt+X", out gesture);
 
-            TheResultingValue(result).ShouldBe(true);
-            TheResultingValue(gesture.Key).ShouldBe(Key.X);
-            TheResultingValue(gesture.Modifiers).ShouldBe(ModifierKeys.Control | ModifierKeys.Alt);
-            TheResultingString(gesture.DisplayString).ShouldBe("Ctrl+Alt+X");
+                TheResultingValue(result).ShouldBe(true);
+                TheResultingValue(gesture.Key).ShouldBe(Key.X);
+                TheResultingValue(gesture.Modifiers).ShouldBe(ModifierKeys.Control | ModifierKeys.Alt);
+                TheResultingString(gesture.GetDisplayStringForCulture(null)).ShouldBe("Ctrl+Alt+X");
+            });
         }
 
         [Test]
