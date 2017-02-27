@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Text;
 using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
@@ -165,10 +166,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         private static String GenerateCanonicalDisplayString(Key key, ModifierKeys modifiers)
         {
-            var strCtrl = (modifiers & ModifierKeys.Control) != 0 ? "Ctrl" : String.Empty;
-            var strAlt = (modifiers & ModifierKeys.Alt) != 0 ? "Alt" : String.Empty;
-            var strShift = (modifiers & ModifierKeys.Shift) != 0 ? "Shift" : String.Empty;
-            var strKey = key.ToString();
+            var strCtrl = (modifiers & ModifierKeys.Control) != 0 ? Localization.Get("KEY_MODIFIER_CONTROL") : String.Empty;
+            var strAlt = (modifiers & ModifierKeys.Alt) != 0 ? Localization.Get("KEY_MODIFIER_ALT") : String.Empty;
+            var strShift = (modifiers & ModifierKeys.Shift) != 0 ? Localization.Get("KEY_MODIFIER_SHIFT") : String.Empty;
+            var strKey = Localization.Get("KEY_" + key.ToString());
 
             return String.Join("+", new[] { strCtrl, strAlt, strShift, strKey }.Where(x => !String.IsNullOrEmpty(x)));
         }
