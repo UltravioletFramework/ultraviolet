@@ -209,7 +209,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\ICommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ICommandSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\IInputElementHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\InputBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\MouseBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\KeyBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Keyboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Keyboard.KeyboardState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\KeyboardNavigation.cs" />
