@@ -1,4 +1,5 @@
 ﻿using TwistedLogik.Nucleus;
+using System;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -81,6 +82,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Occurs when querying to determine if the command can execute.
         /// </summary>
         public event CanExecuteRoutedEventHandler CanExecute;
+
+        /// <summary>
+        /// Raises the <see cref="PreviewExecuted"/> event.
+        /// </summary>
+        private void RaisePreviewExecuted(Object sender, ICommand command, Object parameter) =>
+            PreviewExecuted?.Invoke(sender, command, parameter);
+
+        /// <summary>
+        /// Raises the <see cref="Executed"/> event.
+        /// </summary>
+        private void RaiseExecuted(Object sender, ICommand command, Object parameter) =>
+            Executed?.Invoke(sender, command, parameter);
+
+        /// <summary>
+        /// Raises the <see cref="PreviewCanExecute"/> event.
+        /// </summary>
+        private void RaisePreviewCanExecute(Object sender, ICommand command, Object parameters, CanExecuteEventArgs args) =>
+            PreviewCanExecute?.Invoke(sender, command, parameters, args);
+
+        /// <summary>
+        /// Raises the <see cref="CanExecute"/> event.
+        /// </summary>
+        private void RaiseCanExecute(Object sender, ICommand command, Object parameters, CanExecuteEventArgs args) =>
+            CanExecute?.Invoke(sender, command, parameters, args);
 
         // Property values.
         private ICommand command;
