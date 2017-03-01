@@ -204,6 +204,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\CanExecuteEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CaptureMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\InputGestureCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputBindingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandBindingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandManager.cs" />
