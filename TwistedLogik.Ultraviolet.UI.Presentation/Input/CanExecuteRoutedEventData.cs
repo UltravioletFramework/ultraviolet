@@ -41,13 +41,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets or sets a value indicating whether the command can be executed
         /// with the specified parameter.
         /// </summary>
-        public Boolean CanExecute => canExecute;
+        public Boolean CanExecute
+        {
+            get { return canExecute; }
+            set { canExecute = value; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the input event that
         /// caused the command to execute should continue its route.
         /// </summary>
-        public Boolean ContinueRouting => continueRouting;
+        public Boolean ContinueRouting
+        {
+            get { return continueRouting; }
+            set { continueRouting = value; }
+        }
         
         /// <inheritdoc/>
         protected override void OnRetrieved(IPool origin, DependencyObject source, Boolean handled, Boolean autorelease)
@@ -62,8 +70,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         {
             this.canExecute = false;
             this.continueRouting = false;
-            this.autorelease = true;
-            this.origin = null;
+            base.OnReleased();
         }
 
         // The global pool of event args objects.

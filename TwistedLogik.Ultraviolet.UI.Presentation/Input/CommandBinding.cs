@@ -1,5 +1,5 @@
-﻿using TwistedLogik.Nucleus;
-using System;
+﻿using System;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -84,28 +84,109 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public event CanExecuteRoutedEventHandler CanExecute;
 
         /// <summary>
+        /// Called when the command binding is executed or queried to determine whether it can execute.
+        /// </summary>
+        internal void HandleExecutedOrCanExecute(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
+        {
+            if (data is CanExecuteRoutedEventData)
+            {
+                HandleCanExecute(element, command, parameter, (CanExecuteRoutedEventData)data, preview);
+            }
+            else
+            {
+                HandleExecuted(element, command, parameter, data, preview);
+            }
+        }
+
+        /// <summary>
+        /// Called when the command binding is executed.
+        /// </summary>
+        internal void HandleExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
+        {
+            if (data.Handled)
+                return;
+
+            var handler = preview ? PreviewExecuted : Executed;
+            if (handler != null)
+            {
+                var canExecuteData = CanExecuteRoutedEventData.Retrieve(data.Source as DependencyObject, autorelease: false);
+                try
+                {
+                    HandleCanExecute(element, command, parameter, canExecuteData, false);
+                    if (canExecuteData.CanExecute)
+                    {
+                        handler(element, command, parameter, data);
+                        data.Handled = true;
+                    }
+                }
+                finally
+                {
+                    data.Release();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when the command binding is being queried to determine whether it can execute.
+        /// </summary>
+        internal void HandleCanExecute(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data, Boolean preview)
+        {
+            if (data.Handled)
+                return;
+
+            if (preview)
+            {
+                if (PreviewCanExecute != null)
+                {
+                    PreviewCanExecute(element, command, parameter, data);
+
+                    if (data.CanExecute)
+                        data.Handled = true;
+                }
+            }
+            else
+            {
+                if (CanExecute != null)
+                {
+                    CanExecute(element, command, parameter, data);
+
+                    if (data.CanExecute)
+                        data.Handled = true;
+                }
+                else
+                {
+                    if (!data.CanExecute && Executed != null)
+                    {
+                        data.CanExecute = true;
+                        data.Handled = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="PreviewExecuted"/> event.
         /// </summary>
-        private void RaisePreviewExecuted(Object sender, ICommand command, Object parameter) =>
-            PreviewExecuted?.Invoke(sender, command, parameter);
+        private void RaisePreviewExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data) =>
+            PreviewExecuted?.Invoke(element, command, parameter, data);
 
         /// <summary>
         /// Raises the <see cref="Executed"/> event.
         /// </summary>
-        private void RaiseExecuted(Object sender, ICommand command, Object parameter) =>
-            Executed?.Invoke(sender, command, parameter);
+        private void RaiseExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data) =>
+            Executed?.Invoke(element, command, parameter, data);
 
         /// <summary>
         /// Raises the <see cref="PreviewCanExecute"/> event.
         /// </summary>
-        private void RaisePreviewCanExecute(Object sender, ICommand command, Object parameters, CanExecuteRoutedEventData args) =>
-            PreviewCanExecute?.Invoke(sender, command, parameters, args);
+        private void RaisePreviewCanExecute(DependencyObject element, ICommand command, Object parameters, CanExecuteRoutedEventData data) =>
+            PreviewCanExecute?.Invoke(element, command, parameters, data);
 
         /// <summary>
         /// Raises the <see cref="CanExecute"/> event.
         /// </summary>
-        private void RaiseCanExecute(Object sender, ICommand command, Object parameters, CanExecuteRoutedEventData args) =>
-            CanExecute?.Invoke(sender, command, parameters, args);
+        private void RaiseCanExecute(DependencyObject element, ICommand command, Object parameters, CanExecuteRoutedEventData data) =>
+            CanExecute?.Invoke(element, command, parameters, data);
 
         // Property values.
         private ICommand command;

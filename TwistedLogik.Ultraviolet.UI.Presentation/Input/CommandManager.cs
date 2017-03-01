@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TwistedLogik.Nucleus;
+using System.Threading;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -26,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Contains methods for registering command and input bindings and managing command handlers.
     /// </summary>
-    public class CommandManager
+    public partial class CommandManager
     {
         /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/>
@@ -301,7 +302,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void HandlePreviewExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            HandleExecutedInternal(element, command, parameter, data, true);
+            HandleCommandEvent(element, command, parameter, data, true);
         }
 
         /// <summary>
@@ -309,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void HandleExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            HandleExecutedInternal(element, command, parameter, data, false);
+            HandleCommandEvent(element, command, parameter, data, false);
         }
 
         /// <summary>
@@ -317,7 +318,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void HandlePreviewCanExecute(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
-            HandleCanExecuteInternal(element, command, parameter, data, true);
+            HandleCommandEvent(element, command, parameter, data, true);
         }
 
         /// <summary>
@@ -325,33 +326,101 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         internal static void HandleCanExecute(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
-            HandleCanExecuteInternal(element, command, parameter, data, false);
+            HandleCommandEvent(element, command, parameter, data, false);
         }
 
         /// <summary>
-        /// Handles the <see cref="PreviewExecutedEvent"/> and <see cref="ExecutedEvent"/> routed events for the specified element.
+        /// Handles the routed events which implement the commanding infrastructure for the specified element.
         /// </summary>
-        private static void HandleExecutedInternal(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
-        {
-            if (element == null || command == null)
-                return;
-            
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="PreviewCanExecuteEvent"/> and <see cref="CanExecuteEvent"/> routed events for the specified element.
-        /// </summary>
-        private static void HandleCanExecuteInternal(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data, Boolean preview)
+        private static void HandleCommandEvent(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
         {
             if (element == null || command == null)
                 return;
 
-            throw new NotImplementedException();
+            InvokeCommandBinding(element, command, parameter, data, preview);
+
+            if (data.Handled || preview)
+                return;
+
+            if (FocusManager.GetIsFocusScope(element))
+            {
+                // TODO: Redirect event through focus scope
+            }
+        }
+
+        /// <summary>
+        /// Invokes the appropriate command binding for the specified event.
+        /// </summary>
+        private static void InvokeCommandBinding(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
+        {
+            var searchList = commandBindingsSearchList.Value;
+            try
+            {
+                // Invoke local bindings, if there are any.
+                var elementBindings = (element as UIElement)?.CommandBindings;
+                if (elementBindings != null)
+                {
+                    foreach (var binding in elementBindings)
+                    {
+                        if (binding.Command == command)
+                            binding.HandleExecutedOrCanExecute(element, command, parameter, data, preview);
+                    }
+                }
+
+                // Search for class bindings.
+                lock (((IDictionary)classCommandBindings).SyncRoot)
+                {
+                    var type = element.GetType();
+                    while (type != null)
+                    {
+                        var classBindingsForType = default(CommandBindingCollection);
+                        if (classCommandBindings.TryGetValue(type, out classBindingsForType))
+                        {
+                            for (int i = 0; i < classCommandBindings.Count; i++)
+                            {
+                                var binding = classBindingsForType[i];
+                                if (binding.Command == command)
+                                {
+                                    searchList.Add(new CommandBindingKey(type, binding));                                
+                                }
+                            }
+                        }
+                        type = type.BaseType;
+                    }
+                }
+
+                // Invoke class bindings, if there are any.
+                if (searchList.Count > 0)
+                {
+                    for (int i = 0; i < searchList.Count; i++)
+                    {
+                        var binding = searchList[i].Binding;
+                        binding.HandleExecutedOrCanExecute(element, command, parameter, data, preview);
+
+                        // Skip past other handlers for this type
+                        if (data.Handled)
+                        {
+                            var j = i;
+                            while (j < searchList.Count && searchList[j].Type == searchList[j].Type)
+                                j++;
+
+                            i = j - 1;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                searchList.Clear();
+            }
         }
 
         // Class binding collections
         private static readonly Dictionary<Type, CommandBindingCollection> classCommandBindings = new Dictionary<Type, CommandBindingCollection>();
         private static readonly Dictionary<Type, InputBindingCollection> classInputBindings = new Dictionary<Type, InputBindingCollection>();
+
+        // State values.
+        private static readonly ThreadLocal<List<CommandBindingKey>> commandBindingsSearchList = 
+            new ThreadLocal<List<CommandBindingKey>>(() => new List<CommandBindingKey>());
     }
 }
