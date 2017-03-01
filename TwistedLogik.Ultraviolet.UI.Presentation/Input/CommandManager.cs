@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
@@ -6,19 +8,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents the method that is called when a command is executed.
     /// </summary>
-    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="element">The element that raised the event.</param>
     /// <param name="command">The command that is being executed.</param>
     /// <param name="parameter">The parameter object that is being passed to the executing command.</param>
-    public delegate void ExecutedRoutedEventHandler(Object sender, ICommand command, Object parameter);
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void ExecutedRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a command is being checked to determine whether it can execute.
     /// </summary>
-    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="element">The element that raised the event.</param>
     /// <param name="command">The command that is being evaluated.</param>
     /// <param name="parameter">The parameter object that is being passed to the evaluated command.</param>
-    /// <param name="args">The event's arguments.</param>
-    public delegate void CanExecuteRoutedEventHandler(Object sender, ICommand command, Object parameter, CanExecuteEventArgs args);
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void CanExecuteRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data);
 
     /// <summary>
     /// Contains methods for registering command and input bindings and managing command handlers.
@@ -144,7 +147,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="inputBinding">The input binding to register for the specified type.</param>
         public static void RegisterClassInputBinding(Type type, InputBinding inputBinding)
         {
-            throw new NotImplementedException();
+            Contract.Require(type, nameof(type));
+            Contract.Require(inputBinding, nameof(inputBinding));
+
+            lock (((IDictionary)classInputBindings).SyncRoot)
+            {
+                InputBindingCollection bindings;
+                if (!classInputBindings.TryGetValue(type, out bindings))
+                {
+                    bindings = new InputBindingCollection();
+                    classInputBindings[type] = bindings;
+                }
+                bindings.Add(inputBinding);
+            }
         }
 
         /// <summary>
@@ -154,7 +169,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="commandBinding">The command binding to register for the specified type.</param>
         public static void RegisterClassCommandBinding(Type type, CommandBinding commandBinding)
         {
-            throw new NotImplementedException();
+            Contract.Require(type, nameof(type));
+            Contract.Require(commandBinding, nameof(commandBinding));
+
+            lock (((IDictionary)classCommandBindings).SyncRoot)
+            {
+                CommandBindingCollection bindings;
+                if (!classCommandBindings.TryGetValue(type, out bindings))
+                {
+                    bindings = new CommandBindingCollection();
+                    classCommandBindings[type] = bindings;
+                }
+                bindings.Add(commandBinding);
+            }
         }
 
         /// <summary>
@@ -268,5 +295,63 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent CanExecuteEvent = EventManager.RegisterRoutedEvent("CanExecute",
             RoutingStrategy.Bubble, typeof(CanExecuteRoutedEventHandler), typeof(CommandManager));
+
+        /// <summary>
+        /// Handles the <see cref="PreviewExecutedEvent"/> routed event for the specified element.
+        /// </summary>
+        internal static void HandlePreviewExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            HandleExecutedInternal(element, command, parameter, data, true);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ExecutedEvent"/> routed event for the specified element.
+        /// </summary>
+        internal static void HandleExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            HandleExecutedInternal(element, command, parameter, data, false);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="PreviewCanExecuteEvent"/> routed event for the specified element.
+        /// </summary>
+        internal static void HandlePreviewCanExecute(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            HandleCanExecuteInternal(element, command, parameter, data, true);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CanExecuteEvent"/> routed event for the specified element.
+        /// </summary>
+        internal static void HandleCanExecute(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            HandleCanExecuteInternal(element, command, parameter, data, false);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="PreviewExecutedEvent"/> and <see cref="ExecutedEvent"/> routed events for the specified element.
+        /// </summary>
+        private static void HandleExecutedInternal(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
+        {
+            if (element == null || command == null)
+                return;
+            
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="PreviewCanExecuteEvent"/> and <see cref="CanExecuteEvent"/> routed events for the specified element.
+        /// </summary>
+        private static void HandleCanExecuteInternal(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data, Boolean preview)
+        {
+            if (element == null || command == null)
+                return;
+
+            throw new NotImplementedException();
+        }
+
+        // Class binding collections
+        private static readonly Dictionary<Type, CommandBindingCollection> classCommandBindings = new Dictionary<Type, CommandBindingCollection>();
+        private static readonly Dictionary<Type, InputBindingCollection> classInputBindings = new Dictionary<Type, InputBindingCollection>();
     }
 }

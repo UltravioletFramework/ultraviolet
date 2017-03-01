@@ -98,13 +98,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the <see cref="PreviewCanExecute"/> event.
         /// </summary>
-        private void RaisePreviewCanExecute(Object sender, ICommand command, Object parameters, CanExecuteEventArgs args) =>
+        private void RaisePreviewCanExecute(Object sender, ICommand command, Object parameters, CanExecuteRoutedEventData args) =>
             PreviewCanExecute?.Invoke(sender, command, parameters, args);
 
         /// <summary>
         /// Raises the <see cref="CanExecute"/> event.
         /// </summary>
-        private void RaiseCanExecute(Object sender, ICommand command, Object parameters, CanExecuteEventArgs args) =>
+        private void RaiseCanExecute(Object sender, ICommand command, Object parameters, CanExecuteRoutedEventData args) =>
             CanExecute?.Invoke(sender, command, parameters, args);
 
         // Property values.

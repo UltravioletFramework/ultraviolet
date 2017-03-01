@@ -53,6 +53,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(OnQueryCursorProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Presentation.View.ViewModelChangedEvent, new UpfRoutedEventHandler(OnViewModelChangedProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewExecutedEvent, new ExecutedRoutedEventHandler(OnPreviewExecutedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.ExecutedEvent, new ExecutedRoutedEventHandler(OnExecutedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewCanExecuteEvent, new CanExecuteRoutedEventHandler(OnPreviewCanExecuteProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.CanExecuteEvent, new CanExecuteRoutedEventHandler(OnCanExecuteProxy));
         }
 
         /// <summary>
@@ -1068,6 +1073,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Effect>(EffectProperty); }
             set { SetValue(EffectProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the collection of input bindings associated with this element.
+        /// </summary>
+        public InputBindingCollection InputBindings
+        {
+            get
+            {
+                if (inputBindings == null)
+                    inputBindings = new InputBindingCollection();
+
+                return inputBindings;
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of command bindings associated with this element.
+        /// </summary>
+        public CommandBindingCollection CommandBindings
+        {
+            get
+            {
+                if (commandBindings == null)
+                    commandBindings = new CommandBindingCollection();
+
+                return commandBindings;
+            }
         }
 
         /// <summary>
@@ -2831,6 +2864,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Handles the <see cref="CommandManager.PreviewExecutedEvent"/> routed event.
+        /// </summary>
+        private static void OnPreviewExecutedProxy(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            CommandManager.HandlePreviewExecuted(element, command, parameter, data);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.ExecutedEvent"/> routed event.
+        /// </summary>
+        private static void OnExecutedProxy(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            CommandManager.HandleExecuted(element, command, parameter, data);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.PreviewCanExecuteEvent"/> routed event.
+        /// </summary>
+        private static void OnPreviewCanExecuteProxy(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            CommandManager.HandlePreviewCanExecute(element, command, parameter, data);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.PreviewCanExecuteEvent"/> routed event.
+        /// </summary>
+        private static void OnCanExecuteProxy(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData args)
+        {
+            CommandManager.HandleCanExecute(element, command, parameter, args);
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="IsVisible"/> dependency property changes.
         /// </summary>
         private static void HandleIsVisibleChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
@@ -3276,12 +3341,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean forceInvalidatePosition;
         private Boolean suppressCacheLayoutParameters;
 
+        // Commanding.
+        private InputBindingCollection inputBindings;
+        private CommandBindingCollection commandBindings;
+
         // State values.
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;
         private Boolean isVisuallyConnectedToViewRoot;
-        private Int32 requiredOutOfBandTargets;
+        private Int32 requiredOutOfBandTargets;        
         
         // The collection of active storyboard instances on this element.
         private readonly Dictionary<Storyboard, UpfPool<StoryboardInstance>.PooledObject> storyboardInstances = 
