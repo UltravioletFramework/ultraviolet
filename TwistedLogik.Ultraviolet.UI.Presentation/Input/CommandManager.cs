@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
 using System.Threading;
+using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -193,7 +194,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
-        /// Occurs when the <see cref="RoutedCommand.Execute(object)"/> method on a <see cref="RoutedCommand"/> is called.
+        /// Occurs when the <see cref="RoutedCommand.Execute(PresentationFoundationView, object)"/> method on a <see cref="RoutedCommand"/> is called.
         /// </summary>
         /// <remarks>
         /// <revt>
@@ -221,7 +222,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
-        /// Occurs when the <see cref="RoutedCommand.Execute(object)"/> method on a <see cref="RoutedCommand"/> is called.
+        /// Occurs when the <see cref="RoutedCommand.Execute(PresentationFoundationView, object)"/> method on a <see cref="RoutedCommand"/> is called.
         /// </summary>
         /// <remarks>
         /// <revt>
@@ -249,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
-        /// Occurs when the <see cref="RoutedCommand.CanExecute(object)"/> method on a <see cref="RoutedCommand"/> is called.
+        /// Occurs when the <see cref="RoutedCommand.CanExecute(PresentationFoundationView, object)"/> method on a <see cref="RoutedCommand"/> is called.
         /// </summary>
         /// <remarks>
         /// <revt>
@@ -277,7 +278,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
-        /// Occurs when the <see cref="RoutedCommand.CanExecute(object)"/> method on a <see cref="RoutedCommand"/> is called.
+        /// Occurs when the <see cref="RoutedCommand.CanExecute(PresentationFoundationView, object)"/> method on a <see cref="RoutedCommand"/> is called.
         /// </summary>
         /// <remarks>
         /// <revt>
@@ -344,7 +345,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             if (FocusManager.GetIsFocusScope(element))
             {
-                // TODO: Redirect event through focus scope
+                var scope = VisualTreeHelper.GetParent(element);
+                if (scope == null)
+                    scope = LogicalTreeHelper.GetParent(element);
+
+                if (scope != null)
+                {
+                    var scopeFocusedElement = FocusManager.GetFocusedElement(scope) as DependencyObject;
+                    if (scopeFocusedElement != null && !FocusManager.IsDescendantOfScope(element, scopeFocusedElement))
+                    {
+                        RedirectCommandEvent(scopeFocusedElement, command, parameter, data, preview);
+                    }
+                }
             }
         }
 
@@ -412,6 +424,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             finally
             {
                 searchList.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Redirects a routed event to the specified element.
+        /// </summary>
+        private static void RedirectCommandEvent(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return;
+
+            try
+            {
+                var view = uiElement.View;
+                var execute = !(data is CanExecuteRoutedEventData);
+                if (execute)
+                {
+                    ((RoutedCommand)command).Execute(view, parameter, uiElement);
+                }
+                else
+                {
+                    ((CanExecuteRoutedEventData)data).CanExecute = ((RoutedCommand)command).CanExecute(view, parameter, uiElement);
+                }
+            }
+            finally
+            {
+                data.Handled = true;
             }
         }
 

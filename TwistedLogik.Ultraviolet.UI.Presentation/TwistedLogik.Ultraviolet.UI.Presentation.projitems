@@ -233,6 +233,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\Mouse.MouseState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MouseButtonState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\RoutedUICommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\RoutedCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Touch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InternalPool.cs" />

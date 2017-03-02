@@ -380,4 +380,9 @@
       <Variant>Templates must specify a ViewModelType attribute.</Variant>
     </en-US>
   </String>
+  <String Key="ELEMENT_DOES_NOT_BELONG_TO_VIEW">
+    <en-US>
+      <Variant>The specified element does not belong to the specified view.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

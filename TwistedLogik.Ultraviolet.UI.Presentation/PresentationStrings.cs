@@ -99,6 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionContainsInvalidResources   = new StringResource(StringDatabase, "COLLECTION_CONTAINS_INVALID_RESOURCES");
         public static readonly StringResource PooledResourceAlreadyReleased        = new StringResource(StringDatabase, "POOLED_RESOURCE_ALREADY_RELEASED");
         public static readonly StringResource TemplateMustSpecifyViewModelType     = new StringResource(StringDatabase, "TEMPLATE_MUST_SPECIFY_VIEW_MODEL_TYPE");
+        public static readonly StringResource ElementDoesNotBelongToView           = new StringResource(StringDatabase, "ELEMENT_DOES_NOT_BELONG_TO_VIEW");
 #pragma warning restore 1591
     }
 }
