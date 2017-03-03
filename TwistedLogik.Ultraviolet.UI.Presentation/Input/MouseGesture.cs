@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <inheritdoc/>
-        public override Boolean MatchesMouseClick(Object targetElement, MouseDevice device, MouseButton button, RoutedEventData data)
+        public override Boolean MatchesMouseClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             switch (MouseAction)
             {
@@ -147,11 +147,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 case MouseAction.MiddleClick:
                     return button == MouseButton.Middle && Keyboard.Modifiers == Modifiers;
             }
-            return base.MatchesMouseClick(targetElement, device, button, data);
+            return base.MatchesMouseClick(device, button, data);
         }
 
         /// <inheritdoc/>
-        public override Boolean MatchesMouseDoubleClick(Object targetElement, MouseDevice device, MouseButton button, RoutedEventData data)
+        public override Boolean MatchesMouseDoubleClick(MouseDevice device, MouseButton button, RoutedEventData data)
         {
             switch (MouseAction)
             {
@@ -164,18 +164,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 case MouseAction.MiddleDoubleClick:
                     return button == MouseButton.Middle && Keyboard.Modifiers == Modifiers;
             }
-            return base.MatchesMouseDoubleClick(targetElement, device, button, data);
+            return base.MatchesMouseDoubleClick(device, button, data);
         }
 
         /// <inheritdoc/>
-        public override Boolean MatchesMouseWheel(Object targetElement, MouseDevice device, Double x, Double y, RoutedEventData data)
+        public override Boolean MatchesMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data)
         {
             switch (MouseAction)
             {
                 case MouseAction.WheelClick:
                     return Keyboard.Modifiers == Modifiers;
             }
-            return base.MatchesMouseWheel(targetElement, device, x, y, data);
+            return base.MatchesMouseWheel(device, x, y, data);
         }
 
         /// <summary>

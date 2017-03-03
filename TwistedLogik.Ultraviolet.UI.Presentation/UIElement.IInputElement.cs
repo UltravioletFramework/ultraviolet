@@ -1742,7 +1742,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void OnKeyDownProxy(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
-            ((UIElement)element).OnKeyDown(device, key, modifiers, data);
+            if (!data.Handled)
+                CommandManager.HandleKeyDownTranslation(element, device, key, modifiers, data);
+
+            if (!data.Handled)
+                ((UIElement)element).OnKeyDown(device, key, modifiers, data);
         }
 
         /// <summary>
@@ -1864,7 +1868,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void OnMouseClickProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseClick(device, button, data);
+            if (!data.Handled)
+                CommandManager.HandleMouseClickTranslation(element, device, button, data);
+
+            if (!data.Handled)
+                ((UIElement)element).OnMouseClick(device, button, data);
         }
 
         /// <summary>
@@ -1872,7 +1880,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void OnMouseDoubleClickProxy(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseDoubleClick(device, button, data);
+            if (!data.Handled)
+                CommandManager.HandleMouseDoubleClickTranslation(element, device, button, data);
+
+            if (!data.Handled)
+                ((UIElement)element).OnMouseDoubleClick(device, button, data);
         }
 
         /// <summary>
@@ -1880,7 +1892,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void OnMouseWheelProxy(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
         {
-            ((UIElement)element).OnMouseWheel(device, x, y, data);
+            if (!data.Handled)
+                CommandManager.HandleMouseWheelTranslation(element, device, x, y, data);
+
+            if (!data.Handled)
+                ((UIElement)element).OnMouseWheel(device, x, y, data);
         }
 
         /// <summary>

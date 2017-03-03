@@ -142,7 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <inheritdoc/>
-        public override Boolean MatchesKeyDown(Object targetElement, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        public override Boolean MatchesKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
         {
             return key == Key && modifiers == Modifiers;
         }

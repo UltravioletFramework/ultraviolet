@@ -52,6 +52,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public Boolean CanExecute(PresentationFoundationView view, Object parameter, IInputElement target)
         {
+            var @continue = false;
+            return CanExecute(view, parameter, target, out @continue);
+        }
+
+        /// <summary>
+        /// Determines whether the command can be executed.
+        /// </summary>
+        /// <param name="view">The view within which the command is being executed.</param>
+        /// <param name="parameter">The command parameter, or <see langword="null"/> if the command
+        /// does not require a parameter.</param>
+        /// <param name="target">The element within <paramref name="view"/> at which to begin
+        /// searching for command handlers.</param>
+        /// <param name="continue">A value indicating whether command routing should continue.</param>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        public Boolean CanExecute(PresentationFoundationView view, Object parameter, IInputElement target, out Boolean @continue)
+        {
             Contract.Require(view, nameof(view));
 
             var uiElement = target as UIElement;
@@ -72,6 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         evt(uiElement, this, parameter, data);
                     }
 
+                    @continue = data.ContinueRouting;
                     return data.CanExecute;
                 }
                 finally
@@ -81,6 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             }
             else
             {
+                @continue = false;
                 return false;
             }
         }
@@ -166,7 +184,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 return inputGestures;
             }
         }
-
+        
         // Property values.
         private readonly String name;
         private readonly Type ownerType;

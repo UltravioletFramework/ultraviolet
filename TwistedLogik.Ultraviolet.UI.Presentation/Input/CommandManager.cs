@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
@@ -299,6 +300,170 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             RoutingStrategy.Bubble, typeof(CanExecuteRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
+        /// Attempts to translate a mouse click event into a command invocation for the specified element.
+        /// </summary>
+        internal static void HandleMouseClickTranslation(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return;
+
+            // Check element input commands
+            var invocation = FindMatchingBinding_MouseClick(uiElement.InputBindings, device, button, data);
+
+            // Check class input bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classInputBindings).SyncRoot)
+                {
+                    var bindings = default(InputBindingCollection);
+                    if (classInputBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_MouseClick(bindings, device, button, data);
+                }
+            }
+
+            // Check element command bindings
+            invocation = invocation ?? FindMatchingBinding_MouseClick(uiElement.CommandBindings, device, button, data);
+
+            // Check class command bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classCommandBindings).SyncRoot)
+                {
+                    var bindings = default(CommandBindingCollection);
+                    if (classCommandBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_MouseClick(bindings, device, button, data);
+                }
+            }
+
+            // Execute command, if found
+            ExecuteTranslatedCommand(invocation, uiElement, data);
+        }
+
+        /// <summary>
+        /// Attempts to translate a mouse double click event into a command invocation for the specified element.
+        /// </summary>
+        internal static void HandleMouseDoubleClickTranslation(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return;
+
+            // Check element input commands
+            var invocation = FindMatchingBinding_MouseDoubleClick(uiElement.InputBindings, device, button, data);
+
+            // Check class input bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classInputBindings).SyncRoot)
+                {
+                    var bindings = default(InputBindingCollection);
+                    if (classInputBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_MouseDoubleClick(bindings, device, button, data);
+                }
+            }
+
+            // Check element command bindings
+            invocation = invocation ?? FindMatchingBinding_MouseDoubleClick(uiElement.CommandBindings, device, button, data);
+
+            // Check class command bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classCommandBindings).SyncRoot)
+                {
+                    var bindings = default(CommandBindingCollection);
+                    if (classCommandBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_MouseDoubleClick(bindings, device, button, data);
+                }
+            }
+
+            // Execute command, if found
+            ExecuteTranslatedCommand(invocation, uiElement, data);
+        }
+
+        /// <summary>
+        /// Attempts to translate a mouse wheel event into a command invocation for the specified element.
+        /// </summary>
+        internal static void HandleMouseWheelTranslation(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return;
+
+            // Check element input commands
+            var invocation = FindMatchingBinding_MouseWheel(uiElement.InputBindings, device, x, y, data);
+
+            // Check class input bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classInputBindings).SyncRoot)
+                {
+                    var bindings = default(InputBindingCollection);
+                    if (classInputBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_MouseWheel(bindings, device, x, y, data);
+                }
+            }
+
+            // Check element command bindings
+            invocation = invocation ?? FindMatchingBinding_MouseWheel(uiElement.CommandBindings, device, x, y, data);
+
+            // Check class command bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classCommandBindings).SyncRoot)
+                {
+                    var bindings = default(CommandBindingCollection);
+                    if (classCommandBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_MouseWheel(bindings, device, x, y, data);
+                }
+            }
+
+            // Execute command, if found
+            ExecuteTranslatedCommand(invocation, uiElement, data);
+        }
+
+        /// <summary>
+        /// Attempts to translate a key down event into a command invocation for the specified element.
+        /// </summary>
+        internal static void HandleKeyDownTranslation(DependencyObject element, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return;
+
+            // Check element input commands
+            var invocation = FindMatchingBinding_KeyDown(uiElement.InputBindings, device, key, modifiers, data);
+
+            // Check class input bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classInputBindings).SyncRoot)
+                {
+                    var bindings = default(InputBindingCollection);
+                    if (classInputBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_KeyDown(bindings, device, key, modifiers, data);
+                }
+            }
+
+            // Check element command bindings
+            invocation = invocation ?? FindMatchingBinding_KeyDown(uiElement.CommandBindings, device, key, modifiers, data);
+
+            // Check class command bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classCommandBindings).SyncRoot)
+                {
+                    var bindings = default(CommandBindingCollection);
+                    if (classCommandBindings.TryGetValue(uiElement.GetType(), out bindings))
+                        invocation = FindMatchingBinding_KeyDown(bindings, device, key, modifiers, data);
+                }
+            }
+
+            // Execute command, if found
+            ExecuteTranslatedCommand(invocation, uiElement, data);
+        }
+
+        /// <summary>
         /// Handles the <see cref="PreviewExecutedEvent"/> routed event for the specified element.
         /// </summary>
         internal static void HandlePreviewExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
@@ -453,6 +618,182 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 data.Handled = true;
             }
+        }
+        
+        /// <summary>
+        /// Searches the specified collection of input bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_MouseClick(InputBindingCollection bindings, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                if (binding.Command != null && (binding?.Gesture?.MatchesMouseClick(device, button, data) ?? false))
+                    return new CommandInvocationData(binding.CommandTarget, binding.Command, binding.CommandParameter);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of input bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_MouseDoubleClick(InputBindingCollection bindings, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                if (binding.Command != null && (binding?.Gesture?.MatchesMouseDoubleClick(device, button, data) ?? false))
+                    return new CommandInvocationData(binding.CommandTarget, binding.Command, binding.CommandParameter);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of input bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_MouseWheel(InputBindingCollection bindings, MouseDevice device, Double x, Double y, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                if (binding.Command != null && (binding?.Gesture?.MatchesMouseWheel(device, x, y, data) ?? false))
+                    return new CommandInvocationData(binding.CommandTarget, binding.Command, binding.CommandParameter);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of input bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_KeyDown(InputBindingCollection bindings, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                if (binding.Command != null && (binding?.Gesture?.MatchesKeyDown(device, key, modifiers, data) ?? false))
+                    return new CommandInvocationData(binding.CommandTarget, binding.Command, binding.CommandParameter);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of command bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_MouseClick(CommandBindingCollection bindings, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                var command = binding.Command as RoutedCommand;
+                if (command == null)
+                    continue;
+
+                var gestures = command.InputGestures;
+                for (int j = gestures.Count - 1; j >= 0; j--)
+                {
+                    if (gestures[j].MatchesMouseClick(device, button, data))
+                        return new CommandInvocationData(null, binding.Command, null);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of command bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_MouseDoubleClick(CommandBindingCollection bindings, MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                var command = binding.Command as RoutedCommand;
+                if (command == null)
+                    continue;
+
+                var gestures = command.InputGestures;
+                for (int j = gestures.Count - 1; j >= 0; j--)
+                {
+                    if (gestures[j].MatchesMouseDoubleClick(device, button, data))
+                        return new CommandInvocationData(null, binding.Command, null);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of command bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_MouseWheel(CommandBindingCollection bindings, MouseDevice device, Double x, Double y, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                var command = binding.Command as RoutedCommand;
+                if (command == null)
+                    continue;
+
+                var gestures = command.InputGestures;
+                for (int j = gestures.Count - 1; j >= 0; j--)
+                {
+                    if (gestures[j].MatchesMouseWheel(device, x, y, data))
+                        return new CommandInvocationData(null, binding.Command, null);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of command bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_KeyDown(CommandBindingCollection bindings, KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                var command = binding.Command as RoutedCommand;
+                if (command == null)
+                    continue;
+
+                var gestures = command.InputGestures;
+                for (int j = gestures.Count - 1; j >= 0; j--)
+                {
+                    if (gestures[j].MatchesKeyDown(device, key, modifiers, data))
+                        return new CommandInvocationData(null, binding.Command, null);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Executes a command as a result of an input event.
+        /// </summary>
+        private static void ExecuteTranslatedCommand(CommandInvocationData? invocation, UIElement element, RoutedEventData data)
+        {
+            if (invocation == null || element == null)
+                return;
+
+            var @continue = false;
+            var commandData = invocation.GetValueOrDefault();
+            var commandTarget = commandData.CommandTarget ?? element;
+            var commandParameter = commandData.CommandParameter;
+            var command = commandData.Command;
+
+            var routedCommand = command as RoutedCommand;
+            if (routedCommand != null)
+            {
+                if (routedCommand.CanExecute(element.View, commandParameter, commandTarget, out @continue))
+                {
+                    routedCommand.Execute(element.View, commandParameter, commandTarget);
+                    @continue = false;
+                }
+            }
+            else
+            {
+                if (command.CanExecute(element.View, commandParameter))
+                    command.Execute(element.View, commandParameter);
+            }
+
+            data.Handled = !@continue;
         }
 
         // Class binding collections
