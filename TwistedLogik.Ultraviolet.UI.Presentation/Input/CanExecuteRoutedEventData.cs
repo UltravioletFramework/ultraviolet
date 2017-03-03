@@ -18,13 +18,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// pool and initializes it for use with a routed event handler.
         /// </summary>
         /// <param name="source">The object that raised the event.</param>
-        /// <param name="canExecute">A value indicating whether the command can be executed with the specified parameter.</param>
-        /// <param name="continueRouting">A value indicating whether the input event that caused the command to execute should continue its route.</param>
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
         /// <returns>The <see cref="RoutedEventData"/> instance that was retrieved.</returns>
-        public static CanExecuteRoutedEventData Retrieve(DependencyObject source, Boolean canExecute = false, Boolean continueRouting = false, Boolean handled = false, Boolean autorelease = true)
+        public static new CanExecuteRoutedEventData Retrieve(Object source, Boolean handled = false, Boolean autorelease = true)
         {
             var data = default(CanExecuteRoutedEventData);
 
@@ -32,8 +30,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 data = pool.Retrieve();
 
             data.OnRetrieved(pool, source, handled, autorelease);
-            data.canExecute = canExecute;
-            data.continueRouting = continueRouting;
+            data.canExecute = false;
+            data.continueRouting = false;
             return data;
         }
 
@@ -58,7 +56,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
         
         /// <inheritdoc/>
-        protected override void OnRetrieved(IPool origin, DependencyObject source, Boolean handled, Boolean autorelease)
+        protected override void OnRetrieved(IPool origin, Object source, Boolean handled, Boolean autorelease)
         {
             base.OnRetrieved(origin, source, handled, autorelease);
         }

@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
         /// <returns>The <see cref="TextEntryValidationRoutedEventData"/> instance that was retrieved.</returns>
-        public static new TextEntryValidationRoutedEventData Retrieve(DependencyObject source, Boolean handled = false, Boolean autorelease = true)
+        public static new TextEntryValidationRoutedEventData Retrieve(Object source, Boolean handled = false, Boolean autorelease = true)
         {
             var data = default(TextEntryValidationRoutedEventData);
 
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Boolean Valid { get; set; }
 
         /// <inheritdoc/>
-        protected override void OnRetrieved(IPool origin, DependencyObject source, Boolean handled, Boolean autorelease)
+        protected override void OnRetrieved(IPool origin, Object source, Boolean handled, Boolean autorelease)
         {
             Valid = true;
 

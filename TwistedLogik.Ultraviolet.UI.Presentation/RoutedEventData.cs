@@ -24,7 +24,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
         /// <returns>The <see cref="RoutedEventData"/> instance that was retrieved.</returns>
-        public static RoutedEventData Retrieve(DependencyObject source, Boolean handled = false, Boolean autorelease = true)
+        public static RoutedEventData Retrieve(Object source, Boolean handled = false, Boolean autorelease = true)
         {
             var data = default(RoutedEventData);
 
@@ -88,7 +88,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="handled">A value indicating whether the event has been handled.</param>
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
-        protected virtual void OnRetrieved(IPool origin, DependencyObject source, Boolean handled, Boolean autorelease)
+        protected virtual void OnRetrieved(IPool origin, Object source, Boolean handled, Boolean autorelease)
         {
             this.originalSource = source;
             this.source = source;
