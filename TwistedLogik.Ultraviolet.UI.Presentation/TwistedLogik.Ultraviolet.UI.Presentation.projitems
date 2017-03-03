@@ -206,6 +206,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandManager.CommandBindingKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandManager.CommandInvocationData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\CommandRequeryManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputGestureCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InputBindingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CommandBindingCollection.cs" />

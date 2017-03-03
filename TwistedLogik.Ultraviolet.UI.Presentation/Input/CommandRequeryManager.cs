@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using TwistedLogik.Nucleus.Collections;
+
+namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+{
+    /// <summary>
+    /// Maintains a list of weak references to objects which are listening to the <see cref="CommandManager.RequerySuggested"/> event.
+    /// </summary>
+    internal sealed class CommandRequeryManager : UltravioletResource
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandRequeryManager"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        public CommandRequeryManager(UltravioletContext uv)
+            : base(uv)
+        {
+            uv.Updating += Updating;
+        }
+        
+        /// <summary>
+        /// Adds an event handler to the listener list.
+        /// </summary>
+        /// <param name="handler">The event handler to add to the list.</param>
+        public void Add(EventHandler handler)
+        {
+            listenersLock.EnterWriteLock();
+            try
+            {
+                var weakref = refpool.Retrieve();
+                weakref.Target = handler;
+                listeners.Add(weakref);
+                needsCleanup = true;
+            }
+            finally
+            {
+                listenersLock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Removes an event handler from the listener list.
+        /// </summary>
+        /// <param name="handler">The event handler to remove from the list.</param>
+        public void Remove(EventHandler handler)
+        {
+            listenersLock.EnterWriteLock();
+            try
+            {
+                for (int i = 0; i < listeners.Count; i++)
+                {
+                    var reference = listeners[i];
+                    if (ReferenceEquals(reference.Target, handler))
+                    {
+                        var weakref = listeners[i];
+                        listeners.RemoveAt(i);
+                        refpool.Release(weakref);
+                        needsCleanup = true;
+                        break;
+                    }
+                }
+            }
+            finally
+            {
+                listenersLock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Raises a requery event.
+        /// </summary>
+        public void Raise()
+        {
+            listenersLock.EnterReadLock();
+            try
+            {
+                for (int i = 0; i < listeners.Count; i++)
+                {
+                    (listeners[i].Target as EventHandler)?.Invoke(null, EventArgs.Empty);
+                }
+            }
+            finally
+            {
+                listenersLock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Removes dead references from the list of listeners.
+        /// </summary>
+        public void Cleanup()
+        {
+            if (!needsCleanup)
+                return;
+
+            listenersLock.EnterWriteLock();
+            try
+            {
+                var index = 0;
+                while (index < listeners.Count)
+                {
+                    if (!listeners[index].IsAlive)
+                    {
+                        listeners.RemoveAt(index);
+                    }
+                    else
+                    {
+                        index++;
+                    }
+                }
+            }
+            finally
+            {
+                listenersLock.ExitWriteLock();
+                needsCleanup = false;
+            }
+        }
+
+        /// <summary>
+        /// Cleans up the listener list when the Ultraviolet context is updated.
+        /// </summary>
+        private void Updating(UltravioletContext uv, UltravioletTime time)
+        {
+            Cleanup();
+        }
+
+        // State values.
+        private readonly IPool<WeakReference> refpool = 
+            new ExpandingPool<WeakReference>(8, 32, () => new WeakReference(null), item => item.Target = null);
+        private readonly List<WeakReference> listeners = new List<WeakReference>();
+        private readonly ReaderWriterLockSlim listenersLock = new ReaderWriterLockSlim();
+        private Boolean needsCleanup;
+    }
+}

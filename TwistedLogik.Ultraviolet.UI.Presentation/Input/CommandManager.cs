@@ -32,6 +32,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     public partial class CommandManager
     {
         /// <summary>
+        /// Forces the <see cref="CommandManager"/> to raise the <see cref="RequerySuggested"/> event.
+        /// </summary>
+        public static void InvalidateRequerySuggested()
+        {
+            var manager = requeryManagerSingleton.Value;
+            if (manager != null)
+                manager.Raise();
+        }
+
+        /// <summary>
         /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/>
         /// attached event to the specified element.
         /// </summary>
@@ -184,6 +194,29 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     classCommandBindings[type] = bindings;
                 }
                 bindings.Add(commandBinding);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the <see cref="CommandManager"/> detects conditions that might change the ability of a command to execute.
+        /// </summary>
+        public static event EventHandler RequerySuggested
+        {
+            add
+            {
+                var manager = requeryManagerSingleton.Value;
+                if (manager == null)
+                    throw new InvalidOperationException(UltravioletStrings.ContextMissing);
+
+                manager.Add(value);
+            }
+            remove
+            {
+                var manager = requeryManagerSingleton.Value;
+                if (manager == null)
+                    throw new InvalidOperationException(UltravioletStrings.ContextMissing);
+
+                manager.Remove(value);
             }
         }
 
@@ -795,6 +828,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             data.Handled = !@continue;
         }
+
+        // Manager for status requery requests
+        private static readonly UltravioletSingleton<CommandRequeryManager> requeryManagerSingleton =
+            new UltravioletSingleton<CommandRequeryManager>(UltravioletSingletonFlags.DisabledInServiceMode, uv => new CommandRequeryManager(uv));
 
         // Class binding collections
         private static readonly Dictionary<Type, CommandBindingCollection> classCommandBindings = new Dictionary<Type, CommandBindingCollection>();

@@ -151,8 +151,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <inheritdoc/>
         public event EventHandler CanExecuteChanged
         {
-            add { throw new NotImplementedException(); }
-            remove { throw new NotImplementedException(); }
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         /// <summary>
