@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Nucleus.Data;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +19,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public partial class PresentationFoundation : UltravioletResource
     {
+        /// <summary>
+        /// Initializes the <see cref="PresentationFoundation"/> type.
+        /// </summary>
+        static PresentationFoundation()
+        {
+            CommandManager.RegisterValueResolvers();
+        }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundation"/> class.
         /// </summary>
