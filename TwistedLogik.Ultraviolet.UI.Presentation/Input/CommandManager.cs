@@ -334,6 +334,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             RoutingStrategy.Bubble, typeof(CanExecuteRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
+        /// Determines whether the specified command source can execute its command.
+        /// </summary>
+        internal static Boolean CheckCanExecuteSource(PresentationFoundationView view, ICommandSource source)
+        {
+            Contract.Require(view, nameof(view));
+            Contract.Require(source, nameof(source));
+
+            var command = source.Command;
+            if (command == null)
+                return false;
+
+            var routedCommand = command as RoutedCommand;
+            if (routedCommand != null)
+            {
+                var target = source.CommandTarget ?? source as IInputElement;
+                return routedCommand.CanExecute(view, source.CommandParameter, target);
+            }
+
+            return command.CanExecute(view, source.CommandParameter);
+        }
+        
+        /// <summary>
+        /// Executes the specified command source's command.
+        /// </summary>
+        internal static void ExecuteSource(PresentationFoundationView view, ICommandSource source)
+        {
+            Contract.Require(view, nameof(view));
+            Contract.Require(source, nameof(source));
+
+            var command = source.Command;
+            if (command == null)
+                return;
+
+            var routedCommand = command as RoutedCommand;
+            if (routedCommand != null)
+            {
+                var target = source.CommandTarget ?? source as IInputElement;
+                routedCommand.Execute(view, source.CommandParameter, target);
+                return;
+            }
+
+            command.Execute(view, source.CommandParameter);
+        }
+
+        /// <summary>
         /// Registers the value resolvers used to parse commands.
         /// </summary>
         internal static void RegisterValueResolvers()

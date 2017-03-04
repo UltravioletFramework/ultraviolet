@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    public abstract class ButtonBase : ContentControl
+    public abstract class ButtonBase : ContentControl, ICommandSource
     {
         /// <summary>
         /// Initializes the <see cref="ButtonBase"/> type.
@@ -29,6 +29,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             : base(uv, name)
         {
             VisualStateGroups.Create("common", new[] { "normal", "hover", "pressed", "disabled" });
+        }
+
+        /// <inheritdoc/>
+        public IInputElement CommandTarget
+        {
+            get { return GetValue<IInputElement>(CommandTargetProperty); }
+            set { SetValue(CommandTargetProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public ICommand Command
+        {
+            get { return GetValue<ICommand>(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        public Object CommandParameter
+        {
+            get { return GetValue<Object>(CommandParameterProperty); }
+            set { SetValue(CommandParameterProperty, value); }
         }
 
         /// <summary>
@@ -102,6 +123,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Identifies the <see cref="CommandTarget"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="CommandTarget"/> dependency property.</value>
+        public static readonly DependencyProperty CommandTargetProperty = DependencyProperty.Register("CommandTarget", typeof(IInputElement), typeof(ButtonBase),
+            new PropertyMetadata<IInputElement>(null));
+
+        /// <summary>
+        /// Identifies the <see cref="Command"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Command"/> dependency property.</value>
+        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonBase),
+            new PropertyMetadata<ICommand>(null, HandleCommandChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="CommandParameter"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="CommandParameter"/> dependency property.</value>
+        public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(Object), typeof(ButtonBase),
+            new PropertyMetadata<Object>(null));
+
+        /// <summary>
         /// The private access key for the <see cref="IsPressed"/> read-only dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsPressedPropertyKey = DependencyProperty.RegisterReadOnly("IsPressed", typeof(Boolean), typeof(ButtonBase),
@@ -133,6 +175,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>The identifier for the <see cref="ClickByUser"/> event.</value>
         public static readonly RoutedEvent ClickByUserEvent = EventManager.RegisterRoutedEvent("ClickByUser", RoutingStrategy.Bubble,
             typeof(UpfRoutedEventHandler), typeof(ButtonBase));
+        
+        /// <inheritdoc/>
+        protected override Boolean IsEnabledCore => base.IsEnabledCore && commandCanExecute;
 
         /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
@@ -336,6 +381,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRoutedEventHandler>(ClickEvent);
             evtDelegate(this, evtData);
+
+            CommandManager.ExecuteSource(View, this);
         }
 
         /// <summary>
@@ -357,6 +404,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="Command"/> dependency property changes.
+        /// </summary>
+        private static void HandleCommandChanged(DependencyObject dobj, ICommand oldValue, ICommand newValue)
+        {
+            var button = (ButtonBase)dobj;
+
+            if (oldValue != null)
+                button.DetachCanExecuteChanged(oldValue);
+
+            if (newValue != null)
+                button.AttachCanExecuteChanged(newValue);
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="UIElement.IsEnabledChanged"/> dependency property changes.
         /// </summary>
         private static void HandleIsEnabledChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
@@ -373,6 +434,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var buttonBase = (ButtonBase)dobj;
             buttonBase.UpdateCommonState();
             buttonBase.OnIsPressedChanged();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ICommand.CanExecuteChanged"/> event for the button's command.
+        /// </summary>
+        private void OnCanExecuteChanged(Object sender, EventArgs e)
+        {
+            UpdateCanExecute();
         }
 
         /// <summary>
@@ -451,5 +520,42 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 VisualStateGroups.GoToState("common", "disabled");
             }
         }
+
+        /// <summary>
+        /// Updates the button when its command's execution state changes.
+        /// </summary>
+        private void UpdateCanExecute()
+        {
+            if (View == null)
+            {
+                commandCanExecute = false;
+            }
+            else
+            {
+                commandCanExecute = (Command == null) || CommandManager.CheckCanExecuteSource(View, this);
+            }
+            CoerceValue(IsEnabledProperty);
+        }
+
+        /// <summary>
+        /// Attaches an event handler to the specified command's <see cref="ICommand.CanExecuteChanged"/> event.
+        /// </summary>
+        private void AttachCanExecuteChanged(ICommand command)
+        {
+            CanExecuteChangedEventManager.AddHandler(command, OnCanExecuteChanged);
+            UpdateCanExecute();
+        }
+
+        /// <summary>
+        /// Detaches an event handler from the specified command's <see cref="ICommand.CanExecuteChanged"/> event.
+        /// </summary>
+        private void DetachCanExecuteChanged(ICommand command)
+        {
+            CanExecuteChangedEventManager.RemoveHandler(command, OnCanExecuteChanged);
+            UpdateCanExecute();
+        }
+
+        // State values.
+        private Boolean commandCanExecute;
     }
 }
