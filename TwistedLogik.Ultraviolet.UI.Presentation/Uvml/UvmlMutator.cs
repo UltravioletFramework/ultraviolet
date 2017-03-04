@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
 
             var elementReference = value as UvmlElementReference;
             if (elementReference != null)
-                return (T)(Object)elementReference.GetReferencedElement(context.Namescope);
+                return (T)elementReference.GetReferencedElement(context.Namescope);
 
             return (T)value;
         }

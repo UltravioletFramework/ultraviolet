@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
             if (String.Equals(Literal, "{{null}}", StringComparison.Ordinal))
                 return Type.IsValueType ? Activator.CreateInstance(Type) : null;
 
-            if (typeof(UIElement).IsAssignableFrom(Type))
+            if (typeof(IInputElement).IsAssignableFrom(Type))
             {
                 return new UvmlElementReference(Literal);
             }

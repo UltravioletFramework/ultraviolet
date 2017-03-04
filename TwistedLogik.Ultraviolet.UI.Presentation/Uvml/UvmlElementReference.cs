@@ -22,7 +22,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
         /// </summary>
         /// <param name="namescope">The namescope from which to retrieve the referenced element.</param>
         /// <returns></returns>
-        public UIElement GetReferencedElement(Namescope namescope)
+        public IInputElement GetReferencedElement(Namescope namescope)
         {
             Contract.Require(namescope, nameof(namescope));
 
