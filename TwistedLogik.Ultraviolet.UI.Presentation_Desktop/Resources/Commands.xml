@@ -198,6 +198,16 @@
       <Variant>Move Focus Down</Variant>
     </en-US>
   </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_PAGE_UP">
+    <en-US>
+      <Variant>Move Focus Page Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_PAGE_DOWN">
+    <en-US>
+      <Variant>Move Focus Page Down</Variant>
+    </en-US>
+  </String>
   <String Key="COMPONENT_COMMAND_SCROLL_DOWN">
     <en-US>
       <Variant>Scroll Down</Variant>
@@ -216,6 +226,31 @@
   <String Key="COMPONENT_COMMAND_SCROLL_UP">
     <en-US>
       <Variant>Scroll Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_DOWN">
+    <en-US>
+      <Variant>Scroll Page Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_LEFT">
+    <en-US>
+      <Variant>Scroll Page Left</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_RIGHT">
+    <en-US>
+      <Variant>Scroll Page Right</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_UP">
+    <en-US>
+      <Variant>Scroll Page Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_BY_LINE">
+    <en-US>
+      <Variant>Scroll by Line</Variant>
     </en-US>
   </String>
   <String Key="COMPONENT_COMMAND_SELECT_TO_END">
