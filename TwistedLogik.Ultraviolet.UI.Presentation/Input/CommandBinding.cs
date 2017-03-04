@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents a binding between a command and the event handlers which implement the command.
     /// </summary>
+    [UvmlKnownType]
     public class CommandBinding
     {
         /// <summary>
@@ -121,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 }
                 finally
                 {
-                    data.Release();
+                    canExecuteData.Release();
                 }
             }
         }

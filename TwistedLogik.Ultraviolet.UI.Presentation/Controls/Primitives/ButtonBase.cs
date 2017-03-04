@@ -190,6 +190,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            UpdateCanExecute();
+            base.OnViewChanged(oldView, newView);
+        }
+
+        /// <inheritdoc/>
         protected override void OnIsMouseOverChanged()
         {
             UpdateCommonState();

@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents a binding between an input gesture and a command.
     /// </summary>
+    [UvmlKnownType]
     public class InputBinding : DependencyObject, ICommandSource
     {
         /// <summary>

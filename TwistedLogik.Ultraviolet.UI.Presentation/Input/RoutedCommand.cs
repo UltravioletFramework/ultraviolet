@@ -144,8 +144,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     data.Release();
                 }
             }
-
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
