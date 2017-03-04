@@ -6,6 +6,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents an association between a key gesture and a command.
     /// </summary>
+    [UvmlKnownType]
     public class KeyBinding : InputBinding
     {
         /// <summary>

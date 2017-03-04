@@ -5,6 +5,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <summary>
     /// Represents an association between a mouse gesture and a command.
     /// </summary>
+    [UvmlKnownType]
     public class MouseBinding : InputBinding
     {
         /// <summary>
@@ -59,13 +60,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Identifies the <see cref="MouseAction"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MouseActionProperty = DependencyProperty.Register(nameof(MouseAction), typeof(MouseAction), typeof(KeyBinding),
+        public static readonly DependencyProperty MouseActionProperty = DependencyProperty.Register(nameof(MouseAction), typeof(MouseAction), typeof(MouseBinding),
             new PropertyMetadata<MouseAction>(MouseAction.None, HandleMouseActionChanged));
 
         /// <summary>
         /// Identifies the <see cref="Modifiers"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ModifiersProperty = DependencyProperty.Register(nameof(Modifiers), typeof(ModifierKeys), typeof(KeyBinding),
+        public static readonly DependencyProperty ModifiersProperty = DependencyProperty.Register(nameof(Modifiers), typeof(ModifierKeys), typeof(MouseBinding),
             new PropertyMetadata<ModifierKeys>(ModifierKeys.None, HandleModifiersChanged));
 
         /// <summary>

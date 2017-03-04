@@ -51,8 +51,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         public Object CommandParameter
         {
-            get { return GetValue<Object>(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get { return GetValue<Object>(CommandParameterProperty); }
+            set { SetValue(CommandParameterProperty, value); }
         }
 
         /// <summary>
