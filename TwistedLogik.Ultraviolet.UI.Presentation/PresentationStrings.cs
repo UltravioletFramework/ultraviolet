@@ -18,6 +18,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 StringDatabase.LoadFromStream(stream);
             }
+            using (var stream = asm.GetManifestResourceStream("TwistedLogik.Ultraviolet.UI.Presentation.Resources.Commands.xml"))
+            {
+                StringDatabase.LoadFromStream(stream);
+            }
         }
 
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
