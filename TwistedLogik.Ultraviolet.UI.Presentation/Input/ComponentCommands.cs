@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -86,26 +87,61 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets the value that represents the Move Focus Down command.
         /// </summary>
         public static RoutedUICommand MoveFocusDown => moveFocusDown.Value;
-        
+
+        /// <summary>
+        /// Gets the value that represents the Move Focus Page Up command.
+        /// </summary>
+        public static RoutedUICommand MoveFocusPageUp => moveFocusPageUp.Value;
+
+        /// <summary>
+        /// Gets the value that represents the Move Focus Page Down command.
+        /// </summary>
+        public static RoutedUICommand MoveFocusPageDown => moveFocusPageDown.Value;
+
         /// <summary>
         /// Gets the value that represents the Scroll Down command.
         /// </summary>
-        public static RoutedUICommand ScrollDown => moveDown.Value;
+        public static RoutedUICommand ScrollDown => scrollDown.Value;
 
         /// <summary>
         /// Gets the value that represents the Scroll Left command.
         /// </summary>
-        public static RoutedUICommand ScrollLeft => moveLeft.Value;
+        public static RoutedUICommand ScrollLeft => scrollLeft.Value;
 
         /// <summary>
         /// Gets the value that represents the Scroll Right command.
         /// </summary>
-        public static RoutedUICommand ScrollRight => moveRight.Value;
+        public static RoutedUICommand ScrollRight => scrollRight.Value;
 
         /// <summary>
         /// Gets the value that represents the Scroll Up command.
         /// </summary>
-        public static RoutedUICommand ScrollUp => moveUp.Value;
+        public static RoutedUICommand ScrollUp => scrollUp.Value;
+
+        /// <summary>
+        /// Gets the value that represents the Scroll Page Down command.
+        /// </summary>
+        public static RoutedUICommand ScrollPageDown => scrollPageDown.Value;
+
+        /// <summary>
+        /// Gets the value that represents the Scroll Page Left command.
+        /// </summary>
+        public static RoutedUICommand ScrollPageLeft => scrollPageLeft.Value;
+
+        /// <summary>
+        /// Gets the value that represents the Scroll Page Right command.
+        /// </summary>
+        public static RoutedUICommand ScrollPageRight => scrollPageRight.Value;
+
+        /// <summary>
+        /// Gets the value that represents the Scroll Page Up command.
+        /// </summary>
+        public static RoutedUICommand ScrollPageUp => scrollPageUp.Value;
+
+        /// <summary>
+        /// Gets the value that represents the Scroll by Line command.
+        /// </summary>
+        public static RoutedUICommand ScrollByLine => scrollByLine.Value;
 
         /// <summary>
         /// Gets the value that represents the Select to End command.
@@ -126,6 +162,115 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Gets the value that represents the Select to Page Up command.
         /// </summary>
         public static RoutedUICommand SelectToPageUp => selectToPageUp.Value;
+
+        /// <summary>
+        /// Gets the collection of default gestures for the specified command.
+        /// </summary>
+        private static InputGestureCollection GetInputGestures(String name)
+        {
+            var gestures = new InputGestureCollection();
+
+            switch (name)
+            {
+                case nameof(ScrollPageUp):
+                    gestures.Add(new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
+                    break;
+
+                case nameof(ScrollPageDown):
+                    gestures.Add(new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
+                    break;
+
+                case nameof(MoveLeft):
+                    gestures.Add(new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
+                    break;
+
+                case nameof(MoveRight):
+                    gestures.Add(new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
+                    break;
+
+                case nameof(MoveUp):
+                    gestures.Add(new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
+                    break;
+
+                case nameof(MoveDown):
+                    gestures.Add(new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
+                    break;
+
+                case nameof(MoveToHome):
+                    gestures.Add(new KeyGesture(Key.Home, ModifierKeys.None, "Home"));
+                    break;
+
+                case nameof(MoveToEnd):
+                    gestures.Add(new KeyGesture(Key.End, ModifierKeys.None, "End"));
+                    break;
+
+                case nameof(MoveToPageUp):
+                    gestures.Add(new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
+                    break;
+
+                case nameof(MoveToPageDown):
+                    gestures.Add(new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
+                    break;
+
+                case nameof(ExtendSelectionUp):
+                    gestures.Add(new KeyGesture(Key.Up, ModifierKeys.Shift, "Shift+Up"));
+                    break;
+
+                case nameof(ExtendSelectionDown):
+                    gestures.Add(new KeyGesture(Key.Down, ModifierKeys.Shift, "Shift+Down"));
+                    break;
+
+                case nameof(ExtendSelectionLeft):
+                    gestures.Add(new KeyGesture(Key.Left, ModifierKeys.Shift, "Shift+Left"));
+                    break;
+
+                case nameof(ExtendSelectionRight):
+                    gestures.Add(new KeyGesture(Key.Right, ModifierKeys.Shift, "Shift+Right"));
+                    break;
+
+                case nameof(SelectToHome):
+                    gestures.Add(new KeyGesture(Key.Home, ModifierKeys.Shift, "Shift+Home"));
+                    break;
+
+                case nameof(SelectToEnd):
+                    gestures.Add(new KeyGesture(Key.End, ModifierKeys.Shift, "Shift+End"));
+                    break;
+
+                case nameof(SelectToPageUp):
+                    gestures.Add(new KeyGesture(Key.PageUp, ModifierKeys.Shift, "Shift+PageUp"));
+                    break;
+
+                case nameof(SelectToPageDown):
+                    gestures.Add(new KeyGesture(Key.PageDown, ModifierKeys.Shift, "Shift+PageDown"));
+                    break;
+
+                case nameof(MoveFocusUp):
+                    gestures.Add(new KeyGesture(Key.Up, ModifierKeys.Control, "Ctrl+Up"));
+                    break;
+
+                case nameof(MoveFocusDown):
+                    gestures.Add(new KeyGesture(Key.Down, ModifierKeys.Control, "Ctrl+Down"));
+                    break;
+
+                case nameof(MoveFocusForward):
+                    gestures.Add(new KeyGesture(Key.Right, ModifierKeys.Control, "Ctrl+Right"));
+                    break;
+
+                case nameof(MoveFocusBack):
+                    gestures.Add(new KeyGesture(Key.Left, ModifierKeys.Control, "Ctrl+Left"));
+                    break;
+
+                case nameof(MoveFocusPageUp):
+                    gestures.Add(new KeyGesture(Key.PageUp, ModifierKeys.Control, "Ctrl+PageUp"));
+                    break;
+
+                case nameof(MoveFocusPageDown):
+                    gestures.Add(new KeyGesture(Key.PageDown, ModifierKeys.Control, "Ctrl+PageDown"));
+                    break;
+            }
+
+            return gestures;
+        }
 
         // Property values.
         private static Lazy<RoutedUICommand> extendSelectionDown = new Lazy<RoutedUICommand>(() =>
@@ -160,6 +305,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_UP", nameof(MoveFocusUp), typeof(ComponentCommands)));
         private static Lazy<RoutedUICommand> moveFocusDown = new Lazy<RoutedUICommand>(() =>
             new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_DOWN", nameof(MoveFocusDown), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> moveFocusPageUp = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_PAGE_UP", nameof(MoveFocusPageUp), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> moveFocusPageDown = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_PAGE_DOWN", nameof(MoveFocusPageDown), typeof(ComponentCommands)));
         private static Lazy<RoutedUICommand> scrollDown = new Lazy<RoutedUICommand>(() =>
             new RoutedUICommand("COMPONENT_COMMAND_SCROLL_DOWN", nameof(ScrollDown), typeof(ComponentCommands)));
         private static Lazy<RoutedUICommand> scrollLeft = new Lazy<RoutedUICommand>(() =>
@@ -168,6 +317,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new RoutedUICommand("COMPONENT_COMMAND_SCROLL_RIGHT", nameof(ScrollRight), typeof(ComponentCommands)));
         private static Lazy<RoutedUICommand> scrollUp = new Lazy<RoutedUICommand>(() =>
             new RoutedUICommand("COMPONENT_COMMAND_SCROLL_UP", nameof(ScrollUp), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> scrollPageDown = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_DOWN", nameof(ScrollPageDown), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> scrollPageLeft = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_LEFT", nameof(ScrollPageLeft), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> scrollPageRight = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_RIGHT", nameof(ScrollPageRight), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> scrollPageUp = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_UP", nameof(ScrollPageUp), typeof(ComponentCommands)));
+        private static Lazy<RoutedUICommand> scrollByLine = new Lazy<RoutedUICommand>(() =>
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_BY_LINE", nameof(ScrollByLine), typeof(ComponentCommands)));
         private static Lazy<RoutedUICommand> selectToEnd = new Lazy<RoutedUICommand>(() =>
             new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_END", nameof(SelectToEnd), typeof(ComponentCommands)));
         private static Lazy<RoutedUICommand> selectToHome = new Lazy<RoutedUICommand>(() =>
