@@ -885,7 +885,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var commandData = invocation.GetValueOrDefault();
             var commandTarget = commandData.CommandTarget ?? element;
             var commandParameter = commandData.CommandParameter;
+
             var command = commandData.Command;
+            if (command == ApplicationCommands.NotACommand)
+                return;
 
             var routedCommand = command as RoutedCommand;
             if (routedCommand != null)
