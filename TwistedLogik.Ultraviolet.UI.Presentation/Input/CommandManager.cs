@@ -527,8 +527,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 lock (((IDictionary)classInputBindings).SyncRoot)
                 {
                     var bindings = default(InputBindingCollection);
-                    if (classInputBindings.TryGetValue(uiElement.GetType(), out bindings))
-                        invocation = FindMatchingBinding_KeyDown(bindings, device, key, modifiers, data);
+                    var type = element.GetType();
+                    while (type != null)
+                    {
+                        if (classInputBindings.TryGetValue(type, out bindings))
+                        {
+                            invocation = FindMatchingBinding_KeyDown(bindings, device, key, modifiers, data);
+                            if (invocation != null)
+                            {
+                                break;
+                            }
+                        }
+                        type = type.BaseType;
+                    }
                 }
             }
 
@@ -541,8 +552,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 lock (((IDictionary)classCommandBindings).SyncRoot)
                 {
                     var bindings = default(CommandBindingCollection);
-                    if (classCommandBindings.TryGetValue(uiElement.GetType(), out bindings))
-                        invocation = FindMatchingBinding_KeyDown(bindings, device, key, modifiers, data);
+                    var type = element.GetType();
+                    while (type != null)
+                    {
+                        if (classCommandBindings.TryGetValue(type, out bindings))
+                        {
+                            invocation = FindMatchingBinding_KeyDown(bindings, device, key, modifiers, data);
+                            if (invocation != null)
+                            {
+                                break;
+                            }
+                        }
+                        type = type.BaseType;
+                    }
                 }
             }
 
