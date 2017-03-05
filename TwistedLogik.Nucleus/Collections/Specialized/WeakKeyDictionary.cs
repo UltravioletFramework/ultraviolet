@@ -2,56 +2,55 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Nucleus.Collections
+namespace TwistedLogik.Nucleus.Collections.Specialized
 {
     /// <summary>
-    /// Represents a dictionary which maintains weak references to both its keys and its values.
+    /// Represents a dictionary which maintains weak references to its keys and strong references to its values.
     /// </summary>
     /// <typeparam name="TKey">The type of key.</typeparam>
     /// <typeparam name="TValue">The type of value.</typeparam>
-    public partial class WeakDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    public partial class WeakKeyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
         where TKey : class
-        where TValue : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeakDictionary{TKey, TValue}"/> class.
+        /// Initializes a new instance of the <see cref="WeakKeyDictionary{TKey, TValue}"/> class.
         /// </summary>
-        public WeakDictionary()
+        public WeakKeyDictionary()
             : this(0, null)
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeakDictionary{TKey, TValue}"/> class.
+        /// Initializes a new instance of the <see cref="WeakKeyDictionary{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="capacity">The dictionary's initial capacity.</param>
-        public WeakDictionary(Int32 capacity)
+        public WeakKeyDictionary(Int32 capacity)
             : this(capacity, null)
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeakDictionary{TKey, TValue}"/> class.
+        /// Initializes a new instance of the <see cref="WeakKeyDictionary{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="comparer">The equality comparer used to compare the dictionary's keys.</param>
-        public WeakDictionary(IEqualityComparer<TKey> comparer)
+        public WeakKeyDictionary(IEqualityComparer<TKey> comparer)
             : this(0, comparer)
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeakDictionary{TKey, TValue}"/> class.
+        /// Initializes a new instance of the <see cref="WeakKeyDictionary{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="capacity">The dictionary's initial capacity.</param>
         /// <param name="comparer">The equality comparer used to compare the dictionary's keys.</param>
-        public WeakDictionary(Int32 capacity, IEqualityComparer<TKey> comparer)
+        public WeakKeyDictionary(Int32 capacity, IEqualityComparer<TKey> comparer)
         {
             this.comparer = new WeakKeyComparer<TKey>(comparer);
-            this.dictionary = new Dictionary<Object, WeakReference<TValue>>(capacity, this.comparer);
+            this.dictionary = new Dictionary<Object, TValue>(capacity, this.comparer);
         }
 
         /// <summary>
         /// Gets an enumerator which iterates through the dictionary.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the dictionary.</returns>
-        public IEnumerator<KeyValuePair<Object, WeakReference<TValue>>> GetEnumerator() =>
+        public IEnumerator<KeyValuePair<Object, TValue>> GetEnumerator() =>
             this.dictionary.GetEnumerator();
 
         /// <inheritdoc/>
@@ -60,12 +59,10 @@ namespace TwistedLogik.Nucleus.Collections
             foreach (var kvp in this.dictionary)
             {
                 var weakKey = (WeakKeyReference<TKey>)kvp.Key;
-                var weakVal = kvp.Value;
                 var key = weakKey.Target;
-                var val = weakVal.Target;
-                if (weakKey.IsAlive && weakVal.IsAlive)
+                if (weakKey.IsAlive)
                 {
-                    yield return new KeyValuePair<TKey, TValue>(key, val);
+                    yield return new KeyValuePair<TKey, TValue>(key, kvp.Value);
                 }
             }
         }
@@ -85,9 +82,7 @@ namespace TwistedLogik.Nucleus.Collections
             foreach (var kvp in this.dictionary)
             {
                 var weakKey = (WeakReference<TKey>)kvp.Key;
-                var weakVal = kvp.Value;
-
-                if (!weakKey.IsAlive || !weakVal.IsAlive)
+                if (!weakKey.IsAlive)
                 {
                     if (removed == null)
                         removed = new List<Object>();
@@ -113,12 +108,10 @@ namespace TwistedLogik.Nucleus.Collections
             foreach (var item in dictionary)
             {
                 var weakKey = (WeakKeyReference<TKey>)item.Key;
-                var weakVal = item.Value;
                 var key = weakKey.Target;
-                var val = weakVal.Target;
-                if (weakKey.IsAlive && weakVal.IsAlive)
+                if (weakKey.IsAlive)
                 {
-                    array[offset++] = new KeyValuePair<TKey, TValue>(key, val);
+                    array[offset++] = new KeyValuePair<TKey, TValue>(key, item.Value);
                 }
             }
         }
@@ -133,9 +126,7 @@ namespace TwistedLogik.Nucleus.Collections
             Contract.Require(key, nameof(key));
 
             var weakKey = new WeakKeyReference<TKey>(key, this.comparer);
-            var weakVal = WeakReference<TValue>.Create(value);
-
-            this.dictionary.Add(weakKey, weakVal);
+            this.dictionary.Add(weakKey, value);
         }
 
         /// <inheritdoc/>
@@ -145,17 +136,8 @@ namespace TwistedLogik.Nucleus.Collections
         }
 
         /// <inheritdoc/>
-        public Boolean TryGetValue(TKey key, out TValue value)
-        {
-            var weakVal = default(WeakReference<TValue>);
-            if (this.dictionary.TryGetValue(key, out weakVal))
-            {
-                value = weakVal.Target;
-                return true;
-            }
-            value = null;
-            return false;
-        }
+        public Boolean TryGetValue(TKey key, out TValue value) =>
+            this.dictionary.TryGetValue(key, out value);
 
         /// <inheritdoc/>
         public Boolean Remove(TKey key) =>
@@ -204,11 +186,9 @@ namespace TwistedLogik.Nucleus.Collections
             {
                 var weakKey = (WeakKeyReference<TKey>)kvp.Key;
                 var key = weakKey.Target;
-                var weakVal = dictionary[weakKey];
-                var val = weakVal.Target;
-                if (weakKey.IsAlive && weakVal.IsAlive)
+                if (weakKey.IsAlive)
                 {
-                    collection.Add(val);
+                    collection.Add(kvp.Value);
                 }
             }
         }
@@ -221,14 +201,14 @@ namespace TwistedLogik.Nucleus.Collections
                 Contract.Require(key, nameof(key));
 
                 var weakKey = new WeakKeyReference<TKey>(key, this.comparer);
-                return this.dictionary[weakKey].Target;
+                return this.dictionary[weakKey];
             }
             set
             {
                 Contract.Require(key, nameof(key));
 
                 var weakKey = new WeakKeyReference<TKey>(key, this.comparer);
-                this.dictionary[weakKey] = WeakReference<TValue>.Create(value);
+                this.dictionary[weakKey] = value;
             }
         }
 
@@ -268,8 +248,7 @@ namespace TwistedLogik.Nucleus.Collections
                 foreach (var kvp in dictionary)
                 {
                     var weakKey = (WeakKeyReference<TKey>)kvp.Key;
-                    var weakVal = kvp.Value;
-                    if (weakKey.IsAlive && weakVal.IsAlive)
+                    if (weakKey.IsAlive)
                         count++;
                 }
                 return count;
@@ -280,7 +259,7 @@ namespace TwistedLogik.Nucleus.Collections
         public Boolean IsReadOnly => false;
 
         // The underlying dictionary object.
-        private readonly Dictionary<Object, WeakReference<TValue>> dictionary;
+        private readonly Dictionary<Object, TValue> dictionary;
         private readonly WeakKeyComparer<TKey> comparer;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Nucleus.Collections
+namespace TwistedLogik.Nucleus
 {
     /// <summary>
     /// Represents a strongly-typed null weak reference.

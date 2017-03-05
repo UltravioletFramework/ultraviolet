@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Collections;
+using TwistedLogik.Nucleus.Collections.Specialized;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {

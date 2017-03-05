@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Nucleus.Collections
+namespace TwistedLogik.Nucleus.Collections.Specialized
 {
     /// <summary>
     /// Represents a key in a weak dictionary.

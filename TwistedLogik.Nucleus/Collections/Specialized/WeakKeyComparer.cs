@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Nucleus.Collections
+namespace TwistedLogik.Nucleus.Collections.Specialized
 {
     /// <summary>
     /// Represents a strongly-typed null weak reference.

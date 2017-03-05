@@ -27,12 +27,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\PriorityQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\UnsafeObjectStream.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakKeyDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakKeyComparer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakKeyReference.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakNullReference.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakReferenceOfT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\WeakDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\WeakKeyComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\WeakKeyDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\WeakKeyReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommonBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contract.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObject.cs" />
@@ -125,6 +123,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentConversion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Tokenizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WeakNullReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WeakReferenceOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
   </ItemGroup>
