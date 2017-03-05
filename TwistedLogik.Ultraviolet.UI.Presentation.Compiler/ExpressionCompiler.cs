@@ -790,25 +790,32 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             var elementType = GetPlaceholderType(dataSourceWrappedType, elementName);            
             if (elementType != null || state.GetKnownType(elementName, out elementType))
             {
-                var attrs = element.Attributes();
+                var attrs = Enumerable.Union(
+                    element.Attributes().Select(x =>
+                        new { Object = (XObject)x, Name = x.Name.LocalName, Value = x.Value }),
+                    element.Elements().Where(x => x.Name.LocalName.StartsWith(elementName + ".")).Select(x =>
+                        new { Object = (XObject)x, Name = x.Name.LocalName, Value = x.Value }));
+
                 foreach (var attr in attrs)
                 {
                     var attrValue = attr.Value;
                     if (!BindingExpressions.IsBindingExpression(attrValue))
                         continue;
-                    
-                    var dprop = FindDependencyOrAttachedPropertyByName(state, attr.Name.LocalName, elementType);
+
+                    var dprop = FindDependencyOrAttachedPropertyByName(state, attr.Name, elementType);
                     if (dprop == null)
                     {
-                        throw new BindingExpressionCompilationErrorException(attr, dataSourceDefinition.DefinitionPath,
-                            CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name.LocalName));
+                        throw new BindingExpressionCompilationErrorException(attr.Object, dataSourceDefinition.DefinitionPath,
+                            CompilerStrings.OnlyDependencyPropertiesCanBeBound.Format(attr.Name));
                     }
 
                     var expText = BindingExpressions.GetBindingMemberPathPart(attrValue);
                     var expProp = GetBindablePropertyOnDataSource(dataSourceWrappedType, expText);
+                    var expType = expProp?.PropertyType ?? dprop.PropertyType;
+                    if (typeof(DataTemplate).IsAssignableFrom(expType))
+                        continue;
 
-                    expressions.Add(new BindingExpressionInfo(attr, 
-                        attrValue, expProp?.PropertyType ?? dprop.PropertyType) { GenerateGetter = true });
+                    expressions.Add(new BindingExpressionInfo(attr.Object, attrValue, expType) { GenerateGetter = true });
                 }
 
                 if (element.Nodes().Count() == 1)
