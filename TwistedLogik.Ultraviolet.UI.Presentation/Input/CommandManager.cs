@@ -1213,17 +1213,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             throw new FormatException();
         }
 
+        // Manager instance used to recognize events raised by us
+        private static readonly CommandManager instance = new CommandManager();
+
         // Manager for status requery requests
-        private static CommandManager instance;
         private static readonly UltravioletSingleton<CommandRequeryManager> requeryManagerSingleton =
             new UltravioletSingleton<CommandRequeryManager>(UltravioletSingletonFlags.DisabledInServiceMode, uv =>
-                {
-                    // NOTE: We create this instance so that we don't have a null sender when raising requery events.
-                    if (instance == null)
-                        instance = new CommandManager();
-
-                    return new CommandRequeryManager(uv, instance);
-                });
+                new CommandRequeryManager(uv, instance));
 
         // Class binding collections
         private static readonly Dictionary<Type, CommandBindingCollection> classCommandBindings = new Dictionary<Type, CommandBindingCollection>();

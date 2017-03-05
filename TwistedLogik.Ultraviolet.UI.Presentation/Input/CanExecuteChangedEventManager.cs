@@ -19,6 +19,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         internal CanExecuteChangedEventManager(UltravioletContext uv)
             : base(uv)
         {
+            this.weakHandlerPool = new ExpandingPool<WeakHandler>(8, 32, () => new WeakHandler(this));
+            this.weakHandlerTable = new WeakKeyDictionary<Object, List<WeakHandler>>(8);
+            this.keepAliveTable = new ConditionalWeakTable<Object, List<EventHandler>>();
+
             uv.Updating += Context_Updating;
         }
 
@@ -86,13 +90,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             try
             {
                 var weakHandlersForSource = default(List<WeakHandler>);
-                if (!weakHandlers.TryGetValue(source, out weakHandlersForSource))
+                if (!weakHandlerTable.TryGetValue(source, out weakHandlersForSource))
                 {
                     weakHandlersForSource = new List<WeakHandler>();
-                    weakHandlers.Add(source, weakHandlersForSource);
+                    weakHandlerTable.Add(source, weakHandlersForSource);
                 }
 
-                var weakHandler = new WeakHandler(this);
+                var weakHandler = weakHandlerPool.Retrieve();
                 weakHandler.Attach(source, handler);
                 weakHandlersForSource.Add(weakHandler);
 
@@ -116,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
                 var weakHandlerRemoved = default(WeakHandler);
                 var weakHandlersForSource = default(List<WeakHandler>);
-                if (weakHandlers.TryGetValue(source, out weakHandlersForSource))
+                if (weakHandlerTable.TryGetValue(source, out weakHandlersForSource))
                 {
                     foreach (var weakHandler in weakHandlersForSource)
                     {
@@ -134,6 +138,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     {
                         weakHandlersForSource.Remove(weakHandlerRemoved);
                         weakHandlerRemoved.Detach();
+                        weakHandlerPool.Release(weakHandlerRemoved);
                         RemoveKeepAlive(handler);
                     }
 
@@ -193,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 var removedSources = default(List<Object>);
 
-                foreach (var weakHandlersKvp in weakHandlers)
+                foreach (var weakHandlersKvp in weakHandlerTable)
                 {
                     var weakSource = (WeakKeyReference<Object>)weakHandlersKvp.Key;
                     var source = weakSource.Target;
@@ -223,8 +228,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                             {
                                 var sourceHandler = weakHandler.SourceHandler;
 
-                                weakHandler.Detach();
                                 handlerList.Remove(weakHandler);
+                                weakHandler.Detach();
+                                weakHandlerPool.Release(weakHandler);
 
                                 if (sourceHandler != null)
                                     RemoveKeepAlive(sourceHandler);
@@ -244,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                     if (removedSources != null)
                     {
                         foreach (var removedSource in removedSources)
-                            weakHandlers.Remove(removedSource);
+                            weakHandlerTable.Remove(removedSource);
                     }
                 }
             }
@@ -261,10 +267,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 uv => new CanExecuteChangedEventManager(uv));
 
         // State values.
-        private readonly WeakKeyDictionary<Object, List<WeakHandler>> weakHandlers =
-            new WeakKeyDictionary<Object, List<WeakHandler>>();
-        private readonly ConditionalWeakTable<Object, List<EventHandler>> keepAliveTable =
-            new ConditionalWeakTable<Object, List<EventHandler>>();
+        private readonly IPool<WeakHandler> weakHandlerPool;
+        private readonly WeakKeyDictionary<Object, List<WeakHandler>> weakHandlerTable;
+        private readonly ConditionalWeakTable<Object, List<EventHandler>> keepAliveTable;
         private Boolean cleanupScheduled;
 
         // Thread synchronization.
