@@ -354,7 +354,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             return command.CanExecute(view, source.CommandParameter);
         }
-        
+
         /// <summary>
         /// Executes the specified command source's command.
         /// </summary>
@@ -645,7 +645,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                                 var binding = classBindingsForType[i];
                                 if (binding.Command == command)
                                 {
-                                    searchList.Add(new CommandBindingKey(type, binding));                                
+                                    searchList.Add(new CommandBindingKey(type, binding));
                                 }
                             }
                         }
@@ -706,7 +706,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 data.Handled = true;
             }
         }
-        
+
         /// <summary>
         /// Searches the specified collection of input bindings for a binding which matches the specified input event.
         /// </summary>
@@ -1214,8 +1214,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         // Manager for status requery requests
+        private static CommandManager instance;
         private static readonly UltravioletSingleton<CommandRequeryManager> requeryManagerSingleton =
-            new UltravioletSingleton<CommandRequeryManager>(UltravioletSingletonFlags.DisabledInServiceMode, uv => new CommandRequeryManager(uv));
+            new UltravioletSingleton<CommandRequeryManager>(UltravioletSingletonFlags.DisabledInServiceMode, uv =>
+                {
+                    // NOTE: We create this instance so that we don't have a null sender when raising requery events.
+                    if (instance == null)
+                        instance = new CommandManager();
+
+                    return new CommandRequeryManager(uv, instance);
+                });
 
         // Class binding collections
         private static readonly Dictionary<Type, CommandBindingCollection> classCommandBindings = new Dictionary<Type, CommandBindingCollection>();

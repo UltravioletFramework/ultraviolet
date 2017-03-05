@@ -14,9 +14,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// Initializes a new instance of the <see cref="CommandRequeryManager"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        public CommandRequeryManager(UltravioletContext uv)
+        /// <param name="owner">The command manager that owns this instance.</param>
+        public CommandRequeryManager(UltravioletContext uv, CommandManager owner)
             : base(uv)
         {
+            this.owner = owner;
             uv.Updating += Updating;
         }
         
@@ -78,7 +80,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 for (int i = 0; i < listeners.Count; i++)
                 {
-                    (listeners[i].Target as EventHandler)?.Invoke(null, EventArgs.Empty);
+                    (listeners[i].Target as EventHandler)?.Invoke(owner, EventArgs.Empty);
                 }
             }
             finally
@@ -127,6 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         // State values.
+        private readonly CommandManager owner;
         private readonly IPool<WeakReference> refpool = 
             new ExpandingPool<WeakReference>(8, 32, () => new WeakReference(null), item => item.Target = null);
         private readonly List<WeakReference> listeners = new List<WeakReference>();
