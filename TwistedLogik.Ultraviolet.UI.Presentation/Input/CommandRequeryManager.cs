@@ -71,25 +71,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises a requery event.
-        /// </summary>
-        public void Raise()
-        {
-            listenersLock.EnterReadLock();
-            try
-            {
-                for (int i = 0; i < listeners.Count; i++)
-                {
-                    (listeners[i].Target as EventHandler)?.Invoke(owner, EventArgs.Empty);
-                }
-            }
-            finally
-            {
-                listenersLock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
         /// Removes dead references from the list of listeners.
         /// </summary>
         public void Cleanup()
@@ -121,11 +102,43 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Raises a requery event.
+        /// </summary>
+        public void Raise()
+        {
+            if (!needsRequery)
+                return;
+
+            listenersLock.EnterReadLock();
+            try
+            {
+                for (int i = 0; i < listeners.Count; i++)
+                {
+                    (listeners[i].Target as EventHandler)?.Invoke(owner, EventArgs.Empty);
+                }
+            }
+            finally
+            {
+                listenersLock.ExitReadLock();
+                needsRequery = false;
+            }
+        }
+
+        /// <summary>
+        /// Indicates that command statuses should be requeried at the end of the next frame.
+        /// </summary>
+        public void InvalidateRequerySuggested()
+        {
+            needsRequery = true;
+        }
+
+        /// <summary>
         /// Cleans up the listener list when the Ultraviolet context is updated.
         /// </summary>
         private void Updating(UltravioletContext uv, UltravioletTime time)
         {
             Cleanup();
+            Raise();
         }
 
         // State values.
@@ -135,5 +148,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         private readonly List<WeakReference> listeners = new List<WeakReference>();
         private readonly ReaderWriterLockSlim listenersLock = new ReaderWriterLockSlim();
         private Boolean needsCleanup;
+        private Boolean needsRequery;
     }
 }

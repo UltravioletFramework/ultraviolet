@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         {
             var manager = requeryManagerSingleton.Value;
             if (manager != null)
-                manager.Raise();
+                manager.InvalidateRequerySuggested();
         }
 
         /// <summary>
