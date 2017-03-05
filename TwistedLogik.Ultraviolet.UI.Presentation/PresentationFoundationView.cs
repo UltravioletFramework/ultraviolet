@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -2009,6 +2008,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2153,6 +2154,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2334,6 +2337,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2401,6 +2406,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2505,7 +2512,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
 
-            touchCursorTrackers.FinishTracking(touchID);
+            touchCursorTrackers.FinishTracking(touchID);            
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
