@@ -14,7 +14,7 @@ namespace TwistedLogik.Nucleus.Collections
         /// <param name="key">The key value which is being tracked.</param>
         /// <param name="comparer">The comparer which is used to compare key values.</param>
         internal WeakKeyReference(T key, WeakKeyComparer<T> comparer)
-            : base(null)
+            : base(key)
         {
             this.Hashcode = comparer.GetHashCode(key);
         }
