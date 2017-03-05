@@ -274,66 +274,66 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
         // Property values.
         private static Lazy<RoutedUICommand> extendSelectionDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_DOWN", nameof(ExtendSelectionDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_DOWN", nameof(ExtendSelectionDown), typeof(ComponentCommands), GetInputGestures(nameof(ExtendSelectionDown))));
         private static Lazy<RoutedUICommand> extendSelectionLeft = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_LEFT", nameof(ExtendSelectionLeft), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_LEFT", nameof(ExtendSelectionLeft), typeof(ComponentCommands), GetInputGestures(nameof(ExtendSelectionLeft))));
         private static Lazy<RoutedUICommand> extendSelectionRight = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_RIGHT", nameof(ExtendSelectionRight), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_RIGHT", nameof(ExtendSelectionRight), typeof(ComponentCommands), GetInputGestures(nameof(ExtendSelectionRight))));
         private static Lazy<RoutedUICommand> extendSelectionUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_UP", nameof(ExtendSelectionUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_EXTEND_SELECTION_UP", nameof(ExtendSelectionUp), typeof(ComponentCommands), GetInputGestures(nameof(ExtendSelectionUp))));
         private static Lazy<RoutedUICommand> moveDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_DOWN", nameof(MoveDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_DOWN", nameof(MoveDown), typeof(ComponentCommands), GetInputGestures(nameof(MoveDown))));
         private static Lazy<RoutedUICommand> moveLeft = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_LEFT", nameof(MoveLeft), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_LEFT", nameof(MoveLeft), typeof(ComponentCommands), GetInputGestures(nameof(MoveLeft))));
         private static Lazy<RoutedUICommand> moveRight = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_RIGHT", nameof(MoveRight), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_RIGHT", nameof(MoveRight), typeof(ComponentCommands), GetInputGestures(nameof(MoveRight))));
         private static Lazy<RoutedUICommand> moveUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_UP", nameof(MoveUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_UP", nameof(MoveUp), typeof(ComponentCommands), GetInputGestures(nameof(MoveUp))));
         private static Lazy<RoutedUICommand> moveToEnd = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_END", nameof(MoveToEnd), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_END", nameof(MoveToEnd), typeof(ComponentCommands), GetInputGestures(nameof(MoveToEnd))));
         private static Lazy<RoutedUICommand> moveToHome = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_HOME", nameof(MoveToHome), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_HOME", nameof(MoveToHome), typeof(ComponentCommands), GetInputGestures(nameof(MoveToHome))));
         private static Lazy<RoutedUICommand> moveToPageDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_PAGE_DOWN", nameof(MoveToPageDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_PAGE_DOWN", nameof(MoveToPageDown), typeof(ComponentCommands), GetInputGestures(nameof(MoveToPageDown))));
         private static Lazy<RoutedUICommand> moveToPageUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_PAGE_UP", nameof(MoveToPageUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_TO_PAGE_UP", nameof(MoveToPageUp), typeof(ComponentCommands), GetInputGestures(nameof(MoveToPageUp))));
         private static Lazy<RoutedUICommand> moveFocusBack = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_BACK", nameof(MoveFocusBack), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_BACK", nameof(MoveFocusBack), typeof(ComponentCommands), GetInputGestures(nameof(MoveFocusBack))));
         private static Lazy<RoutedUICommand> moveFocusForward = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_FORWARD", nameof(MoveFocusForward), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_FORWARD", nameof(MoveFocusForward), typeof(ComponentCommands), GetInputGestures(nameof(MoveFocusForward))));
         private static Lazy<RoutedUICommand> moveFocusUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_UP", nameof(MoveFocusUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_UP", nameof(MoveFocusUp), typeof(ComponentCommands), GetInputGestures(nameof(MoveFocusUp))));
         private static Lazy<RoutedUICommand> moveFocusDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_DOWN", nameof(MoveFocusDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_DOWN", nameof(MoveFocusDown), typeof(ComponentCommands), GetInputGestures(nameof(MoveFocusDown))));
         private static Lazy<RoutedUICommand> moveFocusPageUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_PAGE_UP", nameof(MoveFocusPageUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_PAGE_UP", nameof(MoveFocusPageUp), typeof(ComponentCommands), GetInputGestures(nameof(MoveFocusPageUp))));
         private static Lazy<RoutedUICommand> moveFocusPageDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_PAGE_DOWN", nameof(MoveFocusPageDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_MOVE_FOCUS_PAGE_DOWN", nameof(MoveFocusPageDown), typeof(ComponentCommands), GetInputGestures(nameof(MoveFocusPageDown))));
         private static Lazy<RoutedUICommand> scrollDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_DOWN", nameof(ScrollDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_DOWN", nameof(ScrollDown), typeof(ComponentCommands), GetInputGestures(nameof(ScrollDown))));
         private static Lazy<RoutedUICommand> scrollLeft = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_LEFT", nameof(ScrollLeft), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_LEFT", nameof(ScrollLeft), typeof(ComponentCommands), GetInputGestures(nameof(ScrollLeft))));
         private static Lazy<RoutedUICommand> scrollRight = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_RIGHT", nameof(ScrollRight), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_RIGHT", nameof(ScrollRight), typeof(ComponentCommands), GetInputGestures(nameof(ScrollRight))));
         private static Lazy<RoutedUICommand> scrollUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_UP", nameof(ScrollUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_UP", nameof(ScrollUp), typeof(ComponentCommands), GetInputGestures(nameof(ScrollUp))));
         private static Lazy<RoutedUICommand> scrollPageDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_DOWN", nameof(ScrollPageDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_DOWN", nameof(ScrollPageDown), typeof(ComponentCommands), GetInputGestures(nameof(ScrollPageDown))));
         private static Lazy<RoutedUICommand> scrollPageLeft = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_LEFT", nameof(ScrollPageLeft), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_LEFT", nameof(ScrollPageLeft), typeof(ComponentCommands), GetInputGestures(nameof(ScrollPageLeft))));
         private static Lazy<RoutedUICommand> scrollPageRight = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_RIGHT", nameof(ScrollPageRight), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_RIGHT", nameof(ScrollPageRight), typeof(ComponentCommands), GetInputGestures(nameof(ScrollPageRight))));
         private static Lazy<RoutedUICommand> scrollPageUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_UP", nameof(ScrollPageUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_PAGE_UP", nameof(ScrollPageUp), typeof(ComponentCommands), GetInputGestures(nameof(ScrollPageUp))));
         private static Lazy<RoutedUICommand> scrollByLine = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_BY_LINE", nameof(ScrollByLine), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SCROLL_BY_LINE", nameof(ScrollByLine), typeof(ComponentCommands), GetInputGestures(nameof(ScrollByLine))));
         private static Lazy<RoutedUICommand> selectToEnd = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_END", nameof(SelectToEnd), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_END", nameof(SelectToEnd), typeof(ComponentCommands), GetInputGestures(nameof(SelectToEnd))));
         private static Lazy<RoutedUICommand> selectToHome = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_HOME", nameof(SelectToHome), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_HOME", nameof(SelectToHome), typeof(ComponentCommands), GetInputGestures(nameof(SelectToHome))));
         private static Lazy<RoutedUICommand> selectToPageDown = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_PAGE_DOWN", nameof(SelectToPageDown), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_PAGE_DOWN", nameof(SelectToPageDown), typeof(ComponentCommands), GetInputGestures(nameof(SelectToPageDown))));
         private static Lazy<RoutedUICommand> selectToPageUp = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_PAGE_UP", nameof(SelectToPageUp), typeof(ComponentCommands)));
+            new RoutedUICommand("COMPONENT_COMMAND_SELECT_TO_PAGE_UP", nameof(SelectToPageUp), typeof(ComponentCommands), GetInputGestures(nameof(SelectToPageUp))));
     }
 }
