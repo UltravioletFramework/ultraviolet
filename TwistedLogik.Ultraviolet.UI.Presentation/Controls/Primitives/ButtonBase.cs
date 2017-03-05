@@ -542,6 +542,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 commandCanExecute = (Command == null) || CommandManager.CheckCanExecuteSource(View, this);
             }
             CoerceValue(IsEnabledProperty);
+            UpdateCommonState();
         }
 
         /// <summary>
