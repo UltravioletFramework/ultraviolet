@@ -203,6 +203,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)IInputElementExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CanExecuteChangedEventManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\CanExecuteChangedEventManager.WeakHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommandBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommandOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NavigationCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MediaCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ComponentCommands.cs" />

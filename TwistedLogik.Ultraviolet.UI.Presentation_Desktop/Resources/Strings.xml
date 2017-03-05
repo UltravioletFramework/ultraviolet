@@ -385,4 +385,9 @@
       <Variant>The specified element does not belong to the specified view.</Variant>
     </en-US>
   </String>
+  <String Key="DELEGATE_COMMAND_PARAM_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The parameter type of a DelegateCommand{T} must be either a reference type or Nullable{T}.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
