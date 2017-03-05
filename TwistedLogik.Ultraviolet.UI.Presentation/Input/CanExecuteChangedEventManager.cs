@@ -204,7 +204,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
                         // Search the source's list for dead handlers
                         var weakHandlerList = weakHandlersKvp.Value;
-                        var handlerList = weakHandlerList.Target;
+                        var handlerList = weakHandlerList;
                         foreach (var weakHandler in handlerList)
                         {
                             if (!weakHandler.IsAlive)
@@ -261,8 +261,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 uv => new CanExecuteChangedEventManager(uv));
 
         // State values.
-        private readonly WeakDictionary<Object, List<WeakHandler>> weakHandlers =
-            new WeakDictionary<Object, List<WeakHandler>>();
+        private readonly WeakKeyDictionary<Object, List<WeakHandler>> weakHandlers =
+            new WeakKeyDictionary<Object, List<WeakHandler>>();
         private readonly ConditionalWeakTable<Object, List<EventHandler>> keepAliveTable =
             new ConditionalWeakTable<Object, List<EventHandler>>();
         private Boolean cleanupScheduled;
