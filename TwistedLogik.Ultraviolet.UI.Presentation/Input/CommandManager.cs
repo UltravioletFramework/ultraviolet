@@ -662,7 +662,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         var classBindingsForType = default(CommandBindingCollection);
                         if (classCommandBindings.TryGetValue(type, out classBindingsForType))
                         {
-                            for (int i = 0; i < classCommandBindings.Count; i++)
+                            for (int i = 0; i < classBindingsForType.Count; i++)
                             {
                                 var binding = classBindingsForType[i];
                                 if (binding.Command == command)
