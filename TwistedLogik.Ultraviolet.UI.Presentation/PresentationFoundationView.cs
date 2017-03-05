@@ -329,6 +329,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
 
+            CommandManager.InvalidateRequerySuggested();
+
             return true;
         }
 
@@ -360,6 +362,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             UpdateIsDefaulted();
 
             wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
