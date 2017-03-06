@@ -139,13 +139,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             switch (MouseAction)
             {
                 case MouseAction.LeftClick:
-                    return button == MouseButton.Left && Keyboard.Modifiers == Modifiers;
+                    return button == MouseButton.Left && Keyboard.Modifiers.IsEquivalentTo(Modifiers);
 
                 case MouseAction.RightClick:
-                    return button == MouseButton.Right && Keyboard.Modifiers == Modifiers;
+                    return button == MouseButton.Right && Keyboard.Modifiers.IsEquivalentTo(Modifiers);
 
                 case MouseAction.MiddleClick:
-                    return button == MouseButton.Middle && Keyboard.Modifiers == Modifiers;
+                    return button == MouseButton.Middle && Keyboard.Modifiers.IsEquivalentTo(Modifiers);
             }
             return base.MatchesMouseClick(device, button, data);
         }
@@ -156,13 +156,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             switch (MouseAction)
             {
                 case MouseAction.LeftDoubleClick:
-                    return button == MouseButton.Left && Keyboard.Modifiers == Modifiers;
+                    return button == MouseButton.Left && Keyboard.Modifiers.IsEquivalentTo(Modifiers);
 
                 case MouseAction.RightDoubleClick:
-                    return button == MouseButton.Right && Keyboard.Modifiers == Modifiers;
+                    return button == MouseButton.Right && Keyboard.Modifiers.IsEquivalentTo(Modifiers);
 
                 case MouseAction.MiddleDoubleClick:
-                    return button == MouseButton.Middle && Keyboard.Modifiers == Modifiers;
+                    return button == MouseButton.Middle && Keyboard.Modifiers.IsEquivalentTo(Modifiers);
             }
             return base.MatchesMouseDoubleClick(device, button, data);
         }
@@ -173,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             switch (MouseAction)
             {
                 case MouseAction.WheelClick:
-                    return Keyboard.Modifiers == Modifiers;
+                    return Keyboard.Modifiers.IsEquivalentTo(Modifiers);
             }
             return base.MatchesMouseWheel(device, x, y, data);
         }
