@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -128,27 +128,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Gets the value that represents the Extend Selection to Page Down command.
         /// </summary>
         public static RoutedUICommand SelectToPageDown => ComponentCommands.SelectToPageDown;
-
-        /// <summary>
-        /// Gets the value that represents the Insert New Line command.
-        /// </summary>
-        public static RoutedUICommand InsertNewLine => insertNewLine.Value;
-
-        /// <summary>
-        /// Gets the value that represents the Insert Tab command.
-        /// </summary>
-        public static RoutedUICommand InsertTab => insertTab.Value;
-        
-        /// <summary>
-        /// Gets the value that represents the Delete command.
-        /// </summary>
-        public static RoutedUICommand Delete => ApplicationCommands.Delete;
-        
-        /// <summary>
-        /// Gets the value that represents the Backspace command.
-        /// </summary>
-        public static RoutedUICommand Backspace => backspace.Value;
-        
+                
         /// <summary>
         /// Gets the value that represents the Toggle Insertion Mode command.
         /// </summary>
@@ -194,23 +174,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 case nameof(ExtendSelectionToEndOfText):
                     gestures.Add(new KeyGesture(Key.Home, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+End"));
                     break;
-
-                case nameof(InsertNewLine):
-                    gestures.Add(new KeyGesture(Key.Return, ModifierKeys.None, "Return"));
-                    gestures.Add(new KeyGesture(Key.Return2, ModifierKeys.None, "Return2"));
-                    gestures.Add(new KeyGesture(Key.KeypadEnter, ModifierKeys.None, "KeypadEnter"));
-                    break;
-
-                case nameof(InsertTab):
-                    gestures.Add(new KeyGesture(Key.Tab, ModifierKeys.None, "Tab"));
-                    gestures.Add(new KeyGesture(Key.KeypadTab, ModifierKeys.None, "KeypadTab"));
-                    break;
-
-                case nameof(Backspace):
-                    gestures.Add(new KeyGesture(Key.Backspace, ModifierKeys.None, "Backspace"));
-                    gestures.Add(new KeyGesture(Key.KeypadBackspace, ModifierKeys.None, "KeypadBackspace"));
-                    break;
-
+                    
                 case nameof(ToggleInsertionMode):
                     gestures.Add(new KeyGesture(Key.Insert, ModifierKeys.None, "Insert"));
                     break;
@@ -236,12 +200,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new RoutedUICommand("TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_START_OF_TEXT", nameof(ExtendSelectionToStartOfText), typeof(TextEditorCommands), GetInputGestures(nameof(ExtendSelectionToStartOfText))));
         private static Lazy<RoutedUICommand> extendSelectionToEndOfText = new Lazy<RoutedUICommand>(() =>
             new RoutedUICommand("TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_END_OF_TEXT", nameof(ExtendSelectionToEndOfText), typeof(TextEditorCommands), GetInputGestures(nameof(ExtendSelectionToEndOfText))));
-        private static Lazy<RoutedUICommand> insertNewLine = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("TEXT_EDITOR_COMMAND_INSERT_NEW_LINE", nameof(InsertNewLine), typeof(TextEditorCommands), GetInputGestures(nameof(InsertNewLine))));
-        private static Lazy<RoutedUICommand> insertTab = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("TEXT_EDITOR_COMMAND_INSERT_TAB", nameof(InsertTab), typeof(TextEditorCommands), GetInputGestures(nameof(InsertTab))));
-        private static Lazy<RoutedUICommand> backspace = new Lazy<RoutedUICommand>(() =>
-            new RoutedUICommand("TEXT_EDITOR_COMMAND_BACKSPACE", nameof(Backspace), typeof(TextEditorCommands), GetInputGestures(nameof(Backspace))));
         private static Lazy<RoutedUICommand> toggleInsertionMode = new Lazy<RoutedUICommand>(() =>
             new RoutedUICommand("TEXT_EDITOR_COMMAND_TOGGLE_INSERTION_MODE", nameof(ToggleInsertionMode), typeof(TextEditorCommands), GetInputGestures(nameof(ToggleInsertionMode))));
     }

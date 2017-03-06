@@ -23,10 +23,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Copy, ExecutedCopy, CanExecuteCopy));
             CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Cut, ExecutedCut, CanExecuteCut));
             CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Paste, ExecutedPaste, CanExecutePaste));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.InsertNewLine, ExecutedInsertNewLine, CanExecuteInsertNewLine));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.InsertTab, ExecutedInsertTab, CanExecuteInsertTab));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Backspace, ExecutedBackspace, CanExecuteBackspace));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Delete, ExecutedDelete, CanExecuteDelete));
             CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveLeft, ExecutedMoveLeft, CanExecuteMoveLeft));
             CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveRight, ExecutedMoveRight, CanExecuteMoveRight));
             CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveUp, ExecutedMoveUp, CanExecuteMoveUp));
@@ -760,59 +756,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             data.Handled = true;
         }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.InsertNewLine"/> command.
-        /// </summary>
-        private static void ExecutedInsertNewLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.InsertNewLine();
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.InsertTab"/> command.
-        /// </summary>
-        private static void ExecutedInsertTab(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.InsertTab();
-
-            data.Handled = true;
-        }
         
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.Backspace"/> command.
-        /// </summary>
-        private static void ExecutedBackspace(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.Backspace();
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.Delete"/> command.
-        /// </summary>
-        private static void ExecutedDelete(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.Delete();
-
-            data.Handled = true;
-        }
-
         /// <summary>
         /// Executes the <see cref="TextEditorCommands.MoveLeft"/> command.
         /// </summary>
@@ -1125,47 +1069,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly;
             data.Handled = true;
         }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.InsertNewLine"/> command can execute.
-        /// </summary>
-        private static void CanExecuteInsertNewLine(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly && textBox.TextEditor.AcceptsReturn;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.InsertTab"/> command can execute.
-        /// </summary>
-        private static void CanExecuteInsertTab(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly && textBox.TextEditor.AcceptsTab;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.Backspace"/> command can execute.
-        /// </summary>
-        private static void CanExecuteBackspace(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.Delete"/> command can execute.
-        /// </summary>
-        private static void CanExecuteDelete(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly;
-            data.Handled = true;
-        }
-
+        
         /// <summary>
         /// Determines whether the <see cref="TextEditorCommands.ToggleInsertionMode"/> command can execute.
         /// </summary>

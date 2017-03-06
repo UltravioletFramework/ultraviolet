@@ -435,7 +435,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            if (PART_Editor != null)
+                PART_Editor.HandleKeyDown(device, key, modifiers, data);
+
+            base.OnKeyDown(device, key, modifiers, data);
+        }
+
         /// <inheritdoc/>
         protected override void OnTextInput(KeyboardDevice device, RoutedEventData data)
         {
