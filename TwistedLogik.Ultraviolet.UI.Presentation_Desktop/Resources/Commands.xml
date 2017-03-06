@@ -477,4 +477,51 @@
       <Variant>Navigate Journal</Variant>
     </en-US>
   </String>
+  
+  <!-- Text Editor Commands -->
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_START_OF_LINE">
+    <en-US>
+      <Variant>Move to Start of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_END_OF_LINE">
+    <en-US>
+      <Variant>Move to End of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_START_OF_TEXT">
+    <en-US>
+      <Variant>Move to Start of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_END_OF_TEXT">
+    <en-US>
+      <Variant>Move to End of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_START_OF_LINE">
+    <en-US>
+      <Variant>Extend Selection to Start of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_END_OF_LINE">
+    <en-US>
+      <Variant>Extend Selection to End of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_START_OF_TEXT">
+    <en-US>
+      <Variant>Extend Selection to Start of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_END_OF_TEXT">
+    <en-US>
+      <Variant>Extend Selection to End of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_TOGGLE_INSERTION_MODE">
+    <en-US>
+      <Variant>Toggle Insertion Mode</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
