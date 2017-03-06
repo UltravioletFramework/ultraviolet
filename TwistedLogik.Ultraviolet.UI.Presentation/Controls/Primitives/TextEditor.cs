@@ -302,6 +302,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Inserts a new line.
+        /// </summary>
+        public void InsertNewLine()
+        {
+            if (IsReadOnly)
+                return;
+
+            InsertTextAtCaret(Environment.NewLine, false);
+        }
+
+        /// <summary>
+        /// Inserts a tab character.
+        /// </summary>
+        public void InsertTab()
+        {
+            if (IsReadOnly)
+                return;
+
+            InsertTextAtCaret("\t", true);
+        }
+
+        /// <summary>
+        /// Deletes the character ahead of the caret.
+        /// </summary>
+        public void Delete()
+        {
+            if (IsReadOnly)
+                return;
+
+            DeleteAhead();
+        }
+
+        /// <summary>
+        /// Deletes the character behind the caret.
+        /// </summary>
+        public void Backspace()
+        {
+            if (IsReadOnly)
+                return;
+
+            DeleteBehind();
+        }
+
+        /// <summary>
         /// Clears the text editor's text.
         /// </summary>
         public void Clear()
@@ -344,6 +388,243 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             scrollViewer.ScrollToHorizontalOffset(lineInfo.X);
             scrollViewer.ScrollToVerticalOffset(lineInfo.Y);
+        }
+
+        /// <summary>
+        /// Moves the caret to the specified cursor position.
+        /// </summary>
+        public void MoveCaretToCursor(Point2D position)
+        {
+            BeginTrackingSelectionChanges();
+
+            var positionPixs = (Point2)Display.DipsToPixels(position);
+
+            caretBlinkTimer = 0;
+            caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, positionPixs);
+
+            UpdateSelectionAndCaret();
+            ScrollToCaret(true, false, false);
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret to the left.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretLeft(Boolean moveSelection)
+        {
+            BeginTrackingSelectionChanges();
+
+            var movementAllowed = (caretPosition > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Left, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(false, true, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret to the right.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretRight(Boolean moveSelection)
+        {
+            BeginTrackingSelectionChanges();
+
+            var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Right, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition + 1, true);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(false, false, true);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret up.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretUp(Boolean moveSelection)
+        {
+            BeginTrackingSelectionChanges();
+
+            var x = caretBounds.Left;
+            var y = caretBounds.Top - 1;
+
+            var movementAllowed = (textLayoutStream.Count > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Up, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret down.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretDown(Boolean moveSelection)
+        {
+            BeginTrackingSelectionChanges();
+
+            var x = caretBounds.Left;
+            var y = caretBounds.Bottom;
+
+            var movementAllowed = (textLayoutStream.Count > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Down, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret up one page.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretPageUp(Boolean moveSelection)
+        {
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            BeginTrackingSelectionChanges();
+
+            var x = caretBounds.Left;
+            var y = caretBounds.Top - (Int32)Display.DipsToPixels(scrollViewer.ViewportHeight);
+
+            if (caretLineIndex > 0 && y < 0)
+                y = 0;
+
+            var movementAllowed = (textLayoutStream.Count > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PageUp, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret down one page.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretPageDown(Boolean moveSelection)
+        {
+            var scrollViewer = Parent as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            BeginTrackingSelectionChanges();
+
+            var x = caretBounds.Left;
+            var y = caretBounds.Top + (Int32)Display.DipsToPixels(scrollViewer.ViewportHeight);
+
+            if (caretLineIndex < textLayoutStream.LineCount - 1 && y >= textLayoutStream.ActualHeight)
+                y = textLayoutStream.ActualHeight - 1;
+
+            var movementAllowed = (textLayoutStream.Count > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PageDown, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret to the beginning of the current line.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        /// <param name="moveToBeginningOfText">A value indicating whether the caret should be moved to the beginning of the editor's text.</param>
+        public void MoveCaretToHome(Boolean moveSelection, Boolean moveToBeginningOfText)
+        {
+            BeginTrackingSelectionChanges();
+
+            var movementAllowed = (caretPosition > 0 && textLayoutStream.TotalLength > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Home, moveSelection))
+            {
+                caretBlinkTimer = 0;
+                caretPosition = moveToBeginningOfText ? 0 : textLayoutStream.GetLineInfo(caretLineIndex).OffsetInGlyphs;
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret to the end of the current line.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        /// <param name="moveToEndOfText">A value indicating whether the caret should be moved to the end of the editor's text.</param>
+        public void MoveCaretToEnd(Boolean moveSelection, Boolean moveToEndOfText)
+        {
+            BeginTrackingSelectionChanges();
+
+            var movementAllowed = (caretPosition < textLayoutStream.TotalLength && textLayoutStream.TotalLength > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End, moveToEndOfText))
+            {
+                caretBlinkTimer = 0;
+                if (moveToEndOfText)
+                {
+                    caretPosition = textLayoutStream.TotalLength;
+                }
+                else
+                {
+                    var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
+                    caretPosition = lineInfo.OffsetInGlyphs + lineInfo.LengthInGlyphs;
+
+                    if (IsLineBreak(caretPosition - 1, false))
+                        caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
+                }
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Toggles the editor's insertion mode.
+        /// </summary>
+        public void ToggleInsertionMode()
+        {
+            caretBlinkTimer = 0;
+            caretInsertionMode = (caretInsertionMode == CaretMode.Insert) ?
+                CaretMode.Overwrite : CaretMode.Insert;
+
+            UpdateCaret();
         }
 
         /// <summary>
@@ -803,6 +1084,50 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets a value indicating whether this editor is read-only.
+        /// </summary>
+        public Boolean IsReadOnly
+        {
+            get
+            {
+                var owner = TemplatedParent as Control;
+                return (owner != null && owner.GetValue<Boolean>(TextBoxBase.IsReadOnlyProperty));
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this editor masks its text.
+        /// </summary>
+        public Boolean IsMasked
+        {
+            get { return MaskCharacter.HasValue; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this editor accepts new lines.
+        /// </summary>
+        public Boolean AcceptsReturn
+        {
+            get
+            {
+                var owner = TemplatedParent as Control;
+                return (owner != null && owner.GetValue<Boolean>(TextBoxBase.AcceptsReturnProperty));
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this editor accepts tabs.
+        /// </summary>
+        public Boolean AcceptsTab
+        {
+            get
+            {
+                var owner = TemplatedParent as Control;
+                return (owner != null && owner.GetValue<Boolean>(TextBoxBase.AcceptsTabProperty));
+            }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="CaretInsertTopmost"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="CaretInsertTopmost"/> dependency property.</value>
@@ -1169,154 +1494,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
 
         }
-
-        /// <summary>
-        /// Called when the editor should handle a <see cref="Keyboard.KeyDownEvent"/> routed event.
-        /// </summary>
-        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
-        {
-            var owner = TemplatedParent as Control;
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
-            var acceptsReturn = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsReturnProperty));
-            var acceptsTab = (owner != null && owner.GetValue<Boolean>(TextBox.AcceptsTabProperty));
-            var masked = MaskCharacter.HasValue;
-
-            var ctrl = (modifiers & ModifierKeys.Control) == ModifierKeys.Control;
-
-            switch (key)
-            {
-                case Key.A:
-                    if (ctrl)
-                    {
-                        SelectAll();
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.C:
-                    if (ctrl)
-                    {
-                        if (!masked)
-                        {
-                            Copy();
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.X:
-                    if (ctrl)
-                    {
-                        if (!isReadOnly && !masked)
-                        {
-                            Cut();
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.V:
-                    if (ctrl)
-                    {
-                        if (!isReadOnly)
-                        {
-                            Paste();
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Return:
-                case Key.Return2:
-                    if (acceptsReturn)
-                    {
-                        if (!isReadOnly)
-                        {
-                            InsertTextAtCaret(Environment.NewLine, false);
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Tab:
-                    if (acceptsTab)
-                    {
-                        if (!isReadOnly)
-                        {
-                            InsertTextAtCaret("\t", true);
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Backspace:
-                    if (!isReadOnly)
-                    {
-                        DeleteBehind();
-                    }
-                    break;
-
-                case Key.Delete:
-                    if (!isReadOnly)
-                    {
-                        DeleteAhead();
-                    }
-                    break;
-
-                case Key.Left:
-                    MoveCaretInDirection(CaretNavigationDirection.Left, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.Right:
-                    MoveCaretInDirection(CaretNavigationDirection.Right, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.Up:
-                    MoveCaretInDirection(CaretNavigationDirection.Up, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.Down:
-                    MoveCaretInDirection(CaretNavigationDirection.Down, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.Home:
-                    MoveCaretInDirection(CaretNavigationDirection.Home, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.End:
-                    MoveCaretInDirection(CaretNavigationDirection.End, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.PageUp:
-                    MoveCaretInDirection(CaretNavigationDirection.PageUp, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.PageDown:
-                    MoveCaretInDirection(CaretNavigationDirection.PageDown, modifiers);
-                    data.Handled = true;
-                    break;
-
-                case Key.Insert:
-                    if (!isReadOnly)
-                    {
-                        ToggleInsertionMode();
-                    }
-                    data.Handled = true;
-                    break;
-            }
-        }
-
+        
         /// <summary>
         /// Called when the editor should read text input from the keyboard device.
         /// </summary>
@@ -1812,271 +1990,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <summary>
-        /// Moves the caret to the specified cursor position.
-        /// </summary>
-        private void MoveCaretToCursor(Point2D position)
-        {
-            BeginTrackingSelectionChanges();
-            
-            var positionPixs = (Point2)Display.DipsToPixels(position);
-
-            caretBlinkTimer = 0;
-            caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, positionPixs);
-
-            UpdateSelectionAndCaret();
-            ScrollToCaret(true, false, false);
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret to the left.
-        /// </summary>
-        private void MoveCaretLeft()
-        {
-            BeginTrackingSelectionChanges();
-
-            var movementAllowed = (caretPosition > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Left))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(false, true, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret to the right.
-        /// </summary>
-        private void MoveCaretRight()
-        {
-            BeginTrackingSelectionChanges();
-
-            var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Right))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition + 1, true);
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(false, false, true);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret up.
-        /// </summary>
-        private void MoveCaretUp()
-        {
-            BeginTrackingSelectionChanges();
-
-            var x = caretBounds.Left;
-            var y = caretBounds.Top - 1;
-
-            var movementAllowed = (textLayoutStream.Count > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Up))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret down.
-        /// </summary>
-        private void MoveCaretDown()
-        {
-            BeginTrackingSelectionChanges();
-
-            var x = caretBounds.Left;
-            var y = caretBounds.Bottom;
-
-            var movementAllowed = (textLayoutStream.Count > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Down))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret up one page.
-        /// </summary>
-        private void MoveCaretPageUp()
-        {
-            var scrollViewer = Parent as ScrollViewer;
-            if (scrollViewer == null)
-                return;
-
-            BeginTrackingSelectionChanges();
-
-            var x = caretBounds.Left;
-            var y = caretBounds.Top - (Int32)Display.DipsToPixels(scrollViewer.ViewportHeight);
-
-            if (caretLineIndex > 0 && y < 0)
-                y = 0;
-
-            var movementAllowed = (textLayoutStream.Count > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PageUp))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret down one page.
-        /// </summary>
-        private void MoveCaretPageDown()
-        {
-            var scrollViewer = Parent as ScrollViewer;
-            if (scrollViewer == null)
-                return;
-
-            BeginTrackingSelectionChanges();
-
-            var x = caretBounds.Left;
-            var y = caretBounds.Top + (Int32)Display.DipsToPixels(scrollViewer.ViewportHeight);
-
-            if (caretLineIndex < textLayoutStream.LineCount - 1 && y >= textLayoutStream.ActualHeight)
-                y = textLayoutStream.ActualHeight - 1;
-
-            var movementAllowed = (textLayoutStream.Count > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PageDown))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, x, y);
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret to the beginning of the current line.
-        /// </summary>
-        private void MoveCaretToHome(Boolean moveToBeginningOfText)
-        {
-            BeginTrackingSelectionChanges();
-
-            var movementAllowed = (caretPosition > 0 && textLayoutStream.TotalLength > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Home))
-            {
-                caretBlinkTimer = 0;
-                caretPosition = moveToBeginningOfText ? 0 : textLayoutStream.GetLineInfo(caretLineIndex).OffsetInGlyphs;
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret to the end of the current line.
-        /// </summary>
-        private void MoveCaretToEnd(Boolean moveToEndOfText)
-        {
-            BeginTrackingSelectionChanges();
-
-            var movementAllowed = (caretPosition < textLayoutStream.TotalLength && textLayoutStream.TotalLength > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End))
-            {
-                caretBlinkTimer = 0;
-                if (moveToEndOfText)
-                {
-                    caretPosition = textLayoutStream.TotalLength;
-                }
-                else
-                {
-                    var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
-                    caretPosition = lineInfo.OffsetInGlyphs + lineInfo.LengthInGlyphs;
-
-                    if (IsLineBreak(caretPosition - 1, false))
-                        caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
-                }
-
-                UpdateSelectionAndCaret();
-                ScrollToCaret(true, false, false);
-            }
-
-            EndTrackingSelectionChanges();
-        }
-
-        /// <summary>
-        /// Moves the caret in the specified direction.
-        /// </summary>
-        private Boolean MoveCaretInDirection(CaretNavigationDirection direction, ModifierKeys modifiers = ModifierKeys.None)
-        {
-            var owner = TemplatedParent as Control;
-
-            var isReadOnly = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyProperty));
-            var isReadOnlyCaretVisible = (owner != null && owner.GetValue<Boolean>(TextBox.IsReadOnlyCaretVisibleProperty));
-            if (isReadOnly && !isReadOnlyCaretVisible && (modifiers & ModifierKeys.Shift) != ModifierKeys.Shift)
-                return false;
-
-            switch (direction)
-            {
-                case CaretNavigationDirection.Left:
-                    MoveCaretLeft();
-                    break;
-
-                case CaretNavigationDirection.Right:
-                    MoveCaretRight();
-                    break;
-
-                case CaretNavigationDirection.Up:
-                    MoveCaretUp();
-                    break;
-
-                case CaretNavigationDirection.Down:
-                    MoveCaretDown();
-                    break;
-
-                case CaretNavigationDirection.Home:
-                    MoveCaretToHome((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
-                    break;
-
-                case CaretNavigationDirection.End:
-                    MoveCaretToEnd((modifiers & ModifierKeys.Control) == ModifierKeys.Control);
-                    break;
-
-                case CaretNavigationDirection.PageUp:
-                    MoveCaretPageUp();
-                    break;
-
-                case CaretNavigationDirection.PageDown:
-                    MoveCaretPageDown();
-                    break;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Deletes the text in the current selection.
         /// </summary>
         /// <param name="raiseChangeEvents">A value indicating whether the editor should raise events relating to the text being changed.</param>
@@ -2213,11 +2126,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <param name="movementAllowed">A value indicating whether the user's desired movement is allowed.</param>
         /// <param name="movementDirection">A <see cref="CaretNavigationDirection"/> value specifying which direction the selection is moving.</param>
+        /// <param name="moveSelection">A value indicating whether the selection is moving (if <see langword="true"/>) or 
+        /// if the insertion position is moving (if <see langword="false"/>).</param>
         /// <returns><see langword="true"/> if the movement was handled; otherwise, <see langword="false"/>.</returns>
-        private Boolean HandleSelectionMovement(Boolean movementAllowed, CaretNavigationDirection movementDirection)
+        private Boolean HandleSelectionMovement(Boolean movementAllowed, CaretNavigationDirection movementDirection, Boolean moveSelection)
         {
-            var selecting = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
-            if (selecting)
+            if (moveSelection)
             {
                 if (selectionPosition == null)
                     selectionPosition = caretPosition;
@@ -2248,18 +2162,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 return !movementAllowed;
             }
-        }
-
-        /// <summary>
-        /// Toggles the editor's insertion mode.
-        /// </summary>
-        private void ToggleInsertionMode()
-        {
-            caretBlinkTimer = 0;
-            caretInsertionMode = (caretInsertionMode == CaretMode.Insert) ?
-                CaretMode.Overwrite : CaretMode.Insert;
-
-            UpdateCaret();
         }
 
         /// <summary>
