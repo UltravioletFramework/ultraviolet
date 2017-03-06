@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -6,6 +7,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Nucleus.Data;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using System.Reflection;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -919,325 +921,36 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             if (parts.Length != 2)
                 throw new FormatException();
 
-            switch (parts[0])
+            var type = default(Type);
+            var prop = default(PropertyInfo);
+
+            lock (((IDictionary)typeCache).SyncRoot)
             {
-                case nameof(ApplicationCommands):
-                    return ICommandResolver_ApplicationCommands(parts[1], provider);
+                if (!typeCache.TryGetValue(parts[0], out type))
+                {
+                    var matches = typeof(CommandManager).Assembly.GetTypes().Where(x => x.Name == parts[0]).ToList();
+                    if (matches.Count != 1)
+                        throw new FormatException();
 
-                case nameof(ComponentCommands):
-                    break;
+                    type = matches.Single();
+                    prop = type.GetProperty(parts[1], BindingFlags.Public | BindingFlags.Static);
 
-                case nameof(MediaCommands):
-                    break;
+                    if (prop == null || !typeof(ICommand).IsAssignableFrom(prop.PropertyType) || prop.GetIndexParameters().Length > 0)
+                        throw new FormatException();
 
-                case nameof(NavigationCommands):
-                    break;
+                    typeCache[parts[0]] = type;
+                    return prop.GetValue(null, null);
+                }
             }
 
-            throw new FormatException();
+            prop = type.GetProperty(parts[1], BindingFlags.Public | BindingFlags.Static);
+
+            if (prop == null || !typeof(ICommand).IsAssignableFrom(prop.PropertyType) || prop.GetIndexParameters().Length > 0)
+                throw new FormatException();
+
+            return prop.GetValue(null, null);
         }
-
-        /// <summary>
-        /// Resolves <see cref="ApplicationCommands"/> from string values.
-        /// </summary>
-        private static Object ICommandResolver_ApplicationCommands(String value, IFormatProvider provider)
-        {
-            switch (value)
-            {
-                case nameof(ApplicationCommands.CancelPrint):
-                    return ApplicationCommands.CancelPrint;
-
-                case nameof(ApplicationCommands.Close):
-                    return ApplicationCommands.Close;
-
-                case nameof(ApplicationCommands.ContextMenu):
-                    return ApplicationCommands.ContextMenu;
-
-                case nameof(ApplicationCommands.Copy):
-                    return ApplicationCommands.Copy;
-
-                case nameof(ApplicationCommands.CorrectionList):
-                    return ApplicationCommands.CorrectionList;
-
-                case nameof(ApplicationCommands.Cut):
-                    return ApplicationCommands.Cut;
-
-                case nameof(ApplicationCommands.Delete):
-                    return ApplicationCommands.Delete;
-
-                case nameof(ApplicationCommands.Find):
-                    return ApplicationCommands.Find;
-
-                case nameof(ApplicationCommands.Help):
-                    return ApplicationCommands.Help;
-
-                case nameof(ApplicationCommands.New):
-                    return ApplicationCommands.New;
-
-                case nameof(ApplicationCommands.NotACommand):
-                    return ApplicationCommands.NotACommand;
-
-                case nameof(ApplicationCommands.Open):
-                    return ApplicationCommands.Open;
-
-                case nameof(ApplicationCommands.Paste):
-                    return ApplicationCommands.Paste;
-
-                case nameof(ApplicationCommands.Print):
-                    return ApplicationCommands.Print;
-
-                case nameof(ApplicationCommands.PrintPreview):
-                    return ApplicationCommands.PrintPreview;
-
-                case nameof(ApplicationCommands.Properties):
-                    return ApplicationCommands.Properties;
-
-                case nameof(ApplicationCommands.Redo):
-                    return ApplicationCommands.Redo;
-
-                case nameof(ApplicationCommands.Replace):
-                    return ApplicationCommands.Replace;
-
-                case nameof(ApplicationCommands.Save):
-                    return ApplicationCommands.Save;
-
-                case nameof(ApplicationCommands.SaveAs):
-                    return ApplicationCommands.SaveAs;
-
-                case nameof(ApplicationCommands.SelectAll):
-                    return ApplicationCommands.SelectAll;
-
-                case nameof(ApplicationCommands.Stop):
-                    return ApplicationCommands.Stop;
-
-                case nameof(ApplicationCommands.Undo):
-                    return ApplicationCommands.Undo;
-            }
-            throw new FormatException();
-        }
-
-        /// <summary>
-        /// Resolves <see cref="ComponentCommands"/> from string values.
-        /// </summary>
-        private static Object ICommandResolver_ComponentCommands(String value, IFormatProvider provider)
-        {
-            switch (value)
-            {
-                case nameof(ComponentCommands.ExtendSelectionDown):
-                    return ComponentCommands.ExtendSelectionDown;
-
-                case nameof(ComponentCommands.ExtendSelectionLeft):
-                    return ComponentCommands.ExtendSelectionLeft;
-
-                case nameof(ComponentCommands.ExtendSelectionRight):
-                    return ComponentCommands.ExtendSelectionRight;
-
-                case nameof(ComponentCommands.ExtendSelectionUp):
-                    return ComponentCommands.ExtendSelectionUp;
-
-                case nameof(ComponentCommands.MoveDown):
-                    return ComponentCommands.MoveDown;
-
-                case nameof(ComponentCommands.MoveFocusBack):
-                    return ComponentCommands.MoveFocusBack;
-
-                case nameof(ComponentCommands.MoveFocusDown):
-                    return ComponentCommands.MoveFocusDown;
-
-                case nameof(ComponentCommands.MoveFocusForward):
-                    return ComponentCommands.MoveFocusForward;
-
-                case nameof(ComponentCommands.MoveFocusUp):
-                    return ComponentCommands.MoveFocusUp;
-
-                case nameof(ComponentCommands.MoveLeft):
-                    return ComponentCommands.MoveLeft;
-
-                case nameof(ComponentCommands.MoveRight):
-                    return ComponentCommands.MoveRight;
-
-                case nameof(ComponentCommands.MoveToEnd):
-                    return ComponentCommands.MoveToEnd;
-
-                case nameof(ComponentCommands.MoveToHome):
-                    return ComponentCommands.MoveToHome;
-
-                case nameof(ComponentCommands.MoveToPageDown):
-                    return ComponentCommands.MoveToPageDown;
-
-                case nameof(ComponentCommands.MoveToPageUp):
-                    return ComponentCommands.MoveToPageUp;
-
-                case nameof(ComponentCommands.MoveUp):
-                    return ComponentCommands.MoveUp;
-
-                case nameof(ComponentCommands.ScrollDown):
-                    return ComponentCommands.ScrollDown;
-
-                case nameof(ComponentCommands.ScrollLeft):
-                    return ComponentCommands.ScrollLeft;
-
-                case nameof(ComponentCommands.ScrollRight):
-                    return ComponentCommands.ScrollRight;
-
-                case nameof(ComponentCommands.ScrollUp):
-                    return ComponentCommands.ScrollUp;
-
-                case nameof(ComponentCommands.SelectToEnd):
-                    return ComponentCommands.SelectToEnd;
-
-                case nameof(ComponentCommands.SelectToHome):
-                    return ComponentCommands.SelectToHome;
-
-                case nameof(ComponentCommands.SelectToPageDown):
-                    return ComponentCommands.SelectToPageDown;
-
-                case nameof(ComponentCommands.SelectToPageUp):
-                    return ComponentCommands.SelectToPageUp;
-            }
-            throw new FormatException();
-        }
-
-        /// <summary>
-        /// Resolves <see cref="MediaCommands"/> from string values.
-        /// </summary>
-        private static Object ICommandResolver_MediaCommands(String value, IFormatProvider provider)
-        {
-            switch (value)
-            {
-                case nameof(MediaCommands.BoostBass):
-                    return MediaCommands.BoostBass;
-
-                case nameof(MediaCommands.ChannelDown):
-                    return MediaCommands.ChannelDown;
-
-                case nameof(MediaCommands.ChannelUp):
-                    return MediaCommands.ChannelUp;
-
-                case nameof(MediaCommands.DecreaseBass):
-                    return MediaCommands.DecreaseBass;
-
-                case nameof(MediaCommands.DecreaseMicrophoneVolume):
-                    return MediaCommands.DecreaseMicrophoneVolume;
-
-                case nameof(MediaCommands.DecreaseTreble):
-                    return MediaCommands.DecreaseTreble;
-
-                case nameof(MediaCommands.DecreaseVolume):
-                    return MediaCommands.DecreaseVolume;
-
-                case nameof(MediaCommands.FastForward):
-                    return MediaCommands.FastForward;
-
-                case nameof(MediaCommands.IncreaseBass):
-                    return MediaCommands.IncreaseBass;
-
-                case nameof(MediaCommands.IncreaseMicrophoneVolume):
-                    return MediaCommands.IncreaseMicrophoneVolume;
-
-                case nameof(MediaCommands.IncreaseTreble):
-                    return MediaCommands.IncreaseTreble;
-
-                case nameof(MediaCommands.IncreaseVolume):
-                    return MediaCommands.IncreaseVolume;
-
-                case nameof(MediaCommands.MuteMicrophoneVolume):
-                    return MediaCommands.MuteMicrophoneVolume;
-
-                case nameof(MediaCommands.MuteVolume):
-                    return MediaCommands.MuteVolume;
-
-                case nameof(MediaCommands.NextTrack):
-                    return MediaCommands.NextTrack;
-
-                case nameof(MediaCommands.Pause):
-                    return MediaCommands.Pause;
-
-                case nameof(MediaCommands.Play):
-                    return MediaCommands.Play;
-
-                case nameof(MediaCommands.PreviousTrack):
-                    return MediaCommands.PreviousTrack;
-
-                case nameof(MediaCommands.Record):
-                    return MediaCommands.Record;
-
-                case nameof(MediaCommands.Rewind):
-                    return MediaCommands.Rewind;
-
-                case nameof(MediaCommands.Select):
-                    return MediaCommands.Select;
-
-                case nameof(MediaCommands.Stop):
-                    return MediaCommands.Stop;
-
-                case nameof(MediaCommands.ToggleMicrophoneOnOff):
-                    return MediaCommands.ToggleMicrophoneOnOff;
-
-                case nameof(MediaCommands.TogglePlayPause):
-                    return MediaCommands.TogglePlayPause;
-            }
-            throw new FormatException();
-        }
-
-        /// <summary>
-        /// Resolves <see cref="NavigationCommands"/> from string values.
-        /// </summary>
-        private static Object ICommandResolver_NavigationCommands(String value, IFormatProvider provider)
-        {
-            switch (value)
-            {
-                case nameof(NavigationCommands.BrowseBack):
-                    return NavigationCommands.BrowseBack;
-
-                case nameof(NavigationCommands.BrowseForward):
-                    return NavigationCommands.BrowseForward;
-
-                case nameof(NavigationCommands.BrowseHome):
-                    return NavigationCommands.BrowseHome;
-
-                case nameof(NavigationCommands.BrowseStop):
-                    return NavigationCommands.BrowseStop;
-
-                case nameof(NavigationCommands.DecreaseZoom):
-                    return NavigationCommands.DecreaseZoom;
-
-                case nameof(NavigationCommands.Favorites):
-                    return NavigationCommands.Favorites;
-
-                case nameof(NavigationCommands.FirstPage):
-                    return NavigationCommands.FirstPage;
-
-                case nameof(NavigationCommands.GoToPage):
-                    return NavigationCommands.GoToPage;
-
-                case nameof(NavigationCommands.IncreaseZoom):
-                    return NavigationCommands.IncreaseZoom;
-
-                case nameof(NavigationCommands.LastPage):
-                    return NavigationCommands.LastPage;
-
-                case nameof(NavigationCommands.NavigateJournal):
-                    return NavigationCommands.NavigateJournal;
-
-                case nameof(NavigationCommands.NextPage):
-                    return NavigationCommands.NextPage;
-
-                case nameof(NavigationCommands.PreviousPage):
-                    return NavigationCommands.PreviousPage;
-
-                case nameof(NavigationCommands.Refresh):
-                    return NavigationCommands.Refresh;
-
-                case nameof(NavigationCommands.Search):
-                    return NavigationCommands.Search;
-
-                case nameof(NavigationCommands.Zoom):
-                    return NavigationCommands.Zoom;
-            }
-            throw new FormatException();
-        }
-
+        
         // Manager instance used to recognize events raised by us
         private static readonly CommandManager instance = new CommandManager();
 
@@ -1253,5 +966,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         // State values.
         private static readonly ThreadLocal<List<CommandBindingKey>> commandBindingsSearchList = 
             new ThreadLocal<List<CommandBindingKey>>(() => new List<CommandBindingKey>());
+        private static readonly Dictionary<String, Type> typeCache = new Dictionary<String, Type>();
     }
 }
