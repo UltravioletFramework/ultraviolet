@@ -2577,22 +2577,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var boundsCaretPixs = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, caretRenderBounds.Width, caretBounds.Height);
             var boundsCaretDips = Display.PixelsToDips(boundsCaretPixs);
 
-            var isHorizontalScrollingNecessary = (boundsCaretDips.Left < boundsViewport.Left || boundsCaretDips.Right > boundsViewport.Right);
-            var isVerticalScrollingNecessary = (boundsCaretDips.Top < boundsViewport.Top || boundsCaretDips.Bottom > boundsViewport.Bottom);
+            var isHorizontalScrollingNecessary = (boundsCaretDips.Left <= boundsViewport.Left || boundsCaretDips.Right >= boundsViewport.Right);
+            var isVerticalScrollingNecessary = (boundsCaretDips.Top <= boundsViewport.Top || boundsCaretDips.Bottom >= boundsViewport.Bottom);
 
             if (!isHorizontalScrollingNecessary && !isVerticalScrollingNecessary)
                 return;
             
             if (isVerticalScrollingNecessary)
             {
-                if (boundsCaretDips.Top < boundsViewport.Top)
+                if (boundsCaretDips.Top <= boundsViewport.Top)
                 {
-                    var verticalOffset = boundsCaretDips.Top;
+                    var verticalOffset = boundsCaretDips.Top - 1.0;
                     scrollViewer.ScrollToVerticalOffset(verticalOffset);
                 }
                 else
                 {
-                    var verticalOffset = (boundsCaretDips.Bottom - boundsViewport.Height);
+                    var verticalOffset = (boundsCaretDips.Bottom + 1.0) - boundsViewport.Height;
                     scrollViewer.ScrollToVerticalOffset(verticalOffset);
                 }
             }
@@ -2601,23 +2601,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 var owner = TemplatedParent as Control;
                 var alignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
-                var horizontalOffset = (alignment == TextAlignment.Right) ? boundsCaretDips.Left : boundsCaretDips.Right - boundsViewport.Width;
+                var horizontalOffset = (alignment == TextAlignment.Right) ? (boundsCaretDips.Left - 1.0) : (boundsCaretDips.Right + 1.0) - boundsViewport.Width;
                 scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
             }
             else
             {
                 if (isHorizontalScrollingNecessary)
                 {
-                    if (boundsCaretDips.Left < boundsViewport.Left)
+                    if (boundsCaretDips.Left <= boundsViewport.Left)
                     {
-                        var horizontalOffset = boundsCaretDips.Left -
+                        var horizontalOffset = (boundsCaretDips.Left - 1.0) -
                             (jumpLeft ? (boundsViewport.Width / 3.0) : 0);
 
                         scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
                     }
                     else
                     {
-                        var horizontalOffset = (boundsCaretDips.Right - boundsViewport.Width) +
+                        var horizontalOffset = ((boundsCaretDips.Right + 1.0) - boundsViewport.Width) +
                             (jumpRight ? (boundsViewport.Width / 3.0) : 0);
 
                         scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
