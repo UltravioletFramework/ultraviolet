@@ -49,5 +49,15 @@
         /// The caret is being moved down one page.
         /// </summary>
         PageDown,
+
+        /// <summary>
+        /// The caret is being moved to the end of the next word.
+        /// </summary>
+        NextWord,
+
+        /// <summary>
+        /// The caret is being moved to the beginning of the previous word.
+        /// </summary>
+        PreviousWord,
     }
 }

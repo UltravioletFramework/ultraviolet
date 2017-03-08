@@ -358,6 +358,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Registers the value resolvers used to parse commands.
+        /// </summary>
+        internal static void RegisterValueResolvers()
+        {
+            ObjectResolver.RegisterValueResolver<ICommand>(ICommandResolver);
+        }
+
+        /// <summary>
+        /// Registers a command and input binding for the specified class.
+        /// </summary>
+        internal static void RegisterClassBindings(Type type, ICommand command, ExecutedRoutedEventHandler executed, params InputGesture[] gestures)
+        {
+            RegisterClassCommandBinding(type, new CommandBinding(command, executed));
+
+            if (gestures != null)
+            {
+                foreach (var gesture in gestures)
+                {
+                    RegisterClassInputBinding(type, new InputBinding(command, gesture));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Registers a command and input binding for the specified class.
+        /// </summary>
+        internal static void RegisterClassBindings(Type type, ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute, params InputGesture[] gestures)
+        {
+            RegisterClassCommandBinding(type, new CommandBinding(command, executed, canExecute));
+
+            if (gestures != null)
+            {
+                foreach (var gesture in gestures)
+                {
+                    RegisterClassInputBinding(type, new InputBinding(command, gesture));
+                }
+            }
+        }
+
+        /// <summary>
         /// Executes the specified command source's command.
         /// </summary>
         internal static void ExecuteSource(PresentationFoundationView view, ICommandSource source)
@@ -378,14 +418,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             }
 
             command.Execute(view, source.CommandParameter);
-        }
-
-        /// <summary>
-        /// Registers the value resolvers used to parse commands.
-        /// </summary>
-        internal static void RegisterValueResolvers()
-        {
-            ObjectResolver.RegisterValueResolver<ICommand>(ICommandResolver);
         }
 
         /// <summary>

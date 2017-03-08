@@ -173,6 +173,62 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Finds the extent of the word at the specified caret position.
+        /// </summary>
+        /// <param name="position">The caret position at which to begin searching for words.</param>
+        /// <param name="wordStart">The start index of the word that was found.</param>
+        /// <param name="wordEnd">The end index of the word that was found.</param>
+        public void FindWord(Int32 position, out Int32 wordStart, out Int32 wordEnd)
+        {
+            wordStart = wordEnd = 0;
+            
+            if (bufferText.Length == 0)
+                return;
+
+            if (IsMasked)
+            {
+                wordStart = 0;
+                wordEnd = bufferText.Length;
+            }
+            else
+            {
+                // Find the beginning of the word
+                var wordStartNeeded = true;
+                for (int i = Math.Min(position, bufferText.Length) - 1; i > 0; i--)
+                {
+                    var charPrev = bufferText[i - 1];
+                    var charNext = bufferText[i];
+                    if (IsEndOfWordBoundary(charPrev, charNext))
+                    {
+                        wordStart = i;
+                        wordStartNeeded = false;
+                        break;
+                    }
+                }
+
+                if (wordStartNeeded)
+                    wordStart = 0;
+
+                // Find the end of the word
+                var wordEndNeeded = true;
+                for (int i = Math.Max(position, 0) + 1; i < bufferText.Length; i++)
+                {
+                    var charPrev = bufferText[i - 1];
+                    var charNext = bufferText[i];
+                    if (IsEndOfWordBoundary(charPrev, charNext))
+                    {
+                        wordEnd = i;
+                        wordEndNeeded = false;
+                        break;
+                    }
+                }
+
+                if (wordEndNeeded)
+                    wordEnd = bufferText.Length;
+            }
+        }
+
+        /// <summary>
         /// Selects the specified range of text.
         /// </summary>
         /// <param name="start">The index of the first character to select.</param>
@@ -203,7 +259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             Select(0, textLayoutStream.TotalLength);
         }
-
+        
         /// <summary>
         /// Selects the word, whitespace, or symbol at the current caret position.
         /// </summary>
@@ -328,10 +384,44 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void Delete()
         {
-            if (IsReadOnly)
+            if (IsReadOnly || !IsEnabled)
                 return;
 
             DeleteAhead();
+        }
+
+        /// <summary>
+        /// Deletes everything from the current caret position to the beginning of the next word.
+        /// </summary>
+        public void DeleteNextWord()
+        {
+            if (IsReadOnly || !IsEnabled)
+                return;
+
+            var wordStart = 0;
+            var wordEnd = 0;
+            FindWord(caretPosition, out wordStart, out wordEnd);
+
+            var wordLength = (wordEnd - caretPosition);
+            if (wordLength > 0)
+                DeleteSpan(caretPosition, wordLength, true);
+        }
+
+        /// <summary>
+        /// Deletes everything from the current caret position to the end of the previous word.
+        /// </summary>
+        public void DeletePreviousWord()
+        {
+            if (IsReadOnly || !IsEnabled)
+                return;
+
+            var wordStart = 0;
+            var wordEnd = 0;
+            FindWord(caretPosition, out wordStart, out wordEnd);
+
+            var wordLength = (caretPosition - wordStart);
+            if (wordLength > 0)
+                DeleteSpan(wordStart, wordLength, true);
         }
 
         /// <summary>
@@ -592,7 +682,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             BeginTrackingSelectionChanges();
 
             var movementAllowed = (caretPosition < textLayoutStream.TotalLength && textLayoutStream.TotalLength > 0);
-            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End, moveToEndOfText))
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End, moveSelection))
             {
                 caretBlinkTimer = 0;
                 if (moveToEndOfText)
@@ -610,6 +700,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 UpdateSelectionAndCaret();
                 ScrollToCaret(true, false, false);
+            }
+
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret to the start of the next word.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretToNextWord(Boolean moveSelection)
+        {
+            BeginTrackingSelectionChanges();
+
+            var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.NextWord, moveSelection))
+            {
+                var wordStart = 0;
+                var wordEnd = 0;
+                FindWord(caretPosition, out wordStart, out wordEnd);
+
+                caretBlinkTimer = 0;
+                caretPosition = wordEnd;
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(false, false, true);
+            }
+            
+            EndTrackingSelectionChanges();
+        }
+
+        /// <summary>
+        /// Moves the caret to the end of the previous word.
+        /// </summary>
+        /// <param name="moveSelection">A value indicating whether or not the selection is moving.</param>
+        public void MoveCaretToPreviousWord(Boolean moveSelection)
+        {
+            BeginTrackingSelectionChanges();
+
+            var movementAllowed = (caretPosition > 0);
+            if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.PreviousWord, moveSelection))
+            {
+                var wordStart = 0;
+                var wordEnd = 0;
+                FindWord(caretPosition, out wordStart, out wordEnd);
+
+                caretBlinkTimer = 0;
+                caretPosition = wordStart;
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(false, false, true);
             }
 
             EndTrackingSelectionChanges();
@@ -1802,6 +1942,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var textEditor = (TextEditor)dobj;
             textEditor.ReloadSelectionImage();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character is a "non-word" character such 
+        /// as white space or a hyphen.
+        /// </summary>
+        private static Boolean IsNonWordCharacter(Char c)
+        {
+            return Char.IsWhiteSpace(c) || c == '-';
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified character combination represents the end of a word.
+        /// </summary>
+        private static Boolean IsEndOfWordBoundary(Char charPrev, Char charNext)
+        {
+            return IsNonWordCharacter(charPrev) && !IsNonWordCharacter(charNext);
         }
 
         /// <summary>

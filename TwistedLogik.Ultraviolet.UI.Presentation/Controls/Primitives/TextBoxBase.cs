@@ -1,6 +1,7 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
+using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
@@ -19,31 +20,89 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             EventManager.RegisterClassHandler(typeof(TextBoxBase), SelectionChangedEvent, new UpfRoutedEventHandler(HandleSelectionChanged));
 
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.SelectAll, ExecutedSelectAll, CanExecuteSelectAll));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Copy, ExecutedCopy, CanExecuteCopy));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Cut, ExecutedCut, CanExecuteCut));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.Paste, ExecutedPaste, CanExecutePaste));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveLeft, ExecutedMoveLeft, CanExecuteMoveLeft));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveRight, ExecutedMoveRight, CanExecuteMoveRight));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveUp, ExecutedMoveUp, CanExecuteMoveUp));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveDown, ExecutedMoveDown, CanExecuteMoveDown));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveToStartOfLine, ExecutedMoveToStartOfLine, CanExecuteMoveToStartOfLine));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveToEndOfLine, ExecutedMoveToEndOfLine, CanExecuteMoveToEndOfLine));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveToStartOfText, ExecutedMoveToStartOfText, CanExecuteMoveToStartOfText));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveToEndOfText, ExecutedMoveToEndOfText, CanExecuteMoveToEndOfText));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveToPageUp, ExecutedMoveToPageUp, CanExecuteMoveToPageUp));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.MoveToPageDown, ExecutedMoveToPageDown, CanExecuteMoveToPageDown));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionDown, ExecutedExtendSelectionDown, CanExecuteExtendSelectionDown));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionLeft, ExecutedExtendSelectionLeft, CanExecuteExtendSelectionLeft));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionRight, ExecutedExtendSelectionRight, CanExecuteExtendSelectionRight));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionUp, ExecutedExtendSelectionUp, CanExecuteExtendSelectionUp));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionToStartOfLine, ExecutedExtendSelectionToStartOfLine, CanExecuteExtendSelectionToStartOfLine));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionToEndOfLine, ExecutedExtendSelectionToEndOfLine, CanExecuteExtendSelectionToEndOfLine));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionToStartOfText, ExecutedExtendSelectionToStartOfText, CanExecuteExtendSelectionToStartOfText));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ExtendSelectionToEndOfText, ExecutedExtendSelectionToEndOfText, CanExecuteExtendSelectionToEndOfText));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.SelectToPageDown, ExecutedSelectToPageDown, CanExecuteSelectToPageDown));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.SelectToPageDown, ExecutedSelectToPageUp, CanExecuteSelectToPageUp));
-            CommandManager.RegisterClassCommandBinding(typeof(TextBoxBase), new CommandBinding(TextEditorCommands.ToggleInsertionMode, ExecutedToggleInsertionMode, CanExecuteToggleInsertionMode));
+            var canExecuteIsEnabled = new CanExecuteRoutedEventHandler(CanExecuteIsEnabled);
+            var canExecuteIsEditable = new CanExecuteRoutedEventHandler(CanExecuteIsEditable);
+            var canExecuteIsCaretVisible = new CanExecuteRoutedEventHandler(CanExecuteIsCaretVisible);
+
+            // Selection commands
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), ApplicationCommands.SelectAll,
+                ExecutedSelectAll, canExecuteIsCaretVisible, new KeyGesture(Key.A, ModifierKeys.Control, "Ctrl+A"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectRightByCharacter,
+                ExecutedSelectRightByCharacter, canExecuteIsCaretVisible, new KeyGesture(Key.Right, ModifierKeys.Shift, "Shift+Right"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectLeftByCharacter,
+                ExecutedSelectLeftByCharacter, canExecuteIsCaretVisible, new KeyGesture(Key.Left, ModifierKeys.Shift, "Shift+Left"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectRightByWord,
+                ExecutedSelectRightByWord, canExecuteIsCaretVisible, new KeyGesture(Key.Right, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+Right"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectLeftByWord,
+                ExecutedSelectLeftByWord, canExecuteIsCaretVisible, new KeyGesture(Key.Left, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+Left"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectDownByLine,
+                ExecutedSelectDownByLine, canExecuteIsCaretVisible, new KeyGesture(Key.Down, ModifierKeys.Shift, "Shift+Down"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectUpByLine,
+                ExecutedSelectUpByLine, canExecuteIsCaretVisible, new KeyGesture(Key.Up, ModifierKeys.Shift, "Shift+Up"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectDownByPage,
+                ExecutedSelectDownByPage, canExecuteIsCaretVisible, new KeyGesture(Key.PageDown, ModifierKeys.Shift, "Shift+PageDown"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectUpByPage,
+                ExecutedSelectUpByPage, canExecuteIsCaretVisible, new KeyGesture(Key.PageUp, ModifierKeys.Shift, "Shift+PageUp"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectToLineStart,
+                ExecutedSelectToLineStart, canExecuteIsCaretVisible, new KeyGesture(Key.Home, ModifierKeys.Shift, "Shift+Home"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectToLineEnd,
+                ExecutedSelectToLineEnd, canExecuteIsCaretVisible, new KeyGesture(Key.End, ModifierKeys.Shift, "Shift+End"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectToDocumentStart,
+                ExecutedSelectToDocumentStart, canExecuteIsCaretVisible, new KeyGesture(Key.Home, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+Home"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.SelectToDocumentEnd,
+                ExecutedSelectToDocumentEnd, canExecuteIsCaretVisible, new KeyGesture(Key.End, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+End"));
+
+            // Movement commands
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveRightByCharacter,
+                ExecutedMoveRightByCharacter, canExecuteIsCaretVisible, new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveLeftByCharacter,
+                ExecutedMoveLeftByCharacter, canExecuteIsCaretVisible, new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveRightByWord,
+                ExecutedMoveRightByWord, canExecuteIsCaretVisible, new KeyGesture(Key.Right, ModifierKeys.Control, "Ctrl+Right"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveLeftByWord,
+                ExecutedMoveLeftByWord, canExecuteIsCaretVisible, new KeyGesture(Key.Left, ModifierKeys.Control, "Ctrl+Left"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveDownByLine,
+                ExecutedMoveDownByLine, canExecuteIsCaretVisible, new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveUpByLine,
+                ExecutedMoveUpByLine, canExecuteIsCaretVisible, new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveDownByPage,
+                ExecutedMoveDownByPage, canExecuteIsCaretVisible, new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveUpByPage,
+                ExecutedMoveUpByPage, canExecuteIsCaretVisible, new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveToLineStart,
+                ExecutedMoveToLineStart, canExecuteIsCaretVisible, new KeyGesture(Key.Home, ModifierKeys.None, "Home"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveToLineEnd,
+                ExecutedMoveToLineEnd, canExecuteIsCaretVisible, new KeyGesture(Key.End, ModifierKeys.None, "End"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveToDocumentStart,
+                ExecutedMoveToDocumentStart, canExecuteIsCaretVisible, new KeyGesture(Key.Home, ModifierKeys.Control, "Ctrl+Home"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.MoveToDocumentEnd,
+                ExecutedMoveToDocumentEnd, canExecuteIsCaretVisible, new KeyGesture(Key.End, ModifierKeys.Control, "Ctrl+End"));
+            
+            // Text editing commands
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.ToggleInsert,
+                ExecutedToggleInsert, canExecuteIsCaretVisible, new KeyGesture(Key.Insert, ModifierKeys.None, "Insert"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.Backspace,
+                ExecutedBackspace, canExecuteIsEditable, new KeyGesture(Key.Backspace, ModifierKeys.None, "Backspace"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.Delete,
+                ExecutedDelete, canExecuteIsEditable, new KeyGesture(Key.Delete, ModifierKeys.None, "Delete"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.DeleteNextWord,
+                ExecutedDeleteNextWord, canExecuteIsEditable, new KeyGesture(Key.Delete, ModifierKeys.Control, "Ctrl+Delete"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.DeletePreviousWord,
+                ExecutedDeletePreviousWord, canExecuteIsEditable, new KeyGesture(Key.Backspace, ModifierKeys.Control, "Ctrl+Backspace"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.EnterParagraphBreak,
+                ExecutedEnterParagraphBreak, canExecuteIsEditable, new KeyGesture(Key.Return, ModifierKeys.None, "Return"), new KeyGesture(Key.KeypadEnter, ModifierKeys.None, "KeypadEnter"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.EnterLineBreak,
+                ExecutedEnterLineBreak, canExecuteIsEditable, new KeyGesture(Key.Return, ModifierKeys.Shift, "Shift+Return"), new KeyGesture(Key.KeypadEnter, ModifierKeys.Shift, "Shift+KeypadEnter"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.TabForward,
+                ExecutedTabForward, CanExecuteTabForward, new KeyGesture(Key.Return, ModifierKeys.None, "Tab"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.TabBackward,
+                ExecutedTabBackward, CanExecuteTabBackward, new KeyGesture(Key.Return, ModifierKeys.None, "Shift+Tab"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), ApplicationCommands.Copy,
+                ExecutedCopy, CanExecuteCopy, new KeyGesture(Key.C, ModifierKeys.Control, "Ctrl+C"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), ApplicationCommands.Cut,
+                ExecutedCut, CanExecuteCut, new KeyGesture(Key.X, ModifierKeys.Control, "Ctrl+X"));
+            CommandManager.RegisterClassBindings(typeof(TextBoxBase), ApplicationCommands.Paste,
+                ExecutedPaste, CanExecutePaste, new KeyGesture(Key.V, ModifierKeys.Control, "Ctrl+V"));
         }
 
         /// <summary>
@@ -706,580 +765,564 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.SelectAll"/> command.
+        /// Executes the <see cref="ApplicationCommands.SelectAll"/> command.
         /// </summary>
         private static void ExecutedSelectAll(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var textBox = (TextBox)element;
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.SelectAll();
-
-            data.Handled = true;
+            textBox.TextEditor.SelectAll();
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.Cut"/> command.
+        /// Executes the <see cref="EditingCommands.SelectRightByCharacter"/> command.
         /// </summary>
-        private static void ExecutedCut(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectRightByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var textBox = (TextBox)element;
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null && !textBox.TextEditor.IsMasked)
-                textBox.TextEditor.Cut();
-
-            data.Handled = true;
+            textBox.TextEditor.MoveCaretRight(true);
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.Copy"/> command.
+        /// Executes the <see cref="EditingCommands.SelectLeftByCharacter"/> command.
+        /// </summary>
+        private static void ExecutedSelectLeftByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretLeft(true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectRightByWord"/> command.
+        /// </summary>
+        private static void ExecutedSelectRightByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToNextWord(true);
+        }
+        
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectLeftByWord"/> command.
+        /// </summary>
+        private static void ExecutedSelectLeftByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToPreviousWord(true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectUpByLine"/> command.
+        /// </summary>
+        private static void ExecutedSelectDownByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretUp(true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectDownByLine"/> command.
+        /// </summary>
+        private static void ExecutedSelectUpByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretDown(true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectUpByPage"/> command.
+        /// </summary>
+        private static void ExecutedSelectDownByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretPageUp(true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectDownByPage"/> command.
+        /// </summary>
+        private static void ExecutedSelectUpByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretPageDown(true);
+        }
+        
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectToLineStart"/> command.
+        /// </summary>
+        private static void ExecutedSelectToLineStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToHome(true, false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectToLineEnd"/> command.
+        /// </summary>
+        private static void ExecutedSelectToLineEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToEnd(true, false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectToDocumentStart"/> command.
+        /// </summary>
+        private static void ExecutedSelectToDocumentStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToHome(true, true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.SelectToDocumentEnd"/> command.
+        /// </summary>
+        private static void ExecutedSelectToDocumentEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToEnd(true, true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveRightByCharacter"/> command.
+        /// </summary>
+        private static void ExecutedMoveRightByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretRight(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveLeftByCharacter"/> command.
+        /// </summary>
+        private static void ExecutedMoveLeftByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretLeft(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveRightByWord"/> command.
+        /// </summary>
+        private static void ExecutedMoveRightByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToNextWord(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveLeftByWord"/> command.
+        /// </summary>
+        private static void ExecutedMoveLeftByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToPreviousWord(false);
+        }
+        
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveUpByLine"/> command.
+        /// </summary>
+        private static void ExecutedMoveDownByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretUp(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveDownByLine"/> command.
+        /// </summary>
+        private static void ExecutedMoveUpByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretDown(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveUpByPage"/> command.
+        /// </summary>
+        private static void ExecutedMoveDownByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretPageUp(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveDownByPage"/> command.
+        /// </summary>
+        private static void ExecutedMoveUpByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretPageDown(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveToLineStart"/> command.
+        /// </summary>
+        private static void ExecutedMoveToLineStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToHome(false, false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveToLineEnd"/> command.
+        /// </summary>
+        private static void ExecutedMoveToLineEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToEnd(false, false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveToDocumentStart"/> command.
+        /// </summary>
+        private static void ExecutedMoveToDocumentStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToHome(false, true);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveToDocumentEnd"/> command.
+        /// </summary>
+        private static void ExecutedMoveToDocumentEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretToEnd(false, true);
+        }
+        
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.ToggleInsert"/> command.
+        /// </summary>
+        private static void ExecutedToggleInsert(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.ToggleInsertionMode();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.Backspace"/> command.
+        /// </summary>
+        private static void ExecutedBackspace(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.Backspace();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.Delete"/> command.
+        /// </summary>
+        private static void ExecutedDelete(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.Delete();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.DeleteNextWord"/> command.
+        /// </summary>
+        private static void ExecutedDeleteNextWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.DeleteNextWord();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.DeletePreviousWord"/> command.
+        /// </summary>
+        private static void ExecutedDeletePreviousWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.DeletePreviousWord();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.EnterParagraphBreak"/> command.
+        /// </summary>
+        private static void ExecutedEnterParagraphBreak(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.InsertNewLine();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.EnterLineBreak"/> command.
+        /// </summary>
+        private static void ExecutedEnterLineBreak(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.InsertNewLine();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.TabForward"/> command.
+        /// </summary>
+        private static void ExecutedTabForward(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.InsertTab();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.TabBackward"/> command.
+        /// </summary>
+        private static void ExecutedTabBackward(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.InsertTab();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="ApplicationCommands.Copy"/> command.
         /// </summary>
         private static void ExecutedCopy(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var textBox = (TextBox)element;
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.TextEditor.IsMasked || textBox.TextEditor.SelectionLength == 0 || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null && !textBox.TextEditor.IsMasked && !textBox.TextEditor.IsReadOnly)
-                textBox.TextEditor.Copy();
-
-            data.Handled = true;
+            textBox.TextEditor.Copy();
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.Paste"/> command.
+        /// Executes the <see cref="ApplicationCommands.Cut"/> command.
+        /// </summary>
+        private static void ExecutedCut(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.TextEditor.IsMasked || textBox.TextEditor.SelectionLength == 0 || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.Cut();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="ApplicationCommands.Paste"/> command.
         /// </summary>
         private static void ExecutedPaste(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var textBox = (TextBox)element;
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly)
-                textBox.TextEditor.Paste();
-
-            data.Handled = true;
+            textBox.TextEditor.Paste();
         }
-        
+
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveLeft"/> command.
+        /// Specifies that a command can execute if the text box is enabled.
         /// </summary>
-        private static void ExecutedMoveLeft(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void CanExecuteIsEnabled(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
+            if (textBox.TextEditor == null || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretLeft(false);
-
+            data.CanExecute = true;
             data.Handled = true;
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveRight"/> command.
+        /// Specifies that a command can execute if the text box is enabled and editable.
         /// </summary>
-        private static void ExecutedMoveRight(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void CanExecuteIsEditable(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
+            if (textBox.TextEditor == null || textBox.IsReadOnly || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretRight(false);
-
+            data.CanExecute = true;
             data.Handled = true;
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveUp"/> command.
+        /// Specifies that a command can execute if the text box is enabled and the caret is visible.
         /// </summary>
-        private static void ExecutedMoveUp(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void CanExecuteIsCaretVisible(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
+            if (textBox.TextEditor == null || !textBox.IsEnabled)
+                return;
 
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretUp(false);
+            if (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible)
+                return;
 
+            data.CanExecute = true;
             data.Handled = true;
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveDown"/> command.
+        /// Determines whether the <see cref="EditingCommands.TabForward"/> command can execute.
         /// </summary>
-        private static void ExecutedMoveDown(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void CanExecuteTabForward(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretDown(false);
-
+            data.CanExecute = textBox.TextEditor != null && textBox.IsEnabled && textBox.AcceptsTab && !textBox.IsReadOnly;
             data.Handled = true;
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveToStartOfLine"/> command.
+        /// Determines whether the <see cref="EditingCommands.TabBackward"/> command can execute.
         /// </summary>
-        private static void ExecutedMoveToStartOfLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void CanExecuteTabBackward(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToHome(false, false);
-
+            data.CanExecute = textBox.TextEditor != null && textBox.IsEnabled && textBox.AcceptsTab && !textBox.IsReadOnly;
             data.Handled = true;
         }
 
         /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveToEndOfLine"/> command.
-        /// </summary>
-        private static void ExecutedMoveToEndOfLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToEnd(false, false);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveToStartOfText"/> command.
-        /// </summary>
-        private static void ExecutedMoveToStartOfText(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToHome(false, true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveToEndOfText"/> command.
-        /// </summary>
-        private static void ExecutedMoveToEndOfText(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToEnd(false, true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveToPageUp"/> command.
-        /// </summary>
-        private static void ExecutedMoveToPageUp(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretPageUp(false);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.MoveToPageDown"/> command.
-        /// </summary>
-        private static void ExecutedMoveToPageDown(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretPageDown(false);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionDown"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionDown(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretDown(true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionDown"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionLeft(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretLeft(true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionRight"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionRight(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretRight(true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionUp"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionUp(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretUp(true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionToStartOfLine"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionToStartOfLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToHome(true, false);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionToEndOfLine"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionToEndOfLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToEnd(true, false);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionToStartOfText"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionToStartOfText(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToHome(true, true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ExtendSelectionToEndOfText"/> command.
-        /// </summary>
-        private static void ExecutedExtendSelectionToEndOfText(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretToEnd(true, true);
-
-            data.Handled = true;
-        }
-        
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.SelectToPageDown"/> command.
-        /// </summary>
-        private static void ExecutedSelectToPageDown(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretPageDown(true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.SelectToPageUp"/> command.
-        /// </summary>
-        private static void ExecutedSelectToPageUp(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.MoveCaretPageUp(true);
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Executes the <see cref="TextEditorCommands.ToggleInsertionMode"/> command.
-        /// </summary>
-        private static void ExecutedToggleInsertionMode(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-
-            if (textBox.TextEditor != null)
-                textBox.TextEditor.ToggleInsertionMode();
-
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.SelectAll"/> command can execute.
-        /// </summary>
-        private static void CanExecuteSelectAll(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.Cut"/> command can execute.
-        /// </summary>
-        private static void CanExecuteCut(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsMasked && !textBox.TextEditor.IsReadOnly;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.Copy"/> command can execute.
+        /// Determines whether the <see cref="ApplicationCommands.Copy"/> command can execute.
         /// </summary>
         private static void CanExecuteCopy(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsMasked;
+            if (textBox.TextEditor == null)
+                return;
+
+            if (textBox.TextEditor.IsMasked)
+            {
+                data.CanExecute = false;
+                data.Handled = true;
+                return;
+            }
+
+            data.CanExecute = textBox.IsEnabled && textBox.TextEditor.SelectionLength > 0;
             data.Handled = true;
         }
 
         /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.Paste"/> command can execute.
+        /// Determines whether the <see cref="ApplicationCommands.Cut"/> command can execute.
+        /// </summary>
+        private static void CanExecuteCut(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            var textBox = (TextBox)element;
+            if (textBox.TextEditor == null)
+                return;
+
+            if (textBox.TextEditor.IsMasked)
+            {
+                data.CanExecute = false;
+                data.Handled = true;
+                return;
+            }
+
+            data.CanExecute = textBox.IsEnabled && !textBox.IsReadOnly && textBox.TextEditor.SelectionLength > 0;
+            data.Handled = true;
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="ApplicationCommands.Paste"/> command can execute.
         /// </summary>
         private static void CanExecutePaste(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null && !textBox.TextEditor.IsReadOnly;
+            if (textBox.TextEditor == null)
+                return;
+
+            data.CanExecute = textBox.IsEnabled && !textBox.IsReadOnly;
             data.Handled = true;
         }
         
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ToggleInsertionMode"/> command can execute.
-        /// </summary>
-        private static void CanExecuteToggleInsertionMode(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveLeft"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveLeft(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveRight"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveRight(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveUp"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveUp(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveDown"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveDown(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveToStartOfLine"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveToStartOfLine(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveToEndOfLine"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveToEndOfLine(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveToStartOfText"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveToStartOfText(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveToEndOfText"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveToEndOfText(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveToPageUp"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveToPageUp(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.MoveToPageDown"/> command can execute.
-        /// </summary>
-        private static void CanExecuteMoveToPageDown(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionDown"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionDown(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionDown"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionLeft(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionRight"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionRight(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionUp"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionUp(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionToStartOfLine"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionToStartOfLine(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionToEndOfLine"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionToEndOfLine(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionToStartOfText"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionToStartOfText(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.ExtendSelectionToEndOfText"/> command can execute.
-        /// </summary>
-        private static void CanExecuteExtendSelectionToEndOfText(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.SelectToPageDown"/> command can execute.
-        /// </summary>
-        private static void CanExecuteSelectToPageDown(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
-        /// <summary>
-        /// Determines whether the <see cref="TextEditorCommands.SelectToPageUp"/> command can execute.
-        /// </summary>
-        private static void CanExecuteSelectToPageUp(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textBox = (TextBox)element;
-            data.CanExecute = textBox.TextEditor != null;
-            data.Handled = true;
-        }
-
         /// <summary>
         /// Updates the value of the <see cref="IsSelectionActive"/> property.
         /// </summary>
