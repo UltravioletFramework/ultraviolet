@@ -94,9 +94,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.EnterLineBreak,
                 ExecutedEnterLineBreak, canExecuteIsEditable, new KeyGesture(Key.Return, ModifierKeys.Shift, "Shift+Return"), new KeyGesture(Key.KeypadEnter, ModifierKeys.Shift, "Shift+KeypadEnter"));
             CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.TabForward,
-                ExecutedTabForward, CanExecuteTabForward, new KeyGesture(Key.Return, ModifierKeys.None, "Tab"));
+                ExecutedTabForward, CanExecuteTabForward, new KeyGesture(Key.Tab, ModifierKeys.None, "Tab"));
             CommandManager.RegisterClassBindings(typeof(TextBoxBase), EditingCommands.TabBackward,
-                ExecutedTabBackward, CanExecuteTabBackward, new KeyGesture(Key.Return, ModifierKeys.None, "Shift+Tab"));
+                ExecutedTabBackward, CanExecuteTabBackward, new KeyGesture(Key.Tab, ModifierKeys.Shift, "Shift+Tab"));
             CommandManager.RegisterClassBindings(typeof(TextBoxBase), ApplicationCommands.Copy,
                 ExecutedCopy, CanExecuteCopy, new KeyGesture(Key.C, ModifierKeys.Control, "Ctrl+C"));
             CommandManager.RegisterClassBindings(typeof(TextBoxBase), ApplicationCommands.Cut,
@@ -833,7 +833,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
                 return;
 
-            textBox.TextEditor.MoveCaretUp(true);
+            textBox.TextEditor.MoveCaretDown(true);
         }
 
         /// <summary>
@@ -845,11 +845,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
                 return;
 
-            textBox.TextEditor.MoveCaretDown(true);
+            textBox.TextEditor.MoveCaretUp(true);
         }
 
         /// <summary>
-        /// Executes the <see cref="EditingCommands.SelectUpByPage"/> command.
+        /// Executes the <see cref="EditingCommands.SelectDownByPage"/> command.
         /// </summary>
         private static void ExecutedSelectDownByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
@@ -857,11 +857,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
                 return;
 
-            textBox.TextEditor.MoveCaretPageUp(true);
+            textBox.TextEditor.MoveCaretPageDown(true);
         }
 
         /// <summary>
-        /// Executes the <see cref="EditingCommands.SelectDownByPage"/> command.
+        /// Executes the <see cref="EditingCommands.SelectUpByPage"/> command.
         /// </summary>
         private static void ExecutedSelectUpByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
@@ -869,7 +869,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
                 return;
 
-            textBox.TextEditor.MoveCaretPageDown(true);
+            textBox.TextEditor.MoveCaretPageUp(true);
         }
         
         /// <summary>
@@ -969,21 +969,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <summary>
-        /// Executes the <see cref="EditingCommands.MoveUpByLine"/> command.
-        /// </summary>
-        private static void ExecutedMoveDownByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
-        {
-            var textBox = (TextBoxBase)element;
-            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
-                return;
-
-            textBox.TextEditor.MoveCaretUp(false);
-        }
-
-        /// <summary>
         /// Executes the <see cref="EditingCommands.MoveDownByLine"/> command.
         /// </summary>
-        private static void ExecutedMoveUpByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveDownByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
             var textBox = (TextBoxBase)element;
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
@@ -993,7 +981,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Executes the <see cref="EditingCommands.MoveUpByPage"/> command.
+        /// Executes the <see cref="EditingCommands.MoveUpByLine"/> command.
+        /// </summary>
+        private static void ExecutedMoveUpByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var textBox = (TextBoxBase)element;
+            if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
+                return;
+
+            textBox.TextEditor.MoveCaretUp(false);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="EditingCommands.MoveDownByPage"/> command.
         /// </summary>
         private static void ExecutedMoveDownByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
@@ -1001,11 +1001,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
                 return;
 
-            textBox.TextEditor.MoveCaretPageUp(false);
+            textBox.TextEditor.MoveCaretPageDown(false);
         }
 
         /// <summary>
-        /// Executes the <see cref="EditingCommands.MoveDownByPage"/> command.
+        /// Executes the <see cref="EditingCommands.MoveUpByPage"/> command.
         /// </summary>
         private static void ExecutedMoveUpByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
@@ -1013,7 +1013,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (textBox.TextEditor == null || (textBox.IsReadOnly && !textBox.IsReadOnlyCaretVisible) || !textBox.IsEnabled)
                 return;
 
-            textBox.TextEditor.MoveCaretPageDown(false);
+            textBox.TextEditor.MoveCaretPageUp(false);
         }
 
         /// <summary>
