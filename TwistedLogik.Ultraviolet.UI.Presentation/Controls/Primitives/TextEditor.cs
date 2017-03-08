@@ -1236,6 +1236,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets a value indicating whether this editor's caret is visible when it is read-only.
+        /// </summary>
+        public Boolean IsReadOnlyCaretVisible
+        {
+            get
+            {
+                var owner = TemplatedParent as Control;
+                return (owner != null && owner.GetValue<Boolean>(TextBoxBase.IsReadOnlyCaretVisibleProperty));
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this editor masks its text.
         /// </summary>
         public Boolean IsMasked
@@ -1635,66 +1647,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
         }
         
-        /// <summary>
-        /// Called when the editor should handle a <see cref="Keyboard.KeyDownEvent"/> routed event.
-        /// </summary>
-        /// <param name="device">The <see cref="KeyboardDevice"/> that raised the event.</param>
-        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        internal void HandleKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
-        {
-            var owner = TemplatedParent as Control;
-            var isReadOnly = 
-                (owner != null && owner.GetValue<Boolean>(TextBoxBase.IsReadOnlyProperty));
-            var acceptsReturn = 
-                (owner != null && owner.GetValue<Boolean>(TextBoxBase.AcceptsReturnProperty));
-            var acceptsTab = 
-                (owner != null && owner.GetValue<Boolean>(TextBoxBase.AcceptsTabProperty));
-
-            switch (key)
-            {
-                case Key.Return:
-                case Key.Return2:
-                    if (acceptsReturn)
-                    {
-                        if (!isReadOnly)
-                        {
-                            InsertTextAtCaret(Environment.NewLine, false);
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Tab:
-                    if (acceptsTab)
-                    {
-                        if (!isReadOnly)
-                        {
-                            InsertTextAtCaret("\t", true);
-                        }
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Backspace:
-                    if (!isReadOnly)
-                    {
-                        DeleteBehind();
-                    }
-                    data.Handled = true;
-                    break;
-
-                case Key.Delete:
-                    if (!isReadOnly)
-                    {
-                        DeleteAhead();
-                    }
-                    data.Handled = true;
-                    break;
-            }
-        }
-
         /// <summary>
         /// Called when the editor should read text input from the keyboard device.
         /// </summary>
