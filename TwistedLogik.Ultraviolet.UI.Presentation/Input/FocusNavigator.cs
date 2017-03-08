@@ -530,7 +530,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 }
                 
                 var firstNavStopInContainer = GetFirstNavigationStop(navContainer, navProp);
-                return ((firstNavStopInContainer == null) ? null : FindNextVisualElementWithinContainer(firstNavStopInContainer, null, navProp, navMode)) ?? firstNavStopInContainer;
+                if (firstNavStopInContainer == null)
+                    return null;
+
+                if (IsNavigationStop(firstNavStopInContainer))
+                    return firstNavStopInContainer;
+
+                return FindNextVisualElementWithinContainer(firstNavStopInContainer, null, navProp, navMode) ?? firstNavStopInContainer;
             }
 
             return null;
