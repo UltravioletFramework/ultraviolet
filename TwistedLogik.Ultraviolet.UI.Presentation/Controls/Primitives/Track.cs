@@ -92,12 +92,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             get
             {
-                var owner = TemplatedParent as ScrollBarBase;
+                var owner = TemplatedParent as OrientedScrollBar;
                 return (owner == null) ? Double.NaN : owner.ViewportSize;
             }
             set
             {
-                var owner = TemplatedParent as ScrollBarBase;
+                var owner = TemplatedParent as OrientedScrollBar;
                 if (owner != null)
                 {
                     owner.ViewportSize = value;
@@ -378,7 +378,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 owner.DecreaseLarge();
 
-                var scrollbar = owner as ScrollBarBase;
+                var scrollbar = owner as OrientedScrollBar;
                 if (scrollbar != null)
                 {
                     scrollbar.RaiseScrollEvent(ScrollEventType.LargeDecrement);
@@ -396,7 +396,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 owner.IncreaseLarge();
 
-                var scrollbar = owner as ScrollBarBase;
+                var scrollbar = owner as OrientedScrollBar;
                 if (scrollbar != null)
                 {
                     scrollbar.RaiseScrollEvent(ScrollEventType.LargeIncrement);
@@ -511,7 +511,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             if (Value != oldValue)
             {
-                var scrollbar = TemplatedParent as ScrollBarBase;
+                var scrollbar = TemplatedParent as OrientedScrollBar;
                 if (scrollbar != null)
                 {
                     scrollbar.RaiseScrollEvent(ScrollEventType.ThumbTrack);
@@ -551,7 +551,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!thumbDragging || thumbDragCursorID != cursorID)
                 return;
 
-            var scrollbar = TemplatedParent as ScrollBarBase;
+            var scrollbar = TemplatedParent as OrientedScrollBar;
             if (scrollbar != null)
             {
                 scrollbar.RaiseScrollEvent(ScrollEventType.EndScroll);

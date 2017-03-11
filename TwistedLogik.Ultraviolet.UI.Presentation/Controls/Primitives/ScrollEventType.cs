@@ -2,7 +2,7 @@
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
-    /// Represents the different events which can raise a <see cref="ScrollBarBase.Scroll"/> event.
+    /// Represents the different events which can raise a <see cref="ScrollBar.Scroll"/> event.
     /// </summary>
     public enum ScrollEventType
     {

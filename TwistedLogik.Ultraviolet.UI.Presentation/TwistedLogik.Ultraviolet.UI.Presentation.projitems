@@ -116,7 +116,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Popup.PopupScreenEdges.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\PopupRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\RangeBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ScrollBarBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\OrientedScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ScrollEventType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.SelectionCollection.cs" />

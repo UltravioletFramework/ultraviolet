@@ -4,6 +4,14 @@ using TwistedLogik.Nucleus;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
+    /// Represents the method that handles a <see cref="ScrollBar.Scroll"/> event.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="type">The scroll event type.</param>
+    /// <param name="data">The routed event data.</param>
+    public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, RoutedEventData data);
+
+    /// <summary>
     /// Represents a scroll bar with a sliding thumb.
     /// </summary>
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.ScrollBar.xml")]
@@ -129,7 +137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Called when the <see cref="RangeBase.Value"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>
-        internal void OnChildValueChanged(ScrollBarBase child, Double value)
+        internal void OnChildValueChanged(OrientedScrollBar child, Double value)
         {
             if (Orientation == Orientation.Horizontal)
             {
@@ -150,7 +158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Called when the <see cref="RangeBase.Minimum"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>
-        internal void OnChildMinimumChanged(ScrollBarBase child, Double value)
+        internal void OnChildMinimumChanged(OrientedScrollBar child, Double value)
         {
             if (Orientation == Orientation.Horizontal)
             {
@@ -171,7 +179,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Called when the <see cref="RangeBase.Maximum"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>
-        internal void OnChildMaximumChanged(ScrollBarBase child, Double value)
+        internal void OnChildMaximumChanged(OrientedScrollBar child, Double value)
         {
             if (Orientation == Orientation.Horizontal)
             {
@@ -192,7 +200,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Called when the <see cref="RangeBase.SmallChange"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>
-        internal void OnChildSmallChangeChanged(ScrollBarBase child, Double value)
+        internal void OnChildSmallChangeChanged(OrientedScrollBar child, Double value)
         {
             if (Orientation == Orientation.Horizontal)
             {
@@ -213,7 +221,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Called when the <see cref="RangeBase.LargeChange"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>
-        internal void OnChildLargeChangeChanged(ScrollBarBase child, Double value)
+        internal void OnChildLargeChangeChanged(OrientedScrollBar child, Double value)
         {
             if (Orientation == Orientation.Horizontal)
             {
@@ -232,9 +240,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Called when the <see cref="ScrollBarBase.ViewportSize"/> property of one of the scroll bar's child scroll bars changes.
+        /// Called when the <see cref="OrientedScrollBar.ViewportSize"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>
-        internal void OnChildViewportSizeChanged(ScrollBarBase child, Double value)
+        internal void OnChildViewportSizeChanged(OrientedScrollBar child, Double value)
         {
             if (Orientation == Orientation.Horizontal)
             {

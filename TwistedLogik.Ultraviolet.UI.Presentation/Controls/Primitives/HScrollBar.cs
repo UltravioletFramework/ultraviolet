@@ -8,7 +8,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.HScrollBar.xml")]
-    public class HScrollBar : ScrollBarBase
+    public class HScrollBar : OrientedScrollBar
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HScrollBar"/> class.

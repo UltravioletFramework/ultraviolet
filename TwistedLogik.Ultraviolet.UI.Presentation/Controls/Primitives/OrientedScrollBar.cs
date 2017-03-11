@@ -1,43 +1,34 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
     /// <summary>
-    /// Represents the method that handles a <see cref="ScrollBarBase.Scroll"/> event.
-    /// </summary>
-    /// <param name="element">The element that raised the event.</param>
-    /// <param name="type">The scroll event type.</param>
-    /// <param name="data">The routed event data.</param>
-    public delegate void UpfScrollEventHandler(DependencyObject element, ScrollEventType type, RoutedEventData data);
-
-    /// <summary>
-    /// Represents the base class for scroll bars.
+    /// Represents the base class for horizontal and vertical scroll bars.
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    public abstract class ScrollBarBase : RangeBase
+    public abstract class OrientedScrollBar : RangeBase
     {
         /// <summary>
-        /// Initializes the <see cref="ScrollBarBase"/> type.
+        /// Initializes the <see cref="OrientedScrollBar"/> type.
         /// </summary>
-        static ScrollBarBase()
+        static OrientedScrollBar()
         {
-            ValueProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Double>(HandleValueChanged));
-            MinimumProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Double>(HandleMinimumChanged));
-            MaximumProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Double>(HandleMaximumChanged));
-            SmallChangeProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Double>(HandleSmallChangeChanged));
-            LargeChangeProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Double>(HandleLargeChangeChanged));
-            FocusableProperty.OverrideMetadata(typeof(ScrollBarBase), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+            ValueProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleValueChanged));
+            MinimumProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleMinimumChanged));
+            MaximumProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleMaximumChanged));
+            SmallChangeProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleSmallChangeChanged));
+            LargeChangeProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleLargeChangeChanged));
+            FocusableProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ScrollBarBase"/> class.
+        /// Initializes a new instance of the <see cref="OrientedScrollBar"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The element's identifying name within its namescope.</param>
-        public ScrollBarBase(UltravioletContext uv, String name)
+        public OrientedScrollBar(UltravioletContext uv, String name)
             : base(uv, name)
         {
 
@@ -91,14 +82,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="ViewportSize"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="ViewportSize"/> dependency property.</value>
-        public static readonly DependencyProperty ViewportSizeProperty = ScrollBar.ViewportSizeProperty.AddOwner(typeof(ScrollBarBase), 
+        public static readonly DependencyProperty ViewportSizeProperty = ScrollBar.ViewportSizeProperty.AddOwner(typeof(OrientedScrollBar), 
             new PropertyMetadata<Double>(HandleViewportSizeChanged));
 
         /// <summary>
         /// Identifies the <see cref="Scroll"/> routed event.
         /// </summary>
         /// <value>The identifier for the <see cref="Scroll"/> routed event.</value>
-        public static readonly RoutedEvent ScrollEvent = ScrollBar.ScrollEvent.AddOwner(typeof(ScrollBarBase));
+        public static readonly RoutedEvent ScrollEvent = ScrollBar.ScrollEvent.AddOwner(typeof(OrientedScrollBar));
 
         /// <inheritdoc/>
         protected override void OnMinimumChanged()
@@ -147,7 +138,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleValueChanged(DependencyObject element, Double oldValue, Double newValue)
         {
-            var child = (ScrollBarBase)element;
+            var child = (OrientedScrollBar)element;
             var parent = child.TemplatedParent as ScrollBar;
             if (parent != null)
             {
@@ -160,7 +151,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleMinimumChanged(DependencyObject element, Double oldValue, Double newValue)
         {
-            var child = (ScrollBarBase)element;
+            var child = (OrientedScrollBar)element;
             var parent = child.TemplatedParent as ScrollBar;
             if (parent != null)
             {
@@ -173,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleMaximumChanged(DependencyObject element, Double oldValue, Double newValue)
         {
-            var child = (ScrollBarBase)element;
+            var child = (OrientedScrollBar)element;
             var parent = child.TemplatedParent as ScrollBar;
             if (parent != null)
             {
@@ -186,7 +177,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleSmallChangeChanged(DependencyObject element, Double oldValue, Double newValue)
         {
-            var child = (ScrollBarBase)element;
+            var child = (OrientedScrollBar)element;
             var parent = child.TemplatedParent as ScrollBar;
             if (parent != null)
             {
@@ -199,7 +190,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleLargeChangeChanged(DependencyObject element, Double oldValue, Double newValue)
         {
-            var child = (ScrollBarBase)element;
+            var child = (OrientedScrollBar)element;
             var parent = child.TemplatedParent as ScrollBar;
             if (parent != null)
             {
@@ -212,7 +203,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleViewportSizeChanged(DependencyObject element, Double oldValue, Double newValue)
         {
-            var child = (ScrollBarBase)element;
+            var child = (OrientedScrollBar)element;
             var parent = child.TemplatedParent as ScrollBar;
             if (parent != null)
             {
