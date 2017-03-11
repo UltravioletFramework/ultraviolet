@@ -5,19 +5,19 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2DCB1219-E0EE-44F0-A4C2-AC120D0CA386}</ProjectGuid>
+    <ProjectGuid>{FE4CC454-0475-4F11-8E04-D9674B5A811F}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UltravioletSample.Sample13_UPFAdvanced</RootNamespace>
-    <AssemblyName>Sample13_UPFAdvanced</AssemblyName>
+    <RootNamespace>UltravioletSample.Sample9_ManagingStateWithUIScreens</RootNamespace>
+    <AssemblyName>Sample9_ManagingStateWithUIScreens</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -45,6 +45,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkSkip>
+    </AndroidLinkSkip>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <Debugger>Xamarin</Debugger>
+    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -99,18 +107,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
-    </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions">
-      <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
-    </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Sample13_UPFAdvanced_Desktop\Properties\AssemblyInfo.cs">
+    <Compile Include="..\Sample9_ManagingStateWithUIScreens_Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
@@ -121,39 +120,51 @@
   <ItemGroup>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libbass.so">
       <Link>lib\armeabi-v7a\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libbass_fx.so">
       <Link>lib\armeabi-v7a\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libSDL2.so">
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi-v7a\libSDL2main.so">
       <Link>lib\armeabi-v7a\libSDL2main.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libbass_fx.so">
       <Link>lib\armeabi\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libSDL2.so">
       <Link>lib\armeabi\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\armeabi\libSDL2main.so">
       <Link>lib\armeabi\libSDL2main.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libbass_fx.so">
       <Link>lib\x86\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\Dependencies\Android\x86\libSDL2main.so">
       <Link>lib\x86\libSDL2main.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <EmbeddedResource Include="Content.uvarc" />
     <None Include="packages.config" />
@@ -164,14 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Sample13_UPFAdvanced_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
-      <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleSharedLib_Android\SampleSharedLib (Android).csproj">
@@ -185,8 +188,13 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
-  <Import Project="..\Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems" Label="Shared" />
+  <Import Project="..\Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkReference="dbd61736-8eb2-4d5c-bbb2-110fc9a10c7d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

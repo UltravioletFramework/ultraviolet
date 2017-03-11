@@ -5,19 +5,19 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2DCB1219-E0EE-44F0-A4C2-AC120D0CA386}</ProjectGuid>
+    <ProjectGuid>{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UltravioletSample.Sample13_UPFAdvanced</RootNamespace>
-    <AssemblyName>Sample13_UPFAdvanced</AssemblyName>
+    <RootNamespace>UltravioletSample.Sample4_ContentManagement</RootNamespace>
+    <AssemblyName>Sample4_ContentManagement</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -45,6 +45,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkSkip>
+    </AndroidLinkSkip>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <Debugger>Xamarin</Debugger>
+    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -68,7 +76,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Dependencies\Android\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="org.libsdl.app, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -99,18 +107,9 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
-    </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions">
-      <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
-    </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Sample13_UPFAdvanced_Desktop\Properties\AssemblyInfo.cs">
+    <Compile Include="..\Sample4_ContentManagement_Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\Version.cs">
@@ -166,14 +165,6 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Sample13_UPFAdvanced_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
-      <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SampleSharedLib_Android\SampleSharedLib (Android).csproj">
       <Project>{b238a15b-e99b-45f5-99fc-da32ce11ef4d}</Project>
       <Name>SampleSharedLib (Android)</Name>
@@ -185,8 +176,13 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
-  <Import Project="..\Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems" Label="Shared" />
+  <Import Project="..\Sample4_ContentManagement\Sample4_ContentManagement.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="2c6b942e-3d19-4211-af85-82402fd31a73" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
