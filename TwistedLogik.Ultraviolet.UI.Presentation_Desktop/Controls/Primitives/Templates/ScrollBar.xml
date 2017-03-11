@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View LargeChange="10" SmallChange="1">
+    <Grid Class="scrollbar-container" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <HScrollBar Name="PART_HScrollBar" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" IsEnabled="false" />
+      <VScrollBar Name="PART_VScrollBar" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Visible" IsEnabled="true" />
+    </Grid>
+  </View>
+</ComponentTemplate>

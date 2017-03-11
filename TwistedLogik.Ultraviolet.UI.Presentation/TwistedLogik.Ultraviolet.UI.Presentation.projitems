@@ -66,6 +66,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEditingControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PasswordBox.cs" />
