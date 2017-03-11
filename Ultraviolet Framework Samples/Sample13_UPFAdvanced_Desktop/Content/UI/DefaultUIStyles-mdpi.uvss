@@ -838,7 +838,7 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
 
 VScrollBar!
 {
-    width: 17;
+    min-width: 17;
     min-height: 64;
 }
 
@@ -856,7 +856,7 @@ VScrollBar! >> Track! > .track-thumb >> .button-background
 .scroll-button-up, .scroll-button-down
 {
     padding: 0;
-    width: 17;
+    min-width: 17;
     height: 21;
         
     transition (common, normal): scrollbutton-to-normal;
@@ -897,7 +897,7 @@ VScrollBar! >> Track! > .track-thumb >> .button-background
 HScrollBar!
 {
     min-width: 64;
-    height: 17;
+    min-height: 17;
 }
 
 HScrollBar! >> Track! > .track-thumb
@@ -915,7 +915,7 @@ HScrollBar! >> Track! > .track-thumb >> .button-background
 {
     padding: 0;
     width: 21;
-    height: 17;
+    min-height: 17;
 
     transition (common, normal): scrollbutton-to-normal;
     transition (common, hover): scrollbutton-to-hover;
