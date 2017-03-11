@@ -19,7 +19,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public TextEditingControl(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            var canExecuteIsEnabled = new CanExecuteRoutedEventHandler(CanExecuteIsEnabled);
             var canExecuteIsEditable = new CanExecuteRoutedEventHandler(CanExecuteIsEditable);
             var canExecuteIsCaretVisible = new CanExecuteRoutedEventHandler(CanExecuteIsCaretVisible);
 
@@ -551,18 +550,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return;
 
             textEditor.Paste();
-        }
-
-        /// <summary>
-        /// Specifies that a command can execute if the text box is enabled.
-        /// </summary>
-        private static void CanExecuteIsEnabled(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
-        {
-            var textEditor = ((TextEditingControl)element).TextEditor;
-            if (textEditor == null || !textEditor.IsEnabled)
-                return;
-
-            data.CanExecute = true;
         }
 
         /// <summary>
