@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -133,6 +134,101 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>The identifier for the <see cref="Scroll"/> routed event.</value>
         public static readonly RoutedEvent ScrollEvent = EventManager.RegisterRoutedEvent("Scroll", RoutingStrategy.Bubble,
             typeof(UpfScrollEventHandler), typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that is executed when the scroll bar's thumb is being dragged to the horizontal offset specified in the command parameter.
+        /// </summary>
+        public static readonly RoutedCommand DeferScrollToHorizontalOffsetCommand = new RoutedCommand("ScrollToHorizontalOffset", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that is executed when the scroll bar's thumb is being dragged to the vertical offset specified in the command parameter.
+        /// </summary>
+        public static readonly RoutedCommand DeferScrollToVerticalOffsetCommand = new RoutedCommand("ScrollToVerticalOffset", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that increases the value of the scroll bar by a small amount in the vertical direction.
+        /// </summary>
+        public static readonly RoutedCommand LineDownCommand = new RoutedCommand("LineDown", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that decreases the value of the scroll bar by a small amount in the vertical direction.
+        /// </summary>
+        public static readonly RoutedCommand LineUpCommand = new RoutedCommand("LineUp", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that increases the value of the scroll bar by a small amount in the horizontal direction.
+        /// </summary>
+        public static readonly RoutedCommand LineRightCommand = new RoutedCommand("LineRight", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that decreases the value of the scroll bar by a small amount in the horizontal direction.
+        /// </summary>
+        public static readonly RoutedCommand LineLeftCommand = new RoutedCommand("LineLeft", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that increases the value of the scroll bar by a large amount in the vertical direction.
+        /// </summary>
+        public static readonly RoutedCommand PageDownCommand = new RoutedCommand("PageDown", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that decreases the value of the scroll bar by a large amount in the vertical direction.
+        /// </summary>
+        public static readonly RoutedCommand PageUpCommand = new RoutedCommand("PageUp", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that increases the value of the scroll bar by a large amount in the horizontal direction.
+        /// </summary>
+        public static readonly RoutedCommand PageRightCommand = new RoutedCommand("PageRight", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that decreases the value of the scroll bar by a large amount in the horizontal direction.
+        /// </summary>
+        public static readonly RoutedCommand PageLeftCommand = new RoutedCommand("PageLeft", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls the scroll bar to the last position on the track which was clicked.
+        /// </summary>
+        public static readonly RoutedCommand ScrollHere = new RoutedCommand("ScrollHere", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls a vertical scroll bar to its maximum value.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToBottomCommand = new RoutedCommand("ScrollToBottom", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls a vertical scroll bar to its minimum value.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToTopCommand = new RoutedCommand("ScrollToTop", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls a horizontal scroll bar to its maximum value.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToRightEndCommand = new RoutedCommand("ScrollToRightEnd", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls a horizontal scroll bar to its minimum value.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToLeftEndCommand = new RoutedCommand("ScrollToLeftEnd", typeof(ScrollBar));
+        
+        /// <summary>
+        /// A command that scrolls a scroll viewer to the bottom right corner of its content.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToEndCommand = new RoutedCommand("ScrollToEnd", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls a scroll viewer to the top left corner of its content.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToHomeCommand = new RoutedCommand("ScrollToHome", typeof(ScrollBar));
+        
+        /// <summary>
+        /// A command that scrolls a scroll viewer to the horizontal position specified in the command parameter.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToHorizontalOffsetCommand = new RoutedCommand("ScrollToHorizontalOffset", typeof(ScrollBar));
+
+        /// <summary>
+        /// A command that scrolls a scroll viewer to the vertical position specified in the command parameter.
+        /// </summary>
+        public static readonly RoutedCommand ScrollToVerticalOffsetCommand = new RoutedCommand("ScrollToVerticalOffset", typeof(ScrollBar));
 
         /// <summary>
         /// Called when the <see cref="RangeBase.Value"/> property of one of the scroll bar's child scroll bars changes.
