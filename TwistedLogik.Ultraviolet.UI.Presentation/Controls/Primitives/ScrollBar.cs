@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
@@ -23,13 +24,47 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         static ScrollBar()
         {
+            // Dependency property overrides
             ValueProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleValueChanged));
             MinimumProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleMinimumChanged));
             MaximumProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleMaximumChanged));
             SmallChangeProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleSmallChangeChanged));
             LargeChangeProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleLargeChangeChanged));
 
+            // Event handlers
             EventManager.RegisterClassHandler(typeof(ScrollBar), ScrollEvent, new UpfScrollEventHandler(HandleScrollEvent));
+
+            // Commands - vertical scroll
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), LineDownCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), LineUpCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), PageDownCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), PageUpCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollToBottomCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.End, ModifierKeys.Control, "Ctrl+End"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollToTopCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.Home, ModifierKeys.Control, "Ctrl+Home"));
+
+            // Commands - horizontal scroll
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), LineRightCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), LineLeftCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), PageRightCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                null);
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), PageLeftCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                null);
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollToRightEndCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.End, ModifierKeys.None, "End"));
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollToLeftEndCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                new KeyGesture(Key.Home, ModifierKeys.None, "Home"));
+
+            // Commands - misc
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollHereCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
+                null);
         }
 
         /// <summary>
@@ -186,9 +221,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public static readonly RoutedCommand PageLeftCommand = new RoutedCommand("PageLeft", typeof(ScrollBar));
 
         /// <summary>
-        /// A command that scrolls the scroll bar to the last position on the track which was clicked.
+        /// A command that scrolls the scroll bar to the last position on the track which was right clicked.
         /// </summary>
-        public static readonly RoutedCommand ScrollHere = new RoutedCommand("ScrollHere", typeof(ScrollBar));
+        public static readonly RoutedCommand ScrollHereCommand = new RoutedCommand("ScrollHere", typeof(ScrollBar));
 
         /// <summary>
         /// A command that scrolls a vertical scroll bar to its maximum value.
@@ -440,6 +475,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (vscroll != null)
                 vscroll.LargeChange = newValue;
         }
+        
         /// <summary>
         /// Occurs when the value of the <see cref="ViewportSize"/> dependency property changes.
         /// </summary>
@@ -482,9 +518,71 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 var evtData = RoutedEventData.Retrieve(scrollbar);
                 var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollEventHandler>(ScrollEvent);
                 evtDelegate(scrollbar, type, evtData);
-
+                
                 data.Handled = true;
             }
+        }
+
+        /// <summary>
+        /// Executes a scroll command.
+        /// </summary>
+        private static void ExecutedScrollCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            var scrollBar = element as ScrollBar;
+            if (scrollBar == null || data.OriginalSource != scrollBar)
+                return;
+
+            if (scrollBar.Orientation == Orientation.Horizontal)
+            {
+                var hscroll = scrollBar.PART_HScrollBar;
+                if (hscroll != null)
+                {
+                    ((RoutedCommand)command).Execute(scrollBar.View, parameter, hscroll);
+                    data.Handled = true;
+                }
+            }
+            else
+            {
+                var vscroll = scrollBar.PART_VScrollBar;
+                if (vscroll != null)
+                {
+                    ((RoutedCommand)command).Execute(scrollBar.View, parameter, vscroll);
+                    data.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether a scroll command can execute.
+        /// </summary>
+        private static void CanExecuteScrollCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            var scrollBar = element as ScrollBar;
+            if (scrollBar == null || data.OriginalSource != scrollBar)
+                return;
+
+            var @continue = data.ContinueRouting;
+
+            if (scrollBar.Orientation == Orientation.Horizontal)
+            {
+                var hscroll = scrollBar.PART_HScrollBar;
+                if (hscroll != null)
+                {
+                    data.CanExecute = ((RoutedCommand)command).CanExecute(scrollBar.View, parameter, hscroll, out @continue);
+                    data.Handled = true;
+                }
+            }
+            else
+            {
+                var vscroll = scrollBar.PART_VScrollBar;
+                if (vscroll != null)
+                {
+                    data.CanExecute = ((RoutedCommand)command).CanExecute(scrollBar.View, parameter, vscroll, out @continue);
+                    data.Handled = true;
+                }
+            }
+
+            data.ContinueRouting = @continue;
         }
 
         /// <summary>

@@ -66,6 +66,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Calculates the <see cref="Value"/> that corresponds to the specified position within the track.
+        /// </summary>
+        /// <param name="pt">The point to evaluate.</param>
+        /// <returns>The value that corresponds to the specified position. This value is not guaranteed to fall
+        /// within the valid range between <see cref="Minimum"/> and <see cref="Maximum"/>.</returns>
+        public virtual Double ValueFromPoint(Point2D pt)
+        {
+            if (Orientation == Orientation.Horizontal)
+            {
+                var relX = pt.X - (Thumb.RenderSize.Width / 2);
+                return OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
+            }
+            else
+            {
+                var relY = pt.Y - (Thumb.RenderSize.Height / 2);
+                return OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the track's orientation.
         /// </summary>
         /// <value>A <see cref="Orientation"/> value which indicates whether the track is oriented vertically

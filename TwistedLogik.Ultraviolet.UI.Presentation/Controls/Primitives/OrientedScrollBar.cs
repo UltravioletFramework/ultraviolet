@@ -123,6 +123,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
         
         /// <summary>
+        /// Gets a value indicating whether the scroll bar is part of a <see cref="ScrollViewer"/> control.
+        /// </summary>
+        protected Boolean IsPartOfScrollViewer
+        {
+            get { return TemplatedParent is ScrollViewer; }
+        }
+
+        /// <summary>
         /// Raises the <see cref="Scroll"/> event.
         /// </summary>
         /// <param name="type">The scroll event type.</param>
