@@ -954,7 +954,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 throw new FormatException();
 
             var type = default(Type);
-            var prop = default(PropertyInfo);
+            var member = default(MemberInfo);
+            var memberType = default(Type);
 
             lock (((IDictionary)typeCache).SyncRoot)
             {
@@ -965,22 +966,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         throw new FormatException();
 
                     type = matches.Single();
-                    prop = type.GetProperty(parts[1], BindingFlags.Public | BindingFlags.Static);
+                    member = type.GetMember(parts[1], MemberTypes.Property | MemberTypes.Field, BindingFlags.Public | BindingFlags.Static).SingleOrDefault();
+                    memberType = (member == null) ? null : (member.MemberType == MemberTypes.Property) ?
+                        ((PropertyInfo)member).PropertyType : ((FieldInfo)member).FieldType;
 
-                    if (prop == null || !typeof(ICommand).IsAssignableFrom(prop.PropertyType) || prop.GetIndexParameters().Length > 0)
+                    if (memberType == null || !typeof(ICommand).IsAssignableFrom(memberType))
+                        throw new FormatException();
+
+                    if (member != null && member.MemberType == MemberTypes.Property && ((PropertyInfo)member).GetIndexParameters().Length > 0)
                         throw new FormatException();
 
                     typeCache[parts[0]] = type;
-                    return prop.GetValue(null, null);
+                    return member.MemberType == MemberTypes.Property ? 
+                        ((PropertyInfo)member).GetValue(null, null) : ((FieldInfo)member).GetValue(null);
                 }
             }
 
-            prop = type.GetProperty(parts[1], BindingFlags.Public | BindingFlags.Static);
+            member = type.GetMember(parts[1], MemberTypes.Property | MemberTypes.Field, BindingFlags.Public | BindingFlags.Static).SingleOrDefault();
+            memberType = (member == null) ? null : (member.MemberType == MemberTypes.Property) ?
+                ((PropertyInfo)member).PropertyType : ((FieldInfo)member).FieldType;
 
-            if (prop == null || !typeof(ICommand).IsAssignableFrom(prop.PropertyType) || prop.GetIndexParameters().Length > 0)
+            if (memberType == null || !typeof(ICommand).IsAssignableFrom(memberType))
                 throw new FormatException();
 
-            return prop.GetValue(null, null);
+            if (member != null && member.MemberType == MemberTypes.Property && ((PropertyInfo)member).GetIndexParameters().Length > 0)
+                throw new FormatException();
+
+            return member.MemberType == MemberTypes.Property ?
+                ((PropertyInfo)member).GetValue(null, null) : ((FieldInfo)member).GetValue(null);
         }
         
         // Manager instance used to recognize events raised by us
