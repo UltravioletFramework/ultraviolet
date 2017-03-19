@@ -25,10 +25,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         static ScrollViewer()
         {
+            // Dependency property overrides
             KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
+            // Event handlers
             EventManager.RegisterClassHandler(typeof(ScrollViewer), RangeBase.ValueChangedEvent, new UpfRoutedEventHandler(HandleScrollBarValueChanged));
+
+            // Commands - vertical scroll
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.LineUpCommand, ExecutedLineUpCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.PageDownCommand, ExecutedPageDownCommand, CanExecutePageScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.PageUpCommand, ExecutedPageUpCommand, CanExecutePageScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToBottomCommand, ExecutedScrollToBottomCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToTopCommand, ExecutedScrollToTopCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToVerticalOffsetCommand, ExecutedScrollToVerticalOffsetCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.DeferScrollToVerticalOffsetCommand, ExecutedDeferScrollToVerticalOffsetCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ComponentCommands.ScrollPageDown, ExecutedPageDownCommand, CanExecutePageScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ComponentCommands.ScrollPageUp, ExecutedPageUpCommand, CanExecutePageScrollCommand);
+
+            // Commands - horizontal scroll            
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.LineRightCommand, ExecutedLineRightCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.LineLeftCommand, ExecutedLineLeftCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.PageRightCommand, ExecutedPageRightCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.PageLeftCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToRightEndCommand, ExecutedScrollToRightEndCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToLeftEndCommand, ExecutedScrollToLeftEndCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToHorizontalOffsetCommand, ExecutedScrollToHorizontalOffsetCommand, CanExecuteDeferredScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.DeferScrollToHorizontalOffsetCommand, ExecutedDeferScrollToHorizontalOffsetCommand, CanExecuteDeferredScrollCommand);
+
+            // Commands - misc
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToEndCommand, ExecutedScrollToEndCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToHomeCommand, ExecutedScrollToHomeCommand, CanExecuteScrollCommand);
         }
 
         /// <summary>
@@ -40,6 +68,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
 
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
+        /// </summary>
+        /// <param name="element">The element on which to set the property.</param>
+        /// <param name="value">The property value to set on the element.</param>
+        public static void SetIsDeferredScrollingEnabled(DependencyObject element, Boolean value)
+        {
+            Contract.Require(element, nameof(element));
+
+            element.SetValue(IsDeferredScrollingEnabledProperty, value);
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
+        /// </summary>
+        /// <param name="element">The element for which to retrieve the property value.</param>
+        /// <returns>The value of the property on the specified element.</returns>
+        public static bool GetIsDeferredScrollingEnabled(DependencyObject element)
+        {
+            Contract.Require(element, nameof(element));
+
+            return element.GetValue<Boolean>(IsDeferredScrollingEnabledProperty);
         }
 
         /// <summary>
@@ -166,6 +218,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             set { SetValue(ContentClippedProperty, value); }
         }
         
+        /// <summary>
+        /// Gets or sets a value indicating whether the scroll viewer should defer
+        /// scrolling until after the user is finished dragging the thumb.
+        /// </summary>
+        public Boolean IsDeferredScrollingEnabled
+        {
+            get { return GetValue<Boolean>(IsDeferredScrollingEnabledProperty); }
+            set { SetValue(IsDeferredScrollingEnabledProperty, value); }
+        }
+
         /// <summary>
         /// Gets or sets the margin which is applied to the scroll viewer's content pane.
         /// </summary>
@@ -323,6 +385,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="ContentClipped"/> dependency property.</value>
         public static readonly DependencyProperty ContentClippedProperty = DependencyProperty.Register("ContentClipped", typeof(Boolean), typeof(ScrollViewer),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleContentClippedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="ScrollViewer"/> should defer
+        /// scrolling until after the user is finished dragging the thumb.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> that represents whether the <see cref="ScrollViewer"/> should defer
+        /// scrolling until after the user is finished dragging the thumb. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="IsDeferredScrollingEnabledProperty"/></dpropField>
+        ///		<dpropStylingName>deferred-scrolling-enabled</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.None"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty IsDeferredScrollingEnabledProperty = DependencyProperty.RegisterAttached("IsDeferredScrollingEnabled", typeof(Boolean), typeof(ScrollViewer),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="ContentMargin"/> dependency property.
@@ -651,6 +735,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnTouchMove(device, id, x, y, dx, dy, pressure, data);
         }
 
+        /// <inheritdoc/>
+        protected internal override Boolean HandlesScrolling
+        {
+            get { return true; }
+        }
+
         /// <summary>
         /// Occurs when the value of the <see cref="ContentClipped"/> dependency property changes.
         /// </summary>
@@ -672,6 +762,198 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 scrollViewer.Position(scrollViewer.MostRecentPositionOffset);
                 data.Handled = true;
             }            
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.LineDownCommand"/> command.
+        /// </summary>
+        private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_VScroll?.LineDown();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.LineUpCommand"/> command.
+        /// </summary>
+        private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_VScroll?.LineUp();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.PageDownCommand"/> command.
+        /// </summary>
+        private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_VScroll?.PageDown();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.PageUpCommand"/> command.
+        /// </summary>
+        private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_VScroll?.PageUp();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToBottomCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_VScroll?.ScrollToBottom();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToTopCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_VScroll?.ScrollToTop();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToVerticalOffsetCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            if (parameter is Double)
+            {
+                ((ScrollViewer)element).ScrollToVerticalOffset((Double)parameter);
+            }
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.DeferScrollToVerticalOffsetCommand"/> command.
+        /// </summary>
+        private static void ExecutedDeferScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.LineRightCommand"/> command.
+        /// </summary>
+        private static void ExecutedLineRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_HScroll?.LineRight();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.LineLeftCommand"/> command.
+        /// </summary>
+        private static void ExecutedLineLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_HScroll?.LineLeft();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.PageRightCommand"/> command.
+        /// </summary>
+        private static void ExecutedPageRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_HScroll?.PageRight();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.PageLeftCommand"/> command.
+        /// </summary>
+        private static void ExecutedPageLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_HScroll?.PageLeft();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToRightEndCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToRightEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_HScroll?.ScrollToRightEnd();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToLeftEndCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToLeftEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.PART_HScroll?.ScrollToLeftEnd();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToHorizontalOffsetCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            if (parameter is Double)
+            {
+                ((ScrollViewer)element).ScrollToHorizontalOffset((Double)parameter);
+            }
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.DeferScrollToHorizontalOffsetCommand"/> command.
+        /// </summary>
+        private static void ExecutedDeferScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToEndCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.ScrollToEnd();
+        }
+
+        /// <summary>
+        /// Exeuctes the <see cref="ScrollBar.ScrollToHomeCommand"/> command.
+        /// </summary>
+        private static void ExecutedScrollToHomeCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        {
+            (element as ScrollViewer)?.ScrollToHome();
+        }
+
+        /// <summary>
+        /// Determines whether a scroll command can execute.
+        /// </summary>
+        private static void CanExecuteScrollCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            data.CanExecute = true;
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="ScrollBar.PageUpCommand"/> 
+        /// and <see cref="ScrollBar.PageDownCommand"/> commands can execute.
+        /// </summary>
+        private static void CanExecutePageScrollCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            data.CanExecute = true;
+
+            var scrollViewer = element as ScrollViewer;
+            var scrollViewerParent = scrollViewer?.TemplatedParent as Control;
+            if (scrollViewerParent != null && scrollViewerParent.HandlesScrolling)
+            {
+                data.CanExecute = false;
+                data.ContinueRouting = true;
+                data.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="ScrollBar.DeferScrollToHorizontalOffsetCommand"/> 
+        /// and <see cref="ScrollBar.DeferScrollToVerticalOffsetCommand"/> commands can execute.
+        /// </summary>
+        private static void CanExecuteDeferredScrollCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            data.CanExecute = true;
+
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer != null && !scrollViewer.IsDeferredScrollingEnabled)
+            {
+                data.CanExecute = false;
+                data.Handled = true;
+            }
         }
 
         // Scroll deltas for various input events.

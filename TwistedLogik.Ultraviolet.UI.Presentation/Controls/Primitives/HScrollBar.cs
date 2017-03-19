@@ -47,6 +47,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
         }
 
+        /// <summary>
+        /// Increases the value of the scroll bar by a small amount in the horizontal direction.
+        /// </summary>
+        public void LineRight()
+        {
+            IncreaseSmall();
+        }
+
+        /// <summary>
+        /// Decreases the value of the scroll bar by a small amount in the horizontal direction.
+        /// </summary>
+        public void LineLeft()
+        {
+            DecreaseSmall();
+        }
+
+        /// <summary>
+        /// Increases the value of the scroll bar by a large amount in the horizontal direction.
+        /// </summary>
+        public void PageRight()
+        {
+            IncreaseLarge();
+        }
+
+        /// <summary>
+        /// Decreases the value of the scroll bar by a large amount in the horizontal direction.
+        /// </summary>
+        public void PageLeft()
+        {
+            DecreaseLarge();
+        }
+
+        /// <summary>
+        /// Scrolls the scroll bar to its maximum value.
+        /// </summary>
+        public void ScrollToRightEnd()
+        {
+            Value = Maximum;
+        }
+
+        /// <summary>
+        /// Scrolls the scroll bar to its minimum value.
+        /// </summary>
+        public void ScrollToLeftEnd()
+        {
+            Value = Minimum;
+        }
+
         /// <inheritdoc/>
         protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
@@ -62,7 +110,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedLineRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((HScrollBar)element).IncreaseSmall();
+            ((HScrollBar)element).LineRight();
         }
 
         /// <summary>
@@ -70,7 +118,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedLineLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((HScrollBar)element).DecreaseSmall();
+            ((HScrollBar)element).LineLeft();
         }
         
         /// <summary>
@@ -78,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedPageRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((HScrollBar)element).IncreaseLarge();
+            ((HScrollBar)element).PageRight();
         }
 
         /// <summary>
@@ -86,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedPageLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((HScrollBar)element).DecreaseLarge();
+            ((HScrollBar)element).PageLeft();
         }
 
         /// <summary>
@@ -94,8 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedScrollToRightEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var scrollBar = (HScrollBar)element;
-            scrollBar.Value = scrollBar.Maximum;
+            ((HScrollBar)element).ScrollToRightEnd();
         }
 
         /// <summary>
@@ -103,8 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedScrollToLeftEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var scrollBar = (HScrollBar)element;
-            scrollBar.Value = scrollBar.Minimum;
+            ((HScrollBar)element).ScrollToLeftEnd();
         }
 
         /// <summary>

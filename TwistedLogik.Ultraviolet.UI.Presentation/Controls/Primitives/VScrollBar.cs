@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             // Commands - vertical scroll
             CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineUpCommand, ExecutedLineDownCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineUpCommand, ExecutedLineUpCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.PageDownCommand, ExecutedPageDownCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
@@ -30,6 +30,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 new KeyGesture(Key.End, ModifierKeys.Control, "Ctrl+End"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollToTopCommand, ExecutedScrollToTopCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Home, ModifierKeys.Control, "Ctrl+Home"));
+
             // Commands - misc
             CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollHereCommand, ExecutedScrollHereCommand, CanExecuteScrollHereCommand,
                 null);
@@ -44,6 +45,54 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             : base(uv, name)
         {
 
+        }
+
+        /// <summary>
+        /// Increases the value of the scroll bar by a small amount in the vertical direction.
+        /// </summary>
+        public void LineDown()
+        {
+            IncreaseSmall();
+        }
+
+        /// <summary>
+        /// Decreases the value of the scroll bar by a small amount in the vertical direction.
+        /// </summary>
+        public void LineUp()
+        {
+            DecreaseSmall();
+        }
+
+        /// <summary>
+        /// Increases the value of the scroll bar by a large amount in the vertical direction.
+        /// </summary>
+        public void PageDown()
+        {
+            IncreaseLarge();
+        }
+
+        /// <summary>
+        /// Decreases the value of the scroll bar by a large amount in the vertical direction.
+        /// </summary>
+        public void PageUp()
+        {
+            DecreaseLarge();
+        }
+
+        /// <summary>
+        /// Scrolls the scroll bar to its maximum value.
+        /// </summary>
+        public void ScrollToBottom()
+        {
+            Value = Maximum;
+        }
+
+        /// <summary>
+        /// Scrolls the scroll bar to its minimum value.
+        /// </summary>
+        public void ScrollToTop()
+        {
+            Value = Minimum;
         }
 
         /// <inheritdoc/>
@@ -61,15 +110,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((VScrollBar)element).IncreaseSmall();
+            ((VScrollBar)element).LineDown();
         }
 
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineUpCommand"/> command.
         /// </summary>
-        private static void ExecutedLineLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((VScrollBar)element).DecreaseSmall();
+            ((VScrollBar)element).LineUp();
         }
 
         /// <summary>
@@ -77,7 +126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((VScrollBar)element).IncreaseLarge();
+            ((VScrollBar)element).PageDown();
         }
 
         /// <summary>
@@ -85,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            ((VScrollBar)element).DecreaseLarge();
+            ((VScrollBar)element).PageUp();
         }
 
         /// <summary>
@@ -93,8 +142,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var scrollBar = (VScrollBar)element;
-            scrollBar.Value = scrollBar.Maximum;
+            ((VScrollBar)element).ScrollToBottom();
         }
 
         /// <summary>
@@ -102,8 +150,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            var scrollBar = (VScrollBar)element;
-            scrollBar.Value = scrollBar.Minimum;
+            ((VScrollBar)element).ScrollToTop();
         }
 
         /// <summary>
