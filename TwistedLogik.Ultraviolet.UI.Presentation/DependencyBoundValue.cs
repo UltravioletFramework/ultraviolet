@@ -139,7 +139,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             if (!IsReadable)
             {
-                throw new InvalidOperationException(PresentationStrings.BindingIsReadOnly);
+                throw new InvalidOperationException(PresentationStrings.BindingIsWriteOnly);
             }
             
             return getter(PresentationFoundation.GetDataSourceWrapper(dependencyValue.Owner.DependencyDataSource));
