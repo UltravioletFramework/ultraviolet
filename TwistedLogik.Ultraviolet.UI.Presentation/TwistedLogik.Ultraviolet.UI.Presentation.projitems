@@ -158,6 +158,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataBindingSetterBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceExpressionBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyPropertyValueAnimationState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyPropertyValueFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrameworkTemplateNameAnnotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataTemplateSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyBoundValue.cs" />
