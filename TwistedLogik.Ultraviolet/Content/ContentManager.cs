@@ -36,6 +36,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             this.rootDirectory = rootDirectory;
             this.fileSystemService = FileSystemService.Create();
+            this.overrideDirectories = new ContentOverrideDirectoryCollection();
 
             uv.Messages.Subscribe(this, UltravioletMessages.LowMemory);
         }
@@ -246,10 +247,12 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 Object result;
                 LoadInternal(asset, typeof(TOutput), cache, false, false, out result);
-                return (TOutput)result;
+                return (result is ContentCacheData) ?
+                    (TOutput)((ContentCacheData)result).Asset : (TOutput)result;
             }
 
-            return (TOutput)cachedInstance;
+            return (cachedInstance is ContentCacheData) ?
+                (TOutput)((ContentCacheData)cachedInstance).Asset : (TOutput)cachedInstance;
         }
 
         /// <summary>
@@ -386,7 +389,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
 
             var processor = FindContentProcessor("unknown", intermediate.GetType(), typeof(TOutput));
-            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, metadata, false, false);
+            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false);
             var result = processor.Process(this, assetmeta, intermediate);
 
             return (TOutput)result;
@@ -406,7 +409,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
 
             var processor = FindContentProcessor("unknown", typeof(TInput), typeof(TOutput));
-            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, metadata, false, false);
+            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false);
             var result = processor.Process(this, assetmeta, intermediate);
 
             return (TOutput)result;
@@ -643,7 +646,8 @@ namespace TwistedLogik.Ultraviolet.Content
 
                 foreach (var instance in assetCache)
                 {
-                    var disposable = instance.Value as IDisposable;
+                    var disposable = ((instance.Value is ContentCacheData) ?
+                        ((ContentCacheData)instance.Value).Asset : instance.Value) as IDisposable;
                     if (disposable != null)
                     {
                         disposable.Dispose();
@@ -663,10 +667,11 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Lists the assets which can serve as substitutions for the specified asset.
         /// </summary>
+        /// <param name="rootdir">The root directory from which content is being loaded.</param>
         /// <param name="path">The file path of the asset for which to list substitutions.</param>
         /// <param name="maxDensityBucket">The maximum density bucket to consider.</param>
         /// <returns>A collection containing the specified asset's possible substitution assets.</returns>
-        private IEnumerable<String> ListPossibleSubstitutions(String path, ScreenDensityBucket maxDensityBucket)
+        private IEnumerable<String> ListPossibleSubstitutions(String rootdir, String path, ScreenDensityBucket maxDensityBucket)
         {
             var directory = Path.GetDirectoryName(path) ?? String.Empty;
             var filename = Path.GetFileNameWithoutExtension(path);
@@ -679,7 +684,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 let bucketfile = String.Format("{0}-{1}{2}", filename, bucketname, extension)
                 let bucketpath = Path.Combine(directory, bucketfile)
                 where fileSystemService.FileExists(bucketpath)
-                select fileSystemService.GetRelativePath(rootDirectory, bucketpath);
+                select fileSystemService.GetRelativePath(rootdir, bucketpath);
 
             return substitutions;
         }
@@ -768,13 +773,17 @@ namespace TwistedLogik.Ultraviolet.Content
                 var importer = default(IContentImporter);
                 var processor = default(IContentProcessor);
                 var instance = preprocessed ?
-                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, out importer, out processor) :
+                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, out importer, out processor) :
                     LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
 
                 if (cache)
                 {
                     lock (cacheSyncObject)
                     {
+                        if (metadata.IsOverridden)
+                        {
+                            instance = new ContentCacheData(instance, metadata.OverrideDirectory);
+                        }
                         assetCache[asset] = instance;
 
                         if (!assetFlags.ContainsKey(asset))
@@ -864,10 +873,11 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="type">The type of asset to load.</param>
         /// <param name="asset">The name of the asset being loaded.</param>
         /// <param name="path">The path to the asset file.</param>
+        /// <param name="overridedir">The override directory from which to load the asset.</param>
         /// <param name="importer">The content importer for the asset.</param>
         /// <param name="processor">The content processor for the asset.</param>
         /// <returns>The asset that was loaded.</returns>
-        private Object LoadInternalPreprocessed(Type type, String asset, String path, out IContentImporter importer, out IContentProcessor processor)
+        private Object LoadInternalPreprocessed(Type type, String asset, String path, String overridedir, out IContentImporter importer, out IContentProcessor processor)
         {
             importer = null;
             using (var stream = fileSystemService.OpenRead(path))
@@ -902,7 +912,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
                     processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
 
-                    var metadata = new AssetMetadata(asset, fileSystemService.GetFullPath(path), null, null, true, false);
+                    var metadata = new AssetMetadata(overridedir, asset, fileSystemService.GetFullPath(path), null, null, true, false);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }
             }
@@ -1014,9 +1024,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asset">The asset name.</param>
         /// <param name="extension">The extension for which to search, or <see langword="null"/> to search for any extension.</param>
         /// <param name="directory">The directory in which the asset was found.</param>
+        /// <param name="overridden">A value indicating whether the asset was loaded from an override directory.</param>
         /// <param name="flags">A collection of <see cref="AssetResolutionFlags"/> values indicating how to resolve the asset path.</param>
         /// <returns>The path of the specified asset.</returns>
-        private String GetAssetPath(String asset, String extension, out String directory, AssetResolutionFlags flags = AssetResolutionFlags.Default)
+        private String GetAssetPath(String asset, String extension, out String directory, out Boolean overridden, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
             var specifiedExtension = Path.GetExtension(asset);
             if (extension == null && !String.IsNullOrWhiteSpace(specifiedExtension))
@@ -1024,6 +1035,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
             var path = GetAssetPathFromDirectory(RootDirectory, asset, ref extension, flags);
             directory = RootDirectory;
+            overridden = false;
 
             foreach (var dir in OverrideDirectories)
             {
@@ -1032,6 +1044,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 {
                     directory = dir;
                     path = dirPath;
+                    overridden = true;
                 }
             }
 
@@ -1041,13 +1054,13 @@ namespace TwistedLogik.Ultraviolet.Content
                 var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
                 if (primaryDisplay != null)
                 {
-                    var substitution = ListPossibleSubstitutions(path, primaryDisplay.DensityBucket)
+                    var substitution = ListPossibleSubstitutions(directory, path, primaryDisplay.DensityBucket)
                         .Take(1).SingleOrDefault();
 
                     if (substitution != null)
                     {
                         flags &= ~AssetResolutionFlags.PerformSubstitution;
-                        return GetAssetPath(substitution, extension, out directory, flags);
+                        path = GetAssetPathFromDirectory(directory, substitution, ref extension, flags);
                     }
                 }
             }
@@ -1066,16 +1079,15 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             // If we're given a full filename with extension, return that.
             var assetDirectory = String.Empty;
+            var assetOverridden = false;
             var assetExtension = Path.GetExtension(asset);
             if (!String.IsNullOrEmpty(assetExtension))
             {
-                var assetPath = GetAssetPath(asset, assetExtension, out assetDirectory);
+                var assetPath = GetAssetPath(asset, assetExtension, out assetDirectory, out assetOverridden);
                 if (assetPath != null)
                 {
                     if (includePreprocessedFiles || !IsPreprocessedFile(asset))
-                    {
-                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, includeDetailedMetadata);
-                    }
+                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, assetOverridden, includeDetailedMetadata);
                 }
                 throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
             }
@@ -1083,20 +1095,20 @@ namespace TwistedLogik.Ultraviolet.Content
             // Find the highest-ranking preprocessed file, if one exists.
             if (includePreprocessedFiles)
             {
-                var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory);
+                var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory, out assetOverridden);
                 if (assetPathPreprocessed != null)
-                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, includeDetailedMetadata);
+                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, assetOverridden, includeDetailedMetadata);
             }
 
             // Find the highest-ranking metadata file, if one exists.
-            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
+            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, out assetDirectory, out assetOverridden, AssetResolutionFlags.PerformSubstitution);
             if (assetPathMetadata != null)
-                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, includeDetailedMetadata);
+                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, assetOverridden, includeDetailedMetadata);
 
             // Find the highest-ranking raw file.
-            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.PerformSubstitution);
+            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, out assetOverridden, AssetResolutionFlags.PerformSubstitution);
             if (assetPathRaw != null)
-                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, includeDetailedMetadata);
+                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, assetOverridden, includeDetailedMetadata);
 
             // If we still have no matches, we can't find the file.
             throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
@@ -1108,9 +1120,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="asset">The normalized asset path.</param>
         /// <param name="filename">The filename of the file from which to create asset metadata.</param>
         /// <param name="rootdir">The root directory from which the file is being loaded.</param>
+        /// <param name="overridden">A value indicating whether the asset was loaded from an override directory.</param>
         /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
         /// <returns>The asset metadata for the specified asset file.</returns>
-        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean includeDetailedMetadata)
+        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata)
         {
             String extension;
             if (IsMetadataFile(filename, out extension) && includeDetailedMetadata)
@@ -1152,14 +1165,16 @@ namespace TwistedLogik.Ultraviolet.Content
                 var relative = fileSystemService.GetRelativePath(rootDirectory, Path.Combine(directory, wrappedFilename));
 
                 var wrappedAssetDirectory = String.Empty;
-                wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory);
+                var wrappedAssetOverridden = false;
+                wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory, out wrappedAssetOverridden);
 
                 if (!fileSystemService.FileExists(wrappedAssetPath))
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
 
-                return new AssetMetadata(asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson);
+                return new AssetMetadata(wrappedAssetOverridden ? wrappedAssetDirectory : null,
+                    asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson);
             }
-            return new AssetMetadata(asset, filename, null, null, true, false);
+            return new AssetMetadata(overridden ? rootdir : null, asset, filename, null, null, true, false);
         }
 
         /// <summary>
@@ -1287,12 +1302,13 @@ namespace TwistedLogik.Ultraviolet.Content
             Object result;
 
             var assetDirectory = String.Empty;
-            var assetPath = GetAssetPath(asset, null, out assetDirectory, AssetResolutionFlags.None);
+            var assetOveridden = false;
+            var assetPath = GetAssetPath(asset, null, out assetDirectory, out assetOveridden, AssetResolutionFlags.None);
 
             if (IsPreprocessedFile(assetPath))
                 return true;
 
-            var substitutions = ListPossibleSubstitutions(assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
+            var substitutions = ListPossibleSubstitutions(assetDirectory, assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
             foreach (var substitution in substitutions)
             {
                 if (!LoadInternal(substitution, type, false, true, delete, out result))
@@ -1308,7 +1324,7 @@ namespace TwistedLogik.Ultraviolet.Content
         private readonly String rootDirectory;
 
         // State values.
-        private readonly ContentOverrideDirectoryCollection overrideDirectories = new ContentOverrideDirectoryCollection();
+        private readonly ContentOverrideDirectoryCollection overrideDirectories;
         private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;

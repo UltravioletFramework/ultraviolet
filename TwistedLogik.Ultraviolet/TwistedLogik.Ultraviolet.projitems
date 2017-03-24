@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentArchiveStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentBinaryReaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentBinaryWriterExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentCacheData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporterAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporterRegistry.cs" />
