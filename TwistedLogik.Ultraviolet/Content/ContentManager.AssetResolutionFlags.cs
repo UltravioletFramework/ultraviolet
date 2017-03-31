@@ -26,6 +26,12 @@ namespace TwistedLogik.Ultraviolet.Content
             PerformSubstitution = 0x0002,
 
             /// <summary>
+            /// Attempt to load assets from the solution directory
+            /// instead of the content root.
+            /// </summary>
+            LoadFromSolutionDirectory = 0x0004,
+
+            /// <summary>
             /// The default options for asset resolution.
             /// </summary>
             Default = IncludePreprocessed | PerformSubstitution

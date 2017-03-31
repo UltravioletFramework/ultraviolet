@@ -113,7 +113,7 @@ namespace UvDebugSandbox
 
                 Ultraviolet.GetUI().GetScreens().Open(screen);
             }
-
+            
             base.OnLoadingContent();
         }
 
