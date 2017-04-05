@@ -20,7 +20,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Track(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            this.Thumb = new Button(uv, null) 
+            this.Thumb = new Thumb(uv, null) 
             { 
                 HorizontalAlignment = HorizontalAlignment.Stretch, 
                 VerticalAlignment   = VerticalAlignment.Stretch,
@@ -53,16 +53,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.DecreaseButton.Click += HandleDecreaseButtonClick;
             this.DecreaseButton.ChangeLogicalAndVisualParents(this, this);
             KeyboardNavigation.SetIsTabStop(this.DecreaseButton, false);
+        }
 
-            Mouse.AddLostMouseCaptureHandler(this.Thumb, HandleThumbLostMouseCapture);
-            Mouse.AddPreviewMouseMoveHandler(this.Thumb, HandleThumbPreviewMouseMove);
-            Mouse.AddPreviewMouseDownHandler(this.Thumb, HandleThumbPreviewMouseDown);
-            Mouse.AddPreviewMouseUpHandler(this.Thumb, HandleThumbPreviewMouseUp);
-
-            Touch.AddLostTouchCaptureHandler(this.Thumb, HandleThumbLostTouchCapture);
-            Touch.AddPreviewTouchMoveHandler(this.Thumb, HandleThumbPreviewTouchMove);
-            Touch.AddPreviewTouchDownHandler(this.Thumb, HandleThumbPreviewTouchDown);
-            Touch.AddPreviewTouchUpHandler(this.Thumb, HandleThumbPreviewTouchUp);
+        /// <summary>
+        /// Calculates the change in <see cref="Value"/> that corresponds to moving the track's thumb
+        /// by the specified amount along the horizontal and vertical axes.
+        /// </summary>
+        /// <param name="horizontal">The horizontal distance.</param>
+        /// <param name="vertical">The vertical distance.</param>
+        /// <returns>The change in <see cref="Value"/> which corresponds to the specified distances.</returns>
+        public virtual Double ValueFromDistance(Double horizontal, Double vertical)
+        {
+            if (Orientation == Orientation.Horizontal)
+            {
+                return Math.Sign(horizontal) * 
+                    (OffsetToValue(Math.Abs(horizontal), RenderSize.Width, Thumb.RenderSize.Width) - OffsetToValue(0, RenderSize.Width, Thumb.RenderSize.Width));
+            }
+            else
+            {
+                return Math.Sign(vertical) *
+                    (OffsetToValue(Math.Abs(vertical), RenderSize.Height, Thumb.RenderSize.Height) - OffsetToValue(0, RenderSize.Height, Thumb.RenderSize.Height));
+            }
         }
 
         /// <summary>
@@ -110,19 +121,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// track's associated viewport.</value>
         public Double ViewportSize
         {
-            get
-            {
-                var owner = TemplatedParent as OrientedScrollBar;
-                return (owner == null) ? Double.NaN : owner.ViewportSize;
-            }
-            set
-            {
-                var owner = TemplatedParent as OrientedScrollBar;
-                if (owner != null)
-                {
-                    owner.ViewportSize = value;
-                }
-            }
+            get { return GetValue<Double>(ViewportSizeProperty); }
+            set { SetValue(ViewportSizeProperty, value); }
         }
 
         /// <summary>
@@ -131,19 +131,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>A <see cref="Double"/> that represents the minimum value of the <see cref="Value"/> property.</value>
         public Double Minimum
         {
-            get
-            {
-                var owner = TemplatedParent as RangeBase;
-                return (owner == null) ? 0 : owner.Minimum;
-            }
-            set
-            {
-                var owner = TemplatedParent as RangeBase;
-                if (owner != null)
-                {
-                    owner.Minimum = value;
-                }
-            }
+            get { return GetValue<Double>(MinimumProperty); }
+            set { SetValue(MinimumProperty, value); }
         }
 
         /// <summary>
@@ -152,19 +141,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>A <see cref="Double"/> that represents the maximum value of the <see cref="Value"/> property.</value>
         public Double Maximum
         {
-            get
-            {
-                var owner = TemplatedParent as RangeBase;
-                return (owner == null) ? 0 : owner.Maximum;
-            }
-            set
-            {
-                var owner = TemplatedParent as RangeBase;
-                if (owner != null)
-                {
-                    owner.Maximum = value;
-                }
-            }
+            get { return GetValue<Double>(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
         }
 
         /// <summary>
@@ -173,19 +151,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>A <see cref="Double"/> that represents the track's current value.</value>
         public Double Value
         {
-            get
-            {
-                var owner = TemplatedParent as RangeBase;
-                return (owner == null) ? 0 : owner.Value;
-            }
-            set
-            {
-                var owner = TemplatedParent as RangeBase;
-                if (owner != null)
-                {
-                    owner.Value = value;
-                }
-            }
+            get { return GetValue<Double>(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
         }
 
         /// <summary>
@@ -194,6 +161,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(Track),
             new PropertyMetadata<Orientation>(null, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="ViewportSize"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ViewportSize"/> dependency property.</value>
+        public static readonly DependencyProperty ViewportSizeProperty = DependencyProperty.Register("ViewportSize", typeof(Double), typeof(Track),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.NaN, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="Minimum"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Minimum"/> dependency property.</value>
+        public static readonly DependencyProperty MinimumProperty = RangeBase.MinimumProperty.AddOwner(typeof(Track),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="Maximum"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Maximum"/> dependency property.</value>
+        public static readonly DependencyProperty MaximumProperty = RangeBase.MaximumProperty.AddOwner(typeof(Track),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.One, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="Value"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Value"/> dependency property.</value>
+        public static readonly DependencyProperty ValueProperty = RangeBase.ValueProperty.AddOwner(typeof(Track),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
 
         /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
@@ -396,7 +391,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var owner = TemplatedParent as RangeBase;
             if (owner != null)
             {
-                owner.DecreaseLarge();
+                owner.Value -= owner.LargeChange;
 
                 var scrollbar = owner as OrientedScrollBar;
                 if (scrollbar != null)
@@ -414,7 +409,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var owner = TemplatedParent as RangeBase;
             if (owner != null)
             {
-                owner.IncreaseLarge();
+                owner.Value += owner.LargeChange;
 
                 var scrollbar = owner as OrientedScrollBar;
                 if (scrollbar != null)
@@ -424,170 +419,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
         }
 
-        /// <summary>
-        /// Handles the <see cref="Mouse.LostMouseCaptureEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbLostMouseCapture(DependencyObject element, RoutedEventData data)
-        {
-            HandleCursorUp(0);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseMoveEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbPreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
-        {
-            var button = element as Button;
-            if (button != null && thumbDragCursorID == 0)
-            {
-                var relativeMousePosition = Mouse.GetPosition(this);
-                HandleCursorMove(0, relativeMousePosition);
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseDownEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbPreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton pressed, RoutedEventData data)
-        {
-            var relativeMousePosition = Mouse.GetPosition(Thumb);
-            HandleCursorDown(0, relativeMousePosition);
-        }
-        
-        /// <summary>
-        /// Handles the <see cref="Mouse.PreviewMouseUpEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbPreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton pressed, RoutedEventData data)
-        {
-            HandleCursorUp(0);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Touch.LostTouchCaptureEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbLostTouchCapture(DependencyObject element, TouchDevice device, Int64 id, RoutedEventData data)
-        {
-            HandleCursorUp(id);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Touch.PreviewTouchMoveEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbPreviewTouchMove(DependencyObject element, TouchDevice device,
-            Int64 id, Double x, Double y, Double dx, Double dy, Single pressure, RoutedEventData data)
-        {
-            if (Ultraviolet.GetInput().IsMouseCursorAvailable)
-                return;
-
-            var button = element as Button;
-            if (button != null && thumbDragCursorID == id)
-            {
-                var relativeTouchPosition = Touch.GetPosition(id, this);
-                HandleCursorMove(id, relativeTouchPosition);
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Touch.PreviewTouchDownEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbPreviewTouchDown(DependencyObject element, TouchDevice device,
-            Int64 id, Double x, Double y, Single pressure, RoutedEventData data)
-        {
-            if (Ultraviolet.GetInput().IsMouseCursorAvailable)
-                return;
-
-            var relativeTouchPosition = Touch.GetPosition(id, Thumb);
-            HandleCursorDown(id, relativeTouchPosition);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Touch.PreviewTouchUpEvent"/> routed event for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleThumbPreviewTouchUp(DependencyObject element, TouchDevice device,
-            Int64 id, RoutedEventData data)
-        {
-            HandleCursorUp(id);
-        }
-
-        /// <summary>
-        /// Handles <see cref="Mouse.MouseMoveEvent"/> and <see cref="Touch.TouchMoveEvent"/> events for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleCursorMove(Int64 cursorID, Point2D relativeCursorPosition)
-        {
-            if (!thumbDragging || thumbDragCursorID != cursorID)
-                return;
-
-            var oldValue = Value;
-            if (Orientation == Orientation.Vertical)
-            {
-                var relY = relativeCursorPosition.Y - thumbDragOffset;
-                Value = OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
-            }
-            else
-            {
-                var relX = relativeCursorPosition.X - thumbDragOffset;
-                Value = OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
-            }
-
-            if (Value != oldValue)
-            {
-                var scrollbar = TemplatedParent as OrientedScrollBar;
-                if (scrollbar != null)
-                {
-                    scrollbar.RaiseScrollEvent(ScrollEventType.ThumbTrack);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles <see cref="Mouse.MouseDownEvent"/> and <see cref="Touch.TouchDownEvent"/> events for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleCursorDown(Int64 cursorID, Point2D relativeCursorPosition)
-        {
-            if (thumbDragging)
-                return;
-
-            if (Orientation == Orientation.Vertical)
-            {
-                thumbDragOffset = relativeCursorPosition.Y;
-            }
-            else
-            {
-                thumbDragOffset = relativeCursorPosition.X;
-            }
-
-            thumbDragging = true;
-            thumbDragCursorID = cursorID;
-
-            if (cursorID > 0)
-                Thumb?.CaptureTouch(cursorID);
-        }
-
-        /// <summary>
-        /// Handles <see cref="Mouse.MouseUpEvent"/> and <see cref="Touch.TouchUpEvent"/> events for the <see cref="Thumb"/> button.
-        /// </summary>
-        private void HandleCursorUp(Int64 cursorID)
-        {
-            if (!thumbDragging || thumbDragCursorID != cursorID)
-                return;
-
-            var scrollbar = TemplatedParent as OrientedScrollBar;
-            if (scrollbar != null)
-            {
-                scrollbar.RaiseScrollEvent(ScrollEventType.EndScroll);
-            }
-
-            thumbDragging = false;
-        }
-
         // Component element references.
-        private readonly Button Thumb = null;
+        private readonly Thumb Thumb = null;
         private readonly RepeatButton DecreaseButton = null;
-        private readonly RepeatButton IncreaseButton = null;
-
-        // State values.
-        private Boolean thumbDragging;
-        private Double thumbDragOffset;
-        private Int64 thumbDragCursorID;
+        private readonly RepeatButton IncreaseButton = null;        
     }
 }

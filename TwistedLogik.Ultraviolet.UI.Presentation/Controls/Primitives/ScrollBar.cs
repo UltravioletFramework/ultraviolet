@@ -264,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// A command that scrolls a scroll viewer to the vertical position specified in the command parameter.
         /// </summary>
         public static readonly RoutedCommand ScrollToVerticalOffsetCommand = new RoutedCommand("ScrollToVerticalOffset", typeof(ScrollBar));
-
+        
         /// <summary>
         /// Called when the <see cref="RangeBase.Value"/> property of one of the scroll bar's child scroll bars changes.
         /// </summary>

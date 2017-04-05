@@ -106,12 +106,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (direction)
                 {
                     case GamePadJoystickDirection.Up:
-                        IncreaseSmall();
+                        Value += SmallChange;
                         data.Handled = true;
                         break;
 
                     case GamePadJoystickDirection.Down:
-                        DecreaseSmall();
+                        Value -= SmallChange;
                         data.Handled = true;
                         break;
                 }
@@ -128,12 +128,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (button)
                 {
                     case GamePadButton.DPadUp:
-                        IncreaseSmall();
+                        Value += SmallChange;
                         data.Handled = true;
                         break;
 
                     case GamePadButton.DPadDown:
-                        DecreaseSmall();
+                        Value -= SmallChange;
                         data.Handled = true;
                         break;
                 }
@@ -155,7 +155,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void Increment(DependencyObject element, RoutedEventData data)
         {
-            IncreaseSmall();
+            Value += SmallChange;
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private void Decrement(DependencyObject element, RoutedEventData data)
         {
-            DecreaseSmall();
+            Value -= SmallChange;
         }
         
         /// <summary>
@@ -201,12 +201,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (key)
                 {
                     case Key.Up:
-                        numericUpDown.IncreaseSmall();
+                        numericUpDown.Value += numericUpDown.SmallChange;
                         data.Handled = true;
                         break;
 
                     case Key.Down:
-                        numericUpDown.DecreaseSmall();
+                        numericUpDown.Value -= numericUpDown.SmallChange;
                         data.Handled = true;
                         break;
                 }

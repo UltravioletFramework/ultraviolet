@@ -40,12 +40,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             switch (key)
             {
                 case Key.Left:
-                    DecreaseSmall();
+                    Value -= SmallChange;
                     data.Handled = true;
                     break;
 
                 case Key.Right:
-                    IncreaseSmall();
+                    Value += SmallChange;
                     data.Handled = true;
                     break;
             }
@@ -62,12 +62,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (direction)
                 {
                     case GamePadJoystickDirection.Left:
-                        DecreaseSmall();
+                        Value -= SmallChange;
                         data.Handled = true;
                         break;
 
                     case GamePadJoystickDirection.Right:
-                        IncreaseSmall();
+                        Value += SmallChange;
                         data.Handled = true;
                         break;
                 }
@@ -83,12 +83,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (button)
                 {
                     case GamePadButton.DPadLeft:
-                        DecreaseSmall();
+                        Value -= SmallChange;
                         data.Handled = true;
                         break;
 
                     case GamePadButton.DPadRight:
-                        IncreaseSmall();
+                        Value += SmallChange;
                         data.Handled = true;
                         break;
                 }

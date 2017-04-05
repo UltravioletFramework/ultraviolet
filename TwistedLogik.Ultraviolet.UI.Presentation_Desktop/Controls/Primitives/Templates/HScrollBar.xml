@@ -9,7 +9,7 @@
       </Grid.ColumnDefinitions>
 
       <RepeatButton Class="scroll-button scroll-button-left" Grid.Column="0" VerticalAlignment="Stretch"
-                    Click="HandleClickLineLeft" IsEnabled="{{CanBeDecreased}}" Focusable="false" KeyboardNavigation.IsTabStop="false">
+                    Command="ScrollBar.LineLeftCommand" IsEnabled="{{CanBeDecreased}}" Focusable="false" KeyboardNavigation.IsTabStop="false">
 
         <Image Class="scroll-button-left-arrow"/>
 
@@ -17,10 +17,11 @@
 
       <Image Class="scroll-track-bg scroll-track-bg-horizontal" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
       <Track Name="PART_Track"
-             Class="scroll-track" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" />
+             Class="scroll-track" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal"
+             ViewportSize="{{ViewportSize}}" Minimum="{{Minimum}}" Maximum="{{Maximum}}" Value="{{Value}}"/>
 
       <RepeatButton Class="scroll-button scroll-button-right" Grid.Column="2" VerticalAlignment="Stretch"
-                    Click="HandleClickLineRight" IsEnabled="{{CanBeIncreased}}" Focusable="false" KeyboardNavigation.IsTabStop="false">
+                    Command="ScrollBar.LineRightCommand" IsEnabled="{{CanBeIncreased}}" Focusable="false" KeyboardNavigation.IsTabStop="false">
 
         <Image Class="scroll-button-right-arrow"/>
 

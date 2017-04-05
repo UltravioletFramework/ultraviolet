@@ -21,6 +21,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             SmallChangeProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleSmallChangeChanged));
             LargeChangeProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleLargeChangeChanged));
             FocusableProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+
+            EventManager.RegisterClassHandler(typeof(OrientedScrollBar), Thumb.DragStartedEvent, new UpfDragStartedEventHandler(HandleThumbDragStarted));
+            EventManager.RegisterClassHandler(typeof(OrientedScrollBar), Thumb.DragDeltaEvent, new UpfDragDeltaEventHandler(HandleThumbDragDelta));
+            EventManager.RegisterClassHandler(typeof(OrientedScrollBar), Thumb.DragCompletedEvent, new UpfDragCompletedEventHandler(HandleThumbDragCompleted));
         }
 
         /// <summary>
@@ -90,6 +94,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <value>The identifier for the <see cref="Scroll"/> routed event.</value>
         public static readonly RoutedEvent ScrollEvent = ScrollBar.ScrollEvent.AddOwner(typeof(OrientedScrollBar));
+
+        /// <summary>
+        /// Occurs when the scroll bar receives a <see cref="Thumb.DragDelta"/> event.
+        /// </summary>
+        /// <param name="hchange">The distance that the thumb moved horizontally.</param>
+        /// <param name="vchange">The distance that the thumb moved vertically.</param>
+        protected virtual void OnThumbDragDelta(Double hchange, Double vchange)
+        {
+            var valueDelta = Track.ValueFromDistance(hchange, vchange);
+            if (!Double.IsNaN(valueDelta) && valueDelta != 0.0)
+            {
+                Value += valueDelta;
+                RaiseScrollEvent(ScrollEventType.ThumbTrack);
+            }
+        }
 
         /// <inheritdoc/>
         protected override void OnMinimumChanged()
@@ -217,6 +236,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 parent.OnChildViewportSizeChanged(child, newValue);
             }
+        }
+
+        /// <summary>
+        /// Occurs when the user starts a thumb drag operation.
+        /// </summary>
+        private static void HandleThumbDragStarted(DependencyObject element, Double hoffset, Double voffset, RoutedEventData data)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Occurs when the user moves the thumb during a drag operation.
+        /// </summary>
+        private static void HandleThumbDragDelta(DependencyObject element, Double hchange, Double vchange, RoutedEventData data)
+        {
+            var scrollBar = (OrientedScrollBar)element;
+            scrollBar.OnThumbDragDelta(hchange, vchange);
+        }
+
+        /// <summary>
+        /// Occurs when the user completes a thumb drag operation.
+        /// </summary>
+        private static void HandleThumbDragCompleted(DependencyObject element, Double hchange, Double vchange, RoutedEventData data)
+        {
+            // TODO
         }
 
         // Component references.

@@ -12,7 +12,10 @@
              Class="slider-track slider-track-horizontal"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Center"
-             Orientation="Horizontal"/>
+             Orientation="Horizontal"
+             Minimum="{{Minimum}}" 
+             Maximum="{{Maximum}}" 
+             Value="{{Value}}"/>
       <Image Class="slider-focus-image"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"

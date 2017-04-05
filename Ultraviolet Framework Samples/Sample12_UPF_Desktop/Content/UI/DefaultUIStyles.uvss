@@ -401,12 +401,12 @@ VSlider! .track-thumb
     height: 10;
 }
 
-HSlider! .track-thumb .button-background
+HSlider! .track-thumb .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 136 484 10 19;
 }
 
-VSlider! .track-thumb .button-background
+VSlider! .track-thumb .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 147 484 19 10;
 }
@@ -850,7 +850,7 @@ VScrollBar! >> Track! > .track-thumb
     transition (common, pressed): null;
 }
 
-VScrollBar! >> Track! > .track-thumb >> .button-background
+VScrollBar! >> Track! > .track-thumb >> .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 154 404 17 53 8 8 vertical;
 }
@@ -908,7 +908,7 @@ HScrollBar! >> Track! > .track-thumb
     transition (common, pressed): null;
 }
 
-HScrollBar! >> Track! > .track-thumb >> .button-background
+HScrollBar! >> Track! > .track-thumb >> .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 183 422 53 17 8 8;
 }

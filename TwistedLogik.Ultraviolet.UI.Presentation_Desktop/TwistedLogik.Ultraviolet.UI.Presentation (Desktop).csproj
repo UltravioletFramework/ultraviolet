@@ -112,7 +112,9 @@
     <EmbeddedResource Include="Resources\Strings.xml" />
     <EmbeddedResource Include="Controls\Primitives\Templates\HScrollBar.xml" />
     <EmbeddedResource Include="Controls\Primitives\Templates\ToggleButton.xml" />
-    <EmbeddedResource Include="Controls\Primitives\Templates\VScrollBar.xml" />
+    <EmbeddedResource Include="Controls\Primitives\Templates\VScrollBar.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Templates\Button.xml" />
     <EmbeddedResource Include="Controls\Templates\CheckBox.xml" />
     <EmbeddedResource Include="Controls\Templates\ComboBox.xml" />
@@ -137,6 +139,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Controls\Primitives\Templates\Thumb.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Primitives\Templates\ScrollBar.xml" />
     <EmbeddedResource Include="Resources\Commands.xml" />
     <EmbeddedResource Include="Controls\Templates\ProgressBar.xml" />

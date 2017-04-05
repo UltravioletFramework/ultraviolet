@@ -52,7 +52,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void LineDown()
         {
-            IncreaseSmall();
+            var newValue = Math.Min(Maximum, Value + SmallChange);
+            if (newValue != Value)
+            {
+                Value = newValue;
+                RaiseScrollEvent(ScrollEventType.SmallIncrement);
+            }
         }
 
         /// <summary>
@@ -60,7 +65,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void LineUp()
         {
-            DecreaseSmall();
+            var newValue = Math.Min(Maximum, Value - SmallChange);
+            if (newValue != Value)
+            {
+                Value = newValue;
+                RaiseScrollEvent(ScrollEventType.SmallDecrement);
+            }
         }
 
         /// <summary>
@@ -68,7 +78,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void PageDown()
         {
-            IncreaseLarge();
+            var newValue = Math.Min(Maximum, Value + LargeChange);
+            if (newValue != Value)
+            {
+                Value = newValue;
+                RaiseScrollEvent(ScrollEventType.LargeIncrement);
+            }
         }
 
         /// <summary>
@@ -76,7 +91,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void PageUp()
         {
-            DecreaseLarge();
+            var newValue = Math.Min(Maximum, Value - LargeChange);
+            if (newValue != Value)
+            {
+                Value = newValue;
+                RaiseScrollEvent(ScrollEventType.LargeDecrement);
+            }
         }
 
         /// <summary>
@@ -84,7 +104,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void ScrollToBottom()
         {
-            Value = Maximum;
+            if (Value != Maximum)
+            {
+                Value = Maximum;
+                RaiseScrollEvent(ScrollEventType.Last);
+            }
         }
 
         /// <summary>
@@ -92,9 +116,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public void ScrollToTop()
         {
-            Value = Minimum;
+            if (Value != Minimum)
+            {
+                Value = Minimum;
+                RaiseScrollEvent(ScrollEventType.First);
+            }
         }
-
+        
         /// <inheritdoc/>
         protected override void OnMouseUp(MouseDevice device, MouseButton button, RoutedEventData data)
         {
@@ -160,8 +188,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             var scrollBar = (VScrollBar)element;
             var scrollBarMin = scrollBar.Minimum;
-            scrollBar.Value = scrollBar.lastRightClickedPoint.HasValue ?
+
+            var newValue = scrollBar.lastRightClickedPoint.HasValue ?
                 (scrollBar.Track?.ValueFromPoint(scrollBar.lastRightClickedPoint.Value) ?? scrollBarMin) : scrollBarMin;
+            if (newValue != scrollBar.Value)
+            {
+                scrollBar.Value = newValue;
+                scrollBar.RaiseScrollEvent(ScrollEventType.ThumbPosition);
+            }
         }
 
         /// <summary>
@@ -179,25 +213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             data.CanExecute = true;
         }
-
-        /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for LineUpButton.
-        /// </summary>
-        private void HandleClickLineUp(DependencyObject element, RoutedEventData data)
-        {
-            DecreaseSmall();
-            RaiseScrollEvent(ScrollEventType.SmallDecrement);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for LineDownButton.
-        /// </summary>
-        private void HandleClickLineDown(DependencyObject element, RoutedEventData data)
-        {
-            IncreaseSmall();
-            RaiseScrollEvent(ScrollEventType.SmallIncrement);
-        }
-        
+                
         // State values.
         private Point2D? lastRightClickedPoint;
     }
