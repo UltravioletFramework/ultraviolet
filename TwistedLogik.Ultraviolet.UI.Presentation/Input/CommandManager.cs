@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="command">The command that is being executed.</param>
     /// <param name="parameter">The parameter object that is being passed to the executing command.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void ExecutedRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, RoutedEventData data);
+    public delegate void UpfExecutedRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, RoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a command is being checked to determine whether it can execute.
@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="command">The command that is being evaluated.</param>
     /// <param name="parameter">The parameter object that is being passed to the evaluated command.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void CanExecuteRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data);
+    public delegate void UpfCanExecuteRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data);
 
     /// <summary>
     /// Contains methods for registering command and input bindings and managing command handlers.
@@ -50,7 +50,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewExecutedEventHandler(UIElement element, ExecutedRoutedEventHandler handler)
+        public static void AddPreviewExecutedEventHandler(UIElement element, UpfExecutedRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -64,7 +64,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddExecutedEventHandler(UIElement element, ExecutedRoutedEventHandler handler)
+        public static void AddExecutedEventHandler(UIElement element, UpfExecutedRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -78,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddPreviewCanExecuteEventHandler(UIElement element, CanExecuteRoutedEventHandler handler)
+        public static void AddPreviewCanExecuteEventHandler(UIElement element, UpfCanExecuteRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -92,7 +92,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
         /// <param name="handler">The handler to add to the specified element.</param>
-        public static void AddCanExecuteEventHandler(UIElement element, CanExecuteRoutedEventHandler handler)
+        public static void AddCanExecuteEventHandler(UIElement element, UpfCanExecuteRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewExecutedEventHandler(UIElement element, ExecutedRoutedEventHandler handler)
+        public static void RemovePreviewExecutedEventHandler(UIElement element, UpfExecutedRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -120,7 +120,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveExecutedEventHandler(UIElement element, ExecutedRoutedEventHandler handler)
+        public static void RemoveExecutedEventHandler(UIElement element, UpfExecutedRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemovePreviewCanExecuteEventHandler(UIElement element, CanExecuteRoutedEventHandler handler)
+        public static void RemovePreviewCanExecuteEventHandler(UIElement element, UpfCanExecuteRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
         /// <param name="handler">The handler to remove from the specified element.</param>
-        public static void RemoveCanExecuteEventHandler(UIElement element, CanExecuteRoutedEventHandler handler)
+        public static void RemoveCanExecuteEventHandler(UIElement element, UpfCanExecuteRoutedEventHandler handler)
         {
             Contract.Require(element, nameof(element));
             Contract.Require(handler, nameof(handler));
@@ -238,7 +238,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         ///     <revtField><see cref="PreviewExecutedEvent"/></revtField>
         ///     <revtStylingName>preview-executed</revtStylingName>
         ///     <revtStrategy>Tunneling</revtStrategy>
-        ///     <revtDelegate><see cref="ExecutedRoutedEventHandler"/></revtDelegate>
+        ///     <revtDelegate><see cref="UpfExecutedRoutedEventHandler"/></revtDelegate>
         /// </revt>
         /// <list type="bullet">
         ///     <item>
@@ -249,7 +249,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </remarks>
         /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewExecutedEvent = EventManager.RegisterRoutedEvent("PreviewExecuted",
-            RoutingStrategy.Tunnel, typeof(ExecutedRoutedEventHandler), typeof(CommandManager));
+            RoutingStrategy.Tunnel, typeof(UpfExecutedRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.Executed"/> 
@@ -266,7 +266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         ///     <revtField><see cref="ExecutedEvent"/></revtField>
         ///     <revtStylingName>executed</revtStylingName>
         ///     <revtStrategy>Bubbling</revtStrategy>
-        ///     <revtDelegate><see cref="ExecutedRoutedEventHandler"/></revtDelegate>
+        ///     <revtDelegate><see cref="UpfExecutedRoutedEventHandler"/></revtDelegate>
         /// </revt>
         /// <list type="bullet">
         ///     <item>
@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </remarks>
         /// </AttachedEventComments>
         public static readonly RoutedEvent ExecutedEvent = EventManager.RegisterRoutedEvent("Executed",
-            RoutingStrategy.Bubble, typeof(ExecutedRoutedEventHandler), typeof(CommandManager));
+            RoutingStrategy.Bubble, typeof(UpfExecutedRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewCanExecute"/> 
@@ -294,7 +294,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         ///     <revtField><see cref="PreviewCanExecuteEvent"/></revtField>
         ///     <revtStylingName>preview-can-execute</revtStylingName>
         ///     <revtStrategy>Tunneling</revtStrategy>
-        ///     <revtDelegate><see cref="CanExecuteRoutedEventHandler"/></revtDelegate>
+        ///     <revtDelegate><see cref="UpfCanExecuteRoutedEventHandler"/></revtDelegate>
         /// </revt>
         /// <list type="bullet">
         ///     <item>
@@ -305,7 +305,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </remarks>
         /// </AttachedEventComments>
         public static readonly RoutedEvent PreviewCanExecuteEvent = EventManager.RegisterRoutedEvent("PreviewCanExecute",
-            RoutingStrategy.Tunnel, typeof(CanExecuteRoutedEventHandler), typeof(CommandManager));
+            RoutingStrategy.Tunnel, typeof(UpfCanExecuteRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
         /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.CanExecute"/> 
@@ -322,7 +322,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         ///     <revtField><see cref="CanExecuteEvent"/></revtField>
         ///     <revtStylingName>can-execute</revtStylingName>
         ///     <revtStrategy>Bubbling</revtStrategy>
-        ///     <revtDelegate><see cref="CanExecuteRoutedEventHandler"/></revtDelegate>
+        ///     <revtDelegate><see cref="UpfCanExecuteRoutedEventHandler"/></revtDelegate>
         /// </revt>
         /// <list type="bullet">
         ///     <item>
@@ -333,7 +333,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </remarks>
         /// </AttachedEventComments>
         public static readonly RoutedEvent CanExecuteEvent = EventManager.RegisterRoutedEvent("CanExecute",
-            RoutingStrategy.Bubble, typeof(CanExecuteRoutedEventHandler), typeof(CommandManager));
+            RoutingStrategy.Bubble, typeof(UpfCanExecuteRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
         /// Determines whether the specified command source can execute its command.
@@ -368,7 +368,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Registers a command and input binding for the specified class.
         /// </summary>
-        internal static void RegisterClassBindings(Type type, ICommand command, ExecutedRoutedEventHandler executed, params InputGesture[] gestures)
+        internal static void RegisterClassBindings(Type type, ICommand command, UpfExecutedRoutedEventHandler executed, params InputGesture[] gestures)
         {
             RegisterClassCommandBinding(type, new CommandBinding(command, executed));
 
@@ -384,7 +384,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Registers a command and input binding for the specified class.
         /// </summary>
-        internal static void RegisterClassBindings(Type type, ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute, params InputGesture[] gestures)
+        internal static void RegisterClassBindings(Type type, ICommand command, UpfExecutedRoutedEventHandler executed, UpfCanExecuteRoutedEventHandler canExecute, params InputGesture[] gestures)
         {
             RegisterClassCommandBinding(type, new CommandBinding(command, executed, canExecute));
 

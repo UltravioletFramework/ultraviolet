@@ -27,7 +27,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         /// <param name="command">The command that is being bound.</param>
         /// <param name="executed">The handler for the command's <see cref="Executed"/> event.</param>
-        public CommandBinding(ICommand command, ExecutedRoutedEventHandler executed)
+        public CommandBinding(ICommand command, UpfExecutedRoutedEventHandler executed)
             : this (command, executed, null)
         { }
 
@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="command">The command that is being bound.</param>
         /// <param name="executed">The handler for the command's <see cref="Executed"/> event.</param>
         /// <param name="canExecute">The handler for the command's <see cref="CanExecute"/> event.</param>
-        public CommandBinding(ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute)
+        public CommandBinding(ICommand command, UpfExecutedRoutedEventHandler executed, UpfCanExecuteRoutedEventHandler canExecute)
         {
             Contract.Require(command, nameof(command));
 
@@ -67,22 +67,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Occurs before the command is executed.
         /// </summary>
-        public event ExecutedRoutedEventHandler PreviewExecuted;
+        public event UpfExecutedRoutedEventHandler PreviewExecuted;
 
         /// <summary>
         /// Occurs when the command is executed.
         /// </summary>
-        public event ExecutedRoutedEventHandler Executed;
+        public event UpfExecutedRoutedEventHandler Executed;
 
         /// <summary>
         /// Occurs before query to determine if the command can execute.
         /// </summary>
-        public event CanExecuteRoutedEventHandler PreviewCanExecute;
+        public event UpfCanExecuteRoutedEventHandler PreviewCanExecute;
 
         /// <summary>
         /// Occurs when querying to determine if the command can execute.
         /// </summary>
-        public event CanExecuteRoutedEventHandler CanExecute;
+        public event UpfCanExecuteRoutedEventHandler CanExecute;
 
         /// <summary>
         /// Called when the command binding is executed or queried to determine whether it can execute.

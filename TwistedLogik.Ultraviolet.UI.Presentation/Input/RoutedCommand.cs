@@ -79,12 +79,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 var data = CanExecuteRoutedEventData.Retrieve(this, autorelease: false);
                 try
                 {
-                    var evtPreview = EventManager.GetInvocationDelegate<CanExecuteRoutedEventHandler>(CommandManager.PreviewCanExecuteEvent);
+                    var evtPreview = EventManager.GetInvocationDelegate<UpfCanExecuteRoutedEventHandler>(CommandManager.PreviewCanExecuteEvent);
                     evtPreview(uiElement, this, parameter, data);
 
                     if (!data.Handled)
                     {
-                        var evt = EventManager.GetInvocationDelegate<CanExecuteRoutedEventHandler>(CommandManager.CanExecuteEvent);
+                        var evt = EventManager.GetInvocationDelegate<UpfCanExecuteRoutedEventHandler>(CommandManager.CanExecuteEvent);
                         evt(uiElement, this, parameter, data);
                     }
 
@@ -130,12 +130,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 var data = RoutedEventData.Retrieve(this, autorelease: false);
                 try
                 {
-                    var evtPreview = EventManager.GetInvocationDelegate<ExecutedRoutedEventHandler>(CommandManager.PreviewExecutedEvent);
+                    var evtPreview = EventManager.GetInvocationDelegate<UpfExecutedRoutedEventHandler>(CommandManager.PreviewExecutedEvent);
                     evtPreview(uiElement, this, parameter, data);
 
                     if (!data.Handled)
                     {
-                        var evt = EventManager.GetInvocationDelegate<ExecutedRoutedEventHandler>(CommandManager.ExecutedEvent);
+                        var evt = EventManager.GetInvocationDelegate<UpfExecutedRoutedEventHandler>(CommandManager.ExecutedEvent);
                         evt(uiElement, this, parameter, data);
                     }
                 }

@@ -54,10 +54,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(OnQueryCursorProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Presentation.View.ViewModelChangedEvent, new UpfRoutedEventHandler(OnViewModelChangedProxy));
 
-            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewExecutedEvent, new ExecutedRoutedEventHandler(OnPreviewExecutedProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.ExecutedEvent, new ExecutedRoutedEventHandler(OnExecutedProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewCanExecuteEvent, new CanExecuteRoutedEventHandler(OnPreviewCanExecuteProxy));
-            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.CanExecuteEvent, new CanExecuteRoutedEventHandler(OnCanExecuteProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewExecutedEvent, new UpfExecutedRoutedEventHandler(OnPreviewExecutedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.ExecutedEvent, new UpfExecutedRoutedEventHandler(OnExecutedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewCanExecuteEvent, new UpfCanExecuteRoutedEventHandler(OnPreviewCanExecuteProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.CanExecuteEvent, new UpfCanExecuteRoutedEventHandler(OnCanExecuteProxy));
         }
 
         /// <summary>

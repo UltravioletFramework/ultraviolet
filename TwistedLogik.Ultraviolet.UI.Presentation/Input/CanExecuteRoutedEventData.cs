@@ -4,7 +4,7 @@ using TwistedLogik.Nucleus.Collections;
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
     /// <summary>
-    /// Represents the extended event data for a <see cref="CanExecuteRoutedEventHandler"/> delegate.
+    /// Represents the extended event data for a <see cref="UpfCanExecuteRoutedEventHandler"/> delegate.
     /// </summary>
     public class CanExecuteRoutedEventData : RoutedEventData
     {

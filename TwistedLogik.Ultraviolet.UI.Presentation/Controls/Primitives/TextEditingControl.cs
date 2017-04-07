@@ -19,8 +19,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public TextEditingControl(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            var canExecuteIsEditable = new CanExecuteRoutedEventHandler(CanExecuteIsEditable);
-            var canExecuteIsCaretVisible = new CanExecuteRoutedEventHandler(CanExecuteIsCaretVisible);
+            var canExecuteIsEditable = new UpfCanExecuteRoutedEventHandler(CanExecuteIsEditable);
+            var canExecuteIsCaretVisible = new UpfCanExecuteRoutedEventHandler(CanExecuteIsCaretVisible);
 
             // Selection commands
             CommandManager.RegisterClassBindings(typeof(TextEditingControl), ApplicationCommands.SelectAll,
