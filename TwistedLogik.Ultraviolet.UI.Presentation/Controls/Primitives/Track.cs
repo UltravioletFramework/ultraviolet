@@ -388,16 +388,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void HandleDecreaseButtonClick(DependencyObject element, RoutedEventData data)
         {
-            var owner = TemplatedParent as RangeBase;
-            if (owner != null)
+            var command = (Orientation == Orientation.Horizontal) ? ScrollBar.PageLeftCommand : ScrollBar.PageUpCommand;
+            var commandTarget = TemplatedParent as IInputElement;
+            if (command.CanExecute(View, null, commandTarget))
             {
-                owner.Value -= owner.LargeChange;
-
-                var scrollbar = owner as OrientedScrollBar;
-                if (scrollbar != null)
-                {
-                    scrollbar.RaiseScrollEvent(ScrollEventType.LargeDecrement);
-                }
+                command.Execute(View, null, commandTarget);
             }
         }
 
@@ -406,16 +401,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void HandleIncreaseButtonClick(DependencyObject element, RoutedEventData data)
         {
-            var owner = TemplatedParent as RangeBase;
-            if (owner != null)
+            var command = (Orientation == Orientation.Horizontal) ? ScrollBar.PageRightCommand : ScrollBar.PageDownCommand;
+            var commandTarget = TemplatedParent as IInputElement;
+            if (command.CanExecute(View, null, commandTarget))
             {
-                owner.Value += owner.LargeChange;
-
-                var scrollbar = owner as OrientedScrollBar;
-                if (scrollbar != null)
-                {
-                    scrollbar.RaiseScrollEvent(ScrollEventType.LargeIncrement);
-                }
+                command.Execute(View, null, commandTarget);
             }
         }
 

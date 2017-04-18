@@ -173,12 +173,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// A command that is executed when the scroll bar's thumb is being dragged to the horizontal offset specified in the command parameter.
         /// </summary>
-        public static readonly RoutedCommand DeferScrollToHorizontalOffsetCommand = new RoutedCommand("ScrollToHorizontalOffset", typeof(ScrollBar));
+        public static readonly RoutedCommand DeferScrollToHorizontalOffsetCommand = new RoutedCommand("DeferScrollToHorizontalOffset", typeof(ScrollBar));
 
         /// <summary>
         /// A command that is executed when the scroll bar's thumb is being dragged to the vertical offset specified in the command parameter.
         /// </summary>
-        public static readonly RoutedCommand DeferScrollToVerticalOffsetCommand = new RoutedCommand("ScrollToVerticalOffset", typeof(ScrollBar));
+        public static readonly RoutedCommand DeferScrollToVerticalOffsetCommand = new RoutedCommand("DeferScrollToVerticalOffset", typeof(ScrollBar));
 
         /// <summary>
         /// A command that increases the value of the scroll bar by a small amount in the vertical direction.

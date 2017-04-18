@@ -43,6 +43,7 @@
                   HorizontalAlignment="Stretch"
                   SmallChange="16"
                   LargeChange="{{ViewportWidth}}"
+                  Value="{{HorizontalOffset}}"
                   Minimum="0" 
                   Maximum="{{ScrollableWidth}}"
                   ViewportSize="{{ViewportWidth}}"/>
@@ -54,6 +55,7 @@
                   VerticalAlignment="Stretch"
                   SmallChange="16"
                   LargeChange="{{ViewportHeight}}"
+                  Value="{{VerticalOffset}}"
                   Minimum="0"
                   Maximum="{{ScrollableHeight}}"
                   ViewportSize="{{ViewportHeight}}"/>

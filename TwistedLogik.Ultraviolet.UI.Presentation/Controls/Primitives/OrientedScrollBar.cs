@@ -102,10 +102,35 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="vchange">The distance that the thumb moved vertically.</param>
         protected virtual void OnThumbDragDelta(Double hchange, Double vchange)
         {
+            if (hchange == 0 && vchange == 0)
+                return;
+
             var valueDelta = Track.ValueFromDistance(hchange, vchange);
             if (!Double.IsNaN(valueDelta) && valueDelta != 0.0)
             {
-                Value += valueDelta;
+                var valueAfterChange = Math.Max(Minimum, Math.Min(Value + valueDelta, Maximum));
+                Console.WriteLine(valueAfterChange);
+                if (IsPartOfScrollViewer)
+                {
+                    var command = (Track.Orientation == Orientation.Horizontal) ? ScrollBar.DeferScrollToHorizontalOffsetCommand : ScrollBar.DeferScrollToVerticalOffsetCommand;
+                    var commandTarget = (TemplatedParent as IInputElement) ?? this;
+                    if (command.CanExecute(View, valueAfterChange, commandTarget))
+                    {
+                        command.Execute(View, valueAfterChange, commandTarget);
+                    }
+                    else
+                    {
+                        command = (Track.Orientation == Orientation.Horizontal) ? ScrollBar.ScrollToHorizontalOffsetCommand : ScrollBar.ScrollToVerticalOffsetCommand;
+                        if (command.CanExecute(View, valueAfterChange, commandTarget))
+                        {
+                            command.Execute(View, valueAfterChange, commandTarget);
+                        }
+                    }
+                }
+                else
+                {
+                    Value = valueAfterChange;
+                }
                 RaiseScrollEvent(ScrollEventType.ThumbTrack);
             }
         }
@@ -243,7 +268,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleThumbDragStarted(DependencyObject element, Double hoffset, Double voffset, RoutedEventData data)
         {
-            // TODO
         }
 
         /// <summary>
@@ -260,7 +284,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleThumbDragCompleted(DependencyObject element, Double hchange, Double vchange, RoutedEventData data)
         {
-            // TODO
+            var scrollBar = (OrientedScrollBar)element;
+            scrollBar.RaiseScrollEvent(ScrollEventType.EndScroll);
         }
 
         // Component references.

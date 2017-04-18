@@ -31,6 +31,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             // Event handlers
             EventManager.RegisterClassHandler(typeof(ScrollViewer), RangeBase.ValueChangedEvent, new UpfRoutedEventHandler(HandleScrollBarValueChanged));
+            EventManager.RegisterClassHandler(typeof(ScrollViewer), Thumb.DragCompletedEvent, new UpfDragCompletedEventHandler(HandleThumbDragCompleted));
 
             // Commands - vertical scroll
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand);
@@ -40,7 +41,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToBottomCommand, ExecutedScrollToBottomCommand, CanExecuteScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToTopCommand, ExecutedScrollToTopCommand, CanExecuteScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToVerticalOffsetCommand, ExecutedScrollToVerticalOffsetCommand, CanExecuteScrollCommand);
-            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.DeferScrollToVerticalOffsetCommand, ExecutedDeferScrollToVerticalOffsetCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.DeferScrollToVerticalOffsetCommand, ExecutedDeferScrollToVerticalOffsetCommand, CanExecuteDeferredScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ComponentCommands.ScrollPageDown, ExecutedPageDownCommand, CanExecutePageScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ComponentCommands.ScrollPageUp, ExecutedPageUpCommand, CanExecutePageScrollCommand);
 
@@ -51,7 +52,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.PageLeftCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToRightEndCommand, ExecutedScrollToRightEndCommand, CanExecuteScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToLeftEndCommand, ExecutedScrollToLeftEndCommand, CanExecuteScrollCommand);
-            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToHorizontalOffsetCommand, ExecutedScrollToHorizontalOffsetCommand, CanExecuteDeferredScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.ScrollToHorizontalOffsetCommand, ExecutedScrollToHorizontalOffsetCommand, CanExecuteScrollCommand);
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.DeferScrollToHorizontalOffsetCommand, ExecutedDeferScrollToHorizontalOffsetCommand, CanExecuteDeferredScrollCommand);
 
             // Commands - misc
@@ -207,6 +208,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             ScrollToHorizontalOffset(ContentHorizontalOffset + ViewportWidth);
         }
+        
+        /// <summary>
+        /// Scrolls the viewer to the top of its content.
+        /// </summary>
+        public void ScrollToTop()
+        {
+            ScrollToVerticalOffset(PART_VScroll?.Minimum ?? 0);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer to the bottom of its content.
+        /// </summary>
+        public void ScrollToBottom()
+        {
+            ScrollToVerticalOffset(PART_VScroll?.Maximum ?? 0);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer to the left end of its content.
+        /// </summary>
+        public void ScrollToLeftEnd()
+        {
+            ScrollToHorizontalOffset(PART_HScroll?.Minimum ?? 0);
+        }
+
+        /// <summary>
+        /// Scrolls the viewer to the right end of its content.
+        /// </summary>
+        public void ScrollToRightEnd()
+        {
+            ScrollToHorizontalOffset(PART_HScroll?.Maximum ?? 0);
+        }
 
         /// <summary>
         /// Scrolls the viewer to the beginning of its content.
@@ -232,10 +265,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="offset">The horizontal offset to which to move the scroll viewer.</param>
         public void ScrollToHorizontalOffset(Double offset)
         {
-            if (PART_HScroll == null)
-                return;
-
-            PART_HScroll.Value = offset;
+            ChangeHorizontalOffset(offset, false);
         }
 
         /// <summary>
@@ -244,10 +274,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="offset">The vertical offset to which to move the scroll viewer.</param>
         public void ScrollToVerticalOffset(Double offset)
         {
-            if (PART_VScroll == null)
-                return;
-
-            PART_VScroll.Value = offset;
+            ChangeVerticalOffset(offset, false);
         }
 
         /// <summary>
@@ -417,7 +444,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// of the scrolled content in device-independent pixels.</value>
         public Double HorizontalOffset
         {
-            get { return PART_HScroll == null || !PART_HScroll.IsEnabled ? 0 : PART_HScroll.Value; }
+            get { return GetValue<Double>(HorizontalOffsetProperty); }
+            private set { SetValue(HorizontalOffsetPropertyKey, value); }
         }
 
         /// <summary>
@@ -427,7 +455,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// of the scrolled content in device-independent pixels.</value>
         public Double VerticalOffset
         {
-            get { return PART_VScroll == null || !PART_VScroll.IsEnabled ? 0 : PART_VScroll.Value; }
+            get { return GetValue<Double>(VerticalOffsetProperty); }
+            private set { SetValue(VerticalOffsetPropertyKey, value); }
         }
 
         /// <summary>
@@ -437,7 +466,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// of the scrolled content in device-independent pixels.</value>
         public Double ContentHorizontalOffset
         {
-            get { return PART_HScroll == null || !PART_HScroll.IsEnabled ? 0 : PART_HScroll.Value; }
+            get { return GetValue<Double>(ContentHorizontalOffsetProperty); }
+            private set { SetValue(ContentHorizontalOffsetPropertyKey, value); }
         }
 
         /// <summary>
@@ -447,7 +477,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// of the scrolled content in device-independent pixels.</value>
         public Double ContentVerticalOffset
         {
-            get { return PART_VScroll == null || !PART_VScroll.IsEnabled ? 0 : PART_VScroll.Value; }
+            get { return GetValue<Double>(ContentVerticalOffsetProperty); }
+            private set { SetValue(ContentVerticalOffsetPropertyKey, value); }
         }
 
         /// <summary>
@@ -648,7 +679,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="ViewportHeight"/> dependency property.</value>
         public static readonly DependencyProperty ViewportHeightProperty = ViewportHeightPropertyKey.DependencyProperty;
-                
+        
+        /// <summary>
+        /// The private access key for the <see cref="HorizontalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="HorizontalOffset"/> dependency property.</value>
+        private static readonly DependencyPropertyKey HorizontalOffsetPropertyKey = DependencyProperty.RegisterAttachedReadOnly("HorizontalOffset", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// The private access key for the <see cref="HorizontalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="HorizontalOffset"/> dependency property.</value>
+        public static readonly DependencyProperty HorizontalOffsetProperty = HorizontalOffsetPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="VerticalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="VerticalOffset"/> dependency property.</value>
+        private static readonly DependencyPropertyKey VerticalOffsetPropertyKey = DependencyProperty.RegisterAttachedReadOnly("VerticalOffset", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// The private access key for the <see cref="VerticalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="VerticalOffset"/> dependency property.</value>
+        public static readonly DependencyProperty VerticalOffsetProperty = VerticalOffsetPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ContentHorizontalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ContentHorizontalOffset"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ContentHorizontalOffsetPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ContentHorizontalOffset", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// The private access key for the <see cref="ContentHorizontalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ContentHorizontalOffset"/> dependency property.</value>
+        public static readonly DependencyProperty ContentHorizontalOffsetProperty = ContentHorizontalOffsetPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ContentVerticalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ContentVerticalOffset"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ContentVerticalOffsetPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ContentVerticalOffset", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// The private access key for the <see cref="ContentVerticalOffset"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ContentVerticalOffset"/> dependency property.</value>
+        public static readonly DependencyProperty ContentVerticalOffsetProperty = ContentVerticalOffsetPropertyKey.DependencyProperty;
+        
         /// <summary>
         /// Identifies the <see cref="ScrollChanged"/> event.
         /// </summary>
@@ -783,6 +866,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             PART_HScroll.IsEnabled = PART_ContentPresenter.CanScrollHorizontally && ScrollableWidth > 0;
             PART_VScroll.IsEnabled = PART_ContentPresenter.CanScrollVertically && ScrollableHeight > 0;
 
+            if (hComputedVisibility != Visibility.Visible)
+            {
+                HorizontalOffset = 0;
+                PART_HScroll.Value = 0;
+            }
+
+            if (vComputedVisibility != Visibility.Visible)
+            {
+                VerticalOffset = 0;
+                PART_VScroll.Value = 0;
+            }
+
             child.InvalidateMeasure();
             child.DigestImmediately();
             child.Measure(availableSizeSansMargins);
@@ -861,11 +956,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 if (x != 0 && PART_HScroll != null)
                 {
-                    PART_HScroll.Value += ScrollDeltaMouseWheel * x;
+                    ChangeHorizontalOffset(HorizontalOffset + (ScrollDeltaMouseWheel * x), false);
                 }
                 if (y != 0 && PART_VScroll != null)
                 {
-                    PART_VScroll.Value += ScrollDeltaMouseWheel * -y;
+                    ChangeVerticalOffset(VerticalOffset + (ScrollDeltaMouseWheel * -y), false);
                 }
                 data.Handled = true;
             }
@@ -987,6 +1082,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the user stops dragging one of the viewer's scroll thumbs.
+        /// </summary>
+        private static void HandleThumbDragCompleted(DependencyObject element, Double hchange, Double vchange, RoutedEventData data)
+        {
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            var scrollBar = ((data.OriginalSource as Thumb)?.Parent as Track)?.TemplatedParent as OrientedScrollBar;
+            if (scrollBar == null)
+                return;
+
+            if (scrollViewer.PART_HScroll == scrollBar)
+                scrollViewer.ContentHorizontalOffset = scrollViewer.HorizontalOffset;
+
+            if (scrollViewer.PART_VScroll == scrollBar)
+                scrollViewer.ContentVerticalOffset = scrollViewer.VerticalOffset;
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="ContentClipped"/> dependency property changes.
         /// </summary>
         private static void HandleContentClippedChanged(DependencyObject element, Boolean oldValue, Boolean newValue)
@@ -1014,7 +1129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_VScroll?.LineDown();
+            (element as ScrollViewer)?.LineDown();
         }
 
         /// <summary>
@@ -1022,7 +1137,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_VScroll?.LineUp();
+            (element as ScrollViewer)?.LineUp();
         }
 
         /// <summary>
@@ -1030,7 +1145,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_VScroll?.PageDown();
+            (element as ScrollViewer)?.PageDown();
         }
 
         /// <summary>
@@ -1038,7 +1153,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_VScroll?.PageUp();
+            (element as ScrollViewer)?.PageUp();
         }
 
         /// <summary>
@@ -1046,7 +1161,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_VScroll?.ScrollToBottom();
+            (element as ScrollViewer)?.ScrollToBottom();
         }
 
         /// <summary>
@@ -1054,7 +1169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_VScroll?.ScrollToTop();
+            (element as ScrollViewer)?.ScrollToTop();
         }
 
         /// <summary>
@@ -1062,10 +1177,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            if (parameter is Double)
-            {
-                ((ScrollViewer)element).ScrollToVerticalOffset((Double)parameter);
-            }
+            if (!(parameter is Double))
+                return;
+
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ChangeVerticalOffset((Double)parameter, false);
         }
 
         /// <summary>
@@ -1073,7 +1190,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedDeferScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            throw new NotImplementedException();
+            if (!(parameter is Double))
+                return;
+
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ChangeVerticalOffset((Double)parameter, true);
         }
         
         /// <summary>
@@ -1081,7 +1203,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedLineRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_HScroll?.LineRight();
+            (element as ScrollViewer)?.LineRight();
         }
 
         /// <summary>
@@ -1089,7 +1211,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedLineLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_HScroll?.LineLeft();
+            (element as ScrollViewer)?.LineLeft();
         }
 
         /// <summary>
@@ -1097,7 +1219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedPageRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_HScroll?.PageRight();
+            (element as ScrollViewer)?.PageRight();
         }
 
         /// <summary>
@@ -1105,7 +1227,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedPageLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_HScroll?.PageLeft();
+            (element as ScrollViewer)?.PageLeft();
         }
 
         /// <summary>
@@ -1113,7 +1235,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedScrollToRightEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_HScroll?.ScrollToRightEnd();
+            (element as ScrollViewer)?.ScrollToRightEnd();
         }
 
         /// <summary>
@@ -1121,7 +1243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedScrollToLeftEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            (element as ScrollViewer)?.PART_HScroll?.ScrollToLeftEnd();
+            (element as ScrollViewer)?.ScrollToLeftEnd();
         }
 
         /// <summary>
@@ -1129,10 +1251,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            if (parameter is Double)
-            {
-                ((ScrollViewer)element).ScrollToHorizontalOffset((Double)parameter);
-            }
+            if (!(parameter is Double))
+                return;
+
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ChangeHorizontalOffset((Double)parameter, false);
         }
 
         /// <summary>
@@ -1140,7 +1264,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         private static void ExecutedDeferScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
         {
-            throw new NotImplementedException();
+            if (!(parameter is Double))
+                return;
+
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ChangeHorizontalOffset((Double)parameter, true);
         }
 
         /// <summary>
@@ -1202,6 +1331,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Clamps the specified horizontal offset so that it falls within the scrollable area.
+        /// </summary>
+        private Double ClampHorizontalOffset(Double value) => Math.Max(0, Math.Min(value, ScrollableWidth));
+
+        /// <summary>
+        /// Clamps the specified vertical offset so that it falls within the scrollable area.
+        /// </summary>
+        private Double ClampVerticalOffset(Double value) => Math.Max(0, Math.Min(value, ScrollableHeight));
+
+        /// <summary>
         /// Handles the <see cref="UIElement.LayoutUpdated"/> event.
         /// </summary>
         private void OnLayoutUpdated(Object sender, EventArgs e)
@@ -1223,6 +1362,46 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var scrollableHeight = extentHeight - viewportHeight;
             SetValue(ScrollableHeightPropertyKey, scrollableHeight);
+
+            var hOffset = ClampHorizontalOffset(HorizontalOffset);
+            if (hOffset != HorizontalOffset)
+                ChangeHorizontalOffset(hOffset, false);
+
+            var vOffset = ClampVerticalOffset(VerticalOffset);
+            if (vOffset != VerticalOffset)
+                ChangeVerticalOffset(vOffset, false);            
+        }
+
+        /// <summary>
+        /// Changes the scroll viewer's horizontal offset to the specified value.
+        /// </summary>
+        private void ChangeHorizontalOffset(Double value, Boolean defer)
+        {
+            value = ClampHorizontalOffset(value);
+            HorizontalOffset = value;
+
+            if (!IsDeferredScrollingEnabled || !defer)
+            {
+                ContentHorizontalOffset = value;
+                if (PART_HScroll != null)
+                    PART_HScroll.Value = value;
+            }
+        }
+
+        /// <summary>
+        /// Changes the scroll viewer's vertical offset to the specified value.
+        /// </summary>
+        private void ChangeVerticalOffset(Double value, Boolean defer)
+        {
+            value = ClampVerticalOffset(value);
+            VerticalOffset = value;
+
+            if (!IsDeferredScrollingEnabled || !defer)
+            {
+                ContentVerticalOffset = value;
+                if (PART_VScroll != null)
+                    PART_VScroll.Value = value;
+            }
         }
 
         // Scroll deltas for various input events.
@@ -1236,7 +1415,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private Double oldExtentHeight;
         private Double oldViewportWidth;
         private Double oldViewportHeight;
-
+        
         // Control component references.
         private readonly ScrollContentPresenter PART_ContentPresenter = null;
         private readonly HScrollBar PART_HScroll = null;
