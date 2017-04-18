@@ -38,7 +38,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <inheritdoc/>
         public Boolean CanExecute(PresentationFoundationView view, Object parameter)
         {
-            return CanExecute(view, parameter, Keyboard.GetFocusedElement(null));
+            return CanExecute(view, parameter, Keyboard.GetFocusedElement(view));
         }
 
         /// <summary>
