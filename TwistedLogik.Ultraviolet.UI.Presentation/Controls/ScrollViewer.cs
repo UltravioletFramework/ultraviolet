@@ -71,6 +71,55 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.
+        /// </summary>
+        /// <param name="element">The element on which to set the property.</param>
+        /// <param name="value">The property value to set on the element.</param>
+        public static void SetHorizontalScrollBarVisibility(DependencyObject element, ScrollBarVisibility value)
+        {
+            Contract.Require(element, nameof(element));
+
+            element.SetValue(HorizontalScrollBarVisibilityProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property
+        /// on the specified object.
+        /// </summary>
+        /// <param name="element">The element for which to retrieve the property value.</param>
+        public static ScrollBarVisibility GetHorizontalScrollBarVisibility(DependencyObject element)
+        {
+            Contract.Require(element, nameof(element));
+
+            return element.GetValue<ScrollBarVisibility>(HorizontalScrollBarVisibilityProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.
+        /// </summary>
+        /// <param name="element">The element on which to set the property.</param>
+        /// <param name="value">The property value to set on the element.</param>
+        public static void SetVerticalScrollBarVisibility(DependencyObject element, ScrollBarVisibility value)
+        {
+            Contract.Require(element, nameof(element));
+
+            element.SetValue(VerticalScrollBarVisibilityProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property
+        /// on the specified object.
+        /// </summary>
+        /// <param name="element">The element for which to retrieve the property value.</param>
+        /// <returns>The value of the property on the specified element.</returns>
+        public static ScrollBarVisibility GetVerticalScrollBarVisibility(DependencyObject element)
+        {
+            Contract.Require(element, nameof(element));
+
+            return element.GetValue<ScrollBarVisibility>(VerticalScrollBarVisibilityProperty);
+        }
+
+        /// <summary>
         /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
         /// </summary>
         /// <param name="element">The element on which to set the property.</param>
@@ -83,11 +132,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
+        /// Gets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property
+        /// on the specified object.
         /// </summary>
         /// <param name="element">The element for which to retrieve the property value.</param>
         /// <returns>The value of the property on the specified element.</returns>
-        public static bool GetIsDeferredScrollingEnabled(DependencyObject element)
+        public static Boolean GetIsDeferredScrollingEnabled(DependencyObject element)
         {
             Contract.Require(element, nameof(element));
 
@@ -201,52 +251,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this scroll viewer applies a clipping rectangle to its content pane.
-        /// </summary>
-        /// <value><see langword="true"/> if the scroll viewer's content is clipped; otherwise,
-        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
-        /// <remarks>
-        /// <dprop>
-        ///     <dpropField><see cref="ContentClippedProperty"/></dpropField>
-        ///     <dpropStylingName>content-clipped</dpropStylingName>
-        ///     <dpropMetadata>None</dpropMetadata>
-        /// </dprop>
-        /// </remarks>
-        public Boolean ContentClipped
-        {
-            get { return GetValue<Boolean>(ContentClippedProperty); }
-            set { SetValue(ContentClippedProperty, value); }
-        }
-        
-        /// <summary>
-        /// Gets or sets a value indicating whether the scroll viewer should defer
-        /// scrolling until after the user is finished dragging the thumb.
-        /// </summary>
-        public Boolean IsDeferredScrollingEnabled
-        {
-            get { return GetValue<Boolean>(IsDeferredScrollingEnabledProperty); }
-            set { SetValue(IsDeferredScrollingEnabledProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the margin which is applied to the scroll viewer's content pane.
-        /// </summary>
-        /// <value>A <see cref="Thickness"/> value which represents the margin that is applied
-        /// to the scroll viewer's content pane.</value>
-        /// <remarks>
-        /// <dprop>
-        ///     <dpropField><see cref="ContentMarginProperty"/></dpropField>
-        ///     <dpropStylingName>content-margin</dpropStylingName>
-        ///     <dpropMetadata>None</dpropMetadata>
-        /// </dprop>
-        /// </remarks>
-        public Thickness ContentMargin
-        {
-            get { return GetValue<Thickness>(ContentMarginProperty); }
-            set { SetValue(ContentMarginProperty, value); }
-        }
-        
-        /// <summary>
         /// Gets or sets a value specifying the visibility of the scroll viewer's horizontal scroll bar.
         /// </summary>
         /// <value>A <see cref="ScrollBarVisibility"/> value that specifies the visibility of the scroll
@@ -282,6 +286,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             set { SetValue(VerticalScrollBarVisibilityProperty, value); }
         }
 
+        /// <summary>
+        /// Gets a value that indicates whether the scroll viewer's horizontal scroll bar is visible.
+        /// </summary>
+        public Visibility ComputedHorizontalScrollBarVisibility
+        {
+            get { return GetValue<Visibility>(ComputedHorizontalScrollBarVisibilityProperty); }
+            private set { SetValue(ComputedHorizontalScrollBarVisibilityPropertyKey, value); }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the scroll viewer's vertical scroll bar is visible.
+        /// </summary>
+        public Visibility ComputedVerticalScrollBarVisibility
+        {
+            get { return GetValue<Visibility>(ComputedVerticalScrollBarVisibilityProperty); }
+            private set { SetValue(ComputedVerticalScrollBarVisibilityPropertyKey, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the margin which is applied to the scroll viewer's content pane.
+        /// </summary>
+        /// <value>A <see cref="Thickness"/> value which represents the margin that is applied
+        /// to the scroll viewer's content pane.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ContentMarginProperty"/></dpropField>
+        ///     <dpropStylingName>content-margin</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Thickness ContentMargin
+        {
+            get { return GetValue<Thickness>(ContentMarginProperty); }
+            set { SetValue(ContentMarginProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this scroll viewer applies a clipping rectangle to its content pane.
+        /// </summary>
+        /// <value><see langword="true"/> if the scroll viewer's content is clipped; otherwise,
+        /// <see langword="false"/>. The default value is <see langword="false"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="ContentClippedProperty"/></dpropField>
+        ///     <dpropStylingName>content-clipped</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean ContentClipped
+        {
+            get { return GetValue<Boolean>(ContentClippedProperty); }
+            set { SetValue(ContentClippedProperty, value); }
+        }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the scroll viewer should defer
+        /// scrolling until after the user is finished dragging the thumb.
+        /// </summary>
+        public Boolean IsDeferredScrollingEnabled
+        {
+            get { return GetValue<Boolean>(IsDeferredScrollingEnabledProperty); }
+            set { SetValue(IsDeferredScrollingEnabledProperty, value); }
+        }
+        
         /// <summary>
         /// Gets the width of the content which is being displayed by the scroll viewer.
         /// </summary>
@@ -378,6 +446,81 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             add { AddHandler(ScrollChangedEvent, value); }
             remove { RemoveHandler(ScrollChangedEvent, value); }
         }
+        
+        /// <summary>
+        /// The private access key for the <see cref="ComputedHorizontalScrollBarVisibility"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ComputedHorizontalScrollBarVisibility"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ComputedHorizontalScrollBarVisibilityPropertyKey = DependencyProperty.RegisterReadOnly("ComputedHorizontalScrollBarVisibility", typeof(Visibility), typeof(ScrollViewer),
+            new PropertyMetadata<Visibility>(Visibility.Visible));
+
+        /// <summary>
+        /// Identifies the <see cref="ComputedHorizontalScrollBarVisibility"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ComputedHorizontalScrollBarVisibility"/> dependency property.</value>
+        public static readonly DependencyProperty ComputedHorizontalScrollBarVisibilityProperty = ComputedHorizontalScrollBarVisibilityPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ComputedVerticalScrollBarVisibilityProperty"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ComputedVerticalScrollBarVisibilityProperty"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ComputedVerticalScrollBarVisibilityPropertyKey = DependencyProperty.RegisterReadOnly("ComputedVerticalScrollBarVisibility", typeof(Visibility), typeof(ScrollViewer),
+            new PropertyMetadata<Visibility>(Visibility.Visible));
+
+        /// <summary>
+        /// Identifies the <see cref="ComputedVerticalScrollBarVisibility"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ComputedVerticalScrollBarVisibility"/> dependency property.</value>
+        public static readonly DependencyProperty ComputedVerticalScrollBarVisibilityProperty = ComputedVerticalScrollBarVisibilityPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the scroll viewer's horizontal scroll bar should be visible.
+        /// </summary>
+        /// <value>A <see cref="ScrollBarVisibility"/> value that specifies whether the scroll viewer's horizontal <see cref="ScrollViewer"/> should
+        /// be visible. The default value is <see cref="ScrollBarVisibility.Disabled"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="HorizontalScrollBarVisibilityProperty"/></dpropField>
+        ///		<dpropStylingName>hscrollbar-visibility</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.RegisterAttached("HorizontalScrollBarVisibility", "hscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
+            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.</value>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// Gets or sets a value indicating whether the scroll viewer's vertical scroll bar should be visible.
+        /// </summary>
+        /// <value>A <see cref="ScrollBarVisibility"/> value that specifies whether the scroll viewer's vertical <see cref="ScrollViewer"/> should
+        /// be visible. The default value is <see cref="ScrollBarVisibility.Visible"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="VerticalScrollBarVisibilityProperty"/></dpropField>
+        ///		<dpropStylingName>vscrollbar-visibility</dpropStylingName>
+        ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/></dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.RegisterAttached("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
+            new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsMeasure));
+        
+        /// <summary>
+        /// Identifies the <see cref="ContentMargin"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ContentMargin"/> dependency property.</value>
+        public static readonly DependencyProperty ContentMarginProperty = DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(ScrollViewer),
+            new PropertyMetadata<Thickness>(PresentationBoxedValues.Thickness.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
         /// Identifies the <see cref="ContentClipped"/> dependency property.
@@ -407,27 +550,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsDeferredScrollingEnabledProperty = DependencyProperty.RegisterAttached("IsDeferredScrollingEnabled", typeof(Boolean), typeof(ScrollViewer),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="ContentMargin"/> dependency property.
-        /// </summary>
-        /// <value>The identifier for the <see cref="ContentMargin"/> dependency property.</value>
-        public static readonly DependencyProperty ContentMarginProperty = DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(ScrollViewer),
-            new PropertyMetadata<Thickness>(PresentationBoxedValues.Thickness.Zero, PropertyMetadataOptions.None));
-
-        /// <summary>
-        /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
-        /// </summary>
-        /// <value>The identifier for the <see cref="HorizontalScrollBarVisibility"/> dependency property.</value>
-        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register("HorizontalScrollBarVisibility", "hscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
-            new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsArrange));
-
-        /// <summary>
-        /// Identifies the <see cref="VerticalScrollBarVisibility"/> dependency property.
-        /// </summary>
-        /// <value>The identifier for the <see cref="VerticalScrollBarVisibility"/> dependency property.</value>
-        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
-            new PropertyMetadata<ScrollBarVisibility>(PresentationBoxedValues.ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="ScrollChanged"/> event.
@@ -491,8 +613,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var hVisibility = HorizontalScrollBarVisibility;
             var vVisibility = VerticalScrollBarVisibility;
 
-            PART_HScroll.Visibility = (hVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
-            PART_VScroll.Visibility = (vVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+            var hComputedVisibility = (hVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+            var vComputedVisibility = (vVisibility == ScrollBarVisibility.Visible) ? Visibility.Visible : Visibility.Collapsed;
+
+            ComputedHorizontalScrollBarVisibility = hComputedVisibility;
+            ComputedVerticalScrollBarVisibility = vComputedVisibility;
 
             var hAuto = (hVisibility == ScrollBarVisibility.Auto);
             var vAuto = (vVisibility == ScrollBarVisibility.Auto);
@@ -501,6 +626,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             PART_ContentPresenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
 
             var availableSizeSansMargins = availableSize - Margin;
+            child.DigestImmediately();
             child.Measure(availableSizeSansMargins);
 
             if (hAuto || vAuto)
@@ -508,18 +634,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var hAutoVisible = hAuto && PART_ContentPresenter.ExtentWidth > PART_ContentPresenter.ViewportWidth;
                 if (hAutoVisible)
                 {
-                    PART_HScroll.Visibility = Visibility.Visible;
+                    ComputedHorizontalScrollBarVisibility = Visibility.Visible;
                 }
 
                 var vAutoVisible = vAuto && PART_ContentPresenter.ExtentHeight > PART_ContentPresenter.ViewportHeight;
                 if (vAutoVisible)
                 {
-                    PART_VScroll.Visibility = Visibility.Visible;
+                    ComputedVerticalScrollBarVisibility = Visibility.Visible;
                 }
 
                 if (hAutoVisible || vAutoVisible)
                 {
                     child.InvalidateMeasure();
+                    child.DigestImmediately();
                     child.Measure(availableSizeSansMargins);
                 }
 
@@ -528,18 +655,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     hAutoVisible = !hAutoVisible && PART_ContentPresenter.ExtentWidth > PART_ContentPresenter.ViewportWidth;
                     if (hAutoVisible)
                     {
-                        PART_HScroll.Visibility = Visibility.Visible;
+                        ComputedHorizontalScrollBarVisibility = Visibility.Visible;
                     }
 
                     vAutoVisible = !vAutoVisible && PART_ContentPresenter.ExtentHeight > PART_ContentPresenter.ViewportHeight;
                     if (vAutoVisible)
                     {
-                        PART_VScroll.Visibility = Visibility.Visible;
+                        ComputedVerticalScrollBarVisibility = Visibility.Visible;
                     }
 
                     if (hAutoVisible || vAutoVisible)
                     {
                         child.InvalidateMeasure();
+                        child.DigestImmediately();
                         child.Measure(availableSizeSansMargins);
                     }
                 }
@@ -558,6 +686,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             PART_VScroll.IsEnabled = PART_ContentPresenter.CanScrollVertically && ScrollableHeight > 0;
 
             child.InvalidateMeasure();
+            child.DigestImmediately();
             child.Measure(availableSizeSansMargins);
 
             return child.DesiredSize;
