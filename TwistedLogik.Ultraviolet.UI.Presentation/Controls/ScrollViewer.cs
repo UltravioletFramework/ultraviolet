@@ -357,7 +357,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// pixels of the content which is being displayed by the scroll viewer.</value>
         public Double ExtentWidth
         {
-            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ExtentWidth; }
+            get { return GetValue<Double>(ExtentWidthProperty); }
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// pixels of the content which is being displayed by the scroll viewer.</value>
         public Double ExtentHeight
         {
-            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ExtentHeight; }
+            get { return GetValue<Double>(ExtentHeightProperty); }
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// pixels of the scroll viewer's scrollable area.</value>
         public Double ScrollableWidth
         {
-            get { return ExtentWidth - ViewportWidth; }
+            get { return GetValue<Double>(ScrollableWidthProperty); }
         }
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// pixels of the scroll viewer's scrollable area.</value>
         public Double ScrollableHeight
         {
-            get { return ExtentHeight - ViewportHeight; }
+            get { return GetValue<Double>(ScrollableHeightProperty); }
         }
 
         /// <summary>
@@ -397,7 +397,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// pixels of the scroll viewer's viewport.</value>
         public Double ViewportWidth
         {
-            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportWidth; }
+            get { return GetValue<Double>(ViewportWidthProperty); }
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// pixels of the scroll viewer's viewport.</value>
         public Double ViewportHeight
         {
-            get { return (PART_ContentPresenter == null) ? 0 : PART_ContentPresenter.ViewportHeight; }
+            get { return GetValue<Double>(ViewportHeightProperty); }
         }
 
         /// <summary>
@@ -550,7 +550,85 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsDeferredScrollingEnabledProperty = DependencyProperty.RegisterAttached("IsDeferredScrollingEnabled", typeof(Boolean), typeof(ScrollViewer),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+        
+        /// <summary>
+        /// The private access key for the <see cref="ExtentWidth"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ExtentWidth"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ExtentWidthPropertyKey = DependencyProperty.RegisterReadOnly("ExtentWidth", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
+        /// <summary>
+        /// Identifies the <see cref="ExtentWidth"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ExtentWidth"/> dependency property.</value>
+        public static readonly DependencyProperty ExtentWidthProperty = ExtentWidthPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ExtentHeight"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ExtentHeight"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ExtentHeightPropertyKey = DependencyProperty.RegisterReadOnly("ExtentHeight", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ExtentHeight"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ExtentHeight"/> dependency property.</value>
+        public static readonly DependencyProperty ExtentHeightProperty = ExtentHeightPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ScrollableWidth"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ScrollableHeight"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ScrollableWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ScrollableWidth", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ScrollableWidth"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ScrollableWidth"/> dependency property.</value>
+        public static readonly DependencyProperty ScrollableWidthProperty = ScrollableWidthPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ScrollableHeight"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ScrollableHeight"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ScrollableHeightPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ScrollableHeight", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ScrollableHeight"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ScrollableHeight"/> dependency property.</value>
+        public static readonly DependencyProperty ScrollableHeightProperty = ScrollableHeightPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ViewportWidth"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ViewportWidth"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ViewportWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ViewportWidth", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ViewportWidth"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ViewportWidth"/> dependency property.</value>
+        public static readonly DependencyProperty ViewportWidthProperty = ViewportWidthPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// The private access key for the <see cref="ViewportHeight"/> read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the <see cref="ViewportHeight"/> dependency property.</value>
+        private static readonly DependencyPropertyKey ViewportHeightPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ViewportHeight", typeof(Double), typeof(ScrollViewer),
+            new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="ViewportHeight"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="ViewportHeight"/> dependency property.</value>
+        public static readonly DependencyProperty ViewportHeightProperty = ViewportHeightPropertyKey.DependencyProperty;
+                
         /// <summary>
         /// Identifies the <see cref="ScrollChanged"/> event.
         /// </summary>
@@ -736,6 +814,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
 
             base.PositionOverride();
+        }
+
+        /// <inheritdoc/>
+        protected override void CleanupOverride()
+        {
+            LayoutUpdated -= OnLayoutUpdated;
+
+            base.CleanupOverride();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        {
+            if (oldView != null)
+                LayoutUpdated -= OnLayoutUpdated;
+
+            if (newView != null)
+                LayoutUpdated += OnLayoutUpdated;
         }
 
         /// <inheritdoc/>
@@ -1083,6 +1179,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 data.CanExecute = false;
                 data.Handled = true;
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="UIElement.LayoutUpdated"/> event.
+        /// </summary>
+        private void OnLayoutUpdated(Object sender, EventArgs e)
+        {
+            var extentWidth = PART_ContentPresenter?.ExtentWidth ?? 0;
+            SetValue(ExtentWidthPropertyKey, extentWidth);
+
+            var extentHeight = PART_ContentPresenter?.ExtentHeight ?? 0;
+            SetValue(ExtentHeightPropertyKey, extentHeight);
+
+            var viewportWidth = PART_ContentPresenter?.ViewportWidth ?? 0;
+            SetValue(ViewportWidthPropertyKey, viewportWidth);
+
+            var viewportHeight = PART_ContentPresenter?.ViewportHeight ?? 0;
+            SetValue(ViewportHeightPropertyKey, viewportHeight);
+
+            var scrollableWidth = extentWidth - viewportWidth;
+            SetValue(ScrollableWidthPropertyKey, scrollableWidth);
+
+            var scrollableHeight = extentHeight - viewportHeight;
+            SetValue(ScrollableHeightPropertyKey, scrollableHeight);
         }
 
         // Scroll deltas for various input events.
