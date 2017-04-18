@@ -469,7 +469,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
-            var boundsViewport = new RectangleD(scrollViewer.HorizontalOffset, scrollViewer.VerticalOffset,
+            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset,
                 scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
             var boundsLine = Display.PixelsToDips(new RectangleD(lineInfo.X, lineInfo.Y, lineInfo.Width, lineInfo.Height));
 
@@ -836,7 +836,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             var scrollViewer = Parent as ScrollViewer;
             if (scrollViewer != null)
-                position = new Point2D(0, scrollViewer.VerticalOffset);
+                position = new Point2D(0, scrollViewer.ContentVerticalOffset);
 
             var textFontFace = TextFontFace;
             if (textFontFace == null)
@@ -858,7 +858,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             var scrollViewer = Parent as ScrollViewer;
             if (scrollViewer != null)
-                position = new Point2D(0, scrollViewer.VerticalOffset + scrollViewer.ViewportHeight);
+                position = new Point2D(0, scrollViewer.ContentVerticalOffset + scrollViewer.ViewportHeight);
 
             var textFontFace = TextFontFace;
             if (textFontFace == null)
@@ -2740,7 +2740,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (scrollViewer == null)
                 return;
 
-            var boundsViewport = new RectangleD(scrollViewer.HorizontalOffset, scrollViewer.VerticalOffset, 
+            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset, 
                 scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
 
             var boundsCaretPixs = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, caretRenderBounds.Width, caretBounds.Height);

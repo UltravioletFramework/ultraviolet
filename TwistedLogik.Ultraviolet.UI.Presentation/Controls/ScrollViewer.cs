@@ -149,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void LineUp()
         {
-            ScrollToVerticalOffset(VerticalOffset - ScrollDeltaKey);
+            ScrollToVerticalOffset(ContentVerticalOffset - ScrollDeltaKey);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void LineDown()
         {
-            ScrollToVerticalOffset(VerticalOffset + ScrollDeltaKey);
+            ScrollToVerticalOffset(ContentVerticalOffset + ScrollDeltaKey);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void LineLeft()
         {
-            ScrollToHorizontalOffset(HorizontalOffset - ScrollDeltaKey);
+            ScrollToHorizontalOffset(ContentHorizontalOffset - ScrollDeltaKey);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void LineRight()
         {
-            ScrollToHorizontalOffset(HorizontalOffset + ScrollDeltaKey);
+            ScrollToHorizontalOffset(ContentHorizontalOffset + ScrollDeltaKey);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void PageUp()
         {
-            ScrollToVerticalOffset(VerticalOffset - ViewportHeight);
+            ScrollToVerticalOffset(ContentVerticalOffset - ViewportHeight);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void PageDown()
         {
-            ScrollToVerticalOffset(VerticalOffset + ViewportHeight);
+            ScrollToVerticalOffset(ContentVerticalOffset + ViewportHeight);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void PageLeft()
         {
-            ScrollToHorizontalOffset(HorizontalOffset - ViewportWidth);
+            ScrollToHorizontalOffset(ContentHorizontalOffset - ViewportWidth);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         public void PageRight()
         {
-            ScrollToHorizontalOffset(HorizontalOffset + ViewportWidth);
+            ScrollToHorizontalOffset(ContentHorizontalOffset + ViewportWidth);
         }
 
         /// <summary>
@@ -426,6 +426,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>A <see cref="Double"/> that represents the vertical offset
         /// of the scrolled content in device-independent pixels.</value>
         public Double VerticalOffset
+        {
+            get { return PART_VScroll == null || !PART_VScroll.IsEnabled ? 0 : PART_VScroll.Value; }
+        }
+
+        /// <summary>
+        /// Gets the horizontal offset of the scrolled content.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the horizontal offset
+        /// of the scrolled content in device-independent pixels.</value>
+        public Double ContentHorizontalOffset
+        {
+            get { return PART_HScroll == null || !PART_HScroll.IsEnabled ? 0 : PART_HScroll.Value; }
+        }
+
+        /// <summary>
+        /// Gets the vertical offset of the scrolled content.
+        /// </summary>
+        /// <value>A <see cref="Double"/> that represents the vertical offset
+        /// of the scrolled content in device-independent pixels.</value>
+        public Double ContentVerticalOffset
         {
             get { return PART_VScroll == null || !PART_VScroll.IsEnabled ? 0 : PART_VScroll.Value; }
         }

@@ -131,7 +131,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollview == null || control.Items.Count == 0)
                 return null;
 
-            var min = scrollview.VerticalOffset;
+            var min = scrollview.ContentVerticalOffset;
             var max = min + scrollview.ViewportHeight;
             return GetFirstItemOnPage<TContainer>(control, scrollview, min, max, min);
         }
@@ -149,7 +149,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollview == null || control.Items.Count == 0)
                 return null;
 
-            var min = scrollview.VerticalOffset - scrollview.ViewportHeight;
+            var min = scrollview.ContentVerticalOffset - scrollview.ViewportHeight;
             var max = min + scrollview.ViewportHeight;
             return GetFirstItemOnPage<TContainer>(control, scrollview, min, max, min);
         }
@@ -202,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollview == null || control.Items.Count == 0)
                 return null;
 
-            var min = scrollview.VerticalOffset;
+            var min = scrollview.ContentVerticalOffset;
             var max = min + scrollview.ViewportHeight;
             return GetLastItemOnPage<TContainer>(control, scrollview, min, max, max);
         }
@@ -220,7 +220,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (scrollview == null || control.Items.Count == 0)
                 return null;
 
-            var min = scrollview.VerticalOffset + scrollview.ViewportHeight;
+            var min = scrollview.ContentVerticalOffset + scrollview.ViewportHeight;
             var max = min + scrollview.ViewportHeight;
             return GetLastItemOnPage<TContainer>(control, scrollview, min, max, max);
         }
@@ -277,7 +277,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (comboBoxItem == null)
                 return;
             
-            var minVisible = scrollview.VerticalOffset;
+            var minVisible = scrollview.ContentVerticalOffset;
             var maxVisible = minVisible + scrollview.ViewportHeight;
 
             var prev = buffer ? (VisualTreeHelper.GetPreviousSibling(comboBoxItem) as UIElement ?? comboBoxItem) : comboBoxItem;

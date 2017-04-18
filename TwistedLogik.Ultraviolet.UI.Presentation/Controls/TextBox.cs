@@ -576,7 +576,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - fontLineHeight);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.ContentVerticalOffset - fontLineHeight);
         }
 
         /// <inheritdoc/>
@@ -591,7 +591,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + fontLineHeight);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.ContentVerticalOffset + fontLineHeight);
         }
         
         /// <inheritdoc/>
