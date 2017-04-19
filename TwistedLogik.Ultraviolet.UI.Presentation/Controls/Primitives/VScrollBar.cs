@@ -18,22 +18,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         static VScrollBar()
         {
             // Commands - vertical scroll
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineUpCommand, ExecutedLineUpCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.LineUpCommand, ExecutedLineUpCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.PageDownCommand, ExecutedPageDownCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.PageDownCommand, ExecutedPageDownCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.PageUpCommand, ExecutedPageUpCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.PageUpCommand, ExecutedPageUpCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollToBottomCommand, ExecutedScrollToBottomCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.ScrollToBottomCommand, ExecutedScrollToBottomCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.End, ModifierKeys.Control, "Ctrl+End"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollToTopCommand, ExecutedScrollToTopCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.ScrollToTopCommand, ExecutedScrollToTopCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Home, ModifierKeys.Control, "Ctrl+Home"));
 
             // Commands - misc
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollHereCommand, ExecutedScrollHereCommand, CanExecuteScrollHereCommand,
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.ScrollHereCommand, ExecutedScrollHereCommand, CanExecuteScrollHereCommand,
                 null);
+
+            // Commands - track
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), Track.IncreaseCommand, ExecutedPageDownCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), Track.DecreaseCommand, ExecutedPageUpCommand, CanExecuteScrollCommand);
         }
 
         /// <summary>

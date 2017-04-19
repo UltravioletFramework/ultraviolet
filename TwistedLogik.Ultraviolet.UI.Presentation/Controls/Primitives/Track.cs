@@ -13,6 +13,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     public class Track : FrameworkElement
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Track"/> type.
+        /// </summary>
+        static Track()
+        {
+            CommandManager.RegisterClassCommandBinding(typeof(Track), new CommandBinding(IncreaseCommand, null, 
+                (element, command, parameter, data) => data.CanExecute = true));
+            CommandManager.RegisterClassCommandBinding(typeof(Track), new CommandBinding(DecreaseCommand, null,
+                (element, command, parameter, data) => data.CanExecute = true));
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Track"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -38,7 +49,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 Focusable           = false,
             };
             this.IncreaseButton.Classes.Add("track-increase");
-            this.IncreaseButton.Click += HandleIncreaseButtonClick;
+            this.IncreaseButton.Command = IncreaseCommand;
+            this.IncreaseButton.CommandTarget = this;
             this.IncreaseButton.ChangeLogicalAndVisualParents(this, this);
             KeyboardNavigation.SetIsTabStop(this.IncreaseButton, false);
 
@@ -50,7 +62,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 Focusable           = false,
             };
             this.DecreaseButton.Classes.Add("track-decrease");
-            this.DecreaseButton.Click += HandleDecreaseButtonClick;
+            this.DecreaseButton.Command = DecreaseCommand;
+            this.DecreaseButton.CommandTarget = this;
             this.DecreaseButton.ChangeLogicalAndVisualParents(this, this);
             KeyboardNavigation.SetIsTabStop(this.DecreaseButton, false);
         }
@@ -190,6 +203,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public static readonly DependencyProperty ValueProperty = RangeBase.ValueProperty.AddOwner(typeof(Track),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
 
+        /// <summary>
+        /// A command that increases the track's value.
+        /// </summary>
+        public static readonly RoutedCommand IncreaseCommand = new RoutedCommand("Increase", typeof(Track));
+
+        /// <summary>
+        /// A command that decreases the track's value.
+        /// </summary>
+        public static readonly RoutedCommand DecreaseCommand = new RoutedCommand("Decrease", typeof(Track));
+
         /// <inheritdoc/>
         protected internal override Int32 LogicalChildrenCount
         {
@@ -259,7 +282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             return finalSize;
         }
-
+        
         /// <summary>
         /// Converts a range value to a pixel offset into the scroll bar's track.
         /// </summary>
@@ -382,33 +405,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                new Size2D(Math.Max(0, trackSize.Width - (decreaseButtonSize.Width + thumbSize.Width)), trackSize.Height) :
                new Size2D(trackSize.Width, Math.Max(0, trackSize.Height - (decreaseButtonSize.Height + thumbSize.Height)));
         }
-
-        /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the decrease button.
-        /// </summary>
-        private void HandleDecreaseButtonClick(DependencyObject element, RoutedEventData data)
-        {
-            var command = (Orientation == Orientation.Horizontal) ? ScrollBar.PageLeftCommand : ScrollBar.PageUpCommand;
-            var commandTarget = TemplatedParent as IInputElement;
-            if (command.CanExecute(View, null, commandTarget))
-            {
-                command.Execute(View, null, commandTarget);
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ButtonBase.Click"/> event for the increase button.
-        /// </summary>
-        private void HandleIncreaseButtonClick(DependencyObject element, RoutedEventData data)
-        {
-            var command = (Orientation == Orientation.Horizontal) ? ScrollBar.PageRightCommand : ScrollBar.PageDownCommand;
-            var commandTarget = TemplatedParent as IInputElement;
-            if (command.CanExecute(View, null, commandTarget))
-            {
-                command.Execute(View, null, commandTarget);
-            }
-        }
-
+        
         // Component element references.
         private readonly Thumb Thumb = null;
         private readonly RepeatButton DecreaseButton = null;

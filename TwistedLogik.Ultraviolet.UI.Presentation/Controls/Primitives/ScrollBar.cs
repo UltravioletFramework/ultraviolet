@@ -83,17 +83,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         public Track Track
         {
-            get
-            {
-                if (Orientation == Orientation.Horizontal)
-                {
-                    return PART_HScrollBar?.Track;
-                }
-                else
-                {
-                    return PART_VScrollBar?.Track;
-                }
-            }
+            get { return (Orientation == Orientation.Horizontal) ? PART_HScrollBar?.Track : PART_VScrollBar?.Track; }
         }
 
         /// <summary>
@@ -270,19 +260,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         internal void OnChildValueChanged(OrientedScrollBar child, Double value)
         {
-            if (Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (Orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (orientedScrollBar == child)
             {
-                if (child == PART_HScrollBar)
-                {
-                    Value = value;
-                }
-            }
-            else
-            {
-                if (child == PART_VScrollBar)
-                {
-                    Value = value;
-                }
+                Value = value;
             }
         }
 
@@ -291,19 +272,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         internal void OnChildMinimumChanged(OrientedScrollBar child, Double value)
         {
-            if (Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (Orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (orientedScrollBar == child)
             {
-                if (child == PART_HScrollBar)
-                {
-                    Minimum = value;
-                }
-            }
-            else
-            {
-                if (child == PART_VScrollBar)
-                {
-                    Minimum = value;
-                }
+                Minimum = value;
             }
         }
 
@@ -312,19 +284,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         internal void OnChildMaximumChanged(OrientedScrollBar child, Double value)
         {
-            if (Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (Orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (orientedScrollBar == child)
             {
-                if (child == PART_HScrollBar)
-                {
-                    Maximum = value;
-                }
-            }
-            else
-            {
-                if (child == PART_VScrollBar)
-                {
-                    Maximum = value;
-                }
+                Maximum = value;
             }
         }
 
@@ -333,19 +296,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         internal void OnChildSmallChangeChanged(OrientedScrollBar child, Double value)
         {
-            if (Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (Orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (orientedScrollBar == child)
             {
-                if (child == PART_HScrollBar)
-                {
-                    SmallChange = value;
-                }
-            }
-            else
-            {
-                if (child == PART_VScrollBar)
-                {
-                    SmallChange = value;
-                }
+                SmallChange = value;
             }
         }
 
@@ -354,19 +308,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         internal void OnChildLargeChangeChanged(OrientedScrollBar child, Double value)
         {
-            if (Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (Orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (orientedScrollBar == child)
             {
-                if (child == PART_HScrollBar)
-                {
-                    LargeChange = value;
-                }
-            }
-            else
-            {
-                if (child == PART_VScrollBar)
-                {
-                    LargeChange = value;
-                }
+                LargeChange = value;
             }
         }
 
@@ -375,19 +320,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         internal void OnChildViewportSizeChanged(OrientedScrollBar child, Double value)
         {
-            if (Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (Orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (orientedScrollBar == child)
             {
-                if (child == PART_HScrollBar)
-                {
-                    ViewportSize = value;
-                }
-            }
-            else
-            {
-                if (child == PART_VScrollBar)
-                {
-                    ViewportSize = value;
-                }
+                ViewportSize = value;
             }
         }
 
@@ -498,10 +434,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleOrientationChanged(DependencyObject element, Orientation oldValue, Orientation newValue)
         {
-            if (!(element is ScrollBar))
-                return;
-
-            ((ScrollBar)element).ChangeOrientation(newValue);
+            (element as ScrollBar)?.ChangeOrientation(newValue);
         }
 
         /// <summary>
@@ -532,23 +465,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (scrollBar == null || data.OriginalSource != scrollBar)
                 return;
 
-            if (scrollBar.Orientation == Orientation.Horizontal)
+            var orientedScrollBar = (scrollBar.Orientation == Orientation.Horizontal) ? scrollBar.PART_HScrollBar : scrollBar.PART_VScrollBar;
+            if (orientedScrollBar != null)
             {
-                var hscroll = scrollBar.PART_HScrollBar;
-                if (hscroll != null)
-                {
-                    ((RoutedCommand)command).Execute(scrollBar.View, parameter, hscroll);
-                    data.Handled = true;
-                }
-            }
-            else
-            {
-                var vscroll = scrollBar.PART_VScrollBar;
-                if (vscroll != null)
-                {
-                    ((RoutedCommand)command).Execute(scrollBar.View, parameter, vscroll);
-                    data.Handled = true;
-                }
+                ((RoutedCommand)command).Execute(scrollBar.View, parameter, orientedScrollBar);
+                data.Handled = true;
             }
         }
 
@@ -562,24 +483,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return;
 
             var @continue = data.ContinueRouting;
-
-            if (scrollBar.Orientation == Orientation.Horizontal)
+            
+            var orientedScrollBar = (scrollBar.Orientation == Orientation.Horizontal) ? scrollBar.PART_HScrollBar : scrollBar.PART_VScrollBar;
+            if (orientedScrollBar != null)
             {
-                var hscroll = scrollBar.PART_HScrollBar;
-                if (hscroll != null)
-                {
-                    data.CanExecute = ((RoutedCommand)command).CanExecute(scrollBar.View, parameter, hscroll, out @continue);
-                    data.Handled = true;
-                }
-            }
-            else
-            {
-                var vscroll = scrollBar.PART_VScrollBar;
-                if (vscroll != null)
-                {
-                    data.CanExecute = ((RoutedCommand)command).CanExecute(scrollBar.View, parameter, vscroll, out @continue);
-                    data.Handled = true;
-                }
+                data.CanExecute = ((RoutedCommand)command).CanExecute(scrollBar.View, parameter, orientedScrollBar, out @continue);
+                data.Handled = true;
             }
 
             data.ContinueRouting = @continue;
@@ -590,38 +499,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private void ChangeOrientation(Orientation orientation)
         {
-            if (orientation == Orientation.Horizontal)
+            var childHidden = (orientation == Orientation.Horizontal) ? PART_VScrollBar : PART_HScrollBar;
+            if (childHidden != null)
             {
-                if (PART_HScrollBar != null)
-                {
-                    PART_HScrollBar.Visibility = Visibility.Visible;
-                    PART_HScrollBar.IsEnabled = true;
-                }
-                if (PART_VScrollBar != null)
-                {
-                    PART_VScrollBar.Visibility = Visibility.Collapsed;
-                    PART_VScrollBar.IsEnabled = false;
-                }
-                this.ViewportSize = PART_HScrollBar?.ViewportSize ?? 0;
+                childHidden.Visibility = Visibility.Collapsed;
+                childHidden.IsEnabled = false;
             }
-            else
+
+            var childActive = (orientation == Orientation.Horizontal) ? PART_HScrollBar : PART_VScrollBar;
+            if (childActive != null)
             {
-                if (PART_HScrollBar != null)
-                {
-                    PART_HScrollBar.Visibility = Visibility.Collapsed;
-                    PART_HScrollBar.IsEnabled = false;
-                }
-                if (PART_VScrollBar != null)
-                {
-                    PART_VScrollBar.Visibility = Visibility.Visible;
-                    PART_VScrollBar.IsEnabled = true;
-                }
-                this.ViewportSize = PART_VScrollBar?.ViewportSize ?? 0;
+                childActive.Visibility = Visibility.Visible;
+                childActive.IsEnabled = true;
+
+                Value = childActive.Value;
+                Minimum = childActive.Minimum;
+                Maximum = childActive.Maximum;
+                SmallChange = childActive.SmallChange;
+                LargeChange = childActive.LargeChange;
+                ViewportSize = childActive.ViewportSize;
             }
         }
         
         // Component references.
-        private readonly HScrollBar PART_HScrollBar = null;
-        private readonly VScrollBar PART_VScrollBar = null;
+        private readonly OrientedScrollBar PART_HScrollBar = null;
+        private readonly OrientedScrollBar PART_VScrollBar = null;
     }
 }

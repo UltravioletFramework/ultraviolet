@@ -109,7 +109,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!Double.IsNaN(valueDelta) && valueDelta != 0.0)
             {
                 var valueAfterChange = Math.Max(Minimum, Math.Min(Value + valueDelta, Maximum));
-                Console.WriteLine(valueAfterChange);
                 if (IsPartOfScrollViewer)
                 {
                     var command = (Track.Orientation == Orientation.Horizontal) ? ScrollBar.DeferScrollToHorizontalOffsetCommand : ScrollBar.DeferScrollToVerticalOffsetCommand;

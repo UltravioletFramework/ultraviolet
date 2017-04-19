@@ -66,9 +66,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DockPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HeaderedContentControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\OrientedSlider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextEditingControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Thumb.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Slider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PasswordBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\PasswordEditor.cs" />
@@ -122,7 +124,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.SelectionCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\Selector.SelectionMetadata.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\SliderBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TextBlockBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\ToggleButton.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommandBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommandOfT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\ConditionalGesture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ModifierKeysExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NavigationCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MediaCommands.cs" />

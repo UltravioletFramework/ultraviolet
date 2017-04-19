@@ -18,22 +18,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         static HScrollBar()
         {
             // Commands - horizontal scroll
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineRightCommand, ExecutedLineRightCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.LineRightCommand, ExecutedLineRightCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.LineLeftCommand, ExecutedLineLeftCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.LineLeftCommand, ExecutedLineLeftCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.PageRightCommand, ExecutedPageRightCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.PageRightCommand, ExecutedPageRightCommand, CanExecuteScrollCommand,
                 null);
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.PageLeftCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.PageLeftCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand,
                 null);
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollToRightEndCommand, ExecutedScrollToRightEndCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.ScrollToRightEndCommand, ExecutedScrollToRightEndCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.End, ModifierKeys.None, "End"));
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollToLeftEndCommand, ExecutedScrollToLeftEndCommand, CanExecuteScrollCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.ScrollToLeftEndCommand, ExecutedScrollToLeftEndCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.Home, ModifierKeys.None, "Home"));
 
             // Commands - misc
-            CommandManager.RegisterClassBindings(typeof(ScrollBar), ScrollBar.ScrollHereCommand, ExecutedScrollHereCommand, CanExecuteScrollHereCommand,
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.ScrollHereCommand, ExecutedScrollHereCommand, CanExecuteScrollHereCommand,
                 null);
+
+            // Commands - track
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), Track.IncreaseCommand, ExecutedPageRightCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), Track.DecreaseCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand);
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.VSlider.xml")]
-    public class VSlider : SliderBase
+    public class VSlider : OrientedSlider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VSlider"/> class.
@@ -22,16 +22,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             : base(uv, name)
         {
 
-        }
-
-        /// <inheritdoc/>
-        protected override Size2D MeasureOverride(Size2D availableSize)
-        {
-            if (Track != null)
-            {
-                Track.InvalidateMeasure();
-            }
-            return base.MeasureOverride(availableSize);
         }
 
         /// <inheritdoc/>
@@ -95,8 +85,5 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             base.OnGamePadButtonDown(device, button, repeat, data);
         }
-
-        // Component references.
-        private readonly Track Track = null;
     }
 }

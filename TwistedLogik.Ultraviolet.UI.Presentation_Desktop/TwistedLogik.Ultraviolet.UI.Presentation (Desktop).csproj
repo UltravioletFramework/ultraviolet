@@ -139,6 +139,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Controls\Templates\Slider.xml" />
     <EmbeddedResource Include="Controls\Primitives\Templates\Thumb.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
