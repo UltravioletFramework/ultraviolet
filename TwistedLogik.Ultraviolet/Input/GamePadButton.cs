@@ -85,5 +85,55 @@ namespace TwistedLogik.Ultraviolet.Input
         /// The right button on the directional pad.
         /// </summary>
         DPadRight,
+
+        /// <summary>
+        /// The left stick when it is pressed up.
+        /// </summary>
+        LeftStickUp,
+
+        /// <summary>
+        /// The left stick when it is pressed down.
+        /// </summary>
+        LeftStickDown,
+
+        /// <summary>
+        /// The left stick when it is pressed left.
+        /// </summary>
+        LeftStickLeft,
+
+        /// <summary>
+        /// The left stick when it is pressed right.
+        /// </summary>
+        LeftStickRight,
+
+        /// <summary>
+        /// The right stick when it is pressed up.
+        /// </summary>
+        RightStickUp,
+
+        /// <summary>
+        /// The right stick when it is pressed down.
+        /// </summary>
+        RightStickDown,
+
+        /// <summary>
+        /// The right stick when it is pressed left.
+        /// </summary>
+        RightStickLeft,
+
+        /// <summary>
+        /// The right stick when it is pressed right.
+        /// </summary>
+        RightStickRight,
+
+        /// <summary>
+        /// The left trigger when it is fully depressed.
+        /// </summary>
+        LeftTrigger,
+
+        /// <summary>
+        /// The right trigger when it is fully depressed.
+        /// </summary>
+        RightTrigger,
     }
 }

@@ -61,7 +61,7 @@ namespace TwistedLogik.Ultraviolet.Input
         public GamePadDevice(UltravioletContext uv)
             : base(uv)
         {
-            AxisDownThreshold = 0.75f;
+            AxisDownThreshold = 0.9f;
         }
 
         /// <summary>
