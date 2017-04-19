@@ -1928,7 +1928,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         private static void OnPreviewGamePadButtonDownProxy(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
-            ((UIElement)element).OnPreviewGamePadButtonDown(device, button, repeat, data);
+            if (!data.Handled)
+                CommandManager.HandleGamePadButtonDownTranslation(element, device, button, repeat, data);
+
+            if (!data.Handled)
+                ((UIElement)element).OnPreviewGamePadButtonDown(device, button, repeat, data);
         }
 
         /// <summary>

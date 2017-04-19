@@ -212,7 +212,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\DelegateCommandOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ConditionalGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadGesture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\GamePad.GamePadState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ModifierKeysExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadBinding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\NavigationCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\MediaCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ComponentCommands.cs" />

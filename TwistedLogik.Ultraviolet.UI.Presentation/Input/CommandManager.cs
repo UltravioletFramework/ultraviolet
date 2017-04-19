@@ -607,6 +607,70 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Attempts to translate a game pad button down event into a command invocation for the specified element.
+        /// </summary>
+        internal static void HandleGamePadButtonDownTranslation(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
+        {
+            var uiElement = element as UIElement;
+            if (uiElement == null)
+                return;
+
+            // Check element input commands
+            var invocation = FindMatchingBinding_GamePadButtonDown(uiElement.InputBindings, device, button, repeat, data);
+
+            // Check class input bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classInputBindings).SyncRoot)
+                {
+                    var bindings = default(InputBindingCollection);
+                    var type = element.GetType();
+                    while (type != null)
+                    {
+                        if (classInputBindings.TryGetValue(type, out bindings))
+                        {
+                            invocation = FindMatchingBinding_GamePadButtonDown(bindings, device, button, repeat, data);
+                            if (invocation != null)
+                            {
+                                break;
+                            }
+                        }
+                        type = type.BaseType;
+                    }
+                }
+            }
+
+            // Check element command bindings
+            invocation = invocation ?? FindMatchingBinding_GamePadButtonDown(uiElement.CommandBindings, device, button, repeat, data);
+
+            // Check class command bindings
+            if (invocation == null)
+            {
+                lock (((IDictionary)classCommandBindings).SyncRoot)
+                {
+                    var bindings = default(CommandBindingCollection);
+                    var type = element.GetType();
+                    while (type != null)
+                    {
+                        if (classCommandBindings.TryGetValue(type, out bindings))
+                        {
+                            invocation = FindMatchingBinding_GamePadButtonDown(bindings, device, button, repeat, data);
+                            if (invocation != null)
+                            {
+                                break;
+                            }
+                        }
+                        type = type.BaseType;
+                    }
+                }
+            }
+
+            // Execute command, if found
+            ExecuteTranslatedCommand(invocation, uiElement, data);
+        }
+
+
+        /// <summary>
         /// Handles the <see cref="PreviewExecutedEvent"/> routed event for the specified element.
         /// </summary>
         internal static void HandlePreviewExecuted(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
@@ -820,6 +884,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Searches the specified collection of input bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_GamePadButtonDown(InputBindingCollection bindings, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+
+                if (binding.Command != null && (binding?.Gesture?.MatchesGamePadButtonDown(device, button, repeat, data) ?? false))
+                    return new CommandInvocationData(binding.CommandTarget, binding.Command, binding.CommandParameter);
+            }
+            return null;
+        }
+
+
+        /// <summary>
         /// Searches the specified collection of command bindings for a binding which matches the specified input event.
         /// </summary>
         private static CommandInvocationData? FindMatchingBinding_MouseClick(CommandBindingCollection bindings, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -901,6 +981,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 for (int j = gestures.Count - 1; j >= 0; j--)
                 {
                     if (gestures[j].MatchesKeyDown(device, key, modifiers, data))
+                        return new CommandInvocationData(null, binding.Command, null);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the specified collection of command bindings for a binding which matches the specified input event.
+        /// </summary>
+        private static CommandInvocationData? FindMatchingBinding_GamePadButtonDown(CommandBindingCollection bindings, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
+        {
+            for (int i = bindings.Count - 1; i >= 0; i--)
+            {
+                var binding = bindings[i];
+                var command = binding.Command as RoutedCommand;
+                if (command == null)
+                    continue;
+
+                var gestures = command.InputGestures;
+                for (int j = gestures.Count - 1; j >= 0; j--)
+                {
+                    if (gestures[j].MatchesGamePadButtonDown(device, button, repeat, data))
                         return new CommandInvocationData(null, binding.Command, null);
                 }
             }

@@ -58,7 +58,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    public static class GamePad
+    public static partial class GamePad
     {
         /// <summary>
         /// Initializes the <see cref="GamePad"/> type.
@@ -76,6 +76,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             TabButton = GamePadButton.RightShoulder;
             ShiftTabButton = GamePadButton.LeftShoulder;
             ControlTabButton = GamePadButton.None;
+        }
+
+        /// <summary>
+        /// Gets the game pad device that is associated with the specified player.
+        /// </summary>
+        /// <param name="playerIndex">The index of the player for which to retrieve a game pad device.</param>
+        /// <returns>The game pad device that is associated with the specified player, or <see langword="null"/>
+        /// if no such game pad is connected.</returns>
+        public static GamePadDevice GetDeviceForPlayer(Int32 playerIndex)
+        {
+            return gamePadState.Value.GetGamePadForPlayer(playerIndex);
         }
 
         /// <summary>
@@ -696,7 +707,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedEventComments>
         public static readonly RoutedEvent ButtonUpEvent = EventManager.RegisterRoutedEvent("ButtonUp", RoutingStrategy.Bubble,
             typeof(UpfGamePadButtonUpEventHandler), typeof(GamePad));
-        
+
+        /// <summary>
+        /// Gets the primary game pad input device.
+        /// </summary>
+        public static GamePadDevice PrimaryDevice => gamePadState.Value.PrimaryDevice;
+
         /// <summary>
         /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached event for the specified element.
         /// </summary>
@@ -786,5 +802,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             var evt = EventManager.GetInvocationDelegate<UpfGamePadButtonUpEventHandler>(ButtonUpEvent);
             evt?.Invoke(element, device, button, data);
         }
+
+        // Represents the device state of the current Ultraviolet context.
+        private static readonly UltravioletSingleton<GamePadState> gamePadState =
+            new UltravioletSingleton<GamePadState>(uv => new GamePadState(uv));
     }
 }

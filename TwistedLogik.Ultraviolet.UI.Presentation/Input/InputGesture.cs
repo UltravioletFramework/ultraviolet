@@ -47,6 +47,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public virtual Boolean MatchesMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data) => false;
 
         /// <summary>
+        /// When overriden in a derived class, determines whether the gesture matches the specified game pad button down input event.
+        /// </summary>
+        /// <param name="device">The game pad device.</param>
+        /// <param name="button">The game pad button that was pressed.</param>
+        /// <param name="repeat">A value indicating whether this is a repeated button press.</param>
+        /// <param name="data">The routed event metadata for this event invocation.</param>
+        /// <returns><see langword="true"/> if the gesture matches the event; otherwise, <see langword="false"/>.</returns>
+        public virtual Boolean MatchesGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data) => false;
+
+        /// <summary>
         /// Gets the <see cref="ModifierKeys"/> value that corresponds to the specified string.
         /// </summary>
         /// <param name="str">The string to evaluate.</param>
