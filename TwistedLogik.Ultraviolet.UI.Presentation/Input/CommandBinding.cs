@@ -95,14 +95,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             }
             else
             {
-                HandleExecuted(element, command, parameter, data, preview);
+                HandleExecuted(element, command, parameter, (ExecutedRoutedEventData)data, preview);
             }
         }
 
         /// <summary>
         /// Called when the command binding is executed.
         /// </summary>
-        internal void HandleExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data, Boolean preview)
+        internal void HandleExecuted(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data, Boolean preview)
         {
             if (data.Handled)
                 return;
@@ -168,13 +168,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Raises the <see cref="PreviewExecuted"/> event.
         /// </summary>
-        private void RaisePreviewExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data) =>
+        private void RaisePreviewExecuted(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data) =>
             PreviewExecuted?.Invoke(element, command, parameter, data);
 
         /// <summary>
         /// Raises the <see cref="Executed"/> event.
         /// </summary>
-        private void RaiseExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data) =>
+        private void RaiseExecuted(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data) =>
             Executed?.Invoke(element, command, parameter, data);
 
         /// <summary>

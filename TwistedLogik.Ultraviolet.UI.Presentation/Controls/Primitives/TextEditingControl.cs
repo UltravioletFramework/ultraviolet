@@ -111,7 +111,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="ApplicationCommands.SelectAll"/> command.
         /// </summary>
-        private static void ExecutedSelectAll(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectAll(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -123,7 +123,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectRightByCharacter"/> command.
         /// </summary>
-        private static void ExecutedSelectRightByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectRightByCharacter(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -135,7 +135,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectLeftByCharacter"/> command.
         /// </summary>
-        private static void ExecutedSelectLeftByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectLeftByCharacter(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -147,7 +147,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectRightByWord"/> command.
         /// </summary>
-        private static void ExecutedSelectRightByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectRightByWord(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -159,7 +159,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectLeftByWord"/> command.
         /// </summary>
-        private static void ExecutedSelectLeftByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectLeftByWord(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -171,7 +171,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectUpByLine"/> command.
         /// </summary>
-        private static void ExecutedSelectDownByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectDownByLine(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -183,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectDownByLine"/> command.
         /// </summary>
-        private static void ExecutedSelectUpByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectUpByLine(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -195,7 +195,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectDownByPage"/> command.
         /// </summary>
-        private static void ExecutedSelectDownByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectDownByPage(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -207,7 +207,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectUpByPage"/> command.
         /// </summary>
-        private static void ExecutedSelectUpByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectUpByPage(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -219,7 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectToLineStart"/> command.
         /// </summary>
-        private static void ExecutedSelectToLineStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectToLineStart(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -231,7 +231,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectToLineEnd"/> command.
         /// </summary>
-        private static void ExecutedSelectToLineEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectToLineEnd(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -243,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectToDocumentStart"/> command.
         /// </summary>
-        private static void ExecutedSelectToDocumentStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectToDocumentStart(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -255,7 +255,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.SelectToDocumentEnd"/> command.
         /// </summary>
-        private static void ExecutedSelectToDocumentEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedSelectToDocumentEnd(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -267,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveRightByCharacter"/> command.
         /// </summary>
-        private static void ExecutedMoveRightByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveRightByCharacter(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -279,7 +279,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveLeftByCharacter"/> command.
         /// </summary>
-        private static void ExecutedMoveLeftByCharacter(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveLeftByCharacter(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -291,7 +291,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveRightByWord"/> command.
         /// </summary>
-        private static void ExecutedMoveRightByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveRightByWord(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -303,7 +303,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveLeftByWord"/> command.
         /// </summary>
-        private static void ExecutedMoveLeftByWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveLeftByWord(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -315,7 +315,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveDownByLine"/> command.
         /// </summary>
-        private static void ExecutedMoveDownByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveDownByLine(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveUpByLine"/> command.
         /// </summary>
-        private static void ExecutedMoveUpByLine(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveUpByLine(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -339,7 +339,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveDownByPage"/> command.
         /// </summary>
-        private static void ExecutedMoveDownByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveDownByPage(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveUpByPage"/> command.
         /// </summary>
-        private static void ExecutedMoveUpByPage(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveUpByPage(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -363,7 +363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveToLineStart"/> command.
         /// </summary>
-        private static void ExecutedMoveToLineStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveToLineStart(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -375,7 +375,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveToLineEnd"/> command.
         /// </summary>
-        private static void ExecutedMoveToLineEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveToLineEnd(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -387,7 +387,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveToDocumentStart"/> command.
         /// </summary>
-        private static void ExecutedMoveToDocumentStart(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveToDocumentStart(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -399,7 +399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.MoveToDocumentEnd"/> command.
         /// </summary>
-        private static void ExecutedMoveToDocumentEnd(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMoveToDocumentEnd(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
@@ -411,7 +411,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.ToggleInsert"/> command.
         /// </summary>
-        private static void ExecutedToggleInsert(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedToggleInsert(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -423,7 +423,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.Backspace"/> command.
         /// </summary>
-        private static void ExecutedBackspace(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedBackspace(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -435,7 +435,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.Delete"/> command.
         /// </summary>
-        private static void ExecutedDelete(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDelete(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -447,7 +447,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.DeleteNextWord"/> command.
         /// </summary>
-        private static void ExecutedDeleteNextWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDeleteNextWord(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -459,7 +459,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.DeletePreviousWord"/> command.
         /// </summary>
-        private static void ExecutedDeletePreviousWord(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDeletePreviousWord(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -471,7 +471,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.EnterParagraphBreak"/> command.
         /// </summary>
-        private static void ExecutedEnterParagraphBreak(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedEnterParagraphBreak(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -483,7 +483,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.EnterLineBreak"/> command.
         /// </summary>
-        private static void ExecutedEnterLineBreak(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedEnterLineBreak(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -495,7 +495,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.TabForward"/> command.
         /// </summary>
-        private static void ExecutedTabForward(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedTabForward(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -507,7 +507,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="EditingCommands.TabBackward"/> command.
         /// </summary>
-        private static void ExecutedTabBackward(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedTabBackward(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -519,7 +519,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="ApplicationCommands.Copy"/> command.
         /// </summary>
-        private static void ExecutedCopy(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedCopy(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsMasked || textEditor.SelectionLength == 0 || !textEditor.IsEnabled)
@@ -531,7 +531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="ApplicationCommands.Cut"/> command.
         /// </summary>
-        private static void ExecutedCut(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedCut(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsMasked || textEditor.SelectionLength == 0 || textEditor.IsReadOnly || !textEditor.IsEnabled)
@@ -543,7 +543,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes the <see cref="ApplicationCommands.Paste"/> command.
         /// </summary>
-        private static void ExecutedPaste(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPaste(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var textEditor = ((TextEditingControl)element).TextEditor;
             if (textEditor == null || textEditor.IsReadOnly || !textEditor.IsEnabled)

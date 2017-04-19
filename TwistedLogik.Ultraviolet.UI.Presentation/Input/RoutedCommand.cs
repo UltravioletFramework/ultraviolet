@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -38,7 +39,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <inheritdoc/>
         public Boolean CanExecute(PresentationFoundationView view, Object parameter)
         {
-            return CanExecute(view, parameter, Keyboard.GetFocusedElement(view));
+            var @continue = false;
+            return CanExecute(view, parameter, null, Keyboard.GetFocusedElement(view), out @continue);
+        }
+
+        /// <summary>
+        /// Determines whether the command can be executed.
+        /// </summary>
+        /// <param name="view">The view within which the command is being executed.</param>
+        /// <param name="parameter">The command parameter, or <see langword="null"/> if the command
+        /// does not require a parameter.</param>
+        /// <param name="valparameter">The command value parameter, or <see langword="null"/> if the command
+        /// does not require a value parameter. This parameter is intended for use in internal micro-optimizations and
+        /// will appear as one of the fields in the routed event data.</param>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        public Boolean CanExecute(PresentationFoundationView view, Object parameter, PrimitiveUnion? valparameter)
+        {
+            var @continue = false;
+            return CanExecute(view, parameter, valparameter, Keyboard.GetFocusedElement(view), out @continue);
         }
 
         /// <summary>
@@ -53,7 +71,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public Boolean CanExecute(PresentationFoundationView view, Object parameter, IInputElement target)
         {
             var @continue = false;
-            return CanExecute(view, parameter, target, out @continue);
+            return CanExecute(view, parameter, null, target, out @continue);
+        }
+
+        /// <summary>
+        /// Determines whether the command can be executed.
+        /// </summary>
+        /// <param name="view">The view within which the command is being executed.</param>
+        /// <param name="parameter">The command parameter, or <see langword="null"/> if the command
+        /// does not require a parameter.</param>
+        /// <param name="valparameter">The command value parameter, or <see langword="null"/> if the command
+        /// does not require a value parameter. This parameter is intended for use in internal micro-optimizations and
+        /// will appear as one of the fields in the routed event data.</param>
+        /// <param name="target">The element within <paramref name="view"/> at which to begin
+        /// searching for command handlers.</param>
+        public Boolean CanExecute(PresentationFoundationView view, Object parameter, PrimitiveUnion? valparameter, IInputElement target)
+        {
+            var @continue = false;
+            return CanExecute(view, parameter, valparameter, target, out @continue);
         }
 
         /// <summary>
@@ -68,6 +103,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
         public Boolean CanExecute(PresentationFoundationView view, Object parameter, IInputElement target, out Boolean @continue)
         {
+            return CanExecute(view, parameter, null, target, out @continue);
+        }
+
+        /// <summary>
+        /// Determines whether the command can be executed.
+        /// </summary>
+        /// <param name="view">The view within which the command is being executed.</param>
+        /// <param name="parameter">The command parameter, or <see langword="null"/> if the command
+        /// does not require a parameter.</param>
+        /// <param name="valparameter">The command value parameter, or <see langword="null"/> if the command
+        /// does not require a value parameter. This parameter is intended for use in internal micro-optimizations and
+        /// will appear as one of the fields in the routed event data.</param>
+        /// <param name="target">The element within <paramref name="view"/> at which to begin
+        /// searching for command handlers.</param>
+        /// <param name="continue">A value indicating whether command routing should continue.</param>
+        /// <returns><see langword="true"/> if the command can be executed; otherwise, <see langword="false"/>.</returns>
+        public Boolean CanExecute(PresentationFoundationView view, Object parameter, PrimitiveUnion? valparameter, IInputElement target, out Boolean @continue)
+        {
             Contract.Require(view, nameof(view));
 
             var uiElement = target as UIElement;
@@ -76,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             if (uiElement != null)
             {
-                var data = CanExecuteRoutedEventData.Retrieve(this, autorelease: false);
+                var data = CanExecuteRoutedEventData.Retrieve(this, valparameter, autorelease: false);
                 try
                 {
                     var evtPreview = EventManager.GetInvocationDelegate<UpfCanExecuteRoutedEventHandler>(CommandManager.PreviewCanExecuteEvent);
@@ -106,7 +159,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <inheritdoc/>
         public void Execute(PresentationFoundationView view, Object parameter)
         {
-            Execute(view, parameter, Keyboard.GetFocusedElement(null));
+            Execute(view, parameter, null, Keyboard.GetFocusedElement(null));
+        }
+
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="view">The view within which the command is being executed.</param>
+        /// <param name="parameter">The command parameter, or <see langword="null"/> if the command
+        /// does not require a parameter.</param>
+        /// <param name="valparameter">The command value parameter, or <see langword="null"/> if the command
+        /// does not require a value parameter. This parameter is intended for use in internal micro-optimizations and
+        /// will appear as one of the fields in the routed event data.</param>
+        public void Execute(PresentationFoundationView view, Object parameter, PrimitiveUnion? valparameter)
+        {
+            Execute(view, parameter, valparameter, Keyboard.GetFocusedElement(null));
         }
 
         /// <summary>
@@ -119,6 +186,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// searching for command handlers.</param>
         public void Execute(PresentationFoundationView view, Object parameter, IInputElement target)
         {
+            Execute(view, parameter, null, target);
+        }
+
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="view">The view within which the command is being executed.</param>
+        /// <param name="parameter">The command parameter, or <see langword="null"/> if the command
+        /// does not require a parameter.</param>
+        /// <param name="valparameter">The command value parameter, or <see langword="null"/> if the command
+        /// does not require a value parameter. This parameter is intended for use in internal micro-optimizations and
+        /// will appear as one of the fields in the routed event data.</param>
+        /// <param name="target">The element within <paramref name="view"/> at which to begin
+        /// searching for command handlers.</param>
+        public void Execute(PresentationFoundationView view, Object parameter, PrimitiveUnion? valparameter, IInputElement target)
+        {
             Contract.Require(view, nameof(view));
 
             var uiElement = target as UIElement;
@@ -127,7 +210,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             if (uiElement != null)
             {
-                var data = RoutedEventData.Retrieve(this, autorelease: false);
+                var data = ExecutedRoutedEventData.Retrieve(this, valparameter, autorelease: false);
                 try
                 {
                     var evtPreview = EventManager.GetInvocationDelegate<UpfExecutedRoutedEventHandler>(CommandManager.PreviewExecutedEvent);

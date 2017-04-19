@@ -18,7 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     /// <param name="command">The command that is being executed.</param>
     /// <param name="parameter">The parameter object that is being passed to the executing command.</param>
     /// <param name="data">The routed event metadata for this event invocation.</param>
-    public delegate void UpfExecutedRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, RoutedEventData data);
+    public delegate void UpfExecutedRoutedEventHandler(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data);
 
     /// <summary>
     /// Represents the method that is called when a command is being checked to determine whether it can execute.
@@ -609,7 +609,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Handles the <see cref="PreviewExecutedEvent"/> routed event for the specified element.
         /// </summary>
-        internal static void HandlePreviewExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        internal static void HandlePreviewExecuted(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             HandleCommandEvent(element, command, parameter, data, true);
         }
@@ -617,7 +617,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <summary>
         /// Handles the <see cref="ExecutedEvent"/> routed event for the specified element.
         /// </summary>
-        internal static void HandleExecuted(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        internal static void HandleExecuted(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             HandleCommandEvent(element, command, parameter, data, false);
         }

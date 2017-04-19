@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnReleased();
         }
 
-        // The global pool of cursor query data objects.
+        // The global pool of scroll changed data objects.
         private static readonly Pool<ScrollChangedRoutedEventData> pool =
             new ExpandingPool<ScrollChangedRoutedEventData>(1, 4, () => new ScrollChangedRoutedEventData());
     }

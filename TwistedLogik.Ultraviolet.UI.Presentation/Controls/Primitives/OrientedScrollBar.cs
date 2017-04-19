@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Nucleus.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {
@@ -112,17 +113,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (IsPartOfScrollViewer)
                 {
                     var command = (Track.Orientation == Orientation.Horizontal) ? ScrollBar.DeferScrollToHorizontalOffsetCommand : ScrollBar.DeferScrollToVerticalOffsetCommand;
+                    var commandParam = new PrimitiveUnion(valueAfterChange);
                     var commandTarget = (TemplatedParent as IInputElement) ?? this;
-                    if (command.CanExecute(View, valueAfterChange, commandTarget))
+                    if (command.CanExecute(View, null, commandParam, commandTarget))
                     {
-                        command.Execute(View, valueAfterChange, commandTarget);
+                        command.Execute(View, null, commandParam, commandTarget);
                     }
                     else
                     {
                         command = (Track.Orientation == Orientation.Horizontal) ? ScrollBar.ScrollToHorizontalOffsetCommand : ScrollBar.ScrollToVerticalOffsetCommand;
-                        if (command.CanExecute(View, valueAfterChange, commandTarget))
+                        if (command.CanExecute(View, null, commandParam, commandTarget))
                         {
-                            command.Execute(View, valueAfterChange, commandTarget);
+                            command.Execute(View, null, commandParam, commandTarget);
                         }
                     }
                 }

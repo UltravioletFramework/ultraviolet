@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\WeakKeyReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommonBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contract.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\PrimitiveUnion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistry.cs" />

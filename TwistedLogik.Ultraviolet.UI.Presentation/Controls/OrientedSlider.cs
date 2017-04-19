@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Executes the <see cref="Slider.DecreaseLargeCommand"/> command.
         /// </summary>
-        private static void ExecutedDecreaseLargeCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDecreaseLargeCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var slider = element as OrientedSlider;
             if (slider == null)
@@ -224,7 +224,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Executes the <see cref="Slider.DecreaseSmallCommand"/> command.
         /// </summary>
-        private static void ExecutedDecreaseSmallCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDecreaseSmallCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var slider = element as OrientedSlider;
             if (slider == null)
@@ -237,7 +237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Executes the <see cref="Slider.IncreaseLargeCommand"/> command.
         /// </summary>
-        private static void ExecutedIncreaseLargeCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedIncreaseLargeCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var slider = element as OrientedSlider;
             if (slider == null)
@@ -250,7 +250,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Executes the <see cref="Slider.IncreaseSmallCommand"/> command.
         /// </summary>
-        private static void ExecutedIncreaseSmallCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedIncreaseSmallCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var slider = element as OrientedSlider;
             if (slider == null)
@@ -263,7 +263,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Executes the <see cref="Slider.MaximizeValueCommand"/> command.
         /// </summary>
-        private static void ExecutedMaximizeValueCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMaximizeValueCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var slider = element as OrientedSlider;
             if (slider == null)
@@ -276,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Executes the <see cref="Slider.MinimizeValueCommand"/> command.
         /// </summary>
-        private static void ExecutedMinimizeValueCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedMinimizeValueCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var slider = element as OrientedSlider;
             if (slider == null)

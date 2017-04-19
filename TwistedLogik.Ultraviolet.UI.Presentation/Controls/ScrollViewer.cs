@@ -1173,7 +1173,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineDownCommand"/> command.
         /// </summary>
-        private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.LineDown();
         }
@@ -1181,7 +1181,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineUpCommand"/> command.
         /// </summary>
-        private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.LineUp();
         }
@@ -1189,7 +1189,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.PageDownCommand"/> command.
         /// </summary>
-        private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.PageDown();
         }
@@ -1197,7 +1197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.PageUpCommand"/> command.
         /// </summary>
-        private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.PageUp();
         }
@@ -1205,7 +1205,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToBottomCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.ScrollToBottom();
         }
@@ -1213,7 +1213,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToTopCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.ScrollToTop();
         }
@@ -1221,33 +1221,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToVerticalOffsetCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
-            if (!(parameter is Double))
+            if (!(parameter is Double) && data.CommandValueParameter == null)
                 return;
+
+            var pvalue = data.CommandValueParameter.HasValue ? data.CommandValueParameter.Value.AsDouble() : (Double)parameter;
 
             var scrollViewer = element as ScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ChangeVerticalOffset((Double)parameter, false);
+                scrollViewer.ChangeVerticalOffset(pvalue, false);
         }
 
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.DeferScrollToVerticalOffsetCommand"/> command.
         /// </summary>
-        private static void ExecutedDeferScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDeferScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
-            if (!(parameter is Double))
+            if (!(parameter is Double) && data.CommandValueParameter == null) 
                 return;
+
+            var pvalue = data.CommandValueParameter.HasValue ? data.CommandValueParameter.Value.AsDouble() : (Double)parameter;
 
             var scrollViewer = element as ScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ChangeVerticalOffset((Double)parameter, true);
+                scrollViewer.ChangeVerticalOffset(pvalue, true);
         }
         
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineRightCommand"/> command.
         /// </summary>
-        private static void ExecutedLineRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineRightCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.LineRight();
         }
@@ -1255,7 +1259,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineLeftCommand"/> command.
         /// </summary>
-        private static void ExecutedLineLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineLeftCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.LineLeft();
         }
@@ -1263,7 +1267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.PageRightCommand"/> command.
         /// </summary>
-        private static void ExecutedPageRightCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPageRightCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.PageRight();
         }
@@ -1271,7 +1275,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.PageLeftCommand"/> command.
         /// </summary>
-        private static void ExecutedPageLeftCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPageLeftCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.PageLeft();
         }
@@ -1279,7 +1283,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToRightEndCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToRightEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToRightEndCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.ScrollToRightEnd();
         }
@@ -1287,7 +1291,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToLeftEndCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToLeftEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToLeftEndCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.ScrollToLeftEnd();
         }
@@ -1295,33 +1299,37 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToHorizontalOffsetCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
-            if (!(parameter is Double))
+            if (!(parameter is Double) && data.CommandValueParameter == null)
                 return;
+
+            var pvalue = data.CommandValueParameter.HasValue ? data.CommandValueParameter.Value.AsDouble() : (Double)parameter;
 
             var scrollViewer = element as ScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ChangeHorizontalOffset((Double)parameter, false);
+                scrollViewer.ChangeHorizontalOffset(pvalue, false);
         }
 
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.DeferScrollToHorizontalOffsetCommand"/> command.
         /// </summary>
-        private static void ExecutedDeferScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedDeferScrollToHorizontalOffsetCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
-            if (!(parameter is Double))
+            if (!(parameter is Double) && data.CommandValueParameter == null)
                 return;
+
+            var pvalue = data.CommandValueParameter.HasValue ? data.CommandValueParameter.Value.AsDouble() : (Double)parameter;
 
             var scrollViewer = element as ScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ChangeHorizontalOffset((Double)parameter, true);
+                scrollViewer.ChangeHorizontalOffset(pvalue, true);
         }
 
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToEndCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToEndCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToEndCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.ScrollToEnd();
         }
@@ -1329,7 +1337,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToHomeCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToHomeCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToHomeCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             (element as ScrollViewer)?.ScrollToHome();
         }

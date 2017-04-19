@@ -140,7 +140,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineDownCommand"/> command.
         /// </summary>
-        private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineDownCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             ((VScrollBar)element).LineDown();
         }
@@ -148,7 +148,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineUpCommand"/> command.
         /// </summary>
-        private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedLineUpCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             ((VScrollBar)element).LineUp();
         }
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.PageDownCommand"/> command.
         /// </summary>
-        private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPageDownCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             ((VScrollBar)element).PageDown();
         }
@@ -164,7 +164,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.PageUpCommand"/> command.
         /// </summary>
-        private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedPageUpCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             ((VScrollBar)element).PageUp();
         }
@@ -172,7 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToBottomCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToBottomCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             ((VScrollBar)element).ScrollToBottom();
         }
@@ -180,7 +180,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollToTopCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollToTopCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             ((VScrollBar)element).ScrollToTop();
         }
@@ -188,7 +188,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.ScrollHereCommand"/> command.
         /// </summary>
-        private static void ExecutedScrollHereCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollHereCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var scrollBar = (VScrollBar)element;
             var scrollBarMin = scrollBar.Minimum;

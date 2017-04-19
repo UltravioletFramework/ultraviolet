@@ -459,7 +459,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <summary>
         /// Executes a scroll command.
         /// </summary>
-        private static void ExecutedScrollCommand(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void ExecutedScrollCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             var scrollBar = element as ScrollBar;
             if (scrollBar == null || data.OriginalSource != scrollBar)

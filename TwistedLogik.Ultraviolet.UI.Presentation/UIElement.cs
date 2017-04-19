@@ -2896,7 +2896,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Handles the <see cref="CommandManager.PreviewExecutedEvent"/> routed event.
         /// </summary>
-        private static void OnPreviewExecutedProxy(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void OnPreviewExecutedProxy(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             CommandManager.HandlePreviewExecuted(element, command, parameter, data);
         }
@@ -2904,7 +2904,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <summary>
         /// Handles the <see cref="CommandManager.ExecutedEvent"/> routed event.
         /// </summary>
-        private static void OnExecutedProxy(DependencyObject element, ICommand command, Object parameter, RoutedEventData data)
+        private static void OnExecutedProxy(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
             CommandManager.HandleExecuted(element, command, parameter, data);
         }
