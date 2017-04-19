@@ -11,6 +11,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -661,7 +662,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
                         continue;
 
-                    // 4. Raise LayoutUpdated events
+                    // 4. Raise events.
+                    RaiseRenderSizeChanged();
                     RaiseLayoutUpdated();
                 }
             }
@@ -678,6 +680,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             StyleQueue.Remove(element);
             MeasureQueue.Remove(element);
             ArrangeQueue.Remove(element);
+        }
+
+        /// <summary>
+        /// Adds the specified element to the queue of elements which will receive a RenderSizeChanged event.
+        /// </summary>
+        /// <param name="element">The element to register.</param>
+        /// <param name="previousSize">The previous size of the element.</param>
+        internal void RegisterRenderSizeChanged(UIElement element, Size2D previousSize)
+        {
+            Contract.Require(element, nameof(element));
+
+            var entry = new RenderSizeChangedEntry(element, previousSize);
+            elementsPendingRenderSizeChanged.AddLast(entry);
         }
 
         /// <summary>
@@ -1138,6 +1153,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the RenderSizeChanged event for elements which have changed size.
+        /// </summary>
+        private void RaiseRenderSizeChanged()
+        {
+            try
+            {
+                if (elementsPendingRenderSizeChangedTemp.Capacity < elementsPendingRenderSizeChanged.Count)
+                    elementsPendingRenderSizeChangedTemp.Capacity = elementsPendingRenderSizeChanged.Count;
+
+                foreach (var entry in elementsPendingRenderSizeChanged)
+                    elementsPendingRenderSizeChangedTemp.Add(entry);
+
+                elementsPendingRenderSizeChanged.Clear();
+
+                foreach (var entry in elementsPendingRenderSizeChangedTemp)
+                {
+                    var sizeChangedInfo = new SizeChangedInfo(entry.PreviousSize, entry.CurrentSize);
+                    entry.Element.OnRenderSizeChanged(sizeChangedInfo);
+                }
+            }
+            finally
+            {
+                elementsPendingRenderSizeChangedTemp.Clear();
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="UIElement.LayoutUpdated"/> event for elements which have registered handlers.
         /// </summary>
         private void RaiseLayoutUpdated()
@@ -1195,11 +1237,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly ComponentTemplateManager componentTemplateManager = 
             new ComponentTemplateManager();
 
-        // The core type registry.
+        // The registry of known types.
         private readonly Dictionary<String, KnownType> coreTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
-
-        // The custom type registry.
         private readonly Dictionary<String, KnownType> registeredTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
@@ -1214,8 +1254,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
-        private readonly WeakLinkedList<UIElement> elementsWithLayoutUpdatedHandlers = 
+        private readonly WeakLinkedList<UIElement> elementsWithLayoutUpdatedHandlers =  
             new WeakLinkedList<UIElement>();
+
+        // The list of elements waiting for a RenderSizeChanged event.
+        private readonly PooledLinkedList<RenderSizeChangedEntry> elementsPendingRenderSizeChanged =
+            new PooledLinkedList<RenderSizeChangedEntry>();
+        private readonly List<RenderSizeChangedEntry> elementsPendingRenderSizeChangedTemp =
+            new List<RenderSizeChangedEntry>();
 
         // The global style sheet.
         private UvssDocument globalStyleSheet;

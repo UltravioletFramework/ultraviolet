@@ -492,8 +492,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     finalRect = PerformLayoutRounding(finalRect);
 
+                    var oldRenderSize = this.renderSize;
+
                     this.renderSize = ArrangeCore(finalRect, options);
                     this.renderSize = PerformLayoutRounding(this.renderSize);
+
+                    var renderWidthChanged = !MathUtil.AreApproximatelyEqual(oldRenderSize.Width, renderSize.Width);
+                    var renderHeightChanged = !MathUtil.AreApproximatelyEqual(oldRenderSize.Height, renderSize.Height);
+                    if ((renderHeightChanged || renderWidthChanged) && !isRenderSizeChangedPending)
+                    {
+                        isRenderSizeChangedPending = true;
+                        PresentationFoundation.Instance.RegisterRenderSizeChanged(this, oldRenderSize);
+                    }
 
                     SetValue(ActualWidthPropertyKey, this.renderSize.Width);
                     SetValue(ActualHeightPropertyKey, this.renderSize.Height);
@@ -1846,6 +1856,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <param name="classname">The name of the class that was removed from the element.</param>
         protected internal virtual void OnClassRemoved(String classname) =>
             ClassRemoved?.Invoke(this, classname);
+
+        /// <summary>
+        /// Occurs after a layout update if the value of the element's <see cref="RenderSize"/> property has changed.
+        /// </summary>
+        /// <param name="info">A <see cref="SizeChangedInfo"/> structure containing the details of the change.</param>
+        protected internal virtual void OnRenderSizeChanged(SizeChangedInfo info)
+        {
+            isRenderSizeChangedPending = false;
+        }
 
         /// <summary>
         /// Removes the specified child element from this element.
@@ -3326,6 +3345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyleValid;
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
+        private Boolean isRenderSizeChangedPending;
         private Point2D renderOffset;
         private Size2D renderSize;
         private Size2D desiredSize;

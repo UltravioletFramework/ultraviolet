@@ -304,6 +304,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)OutOfBandRenderTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PopupQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationBoxedValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.RenderSizeChangedEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.DiagnosticsPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.KnownElement.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPerformanceStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationProfilerSections.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PropertyMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SizeChangedInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedSpriteAnimationID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursorResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursor.cs" />

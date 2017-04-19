@@ -180,6 +180,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override Boolean IsEnabledCore => base.IsEnabledCore && commandCanExecute;
 
         /// <inheritdoc/>
+        protected internal override void OnRenderSizeChanged(SizeChangedInfo info)
+        {
+            if (IsMouseCaptured && Mouse.PrimaryDevice.IsButtonDown(MouseButton.Left))
+            {
+                var position = Mouse.GetPosition(this);
+                IsPressed = Bounds.Contains(position);
+            }
+            base.OnRenderSizeChanged(info);
+        }
+
+        /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
             if (View != null && !View.IsInputEnabledAndAllowed)
@@ -226,7 +237,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (ClickMode != ClickMode.Hover)
             {
                 if (IsMouseCaptured && device.IsButtonDown(MouseButton.Left))
-                {
+                {                    
                     var position = Mouse.GetPosition(this);
                     IsPressed = Bounds.Contains(position);
                 }
@@ -379,7 +390,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
             base.OnGamePadButtonUp(device, button, data);
         }
-
+        
         /// <summary>
         /// Raises the <see cref="Click"/> event.
         /// </summary>
