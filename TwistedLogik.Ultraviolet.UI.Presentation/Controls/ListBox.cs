@@ -189,11 +189,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.Left:
+                    PART_ScrollViewer?.LineLeft();
+                    data.Handled = true;
+                    break;
+
                 case Key.Right:
-                    if (PART_ScrollViewer != null)
-                    {
-                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, data);
-                    }
+                    PART_ScrollViewer?.LineRight();
                     data.Handled = true;
                     break;
 
@@ -262,17 +263,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (direction)
                 {
                     case GamePadJoystickDirection.Left:
-                        if (PART_ScrollViewer != null)
-                        {
-                            PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
-                        }
+                        PART_ScrollViewer?.LineLeft();
                         break;
 
                     case GamePadJoystickDirection.Right:
-                        if (PART_ScrollViewer != null)
-                        {
-                            PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
-                        }
+                        PART_ScrollViewer?.LineRight();
                         break;
 
                     case GamePadJoystickDirection.Up:
@@ -314,18 +309,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     switch (button)
                     {
                         case GamePadButton.DPadLeft:
-                            if (PART_ScrollViewer != null)
-                            {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
-                            }
+                            PART_ScrollViewer?.LineLeft();
                             data.Handled = true;
                             break;
 
                         case GamePadButton.DPadRight:
-                            if (PART_ScrollViewer != null)
-                            {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
-                            }
+                            PART_ScrollViewer?.LineRight();
                             data.Handled = true;
                             break;
 

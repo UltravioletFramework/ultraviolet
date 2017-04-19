@@ -11,6 +11,14 @@ using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
     /// <summary>
+    /// Represents the method that is called when an element requests that it be brought into view.
+    /// </summary>
+    /// <param name="element">The element that raised the event.</param>
+    /// <param name="targetRectangle">The target rectangle to bring into view.</param>
+    /// <param name="data">The routed event metadata for this event invocation.</param>
+    public delegate void UpfRequestBringIntoViewEventHandler(DependencyObject element, RectangleD targetRectangle, RoutedEventData data);
+
+    /// <summary>
     /// Represents the base class for standard Ultraviolet Presentation Foundation elements.
     /// </summary>
     [Preserve(AllMembers = true)]
@@ -70,6 +78,31 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             initializationState = FrameworkElementInitializationState.Initialized;
 
             OnInitialized();
+        }
+
+        /// <summary>
+        /// Attempts to bring this element into view.
+        /// </summary>
+        public void BringIntoView()
+        {
+            BringIntoView(RectangleD.Empty);
+        }
+
+        /// <summary>
+        /// Attempts to bring the specified rectangle within this element into view.
+        /// </summary>
+        /// <param name="targetRectangle">The rectangle to bring into view.</param>
+        public void BringIntoView(RectangleD targetRectangle)
+        {
+            var evtData = RoutedEventData.Retrieve(this);
+            var evtDelegate = EventManager.GetInvocationDelegate<UpfRequestBringIntoViewEventHandler>(RequestBringIntoViewEvent);
+            evtDelegate(this, targetRectangle, evtData);
+        }
+
+        /// <inheritdoc/>
+        public override sealed DependencyObject PredictFocus(FocusNavigationDirection direction)
+        {
+            return FocusNavigator.PredictNavigation(View, this, direction, false) as DependencyObject;
         }
 
         /// <summary>
@@ -363,6 +396,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Occurs when an element requests that it be brought into view.
+        /// </summary>
+        public event UpfRequestBringIntoViewEventHandler RequestBringIntoView
+        {
+            add { AddHandler(RequestBringIntoViewEvent, value); }
+            remove { RemoveHandler(RequestBringIntoViewEvent, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="Loaded"/> routed event.
         /// </summary>
         /// <remarks>The styling name of this routed event is 'loaded'.</remarks>
@@ -375,6 +417,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// <remarks>The styling name of this routed event is 'unloaded'.</remarks>
         public static readonly RoutedEvent UnloadedEvent = EventManager.RegisterRoutedEvent("Unloaded", RoutingStrategy.Direct,
             typeof(UpfRoutedEventHandler), typeof(FrameworkElement));
+
+        /// <summary>
+        /// Identifies the <see cref="RequestBringIntoView"/> routed event.
+        /// </summary>
+        /// <remarks>The styling name of this routed event is 'request-bring-into-view'.</remarks>
+        public static readonly RoutedEvent RequestBringIntoViewEvent = EventManager.RegisterRoutedEvent("RequestBringIntoView", RoutingStrategy.Bubble,
+            typeof(UpfRequestBringIntoViewEventHandler), typeof(FrameworkElement));
 
         /// <summary>
         /// Sets the value of the <see cref="IsLoaded"/> property, propagating it downward through the
@@ -836,6 +885,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             if (data.OriginalSource == this)
             {
                 VisualStateGroups.GoToState("focus", "focused");
+                BringIntoView();
             }
             base.OnGotFocus(data);
         }

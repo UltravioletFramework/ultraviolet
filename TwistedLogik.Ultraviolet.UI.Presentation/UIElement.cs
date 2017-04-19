@@ -679,6 +679,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             return false;
         }
 
+        /// <summary>
+        /// Requests that the element predict the next element that will be focused if focus moves in the specified direction.
+        /// </summary>
+        /// <param name="direction">The direction in which focus is moving.</param>
+        /// <returns>The element that will be focused if focus moves in the specified direction, or <see langword="null"/> if
+        /// no element will be focused.</returns>
+        public virtual DependencyObject PredictFocus(FocusNavigationDirection direction)
+        {
+            return null;
+        }
+
         /// <inheritdoc/>
         public Boolean Focus()
         {

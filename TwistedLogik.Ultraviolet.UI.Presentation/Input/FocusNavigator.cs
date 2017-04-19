@@ -13,6 +13,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     internal static class FocusNavigator
     {
         /// <summary>
+        /// Converts an arrow key value to a navigation direction.
+        /// </summary>
+        /// <param name="key">The <see cref="Key"/> value to convert.</param>
+        /// <returns>The <see cref="FocusNavigationDirection"/> value that corresponds to the specified key.</returns>
+        public static FocusNavigationDirection ArrowKeyToFocusNavigationDirection(Key key)
+        {
+            switch (key)
+            {
+                case Key.Up:
+                    return FocusNavigationDirection.Up;
+
+                case Key.Down:
+                    return FocusNavigationDirection.Down;
+
+                case Key.Left:
+                    return FocusNavigationDirection.Left;
+
+                case Key.Right:
+                    return FocusNavigationDirection.Right;
+            }
+
+            throw new ArgumentException();
+        }
+
+        /// <summary>
+        /// Attempts to predict the element to which focus will be moved if it is moved in the specified direction.
+        /// </summary>
+        /// <param name="view">The view for which to perform navigation.</param>
+        /// <param name="element">The element at which to begin navigation.</param>
+        /// <param name="direction">The direction in which to navigate focus.</param>
+        /// <param name="ctrl">A value indicating whether the Ctrl modifier is active.</param>
+        /// <returns>The element to which focus will be moved.</returns>
+        public static IInputElement PredictNavigation(PresentationFoundationView view, UIElement element, FocusNavigationDirection direction, Boolean ctrl)
+        {
+            if (!PrepareNavigation(view, ref element, ref direction))
+                return null;
+
+            var navprop = GetNavigationProperty(direction, ctrl);
+            var navContainer = default(DependencyObject);
+            var destination = default(IInputElement);
+
+            switch (direction)
+            {
+                case FocusNavigationDirection.Next:
+                    navContainer = FindNavigationContainer(element, navprop);
+                    destination = FindNextNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.Previous:
+                    navContainer = FindNavigationContainer(element, navprop);
+                    destination = FindPrevNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.First:
+                    destination = FindNextNavigationStop(view, element, null, navprop, true) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.Last:
+                    destination = FindPrevNavigationStop(view, element, null, navprop, true) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.Left:
+                case FocusNavigationDirection.Right:
+                case FocusNavigationDirection.Up:
+                case FocusNavigationDirection.Down:
+                    navContainer = FindNavigationContainer(element, navprop, false);
+                    if (navContainer != null)
+                    {
+                        destination = FindNavigationStopInDirection(view, navContainer, element, navprop, direction) as IInputElement;
+                    }
+                    break;
+            }
+
+            return destination;
+        }
+
+        /// <summary>
         /// Attempts to perform navigation as a result of the specified key press.
         /// </summary>
         /// <param name="view">The view for which to perform navigation.</param>
@@ -142,45 +219,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, UIElement element, FocusNavigationDirection direction, Boolean ctrl)
         {
-            if (!PrepareNavigation(view, ref element, ref direction))
-                return false;
-
-            var navprop      = GetNavigationProperty(direction, ctrl);
-            var navContainer = default(DependencyObject);
-            var destination  = default(IInputElement);
-            
-            switch (direction)
-            {
-                case FocusNavigationDirection.Next:
-                    navContainer = FindNavigationContainer(element, navprop);
-                    destination  = FindNextNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.Previous:
-                    navContainer = FindNavigationContainer(element, navprop);
-                    destination  = FindPrevNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.First:
-                    destination = FindNextNavigationStop(view, element, null, navprop, true) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.Last:
-                    destination = FindPrevNavigationStop(view, element, null, navprop, true) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.Left:
-                case FocusNavigationDirection.Right:
-                case FocusNavigationDirection.Up:
-                case FocusNavigationDirection.Down:
-                    navContainer = FindNavigationContainer(element, navprop, false);
-                    if (navContainer != null)
-                    {
-                        destination = FindNavigationStopInDirection(view, navContainer, element, navprop, direction) as IInputElement;
-                    }
-                    break;
-            }            
-
+            var destination = PredictNavigation(view, element, direction, ctrl);
             if (destination != null)
             {
                 view.FocusElement(destination);

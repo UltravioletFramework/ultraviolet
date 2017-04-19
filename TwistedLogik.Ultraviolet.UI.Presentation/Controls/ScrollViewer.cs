@@ -30,8 +30,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
             // Event handlers
-            EventManager.RegisterClassHandler(typeof(ScrollViewer), RangeBase.ValueChangedEvent, new UpfRoutedEventHandler(HandleScrollBarValueChanged));
+            EventManager.RegisterClassHandler(typeof(ScrollViewer), FrameworkElement.RequestBringIntoViewEvent, new UpfRequestBringIntoViewEventHandler(HandleRequestBringIntoView));
             EventManager.RegisterClassHandler(typeof(ScrollViewer), Thumb.DragCompletedEvent, new UpfDragCompletedEventHandler(HandleThumbDragCompleted));
+            EventManager.RegisterClassHandler(typeof(ScrollViewer), RangeBase.ValueChangedEvent, new UpfRoutedEventHandler(HandleScrollBarValueChanged));
 
             // Commands - vertical scroll
             CommandManager.RegisterClassBindings(typeof(ScrollViewer), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand);
@@ -738,51 +739,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="ScrollChanged"/> routed event.</value>
         public static readonly RoutedEvent ScrollChangedEvent = EventManager.RegisterRoutedEvent("ScrollChanged", RoutingStrategy.Bubble, 
             typeof(UpfScrollChangedEventHandler), typeof(ScrollViewer));
-
-        /// <summary>
-        /// Scrolls in response to keyboard input.
-        /// </summary>
-        /// <param name="key">The <see cref="Key"/> value that represents the key that was pressed.</param>
-        /// <param name="modifiers">A <see cref="ModifierKeys"/> value indicating which of the key modifiers are currently active.</param>
-        /// <param name="data">The routed event metadata for this event invocation.</param>
-        internal void HandleKeyScrolling(Key key, ModifierKeys modifiers, RoutedEventData data)
-        {
-            switch (key)
-            {
-                case Key.Up:
-                    if (PART_VScroll.Value > PART_VScroll.Minimum)
-                    {
-                        PART_VScroll.Value -= ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Down:
-                    if (PART_VScroll.Value < PART_VScroll.Maximum)
-                    {
-                        PART_VScroll.Value += ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Left:
-                    if (PART_HScroll.Value > PART_HScroll.Minimum)
-                    {
-                        PART_HScroll.Value -= ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-
-                case Key.Right:
-                    if (PART_HScroll.Value < PART_HScroll.Maximum)
-                    {
-                        PART_HScroll.Value += ScrollDeltaKey;
-                        data.Handled = true;
-                    }
-                    break;
-            }
-        }
-
+        
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
@@ -973,9 +930,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var templatedParent = TemplatedParent as Control;
             if (templatedParent == null || !templatedParent.HandlesScrolling)
             {
-                HandleKeyScrolling(key, modifiers, data);
+                HandleKeyInput(key, modifiers, data);
             }
-
+            
             base.OnKeyDown(device, key, modifiers, data);
         }
 
@@ -991,19 +948,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     switch (direction)
                     {
                         case GamePadJoystickDirection.Up:
-                            HandleKeyScrolling(Key.Up, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Up, ModifierKeys.None, data);
                             break;
 
                         case GamePadJoystickDirection.Down:
-                            HandleKeyScrolling(Key.Down, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Down, ModifierKeys.None, data);
                             break;
 
                         case GamePadJoystickDirection.Left:
-                            HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Left, ModifierKeys.None, data);
                             break;
 
                         case GamePadJoystickDirection.Right:
-                            HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Right, ModifierKeys.None, data);
                             break;
                     }
                     data.Handled = true;
@@ -1024,19 +981,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     switch (button)
                     {
                         case GamePadButton.DPadUp:
-                            HandleKeyScrolling(Key.Up, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Up, ModifierKeys.None, data);
                             break;
 
                         case GamePadButton.DPadDown:
-                            HandleKeyScrolling(Key.Down, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Down, ModifierKeys.None, data);
                             break;
 
                         case GamePadButton.DPadLeft:
-                            HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Left, ModifierKeys.None, data);
                             break;
 
                         case GamePadButton.DPadRight:
-                            HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
+                            HandleKeyInput(Key.Right, ModifierKeys.None, data);
                             break;
                     }
                     data.Handled = true;
@@ -1080,6 +1037,95 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return true; }
         }
+        
+        /// <summary>
+        /// Occurs when an element requests that it be brought into view.
+        /// </summary>
+        private static void HandleRequestBringIntoView(DependencyObject element, RectangleD targetRectangle, RoutedEventData data)
+        {
+            var scrollViewer = element as ScrollViewer;
+            if (scrollViewer == null)
+                return;
+
+            var requester = data.OriginalSource as UIElement;
+            if (requester == null || requester == scrollViewer)
+                return;
+
+            if (targetRectangle.IsEmpty)
+                targetRectangle = new RectangleD(0, 0, requester.RenderSize.Width, requester.RenderSize.Height);
+
+            var presenter = scrollViewer.PART_ContentPresenter;
+            if (presenter == null)
+                return;
+
+            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset, 
+                scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
+            var boundsRequester = RectangleD.TransformAxisAligned(requester.Bounds, requester.GetTransformToAncestorMatrix(scrollViewer));
+            boundsRequester = RectangleD.Offset(boundsRequester, scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset);
+
+            var minX = 0.0;
+            var minY = 0.0;
+
+            var requesterIsToLeft =
+                MathUtil.IsApproximatelyLessThan(boundsRequester.Left, boundsViewport.Left) &&
+                MathUtil.IsApproximatelyLessThan(boundsRequester.Right, boundsViewport.Right);
+
+            var requesterIsToRight =
+                MathUtil.IsApproximatelyGreaterThan(boundsRequester.Left, boundsViewport.Left) &&
+                MathUtil.IsApproximatelyGreaterThan(boundsRequester.Right, boundsViewport.Right);
+
+            var requesterIsWider =
+                boundsRequester.Width > boundsViewport.Width;
+
+            if ((requesterIsToLeft && !requesterIsWider) || (requesterIsToRight && requesterIsWider))
+            {
+                minX = boundsRequester.Left;
+            }
+            else
+            {
+                if (requesterIsToLeft || requesterIsToRight)
+                {
+                    minX = boundsRequester.Right;
+                }
+                else
+                {
+                    minX = boundsViewport.Left;
+                }
+            }
+
+            var requesterIsAbove =
+                MathUtil.IsApproximatelyLessThan(boundsRequester.Top, boundsViewport.Top) &&
+                MathUtil.IsApproximatelyLessThan(boundsRequester.Bottom, boundsViewport.Bottom);
+
+            var requesterIsBelow =
+                MathUtil.IsApproximatelyGreaterThan(boundsRequester.Top, boundsViewport.Top) &&
+                MathUtil.IsApproximatelyGreaterThan(boundsRequester.Bottom, boundsViewport.Bottom);
+
+            var requesterIsTaller =
+                boundsRequester.Height > boundsViewport.Height;
+
+            if ((requesterIsAbove && !requesterIsTaller) || (requesterIsBelow && requesterIsTaller))
+            {
+                minY = boundsRequester.Top;
+            }
+            else
+            {
+                if (requesterIsAbove || requesterIsBelow)
+                {
+                    minY = boundsRequester.Bottom;
+                }
+                else
+                {
+                    minY = boundsViewport.Top;
+                }
+            }
+
+            scrollViewer.ChangeHorizontalOffset(minX, false);
+            scrollViewer.ChangeVerticalOffset(minY, false);
+
+            data.Handled = true;
+        }
+
 
         /// <summary>
         /// Occurs when the user stops dragging one of the viewer's scroll thumbs.
@@ -1102,16 +1148,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="ContentClipped"/> dependency property changes.
-        /// </summary>
-        private static void HandleContentClippedChanged(DependencyObject element, Boolean oldValue, Boolean newValue)
-        {
-            var scrollViewer = (ScrollViewer)element;
-            if (scrollViewer.PART_ContentPresenter != null)
-                scrollViewer.PART_ContentPresenter.Clip();
-        }
-
-        /// <summary>
         /// Handles the <see cref="RangeBase.ValueChanged"/> event for the scroll viewer's scroll bars.
         /// </summary>
         private static void HandleScrollBarValueChanged(DependencyObject element, RoutedEventData data)
@@ -1121,7 +1157,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 scrollViewer.Position(scrollViewer.MostRecentPositionOffset);
                 data.Handled = true;
-            }            
+            }
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="ContentClipped"/> dependency property changes.
+        /// </summary>
+        private static void HandleContentClippedChanged(DependencyObject element, Boolean oldValue, Boolean newValue)
+        {
+            var scrollViewer = (ScrollViewer)element;
+            if (scrollViewer.PART_ContentPresenter != null)
+                scrollViewer.PART_ContentPresenter.Clip();
         }
 
         /// <summary>
@@ -1331,6 +1377,20 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets a value indicating whether the specified element is at least partially visible within the scrollable area.
+        /// </summary>
+        private Boolean IsElementVisibleWithinScrollViewer(UIElement element)
+        {
+            if (PART_ContentPresenter == null || element == null)
+                return false;
+
+            if (!element.IsDescendantOf(PART_ContentPresenter))
+                return false;
+
+            return element.TransformedVisualBounds.Intersects(PART_ContentPresenter.TransformedVisualBounds);
+        }
+
+        /// <summary>
         /// Clamps the specified horizontal offset so that it falls within the scrollable area.
         /// </summary>
         private Double ClampHorizontalOffset(Double value) => Math.Max(0, Math.Min(value, ScrollableWidth));
@@ -1339,6 +1399,132 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// Clamps the specified vertical offset so that it falls within the scrollable area.
         /// </summary>
         private Double ClampVerticalOffset(Double value) => Math.Max(0, Math.Min(value, ScrollableHeight));
+
+        /// <summary>
+        /// Scrolls in response to keyboard input.
+        /// </summary>
+        private void HandleKeyInput(Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            var templatedParent = TemplatedParent as Control;
+            if (templatedParent?.HandlesScrolling ?? false)
+                return;
+
+            if (data.OriginalSource == this)
+            {
+                HandleKeyScrolling(key, modifiers, data);
+            }
+            else
+            {
+
+                var isArrowKey = (key == Key.Left || key == Key.Right || key == Key.Up || key == Key.Down);
+                if (isArrowKey)
+                {
+                    if (PART_ContentPresenter == null)
+                    {
+                        HandleKeyScrolling(key, modifiers, data);
+                    }
+                    else
+                    {
+                        var direction = FocusNavigator.ArrowKeyToFocusNavigationDirection(key);
+                        var focusedCurrent = Keyboard.GetFocusedElement(View) as UIElement;
+                        var focusedCurrentIsVisible = IsElementVisibleWithinScrollViewer(focusedCurrent);
+                        var focusedNext = (focusedCurrentIsVisible ? focusedCurrent.PredictFocus(direction) : PART_ContentPresenter.PredictFocus(direction)) as UIElement;
+                        if (focusedNext == null)
+                        {
+                            HandleKeyScrolling(key, modifiers, data);
+                        }
+                        else
+                        {
+                            var focusedNextIsVisible = IsElementVisibleWithinScrollViewer(focusedNext);
+                            if (focusedNextIsVisible)
+                            {
+                                data.Handled = true;
+                            }
+                            else
+                            {
+                                HandleKeyScrolling(key, modifiers, data);
+                                UpdateLayout();
+
+                                focusedNextIsVisible = IsElementVisibleWithinScrollViewer(focusedNext);
+                            }
+
+                            if (focusedNextIsVisible)
+                                focusedNext.Focus();
+                        }
+                    }
+                }
+                else
+                {
+                    HandleKeyScrolling(key, modifiers, data);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Scrolls in the direction corresponding to the given key.
+        /// </summary>
+        private void HandleKeyScrolling(Key key, ModifierKeys modifiers, RoutedEventData data)
+        {
+            if ((modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+                return;
+
+            switch (key)
+            {
+                case Key.Left:
+                    LineLeft();
+                    data.Handled = true;
+                    break;
+
+                case Key.Right:
+                    LineRight();
+                    data.Handled = true;
+                    break;
+
+                case Key.Down:
+                    LineDown();
+                    data.Handled = true;
+                    break;
+
+                case Key.Up:
+                    LineUp();
+                    data.Handled = true;
+                    break;
+
+                case Key.PageUp:
+                    PageUp();
+                    data.Handled = true;
+                    break;
+
+                case Key.PageDown:
+                    PageDown();
+                    data.Handled = true;
+                    break;
+
+                case Key.Home:
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        ScrollToTop();
+                    }
+                    else
+                    {
+                        ScrollToLeftEnd();
+                    }
+                    data.Handled = true;
+                    break;
+
+                case Key.End:
+                    if ((modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    {
+                        ScrollToBottom();
+                    }
+                    else
+                    {
+                        ScrollToRightEnd();
+                    }
+                    data.Handled = true;
+                    break;
+            }
+        }
 
         /// <summary>
         /// Handles the <see cref="UIElement.LayoutUpdated"/> event.
