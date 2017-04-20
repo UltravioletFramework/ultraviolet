@@ -172,6 +172,7 @@
     <Compile Include="Size3FTests.cs" />
     <Compile Include="MatrixTests.cs" />
     <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
+    <Compile Include="UI\Presentation\Input\GamePadGestureTests.cs" />
     <Compile Include="UI\Presentation\Input\MouseGestureTests.cs" />
     <Compile Include="UI\Presentation\Input\KeyGestureTests.cs" />
     <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />

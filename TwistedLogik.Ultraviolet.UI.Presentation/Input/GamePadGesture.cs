@@ -55,7 +55,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         [Preserve]
         public GamePadGesture(GamePadButton button, Int32 playerIndex, String displayString)
         {
-            Contract.EnsureRange(playerIndex >= 0, nameof(playerIndex));
+            Contract.EnsureRange(playerIndex >= AnyPlayerIndex, nameof(playerIndex));
             Contract.Require(displayString, nameof(displayString));
 
             this.Button = button;
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 if (partIndex.StartsWith("P", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!Int32.TryParse(partIndex.Substring(1), out index))
+                    if (!Int32.TryParse(partIndex.Substring(1), out index) || index < 0)
                         return false;
                 }
                 else if (!String.Equals("ANY", partIndex, StringComparison.OrdinalIgnoreCase))
