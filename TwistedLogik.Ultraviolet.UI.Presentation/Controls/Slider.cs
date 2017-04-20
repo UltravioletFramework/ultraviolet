@@ -28,14 +28,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp")));
             CommandManager.RegisterClassBindings(typeof(Slider), DecreaseSmallCommand, ExecutedDecreaseSmallCommand,
                 new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new KeyGesture(Key.Up, ModifierKeys.None, "Up")),
-                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Horizontal, new KeyGesture(Key.Left, ModifierKeys.None, "Left")));
+                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp")),
+                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Horizontal, new KeyGesture(Key.Left, ModifierKeys.None, "Left")),
+                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Horizontal, new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft")));
 
             // Commands - increase
             CommandManager.RegisterClassBindings(typeof(Slider), IncreaseLargeCommand, ExecutedIncreaseLargeCommand,
                 new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new KeyGesture(Key.PageUp, ModifierKeys.None, "PageDown")));
             CommandManager.RegisterClassBindings(typeof(Slider), IncreaseSmallCommand, ExecutedIncreaseSmallCommand,
                 new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new KeyGesture(Key.Down, ModifierKeys.None, "Down")),
-                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Horizontal, new KeyGesture(Key.Right, ModifierKeys.None, "Right")));
+                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown")),
+                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Horizontal, new KeyGesture(Key.Right, ModifierKeys.None, "Right")),
+                new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Horizontal, new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight")));
 
             // Commands - min/max
             CommandManager.RegisterClassBindings(typeof(Slider), MaximizeValueCommand, ExecutedMaximizeValueCommand,

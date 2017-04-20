@@ -19,9 +19,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             // Commands - vertical scroll
             CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.LineDownCommand, ExecutedLineDownCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
+                new KeyGesture(Key.Down, ModifierKeys.None, "Down"),
+                new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown"));
             CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.LineUpCommand, ExecutedLineUpCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
+                new KeyGesture(Key.Up, ModifierKeys.None, "Up"),
+                new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp"));
             CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.PageDownCommand, ExecutedPageDownCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
             CommandManager.RegisterClassBindings(typeof(VScrollBar), ScrollBar.PageUpCommand, ExecutedPageUpCommand, CanExecuteScrollCommand,

@@ -935,68 +935,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             
             base.OnKeyDown(device, key, modifiers, data);
         }
-
-        /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
-        {
-            var templatedParent = TemplatedParent as Control;
-            if (templatedParent == null || !templatedParent.HandlesScrolling)
-            {
-                if (GamePad.UseAxisForDirectionalNavigation)
-                {
-                    var direction = device.GetJoystickDirectionFromAxis(axis);
-                    switch (direction)
-                    {
-                        case GamePadJoystickDirection.Up:
-                            HandleKeyInput(Key.Up, ModifierKeys.None, data);
-                            break;
-
-                        case GamePadJoystickDirection.Down:
-                            HandleKeyInput(Key.Down, ModifierKeys.None, data);
-                            break;
-
-                        case GamePadJoystickDirection.Left:
-                            HandleKeyInput(Key.Left, ModifierKeys.None, data);
-                            break;
-
-                        case GamePadJoystickDirection.Right:
-                            HandleKeyInput(Key.Right, ModifierKeys.None, data);
-                            break;
-                    }
-                    data.Handled = true;
-                }
-            }
-            
-            base.OnGamePadAxisDown(device, axis, value, repeat, data);
-        }
-
+        
         /// <inheritdoc/>
         protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             var templatedParent = TemplatedParent as Control;
             if (templatedParent == null || !templatedParent.HandlesScrolling)
             {
-                if (!GamePad.UseAxisForDirectionalNavigation)
+                switch (button)
                 {
-                    switch (button)
-                    {
-                        case GamePadButton.DPadUp:
-                            HandleKeyInput(Key.Up, ModifierKeys.None, data);
-                            break;
+                    case GamePadButton.LeftStickUp:
+                        HandleKeyInput(Key.Up, ModifierKeys.None, data);
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadDown:
-                            HandleKeyInput(Key.Down, ModifierKeys.None, data);
-                            break;
+                    case GamePadButton.LeftStickDown:
+                        HandleKeyInput(Key.Down, ModifierKeys.None, data);
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadLeft:
-                            HandleKeyInput(Key.Left, ModifierKeys.None, data);
-                            break;
+                    case GamePadButton.LeftStickLeft:
+                        HandleKeyInput(Key.Left, ModifierKeys.None, data);
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadRight:
-                            HandleKeyInput(Key.Right, ModifierKeys.None, data);
-                            break;
-                    }
-                    data.Handled = true;
+                    case GamePadButton.LeftStickRight:
+                        HandleKeyInput(Key.Right, ModifierKeys.None, data);
+                        data.Handled = true;
+                        break;
                 }
             }
 
@@ -1125,8 +1091,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             data.Handled = true;
         }
-
-
+        
         /// <summary>
         /// Occurs when the user stops dragging one of the viewer's scroll thumbs.
         /// </summary>

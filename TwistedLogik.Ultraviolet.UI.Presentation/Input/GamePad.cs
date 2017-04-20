@@ -65,11 +65,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </summary>
         static GamePad()
         {
-            UseAxisForDirectionalNavigation = true;
-
-            DirectionalNavigationAxisX = GamePadAxis.LeftJoystickX;
-            DirectionalNavigationAxisY = GamePadAxis.LeftJoystickY;
-
             ConfirmButton = GamePadButton.A;
             CancelButton = GamePadButton.B;
 
@@ -368,37 +363,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             IInputElementHelper.RemoveHandler(element, ButtonUpEvent, handler);
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use controller axes for directional navigation. If this property is
-        /// set to <see langword="false"/>, then the directional pad will be used instead.
-        /// </summary>
-        public static Boolean UseAxisForDirectionalNavigation
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the axis which is used to perform left/right directional navigation if
-        /// <see cref="UseAxisForDirectionalNavigation"/> is <see langword="true"/>.
-        /// </summary>
-        public static GamePadAxis DirectionalNavigationAxisX
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the axis which is used to perform up/down directional navigation if
-        /// <see cref="UseAxisForDirectionalNavigation"/> is <see langword="true"/>.
-        /// </summary>
-        public static GamePadAxis DirectionalNavigationAxisY
-        {
-            get;
-            set;
-        }
-
+        
         /// <summary>
         /// Gets or sets the game pad button which confirms interface actions.
         /// </summary>

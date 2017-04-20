@@ -184,18 +184,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
                 case nameof(MoveLeft):
                     gestures.Add(new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
+                    gestures.Add(new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft"));
                     break;
 
                 case nameof(MoveRight):
                     gestures.Add(new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
+                    gestures.Add(new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight"));
                     break;
 
                 case nameof(MoveUp):
                     gestures.Add(new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
+                    gestures.Add(new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp"));
                     break;
 
                 case nameof(MoveDown):
                     gestures.Add(new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
+                    gestures.Add(new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown"));
                     break;
 
                 case nameof(MoveToHome):

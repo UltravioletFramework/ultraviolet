@@ -34,14 +34,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.DecreaseSmallCommand, ExecutedDecreaseSmallCommand,
                 new ConditionalGesture(src => (src is VSlider), new KeyGesture(Key.Up, ModifierKeys.None, "Up")),
-                new ConditionalGesture(src => (src is HSlider), new KeyGesture(Key.Left, ModifierKeys.None, "Left")));
+                new ConditionalGesture(src => (src is VSlider), new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp")),
+                new ConditionalGesture(src => (src is HSlider), new KeyGesture(Key.Left, ModifierKeys.None, "Left")),
+                new ConditionalGesture(src => (src is HSlider), new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft")));
 
             // Commands - increase
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.IncreaseLargeCommand, ExecutedIncreaseLargeCommand,
                 new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.IncreaseSmallCommand, ExecutedIncreaseSmallCommand,
                 new ConditionalGesture(src => (src is VSlider), new KeyGesture(Key.Down, ModifierKeys.None, "Down")),
-                new ConditionalGesture(src => (src is HSlider), new KeyGesture(Key.Right, ModifierKeys.None, "Right")));
+                new ConditionalGesture(src => (src is VSlider), new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown")),
+                new ConditionalGesture(src => (src is HSlider), new KeyGesture(Key.Right, ModifierKeys.None, "Right")),
+                new ConditionalGesture(src => (src is HSlider), new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight")));
 
             // Commands - min/max
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.MaximizeValueCommand, ExecutedMaximizeValueCommand,

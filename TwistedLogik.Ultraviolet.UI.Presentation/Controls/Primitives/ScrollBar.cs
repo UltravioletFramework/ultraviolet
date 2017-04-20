@@ -36,9 +36,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             // Commands - vertical scroll
             CommandManager.RegisterClassBindings(typeof(ScrollBar), LineDownCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Down, ModifierKeys.None, "Down"));
+                new KeyGesture(Key.Down, ModifierKeys.None, "Down"),
+                new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), LineUpCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Up, ModifierKeys.None, "Up"));
+                new KeyGesture(Key.Up, ModifierKeys.None, "Up"),
+                new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), PageDownCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
                 new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), PageUpCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
@@ -50,9 +52,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             // Commands - horizontal scroll
             CommandManager.RegisterClassBindings(typeof(ScrollBar), LineRightCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
+                new KeyGesture(Key.Right, ModifierKeys.None, "Right"),
+                new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), LineLeftCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
+                new KeyGesture(Key.Left, ModifierKeys.None, "Left"),
+                new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft"));
             CommandManager.RegisterClassBindings(typeof(ScrollBar), PageRightCommand, ExecutedScrollCommand, CanExecuteScrollCommand,
                 null);
             CommandManager.RegisterClassBindings(typeof(ScrollBar), PageLeftCommand, ExecutedScrollCommand, CanExecuteScrollCommand,

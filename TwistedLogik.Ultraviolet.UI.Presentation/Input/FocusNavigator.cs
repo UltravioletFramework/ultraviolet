@@ -150,65 +150,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             if (GamePad.ShiftTabButton == button)
                 return PerformNavigation(view, element, FocusNavigationDirection.Previous, false);
 
-            if (!GamePad.UseAxisForDirectionalNavigation)
+            switch (button)
             {
-                switch (button)
-                {
-                    case GamePadButton.DPadUp:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Up, false);
+                case GamePadButton.LeftStickUp:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Up, false);
 
-                    case GamePadButton.DPadDown:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Down, false);
+                case GamePadButton.LeftStickDown:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Down, false);
 
-                    case GamePadButton.DPadLeft:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Left, false);
+                case GamePadButton.LeftStickLeft:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Left, false);
 
-                    case GamePadButton.DPadRight:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Right, false);
-                }
+                case GamePadButton.LeftStickRight:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Right, false);
             }
 
             return false;
         }
-
-        /// <summary>
-        /// Attempts to perform navigation as a result of the specified game pad axis press.
-        /// </summary>
-        /// <param name="view">The view for which to perform navigation.</param>
-        /// <param name="device">The game pad device that raised the button press event.</param>
-        /// <param name="axis">The axis that was pressed.</param>
-        /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
-        public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadAxis axis)
-        {
-            Contract.Require(view, nameof(view));
-
-            if (GamePad.UseAxisForDirectionalNavigation)
-            {
-                var element = (view.ElementWithFocus ?? view.LayoutRoot) as UIElement;
-                if (element == null)
-                    return false;
-
-                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
-                {
-                    var direction = device.GetJoystickDirectionFromAxis(axis);
-                    var succeeded = false;
-
-                    if ((direction & GamePadJoystickDirection.Up) == GamePadJoystickDirection.Up)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Up, false);
-
-                    if ((direction & GamePadJoystickDirection.Down) == GamePadJoystickDirection.Down)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Down, false);
-
-                    if ((direction & GamePadJoystickDirection.Left) == GamePadJoystickDirection.Left)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Left, false);
-
-                    if ((direction & GamePadJoystickDirection.Right) == GamePadJoystickDirection.Right)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Right, false);
-                }
-            }
-            return false;
-        }
-
+        
         /// <summary>
         /// Attempts to navigate focus in the specified direction.
         /// </summary>

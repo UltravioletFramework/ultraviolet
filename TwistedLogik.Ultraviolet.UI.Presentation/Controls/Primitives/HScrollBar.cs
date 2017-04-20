@@ -19,9 +19,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             // Commands - horizontal scroll
             CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.LineRightCommand, ExecutedLineRightCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Right, ModifierKeys.None, "Right"));
+                new KeyGesture(Key.Right, ModifierKeys.None, "Right"),
+                new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight"));
             CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.LineLeftCommand, ExecutedLineLeftCommand, CanExecuteScrollCommand,
-                new KeyGesture(Key.Left, ModifierKeys.None, "Left"));
+                new KeyGesture(Key.Left, ModifierKeys.None, "Left"),
+                new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft"));
             CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.PageRightCommand, ExecutedPageRightCommand, CanExecuteScrollCommand,
                 null);
             CommandManager.RegisterClassBindings(typeof(HScrollBar), ScrollBar.PageLeftCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand,

@@ -255,42 +255,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
-        {
-            if (GamePad.UseAxisForDirectionalNavigation && (axis == GamePad.DirectionalNavigationAxisX || axis == GamePad.DirectionalNavigationAxisY))
-            {
-                var direction = device.GetJoystickDirectionFromAxis(axis);
-                switch (direction)
-                {
-                    case GamePadJoystickDirection.Left:
-                        PART_ScrollViewer?.LineLeft();
-                        break;
-
-                    case GamePadJoystickDirection.Right:
-                        PART_ScrollViewer?.LineRight();
-                        break;
-
-                    case GamePadJoystickDirection.Up:
-                        if (SelectionMode == SelectionMode.Single)
-                        {
-                            MoveSelectedItem(FocusNavigationDirection.Up);
-                        }
-                        break;
-
-                    case GamePadJoystickDirection.Down:
-                        if (SelectionMode == SelectionMode.Single)
-                        {
-                            MoveSelectedItem(FocusNavigationDirection.Down);
-                        }
-                        break;
-                }
-                data.Handled = true;
-            }
-            
-            base.OnGamePadAxisDown(device, axis, value, repeat, data);
-        }
-
-        /// <inheritdoc/>
         protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (GamePad.ConfirmButton == button)
@@ -304,36 +268,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             else
             {
-                if (!GamePad.UseAxisForDirectionalNavigation)
+                switch (button)
                 {
-                    switch (button)
-                    {
-                        case GamePadButton.DPadLeft:
-                            PART_ScrollViewer?.LineLeft();
-                            data.Handled = true;
-                            break;
+                    case GamePadButton.LeftStickLeft:
+                        PART_ScrollViewer?.LineLeft();
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadRight:
-                            PART_ScrollViewer?.LineRight();
-                            data.Handled = true;
-                            break;
+                    case GamePadButton.LeftStickRight:
+                        PART_ScrollViewer?.LineRight();
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadUp:
-                            if (SelectionMode == SelectionMode.Single)
-                            {
-                                MoveSelectedItem(FocusNavigationDirection.Up);
-                            }
-                            data.Handled = true;
-                            break;
+                    case GamePadButton.LeftStickUp:
+                        if (SelectionMode == SelectionMode.Single)
+                        {
+                            MoveSelectedItem(FocusNavigationDirection.Up);
+                        }
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadDown:
-                            if (SelectionMode == SelectionMode.Single)
-                            {
-                                MoveSelectedItem(FocusNavigationDirection.Down);
-                            }
-                            data.Handled = true;
-                            break;
-                    }
+                    case GamePadButton.LeftStickDown:
+                        if (SelectionMode == SelectionMode.Single)
+                        {
+                            MoveSelectedItem(FocusNavigationDirection.Down);
+                        }
+                        data.Handled = true;
+                        break;
                 }
             }
 
