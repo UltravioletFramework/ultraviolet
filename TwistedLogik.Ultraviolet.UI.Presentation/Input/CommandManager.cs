@@ -668,8 +668,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             // Execute command, if found
             ExecuteTranslatedCommand(invocation, uiElement, data);
         }
-
-
+        
         /// <summary>
         /// Handles the <see cref="PreviewExecutedEvent"/> routed event for the specified element.
         /// </summary>
@@ -897,8 +896,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             }
             return null;
         }
-
-
+        
         /// <summary>
         /// Searches the specified collection of command bindings for a binding which matches the specified input event.
         /// </summary>
