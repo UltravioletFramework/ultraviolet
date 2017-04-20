@@ -51,6 +51,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public override Boolean MatchesMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data) =>
             IsValid(data.Source) ? WrappedGesture.MatchesMouseWheel(device, x, y, data) : false;
 
+        /// <inheritdoc/>
+        public override Boolean MatchesGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data) =>
+            IsValid(data.Source) ? WrappedGesture.MatchesGamePadButtonDown(device, button, repeat, data) : false;
+
         // State values.
         private readonly Func<Object, Boolean> condition;
     }
