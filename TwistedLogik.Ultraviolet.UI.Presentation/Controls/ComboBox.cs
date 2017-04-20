@@ -498,12 +498,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 switch (button)
                 {
                     case GamePadButton.LeftStickUp:
-                        MoveItemSelection(-1);
+                        MoveItemFocus(-1);
                         data.Handled = true;
                         break;
 
                     case GamePadButton.LeftStickDown:
-                        MoveItemSelection(1);
+                        MoveItemFocus(1);
                         data.Handled = true;
                         break;
 
@@ -537,14 +537,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     case GamePadButton.LeftStickUp:
                     case GamePadButton.LeftStickLeft:
                         MoveItemSelection(-1);
+                        data.Handled = true;
                         break;
 
                     case GamePadButton.LeftStickDown:
                     case GamePadButton.LeftStickRight:
                         MoveItemSelection(1);
+                        data.Handled = true;
                         break;
                 }
-                data.Handled = true;
             }
         }
 
