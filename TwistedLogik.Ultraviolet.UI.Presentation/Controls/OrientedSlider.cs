@@ -33,19 +33,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.DecreaseLargeCommand, ExecutedDecreaseLargeCommand,
                 new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp"));
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.DecreaseSmallCommand, ExecutedDecreaseSmallCommand,
-                new ConditionalGesture(src => (src is VSlider), new KeyGesture(Key.Up, ModifierKeys.None, "Up")),
-                new ConditionalGesture(src => (src is VSlider), new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp")),
-                new ConditionalGesture(src => (src is HSlider), new KeyGesture(Key.Left, ModifierKeys.None, "Left")),
-                new ConditionalGesture(src => (src is HSlider), new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft")));
+                new ConditionalGesture(src => (src is VSlider) && !((VSlider)src).IsDirectionReversed, new KeyGesture(Key.Up, ModifierKeys.None, "Up")),
+                new ConditionalGesture(src => (src is VSlider) && !((VSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp")),
+                new ConditionalGesture(src => (src is HSlider) && !((HSlider)src).IsDirectionReversed, new KeyGesture(Key.Left, ModifierKeys.None, "Left")),
+                new ConditionalGesture(src => (src is HSlider) && !((HSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft")),
+                new ConditionalGesture(src => (src is VSlider) && ((VSlider)src).IsDirectionReversed, new KeyGesture(Key.Down, ModifierKeys.None, "Down")),
+                new ConditionalGesture(src => (src is VSlider) && ((VSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown")),
+                new ConditionalGesture(src => (src is HSlider) && ((HSlider)src).IsDirectionReversed, new KeyGesture(Key.Right, ModifierKeys.None, "Right")),
+                new ConditionalGesture(src => (src is HSlider) && ((HSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight")));
 
             // Commands - increase
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.IncreaseLargeCommand, ExecutedIncreaseLargeCommand,
                 new KeyGesture(Key.PageDown, ModifierKeys.None, "PageDown"));
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.IncreaseSmallCommand, ExecutedIncreaseSmallCommand,
-                new ConditionalGesture(src => (src is VSlider), new KeyGesture(Key.Down, ModifierKeys.None, "Down")),
-                new ConditionalGesture(src => (src is VSlider), new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown")),
-                new ConditionalGesture(src => (src is HSlider), new KeyGesture(Key.Right, ModifierKeys.None, "Right")),
-                new ConditionalGesture(src => (src is HSlider), new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight")));
+                new ConditionalGesture(src => (src is VSlider) && !((VSlider)src).IsDirectionReversed, new KeyGesture(Key.Down, ModifierKeys.None, "Down")),
+                new ConditionalGesture(src => (src is VSlider) && !((VSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickDown, 0, "LeftStickDown")),
+                new ConditionalGesture(src => (src is HSlider) && !((HSlider)src).IsDirectionReversed, new KeyGesture(Key.Right, ModifierKeys.None, "Right")),
+                new ConditionalGesture(src => (src is HSlider) && !((HSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickRight, 0, "LeftStickRight")),
+                new ConditionalGesture(src => (src is VSlider) && ((VSlider)src).IsDirectionReversed, new KeyGesture(Key.Up, ModifierKeys.None, "up")),
+                new ConditionalGesture(src => (src is VSlider) && ((VSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickUp, 0, "LeftStickUp")),
+                new ConditionalGesture(src => (src is HSlider) && ((HSlider)src).IsDirectionReversed, new KeyGesture(Key.Left, ModifierKeys.None, "Left")),
+                new ConditionalGesture(src => (src is HSlider) && ((HSlider)src).IsDirectionReversed, new GamePadGesture(GamePadButton.LeftStickLeft, 0, "LeftStickLeft")));
 
             // Commands - min/max
             CommandManager.RegisterClassBindings(typeof(OrientedSlider), Slider.MaximizeValueCommand, ExecutedMaximizeValueCommand,
@@ -116,6 +124,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the slider's direction of increasing value is reversed.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether the slider's direction of increasing value is reversed.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsDirectionReversedProperty"/></dpropField>
+        ///     <dpropStylingName>direction-reversed</dpropStylingName>
+        ///     <dpropMetadata>AffectsMeasure</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsDirectionReversed
+        {
+            get { return GetValue<Boolean>(IsDirectionReversedProperty); }
+            set { SetValue(IsDirectionReversedProperty, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Delay"/> dependency property.</value>
@@ -126,6 +151,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
         public static readonly DependencyProperty IntervalProperty = RepeatButton.IntervalProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <summary>
+        /// Identifies the <see cref="IsDirectionReversed"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
+        public static readonly DependencyProperty IsDirectionReversedProperty = Slider.IsDirectionReversedProperty.AddOwner(typeof(OrientedSlider));
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)

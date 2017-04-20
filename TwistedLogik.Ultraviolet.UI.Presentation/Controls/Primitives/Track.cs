@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         static Track()
         {
-            CommandManager.RegisterClassCommandBinding(typeof(Track), new CommandBinding(IncreaseCommand, null, 
+            CommandManager.RegisterClassCommandBinding(typeof(Track), new CommandBinding(IncreaseCommand, null,
                 (element, command, parameter, data) => data.CanExecute = true));
             CommandManager.RegisterClassCommandBinding(typeof(Track), new CommandBinding(DecreaseCommand, null,
                 (element, command, parameter, data) => data.CanExecute = true));
@@ -31,22 +31,22 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         public Track(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            this.Thumb = new Thumb(uv, null) 
-            { 
-                HorizontalAlignment = HorizontalAlignment.Stretch, 
-                VerticalAlignment   = VerticalAlignment.Stretch,
-                Focusable           = false,
+            this.Thumb = new Thumb(uv, null)
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Focusable = false,
             };
             this.Thumb.Classes.Add("track-thumb");
             this.Thumb.ChangeLogicalAndVisualParents(this, this);
             KeyboardNavigation.SetIsTabStop(this.Thumb, false);
 
-            this.IncreaseButton = new RepeatButton(uv, null) 
-            { 
+            this.IncreaseButton = new RepeatButton(uv, null)
+            {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment   = VerticalAlignment.Stretch,
-                Opacity             = 0,
-                Focusable           = false,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Opacity = 0,
+                Focusable = false,
             };
             this.IncreaseButton.Classes.Add("track-increase");
             this.IncreaseButton.Command = IncreaseCommand;
@@ -54,12 +54,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             this.IncreaseButton.ChangeLogicalAndVisualParents(this, this);
             KeyboardNavigation.SetIsTabStop(this.IncreaseButton, false);
 
-            this.DecreaseButton = new RepeatButton(uv, null) 
-            { 
-                HorizontalAlignment = HorizontalAlignment.Stretch, 
-                VerticalAlignment   = VerticalAlignment.Stretch,
-                Opacity             = 0,
-                Focusable           = false,
+            this.DecreaseButton = new RepeatButton(uv, null)
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Opacity = 0,
+                Focusable = false,
             };
             this.DecreaseButton.Classes.Add("track-decrease");
             this.DecreaseButton.Command = DecreaseCommand;
@@ -79,7 +79,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         {
             if (Orientation == Orientation.Horizontal)
             {
-                return Math.Sign(horizontal) * 
+                return Math.Sign(horizontal) *
                     (OffsetToValue(Math.Abs(horizontal), RenderSize.Width, Thumb.RenderSize.Width) - OffsetToValue(0, RenderSize.Width, Thumb.RenderSize.Width));
             }
             else
@@ -108,7 +108,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the track's orientation.
         /// </summary>
@@ -169,6 +169,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the track's direction of increasing value is reversed.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether the track's direction of increasing value is reversed.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsDirectionReversedProperty"/></dpropField>
+        ///     <dpropStylingName>direction-reversed</dpropStylingName>
+        ///     <dpropMetadata>AffectsMeasure</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsDirectionReversed
+        {
+            get { return GetValue<Boolean>(IsDirectionReversedProperty); }
+            set { SetValue(IsDirectionReversedProperty, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
@@ -202,6 +219,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>The identifier for the <see cref="Value"/> dependency property.</value>
         public static readonly DependencyProperty ValueProperty = RangeBase.ValueProperty.AddOwner(typeof(Track),
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="IsDirectionReversed"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsDirectionReversed"/> dependency property.</value>
+        public static readonly DependencyProperty IsDirectionReversedProperty = DependencyProperty.Register("IsDirectionReversed", typeof(Boolean), typeof(Track),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// A command that increases the track's value.
@@ -264,25 +288,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
             // Calculate the sizes of the track's components.
-            var thumbSize          = CalculateThumbSize(finalSize);
+            var thumbSize = CalculateThumbSize(finalSize);
             var decreaseButtonSize = CalculateDecreaseButtonSize(finalSize, thumbSize);
             var increaseButtonSize = CalculateIncreaseButtonSize(finalSize, decreaseButtonSize, thumbSize);
 
             // Arrange the track's components.
-            var position    = new Point2D(0, 0);
+            var position = new Point2D(0, 0);
             var orientation = this.Orientation;
 
-            DecreaseButton.Arrange(new RectangleD(position, decreaseButtonSize));
-            position += (orientation == Orientation.Horizontal) ? new Point2D(decreaseButtonSize.Width, 0) : new Point2D(0, decreaseButtonSize.Height);
+            if (IsDirectionReversed)
+            {
+                IncreaseButton.Arrange(new RectangleD(position, increaseButtonSize));
+                position += (orientation == Orientation.Horizontal) ? new Point2D(increaseButtonSize.Width, 0) : new Point2D(0, increaseButtonSize.Height);
 
-            Thumb.Arrange(new RectangleD(position, thumbSize));
-            position += (orientation == Orientation.Horizontal) ? new Point2D(thumbSize.Width, 0) : new Point2D(0, thumbSize.Height);
+                Thumb.Arrange(new RectangleD(position, thumbSize));
+                position += (orientation == Orientation.Horizontal) ? new Point2D(thumbSize.Width, 0) : new Point2D(0, thumbSize.Height);
 
-            IncreaseButton.Arrange(new RectangleD(position, increaseButtonSize));
+                DecreaseButton.Arrange(new RectangleD(position, decreaseButtonSize));
+            }
+            else
+            {
+                DecreaseButton.Arrange(new RectangleD(position, decreaseButtonSize));
+                position += (orientation == Orientation.Horizontal) ? new Point2D(decreaseButtonSize.Width, 0) : new Point2D(0, decreaseButtonSize.Height);
+
+                Thumb.Arrange(new RectangleD(position, thumbSize));
+                position += (orientation == Orientation.Horizontal) ? new Point2D(thumbSize.Width, 0) : new Point2D(0, thumbSize.Height);
+
+                IncreaseButton.Arrange(new RectangleD(position, increaseButtonSize));
+            }
 
             return finalSize;
         }
-        
+
         /// <summary>
         /// Converts a range value to a pixel offset into the scroll bar's track.
         /// </summary>
@@ -300,8 +337,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (max == min)
                 return 0;
 
+            if (IsDirectionReversed)
+            {
+                value = Maximum - value;
+            }
+
             var percent = (value - min) / (max - min);
-            var used    = available * percent;
+            var used = available * percent;
 
             return used;
         }
@@ -324,7 +366,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return 0;
 
             var percent = pixels / available;
-            var value   = (percent * (Maximum - Minimum)) + Minimum;
+            var value = (percent * (Maximum - Minimum)) + Minimum;
+
+            if (IsDirectionReversed)
+            {
+                value = Maximum - value;
+            }
 
             return value;
         }
@@ -340,13 +387,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return Thumb.DesiredSize;
 
             var orientation = this.Orientation;
-            var max         = Maximum;
-            var min         = Minimum;
-            var vps         = ViewportSize;
+            var max = Maximum;
+            var min = Minimum;
+            var vps = ViewportSize;
 
             if (max - min + vps == 0)
             {
-                return (orientation == Orientation.Horizontal) ? 
+                return (orientation == Orientation.Horizontal) ?
                     new Size2D(0, trackSize.Height) :
                     new Size2D(trackSize.Width, 0);
             }
@@ -357,7 +404,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
                 return (orientation == Orientation.Horizontal) ?
                     new Size2D(Math.Ceiling(thumbLength), trackSize.Height) :
-                    new Size2D(trackSize.Width, Math.Ceiling(thumbLength));                    
+                    new Size2D(trackSize.Width, Math.Ceiling(thumbLength));
             }
         }
 
@@ -370,26 +417,26 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         protected Size2D CalculateDecreaseButtonSize(Size2D trackSize, Size2D thumbSize)
         {
             var orientation = this.Orientation;
-            var val         = Value;
-            var min         = Minimum;
-            var max         = Maximum;
-
+            var val = Value;
+            var min = Minimum;
+            var max = Maximum;
+            
             if (min == max)
             {
-                return (orientation == Orientation.Horizontal) ? 
+                return (orientation == Orientation.Horizontal) ?
                     new Size2D(0, trackSize.Height) :
                     new Size2D(trackSize.Width, 0);
             }
 
             var trackLength = (orientation == Orientation.Horizontal) ? trackSize.Width : trackSize.Height;
             var thumbLength = (orientation == Orientation.Horizontal) ? thumbSize.Width : thumbSize.Height;
-            var available   = trackLength - thumbLength;
-            var percent     = (val - min) / (max - min);
-            var used        = available * percent;
+            var available = trackLength - thumbLength;
+            var percent = (val - min) / (max - min);
+            var used = available * percent;
 
             return (orientation == Orientation.Horizontal) ?
                     new Size2D(Math.Max(0, Math.Floor(used)), trackSize.Height) :
-                    new Size2D(trackSize.Width, Math.Max(0, Math.Floor(used)));  
+                    new Size2D(trackSize.Width, Math.Max(0, Math.Floor(used)));
         }
 
         /// <summary>
@@ -401,7 +448,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <returns>The size of the track's increase button.</returns>
         protected Size2D CalculateIncreaseButtonSize(Size2D trackSize, Size2D decreaseButtonSize, Size2D thumbSize)
         {
-            return (Orientation == Orientation.Horizontal) ? 
+            return (Orientation == Orientation.Horizontal) ?
                new Size2D(Math.Max(0, trackSize.Width - (decreaseButtonSize.Width + thumbSize.Width)), trackSize.Height) :
                new Size2D(trackSize.Width, Math.Max(0, trackSize.Height - (decreaseButtonSize.Height + thumbSize.Height)));
         }
@@ -451,6 +498,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         // Component element references.
         private readonly Thumb Thumb = null;
         private readonly RepeatButton DecreaseButton = null;
-        private readonly RepeatButton IncreaseButton = null;        
+        private readonly RepeatButton IncreaseButton = null;
     }
 }

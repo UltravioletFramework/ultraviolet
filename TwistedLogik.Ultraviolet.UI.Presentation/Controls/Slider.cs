@@ -2,6 +2,7 @@
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {
@@ -115,7 +116,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// repeat buttons to move the slider's thumb.
         /// </summary>
         /// <value>A <see cref="Double"/> value that represents the amount of time, in milliseconds, between subsequent 
-        /// commands issued by one of the slider's repeat buttons to move the slider's thumb..</value>
+        /// commands issued by one of the slider's repeat buttons to move the slider's thumb.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="IntervalProperty"/></dpropField>
@@ -127,6 +128,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         {
             get { return GetValue<Double>(IntervalProperty); }
             set { SetValue(IntervalProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the slider's direction of increasing value is reversed.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether the slider's direction of increasing value is reversed.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsDirectionReversedProperty"/></dpropField>
+        ///     <dpropStylingName>direction-reversed</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsDirectionReversed
+        {
+            get { return GetValue<Boolean>(IsDirectionReversedProperty); }
+            set { SetValue(IsDirectionReversedProperty, value); }
         }
 
         /// <summary>
@@ -142,6 +160,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
         public static readonly DependencyProperty IntervalProperty = RepeatButton.IntervalProperty.AddOwner(typeof(Slider),
             new PropertyMetadata<Double>(HandleIntervalChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsDirectionReversed"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsDirectionReversed"/> dependency property.</value>
+        public static readonly DependencyProperty IsDirectionReversedProperty = DependencyProperty.Register("IsDirectionReversed", typeof(Boolean), typeof(Slider),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsDirectionReversedChanged));
 
         /// <summary>
         /// A command that decreases the value of the slider by a large amount.
@@ -346,6 +371,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var vscroll = ((Slider)element).PART_VSlider;
             if (vscroll != null)
                 vscroll.Interval = newValue;
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsDirectionReversed"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsDirectionReversedChanged(DependencyObject element, Boolean oldValue, Boolean newValue)
+        {
+            if (!(element is Slider))
+                return;
+
+            var hscroll = ((Slider)element).PART_HSlider;
+            if (hscroll != null)
+                hscroll.IsDirectionReversed = newValue;
+
+            var vscroll = ((Slider)element).PART_VSlider;
+            if (vscroll != null)
+                vscroll.IsDirectionReversed = newValue;
         }
 
         /// <summary>

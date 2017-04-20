@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(ScrollBar),
             new PropertyMetadata<Orientation>(Orientation.Vertical, HandleOrientationChanged));
-
+        
         /// <summary>
         /// Identifies the <see cref="Scroll"/> routed event.
         /// </summary>
