@@ -16,11 +16,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         static OrientedScrollBar()
         {
-            ValueProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleValueChanged));
-            MinimumProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleMinimumChanged));
-            MaximumProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleMaximumChanged));
-            SmallChangeProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleSmallChangeChanged));
-            LargeChangeProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Double>(HandleLargeChangeChanged));
             FocusableProperty.OverrideMetadata(typeof(OrientedScrollBar), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
             EventManager.RegisterClassHandler(typeof(OrientedScrollBar), Thumb.DragStartedEvent, new UpfDragStartedEventHandler(HandleThumbDragStarted));
@@ -87,8 +82,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="ViewportSize"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="ViewportSize"/> dependency property.</value>
-        public static readonly DependencyProperty ViewportSizeProperty = ScrollBar.ViewportSizeProperty.AddOwner(typeof(OrientedScrollBar), 
-            new PropertyMetadata<Double>(HandleViewportSizeChanged));
+        public static readonly DependencyProperty ViewportSizeProperty = ScrollBar.ViewportSizeProperty.AddOwner(typeof(OrientedScrollBar));
 
         /// <summary>
         /// Identifies the <see cref="Scroll"/> routed event.
@@ -192,85 +186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var evtDelegate = EventManager.GetInvocationDelegate<UpfScrollEventHandler>(ScrollEvent);
             evtDelegate(this, type, evtData);
         }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.Value"/> dependency property changes.
-        /// </summary>
-        private static void HandleValueChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            var child = (OrientedScrollBar)element;
-            var parent = child.TemplatedParent as ScrollBar;
-            if (parent != null)
-            {
-                parent.OnChildValueChanged(child, newValue);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.Minimum"/> dependency property changes.
-        /// </summary>
-        private static void HandleMinimumChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            var child = (OrientedScrollBar)element;
-            var parent = child.TemplatedParent as ScrollBar;
-            if (parent != null)
-            {
-                parent.OnChildMinimumChanged(child, newValue);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.Maximum"/> dependency property changes.
-        /// </summary>
-        private static void HandleMaximumChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            var child = (OrientedScrollBar)element;
-            var parent = child.TemplatedParent as ScrollBar;
-            if (parent != null)
-            {
-                parent.OnChildMaximumChanged(child, newValue);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.SmallChange"/> dependency property changes.
-        /// </summary>
-        private static void HandleSmallChangeChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            var child = (OrientedScrollBar)element;
-            var parent = child.TemplatedParent as ScrollBar;
-            if (parent != null)
-            {
-                parent.OnChildSmallChangeChanged(child, newValue);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.LargeChange"/> dependency property changes.
-        /// </summary>
-        private static void HandleLargeChangeChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            var child = (OrientedScrollBar)element;
-            var parent = child.TemplatedParent as ScrollBar;
-            if (parent != null)
-            {
-                parent.OnChildLargeChangeChanged(child, newValue);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="ViewportSize"/> dependency property changes.
-        /// </summary>
-        private static void HandleViewportSizeChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            var child = (OrientedScrollBar)element;
-            var parent = child.TemplatedParent as ScrollBar;
-            if (parent != null)
-            {
-                parent.OnChildViewportSizeChanged(child, newValue);
-            }
-        }
-
+        
         /// <summary>
         /// Occurs when the user starts a thumb drag operation.
         /// </summary>

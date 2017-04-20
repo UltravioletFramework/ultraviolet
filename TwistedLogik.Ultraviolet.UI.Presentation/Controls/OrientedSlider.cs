@@ -77,6 +77,56 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             get { return PART_Track; }
         }
 
+        /// <summary>
+        /// Gets or sets the amount of time, in milliseconds, that one of the slider's repeat buttons waits prior to 
+        /// issuing a command to move the slider's thumb.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the amount of time, in milliseconds,
+        /// that one of the slider's repeat buttons waits prior to issuing a command to move the slider's thumb.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="DelayProperty"/></dpropField>
+        ///     <dpropStylingName>delay</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double Delay
+        {
+            get { return GetValue<Double>(DelayProperty); }
+            set { SetValue(DelayProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of time, in milliseconds, between subsequent commands issued by one of the slider's
+        /// repeat buttons to move the slider's thumb.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the amount of time, in milliseconds, between subsequent 
+        /// commands issued by one of the slider's repeat buttons to move the slider's thumb..</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IntervalProperty"/></dpropField>
+        ///     <dpropStylingName>interval</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double Interval
+        {
+            get { return GetValue<Double>(IntervalProperty); }
+            set { SetValue(IntervalProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="Delay"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Delay"/> dependency property.</value>
+        public static readonly DependencyProperty DelayProperty = RepeatButton.DelayProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <summary>
+        /// Identifies the <see cref="Interval"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
+        public static readonly DependencyProperty IntervalProperty = RepeatButton.IntervalProperty.AddOwner(typeof(OrientedSlider));
+
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {

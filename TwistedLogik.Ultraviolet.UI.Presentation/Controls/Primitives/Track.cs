@@ -405,7 +405,49 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                new Size2D(Math.Max(0, trackSize.Width - (decreaseButtonSize.Width + thumbSize.Width)), trackSize.Height) :
                new Size2D(trackSize.Width, Math.Max(0, trackSize.Height - (decreaseButtonSize.Height + thumbSize.Height)));
         }
-        
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="DelayProperty"/> dependency property changes.
+        /// </summary>
+        private static void HandleDelayChanged(DependencyObject element, Double oldValue, Double newValue)
+        {
+            var track = element as Track;
+            if (track == null)
+                return;
+
+            track.IncreaseButton.Delay = newValue;
+            track.DecreaseButton.Delay = newValue;
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IntervalProperty"/> dependency property changes.
+        /// </summary>
+        private static void HandleIntervalChanged(DependencyObject element, Double oldValue, Double newValue)
+        {
+            var track = element as Track;
+            if (track == null)
+                return;
+
+            track.IncreaseButton.Interval = newValue;
+            track.DecreaseButton.Interval = newValue;
+        }
+
+#pragma warning disable 414
+        /// <summary>
+        /// Identifies the <see cref="RepeatButton.Delay"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="RepeatButton.Delay"/> dependency property.</value>
+        private static readonly DependencyProperty DelayProperty = RepeatButton.DelayProperty.AddOwner(typeof(Track),
+            new PropertyMetadata<Double>(HandleDelayChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="RepeatButton.Interval"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="RepeatButton.Interval"/> dependency property.</value>
+        private static readonly DependencyProperty IntervalProperty = RepeatButton.IntervalProperty.AddOwner(typeof(Track),
+            new PropertyMetadata<Double>(HandleIntervalChanged));
+#pragma warning restore 414
+
         // Component element references.
         private readonly Thumb Thumb = null;
         private readonly RepeatButton DecreaseButton = null;

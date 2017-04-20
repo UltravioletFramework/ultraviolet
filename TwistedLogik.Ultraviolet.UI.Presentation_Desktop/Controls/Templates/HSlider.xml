@@ -13,6 +13,8 @@
              HorizontalAlignment="Stretch"
              VerticalAlignment="Center"
              Orientation="Horizontal"
+             Delay="{{Delay}}"
+             Interval="{{Interval}}"
              Minimum="{{Minimum}}" 
              Maximum="{{Maximum}}" 
              Value="{{Value}}"/>

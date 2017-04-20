@@ -92,6 +92,58 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Orientation>(Orientation.Vertical, HandleOrientationChanged));
 
         /// <summary>
+        /// Gets or sets the amount of time, in milliseconds, that one of the slider's repeat buttons waits prior to 
+        /// issuing a command to move the slider's thumb.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the amount of time, in milliseconds,
+        /// that one of the slider's repeat buttons waits prior to issuing a command to move the slider's thumb.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="DelayProperty"/></dpropField>
+        ///     <dpropStylingName>delay</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double Delay
+        {
+            get { return GetValue<Double>(DelayProperty); }
+            set { SetValue(DelayProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of time, in milliseconds, between subsequent commands issued by one of the slider's
+        /// repeat buttons to move the slider's thumb.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the amount of time, in milliseconds, between subsequent 
+        /// commands issued by one of the slider's repeat buttons to move the slider's thumb..</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IntervalProperty"/></dpropField>
+        ///     <dpropStylingName>interval</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double Interval
+        {
+            get { return GetValue<Double>(IntervalProperty); }
+            set { SetValue(IntervalProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="Delay"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Delay"/> dependency property.</value>
+        public static readonly DependencyProperty DelayProperty = RepeatButton.DelayProperty.AddOwner(typeof(Slider),
+            new PropertyMetadata<Double>(HandleDelayChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="Interval"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
+        public static readonly DependencyProperty IntervalProperty = RepeatButton.IntervalProperty.AddOwner(typeof(Slider),
+            new PropertyMetadata<Double>(HandleIntervalChanged));
+
+        /// <summary>
         /// A command that decreases the value of the slider by a large amount.
         /// </summary>
         public static readonly RoutedCommand DecreaseLargeCommand = new RoutedCommand("DecreaseLarge", typeof(Slider));
@@ -120,67 +172,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// A command that sets the slider's value to the minimum value.
         /// </summary>
         public static readonly RoutedCommand MinimizeValueCommand = new RoutedCommand("MinimizeValue", typeof(Slider));
-
-        /// <summary>
-        /// Called when the <see cref="RangeBase.Value"/> property of one of the scroll bar's child scroll bars changes.
-        /// </summary>
-        internal void OnChildValueChanged(OrientedSlider child, Double value)
-        {
-            var orientedSlider = (Orientation == Orientation.Horizontal) ? PART_HSlider : PART_VSlider;
-            if (orientedSlider == child)
-            {
-                Value = value;
-            }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="RangeBase.Minimum"/> property of one of the scroll bar's child scroll bars changes.
-        /// </summary>
-        internal void OnChildMinimumChanged(OrientedSlider child, Double value)
-        {
-            var orientedSlider = (Orientation == Orientation.Horizontal) ? PART_HSlider : PART_VSlider;
-            if (orientedSlider == child)
-            {
-                Minimum = value;
-            }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="RangeBase.Maximum"/> property of one of the scroll bar's child scroll bars changes.
-        /// </summary>
-        internal void OnChildMaximumChanged(OrientedSlider child, Double value)
-        {
-            var orientedSlider = (Orientation == Orientation.Horizontal) ? PART_HSlider : PART_VSlider;
-            if (orientedSlider == child)
-            {
-                Maximum = value;
-            }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="RangeBase.SmallChange"/> property of one of the scroll bar's child scroll bars changes.
-        /// </summary>
-        internal void OnChildSmallChangeChanged(OrientedSlider child, Double value)
-        {
-            var orientedSlider = (Orientation == Orientation.Horizontal) ? PART_HSlider : PART_VSlider;
-            if (orientedSlider == child)
-            {
-                SmallChange = value;
-            }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="RangeBase.LargeChange"/> property of one of the scroll bar's child scroll bars changes.
-        /// </summary>
-        internal void OnChildLargeChangeChanged(OrientedSlider child, Double value)
-        {
-            var orientedSlider = (Orientation == Orientation.Horizontal) ? PART_HSlider : PART_VSlider;
-            if (orientedSlider == child)
-            {
-                LargeChange = value;
-            }
-        }
-
+        
         /// <summary>
         /// Responds to the <see cref="DecreaseLargeCommand"/> command.
         /// </summary>
@@ -320,6 +312,40 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         private static void HandleOrientationChanged(DependencyObject element, Orientation oldValue, Orientation newValue)
         {
             (element as Slider)?.ChangeOrientation(newValue);
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Delay"/> dependency property changes.
+        /// </summary>
+        private static void HandleDelayChanged(DependencyObject element, Double oldValue, Double newValue)
+        {
+            if (!(element is Slider))
+                return;
+
+            var hscroll = ((Slider)element).PART_HSlider;
+            if (hscroll != null)
+                hscroll.Delay = newValue;
+
+            var vscroll = ((Slider)element).PART_VSlider;
+            if (vscroll != null)
+                vscroll.Delay = newValue;
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="Interval"/> dependency property changes.
+        /// </summary>
+        private static void HandleIntervalChanged(DependencyObject element, Double oldValue, Double newValue)
+        {
+            if (!(element is Slider))
+                return;
+
+            var hscroll = ((Slider)element).PART_HSlider;
+            if (hscroll != null)
+                hscroll.Interval = newValue;
+
+            var vscroll = ((Slider)element).PART_VSlider;
+            if (vscroll != null)
+                vscroll.Interval = newValue;
         }
 
         /// <summary>
