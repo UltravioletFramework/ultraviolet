@@ -110,6 +110,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (!Double.IsNaN(valueDelta) && valueDelta != 0.0)
             {
                 var valueAfterChange = Math.Max(Minimum, Math.Min(Value + valueDelta, Maximum));
+
+                const Double MaximumPerpendicularDistance = 150.0;
+
+                var perpendicularDistance = Math.Abs((Track.Orientation == Orientation.Horizontal) ? vchange : hchange);
+                if (perpendicularDistance > MaximumPerpendicularDistance)
+                    valueAfterChange = valueAtStartOfDrag;
+
                 if (IsPartOfScrollViewer)
                 {
                     var command = (Track.Orientation == Orientation.Horizontal) ? ScrollBar.DeferScrollToHorizontalOffsetCommand : ScrollBar.DeferScrollToVerticalOffsetCommand;
@@ -269,6 +276,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleThumbDragStarted(DependencyObject element, Double hoffset, Double voffset, RoutedEventData data)
         {
+            var scrollBar = element as OrientedScrollBar;
+            if (scrollBar == null)
+                return;
+
+            scrollBar.valueAtStartOfDrag = scrollBar.Value;
         }
 
         /// <summary>
@@ -288,6 +300,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var scrollBar = (OrientedScrollBar)element;
             scrollBar.RaiseScrollEvent(ScrollEventType.EndScroll);
         }
+
+        // State values.
+        private const Double MaximumPerpendularDistance = 150.0;
+        private Double valueAtStartOfDrag;
 
         // Component references.
         private readonly Track PART_Track = null;
