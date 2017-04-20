@@ -262,7 +262,7 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 foreach (var asset in group)
                 {
-                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, false, false, out result);
+                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, false, false, true, null, out result);
                 }
             }
         }
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 var cacheMiss = !assetCache.TryGetValue(asset, out obj);
                 if (cacheMiss)
-                    LoadInternal(asset, typeof(TOutput), cache, false, false, false, out obj);
+                    LoadInternal(asset, typeof(TOutput), cache, false, false, false, true, null, out obj);
             }
 
             var cacheData = obj as ContentCacheData;
@@ -344,7 +344,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return LoadImpl<TOutput>(asset, cache, false);
+            return LoadImpl(asset, cache, false, true, default(TOutput));
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return LoadImpl<TOutput>(AssetID.GetAssetPath(asset), cache, false);
+            return LoadImpl(AssetID.GetAssetPath(asset), cache, false, true, default(TOutput));
         }
 
         /// <summary>
@@ -726,7 +726,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
         /// </summary>
-        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln)
+        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, Boolean throwOnError, TOutput lastKnownGoodVersion)
         {
             var cachedInstance = default(Object);
             var cacheMiss = false;
@@ -737,7 +737,7 @@ namespace TwistedLogik.Ultraviolet.Content
             if (cacheMiss)
             {
                 Object result;
-                LoadInternal(asset, typeof(TOutput), cache, false, false, fromsln, out result);
+                LoadInternal(asset, typeof(TOutput), cache, false, false, fromsln, throwOnError, lastKnownGoodVersion, out result);
                 return (result is ContentCacheData) ?
                     (TOutput)((ContentCacheData)result).Asset : (TOutput)result;
             }
@@ -749,11 +749,11 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Reloads an asset which is being watched for changes.
         /// </summary>
-        internal TOutput LoadWatched<TOutput>(String asset)
+        internal TOutput LoadWatched<TOutput>(String asset, TOutput lastKnownGoodVersion = default(TOutput))
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return LoadImpl<TOutput>(asset, true, true);
+            return LoadImpl(asset, true, true, false, lastKnownGoodVersion);
         }
 
         /// <summary>
@@ -880,9 +880,13 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="preprocess">A value indicating whether to preprocess the loaded asset.</param>
         /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
         /// <param name="fromsln">A value indicating whether to attempt to load the asset from the solution directory.</param>
+        /// <param name="lastKnownGoodVersion">The last known good version of the asset being loaded, if this is an asset which is being reloaded.</param>
+        /// <param name="throwOnError">A value indicating whether to re-throw any exceptions that occur during loading. If <see langword="false"/>,
+        /// then exceptions will be suppressed and the last known good version of the asset will be restored.</param>
         /// <param name="result">The asset that was loaded.</param>
         /// <returns><see langword="true"/> if the asset was loaded or preprocessed successfully; otherwise, <see langword="false"/>.</returns>
-        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean preprocess, Boolean delete, Boolean fromsln, out Object result)
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean preprocess, Boolean delete, Boolean fromsln, Boolean throwOnError, 
+            Object lastKnownGoodVersion, out Object result)
         {
             result = null;
 
@@ -916,9 +920,24 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 var importer = default(IContentImporter);
                 var processor = default(IContentProcessor);
-                var instance = preprocessed ?
-                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, out importer, out processor) :
-                    LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
+                var instance = default(Object);
+
+                try
+                {
+                    instance = preprocessed ?
+                        LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, out importer, out processor) :
+                        LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
+                }
+                catch (Exception e)
+                {
+                    if (throwOnError || lastKnownGoodVersion == null)
+                        throw;
+
+                    Debug.WriteLine(UltravioletStrings.ExceptionDuringContentReloading);
+                    Debug.WriteLine(e);
+
+                    instance = lastKnownGoodVersion;
+                }
 
                 if (cache)
                 {
@@ -1510,13 +1529,13 @@ namespace TwistedLogik.Ultraviolet.Content
             var substitutions = ListPossibleSubstitutions(assetDirectory, assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
             foreach (var substitution in substitutions)
             {
-                if (!LoadInternal(substitution, type, false, true, delete, false, out result))
+                if (!LoadInternal(substitution, type, false, true, delete, false, true, null, out result))
                 {
                     return false;
                 }
             }
 
-            return LoadInternal(asset, type, false, true, delete, false, out result);
+            return LoadInternal(asset, type, false, true, delete, false, true, null, out result);
         }
 
         // Property values.

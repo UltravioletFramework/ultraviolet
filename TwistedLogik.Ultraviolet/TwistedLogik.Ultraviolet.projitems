@@ -361,6 +361,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinitionWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinitionProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelState.cs" />

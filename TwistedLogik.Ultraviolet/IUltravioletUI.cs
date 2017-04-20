@@ -1,4 +1,5 @@
-﻿using TwistedLogik.Ultraviolet.Platform;
+﻿using System;
+using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI;
 
 namespace TwistedLogik.Ultraviolet
@@ -21,5 +22,13 @@ namespace TwistedLogik.Ultraviolet
         /// or <see langword="null"/> to retrieve the screen stack for the primary window.</param>
         /// <returns>The <see cref="UIScreenStack"/> associated with the specified window.</returns>
         UIScreenStack GetScreens(IUltravioletWindow window);
+        
+        /// <summary>
+        /// Gets a value indicating whether the UI subsystem is watching loaded view files for changes.
+        /// </summary>
+        Boolean WatchingViewFilesForChanges
+        {
+            get;
+        }
     }
 }

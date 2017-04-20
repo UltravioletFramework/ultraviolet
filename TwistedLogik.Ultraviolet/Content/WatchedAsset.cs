@@ -72,9 +72,15 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             if (e.FullPath == AssetFilePath && changed != null)
             {
-                Owner.PurgeCache(AssetPath, false);
-                Owner.LoadWatched<TContent>(AssetPath);
-                changed(this);
+                var asset = this;
+                var lastKnownGoodVersion = Owner.LoadWatched<TContent>(asset.AssetPath);
+
+                Owner.Ultraviolet.QueueWorkItem(() =>
+                {
+                    asset.Owner.PurgeCache(asset.AssetPath, false);
+                    asset.Owner.LoadWatched(asset.AssetPath, lastKnownGoodVersion);
+                    asset.changed(asset);
+                });
             }
         }
 

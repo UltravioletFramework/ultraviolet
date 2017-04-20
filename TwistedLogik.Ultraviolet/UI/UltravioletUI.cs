@@ -18,6 +18,7 @@ namespace TwistedLogik.Ultraviolet.UI
             : base(uv)
         {
             screenStacks = new UIScreenStackCollection(uv);
+            WatchingViewFilesForChanges = configuration.WatchViewFilesForChanges;
         }
 
         /// <summary>
@@ -36,10 +37,7 @@ namespace TwistedLogik.Ultraviolet.UI
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Gets the screen stack associated with the primary window.
-        /// </summary>
-        /// <returns>The <see cref="UIScreenStack"/> associated with the primary window.</returns>
+        /// <inheritdoc/>
         public UIScreenStack GetScreens()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -51,17 +49,19 @@ namespace TwistedLogik.Ultraviolet.UI
             return screenStacks[primary];
         }
 
-        /// <summary>
-        /// Gets the screen stack associated with the specified window.
-        /// </summary>
-        /// <param name="window">The window for which to retrieve a screen stack, 
-        /// or <see langword="null"/> to retrieve the screen stack for the primary window.</param>
-        /// <returns>The <see cref="UIScreenStack"/> associated with the specified window.</returns>
+        /// <inheritdoc/>
         public UIScreenStack GetScreens(IUltravioletWindow window)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             return (window == null) ? GetScreens() : screenStacks[window];
+        }
+
+        /// <inheritdoc/>
+        public Boolean WatchingViewFilesForChanges
+        {
+            get;
+            private set;
         }
 
         /// <summary>
