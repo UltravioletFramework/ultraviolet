@@ -18,7 +18,9 @@ namespace TwistedLogik.Ultraviolet.UI
             : base(uv)
         {
             screenStacks = new UIScreenStackCollection(uv);
-            WatchingViewFilesForChanges = configuration.WatchViewFilesForChanges;
+
+            if (uv.Platform != UltravioletPlatform.Android && uv.Platform != UltravioletPlatform.iOS)
+                WatchingViewFilesForChanges = configuration.WatchViewFilesForChanges;
         }
 
         /// <summary>
