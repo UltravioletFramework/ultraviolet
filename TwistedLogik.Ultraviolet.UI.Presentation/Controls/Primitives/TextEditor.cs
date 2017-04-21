@@ -2135,8 +2135,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             var foreground = (owner == null) ? Color.White : owner.Foreground;
 
             var positionRaw = Display.DipsToPixels(UntransformedAbsolutePosition);
-            var positionX = dc.IsTransformed ? positionRaw.X : Math.Round(positionRaw.X, MidpointRounding.AwayFromZero);
-            var positionY = dc.IsTransformed ? positionRaw.Y : Math.Round(positionRaw.Y, MidpointRounding.AwayFromZero);
+            var positionX = dc.IsTransformed ? positionRaw.X : Math.Floor(positionRaw.X);
+            var positionY = dc.IsTransformed ? positionRaw.Y : Math.Floor(positionRaw.Y);
             var position = new Vector2((Single)positionX, (Single)positionY);
             View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, position, foreground * dc.Opacity);
         }

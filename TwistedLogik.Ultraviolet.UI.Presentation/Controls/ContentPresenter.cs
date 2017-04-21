@@ -211,8 +211,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             if (textLayoutCommands != null && textLayoutCommands.Count > 0 && containingControl != null)
             {
                 var positionRaw = Display.DipsToPixels(UntransformedAbsolutePosition + ContentOffset);
-                var positionX = dc.IsTransformed ? positionRaw.X : Math.Round(positionRaw.X, MidpointRounding.AwayFromZero);
-                var positionY = dc.IsTransformed ? positionRaw.Y : Math.Round(positionRaw.Y, MidpointRounding.AwayFromZero);
+                var positionX = dc.IsTransformed ? positionRaw.X : Math.Floor(positionRaw.X);
+                var positionY = dc.IsTransformed ? positionRaw.Y : Math.Floor(positionRaw.Y);
                 var position = new Vector2((Single)positionX, (Single)positionY);
                 View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, position, containingControl.Foreground * dc.Opacity);
             }

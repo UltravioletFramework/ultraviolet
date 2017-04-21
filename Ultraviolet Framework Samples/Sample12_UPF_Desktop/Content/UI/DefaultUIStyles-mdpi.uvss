@@ -422,14 +422,14 @@ HSlider! .track-thumb, VSlider! .track-thumb
 
 HSlider! .slider-track-background
 {
-    source-image: #Global:Textures:DefaultUI 358 856 106 20 8 8;
-    height: 10;
+    source-image: #Global:Textures:DefaultUI 358 858 106 18 8 8;
+    height: 9;
 }
 
 VSlider! .slider-track-background
 {
-    source-image: #Global:Textures:DefaultUI 337 788 20 106 8 8 vertical;
-    width: 10;
+    source-image: #Global:Textures:DefaultUI 339 788 18 106 8 8 vertical;
+    width: 9;
 }
 
 HSlider! .slider-focus-image, VSlider! .slider-focus-image

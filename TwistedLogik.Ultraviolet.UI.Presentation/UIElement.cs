@@ -288,8 +288,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.SetRenderTarget(target, Color.Transparent);
 
             var bounds = Display.DipsToPixels(TransformedVisualBounds);
-            var x = Math.Round(bounds.X + (bounds.Width - target.Width) / 2.0, MidpointRounding.AwayFromZero);
-            var y = Math.Round(bounds.Y + (bounds.Height - target.Height) / 2.0, MidpointRounding.AwayFromZero);
+            var x = Math.Floor(bounds.X + (bounds.Width - target.Width) / 2.0);
+            var y = Math.Floor(bounds.Y + (bounds.Height - target.Height) / 2.0);
 
             var visualBounds = (Vector2)new Point2D(x, y);
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
@@ -2535,8 +2535,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var positionIsRounded = !dc.IsTransformed;
                 var positionRaw = new Vector2(
-                    (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
-                    (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
+                    (positionIsRounded ? (Single)Math.Floor(imageAreaPix.X) : imageAreaPix.X) + originPix.X,
+                    (positionIsRounded ? (Single)Math.Floor(imageAreaPix.Y) : imageAreaPix.Y) + originPix.Y);
 
                 dc.RawDrawImage(imageResource, positionRaw, imageAreaPix.Width, imageAreaPix.Height,
                     color, 0f, originPix, SpriteEffects.None, 0f);
@@ -2558,8 +2558,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             dc.RawDrawSprite(animation, positionRaw);
         }
@@ -2582,8 +2582,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             dc.RawDrawSprite(animation, positionRaw, null, null, color, rotation);
         }
@@ -2608,8 +2608,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
             
             dc.RawDrawSprite(animation, positionRaw, null, null, color, rotation, effects, layerDepth);
         }
@@ -2634,8 +2634,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
             var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
@@ -2665,8 +2665,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
             var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
@@ -2698,8 +2698,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
             var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
@@ -2753,8 +2753,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var position = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
-                (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
+                (positionIsRounded ? (Single)Math.Floor(imageAreaPix.X) : imageAreaPix.X) + originPix.X,
+                (positionIsRounded ? (Single)Math.Floor(imageAreaPix.Y) : imageAreaPix.Y) + originPix.Y);
 
             dc.RawDrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                 color, 0f, originPix, SpriteEffects.None, 0f);

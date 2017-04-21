@@ -1516,10 +1516,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             var viewportHeight = PART_ContentPresenter?.ViewportHeight ?? 0;
             SetValue(ViewportHeightPropertyKey, viewportHeight);
 
-            var scrollableWidth = extentWidth - viewportWidth;
+            var scrollableWidth = Math.Max(0, extentWidth - viewportWidth);
             SetValue(ScrollableWidthPropertyKey, scrollableWidth);
 
-            var scrollableHeight = extentHeight - viewportHeight;
+            var scrollableHeight = Math.Max(0, extentHeight - viewportHeight);
             SetValue(ScrollableHeightPropertyKey, scrollableHeight);
 
             var hOffset = ClampHorizontalOffset(HorizontalOffset);

@@ -7,7 +7,7 @@
 View 
 { 
     cursor: #Global:Cursors:Cursors Normal;
-    blank-image: #Global:Textures:DefaultUI 431 684 30 48; 
+    blank-image: #Global:Textures:DefaultUI 137 459 14 23; 
 }
 
 // ============================================================================
@@ -50,12 +50,12 @@ ToggleButton!
 
     trigger property checked = { false }, mouse-over = { true }
     {
-        set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }	
+        set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 339 71 33 4 4 4 4 }	
     }
     trigger property checked = { true }
     {
         set foreground { #ffaaaaaa }
-        set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
+        set source-image (*:trigger-root >> .button-background) { #Global:Textures:DefaultUI 1 373 71 33 4 4 4 4 }
     }
 }
 
@@ -63,7 +63,7 @@ ToggleButton!
 RepeatButton! >> .button-background,
 ToggleButton! >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 1 593 142 66 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 1 305 71 33 4 4 4 4;
 }
 
       Button! >> .button-focus-image, 
@@ -72,7 +72,7 @@ ToggleButton! >> .button-focus-image
 {
     margin: 4;
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 @button-to-normal
@@ -109,7 +109,7 @@ ToggleButton! >> .button-focus-image
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 1 660 142 66 8 8 8 8 }
+            keyframe 0 { #Global:Textures:DefaultUI 1 339 71 33 4 4 4 4 }
         }
     }
 }
@@ -126,7 +126,7 @@ ToggleButton! >> .button-focus-image
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 1 727 142 66 8 8 8 8 }
+            keyframe 0 { #Global:Textures:DefaultUI 1 373 71 33 4 4 4 4 }
         }
     }
 }
@@ -191,19 +191,19 @@ RadioButton! >> .toggle-content
 RadioButton! >> .toggle-focus-image
 {
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .radiobutton-component > .toggle-box
 {
-    source-image: #Global:Textures:DefaultUI 1 911 32 34;
+    source-image: #Global:Textures:DefaultUI 1 467 16 17;
     min-width: 16;
     min-height: 17;
 }
 
 .radiobutton-component > .toggle-mark
 {
-    source-image: #Global:Textures:DefaultUI 34 911 32 34;
+    source-image: #Global:Textures:DefaultUI 18 467 16 17;
     source-color: #ffcccccc;
     min-width: 16;
     min-height: 17;
@@ -262,19 +262,19 @@ CheckBox! >> .toggle-content
 CheckBox! >> .toggle-focus-image
 {
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .checkbox-component > .toggle-box
 {
-    source-image: #Global:Textures:DefaultUI 1 876 32 34;
+    source-image: #Global:Textures:DefaultUI 1 449 16 17;
     min-width: 16;
     min-height: 17;
 }
 
 .checkbox-component > .toggle-mark
 {
-    source-image: #Global:Textures:DefaultUI 34 876 32 34;
+    source-image: #Global:Textures:DefaultUI 18 449 16 17;
     source-color: #ffcccccc;
     min-width: 16;
     min-height: 17;
@@ -310,7 +310,7 @@ CheckBox! >> .toggle-focus-image
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 100 876 32 34 }
+            keyframe 0 { #Global:Textures:DefaultUI 52 449 16 17 }
         }
         animation visibility
         {
@@ -323,13 +323,13 @@ CheckBox! >> .toggle-focus-image
 // TEXT BOX
 // ============================================================================
 
-    TextBox!,
+    TextBox!, 
 PasswordBox!
 {
     padding: 6 4 6 4;
 }
 
-    TextBox! >>     TextEditor!,
+    TextBox! >>     TextEditor!, 
 PasswordBox! >> PasswordEditor!
 {
     cursor: #Global:Cursors:Cursors IBeam;
@@ -349,7 +349,7 @@ PasswordBox! >> ScrollViewer! >> Border!
     TextBox! >>     .textbox-background,
 PasswordBox! >> .passwordbox-background
 {
-    source-image: #Global:Textures:DefaultUI 144 788 124 62 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 73 404	62 31 4 4 4 4;
 }
 
     TextBox! >>     .textbox-scrollviewer,
@@ -358,7 +358,7 @@ PasswordBox! >> .passwordbox-scrollviewer
     margin: 4;
 }
 
-    .textbox-focus-border,
+    .textbox-focus-border, 
 .passwordbox-focus-border
 {
     margin: 2 2 2 3;
@@ -403,15 +403,15 @@ VSlider! .track-thumb
 
 HSlider! .track-thumb .thumb-image
 {
-    source-image: #Global:Textures:DefaultUI 430 593 20 38;
+    source-image: #Global:Textures:DefaultUI 136 484 10 19;
 }
 
 VSlider! .track-thumb .thumb-image
 {
-    source-image: #Global:Textures:DefaultUI 451 593 38 20;
+    source-image: #Global:Textures:DefaultUI 147 484 19 10;
 }
 
-HSlider! .track-thumb, VSlider! .track-thumb
+HSlider! .track-thumb, VSlider .track-thumb
 {
     transition (focus, blurred): null;
     transition (focus, focused): null;
@@ -422,20 +422,20 @@ HSlider! .track-thumb, VSlider! .track-thumb
 
 HSlider! .slider-track-background
 {
-    source-image: #Global:Textures:DefaultUI 358 856 106 20 8 8;
-    height: 10;
+    source-image: #Global:Textures:DefaultUI 183 441 53 9 4 4;
+    height: 9;
 }
 
 VSlider! .slider-track-background
 {
-    source-image: #Global:Textures:DefaultUI 337 788 20 106 8 8 vertical;
-    width: 10;
+    source-image: #Global:Textures:DefaultUI 173 404 9 53 4 4 vertical;
+    width: 9;
 }
 
-HSlider! .slider-focus-image, VSlider! .slider-focus-image
+HSlider! .slider-focus-image, VSlider .slider-focus-image
 {
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 // ============================================================================
@@ -449,12 +449,12 @@ ProgressBar!
 
 ProgressBar! >> .progressbar-background
 {
-    source-image: #Global:Textures:DefaultUI 1 794 142 40 20 20 tile-center;
+    source-image: #Global:Textures:DefaultUI 1 407 71 20 10 10 tile-center;
 }
 
 ProgressBarFill!
 {
-    source-image: #Global:Textures:DefaultUI 1 835 142 40 20 20 tile-center;
+    source-image: #Global:Textures:DefaultUI 1 428 71 20 10 10 tile-center;
     source-color: #ff5ea0d2;
 }
 
@@ -474,7 +474,7 @@ ProgressBarFill!
 
 .listbox-scrollviewer >> .scrollviewer-background
 {
-    source-image: #Global:Textures:DefaultUI 144 851 124 62 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 73 436 62 31 4 4 4 4;
 }
 
 .listbox-scrollviewer >> VScrollBar!
@@ -498,7 +498,7 @@ ListBoxItem!
     min-height: 25;
     content-valign: Center;
 
-    trigger event selected-by-user (handled)
+    trigger event selected-by-user
     {
         play-sfx { #Global:SoundEffects:Click1 }
     }
@@ -506,14 +506,14 @@ ListBoxItem!
 
 .listboxitem-highlight
 {
-    source-image: #Global:Textures:DefaultUI 431 632 30 50;
+    source-image: #Global:Textures:DefaultUI 154 458 14 25;
 }
 
 .listboxitem-focus-image
 {
     margin: 2;
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 // ============================================================================
@@ -535,7 +535,7 @@ ComboBox! >> ContentPresenter!
 {
     margin: 4;
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .combobox-dropdown-grid
@@ -545,7 +545,7 @@ ComboBox! >> ContentPresenter!
 
 .combobox-dropdown-background
 {
-    source-image: #Global:Textures:DefaultUI 144 914 18 18 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 73 468 9 9 4 4 4 4;
 }
 
 .combobox-dropdown-border
@@ -575,7 +575,7 @@ ComboBox! >> ContentPresenter!
 
 .combobox-arrow
 {
-    source-image: #Global:Textures:DefaultUI 224 915 22 18;
+    source-image: #Global:Textures:DefaultUI 202 458 11 9;
     margin: 0 0 10 0;
     width: 11;
     height: 9;
@@ -613,7 +613,7 @@ ComboBoxItem!
     padding: 10 1 10 1;
     content-valign: Center;
 
-    trigger event selected-by-user (handled)
+    trigger event selected-by-user
     {
         play-sfx { #Global:SoundEffects:Click1 }
     }
@@ -628,12 +628,12 @@ ComboBoxItem!
 {
     margin: 2;
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .comboboxitem-highlight
 {
-    source-image: #Global:Textures:DefaultUI 431 632 30 50;
+    source-image: #Global:Textures:DefaultUI 154 458 14 25;
 }
 
 // ============================================================================
@@ -666,12 +666,12 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
 
 .updown-button-up >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 144 593 142 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 73 305 71 32 4 4 4 4;
 }
 
 .updown-button-up-arrow
 {
-    source-image: #Global:Textures:DefaultUI 163 956 10 10;
+    source-image: #Global:Textures:DefaultUI 170 480 5 5;
     width: 5;
     height: 5;
 }
@@ -703,7 +703,7 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 144 658 142 64 8 8 8 8 }
+            keyframe 0 { #Global:Textures:DefaultUI 73 338 71 32 4 4 4 4 }
         }
     }
     target Image (*:storyboard-root > .updown-button-up-arrow)
@@ -720,7 +720,7 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 144 723 142 64 8 8 8 8 }
+            keyframe 0 { #Global:Textures:DefaultUI 73 371 71 32 4 4 4 4 }
         }
     }
     target Image (*:storyboard-root > .updown-button-up-arrow)
@@ -752,12 +752,12 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
 
 .updown-button-down >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 287 593 142 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 145 305 71 32 4 4 4 4;
 }
 
 .updown-button-down-arrow
 {
-    source-image: #Global:Textures:DefaultUI 174 956 10 10;
+    source-image: #Global:Textures:DefaultUI 176 480 5 5;
     width: 5;
     height: 5;
 }
@@ -789,7 +789,7 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 287 658 142 64 8 8 8 8 }
+            keyframe 0 { #Global:Textures:DefaultUI 145 338 71 32 4 4 4 4 }
         }
     }
     target Image (*:storyboard-root > .updown-button-down-arrow)
@@ -806,7 +806,7 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
     {
         animation source-image
         {
-            keyframe 0 { #Global:Textures:DefaultUI 287 723 142 64 8 8 8 8 }
+            keyframe 0 { #Global:Textures:DefaultUI 145 371 71 32 4 4 4 4 }
         }
     }
     target Image (*:storyboard-root > .updown-button-down-arrow)
@@ -852,7 +852,7 @@ VScrollBar! >> Track! > .track-thumb
 
 VScrollBar! >> Track! > .track-thumb >> .thumb-image
 {
-    source-image: #Global:Textures:DefaultUI 304 788 32 106 16 16 vertical;
+    source-image: #Global:Textures:DefaultUI 154 404 17 53 8 8 vertical;
 }
 
 .scroll-button-up, .scroll-button-down
@@ -869,31 +869,31 @@ VScrollBar! >> Track! > .track-thumb >> .thumb-image
 
 .scroll-button-up-arrow
 {
-    source-image: #Global:Textures:DefaultUI 189 937 18 12;
+    source-image: #Global:Textures:DefaultUI 184 470 9 6;
     width: 9;
     height: 6;
 }
 
 .scroll-button-down-arrow
 {
-    source-image: #Global:Textures:DefaultUI 208 937 18 12;
+    source-image: #Global:Textures:DefaultUI 194 470 9 6;
     width: 9;
     height: 6;
 }
 
 .scroll-button-up >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 269 788 34 42;
+    source-image: #Global:Textures:DefaultUI 136 404 17 21;
 }
 
 .scroll-button-down >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 269 852 34 42;
+    source-image: #Global:Textures:DefaultUI 136 436 17 21;
 }
 
 .scroll-track-bg-vertical
 {
-    source-image: #Global:Textures:DefaultUI 269 830 34 22 16 8 16 8;
+    source-image: #Global:Textures:DefaultUI 136 425 17 11 8 4 8 4;
 }
 
 HScrollBar!
@@ -910,7 +910,7 @@ HScrollBar! >> Track! > .track-thumb
 
 HScrollBar! >> Track! > .track-thumb >> .thumb-image
 {
-    source-image: #Global:Textures:DefaultUI 358 823 106 32 16 16;
+    source-image: #Global:Textures:DefaultUI 183 422 53 17 8 8;
 }
 
 .scroll-button-left, .scroll-button-right
@@ -927,31 +927,31 @@ HScrollBar! >> Track! > .track-thumb >> .thumb-image
 
 .scroll-button-left-arrow
 {
-    source-image: #Global:Textures:DefaultUI 163 937 12 18;
+    source-image: #Global:Textures:DefaultUI 170 470 6 9;
     width: 6;
     height: 9;
 }
 
 .scroll-button-right-arrow
 {
-    source-image: #Global:Textures:DefaultUI 176 937 12 18;
+    source-image: #Global:Textures:DefaultUI 177 470 6 9;
     width: 6;
     height: 9;
 }
 
 .scroll-button-left >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 358 788 42 34;
+    source-image: #Global:Textures:DefaultUI 183 404 21 17;
 }
 
 .scroll-button-right >> .button-background
 {
-    source-image: #Global:Textures:DefaultUI 422 788 42 34;
+    source-image: #Global:Textures:DefaultUI 215 404 21 17;
 }
 
 .scroll-track-bg-horizontal
 {
-    source-image: #Global:Textures:DefaultUI 400 788 22 34 8 16 8 16;
+    source-image: #Global:Textures:DefaultUI 204 404 11 17 4 8 4 8;
 }
 
 @scrollbutton-to-normal
@@ -1039,7 +1039,7 @@ ToolTip!
 
 .tabcontrol-background
 {
-    source-image: #Global:Textures:DefaultUI 463 697 32 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 237 404 16 32 4 4 4 4;
 }
 
 .tabcontrol-content
@@ -1087,7 +1087,7 @@ TabItem!.selected
 {
     margin: 4;
     source-color: #ff000000;
-    source-image: #Global:Textures:DefaultUI 67 911 64 64 8 8 8 8 tile-edges;
+    source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
 .tabitem-grid
@@ -1100,7 +1100,7 @@ TabControl!.left >? TabItem!
 {
     trigger property Selector.selected = { false }, mouse-over = { true }
     {
-        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 465 795 64 32 8 8 8 8 }	
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 237 454 32 16 4 4 4 4 }	
     }
 }
 
@@ -1111,19 +1111,19 @@ TabControl!.left >? TabItem!.selected
 
 TabControl!.left >? TabItem! >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 465 762 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 237 437 32 16 4 4 4 4;	
 }
 
 TabControl!.left >? TabItem!.selected >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 465 828 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 237 471 32 16 4 4 4 4;	
 }
 
 TabControl!.top >? TabItem!
 {
     trigger property Selector.selected = { false }, mouse-over = { true }
     {
-        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 529 697 32 64 8 8 8 8 }	
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 271 404 16 32 4 4 4 4 }	
     }
 }
 
@@ -1134,19 +1134,19 @@ TabControl!.top >? TabItem!.selected
 
 TabControl!.top >? TabItem! >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 496 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 254 404 16 32 4 4 4 4;	
 }
 
 TabControl!.top >? TabItem!.selected >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 562 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 288 404 16 32 4 4 4 4;	
 }
 
-TabControl!.right >? TabItem!
+TabControl!.right >? TabItem
 {
     trigger property Selector.selected = { false }, mouse-over = { true }
     {
-        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 530 795 64 32 8 8 8 8 }	
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 270 454 32 16 4 4 4 4 }	
     }
 }
 
@@ -1157,19 +1157,19 @@ TabControl!.right >? TabItem!.selected
 
 TabControl!.right >? TabItem! >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 530 762 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 270 437 32 16 4 4 4 4;	
 }
 
 TabControl!.right >? TabItem!.selected >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 530 828 64 32 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 270 471 32 16 4 4 4 4;	
 }
 
 TabControl!.bottom >? TabItem!
 {
     trigger property Selector.selected = { false }, mouse-over = { true }
     {
-        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 628 697 32 64 8 8 8 8 }	
+        set source-image (*:trigger-root >> .tabitem-background) { #Global:Textures:DefaultUI 322 404 16 32 4 4 4 4 }	
     }
 }
 
@@ -1180,12 +1180,12 @@ TabControl!.bottom >? TabItem!.selected
 
 TabControl!.bottom >? TabItem! >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 595 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 305 404 16 32 4 4 4 4;	
 }
 
 TabControl!.bottom >? TabItem!.selected >> .tabitem-background
 {
-    source-image: #Global:Textures:DefaultUI 661 697 32 64 8 8 8 8;	
+    source-image: #Global:Textures:DefaultUI 339 404 16 32 4 4 4 4;	
 }
 
 // ============================================================================
@@ -1223,7 +1223,7 @@ TabControl!.bottom >? TabItem!.selected >> .tabitem-background
 
 .msgbox-box-background
 {
-    source-image: #Global:Textures:DefaultUI 463 632 32 64 8 8 8 8;
+    source-image: #Global:Textures:DefaultUI 217 305 16 32 4 4 4 4;
 }
 
 .msgbox-box-content
@@ -1244,29 +1244,29 @@ TabControl!.bottom >? TabItem!.selected >> .tabitem-background
 
 .msgbox-img
 {
-    width: 96;
-    height: 96;
+    width: 48;
+    height: 48;
     margin: 0 0 8 0;
 }
 
 .msgbox-img-hand
 {
-    source-image: #Global:Textures:DefaultUI 269 895 96 96;
+    source-image: #Global:Textures:DefaultUI 234 305 48 48;
 }
 
 .msgbox-img-exclamation
 {
-    source-image: #Global:Textures:DefaultUI 560 895 96 96;
+    source-image: #Global:Textures:DefaultUI 283 354 48 48;
 }
 
 .msgbox-img-question
 {
-    source-image: #Global:Textures:DefaultUI 366 895 96 96;
+    source-image: #Global:Textures:DefaultUI 283 305 48 48;
 }
 
 .msgbox-img-asterisk
 {
-    source-image: #Global:Textures:DefaultUI 463 895 96 96;
+    source-image: #Global:Textures:DefaultUI 234 354 48 48;
 }
 
 .msgbox-btn

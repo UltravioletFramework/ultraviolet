@@ -84,8 +84,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
                 var face = font.Resource.Value.GetFace(FontStyle);
                 var positionRaw = Display.DipsToPixels(UntransformedAbsolutePosition);
-                var positionX = dc.IsTransformed ? positionRaw.X : Math.Round(positionRaw.X, MidpointRounding.AwayFromZero);
-                var positionY = dc.IsTransformed ? positionRaw.Y : Math.Round(positionRaw.Y, MidpointRounding.AwayFromZero);
+                var positionX = dc.IsTransformed ? positionRaw.X : Math.Floor(positionRaw.X);
+                var positionY = dc.IsTransformed ? positionRaw.Y : Math.Floor(positionRaw.Y);
                 var position = new Vector2((Single)positionX, (Single)positionY);
 
                 dc.RawDrawString(face, View.Resources.StringBuffer, position, Foreground);
