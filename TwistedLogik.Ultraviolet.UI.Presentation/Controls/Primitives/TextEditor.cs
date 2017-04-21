@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    public class TextEditor : FrameworkElement
+    public partial class TextEditor : FrameworkElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEditor"/> control.
@@ -421,7 +421,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 
             var wordLength = (caretPosition - wordStart);
             if (wordLength > 0)
+            {
                 DeleteSpan(wordStart, wordLength, true);
+
+                UpdateSelectionAndCaret();
+                ScrollToCaret(false, true, false);
+            }
         }
 
         /// <summary>
@@ -433,6 +438,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 return;
 
             DeleteBehind();
+
+            UpdateSelectionAndCaret();
+            ScrollToCaret(false, true, false);
         }
 
         /// <summary>
@@ -1420,6 +1428,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 caretPosition = bufferText.Length;
 
                 pendingScrollToCaret = true;
+                pendingScrollState = PendingScrollState.None;
             }
 
             UpdateTextStringSource();
@@ -1687,6 +1696,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
+            if (oldView != null)
+                LayoutUpdated -= OnLayoutUpdated;
+
+            if (newView != null)
+                LayoutUpdated += OnLayoutUpdated;
+
             UpdateTextParserStream();
 
             base.OnViewChanged(oldView, newView);
@@ -1714,17 +1729,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             UpdateSelectionAndCaret();
 
             return finalSize;
-        }
-
-        /// <inheritdoc/>
-        protected override void PositionOverride()
-        {
-            if (pendingScrollToCaret)
-            {
-                pendingScrollToCaret = false;
-                ScrollToCaret(false, false, false);
-            }
-            base.PositionOverride();
         }
 
         /// <inheritdoc/>
@@ -1763,6 +1767,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             UpdateSelectionAndCaret();
 
             base.ReloadContentOverride(recursive);
+        }
+        
+        /// <inheritdoc/>
+        protected override void CleanupOverride()
+        {
+            LayoutUpdated -= OnLayoutUpdated;
+
+            base.CleanupOverride();
         }
 
         /// <summary>
@@ -2157,7 +2169,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
             }
         }
-        
+
+        /// <summary>
+        /// Handles the <see cref="UIElement.LayoutUpdated"/> event.
+        /// </summary>
+        private void OnLayoutUpdated(Object sender, EventArgs e)
+        {
+            if (pendingScrollToCaret)
+            {
+                pendingScrollToCaret = false;
+
+                var showMaximumLineWidth = (pendingScrollState & PendingScrollState.ShowMaximumLineWidth) == PendingScrollState.ShowMaximumLineWidth;
+                var jumpLeft = (pendingScrollState & PendingScrollState.JumpLeft) == PendingScrollState.JumpLeft;
+                var jumpRight = (pendingScrollState & PendingScrollState.JumpRight) == PendingScrollState.JumpRight;
+                ScrollToCaret(showMaximumLineWidth, jumpLeft, jumpRight);
+            }
+        }
+
         /// <summary>
         /// Deletes the text in the current selection.
         /// </summary>
@@ -2535,6 +2563,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             caretPosition = (position <= caretPosition) ? caretPosition + characterCount : caretPosition;
 
             pendingScrollToCaret = true;
+            pendingScrollState = PendingScrollState.None;
 
             UpdateTextStringSource();
             UpdateTextParserStream();
@@ -2740,9 +2769,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (scrollViewer == null)
                 return;
 
-            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset, 
-                scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
+            if (pendingTextLayout)
+            {
+                pendingScrollToCaret = true;
+                pendingScrollState = PendingScrollStateFromValues(showMaximumLineWidth, jumpLeft, jumpRight);
+                return;
+            }
 
+            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset, scrollViewer.ViewportWidth, scrollViewer.ViewportHeight); 
             var boundsCaretPixs = new Ultraviolet.Rectangle(caretBounds.X, caretBounds.Y, caretRenderBounds.Width, caretBounds.Height);
             var boundsCaretDips = Display.PixelsToDips(boundsCaretPixs);
 
@@ -2756,12 +2790,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 if (boundsCaretDips.Top <= boundsViewport.Top)
                 {
-                    var verticalOffset = boundsCaretDips.Top - 1.0;
+                    var verticalOffset = boundsCaretDips.Top;
                     scrollViewer.ScrollToVerticalOffset(verticalOffset);
                 }
                 else
                 {
-                    var verticalOffset = (boundsCaretDips.Bottom + 1.0) - boundsViewport.Height;
+                    var verticalOffset = boundsCaretDips.Bottom - boundsViewport.Height;
                     scrollViewer.ScrollToVerticalOffset(verticalOffset);
                 }
             }
@@ -2770,7 +2804,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             {
                 var owner = TemplatedParent as Control;
                 var alignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
-                var horizontalOffset = (alignment == TextAlignment.Right) ? (boundsCaretDips.Left - 1.0) : (boundsCaretDips.Right + 1.0) - boundsViewport.Width;
+                var horizontalOffset = (alignment == TextAlignment.Right) ? boundsCaretDips.Left : boundsCaretDips.Right - boundsViewport.Width;
                 scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
             }
             else
@@ -2779,14 +2813,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 {
                     if (boundsCaretDips.Left <= boundsViewport.Left)
                     {
-                        var horizontalOffset = (boundsCaretDips.Left - 1.0) -
+                        var horizontalOffset = boundsCaretDips.Left -
                             (jumpLeft ? (boundsViewport.Width / 3.0) : 0);
 
                         scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
                     }
                     else
                     {
-                        var horizontalOffset = ((boundsCaretDips.Right + 1.0) - boundsViewport.Width) +
+                        var horizontalOffset = (boundsCaretDips.Right - boundsViewport.Width) +
                             (jumpRight ? (boundsViewport.Width / 3.0) : 0);
 
                         scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
@@ -2890,6 +2924,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
         private Boolean pendingTextLayout = true;
         private Boolean pendingScrollToCaret;
+        private PendingScrollState pendingScrollState;
 
         // Caret parameters.
         private Double caretBlinkTimer;
