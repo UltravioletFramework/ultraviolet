@@ -9,13 +9,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// </summary>
     [Preserve(AllMembers = true)]
     [ContentProcessor]
-    public sealed class OpenGLFragmentShaderProcessor : ShaderProcessor<OpenGLFragmentShader>
+    public sealed class OpenGLFragmentShaderProcessor : ContentProcessor<String, OpenGLFragmentShader>
     {
         /// <inheritdoc/>
         public override OpenGLFragmentShader Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            var source = ProcessShaderDirectives(manager, metadata, input);
-            return new OpenGLFragmentShader(manager.Ultraviolet, new[] { source });
+            var source = ShaderSource.ProcessRawSource(manager, metadata, input);
+            return new OpenGLFragmentShader(manager.Ultraviolet, new[] { (String)source });
         }
     }
 }

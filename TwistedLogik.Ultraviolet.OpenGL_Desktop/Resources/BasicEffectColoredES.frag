@@ -1,9 +1,10 @@
-﻿precision mediump float;
-precision mediump int;
+﻿#includeres "TwistedLogik.Ultraviolet.OpenGL.Resources.HeaderES.fragh" executing
 
-varying vec4 vColor;
+DECLARE_INPUT_COLOR;	// vColor
+
+DECLARE_OUTPUT_COLOR;	// fColor
 
 void main()
 {
-	gl_FragColor = vColor;
+	fColor = vColor;
 }

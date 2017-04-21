@@ -1,0 +1,19 @@
+﻿#ifver "es2.0" { #version 100 es }
+#ifver "es2.0" { #define GLES2 }
+#ifver_gt "es2.0" { #version 300 es }
+#ifver_gt "es2.0" { #define GLES3 }
+
+precision mediump float;
+precision mediump int;
+
+#ifdef GLES2
+	#define texture texture2D
+	#define fColor gl_FragColor
+	#define DECLARE_INPUT_COLOR varying vec4 vColor
+	#define DECLARE_INPUT_TEXCOORD varying vec2 vTextureCoordinate
+	#define DECLARE_OUTPUT_COLOR
+#else
+	#define DECLARE_INPUT_COLOR in vec4 vColor
+	#define DECLARE_INPUT_TEXCOORD in vec2 vTextureCoordinate
+	#define DECLARE_OUTPUT_COLOR out vec4 fColor
+#endif

@@ -209,6 +209,8 @@
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\HeaderES.verth" />
+    <EmbeddedResource Include="Resources\HeaderES.fragh" />
     <None Include="Resources\BlurEffectRadius1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BlurEffectRadius1.frag</LastGenOutput>

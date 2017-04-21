@@ -96,6 +96,12 @@
     <None Include="..\TwistedLogik.Public.snk">
       <Link>TwistedLogik.Public.snk</Link>
     </None>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\HeaderES.fragh">
+      <Link>Resources\HeaderES.fragh</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\HeaderES.verth">
+      <Link>Resources\HeaderES.verth</Link>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
