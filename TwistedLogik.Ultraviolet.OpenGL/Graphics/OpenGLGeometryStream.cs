@@ -469,8 +469,16 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 {
                     if (program.HasValue)
                     {
-                        gl.VertexAttribDivisor(location, frequency);
-                        gl.ThrowIfError();
+                        if (gl.IsGLES2)
+                        {
+                            if (frequency != 0)
+                                throw new NotSupportedException();
+                        }
+                        else
+                        {
+                            gl.VertexAttribDivisor(location, frequency);
+                            gl.ThrowIfError();
+                        }
 
                         gl.EnableVertexAttribArray(location);
                         gl.ThrowIfError();
