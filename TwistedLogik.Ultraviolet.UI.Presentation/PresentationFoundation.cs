@@ -616,7 +616,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             using (UltravioletProfiler.Section(PresentationProfilerSections.Layout))
             {
-                while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                while (ElementNeedsLayout)
                 {
                     // 1. Style
                     using (UltravioletProfiler.Section(PresentationProfilerSections.Style))
@@ -659,11 +659,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         }
                     }
 
-                    if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                    // 4. Raise events.
+                    if (ElementNeedsLayout)
                         continue;
 
-                    // 4. Raise events.
                     RaiseRenderSizeChanged();
+
+                    if (ElementNeedsLayout)
+                        continue;
+
                     RaiseLayoutUpdated();
                 }
             }
@@ -1187,7 +1191,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             elementsWithLayoutUpdatedHandlers.ForEach((element) =>
             {
                 element.RaiseLayoutUpdated();
+                return !Instance.ElementNeedsLayout;
             });
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting layout.
+        /// </summary>
+        private Boolean ElementNeedsLayout
+        {
+            get { return ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange; }
         }
 
         /// <summary>

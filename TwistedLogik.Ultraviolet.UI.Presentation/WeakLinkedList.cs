@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// Performs the specified action on every item in the list.
         /// </summary>
         /// <param name="action">The action to perform.</param>
-        public void ForEach(Action<T> action)
+        public void ForEach(Func<T, Boolean> action)
         {
             Contract.Require(action, nameof(action));
 
@@ -39,7 +39,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 foreach (var item in temp)
                 {
-                    action(item);
+                    if (!action(item))
+                        break;
                 }
             }
             finally
