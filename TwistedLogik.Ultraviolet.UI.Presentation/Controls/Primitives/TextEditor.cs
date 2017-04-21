@@ -1673,7 +1673,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// <param name="data">The routed event metadata for this event.</param>
         internal void HandleTextEditing(KeyboardDevice device, RoutedEventData data)
         {
-            // TODO
+
         }
 
         /// <summary>

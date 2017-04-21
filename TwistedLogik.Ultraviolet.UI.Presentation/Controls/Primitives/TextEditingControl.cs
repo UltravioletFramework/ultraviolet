@@ -1,4 +1,5 @@
 ﻿using System;
+using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
@@ -8,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a control which hosts a text editor.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class TextEditingControl : Control
     {
