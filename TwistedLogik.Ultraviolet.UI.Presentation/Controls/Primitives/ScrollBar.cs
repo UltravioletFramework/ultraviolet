@@ -16,6 +16,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a scroll bar with a sliding thumb.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Templates.ScrollBar.xml")]
     public class ScrollBar : RangeBase
     {

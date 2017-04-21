@@ -9,6 +9,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// <summary>
     /// Represents a slider.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.Slider.xml")]
     public class Slider : RangeBase
     {
