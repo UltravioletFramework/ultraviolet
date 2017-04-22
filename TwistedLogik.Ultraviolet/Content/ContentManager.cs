@@ -37,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.Content
             : base(uv)
         {
             this.rootDirectory = rootDirectory;
+            this.fullRootDirectory = Path.GetFullPath(rootDirectory);
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection();
 
@@ -298,8 +299,8 @@ namespace TwistedLogik.Ultraviolet.Content
             CreateFileSystemWatchers();
 
             var obj = default(Object);
-            var rootdir = FindSolutionDirectory() ?? RootDirectory;
-            var watcher = rootFileSystemWatcher;
+            var rootdir = FindSolutionDirectory() ?? FullRootDirectory;
+            var watcher = rootFileSystemWatcher; 
 
             lock (cacheSyncObject)
             {
@@ -898,6 +899,14 @@ namespace TwistedLogik.Ultraviolet.Content
         public String RootDirectory
         {
             get { return rootDirectory; }
+        }
+
+        /// <summary>
+        /// Gets the full path to the content manager's root directory.
+        /// </summary>
+        public String FullRootDirectory
+        {
+            get { return fullRootDirectory; }
         }
 
         /// <summary>
@@ -1779,6 +1788,7 @@ namespace TwistedLogik.Ultraviolet.Content
 
         // Property values.
         private readonly String rootDirectory;
+        private readonly String fullRootDirectory;
 
         // State values.
         private readonly ContentOverrideDirectoryCollection overrideDirectories;

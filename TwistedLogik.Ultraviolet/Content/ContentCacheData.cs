@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace TwistedLogik.Ultraviolet.Content
 {
@@ -15,7 +16,7 @@ namespace TwistedLogik.Ultraviolet.Content
         public ContentCacheData(Object asset, String origin)
         {
             this.Asset = asset;
-            this.Origin = origin;
+            this.Origin = Path.GetFullPath(origin);
         }
 
         /// <summary>
