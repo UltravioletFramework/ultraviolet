@@ -22,8 +22,10 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="isFile">A value indicating whether the asset was loaded from a file.</param>
         /// <param name="isStream">A value indicating whether the asset was loaded from a stream.</param>
         /// <param name="isJson">A value indicating whether the asset metadata is JSON.</param>
+        /// <param name="isLoadedFromSln">A value indicating whether the asset is being loaded from the 
+        /// application's solution rather than the binaries folder.</param>
         public AssetMetadata(String overrideDirectory, String assetPath, String assetFilePath, 
-            Object importerMetadata, Object processorMetadata, Boolean isFile, Boolean isStream, Boolean isJson = false)
+            Object importerMetadata, Object processorMetadata, Boolean isFile, Boolean isStream, Boolean isJson, Boolean isLoadedFromSln)
         {
             this.OverrideDirectory = overrideDirectory;
             this.AssetPath = assetPath;
@@ -35,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.Content
             this.IsFile = isFile;
             this.IsStream = isStream;
             this.IsJson = isJson;
+            this.IsLoadedFromSolution = isLoadedFromSln;
         }
 
         /// <summary>
@@ -182,15 +185,25 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             get { return !String.IsNullOrEmpty(OverrideDirectory); }
         }
+        
+        /// <summary>
+        /// Gets a value indicating whether the asset is being loaded from the solution,
+        /// rather than the binaries folder of the application.
+        /// </summary>
+        public Boolean IsLoadedFromSolution
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Represents an empty asset metadata object for assets loaded from streams.
         /// </summary>
-        public static readonly AssetMetadata StreamMetadata = new AssetMetadata(null, null, null, null, null, false, true);
+        public static readonly AssetMetadata StreamMetadata = new AssetMetadata(null, null, null, null, null, false, true, false, false);
 
         /// <summary>
         /// Represents an empty asset metadata object for assets loaded in-memory.
         /// </summary>
-        public static readonly AssetMetadata InMemoryMetadata = new AssetMetadata(null, null, null, null, null, false, false);
+        public static readonly AssetMetadata InMemoryMetadata = new AssetMetadata(null, null, null, null, null, false, false, false, false);
     }
 }

@@ -65,6 +65,7 @@ namespace UvDebugSandbox
             PresentationFoundation.Configure(configuration);
 
 #if DEBUG
+            configuration.WatchViewFilesForChanges = true;
             configuration.Debug = true;
             configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
             configuration.DebugCallback = (uv, level, message) =>
@@ -172,10 +173,13 @@ namespace UvDebugSandbox
 
             if (!ShouldRunInServiceMode())
             {
-                var globalStyleSheet = new UvssDocument(Ultraviolet);
-                globalStyleSheet.Append(content.Load<UvssDocument>("UI/DefaultUIStyles"));
-                globalStyleSheet.Append(content.Load<UvssDocument>("UI/GameStyles"));
-                upf.SetGlobalStyleSheet(globalStyleSheet);
+                var reloadGlobalStyleSheet = new WatchedAssetReloadingHandler(() => 
+                    Ultraviolet.GetUI().GetPresentationFoundation().TrySetGlobalStyleSheet(globalStyleSheet.ToUvssDocument()));
+
+                globalStyleSheet = new CompositeUvssDocument(Ultraviolet, reloadGlobalStyleSheet);
+                globalStyleSheet.Append(content, "UI/DefaultUIStyles");
+                globalStyleSheet.Append(content, "UI/GameStyles");
+                reloadGlobalStyleSheet();
 
                 CompileBindingExpressions();
                 upf.LoadCompiledExpressions();
@@ -301,6 +305,7 @@ namespace UvDebugSandbox
         private ContentManager content;
 
         // State values.
+        private CompositeUvssDocument globalStyleSheet;
         private Boolean resolveContent;
         private Boolean compileContent;
         private Boolean compileExpressions;

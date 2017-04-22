@@ -325,6 +325,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursorResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedCursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\CompositeUvssDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssDocument.CategorizedRuleSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\UvssError.cs" />

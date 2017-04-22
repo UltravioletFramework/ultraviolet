@@ -43,5 +43,11 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Gets a value indicating whether the asset is being loaded from a stream.
         /// </summary>
         Boolean IsStream { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the asset is being loaded from the solution,
+        /// rather than the binaries folder of the application.
+        /// </summary>
+        Boolean IsLoadedFromSolution { get; }
     }
 }

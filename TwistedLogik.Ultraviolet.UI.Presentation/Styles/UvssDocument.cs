@@ -441,45 +441,53 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
         /// <param name="element">The element to which to apply styles.</param>
         private void ApplyStylesInternal(UIElement element)
         {
-            element.ClearStyledValues(false);
-
-            // Prioritize styles from name.
-            var frameworkElement = element as FrameworkElement;
-            if (frameworkElement != null && !String.IsNullOrEmpty(frameworkElement.Name))
+            try
             {
-                var ruleSetsByName = GetRuleSetsByName(frameworkElement.Name, onlyIfExists: true);
-                if (ruleSetsByName != null)
+                element.ClearStyledValues(false);
+
+                // Prioritize styles from name.
+                var frameworkElement = element as FrameworkElement;
+                if (frameworkElement != null && !String.IsNullOrEmpty(frameworkElement.Name))
                 {
-                    foreach (var categorized in ruleSetsByName)
+                    var ruleSetsByName = GetRuleSetsByName(frameworkElement.Name, onlyIfExists: true);
+                    if (ruleSetsByName != null)
+                    {
+                        foreach (var categorized in ruleSetsByName)
+                            AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
+                    }
+                }
+
+                // Prioritize styles from class.
+                foreach (var @class in element.Classes)
+                {
+                    var ruleSetsByCategory = GetRuleSetsByClass(@class, onlyIfExists: true);
+                    if (ruleSetsByCategory != null)
+                    {
+                        foreach (var categorized in ruleSetsByCategory)
+                            AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
+                    }
+                }
+
+                // Prioritize rules from type.
+                var ruleSetsByType = GetRuleSetsByType(element.UvmlName, onlyIfExists: true);
+                if (ruleSetsByType != null)
+                {
+                    foreach (var categorized in ruleSetsByType)
                         AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
                 }
-            }
 
-            // Prioritize styles from class.
-            foreach (var @class in element.Classes)
-            {
-                var ruleSetsByCategory = GetRuleSetsByClass(@class, onlyIfExists: true);
-                if (ruleSetsByCategory != null)
-                {
-                    foreach (var categorized in ruleSetsByCategory)
-                        AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
-                }
-            }
-
-            // Prioritize rules from type.
-            var ruleSetsByType = GetRuleSetsByType(element.UvmlName, onlyIfExists: true);
-            if (ruleSetsByType != null)
-            {
-                foreach (var categorized in ruleSetsByType)
+                // Prioritize uncategorized styles.
+                foreach (var categorized in ruleSetsWithoutCategory)
                     AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
-            }
 
-            // Prioritize uncategorized styles.
-            foreach (var categorized in ruleSetsWithoutCategory)
-                AddRuleSetToPrioritizer(element, categorized.Selector, categorized.RuleSet, categorized.Index);
-            
-            // Apply styles to element
-            prioritizer.Apply(element);
+                // Apply styles to element
+                prioritizer.Apply(element);
+            }
+            finally
+            {
+                // Reset the prioritizer even if something blows up.
+                prioritizer.Reset();
+            }
         }
         
         /// <summary>

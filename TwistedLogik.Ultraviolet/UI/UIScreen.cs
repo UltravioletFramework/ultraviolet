@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -268,7 +269,7 @@ namespace TwistedLogik.Ultraviolet.UI
             var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
             if (watch)
             {
-                var definition = LocalContent.LoadWatched<UIPanelDefinition>(asset, x =>
+                var definition = LocalContent.LoadWatched<UIPanelDefinition>(asset, () =>
                 {
                     if (State == UIPanelState.Open)
                     {
@@ -286,14 +287,31 @@ namespace TwistedLogik.Ultraviolet.UI
                         var updatedView = View;
                         if (updatedView != null)
                         {
-                            if (currentViewModel != null)
-                                updatedView.SetViewModel(currentViewModel);
+                            try
+                            {
+                                if (currentViewModel != null)
+                                    updatedView.SetViewModel(currentViewModel);
 
-                            updatedView.OnOpening();
-                            updatedView.OnOpened();
+                                updatedView.OnOpening();
+                                updatedView.OnOpened();
+                            }
+                            catch (Exception e)
+                            {
+                                UnloadView();
+
+                                Debug.WriteLine(UltravioletStrings.ExceptionDuringViewReloading);
+                                Debug.WriteLine(e);
+
+                                return false;                                
+                            }
                         }
                     }
+                    return true;
                 });
+
+                foreach (var styleSheetAsset in definition.Value.StyleSheetAssets)
+                    LocalContent.AddWatchedDependency(asset, styleSheetAsset);
+
                 return new UIPanelDefinitionWrapper(definition);
             }
             else

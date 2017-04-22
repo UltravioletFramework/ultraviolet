@@ -262,7 +262,7 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 foreach (var asset in group)
                 {
-                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, false, false, true, null, out result);
+                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, out result);
                 }
             }
         }
@@ -271,16 +271,26 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Loads the specified asset file.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
-        /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="changed">The delegate to invoke when the watched asset changes.</param>
-        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="onReloading">The delegate to invoke when the watched asset is reloaded.</param>
         /// <returns>The asset that was loaded from the specified file.</returns>
-        public WatchedAsset<TOutput> LoadWatched<TOutput>(String asset, Action<WatchedAsset<TOutput>> changed, Boolean cache = true)
+        public WatchedAsset<TOutput> LoadWatched<TOutput>(String asset, WatchedAssetReloadingHandler onReloading)
+        {
+            return LoadWatched<TOutput>(asset, true, onReloading);
+        }
+        
+        /// <summary>
+        /// Loads the specified asset file.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The path to the asset to load.</param>
+        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="onReloading">The delegate to invoke when the watched asset is reloaded.</param>
+        /// <returns>The asset that was loaded from the specified file.</returns>
+        public WatchedAsset<TOutput> LoadWatched<TOutput>(String asset, Boolean cache, WatchedAssetReloadingHandler onReloading)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(changed, nameof(changed));
+            Contract.Require(onReloading, nameof(onReloading));
 
             if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                 throw new NotSupportedException();
@@ -295,7 +305,7 @@ namespace TwistedLogik.Ultraviolet.Content
             {
                 var cacheMiss = !assetCache.TryGetValue(asset, out obj);
                 if (cacheMiss)
-                    LoadInternal(asset, typeof(TOutput), cache, false, false, false, true, null, out obj);
+                    LoadInternal(asset, typeof(TOutput), cache, false, out obj);
             }
 
             var cacheData = obj as ContentCacheData;
@@ -311,7 +321,7 @@ namespace TwistedLogik.Ultraviolet.Content
             if (!Path.IsPathRooted(path))
                 path = ResolveAssetFilePath(path);
             
-            return new WatchedAsset<TOutput>(this, asset, path, watcher, changed);
+            return new WatchedAsset<TOutput>(this, asset, path, watcher, onReloading);
         }
 
         /// <summary>
@@ -321,14 +331,220 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="changed">The delegate to invoke when the watched asset changes.</param>
-        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="onReloaded">The delegate to invoke when the watched asset is reloaded.</param>
         /// <returns>The asset that was loaded from the specified file.</returns>
-        public WatchedAsset<TOutput> LoadWatched<TOutput>(AssetID asset, Action<WatchedAsset<TOutput>> changed, Boolean cache = true)
+        public WatchedAsset<TOutput> LoadWatched<TOutput>(AssetID asset, WatchedAssetReloadingHandler onReloaded)
+        {
+            return LoadWatched<TOutput>(asset, true, onReloaded);
+        }
+
+        /// <summary>
+        /// Loads the specified asset file.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
+        /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
+        /// <param name="asset">The path to the asset to load.</param>
+        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="onReloaded">The delegate to invoke when the watched asset is reloaded.</param>
+        /// <returns>The asset that was loaded from the specified file.</returns>
+        public WatchedAsset<TOutput> LoadWatched<TOutput>(AssetID asset, Boolean cache, WatchedAssetReloadingHandler onReloaded)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return LoadWatched<TOutput>(AssetID.GetAssetPath(asset), changed, cache);
+            return LoadWatched<TOutput>(AssetID.GetAssetPath(asset), cache, onReloaded);
+        }
+
+        /// <summary>
+        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
+        /// changes to the specified dependency will also cause the main asset to be reloaded.
+        /// </summary>
+        /// <param name="asset">The asset path of the asset for which to add a dependency.</param>
+        /// <param name="dependency">The asset path of the dependency to add to the specified asset.</param>
+        public void AddWatchedDependency(String asset, String dependency)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(dependency, nameof(dependency));
+
+            lock (cacheSyncObject)
+            {
+                if (watchedDependencies == null)
+                    watchedDependencies = new Dictionary<String, HashSet<String>>();
+
+                var dependencies = default(HashSet<String>);
+                if (!watchedDependencies.TryGetValue(asset, out dependencies))
+                    watchedDependencies[asset] = dependencies = new HashSet<String>();
+
+                var dependencyMetadata = GetAssetMetadata(NormalizeAssetPath(dependency), true, false, true);
+                if (dependencyMetadata == null)
+                    throw new FileNotFoundException(dependency);
+
+                dependencies.Add(dependencyMetadata.AssetFilePath);
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
+        /// changes to the specified dependency will also cause the main asset to be reloaded.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to add a dependency.</param>
+        /// <param name="dependency">The asset identifier of the dependency to add to the specified asset.</param>
+        public void AddWatchedDependency(AssetID asset, AssetID dependency)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
+
+            AddWatchedDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
+        }
+
+        /// <summary>
+        /// Clears all of the registered dependencies for the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the asset for which to clear dependencies.</param>
+        public void ClearWatchedDependencies(String asset)
+        {
+            Contract.Require(asset, nameof(asset));
+
+            lock (cacheSyncObject)
+            {
+                if (watchedDependencies == null)
+                    return;
+
+                watchedDependencies.Remove(asset);
+            }
+        }
+
+        /// <summary>
+        /// Clears all of the registered dependencies for the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to clear dependencies.</param>
+        public void ClearWatchedDependencies(AssetID asset)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+
+            ClearWatchedDependencies(AssetID.GetAssetPath(asset));
+        }
+
+        /// <summary>
+        /// Removes the specified dependency from an asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the asset from which to remove a dependency.</param>
+        /// <param name="dependency">The asset path of the dependency to remove from the specified asset.</param>
+        /// <returns></returns>
+        public Boolean RemoveWatchedDependency(String asset, String dependency)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(dependency, nameof(dependency));
+
+            lock (cacheSyncObject)
+            {
+                if (watchedDependencies == null)
+                    return false;
+
+                var dependencies = default(HashSet<String>);
+                if (watchedDependencies.TryGetValue(asset, out dependencies))
+                {
+                    var dependencyMetadata = GetAssetMetadata(NormalizeAssetPath(dependency), true, false, true);
+                    if (dependencyMetadata == null)
+                        return false;
+
+                    return dependencies.Remove(dependencyMetadata.AssetFilePath);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the specified dependency from an asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to remove a dependency.</param>
+        /// <param name="dependency">The asset identifier of the dependency to remove from the specified asset.</param>
+        public Boolean RemoveWatchedDependency(AssetID asset, AssetID dependency)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
+
+            return RemoveWatchedDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the main asset to evaluate.</param>
+        /// <param name="dependency">The asset path of the dependency asset to evaluate.</param>
+        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsWatchedDependency(String asset, String dependency)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(dependency, nameof(dependency));
+
+            lock (cacheSyncObject)
+            {
+                if (watchedDependencies == null)
+                    return false;
+
+                var dependencies = default(HashSet<String>);
+                if (watchedDependencies.TryGetValue(asset, out dependencies))
+                {
+                    var dependencyMetadata = GetAssetMetadata(NormalizeAssetPath(dependency), true, false, true);
+                    if (dependencyMetadata == null)
+                        return false;
+
+                    return dependencies.Contains(dependencyMetadata.AssetFilePath);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
+        /// <param name="dependency">The asset identifier of the dependency asset to evaluate.</param>
+        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsWatchedDependency(AssetID asset, AssetID dependency)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
+
+            return IsWatchedDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified file path is registered as a dependency of another asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the main asset to evaluate.</param>
+        /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
+        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsWatchedDependencyPath(String asset, String dependency)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(dependency, nameof(dependency));
+
+            lock (cacheSyncObject)
+            {
+                if (watchedDependencies == null)
+                    return false;
+
+                var dependencies = default(HashSet<String>);
+                return watchedDependencies.TryGetValue(asset, out dependencies) && dependencies.Contains(dependency);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified asset is registered as a dependency of another asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
+        /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
+        /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
+        public Boolean IsWatchedDependencyPath(AssetID asset, String dependency)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.Require(dependency, nameof(dependency));
+
+            return IsWatchedDependencyPath(AssetID.GetAssetPath(asset), dependency);
         }
 
         /// <summary>
@@ -344,7 +560,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return LoadImpl(asset, cache, false, true, default(TOutput));
+            return LoadImpl<TOutput>(asset, cache, false);
         }
 
         /// <summary>
@@ -360,7 +576,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return LoadImpl(AssetID.GetAssetPath(asset), cache, false, true, default(TOutput));
+            return LoadImpl<TOutput>(AssetID.GetAssetPath(asset), cache, false);
         }
 
         /// <summary>
@@ -481,7 +697,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
 
             var processor = FindContentProcessor("unknown", intermediate.GetType(), typeof(TOutput));
-            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false);
+            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false, false, false);
             var result = processor.Process(this, assetmeta, intermediate);
 
             return (TOutput)result;
@@ -501,7 +717,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
 
             var processor = FindContentProcessor("unknown", typeof(TInput), typeof(TOutput));
-            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false);
+            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false, false, false);
             var result = processor.Process(this, assetmeta, intermediate);
 
             return (TOutput)result;
@@ -546,7 +762,7 @@ namespace TwistedLogik.Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return PreprocessInternal(typeof(TOutput), asset, delete);
+            return PreprocessInternal(asset, typeof(TOutput), delete);
         }
 
         /// <summary>
@@ -561,7 +777,7 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return PreprocessInternal(typeof(TOutput), AssetID.GetAssetPath(asset), delete);
+            return PreprocessInternal(AssetID.GetAssetPath(asset), typeof(TOutput), delete);
         }
 
         /// <summary>
@@ -582,13 +798,16 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Resolves the full path to the file that represents the specified asset.
         /// </summary>
         /// <param name="asset">The asset path for which to resolve a file path.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
         /// <returns>The full path to the file that represents the specified asset.</returns>
-        public String ResolveAssetFilePath(String asset)
+        public String ResolveAssetFilePath(String asset, Boolean fromsln = false)
         {
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var metadata = GetAssetMetadata(NormalizeAssetPath(asset), true, false, false);
+            var metadata = GetAssetMetadata(NormalizeAssetPath(asset), true, false, fromsln);
             if (metadata == null)
                 throw new FileNotFoundException(asset);
 
@@ -599,15 +818,18 @@ namespace TwistedLogik.Ultraviolet.Content
         /// Resolves the full path to the file that represents the specified asset.
         /// </summary>
         /// <param name="asset">The asset identifier for which to resolve a file path.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
         /// <returns>The full path to the file that represents the specified asset.</returns>
-        public String ResolveAssetFilePath(AssetID asset)
+        public String ResolveAssetFilePath(AssetID asset, Boolean fromsln = false)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
             var assetPath = AssetID.GetAssetPath(asset);
 
-            var metadata = GetAssetMetadata(NormalizeAssetPath(assetPath), true, false, false);
+            var metadata = GetAssetMetadata(NormalizeAssetPath(assetPath), true, false, fromsln);
             if (metadata == null)
                 throw new FileNotFoundException(assetPath);
 
@@ -726,7 +948,15 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
         /// </summary>
-        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, Boolean throwOnError, TOutput lastKnownGoodVersion)
+        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln)
+        {
+            return LoadImpl<TOutput>(asset, cache, fromsln, null, default(TOutput));
+        }
+
+        /// <summary>
+        /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
+        /// </summary>
+        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, WatchedAssetReloadingHandler onReloading, TOutput lastKnownGood)
         {
             var cachedInstance = default(Object);
             var cacheMiss = false;
@@ -737,7 +967,7 @@ namespace TwistedLogik.Ultraviolet.Content
             if (cacheMiss)
             {
                 Object result;
-                LoadInternal(asset, typeof(TOutput), cache, false, false, fromsln, throwOnError, lastKnownGoodVersion, out result);
+                LoadInternal(asset, typeof(TOutput), cache, fromsln, onReloading, lastKnownGood, out result);
                 return (result is ContentCacheData) ?
                     (TOutput)((ContentCacheData)result).Asset : (TOutput)result;
             }
@@ -749,11 +979,11 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Reloads an asset which is being watched for changes.
         /// </summary>
-        internal TOutput LoadWatched<TOutput>(String asset, TOutput lastKnownGoodVersion = default(TOutput))
+        internal TOutput LoadWatched<TOutput>(WatchedAsset<TOutput> asset, TOutput lastKnownGood = default(TOutput))
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return LoadImpl(asset, true, true, false, lastKnownGoodVersion);
+            return LoadImpl(asset.AssetPath, true, true, asset.OnReloading, lastKnownGood);
         }
 
         /// <summary>
@@ -872,91 +1102,58 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Loads or preprocesses the specified content file.
+        /// Loads the specified content file.
         /// </summary>
-        /// <param name="asset">The asset to load.</param>
-        /// <param name="type">The type of asset to load.</param>
-        /// <param name="cache">A value indicating whether to add the loaded asset to the asset cache.</param>
-        /// <param name="preprocess">A value indicating whether to preprocess the loaded asset.</param>
-        /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <param name="fromsln">A value indicating whether to attempt to load the asset from the solution directory.</param>
-        /// <param name="lastKnownGoodVersion">The last known good version of the asset being loaded, if this is an asset which is being reloaded.</param>
-        /// <param name="throwOnError">A value indicating whether to re-throw any exceptions that occur during loading. If <see langword="false"/>,
-        /// then exceptions will be suppressed and the last known good version of the asset will be restored.</param>
-        /// <param name="result">The asset that was loaded.</param>
-        /// <returns><see langword="true"/> if the asset was loaded or preprocessed successfully; otherwise, <see langword="false"/>.</returns>
-        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean preprocess, Boolean delete, Boolean fromsln, Boolean throwOnError, 
-            Object lastKnownGoodVersion, out Object result)
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, out Object result)
+        {
+            return LoadInternal(asset, type, cache, fromsln, null, null, out result);
+        }
+
+        /// <summary>
+        /// Loads the specified content file.
+        /// </summary>
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, WatchedAssetReloadingHandler onReloading, Object lastKnownGood, out Object result)
         {
             result = null;
 
             var normalizedAsset = NormalizeAssetPath(asset);
 
-            var metadata = GetAssetMetadata(normalizedAsset, !preprocess, true, fromsln);
+            var metadata = GetAssetMetadata(normalizedAsset, true, true, fromsln);
             var preprocessed = IsPreprocessedFile(metadata.AssetFilePath);
-            if (preprocess && preprocessed)
-                return true;
+            var importer = default(IContentImporter);
+            var processor = default(IContentProcessor);
+            var instance = default(Object);
 
-            if (preprocess)
+            try
             {
-                var intermediateObjectType = default(Type);
-                var intermediate = Import<Object>(normalizedAsset, out intermediateObjectType);
-                var processor = FindContentProcessor(normalizedAsset, intermediateObjectType, type);
-                var preprocessSucceeded = PreprocessInternal(normalizedAsset, metadata, processor, intermediate, delete);
-                if (preprocessSucceeded && delete)
-                {
-                    if (batchDeletedFiles)
-                    {
-                        filesPendingDeletion.Add(metadata.AssetFilePath);
-                    }
-                    else
-                    {
-                        File.Delete(metadata.AssetFilePath);
-                    }
-                }
-                return preprocessSucceeded;
+                instance = preprocessed ?
+                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, out importer, out processor) :
+                    LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
             }
-            else
+            catch (Exception e)
             {
-                var importer = default(IContentImporter);
-                var processor = default(IContentProcessor);
-                var instance = default(Object);
+                if (onReloading == null || lastKnownGood == null)
+                    throw;
 
-                try
-                {
-                    instance = preprocessed ?
-                        LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, out importer, out processor) :
-                        LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
-                }
-                catch (Exception e)
-                {
-                    if (throwOnError || lastKnownGoodVersion == null)
-                        throw;
+                Debug.WriteLine(UltravioletStrings.ExceptionDuringContentReloading);
+                Debug.WriteLine(e);
 
-                    Debug.WriteLine(UltravioletStrings.ExceptionDuringContentReloading);
-                    Debug.WriteLine(e);
+                instance = lastKnownGood;
+            }
 
-                    instance = lastKnownGoodVersion;
-                }
+            if (cache)
+                UpdateCache(asset, metadata, ref instance);
+
+            if (onReloading != null && !onReloading())
+            {
+                instance = lastKnownGood;
 
                 if (cache)
-                {
-                    lock (cacheSyncObject)
-                    {
-                        if (metadata.IsOverridden)
-                        {
-                            instance = new ContentCacheData(instance, metadata.OverrideDirectory);
-                        }
-                        assetCache[asset] = instance;
-
-                        if (!assetFlags.ContainsKey(asset))
-                            assetFlags[asset] = AssetFlags.None;
-                    }
-                }
-
-                result = instance;
-                return true;
+                    UpdateCache(asset, metadata, ref instance);
             }
+
+            result = instance;
+            return true;
         }
 
         /// <summary>
@@ -1075,21 +1272,48 @@ namespace TwistedLogik.Ultraviolet.Content
 
                     processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
 
-                    var metadata = new AssetMetadata(overridedir, asset, fileSystemService.GetFullPath(path), null, null, true, false);
+                    var metadata = new AssetMetadata(overridedir, asset, fileSystemService.GetFullPath(path), null, null, true, false, false, false);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }
             }
         }
 
         /// <summary>
+        /// Preprocesses the assets in the specified content manifests.
+        /// </summary>
+        /// <param name="manifests">A collection containing the content manifests to preprocess.</param>
+        /// <param name="delete">A value indicating whether to delete the original files after preprocessing them.</param>
+        private void PreprocessInternal(IEnumerable<ContentManifest> manifests, Boolean delete)
+        {
+            var batch = false;
+            if (!BatchDeletedFiles)
+            {
+                BatchDeletedFiles = true;
+                batch = true;
+            }
+            batchDeletedFilesGuarantee = true;
+
+            foreach (var manifest in manifests)
+            {
+                foreach (var group in manifest)
+                {
+                    foreach (var asset in group)
+                    {
+                        PreprocessInternal(asset.AbsolutePath, asset.Type, delete);
+                    }
+                }
+            }
+
+            if (batch)
+            {
+                batchDeletedFilesGuarantee = false;
+                BatchDeletedFiles = false;
+            }
+        }
+
+        /// <summary>
         /// Preprocesses an asset.
         /// </summary>
-        /// <param name="asset">The name of the asset to preprocess.</param>
-        /// <param name="metadata">The asset metadata.</param>
-        /// <param name="processor">The content processor for the asset.</param>
-        /// <param name="intermediate">The intermediate form of the asset to preprocess.</param>
-        /// <param name="delete">A value indicating whether the original file will be deleted after preprocessing is complete.</param>
-        /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
         private Boolean PreprocessInternal(String asset, AssetMetadata metadata, IContentProcessor processor, Object intermediate, Boolean delete)
         {
             if (!processor.SupportsPreprocessing)
@@ -1109,6 +1333,66 @@ namespace TwistedLogik.Ultraviolet.Content
                     return true;
                 }
             }
+        }
+
+        /// <summary>
+        /// Preprocesses the specified asset by saving it in a binary format designed for fast deserialization.
+        /// If the asset's content importer does not support a binary data format, this method has no effect.
+        /// </summary>
+        private Boolean PreprocessInternal(String asset, Type type, Boolean delete)
+        {
+            Object result;
+
+            var assetDirectory = String.Empty;
+            var assetOveridden = false;
+            var assetPath = GetAssetPath(asset, null, out assetDirectory, out assetOveridden, AssetResolutionFlags.None);
+
+            if (IsPreprocessedFile(assetPath))
+                return true;
+
+            var substitutions = ListPossibleSubstitutions(assetDirectory, assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
+            foreach (var substitution in substitutions)
+            {
+                if (!PreprocessInternal(substitution, type, delete, false, out result))
+                {
+                    return false;
+                }
+            }
+
+            return PreprocessInternal(asset, type, delete, false, out result);
+        }
+
+        /// <summary>
+        /// Preprocesses the specified asset by saving it in a binary format designed for fast deserialization.
+        /// If the asset's content importer does not support a binary data format, this method has no effect.
+        /// </summary>
+        private Boolean PreprocessInternal(String asset, Type type, Boolean delete, Boolean fromsln, out Object result)
+        {
+            result = null;
+
+            var normalizedAsset = NormalizeAssetPath(asset);
+
+            var metadata = GetAssetMetadata(normalizedAsset, false, true, fromsln);
+            var preprocessed = IsPreprocessedFile(metadata.AssetFilePath);
+            if (preprocessed)
+                return true;
+
+            var intermediateObjectType = default(Type);
+            var intermediate = Import<Object>(normalizedAsset, out intermediateObjectType);
+            var processor = FindContentProcessor(normalizedAsset, intermediateObjectType, type);
+            var preprocessSucceeded = PreprocessInternal(normalizedAsset, metadata, processor, intermediate, delete);
+            if (preprocessSucceeded && delete)
+            {
+                if (batchDeletedFiles)
+                {
+                    filesPendingDeletion.Add(metadata.AssetFilePath);
+                }
+                else
+                {
+                    File.Delete(metadata.AssetFilePath);
+                }
+            }
+            return preprocessSucceeded;
         }
 
         /// <summary>
@@ -1296,7 +1580,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 if (assetPath != null)
                 {
                     if (includePreprocessedFiles || !IsPreprocessedFile(asset))
-                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, assetOverridden, includeDetailedMetadata);
+                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
                 }
                 throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
             }
@@ -1308,7 +1592,7 @@ namespace TwistedLogik.Ultraviolet.Content
                     (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
                 if (assetPathPreprocessed != null)
                 {
-                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, assetOverridden, includeDetailedMetadata);
+                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
                 }
             }
 
@@ -1317,7 +1601,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
             if (assetPathMetadata != null)
             {
-                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, assetOverridden, includeDetailedMetadata);
+                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
             }
 
             // Find the highest-ranking raw file.
@@ -1325,7 +1609,7 @@ namespace TwistedLogik.Ultraviolet.Content
                 (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
             if (assetPathRaw != null)
             {
-                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, assetOverridden, includeDetailedMetadata);
+                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
             }
 
             // If we still have no matches, we can't find the file.
@@ -1340,8 +1624,9 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="rootdir">The root directory from which the file is being loaded.</param>
         /// <param name="overridden">A value indicating whether the asset was loaded from an override directory.</param>
         /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
+        /// <param name="fromsln">A value indicating whether the file is being loaded from the solution, rather than the binaries folder.</param>
         /// <returns>The asset metadata for the specified asset file.</returns>
-        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata)
+        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln)
         {
             String extension;
             if (IsMetadataFile(filename, out extension) && includeDetailedMetadata)
@@ -1390,9 +1675,9 @@ namespace TwistedLogik.Ultraviolet.Content
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
 
                 return new AssetMetadata(wrappedAssetOverridden ? wrappedAssetDirectory : null,
-                    asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson);
+                    asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson, fromsln);
             }
-            return new AssetMetadata(overridden ? rootdir : null, asset, filename, null, null, true, false);
+            return new AssetMetadata(overridden ? rootdir : null, asset, filename, null, null, true, false, false, fromsln);
         }
 
         /// <summary>
@@ -1475,67 +1760,21 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
-        /// Preprocesses the assets in the specified content manifests.
+        /// Updates the content manager's internal cache with the specified object instance.
         /// </summary>
-        /// <param name="manifests">A collection containing the content manifests to preprocess.</param>
-        /// <param name="delete">A value indicating whether to delete the original files after preprocessing them.</param>
-        private void PreprocessInternal(IEnumerable<ContentManifest> manifests, Boolean delete)
+        private void UpdateCache(String asset, AssetMetadata metadata, ref Object instance)
         {
-            var batch = false;
-            if (!BatchDeletedFiles)
+            lock (cacheSyncObject)
             {
-                BatchDeletedFiles = true;
-                batch = true;
-            }
-            batchDeletedFilesGuarantee = true;
-
-            foreach (var manifest in manifests)
-            {
-                foreach (var group in manifest)
+                if (metadata.IsOverridden)
                 {
-                    foreach (var asset in group)
-                    {
-                        PreprocessInternal(asset.Type, asset.AbsolutePath, delete);
-                    }
+                    instance = new ContentCacheData(instance, metadata.OverrideDirectory);
                 }
+                assetCache[asset] = instance;
+
+                if (!assetFlags.ContainsKey(asset))
+                    assetFlags[asset] = AssetFlags.None;
             }
-
-            if (batch)
-            {
-                batchDeletedFilesGuarantee = false;
-                BatchDeletedFiles = false;
-            }
-        }
-
-        /// <summary>
-        /// Preprocesses the specified asset by saving it in a binary format designed for fast deserialization.
-        /// If the asset's content importer does not support a binary data format, this method has no effect.
-        /// </summary>
-        /// <param name="type">The type of asset to preprocess.</param>
-        /// <param name="asset">The asset to preprocess.</param>
-        /// <param name="delete">A value indicating whether to delete the original file after preprocessing it.</param>
-        /// <returns><see langword="true"/> if the asset was preprocessed; otherwise, <see langword="false"/>.</returns>
-        private Boolean PreprocessInternal(Type type, String asset, Boolean delete)
-        {
-            Object result;
-
-            var assetDirectory = String.Empty;
-            var assetOveridden = false;
-            var assetPath = GetAssetPath(asset, null, out assetDirectory, out assetOveridden, AssetResolutionFlags.None);
-
-            if (IsPreprocessedFile(assetPath))
-                return true;
-
-            var substitutions = ListPossibleSubstitutions(assetDirectory, assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
-            foreach (var substitution in substitutions)
-            {
-                if (!LoadInternal(substitution, type, false, true, delete, false, true, null, out result))
-                {
-                    return false;
-                }
-            }
-
-            return LoadInternal(asset, type, false, true, delete, false, true, null, out result);
         }
 
         // Property values.
@@ -1547,7 +1786,10 @@ namespace TwistedLogik.Ultraviolet.Content
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
+
+        // File watching.
         private FileSystemWatcher rootFileSystemWatcher;
+        private Dictionary<String, HashSet<String>> watchedDependencies;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";

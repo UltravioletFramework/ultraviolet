@@ -503,7 +503,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return registeredTypes.Remove(registration.Name);
         }
-        
+
+        /// <summary>
+        /// Attempts to set the global style sheet used by all Presentation Foundation views. If any exceptions are thrown
+        /// during this process, the previous style sheet will be automatically restored.
+        /// </summary>
+        /// <param name="styleSheet">The global style sheet to set.</param>
+        /// <returns><see langword="true"/> if the style sheet was set successfully; otherwise, <see langword="false"/>.</returns>
+        public Boolean TrySetGlobalStyleSheet(UvssDocument styleSheet)
+        {
+            var previous = GlobalStyleSheet;
+            try
+            {
+                SetGlobalStyleSheet(styleSheet);
+            }
+            catch
+            {
+                SetGlobalStyleSheet(previous);
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Sets the global style sheet used by all Presentation Foundation views.
         /// </summary>
@@ -514,7 +535,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.globalStyleSheet = styleSheet;
             OnGlobalStyleSheetChanged();
-        }
+        }        
 
         /// <summary>
         /// Initializes the specified collection of the Presentation Foundation's internal object pools.
