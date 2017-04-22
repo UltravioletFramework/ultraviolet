@@ -70,6 +70,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
             {
                 System.Diagnostics.Debug.WriteLine(message);
             };
+            configuration.WatchViewFilesForChanges = true;
 #endif
             return new OpenGLUltravioletContext(this, configuration);
         }
@@ -215,15 +216,16 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 
             if (!ShouldRunInServiceMode())
             {
-                var globalStyleSheet = new UvssDocument(Ultraviolet);
-                globalStyleSheet.Append(content.Load<UvssDocument>("UI/DefaultUIStyles"));
-                globalStyleSheet.Append(content.Load<UvssDocument>("UI/GameStyles"));
-                upf.SetGlobalStyleSheet(globalStyleSheet);
+                var reloadGlobalStyleSheet = new WatchedAssetReloadingHandler(() =>
+                    Ultraviolet.GetUI().GetPresentationFoundation().TrySetGlobalStyleSheet(globalStyleSheet.ToUvssDocument()));
+
+                globalStyleSheet = new CompositeUvssDocument(Ultraviolet, reloadGlobalStyleSheet);
+                globalStyleSheet.Append(content, "UI/DefaultUIStyles");
+                globalStyleSheet.Append(content, "UI/GameStyles");
+                reloadGlobalStyleSheet();
 
                 CompileBindingExpressions();
-                upf.LoadCompiledExpressions();
-
-                Diagnostics.DrawDiagnosticsVisuals = true;
+                upf.LoadCompiledExpressions();                
             }
         }
 
@@ -231,6 +233,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         private ContentManager content;
 
         // State values.
+        private CompositeUvssDocument globalStyleSheet;
         private Boolean resolveContent;
         private Boolean compileContent;
         private Boolean compileExpressions;

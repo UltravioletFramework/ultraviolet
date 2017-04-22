@@ -65,13 +65,13 @@ namespace UvDebugSandbox
             PresentationFoundation.Configure(configuration);
 
 #if DEBUG
-            configuration.WatchViewFilesForChanges = true;
             configuration.Debug = true;
             configuration.DebugLevels = DebugLevels.Error | DebugLevels.Warning;
             configuration.DebugCallback = (uv, level, message) =>
             {
                 System.Diagnostics.Debug.WriteLine(message);
             };
+            configuration.WatchViewFilesForChanges = true;
 #endif
             return new OpenGLUltravioletContext(this, configuration);
         }
