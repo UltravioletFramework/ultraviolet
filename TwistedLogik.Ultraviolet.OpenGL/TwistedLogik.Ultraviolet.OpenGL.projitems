@@ -41,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IBindableResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IOpenGLResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLAttribCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBasicEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlendState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlurEffect.cs" />

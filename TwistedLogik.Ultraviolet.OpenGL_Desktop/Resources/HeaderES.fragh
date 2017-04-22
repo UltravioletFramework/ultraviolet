@@ -1,4 +1,4 @@
-﻿#ifver "es2.0" { #version 100 es }
+﻿#ifver "es2.0" { #version 100 }
 #ifver "es2.0" { #define GLES2 }
 #ifver_gt "es2.0" { #version 300 es }
 #ifver_gt "es2.0" { #define GLES3 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TwistedLogik.Gluon;
 using TwistedLogik.Nucleus;
-using System.Runtime.InteropServices;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {
@@ -76,6 +76,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                             gl.ThrowIfError();
 
                             attributeLocations[attrName] = location;
+                            attributeTypes[attrName] = attrType;
                         }
                     }
                     finally { Marshal.FreeHGlobal(namebuf); }
@@ -88,7 +89,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.program = program;
             this.uniforms = CreateUniformCollection();
         }
-        
+
         /// <summary>
         /// Gets the location of the specified attribute within the shader program's list of attributes.
         /// </summary>
@@ -96,8 +97,43 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <returns>The location of the specified attribute, or -1 if the attribute does not exist within the program.</returns>
         public Int32 GetAttribLocation(String name)
         {
+            var category = OpenGLAttribCategory.Single;
+            return GetAttribLocation(name, out category);
+        }
+
+        /// <summary>
+        /// Gets the location of the specified attribute within the shader program's list of attributes.
+        /// </summary>
+        /// <param name="name">The name of the attribute to evaluate.</param>
+        /// <param name="category">A value specifying the attribute's type category.</param>
+        /// <returns>The location of the specified attribute, or -1 if the attribute does not exist within the program.</returns>
+        public Int32 GetAttribLocation(String name, out OpenGLAttribCategory category)
+        {
+            category = OpenGLAttribCategory.Single;
+
             var location = -1;
-            attributeLocations.TryGetValue(name, out location);
+            if (attributeLocations.TryGetValue(name, out location))
+            {
+                var type = attributeTypes[name];
+                switch (type)
+                {
+                    case gl.GL_INT:
+                    case gl.GL_INT_VEC2:
+                    case gl.GL_INT_VEC3:
+                    case gl.GL_INT_VEC4:
+                    case gl.GL_UNSIGNED_INT:
+                    case gl.GL_UNSIGNED_INT_VEC2:
+                    case gl.GL_UNSIGNED_INT_VEC3:
+                    case gl.GL_UNSIGNED_INT_VEC4:
+                        category = OpenGLAttribCategory.Integer;
+                        break;
+
+                    case gl.GL_DOUBLE:
+                        category = OpenGLAttribCategory.Double;
+                        break;
+                }
+            }
+
             return location;
         }
 
@@ -228,7 +264,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         private readonly Boolean programOwnsShaders;
 
         // Attrib cache.
-        private readonly Dictionary<String, Int32> attributeLocations =
-            new Dictionary<String, Int32>();
+        private readonly Dictionary<String, Int32> attributeLocations = new Dictionary<String, Int32>();
+        private readonly Dictionary<String, UInt32> attributeTypes = new Dictionary<String, UInt32>();
     }
 }

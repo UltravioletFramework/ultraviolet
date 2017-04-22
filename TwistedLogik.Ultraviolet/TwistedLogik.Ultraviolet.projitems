@@ -129,7 +129,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationName.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteBatchFallback.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationController.cs" />
