@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -203,23 +204,24 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         private static Boolean AttemptCultureAwareParse(String value, Type type, IFormatProvider provider, out Object result)
         {
-            MethodInfo method;
-            if (!cachedCultureAwareParse.TryGetValue(type, out method))
+            var parser = default(Func<String, IFormatProvider, Object>);
+            if (!cachedCultureAwareParse.TryGetValue(type, out parser))
             {
-                method = type.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(String), typeof(IFormatProvider) }, null);
-                cachedCultureAwareParse[type] = method;
+                var method = type.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(String), typeof(IFormatProvider) }, null);
+                if (method != null)
+                {
+                    var expParameter1 = Expression.Parameter(typeof(String), "str");
+                    var expParameter2 = Expression.Parameter(typeof(IFormatProvider), "provider");
+                    var expCall = Expression.Call(null, method, expParameter1, expParameter2);
+                    var expConvert = Expression.Convert(expCall, typeof(Object));
+                    parser = Expression.Lambda<Func<String, IFormatProvider, Object>>(expConvert, expParameter1, expParameter2).Compile();
+                }
+                cachedCultureAwareParse[type] = parser;
             }
 
-            if (method != null)
+            if (parser != null)
             {
-                try
-                {
-                    result = method.Invoke(null, new object[] { value, provider });
-                }
-                catch (TargetInvocationException e)
-                {
-                    throw e.InnerException;
-                }
+                result = parser(value, provider);
                 return true;
             }
             result = null;
@@ -232,23 +234,23 @@ namespace TwistedLogik.Nucleus.Data
         /// </summary>
         private static Boolean AttemptCultureIgnorantParse(String value, Type type, out Object result)
         {
-            MethodInfo method;
-            if (!cachedCultureIgnorantParse.TryGetValue(type, out method))
+            var parser = default(Func<String, Object>);
+            if (!cachedCultureIgnorantParse.TryGetValue(type, out parser))
             {
-                method = type.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(String) }, null);
-                cachedCultureIgnorantParse[type] = method;
+                var method = type.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(String) }, null);
+                if (method != null)
+                {
+                    var expParameter1 = Expression.Parameter(typeof(String), "str");
+                    var expCall = Expression.Call(null, method, expParameter1);
+                    var expConvert = Expression.Convert(expCall, typeof(Object));
+                    parser = Expression.Lambda<Func<String, Object>>(expConvert, expParameter1).Compile();
+                }
+                cachedCultureIgnorantParse[type] = parser;
             }
 
-            if (method != null)
+            if (parser != null)
             {
-                try
-                {
-                    result = method.Invoke(null, new object[] { value });
-                }
-                catch (TargetInvocationException e)
-                {
-                    throw e.InnerException;
-                }
+                result = parser(value);
                 return true;
             }
             result = null;
@@ -294,10 +296,10 @@ namespace TwistedLogik.Nucleus.Data
             new Dictionary<Type, CustomObjectResolver>();
 
         // Cached parse methods.
-        private static readonly Dictionary<Type, MethodInfo> cachedCultureAwareParse = 
-            new Dictionary<Type, MethodInfo>();
-        private static readonly Dictionary<Type, MethodInfo> cachedCultureIgnorantParse =
-            new Dictionary<Type, MethodInfo>();
+        private static readonly Dictionary<Type, Func<String, IFormatProvider, Object>> cachedCultureAwareParse = 
+            new Dictionary<Type, Func<String, IFormatProvider, Object>>();
+        private static readonly Dictionary<Type, Func<String, Object>> cachedCultureIgnorantParse =
+            new Dictionary<Type, Func<String, Object>>();
 
         // Cached resolution methods.
         private static readonly MethodInfo miResolveLazilyLoadedDataObject;
