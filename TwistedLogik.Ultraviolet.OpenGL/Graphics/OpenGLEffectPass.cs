@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics

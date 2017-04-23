@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="Ultraviolet.Core, Version=4.0.0.0">
+    <Types>
+      <Type Name="Ultraviolet.Core.Text.StringResource">
+        <TypeConverter>Ultraviolet.Core.Design.Text.StringResourceTypeConverter, Ultraviolet.Core.Design</TypeConverter>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

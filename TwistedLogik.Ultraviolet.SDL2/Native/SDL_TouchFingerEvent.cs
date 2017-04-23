@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using SDL_FingerID = System.Int64;
 using SDL_TouchID = System.Int64;
 

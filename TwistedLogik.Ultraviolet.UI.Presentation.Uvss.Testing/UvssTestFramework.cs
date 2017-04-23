@@ -1,11 +1,11 @@
-﻿using TwistedLogik.Nucleus.Testing;
+﻿using Ultraviolet.Core.TestFramework;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
 {
     /// <summary>
     /// Represents the test framework for UVSS unit tests.
     /// </summary>
-    public abstract class UvssTestFramework : NucleusTestFramework
+    public abstract class UvssTestFramework : CoreTestFramework
     {
         /// <summary>
         /// Wraps the specified unit test result for evaluation.

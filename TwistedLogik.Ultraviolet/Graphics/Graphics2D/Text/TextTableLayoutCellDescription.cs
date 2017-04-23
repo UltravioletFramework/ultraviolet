@@ -1,6 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
         /// Gets or sets the set of <see cref="TextFlags"/> values used to draw the cell's text.
         /// </summary>
         [JsonProperty(PropertyName = "textFlags", Required = Required.DisallowNull)]
-        [JsonConverter(typeof(NucleusEnumJsonConverter))]
+        [JsonConverter(typeof(CoreEnumJsonConverter))]
         public TextFlags TextFlags { get; set; }
 
         /// <summary>

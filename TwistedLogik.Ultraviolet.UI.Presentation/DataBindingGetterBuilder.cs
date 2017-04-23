@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 #if !CODE_GEN_ENABLED
 using System.Reflection;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 #endif
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation

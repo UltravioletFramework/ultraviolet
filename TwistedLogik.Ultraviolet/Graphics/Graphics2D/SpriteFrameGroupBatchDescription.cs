@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {

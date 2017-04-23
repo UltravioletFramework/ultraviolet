@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {

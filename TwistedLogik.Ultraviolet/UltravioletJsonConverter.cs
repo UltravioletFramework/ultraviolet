@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet
     /// <summary>
     /// Represents a custom JSON converter which supports Ultraviolet's core types.
     /// </summary>
-    public class UltravioletJsonConverter : NucleusJsonConverter
+    public class UltravioletJsonConverter : CoreJsonConverter
     {
         /// <summary>
         /// Initializes the <see cref="UltravioletJsonConverter"/> type.
@@ -86,7 +86,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var values = (Int32[])serializer.Deserialize(reader, typeof(Int32[]));
             if (values.Length != 3 && values.Length != 4)
-                throw new JsonReaderException(NucleusStrings.JsonIncorrectArrayLengthForType.Format(objectType.Name));
+                throw new JsonReaderException(CoreStrings.JsonIncorrectArrayLengthForType.Format(objectType.Name));
 
             var r = values[0];
             var g = values[1];
@@ -114,7 +114,7 @@ namespace TwistedLogik.Ultraviolet
         {
             var values = (Single[])serializer.Deserialize(reader, typeof(Single[]));
             if (values.Length != 16)
-                throw new JsonReaderException(NucleusStrings.JsonIncorrectArrayLengthForType.Format(objectType.Name));
+                throw new JsonReaderException(CoreStrings.JsonIncorrectArrayLengthForType.Format(objectType.Name));
 
             return new Matrix(
                 values[00], values[01], values[02], values[03],

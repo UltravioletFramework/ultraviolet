@@ -3,8 +3,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Platform;
 

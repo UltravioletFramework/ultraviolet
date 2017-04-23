@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 using TwistedLogik.Ultraviolet;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.OpenGL;

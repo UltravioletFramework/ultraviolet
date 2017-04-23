@@ -1,0 +1,10 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Core.Text.LocalizedStringVariant Schema",
+  "properties": {
+    "group": { "type": "string" },
+    "properties": { "type": "string" },
+    "text": { "type": "string" }
+  },
+  "required": [ "text" ]
+}

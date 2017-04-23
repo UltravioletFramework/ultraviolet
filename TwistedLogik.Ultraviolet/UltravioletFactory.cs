@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security;
 using System.Text;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections.Specialized;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Collections.Specialized;
+using Ultraviolet.Core.Text;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
 {

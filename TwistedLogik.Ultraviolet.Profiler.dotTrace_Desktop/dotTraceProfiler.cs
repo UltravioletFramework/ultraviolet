@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.dotTrace.Api;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
 {

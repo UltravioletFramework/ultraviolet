@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Xml;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Xml;
 using TwistedLogik.Ultraviolet.Platform;
 using Newtonsoft.Json;
 

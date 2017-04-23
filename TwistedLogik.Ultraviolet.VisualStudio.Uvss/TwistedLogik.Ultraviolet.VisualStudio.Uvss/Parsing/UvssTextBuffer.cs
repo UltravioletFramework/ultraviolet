@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.Text;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
 {

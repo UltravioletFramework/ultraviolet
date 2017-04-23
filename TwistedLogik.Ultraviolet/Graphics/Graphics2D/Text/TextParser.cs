@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Threading;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 using System.Collections.Generic;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Xml;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Xml;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet

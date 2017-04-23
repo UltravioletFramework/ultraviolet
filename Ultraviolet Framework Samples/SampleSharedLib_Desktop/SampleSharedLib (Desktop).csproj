@@ -38,9 +38,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TwistedLogik.Nucleus, Version=1.3.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.Core, Version=1.3.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\TwistedLogik.Nucleus.dll</HintPath>
+      <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet, Version=1.3.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

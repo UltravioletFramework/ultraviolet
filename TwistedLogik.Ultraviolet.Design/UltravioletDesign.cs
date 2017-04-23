@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Design;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Design;
 
 namespace TwistedLogik.Ultraviolet.Design
 {
@@ -14,11 +14,11 @@ namespace TwistedLogik.Ultraviolet.Design
         /// </summary>
         public static void Initialize()
         {
-            Contract.EnsureNot(Initialized, NucleusStrings.TypeMetadataAlreadyLoaded);
+            Contract.EnsureNot(Initialized, CoreStrings.TypeMetadataAlreadyLoaded);
 
-            if (!NucleusDesign.Initialized)
+            if (!CoreDesign.Initialized)
             {
-                NucleusDesign.Initialize();
+                CoreDesign.Initialize();
             }
 
             foreach (var m in metadata)

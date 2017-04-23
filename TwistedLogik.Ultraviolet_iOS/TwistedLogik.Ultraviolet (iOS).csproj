@@ -117,9 +117,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj">
+    <ProjectReference Include="..\Ultraviolet.Core_iOS\Ultraviolet.Core (iOS).csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
-      <Name>TwistedLogik.Nucleus (iOS)</Name>
+      <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS\TwistedLogik.Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>

@@ -2,7 +2,7 @@
 using System.IO;
 using AppKit;
 using Foundation;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OSX.Graphics

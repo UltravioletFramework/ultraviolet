@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.SDL2.Messages;
 using TwistedLogik.Ultraviolet.SDL2.Native;

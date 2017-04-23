@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 using TwistedLogik.Ultraviolet.Platform;

@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.UI;
 

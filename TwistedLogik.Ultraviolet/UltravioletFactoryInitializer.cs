@@ -1,4 +1,4 @@
-﻿using TwistedLogik.Nucleus;
+﻿using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet

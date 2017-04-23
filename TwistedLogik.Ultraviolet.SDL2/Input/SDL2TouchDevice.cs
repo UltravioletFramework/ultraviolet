@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.Input;
 using TwistedLogik.Ultraviolet.Platform;
 using TwistedLogik.Ultraviolet.SDL2.Messages;

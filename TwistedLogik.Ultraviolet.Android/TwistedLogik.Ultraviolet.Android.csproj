@@ -94,9 +94,9 @@
     <Compile Include="UltravioletActivitySettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_Android\TwistedLogik.Nucleus %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core_Android\Ultraviolet.Core %28Android%29.csproj">
       <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
-      <Name>TwistedLogik.Nucleus %28Android%29</Name>
+      <Name>Ultraviolet.Core %28Android%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet_Android\TwistedLogik.Ultraviolet %28Android%29.csproj">
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>

@@ -70,9 +70,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj">
+    <ProjectReference Include="..\Ultraviolet.Core_iOS\Ultraviolet.Core (iOS).csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
-      <Name>TwistedLogik.Nucleus (iOS)</Name>
+      <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

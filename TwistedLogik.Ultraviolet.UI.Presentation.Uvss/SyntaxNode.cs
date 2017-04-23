@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss

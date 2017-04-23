@@ -279,9 +279,9 @@
       <Project>{65ECB0C3-FD4E-494A-A000-43500B9CB851}</Project>
       <Name>TwistedLogik.Gluon (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core_iOS\Ultraviolet.Core %28iOS%29.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
-      <Name>TwistedLogik.Nucleus (iOS)</Name>
+      <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_iOS\TwistedLogik.Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>

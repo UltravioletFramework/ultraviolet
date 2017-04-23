@@ -41,8 +41,8 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit_iOS">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Nucleus.dll</HintPath>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

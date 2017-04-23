@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Testing

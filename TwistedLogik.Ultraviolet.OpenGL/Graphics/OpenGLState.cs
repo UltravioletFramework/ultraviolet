@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using TwistedLogik.Gluon;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Collections;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching;
 

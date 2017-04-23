@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.Text;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
 
 namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
@@ -67,8 +67,8 @@ namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
                 {
                     var prevToken = DiagnosticInfo.Node.GetPreviousToken(includeMissing: false);
                     if (prevToken.HasTrailingLineBreaks || DiagnosticInfo.Node.HasLeadingLineBreaks)
-					{
-						var positionDelta = prevToken.Position - DiagnosticInfo.Node.Position;
+                    {
+                        var positionDelta = prevToken.Position - DiagnosticInfo.Node.Position;
 
                         tagStart = (tagStart + positionDelta) + (prevToken.FullWidth - prevToken.GetTrailingTriviaWidth());
                         tagWidth = 1;

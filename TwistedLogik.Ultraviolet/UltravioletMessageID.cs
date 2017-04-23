@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet
 {

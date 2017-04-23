@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {

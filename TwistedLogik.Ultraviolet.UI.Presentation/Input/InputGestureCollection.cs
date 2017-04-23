@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -48,7 +48,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public void Clear()
         {
             if (isReadOnly)
-                throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
             ClearInternal();
         }
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(item, nameof(item));
 
             if (isReadOnly)
-                throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
             AddInternal(item);
         }
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(collection, nameof(collection));
 
             if (isReadOnly)
-                throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
             AddRangeInternal(collection);
         }
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(item, nameof(item));
 
             if (isReadOnly)
-                throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
             InsertInternal(index, item);
         }
@@ -93,7 +93,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public void RemoveAt(Int32 index)
         {
             if (isReadOnly)
-                throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
             RemoveAtInternal(index);
         }
@@ -104,7 +104,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             Contract.Require(item, nameof(item));
 
             if (isReadOnly)
-                throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
             return RemoveInternal(item);
         }
@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 Contract.Require(value, nameof(value));
 
                 if (isReadOnly)
-                    throw new NotSupportedException(NucleusStrings.CannotModifyReadOnlyCollection);
+                    throw new NotSupportedException(CoreStrings.CannotModifyReadOnlyCollection);
 
                 base[index] = value;
             }

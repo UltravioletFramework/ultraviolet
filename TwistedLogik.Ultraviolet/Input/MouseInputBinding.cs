@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
-using TwistedLogik.Nucleus.Xml;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
+using Ultraviolet.Core.Xml;
 
 namespace TwistedLogik.Ultraviolet.Input
 {

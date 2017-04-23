@@ -1,7 +1,7 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching;
 using TwistedLogik.Gluon;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics

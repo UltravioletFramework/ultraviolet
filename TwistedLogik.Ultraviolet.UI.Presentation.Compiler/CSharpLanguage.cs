@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet
 {
@@ -25,7 +25,7 @@ namespace TwistedLogik.Ultraviolet
             if (isByRef)
                 type = type.GetElementType();
 
-            var name = (type.IsGenericParameter ? type.Name : type.FullName) ?? type.Name;
+            var name = (type.IsGenericParameter ? type.Name : "global::" + type.FullName) ?? type.Name;
             name = name.Replace('+', '.');
 
             if (type.IsGenericType)
@@ -37,7 +37,7 @@ namespace TwistedLogik.Ultraviolet
                 name = String.Format("{0}<{1}>", genericTypeName,
                     String.Join(", ", genericArguments.Select(x => GetCSharpTypeName(x))));
             }
-
+            
             return isByRef ? "ref " + name : name;
         }
     }

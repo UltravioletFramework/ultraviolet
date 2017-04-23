@@ -79,9 +79,9 @@
     <Compile Include="dotTraceProfiler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Nucleus_iOS\TwistedLogik.Nucleus (iOS).csproj">
+    <ProjectReference Include="..\Ultraviolet.Core_iOS\Ultraviolet.Core (iOS).csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
-      <Name>TwistedLogik.Nucleus (iOS)</Name>
+      <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet (iOS).csproj">
       <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>

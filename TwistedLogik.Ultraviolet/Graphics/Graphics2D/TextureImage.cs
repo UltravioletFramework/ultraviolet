@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Data;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D

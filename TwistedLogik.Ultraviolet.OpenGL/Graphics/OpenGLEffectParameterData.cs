@@ -1,6 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {

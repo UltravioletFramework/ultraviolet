@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
 {

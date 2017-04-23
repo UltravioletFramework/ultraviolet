@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Data;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation

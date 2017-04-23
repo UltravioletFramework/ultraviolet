@@ -168,8 +168,8 @@
     <Reference Include="TwistedLogik.Gluon">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Gluon.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Nucleus.dll</HintPath>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.BASS">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.BASS.dll</HintPath>

@@ -1,6 +1,6 @@
 ﻿using System;
 using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives

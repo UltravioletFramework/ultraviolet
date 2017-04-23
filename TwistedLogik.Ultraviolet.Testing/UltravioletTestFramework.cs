@@ -2,14 +2,14 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using TwistedLogik.Nucleus.Testing;
+using Ultraviolet.Core.TestFramework;
 
 namespace TwistedLogik.Ultraviolet.Testing
 {
     /// <summary>
     /// Represents the test framework for Ultraviolet unit tests.
     /// </summary>
-    public abstract class UltravioletTestFramework : NucleusTestFramework
+    public abstract class UltravioletTestFramework : CoreTestFramework
     {
         /// <summary>
         /// Gets the current machine's name, with any path-invalid characters removed.

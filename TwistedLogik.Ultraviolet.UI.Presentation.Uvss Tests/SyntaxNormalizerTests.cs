@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
-using TwistedLogik.Nucleus.Testing;
+using Ultraviolet.Core.TestFramework;
 using static TwistedLogik.Ultraviolet.UI.Presentation.Uvss.SyntaxFactory;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
 {
     [TestFixture]
-    public class SyntaxNormalizerTests : NucleusTestFramework
+    public class SyntaxNormalizerTests : CoreTestFramework
     {
         [Test]
         public void SyntaxNormalizer_Block_IsCorrectlyNested()

@@ -1,6 +1,6 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
-<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\TwistedLogik.Nucleus.dll" #>
+<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\Ultraviolet.Core.dll" #>
 <#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\TwistedLogik.Ultraviolet.dll" #>
 <#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\TwistedLogik.Ultraviolet.Desktop.dll" #>
 <#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\TwistedLogik.Ultraviolet.UI.Presentation.dll" #>

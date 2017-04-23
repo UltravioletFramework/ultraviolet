@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation

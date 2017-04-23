@@ -91,9 +91,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\TwistedLogik.Gluon.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Nucleus, Version=4.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Android\TwistedLogik.Nucleus.dll</HintPath>
+      <HintPath>..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

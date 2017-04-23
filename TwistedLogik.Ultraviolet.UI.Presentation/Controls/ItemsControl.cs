@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 {

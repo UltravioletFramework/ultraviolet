@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using TwistedLogik.Gluon;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 
 namespace TwistedLogik.Ultraviolet.OpenGL

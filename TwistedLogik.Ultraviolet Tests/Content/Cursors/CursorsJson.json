@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "http://schema.twistedlogik.net/Ultraviolet/CursorCollection.json",
+  "$schema": "http://schema.ultraviolet.tl/uv/Ultraviolet/CursorCollection.json",
   "texture": "CursorsImage",
   "cursors": [
     {

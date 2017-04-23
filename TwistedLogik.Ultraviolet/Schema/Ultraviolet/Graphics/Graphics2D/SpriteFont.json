@@ -30,7 +30,7 @@
       "type": "object",
       "properties": {
         "texture": { "type": "string" },
-        "textureRegion": { "$ref": "http://schema.twistedlogik.net/Ultraviolet/Rectangle.json" },
+        "textureRegion": { "$ref": "http://schema.ultraviolet.tl/uv/Ultraviolet/Rectangle.json" },
         "glyphs": {
           "type": "object",
           "properties": {            

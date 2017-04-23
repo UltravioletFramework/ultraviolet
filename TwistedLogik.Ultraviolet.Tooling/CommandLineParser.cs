@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Data;
 
 namespace TwistedLogik.Ultraviolet.Tooling
 {

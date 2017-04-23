@@ -1,5 +1,5 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.UI.Presentation;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {

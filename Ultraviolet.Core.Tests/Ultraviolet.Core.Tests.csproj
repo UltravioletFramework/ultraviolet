@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{535D248F-F774-4DC0-B314-A15FA25026C8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ultraviolet.Core.Tests</RootNamespace>
+    <AssemblyName>Ultraviolet.Core.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\Ultraviolet.Core Tests.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Ultraviolet.Core Tests.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\UltravioletStyleRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|x86'">
+    <OutputPath>bin\x86\Signed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net40\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Include="%24%28VS100COMNTOOLS%29..\IDE\PrivateAssemblies" Condition=" '$(VS100COMNTOOLS)' != '' ">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DataObjectRegistryTests.cs" />
+    <Compile Include="Data\DataObjectRegistryTests.TestDataObjectRegistry.cs" />
+    <Compile Include="Data\DataObjectRegistryTests.TestDataObject.cs" />
+    <Compile Include="Data\PrimitiveUnionTest.cs" />
+    <Compile Include="CoreEnumerableJsonConverterTests.cs" />
+    <Compile Include="CoreEnumJsonConverterTests.cs" />
+    <Compile Include="SetUpFixture.cs" />
+    <Compile Include="Collections\BinaryHeapTest.cs" />
+    <Compile Include="Collections\ObservableItem.cs" />
+    <Compile Include="Collections\ObservableListTest.cs" />
+    <Compile Include="Collections\ObservableDictionaryTest.cs" />
+    <Compile Include="Collections\GenericEnumeratorTest.cs" />
+    <Compile Include="Collections\ExpandingPoolRegistryTest.cs" />
+    <Compile Include="Collections\PooledLinkedListTest.cs" />
+    <Compile Include="Collections\PooledObjectScopeTest.cs" />
+    <Compile Include="Collections\PriorityQueueTest.cs" />
+    <Compile Include="Collections\ExpandingPoolTest.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectTypeTwo.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectTypeOne.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.UnsafeObjectType.cs" />
+    <Compile Include="Collections\Specialized\UnsafeObjectStreamTest.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ArrayComplexModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.EnumerableComplexModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.EnumerableModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexIndexerModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexList.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexRefObjectF.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexRefObjectNotDerived.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexValueObjectChild.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexRefObjectDerived.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexRefObject.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ComplexValueObject.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ListIndexerModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ArrayIndexerModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ListComplexModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ListModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ArrayModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.MultiIndexerModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.IndexerModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.CtorArgModelInvalidMatch.cs" />
+    <Compile Include="Data\ObjectLoaderTest.CtorArgModelAmbiguousMatch.cs" />
+    <Compile Include="Data\ObjectLoaderTest.CtorArgModelNoMatch.cs" />
+    <Compile Include="Data\ObjectLoaderTest.CtorArgModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.ReservedKeywordModel.cs" />
+    <Compile Include="Data\ObjectLoaderTest.SimpleModelBase.cs" />
+    <Compile Include="Data\ObjectLoaderTest.SimpleFlags.cs" />
+    <Compile Include="Data\ObjectLoaderTest.cs" />
+    <Compile Include="Data\ObjectLoaderTest.SimpleEnum.cs" />
+    <Compile Include="Data\ObjectLoaderTest.SimpleModel.cs" />
+    <Compile Include="MaskedUInt32Test.cs" />
+    <Compile Include="MaskedUInt64Test.cs" />
+    <Compile Include="MathUtilTest.cs" />
+    <Compile Include="Data\MersenneTwisterTest.cs" />
+    <Compile Include="Messages\LocalMessageQueueTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Splinq\HashSetExtensionsTest.cs" />
+    <Compile Include="Splinq\StackExtensionsTest.cs" />
+    <Compile Include="Splinq\QueueExtensionsTest.cs" />
+    <Compile Include="Splinq\PooledLinkedListExtensionsTest.cs" />
+    <Compile Include="Splinq\LinkedListExtensionsTest.cs" />
+    <Compile Include="Splinq\ObservableListExtensionsTest.cs" />
+    <Compile Include="Splinq\ObservableDictionaryExtensionsTest.cs" />
+    <Compile Include="Splinq\DictionaryExtensionsTest.cs" />
+    <Compile Include="Splinq\ListExtensionsTest.cs" />
+    <Compile Include="Text\LocalizationTest.cs" />
+    <Compile Include="Text\StringPtr16Test.cs" />
+    <Compile Include="Text\StringSegmentTest.cs" />
+    <Compile Include="Text\StringPtr8Test.cs" />
+    <Compile Include="Text\StringFormatterTest.cs" />
+    <Compile Include="Text\TokenizerTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj">
+      <Project>{6a17d1a8-ac32-4bb4-8446-d76f6b160246}</Project>
+      <Name>Ultraviolet.Core.TestFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core %28Desktop%29.csproj">
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
+      <Name>Ultraviolet.Core %28Desktop%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
+    <None Include="Data\DataObjectRegistryData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Resources\LocalizedStrings.json" />
+    <EmbeddedResource Include="Resources\LocalizedStrings.xml" />
+    <None Include="Data\DataObjectRegistryData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

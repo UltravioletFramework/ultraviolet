@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using SDL_JoystickID = System.Int32;
 
 #pragma warning disable 1591

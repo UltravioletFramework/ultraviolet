@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {

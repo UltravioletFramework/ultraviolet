@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {

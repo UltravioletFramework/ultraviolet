@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Xml;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Xml;
 
 namespace TwistedLogik.Ultraviolet.Content
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
-        /// Converts the specified string to an instance of the specified type using the Nucleus deserializer.
+        /// Converts the specified string to an instance of the specified type using the Ultraviolet deserializer.
         /// </summary>
         /// <typeparam name="T">The type of value to convert.</typeparam>
         /// <typeparam name="U">The type of value to produce.</typeparam>

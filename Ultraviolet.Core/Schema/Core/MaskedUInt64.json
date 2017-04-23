@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Core.MaskedUInt64 Schema",
+  "anyOf": [
+    {
+      "type": "number",
+      "multipleOf": 1.0,
+      "minimum": 0
+    },
+    {
+      "type": "string",
+      "pattern": "\\d+"
+    }
+  ]
+}

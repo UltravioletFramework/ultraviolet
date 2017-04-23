@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Collections;
 using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation

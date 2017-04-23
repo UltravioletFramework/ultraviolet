@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using TwistedLogik.Nucleus.Testing;
+using Ultraviolet.Core.TestFramework;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Testing;
 using TwistedLogik.Ultraviolet.UI;

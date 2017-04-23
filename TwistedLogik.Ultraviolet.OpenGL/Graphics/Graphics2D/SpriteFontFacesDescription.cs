@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Graphics2D
 {

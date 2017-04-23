@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Collections;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
 {

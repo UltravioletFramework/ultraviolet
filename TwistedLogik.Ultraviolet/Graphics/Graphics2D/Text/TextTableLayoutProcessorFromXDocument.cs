@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Data;
 using TwistedLogik.Ultraviolet.Content;
 
 namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text

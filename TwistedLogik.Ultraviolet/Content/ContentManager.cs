@@ -8,9 +8,9 @@ using System.Text;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
-using TwistedLogik.Nucleus.Xml;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
+using Ultraviolet.Core.Xml;
 using TwistedLogik.Ultraviolet.Platform;
 
 namespace TwistedLogik.Ultraviolet.Content

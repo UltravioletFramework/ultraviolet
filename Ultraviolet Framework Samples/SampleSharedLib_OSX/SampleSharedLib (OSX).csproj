@@ -82,8 +82,8 @@
     <Reference Include="TwistedLogik.Ultraviolet">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>..\Dependencies\TwistedLogik.Nucleus.dll</HintPath>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.OSX">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OSX.dll</HintPath>

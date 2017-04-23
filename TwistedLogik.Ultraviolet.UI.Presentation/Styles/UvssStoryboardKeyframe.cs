@@ -1,5 +1,5 @@
 ﻿using System;
-using TwistedLogik.Nucleus.Data;
+using Ultraviolet.Core.Data;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
 {

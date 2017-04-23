@@ -11,8 +11,8 @@
 powershell -Command "(gc TwistedLogik.Gluon.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Gluon.nuspec"
 nuget pack TwistedLogik.Gluon.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Nucleus.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Nucleus.nuspec"
-nuget pack TwistedLogik.Nucleus.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.Core.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Core.nuspec"
+nuget pack Ultraviolet.Core.nuspec -Symbols
 
 powershell -Command "(gc TwistedLogik.Ultraviolet.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Android.nuspec"
 nuget pack TwistedLogik.Ultraviolet.Android.nuspec -Symbols

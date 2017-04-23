@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Messages;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.BASS.Native;
 
 namespace TwistedLogik.Ultraviolet.BASS

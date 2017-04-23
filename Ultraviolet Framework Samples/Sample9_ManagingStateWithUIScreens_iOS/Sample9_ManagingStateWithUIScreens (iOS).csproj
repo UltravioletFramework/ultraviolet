@@ -192,8 +192,8 @@
     <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Nucleus.dll</HintPath>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.dll</HintPath>

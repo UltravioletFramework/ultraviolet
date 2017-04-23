@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Nucleus;
+using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Media

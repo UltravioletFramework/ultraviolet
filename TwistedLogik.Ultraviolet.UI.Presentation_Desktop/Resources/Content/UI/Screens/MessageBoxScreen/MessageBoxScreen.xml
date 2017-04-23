@@ -2,7 +2,7 @@
 <UIPanelDefinition
   DefaultOpenTransitionDuration="500.0"
   DefaultCloseTransitionDuration="500.0">
-  <Directive Type="import">TwistedLogik.Nucleus.Text</Directive>
+  <Directive Type="import">Ultraviolet.Core.Text</Directive>
   <View Class="msgbox" ViewModelType="TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel, TwistedLogik.Ultraviolet.UI.Presentation">
 
     <Rectangle Class="msgbox-fade"/>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Data;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Data;
+using Ultraviolet.Core.Text;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
 {

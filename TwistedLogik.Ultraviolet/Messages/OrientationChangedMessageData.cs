@@ -1,4 +1,4 @@
-﻿using TwistedLogik.Nucleus.Messages;
+﻿using Ultraviolet.Core.Messages;
 using TwistedLogik.Ultraviolet.Platform; 
 
 namespace TwistedLogik.Ultraviolet.Messages

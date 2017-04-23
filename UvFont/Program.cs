@@ -12,8 +12,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Nucleus.Text;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
 using TwistedLogik.Ultraviolet.Tooling;
 
@@ -63,11 +63,11 @@ namespace UvFont
                                           "  -sourcetext  Specifies the source text.  The source text is used to determine\n" +
                                           "               which glyphs must be included in the font.\n" +
                                           "  -sourcefile: A comma-delimited list of files from which to generate the\n" +
-                                          "               source text.  If the files are Nucleus localization databases,\n" +
+                                          "               source text.  If the files are Ultraviolet localization databases,\n" +
                                           "               only the string variants matching the culture specified by\n" +
                                           "               the -sourceculture option will be read.\n" +
                                           "  -sourceculture\n" +
-                                          "               When reading Nucleus localization databases for source text,\n" +
+                                          "               When reading Ultraviolet localization databases for source text,\n" +
                                           "               this option specifies which culture should be read.  If not\n" +
                                           "               specified, UvFont will read the en-US culture.\n" +
                                           "  -json\n" +

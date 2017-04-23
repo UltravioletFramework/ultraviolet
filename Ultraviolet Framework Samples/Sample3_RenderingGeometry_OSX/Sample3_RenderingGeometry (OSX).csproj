@@ -79,8 +79,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Nucleus">
-      <HintPath>..\Dependencies\TwistedLogik.Nucleus.dll</HintPath>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Gluon">
       <HintPath>..\Dependencies\TwistedLogik.Gluon.dll</HintPath>
