@@ -241,7 +241,24 @@ namespace TwistedLogik.Nucleus.Tests.Text
                     .ShouldBe("rougeoyant");
             });
         }
-        
+
+        [Test]
+        public void Localization_FallsBackToAmericanEnglishAsLastResort()
+        {
+            LoadTestLocalizationDatabaseFromXml();
+
+            UsingCulture("ru-RU", () =>
+            {
+                var str1 = (String)Localization.Get("SWORD");
+                TheResultingString(str1)
+                    .ShouldBe("sword");
+
+                var str2 = (String)Localization.Get("GLOWING");
+                TheResultingString(str2)
+                    .ShouldBe("glowing");
+            });
+        }
+
         [Test]
         public void StringResource_SerializesToJson()
         {
