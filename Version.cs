@@ -4,6 +4,6 @@ using System.Reflection;
 [assembly: AssemblyCompany("TwistedLogik Software")]
 [assembly: AssemblyCopyright("Copyright © Cole Campbell 2014-2017")]
 
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.14.0")]
-[assembly: AssemblyInformationalVersion("1.3.14.0 dev build")] 
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.0.0 dev build")] 
