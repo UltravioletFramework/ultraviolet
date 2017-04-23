@@ -355,8 +355,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                 var childRow    = RowDefinitions[cell.RowIndex];
 
                 var childArea = new RectangleD(childColumn.Position, childRow.Position, 
-                    CalculateSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan),
-                    CalculateSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan));
+                    Math.Max(0, CalculateSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan)),
+                    Math.Max(0, CalculateSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan)));
 
                 childElement.Arrange(childArea);
             }
