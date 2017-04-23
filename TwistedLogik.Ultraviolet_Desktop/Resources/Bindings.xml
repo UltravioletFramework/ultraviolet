@@ -105,6 +105,56 @@
       <Variant>DPadRight</Variant>
     </en-US>
   </String>
+  <String Key="GAME_PAD_BUTTON_LeftStickUp">
+    <en-US>
+      <Variant>LeftStickUp</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_LeftStickDown">
+    <en-US>
+      <Variant>LeftStickDown</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_LeftStickLeft">
+    <en-US>
+      <Variant>LeftStickLeft</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_LeftStickRight">
+    <en-US>
+      <Variant>LeftStickRight</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightStickUp">
+    <en-US>
+      <Variant>RightStickUp</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightStickDown">
+    <en-US>
+      <Variant>RightStickDown</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightStickLeft">
+    <en-US>
+      <Variant>RightStickLeft</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightStickRight">
+    <en-US>
+      <Variant>RightStickRight</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_LeftTrigger">
+    <en-US>
+      <Variant>LeftTrigger</Variant>
+    </en-US>
+  </String>
+  <String Key="GAME_PAD_BUTTON_RightTrigger">
+    <en-US>
+      <Variant>RightTrigger</Variant>
+    </en-US>
+  </String>
   <String Key="KEY_MODIFIER_CONTROL">
     <en-US>
       <Variant>Ctrl</Variant>

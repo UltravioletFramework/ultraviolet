@@ -24,6 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\TwistedLogik.Ultraviolet.UI.Presentation.XML</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +38,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>IOS</DefineConstants>
     <DocumentationFile>bin\Release\TwistedLogik.Ultraviolet.UI.Presentation.XML</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -181,6 +183,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.UI.Presentation_Desktop\Resources\Commands.xml">
+      <Link>Resources\Commands.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

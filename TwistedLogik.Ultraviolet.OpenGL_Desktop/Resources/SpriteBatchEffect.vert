@@ -5,7 +5,7 @@ uniform vec2 TextureSize;
 
 in vec4 uv_Position0;
 in vec4 uv_Color0;
-in uvec2 uv_TextureCoordinate0;
+in vec2 uv_TextureCoordinate0;
 
 out vec4 vColor;
 out vec2 vTextureCoordinate;

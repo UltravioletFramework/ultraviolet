@@ -233,6 +233,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(FocusManager));
 
         /// <summary>
+        /// Gets a value indicating whether the specicied object is a descendant of the specified focus scope.
+        /// </summary>
+        /// <param name="scope">The focus scope to evaluate.</param>
+        /// <param name="descendant">The object to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified object is a descendant of the focus scope;
+        /// otherwise, <see langword="false"/>.</returns>
+        internal static Boolean IsDescendantOfScope(DependencyObject scope, DependencyObject descendant)
+        {
+            if (descendant == null)
+                return false;
+
+            var current = GetFocusScope(descendant);
+            while (current != null)
+            {
+                if (current == scope)
+                    return true;
+
+                var parent = VisualTreeHelper.GetParent(current);
+                if (parent == null)
+                    parent = LogicalTreeHelper.GetParent(current);
+
+                current = parent;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Occurs when the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/>
         /// attached property changes.
         /// </summary>

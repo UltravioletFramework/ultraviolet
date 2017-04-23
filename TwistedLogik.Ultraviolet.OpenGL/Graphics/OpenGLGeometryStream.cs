@@ -244,9 +244,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         /// <param name="size">The number of components in the element.</param>
         /// <param name="stride">The vertex stride in bytes.</param>
         /// <param name="normalize">A value indicating whether to normalize the attribute's values.</param>
-        /// <param name="integer">A value indicating whether to upload the attribute as an integer type.</param>
         /// <returns>The converted vertex format.</returns>
-        private static UInt32 GetVertexFormatGL(VertexFormat format, out Int32 size, out Int32 stride, out Boolean normalize, out Boolean integer)
+        private static UInt32 GetVertexFormatGL(VertexFormat format, out Int32 size, out Int32 stride, out Boolean normalize)
         {
             switch (format)
             {
@@ -254,91 +253,78 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                     size = 1;
                     stride = size * sizeof(float);
                     normalize = false;
-                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Vector2:
                     size = 2;
                     stride = size * sizeof(float);
                     normalize = false;
-                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Vector3:
                     size = 3;
                     stride = size * sizeof(float);
                     normalize = false;
-                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Vector4:
                     size = 4;
                     stride = size * sizeof(float);
                     normalize = false;
-                    integer = false;
                     return gl.GL_FLOAT;
 
                 case VertexFormat.Color:
                     size = 4;
                     stride = size * sizeof(byte);
                     normalize = true;
-                    integer = false;
                     return gl.GL_UNSIGNED_BYTE;
 
                 case VertexFormat.NormalizedShort2:
                     size = 2;
                     stride = size * sizeof(short);
                     normalize = true;
-                    integer = true;
                     return gl.GL_SHORT;
 
                 case VertexFormat.NormalizedShort4:
                     size = 4;
                     stride = size * sizeof(short);
                     normalize = true;
-                    integer = true;
                     return gl.GL_SHORT;
 
                 case VertexFormat.NormalizedUnsignedShort2:
                     size = 2;
                     stride = size * sizeof(ushort);
                     normalize = true;
-                    integer = true;
                     return gl.GL_UNSIGNED_SHORT;
 
                 case VertexFormat.NormalizedUnsignedShort4:
                     size = 4;
                     stride = size * sizeof(ushort);
                     normalize = true;
-                    integer = true;
                     return gl.GL_UNSIGNED_SHORT;
 
                 case VertexFormat.Short2:
                     size = 2;
                     stride = size * sizeof(short);
                     normalize = false;
-                    integer = true;
                     return gl.GL_SHORT;
 
                 case VertexFormat.Short4:
                     size = 4;
                     stride = size * sizeof(short);
                     normalize = false;
-                    integer = true;
                     return gl.GL_SHORT;
 
                 case VertexFormat.UnsignedShort2:
                     size = 2;
                     stride = size * sizeof(ushort);
                     normalize = false;
-                    integer = true;
                     return gl.GL_UNSIGNED_SHORT;
 
                 case VertexFormat.UnsignedShort4:
                     size = 4;
                     stride = size * sizeof(ushort);
                     normalize = false;
-                    integer = true;
                     return gl.GL_UNSIGNED_SHORT;
 
                 default:
@@ -458,33 +444,57 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                 var size = 0;
                 var stride = 0;
                 var normalize = false;
-                var integer = false;
-                var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize, out integer);
+                var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize);
 
-                if (!caps.SupportsIntegralVertexAttributes)
-                    normalize = true;
-
-                var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name);
+                var category = OpenGLAttribCategory.Single;
+                var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name, out category);
                 if (location >= 0)
                 {
                     if (program.HasValue)
                     {
-                        gl.VertexAttribDivisor(location, frequency);
-                        gl.ThrowIfError();
+                        if (gl.IsGLES2)
+                        {
+                            if (frequency != 0)
+                                throw new NotSupportedException();
+                        }
+                        else
+                        {
+                            gl.VertexAttribDivisor(location, frequency);
+                            gl.ThrowIfError();
+                        }
 
                         gl.EnableVertexAttribArray(location);
                         gl.ThrowIfError();
                     }
 
-                    if (integer && !normalize)
+                    switch (category)
                     {
-                        gl.VertexAttribIPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
-                        gl.ThrowIfError();
-                    }
-                    else
-                    {
-                        gl.VertexAttribPointer(location, size, type, normalize, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
-                        gl.ThrowIfError();
+                        case OpenGLAttribCategory.Single:
+                            {
+                                gl.VertexAttribPointer(location, size, type, normalize, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                                gl.ThrowIfError();
+                            }
+                            break;
+
+                        case OpenGLAttribCategory.Double:
+                            {
+                                if (!caps.SupportsDoublePrecisionVertexAttributes)
+                                    throw new NotSupportedException();
+
+                                gl.VertexAttribLPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                                gl.ThrowIfError();
+                            }
+                            break;
+
+                        case OpenGLAttribCategory.Integer:
+                            {
+                                if (!caps.SupportsIntegerVertexAttributes)
+                                    throw new NotSupportedException();
+
+                                gl.VertexAttribIPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
+                                gl.ThrowIfError();
+                            }
+                            break;
                     }
                 }
 
@@ -520,13 +530,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
                         var size = 0;
                         var stride = 0;
                         var normalize = false;
-                        var integer = false;
-                        var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize, out integer);
+                        var type = GetVertexFormatGL(element.Format, out size, out stride, out normalize);
 
-                        if (!caps.SupportsIntegralVertexAttributes)
-                            normalize = true;
-
-                        var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name);
+                        var category = OpenGLAttribCategory.Single;
+                        var location = (UInt32)OpenGLState.CurrentProgram.GetAttribLocation(name, out category);
                         if (location >= 0)
                         {
                             gl.VertexArrayAttribBinding(vao, location, binding);
@@ -537,15 +544,34 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
                             unsafe
                             {
-                                if (integer && !normalize)
+                                switch (category)
                                 {
-                                    gl.VertexArrayAttribIFormat(vao, location, size, type, position);
-                                    gl.ThrowIfError();
-                                }
-                                else
-                                {
-                                    gl.VertexArrayAttribFormat(vao, location, size, type, normalize, position);
-                                    gl.ThrowIfError();
+                                    case OpenGLAttribCategory.Single:
+                                        {
+                                            gl.VertexArrayAttribFormat(vao, location, size, type, normalize, position);
+                                            gl.ThrowIfError();
+                                        }
+                                        break;
+
+                                    case OpenGLAttribCategory.Double:
+                                        {
+                                            if (!caps.SupportsDoublePrecisionVertexAttributes)
+                                                throw new NotSupportedException();
+
+                                            gl.VertexArrayAttribLFormat(vao, location, size, type, position);
+                                            gl.ThrowIfError();
+                                        }
+                                        break;
+
+                                    case OpenGLAttribCategory.Integer:
+                                        {
+                                            if (!caps.SupportsIntegerVertexAttributes)
+                                                throw new NotSupportedException();
+
+                                            gl.VertexArrayAttribIFormat(vao, location, size, type, position);
+                                            gl.ThrowIfError();
+                                        }
+                                        break;
                                 }
                             }
                         }

@@ -41,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IBindableResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IOpenGLResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLAttribCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBasicEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlendState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlurEffect.cs" />
@@ -88,7 +89,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderCompiler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursorProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLInitializer.cs" />

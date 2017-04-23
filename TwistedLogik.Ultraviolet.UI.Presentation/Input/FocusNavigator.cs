@@ -13,6 +13,83 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
     internal static class FocusNavigator
     {
         /// <summary>
+        /// Converts an arrow key value to a navigation direction.
+        /// </summary>
+        /// <param name="key">The <see cref="Key"/> value to convert.</param>
+        /// <returns>The <see cref="FocusNavigationDirection"/> value that corresponds to the specified key.</returns>
+        public static FocusNavigationDirection ArrowKeyToFocusNavigationDirection(Key key)
+        {
+            switch (key)
+            {
+                case Key.Up:
+                    return FocusNavigationDirection.Up;
+
+                case Key.Down:
+                    return FocusNavigationDirection.Down;
+
+                case Key.Left:
+                    return FocusNavigationDirection.Left;
+
+                case Key.Right:
+                    return FocusNavigationDirection.Right;
+            }
+
+            throw new ArgumentException();
+        }
+
+        /// <summary>
+        /// Attempts to predict the element to which focus will be moved if it is moved in the specified direction.
+        /// </summary>
+        /// <param name="view">The view for which to perform navigation.</param>
+        /// <param name="element">The element at which to begin navigation.</param>
+        /// <param name="direction">The direction in which to navigate focus.</param>
+        /// <param name="ctrl">A value indicating whether the Ctrl modifier is active.</param>
+        /// <returns>The element to which focus will be moved.</returns>
+        public static IInputElement PredictNavigation(PresentationFoundationView view, UIElement element, FocusNavigationDirection direction, Boolean ctrl)
+        {
+            if (!PrepareNavigation(view, ref element, ref direction))
+                return null;
+
+            var navprop = GetNavigationProperty(direction, ctrl);
+            var navContainer = default(DependencyObject);
+            var destination = default(IInputElement);
+
+            switch (direction)
+            {
+                case FocusNavigationDirection.Next:
+                    navContainer = FindNavigationContainer(element, navprop);
+                    destination = FindNextNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.Previous:
+                    navContainer = FindNavigationContainer(element, navprop);
+                    destination = FindPrevNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.First:
+                    destination = FindNextNavigationStop(view, element, null, navprop, true) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.Last:
+                    destination = FindPrevNavigationStop(view, element, null, navprop, true) as IInputElement;
+                    break;
+
+                case FocusNavigationDirection.Left:
+                case FocusNavigationDirection.Right:
+                case FocusNavigationDirection.Up:
+                case FocusNavigationDirection.Down:
+                    navContainer = FindNavigationContainer(element, navprop, false);
+                    if (navContainer != null)
+                    {
+                        destination = FindNavigationStopInDirection(view, navContainer, element, navprop, direction) as IInputElement;
+                    }
+                    break;
+            }
+
+            return destination;
+        }
+
+        /// <summary>
         /// Attempts to perform navigation as a result of the specified key press.
         /// </summary>
         /// <param name="view">The view for which to perform navigation.</param>
@@ -73,65 +150,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             if (GamePad.ShiftTabButton == button)
                 return PerformNavigation(view, element, FocusNavigationDirection.Previous, false);
 
-            if (!GamePad.UseAxisForDirectionalNavigation)
+            switch (button)
             {
-                switch (button)
-                {
-                    case GamePadButton.DPadUp:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Up, false);
+                case GamePadButton.LeftStickUp:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Up, false);
 
-                    case GamePadButton.DPadDown:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Down, false);
+                case GamePadButton.LeftStickDown:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Down, false);
 
-                    case GamePadButton.DPadLeft:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Left, false);
+                case GamePadButton.LeftStickLeft:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Left, false);
 
-                    case GamePadButton.DPadRight:
-                        return PerformNavigation(view, element, FocusNavigationDirection.Right, false);
-                }
+                case GamePadButton.LeftStickRight:
+                    return PerformNavigation(view, element, FocusNavigationDirection.Right, false);
             }
 
             return false;
         }
-
-        /// <summary>
-        /// Attempts to perform navigation as a result of the specified game pad axis press.
-        /// </summary>
-        /// <param name="view">The view for which to perform navigation.</param>
-        /// <param name="device">The game pad device that raised the button press event.</param>
-        /// <param name="axis">The axis that was pressed.</param>
-        /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
-        public static Boolean PerformNavigation(PresentationFoundationView view, GamePadDevice device, GamePadAxis axis)
-        {
-            Contract.Require(view, nameof(view));
-
-            if (GamePad.UseAxisForDirectionalNavigation)
-            {
-                var element = (view.ElementWithFocus ?? view.LayoutRoot) as UIElement;
-                if (element == null)
-                    return false;
-
-                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
-                {
-                    var direction = device.GetJoystickDirectionFromAxis(axis);
-                    var succeeded = false;
-
-                    if ((direction & GamePadJoystickDirection.Up) == GamePadJoystickDirection.Up)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Up, false);
-
-                    if ((direction & GamePadJoystickDirection.Down) == GamePadJoystickDirection.Down)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Down, false);
-
-                    if ((direction & GamePadJoystickDirection.Left) == GamePadJoystickDirection.Left)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Left, false);
-
-                    if ((direction & GamePadJoystickDirection.Right) == GamePadJoystickDirection.Right)
-                        succeeded = succeeded || PerformNavigation(view, element, FocusNavigationDirection.Right, false);
-                }
-            }
-            return false;
-        }
-
+        
         /// <summary>
         /// Attempts to navigate focus in the specified direction.
         /// </summary>
@@ -142,48 +178,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <returns><see langword="true"/> if navigation was performed; otherwise, <see langword="false"/>.</returns>
         public static Boolean PerformNavigation(PresentationFoundationView view, UIElement element, FocusNavigationDirection direction, Boolean ctrl)
         {
-            if (!PrepareNavigation(view, ref element, ref direction))
-                return false;
-
-            var navprop      = GetNavigationProperty(direction, ctrl);
-            var navContainer = default(DependencyObject);
-            var destination  = default(IInputElement);
-            
-            switch (direction)
-            {
-                case FocusNavigationDirection.Next:
-                    navContainer = FindNavigationContainer(element, navprop);
-                    destination  = FindNextNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.Previous:
-                    navContainer = FindNavigationContainer(element, navprop);
-                    destination  = FindPrevNavigationStop(view, navContainer, element, navprop, false) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.First:
-                    destination = FindNextNavigationStop(view, element, null, navprop, true) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.Last:
-                    destination = FindPrevNavigationStop(view, element, null, navprop, true) as IInputElement;
-                    break;
-
-                case FocusNavigationDirection.Left:
-                case FocusNavigationDirection.Right:
-                case FocusNavigationDirection.Up:
-                case FocusNavigationDirection.Down:
-                    navContainer = FindNavigationContainer(element, navprop, false);
-                    if (navContainer != null)
-                    {
-                        destination = FindNavigationStopInDirection(view, navContainer, element, navprop, direction) as IInputElement;
-                    }
-                    break;
-            }            
-
+            var destination = PredictNavigation(view, element, direction, ctrl);
             if (destination != null)
             {
                 view.FocusElement(destination);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Updates the value of <see cref="KeyboardNavigation.LastFocusedElementProperty"/> for containers with
+        /// a navigation mode of <see cref="KeyboardNavigationMode.Once"/>.
+        /// </summary>
+        public static Boolean UpdateLastFocusedElement(DependencyObject element)
+        {
+            var navContainer = FindNavigationContainer(element, KeyboardNavigation.TabNavigationProperty, false);
+            if (navContainer == null || navContainer == element)
+                return false;
+
+            if (KeyboardNavigation.GetTabNavigation(navContainer) == KeyboardNavigationMode.Once)
+            {
+                KeyboardNavigation.SetLastFocusedElement(navContainer, element);
                 return true;
             }
             return false;
@@ -443,10 +459,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 current = TraverseVisualTreeNext(navContainer, current, navProp);
                 if (current == null)
                     break;
-
-                var selectedTab = GetSelectedTab(current as UIElement);
-                if (selectedTab != null)
-                    current = selectedTab;
+                
+                var lastFocusedElement = KeyboardNavigation.GetLastFocusedElement(current);
+                if (lastFocusedElement != null)
+                    current = lastFocusedElement;
 
                 if (!IsNavigationStop(current) && !IsNavigationContainer(current, navProp))
                     continue;
@@ -477,8 +493,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 if (IsNavigationStop(navContainer))
                     return navContainer;
-
-                var selectedTab = GetSelectedTab(navContainer as UIElement);
+                
+                var selectedTab = KeyboardNavigation.GetLastFocusedElement(navContainer);
                 if (selectedTab != null)
                     return FindNextNavigationStop(view, selectedTab, null, navProp, local);
             }
@@ -530,7 +546,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 }
                 
                 var firstNavStopInContainer = GetFirstNavigationStop(navContainer, navProp);
-                return ((firstNavStopInContainer == null) ? null : FindNextVisualElementWithinContainer(firstNavStopInContainer, null, navProp, navMode)) ?? firstNavStopInContainer;
+                if (firstNavStopInContainer == null)
+                    return null;
+
+                if (IsNavigationStop(firstNavStopInContainer))
+                    return firstNavStopInContainer;
+
+                return FindNextVisualElementWithinContainer(firstNavStopInContainer, null, navProp, navMode) ?? firstNavStopInContainer;
             }
 
             return null;
@@ -706,9 +728,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             if (navElement == null)
             {
-                var selectedTab = GetSelectedTab(navContainer as UIElement);
-                if (selectedTab != null)
-                    return FindPrevNavigationStop(view, selectedTab, null, navProp, local);
+                var lastFocusedElement = KeyboardNavigation.GetLastFocusedElement(navContainer);
+                if (lastFocusedElement != null)
+                    return FindPrevNavigationStop(view, lastFocusedElement, null, navProp, local);
             }
 
             if (navElement != null && (navMode == KeyboardNavigationMode.Once || navMode == KeyboardNavigationMode.None))
@@ -1029,44 +1051,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         return null;
                 }
             }
-            else
-            {
-                if (IsNavigationContainer(bestMatch, navProp))
-                {
-                    bestMatch = FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction, true) ?? bestMatch;
-                }
-            }
 
-            return IsNavigationStop(bestMatch) ? bestMatch : null;
-        }
+            if (IsNavigationStop(bestMatch))
+                return bestMatch;
 
-        /// <summary>
-        /// If the specified element is a <see cref="TabPanel"/>, this method returns the currently-selected <see cref="TabItem"/> for that panel.
-        /// </summary>
-        private static UIElement GetSelectedTab(UIElement element)
-        {
-            if (element == null)
-                return null;
+            var bestMatchLastFocused = KeyboardNavigation.GetLastFocusedElementRecursive(bestMatch);
+            if (bestMatchLastFocused != null)
+                return bestMatchLastFocused;
 
-            var tabPanel = element as TabPanel;
-            if (tabPanel == null)
-                return null;
-
-            var tabControl = tabPanel.TemplatedParent as TabControl;
-            if (tabControl == null)
-                return null;
-
-            var index = tabControl.SelectedIndex;
-            if (index >= 0)
-            {
-                var container = tabControl.ItemContainerGenerator.ContainerFromIndex(index);
-                if (container != null)
-                {
-                    return (container as UIElement) ?? element;
-                }
-            }
-
-            return null;
+            return FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction);
         }
 
         /// <summary>

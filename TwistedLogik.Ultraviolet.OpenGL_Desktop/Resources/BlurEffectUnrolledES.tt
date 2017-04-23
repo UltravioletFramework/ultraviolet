@@ -1,22 +1,22 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".frag" #>
-<#+ 
-private void BlurEffectES(Int32 radius) {#>
-precision mediump float;
-precision mediump int;
+﻿<#@ template debug="false" hostspecific="false" language="C#" 
+#><#@ assembly name="System.Core" 
+#><#@ import namespace="System.Linq" 
+#><#@ import namespace="System.Text" 
+#><#@ import namespace="System.Collections.Generic" 
+#><#@ output extension=".frag" #><#+ 
+private void BlurEffectES(Int32 radius) {
+#>#includeres "TwistedLogik.Ultraviolet.OpenGL.Resources.HeaderES.fragh" executing
 
 uniform sampler2D Texture;
 
 uniform float Resolution;
 uniform float Mix;
-uniform vec2  Direction;
+uniform vec2 Direction;
 
-varying vec4 vColor;
-varying vec2 vTextureCoordinate;
+DECLARE_INPUT_COLOR;	// vColor
+DECLARE_INPUT_TEXCOORD;	// vTextureCoordinate
+
+DECLARE_OUTPUT_COLOR;	// fColor
 
 void main()
 {
@@ -29,21 +29,20 @@ void main()
 	var incGaussY = Math.Exp(-0.5 / (radius * radius));
 	var incGaussZ = incGaussY * incGaussY;
 	var coefficientSum = incGaussX;
-#>
-	vec4 avgValue = texture2D(Texture, vTextureCoordinate.xy) * <#=incGaussX#>;	
-<#+for (int i = 1; i <= radius; i++) {#>
-	avgValue += texture2D(Texture, vTextureCoordinate.xy - float(<#=i#>) * step * Direction) * <#=incGaussX#>;
-	avgValue += texture2D(Texture, vTextureCoordinate.xy + float(<#=i#>) * step * Direction) * <#=incGaussX#>;
+
+#>	vec4 avgValue = texture(Texture, vTextureCoordinate.xy) * <#=incGaussX#>;	
+<#+for (int i = 1; i <= radius; i++) {
+#>	avgValue += texture(Texture, vTextureCoordinate.xy - float(<#=i#>) * step * Direction) * <#=incGaussX#>;
+	avgValue += texture(Texture, vTextureCoordinate.xy + float(<#=i#>) * step * Direction) * <#=incGaussX#>;
 <#+
 	coefficientSum += 2.0 * incGaussX;
 	incGaussX *= incGaussY;
 	incGaussY *= incGaussZ;
 }#>
-
 	vec4 blur = avgValue / <#=coefficientSum#>;
 	vec4 outBlurred = blur * vColor.a;	
 	vec4 outColored = vColor * blur.a;
 		
-	gl_FragColor = mix(outBlurred, outColored, Mix);
+	fColor = mix(outBlurred, outColored, Mix);
 }
 <#+}#>

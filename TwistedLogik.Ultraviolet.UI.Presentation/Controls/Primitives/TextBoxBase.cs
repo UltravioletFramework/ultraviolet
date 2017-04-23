@@ -10,7 +10,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType]
-    public abstract class TextBoxBase : Control
+    public abstract class TextBoxBase : TextEditingControl
     {
         /// <summary>
         /// Initializes the <see cref="TextBoxBase"/> type.
@@ -491,14 +491,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// Identifies the <see cref="AcceptsReturn"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="AcceptsReturn"/> dependency property.</value>
-        public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextBoxBase));
+        public static readonly DependencyProperty AcceptsReturnProperty = KeyboardNavigation.AcceptsReturnProperty.AddOwner(typeof(TextBoxBase),
+            new PropertyMetadata<Boolean>(HandleAcceptsReturnChanged));
 
         /// <summary>
         /// Identifies the <see cref="AcceptsTab"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="AcceptsTab"/> dependency property.</value>
         public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register("AcceptsTab", typeof(Boolean), typeof(TextBoxBase),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, HandleAcceptsTabChanged));
 
         /// <summary>
         /// Identifies the <see cref="HorizontalScrollBarVisibility"/> dependency property.
@@ -526,7 +527,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         /// <value>The identifier for the <see cref="IsReadOnly"/> dependency property.</value>
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(Boolean), typeof(TextBoxBase),
-            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsReadOnlyChanged));
 
         /// <summary>
         /// Identifies the <see cref="IsReadOnlyCaretVisible"/> dependency property.
@@ -580,15 +581,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             if (scrollViewer != null)
                 scrollViewer.LineDown();
         }
-
-        /// <summary>
-        /// Gets the text box's text editor.
-        /// </summary>
-        internal TextEditor TextEditor
-        {
-            get { return PART_Editor; }
-        }
-
+        
         /// <summary>
         /// Gets the text box's scroll viewer.
         /// </summary>
@@ -639,6 +632,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             evtDelegate(this, evtData);
         }
 
+        /// <inheritdoc/>
+        protected override TextEditor TextEditor => PART_Editor;
+
         /// <summary>
         /// Occurs when the control handles a <see cref="SelectionChangedEvent"/> routed event.
         /// </summary>
@@ -654,6 +650,30 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             }
         }
 
+        /// <summary>
+        /// Occurs when the value of the <see cref="AcceptsReturn"/> dependency property changes.
+        /// </summary>
+        private static void HandleAcceptsReturnChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="AcceptsTab"/> dependency property changes.
+        /// </summary>
+        private static void HandleAcceptsTabChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="IsReadOnly"/> dependency property changes.
+        /// </summary>
+        private static void HandleIsReadOnlyChanged(DependencyObject dobj, Boolean oldValue, Boolean newValue)
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
+        
         /// <summary>
         /// Updates the value of the <see cref="IsSelectionActive"/> property.
         /// </summary>

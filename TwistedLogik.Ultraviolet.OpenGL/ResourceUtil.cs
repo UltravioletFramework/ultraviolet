@@ -57,7 +57,7 @@ namespace TwistedLogik.Ultraviolet.OpenGL
                 }
             }
 
-            return ShaderCompiler.ProcessShaderDirectives(ReadResourceString(name));
+            return ShaderSource.ProcessRawSource(null, null, ReadResourceString(name));
         }
 
         // The manifest resource names for this assembly.

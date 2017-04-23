@@ -1,5 +1,6 @@
 ﻿using System;
 using TwistedLogik.Nucleus;
+using TwistedLogik.Ultraviolet.UI.Presentation.Media;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 {
@@ -250,7 +251,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty TabNavigationProperty = DependencyProperty.RegisterAttached("TabNavigation", typeof(KeyboardNavigationMode), typeof(KeyboardNavigation),
             new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
-
+        
         /// <summary>
         /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
         /// attached property.
@@ -296,6 +297,69 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// </remarks>
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty DirectionalNavigationProperty = DependencyProperty.RegisterAttached("DirectionalNavigation", typeof(KeyboardNavigationMode), typeof(KeyboardNavigation),
-            new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));        
+            new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Gets the last focused element within the specified element.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns>The last focused element within the specified element, or <see langword="null"/> if there is no such element.</returns>
+        internal static DependencyObject GetLastFocusedElement(DependencyObject element)
+        {
+            Contract.Require(element, nameof(element));
+
+            var weakref = element.GetValue<WeakReference>(LastFocusedElementProperty);
+
+            var target = weakref?.Target as DependencyObject;
+            if (target != null)
+            {
+                if (VisualTreeHelper.GetRoot(element) == VisualTreeHelper.GetRoot(target))
+                    return target;
+
+                element.SetValue<WeakReference>(LastFocusedElementProperty, null);
+                WeakReferencePool.Instance.Release(weakref);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the last focused element within the tree rooted in specified element.
+        /// </summary>
+        /// <param name="element">The element to evaluate.</param>
+        /// <returns>The last focused element within the tree rooted in the specified element, or <see langword="null"/> if there is no such element.</returns>
+        internal static DependencyObject GetLastFocusedElementRecursive(DependencyObject element)
+        {
+            var result = default(DependencyObject);
+
+            for (var current = GetLastFocusedElement(element); current != null; current = GetLastFocusedElement(current))
+            {
+                var uiElement = current as UIElement;
+                if (uiElement != null && uiElement.Focusable && uiElement.IsEnabled && uiElement.IsVisible)
+                    result = uiElement;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the last focused element within the specified element.
+        /// </summary>
+        /// <param name="element">The element to update.</param>
+        /// <param name="value">The value to set.</param>
+        internal static void SetLastFocusedElement(DependencyObject element, DependencyObject value)
+        {
+            var weakref = WeakReferencePool.Instance.Retrieve();
+            weakref.Target = value;
+            element.SetValue(LastFocusedElementProperty, weakref);
+        }
+
+        /// <summary>
+        /// This dependency property is used to keep track of the "last focused element" within the element on which it is set.
+        /// This is necessary to properly implement <see cref="KeyboardNavigationMode.Once"/>: according to MSDN, "either the first 
+        /// tree child or the or the *last focused element* in the group receives focus."
+        /// </summary>
+        internal static readonly DependencyProperty LastFocusedElementProperty = DependencyProperty.RegisterAttached("LastFocusedElement", typeof(WeakReference), typeof(KeyboardNavigation),
+            new PropertyMetadata<WeakReference>(null, PropertyMetadataOptions.None));
     }
 }

@@ -75,6 +75,16 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether Ultraviolet should watch view definition files
+        /// and reload them dynamically if changes are detected.
+        /// </summary>
+        public Boolean WatchViewFilesForChanges
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the application supports high-density display modes
         /// such as Retina and Retina HD. This allows the application to make use of every physical pixel 
         /// on the screen, rather than being scaled to use logical pixels.

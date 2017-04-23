@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Grid Class="slider-container" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <HSlider Name="PART_HSlider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" IsEnabled="false" />
+      <VSlider Name="PART_VSlider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Visible" IsEnabled="true" />
+    </Grid>
+  </View>
+</ComponentTemplate>

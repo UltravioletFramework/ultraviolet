@@ -64,7 +64,7 @@ namespace TwistedLogik.Nucleus
         public static Boolean IsApproximatelyLessThan(Single value1, Single value2)
         {
             if (value1 == value2)
-                return true;
+                return false;
 
             return Math.Abs(value1 - value2) >= 1E-7 && value1 < value2;
         }
@@ -126,7 +126,7 @@ namespace TwistedLogik.Nucleus
         public static Boolean IsApproximatelyGreaterThan(Double value1, Double value2)
         {
             if (value1 == value2)
-                return true;
+                return false;
 
             return Math.Abs(value1 - value2) >= 1E-15 && value1 > value2;
         }

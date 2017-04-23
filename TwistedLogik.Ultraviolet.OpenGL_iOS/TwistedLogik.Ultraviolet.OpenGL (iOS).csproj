@@ -24,6 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +38,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>IOS</DefineConstants>
     <DocumentationFile>bin\Release\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -156,6 +158,12 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\HeaderES.fragh">
+      <Link>Resources\HeaderES.fragh</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\Resources\HeaderES.verth">
+      <Link>Resources\HeaderES.verth</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -213,6 +213,36 @@ namespace TwistedLogik.Nucleus.Tests.Text
         }
 
         [Test]
+        public void Localization_ReturnsKeyWhenStringNotLocalized()
+        {
+            LoadTestLocalizationDatabaseFromXml();
+
+            UsingCulture("fr-CA", () =>
+            {
+                var str = (String)Localization.Get("NO_SUCH_KEY");
+                TheResultingString(str)
+                    .ShouldBe("NO_SUCH_KEY");
+            });
+        }
+        
+        [Test]
+        public void Localization_FallsBackToClosestLanguageIfAvailable()
+        {
+            LoadTestLocalizationDatabaseFromXml();
+
+            UsingCulture("fr-CA", () =>
+            {
+                var str1 = (String)Localization.Get("SWORD");
+                TheResultingString(str1)
+                    .ShouldBe("epée");
+
+                var str2 = (String)Localization.Get("GLOWING");
+                TheResultingString(str2)
+                    .ShouldBe("rougeoyant");
+            });
+        }
+        
+        [Test]
         public void StringResource_SerializesToJson()
         {
             LoadTestLocalizationDatabaseFromXml();
@@ -240,7 +270,7 @@ namespace TwistedLogik.Nucleus.Tests.Text
                 TheResultingString(resource.Value).ShouldBe("C'est un test");
             });
         }
-
+        
         private void LoadTestLocalizationDatabaseFromXml()
         {
             Localization.Strings.Unload();

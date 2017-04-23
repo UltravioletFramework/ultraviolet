@@ -38,7 +38,13 @@ namespace TwistedLogik.Ultraviolet.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsIntegralVertexAttributes
+        public override Boolean SupportsIntegerVertexAttributes
+        {
+            get { return false; }
+        }
+
+        /// <inheritdoc/>
+        public override Boolean SupportsDoublePrecisionVertexAttributes
         {
             get { return false; }
         }

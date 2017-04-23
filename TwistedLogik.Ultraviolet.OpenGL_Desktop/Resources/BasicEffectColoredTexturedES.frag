@@ -1,12 +1,13 @@
-﻿precision mediump float;
-precision mediump int;
+﻿#includeres "TwistedLogik.Ultraviolet.OpenGL.Resources.HeaderES.fragh" executing
 
 uniform sampler2D Texture;
 
-varying vec4 vColor;
-varying vec2 vTextureCoordinate;
+DECLARE_INPUT_COLOR;	// vColor
+DECLARE_INPUT_TEXCOORD;	// vTextureCoordinate
+
+DECLARE_OUTPUT_COLOR;	// fColor
 
 void main()
 {
-	gl_FragColor = texture2D(Texture, vTextureCoordinate) * vColor;
+	fColor = texture(Texture, vTextureCoordinate) * vColor;
 }

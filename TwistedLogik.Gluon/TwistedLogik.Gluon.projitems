@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EXT_texture_compression_s3t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EXT_texture_filter_anisotropic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EXT_texture_sRGB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)gl.Core_4_1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)gl.Core_1_1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)gl.Core_1_2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)gl.Core_1_3.cs" />

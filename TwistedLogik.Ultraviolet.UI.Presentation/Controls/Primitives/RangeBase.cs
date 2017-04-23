@@ -23,38 +23,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Increases the value of the <see cref="Value"/> property by a small amount.
-        /// </summary>
-        public void IncreaseSmall()
-        {
-            Value += SmallChange;
-        }
-
-        /// <summary>
-        /// Increases the value of the <see cref="Value"/> property by a large amount.
-        /// </summary>
-        public void IncreaseLarge()
-        {
-            Value += LargeChange;
-        }
-
-        /// <summary>
-        /// Decreases the value of the <see cref="Value"/> property by a small amount.
-        /// </summary>
-        public void DecreaseSmall()
-        {
-            Value -= SmallChange;
-        }
-
-        /// <summary>
-        /// Decreases the value of the <see cref="Value"/> property by a large amount.
-        /// </summary>
-        public void DecreaseLarge()
-        {
-            Value -= LargeChange;
-        }
-
-        /// <summary>
         /// Gets or sets the range control's current value.
         /// </summary>
         /// <value>A <see cref="Double"/> that represents the value of the control. The default
@@ -294,9 +262,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleValueChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            var range = (RangeBase)dobj;
-            range.OnValueChanged();
-            range.UpdateCanBeIncreasedAndDecreased();
+            var rangeBase = dobj as RangeBase;
+            if (rangeBase != null)
+            {
+                rangeBase.OnValueChanged();
+                rangeBase.UpdateCanBeIncreasedAndDecreased();
+            }
         }
 
         /// <summary>
@@ -304,11 +275,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleMinimumChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            var range = (RangeBase)dobj;
-            range.CoerceValue(ValueProperty);
-            range.CoerceValue(MaximumProperty);
-            range.OnMinimumChanged();
-            range.UpdateCanBeIncreasedAndDecreased();
+            var rangeBase = dobj as RangeBase;
+            if (rangeBase != null)
+            {
+                rangeBase.CoerceValue(ValueProperty);
+                rangeBase.CoerceValue(MaximumProperty);
+                rangeBase.OnMinimumChanged();
+                rangeBase.UpdateCanBeIncreasedAndDecreased();
+            }
         }
 
         /// <summary>
@@ -316,10 +290,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static void HandleMaximumChanged(DependencyObject dobj, Double oldValue, Double newValue)
         {
-            var range = (RangeBase)dobj;
-            range.CoerceValue(ValueProperty);
-            range.OnMaximumChanged();
-            range.UpdateCanBeIncreasedAndDecreased();
+            var rangeBase = dobj as RangeBase;
+            if (rangeBase != null)
+            {
+                rangeBase.CoerceValue(ValueProperty);
+                rangeBase.OnMaximumChanged();
+                rangeBase.UpdateCanBeIncreasedAndDecreased();
+            }
         }
 
         /// <summary>
@@ -328,7 +305,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static Double CoerceValue(DependencyObject dobj, Double value)
         {
-            var rangeBase = (RangeBase)dobj;
+            var rangeBase = dobj as RangeBase;
+            if (rangeBase == null)
+                return value;
             
             var min = rangeBase.Minimum;
             if (min > value)
@@ -347,7 +326,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         /// </summary>
         private static Double CoerceMaximum(DependencyObject dobj, Double value)
         {
-            var rangeBase = (RangeBase)dobj;
+            var rangeBase = dobj as RangeBase;
+            if (rangeBase == null)
+                return value;
 
             var min = rangeBase.Minimum;
             if (min > value)

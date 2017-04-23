@@ -1,14 +1,16 @@
-﻿uniform mat4 World;
+﻿#includeres "TwistedLogik.Ultraviolet.OpenGL.Resources.HeaderES.verth" executing
+
+uniform mat4 World;
 uniform mat4 View;
 uniform mat4 Projection;
 uniform vec4 DiffuseColor;
 
-attribute vec4 uv_Position0;
+DECLARE_INPUT_POSITION;	// uv_Position0
 
-varying vec4 vColor;
+DECLARE_OUTPUT_COLOR;	// vColor
 
 void main()
 {
-	gl_Position = Projection * View * World * uv_Position0;
-	vColor      = DiffuseColor;
+    gl_Position = Projection * View * World * uv_Position0;
+    vColor = DiffuseColor;
 }

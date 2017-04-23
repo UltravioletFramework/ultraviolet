@@ -371,6 +371,8 @@ PasswordBox! >> .passwordbox-scrollviewer
 
 Track! Button!, Track! RepeatButton!
 {
+    padding: 0;
+
     trigger event Mouse.mouse-enter { }
     trigger event click-by-user { }
 }
@@ -399,12 +401,12 @@ VSlider! .track-thumb
     height: 10;
 }
 
-HSlider! .track-thumb .button-background
+HSlider! .track-thumb .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 430 593 20 38;
 }
 
-VSlider! .track-thumb .button-background
+VSlider! .track-thumb .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 451 593 38 20;
 }
@@ -420,14 +422,14 @@ HSlider! .track-thumb, VSlider! .track-thumb
 
 HSlider! .slider-track-background
 {
-    source-image: #Global:Textures:DefaultUI 358 856 106 20 8 8;
-    height: 10;
+    source-image: #Global:Textures:DefaultUI 358 858 106 18 8 8;
+    height: 9;
 }
 
 VSlider! .slider-track-background
 {
-    source-image: #Global:Textures:DefaultUI 337 788 20 106 8 8 vertical;
-    width: 10;
+    source-image: #Global:Textures:DefaultUI 339 788 18 106 8 8 vertical;
+    width: 9;
 }
 
 HSlider! .slider-focus-image, VSlider! .slider-focus-image
@@ -838,7 +840,7 @@ NumericUpDown! >> TextBox! >> .textbox-focus-border
 
 VScrollBar!
 {
-    width: 17;
+    min-width: 17;
     min-height: 64;
 }
 
@@ -848,7 +850,7 @@ VScrollBar! >> Track! > .track-thumb
     transition (common, pressed): null;
 }
 
-VScrollBar! >> Track! > .track-thumb >> .button-background
+VScrollBar! >> Track! > .track-thumb >> .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 304 788 32 106 16 16 vertical;
 }
@@ -856,7 +858,7 @@ VScrollBar! >> Track! > .track-thumb >> .button-background
 .scroll-button-up, .scroll-button-down
 {
     padding: 0;
-    width: 17;
+    min-width: 17;
     height: 21;
         
     transition (common, normal): scrollbutton-to-normal;
@@ -897,7 +899,7 @@ VScrollBar! >> Track! > .track-thumb >> .button-background
 HScrollBar!
 {
     min-width: 64;
-    height: 17;
+    min-height: 17;
 }
 
 HScrollBar! >> Track! > .track-thumb
@@ -906,7 +908,7 @@ HScrollBar! >> Track! > .track-thumb
     transition (common, pressed): null;
 }
 
-HScrollBar! >> Track! > .track-thumb >> .button-background
+HScrollBar! >> Track! > .track-thumb >> .thumb-image
 {
     source-image: #Global:Textures:DefaultUI 358 823 106 32 16 16;
 }
@@ -915,7 +917,7 @@ HScrollBar! >> Track! > .track-thumb >> .button-background
 {
     padding: 0;
     width: 21;
-    height: 17;
+    min-height: 17;
 
     transition (common, normal): scrollbutton-to-normal;
     transition (common, hover): scrollbutton-to-hover;

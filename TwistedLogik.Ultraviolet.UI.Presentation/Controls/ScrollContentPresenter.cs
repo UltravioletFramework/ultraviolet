@@ -157,7 +157,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             {
                 var scrollCP     = (ScrollContentPresenter)state;
                 var scrollViewer = scrollCP.TemplatedParent as ScrollViewer;
-                var scrollOffset = scrollViewer == null ? Size2D.Zero : new Size2D(-scrollViewer.HorizontalOffset, -scrollViewer.VerticalOffset);
+                var scrollOffset = scrollViewer == null ? Size2D.Zero : new Size2D(-scrollViewer.ContentHorizontalOffset, -scrollViewer.ContentVerticalOffset);
 
                 var frameworkElement = child as FrameworkElement;
                 if (frameworkElement != null)

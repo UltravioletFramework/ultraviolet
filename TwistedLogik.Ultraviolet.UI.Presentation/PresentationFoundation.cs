@@ -1,4 +1,6 @@
 ﻿using System;
+using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using TwistedLogik.Nucleus.Data;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +11,7 @@ using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
 using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
 using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using TwistedLogik.Nucleus.Collections;
 
 namespace TwistedLogik.Ultraviolet.UI.Presentation
 {
@@ -17,6 +20,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     /// </summary>
     public partial class PresentationFoundation : UltravioletResource
     {
+        /// <summary>
+        /// Initializes the <see cref="PresentationFoundation"/> type.
+        /// </summary>
+        static PresentationFoundation()
+        {
+            CommandManager.RegisterValueResolvers();
+        }
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationFoundation"/> class.
         /// </summary>
@@ -492,7 +503,28 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             return registeredTypes.Remove(registration.Name);
         }
-        
+
+        /// <summary>
+        /// Attempts to set the global style sheet used by all Presentation Foundation views. If any exceptions are thrown
+        /// during this process, the previous style sheet will be automatically restored.
+        /// </summary>
+        /// <param name="styleSheet">The global style sheet to set.</param>
+        /// <returns><see langword="true"/> if the style sheet was set successfully; otherwise, <see langword="false"/>.</returns>
+        public Boolean TrySetGlobalStyleSheet(UvssDocument styleSheet)
+        {
+            var previous = GlobalStyleSheet;
+            try
+            {
+                SetGlobalStyleSheet(styleSheet);
+            }
+            catch
+            {
+                SetGlobalStyleSheet(previous);
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Sets the global style sheet used by all Presentation Foundation views.
         /// </summary>
@@ -503,7 +535,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             this.globalStyleSheet = styleSheet;
             OnGlobalStyleSheetChanged();
-        }
+        }        
 
         /// <summary>
         /// Initializes the specified collection of the Presentation Foundation's internal object pools.
@@ -605,7 +637,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             using (UltravioletProfiler.Section(PresentationProfilerSections.Layout))
             {
-                while (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                while (ElementNeedsLayout)
                 {
                     // 1. Style
                     using (UltravioletProfiler.Section(PresentationProfilerSections.Style))
@@ -648,10 +680,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         }
                     }
 
-                    if (ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange)
+                    // 4. Raise events.
+                    if (ElementNeedsLayout)
                         continue;
 
-                    // 4. Raise LayoutUpdated events
+                    RaiseRenderSizeChanged();
+
+                    if (ElementNeedsLayout)
+                        continue;
+
                     RaiseLayoutUpdated();
                 }
             }
@@ -668,6 +705,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             StyleQueue.Remove(element);
             MeasureQueue.Remove(element);
             ArrangeQueue.Remove(element);
+        }
+
+        /// <summary>
+        /// Adds the specified element to the queue of elements which will receive a RenderSizeChanged event.
+        /// </summary>
+        /// <param name="element">The element to register.</param>
+        /// <param name="previousSize">The previous size of the element.</param>
+        internal void RegisterRenderSizeChanged(UIElement element, Size2D previousSize)
+        {
+            Contract.Require(element, nameof(element));
+
+            var entry = new RenderSizeChangedEntry(element, previousSize);
+            elementsPendingRenderSizeChanged.AddLast(entry);
         }
 
         /// <summary>
@@ -1128,6 +1178,33 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
 
         /// <summary>
+        /// Raises the RenderSizeChanged event for elements which have changed size.
+        /// </summary>
+        private void RaiseRenderSizeChanged()
+        {
+            try
+            {
+                if (elementsPendingRenderSizeChangedTemp.Capacity < elementsPendingRenderSizeChanged.Count)
+                    elementsPendingRenderSizeChangedTemp.Capacity = elementsPendingRenderSizeChanged.Count;
+
+                foreach (var entry in elementsPendingRenderSizeChanged)
+                    elementsPendingRenderSizeChangedTemp.Add(entry);
+
+                elementsPendingRenderSizeChanged.Clear();
+
+                foreach (var entry in elementsPendingRenderSizeChangedTemp)
+                {
+                    var sizeChangedInfo = new SizeChangedInfo(entry.PreviousSize, entry.CurrentSize);
+                    entry.Element.OnRenderSizeChanged(sizeChangedInfo);
+                }
+            }
+            finally
+            {
+                elementsPendingRenderSizeChangedTemp.Clear();
+            }
+        }
+
+        /// <summary>
         /// Raises the <see cref="UIElement.LayoutUpdated"/> event for elements which have registered handlers.
         /// </summary>
         private void RaiseLayoutUpdated()
@@ -1135,7 +1212,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             elementsWithLayoutUpdatedHandlers.ForEach((element) =>
             {
                 element.RaiseLayoutUpdated();
+                return !Instance.ElementNeedsLayout;
             });
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether any elements are awaiting layout.
+        /// </summary>
+        private Boolean ElementNeedsLayout
+        {
+            get { return ElementNeedsStyle || ElementNeedsMeasure || ElementNeedsArrange; }
         }
 
         /// <summary>
@@ -1185,11 +1271,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly ComponentTemplateManager componentTemplateManager = 
             new ComponentTemplateManager();
 
-        // The core type registry.
+        // The registry of known types.
         private readonly Dictionary<String, KnownType> coreTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
-
-        // The custom type registry.
         private readonly Dictionary<String, KnownType> registeredTypes = 
             new Dictionary<String, KnownType>(StringComparer.OrdinalIgnoreCase);
 
@@ -1204,8 +1288,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private readonly LayoutQueue styleQueue;
         private readonly LayoutQueue measureQueue;
         private readonly LayoutQueue arrangeQueue;
-        private readonly WeakLinkedList<UIElement> elementsWithLayoutUpdatedHandlers = 
+        private readonly WeakLinkedList<UIElement> elementsWithLayoutUpdatedHandlers =  
             new WeakLinkedList<UIElement>();
+
+        // The list of elements waiting for a RenderSizeChanged event.
+        private readonly PooledLinkedList<RenderSizeChangedEntry> elementsPendingRenderSizeChanged =
+            new PooledLinkedList<RenderSizeChangedEntry>();
+        private readonly List<RenderSizeChangedEntry> elementsPendingRenderSizeChangedTemp =
+            new List<RenderSizeChangedEntry>();
 
         // The global style sheet.
         private UvssDocument globalStyleSheet;

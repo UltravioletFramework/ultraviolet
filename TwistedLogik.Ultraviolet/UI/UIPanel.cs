@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
@@ -71,23 +72,57 @@ namespace TwistedLogik.Ultraviolet.UI
             if (IsViewLoaded)
                 return;
 
-            this.isViewLoaded = true;
+            this.view = null;
 
-            if (definition != null)
+            if (definition?.IsValid ?? false)
             {
-                var view = UIView.Create(this, definition, vmfactory);
-                if (view != null)
-                {
-                    if (window != null)
-                    {
-                        var area = new Rectangle(X, Y, Width, Height);
-                        view.SetViewPosition(window, area);
-                    }
-                }
-                this.view = view;
+                this.isViewLoaded = true;
 
+                var view = default(UIView);
+                var viewIsCurrent = false;
+
+                try
+                {
+                    view = UIView.Create(this, definition.CurrentValue, vmfactory);
+                    viewIsCurrent = true;
+                }
+                catch (Exception e)
+                {
+                    view = UIView.Create(this, definition.KnownGoodValue, vmfactory);
+
+                    Debug.WriteLine(UltravioletStrings.ExceptionDuringViewReloading);
+                    Debug.WriteLine(e);
+                }
+
+                if (view != null && window != null)
+                {
+                    var area = new Rectangle(X, Y, Width, Height);
+                    view.SetViewPosition(window, area);
+                }
+
+                this.view = view;
                 HandleViewLoaded();
+
+                if (viewIsCurrent)
+                    definition.MarkAsKnownGood();
             }
+        }
+
+        /// <summary>
+        /// Unloads the panel's current view, if it has one.
+        /// </summary>
+        public void UnloadView()
+        {
+            if (!IsViewLoaded)
+                return;
+
+            if (this.view != null)
+            {
+                this.view.Dispose();
+                this.view = null;
+            }
+
+            this.isViewLoaded = false;
         }
 
         /// <summary>
@@ -518,7 +553,7 @@ namespace TwistedLogik.Ultraviolet.UI
         /// Prepares the panel to load the view from the specified panel definition.
         /// </summary>
         /// <param name="definition">The panel definition from which to load the view.</param>
-        protected void PrepareView(UIPanelDefinition definition)
+        protected void PrepareView(UIPanelDefinitionWrapper definition)
         {
             Contract.Require(definition, nameof(definition));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -851,7 +886,7 @@ namespace TwistedLogik.Ultraviolet.UI
         private IUltravioletWindow window;
 
         // View lazy loading parameters.
-        private UIPanelDefinition definition;
+        private UIPanelDefinitionWrapper definition;
         private Boolean isViewLoaded;
 
         // Task completion sources which are triggered when the panel is opened or closed.

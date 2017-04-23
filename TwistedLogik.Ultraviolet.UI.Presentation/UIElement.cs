@@ -53,6 +53,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             EventManager.RegisterClassHandler(typeof(UIElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(OnQueryCursorProxy));
             EventManager.RegisterClassHandler(typeof(UIElement), Presentation.View.ViewModelChangedEvent, new UpfRoutedEventHandler(OnViewModelChangedProxy));
+
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewExecutedEvent, new UpfExecutedRoutedEventHandler(OnPreviewExecutedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.ExecutedEvent, new UpfExecutedRoutedEventHandler(OnExecutedProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.PreviewCanExecuteEvent, new UpfCanExecuteRoutedEventHandler(OnPreviewCanExecuteProxy));
+            EventManager.RegisterClassHandler(typeof(UIElement), CommandManager.CanExecuteEvent, new UpfCanExecuteRoutedEventHandler(OnCanExecuteProxy));
         }
 
         /// <summary>
@@ -283,8 +288,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             graphics.SetRenderTarget(target, Color.Transparent);
 
             var bounds = Display.DipsToPixels(TransformedVisualBounds);
-            var x = Math.Round(bounds.X + (bounds.Width - target.Width) / 2.0, MidpointRounding.AwayFromZero);
-            var y = Math.Round(bounds.Y + (bounds.Height - target.Height) / 2.0, MidpointRounding.AwayFromZero);
+            var x = Math.Floor(bounds.X + (bounds.Width - target.Width) / 2.0);
+            var y = Math.Floor(bounds.Y + (bounds.Height - target.Height) / 2.0);
 
             var visualBounds = (Vector2)new Point2D(x, y);
             dc.GlobalTransform = Matrix.CreateTranslation(-visualBounds.X, -visualBounds.Y, 0);
@@ -487,8 +492,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 {
                     finalRect = PerformLayoutRounding(finalRect);
 
+                    var oldRenderSize = this.renderSize;
+
                     this.renderSize = ArrangeCore(finalRect, options);
                     this.renderSize = PerformLayoutRounding(this.renderSize);
+
+                    var renderWidthChanged = !MathUtil.AreApproximatelyEqual(oldRenderSize.Width, renderSize.Width);
+                    var renderHeightChanged = !MathUtil.AreApproximatelyEqual(oldRenderSize.Height, renderSize.Height);
+                    if ((renderHeightChanged || renderWidthChanged) && !isRenderSizeChangedPending)
+                    {
+                        isRenderSizeChangedPending = true;
+                        PresentationFoundation.Instance.RegisterRenderSizeChanged(this, oldRenderSize);
+                    }
 
                     SetValue(ActualWidthPropertyKey, this.renderSize.Width);
                     SetValue(ActualHeightPropertyKey, this.renderSize.Height);
@@ -672,6 +687,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public virtual Boolean MoveFocus(FocusNavigationDirection direction)
         {
             return false;
+        }
+
+        /// <summary>
+        /// Requests that the element predict the next element that will be focused if focus moves in the specified direction.
+        /// </summary>
+        /// <param name="direction">The direction in which focus is moving.</param>
+        /// <returns>The element that will be focused if focus moves in the specified direction, or <see langword="null"/> if
+        /// no element will be focused.</returns>
+        public virtual DependencyObject PredictFocus(FocusNavigationDirection direction)
+        {
+            return null;
         }
 
         /// <inheritdoc/>
@@ -1068,6 +1094,34 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         {
             get { return GetValue<Effect>(EffectProperty); }
             set { SetValue(EffectProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the collection of input bindings associated with this element.
+        /// </summary>
+        public InputBindingCollection InputBindings
+        {
+            get
+            {
+                if (inputBindings == null)
+                    inputBindings = new InputBindingCollection();
+
+                return inputBindings;
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of command bindings associated with this element.
+        /// </summary>
+        public CommandBindingCollection CommandBindings
+        {
+            get
+            {
+                if (commandBindings == null)
+                    commandBindings = new CommandBindingCollection();
+
+                return commandBindings;
+            }
         }
 
         /// <summary>
@@ -1804,6 +1858,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             ClassRemoved?.Invoke(this, classname);
 
         /// <summary>
+        /// Occurs after a layout update if the value of the element's <see cref="RenderSize"/> property has changed.
+        /// </summary>
+        /// <param name="info">A <see cref="SizeChangedInfo"/> structure containing the details of the change.</param>
+        protected internal virtual void OnRenderSizeChanged(SizeChangedInfo info)
+        {
+            isRenderSizeChangedPending = false;
+        }
+
+        /// <summary>
         /// Removes the specified child element from this element.
         /// </summary>
         /// <param name="child">The child element to remove from this element.</param>
@@ -2472,8 +2535,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var positionIsRounded = !dc.IsTransformed;
                 var positionRaw = new Vector2(
-                    (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
-                    (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
+                    (positionIsRounded ? (Single)Math.Floor(imageAreaPix.X) : imageAreaPix.X) + originPix.X,
+                    (positionIsRounded ? (Single)Math.Floor(imageAreaPix.Y) : imageAreaPix.Y) + originPix.Y);
 
                 dc.RawDrawImage(imageResource, positionRaw, imageAreaPix.Width, imageAreaPix.Height,
                     color, 0f, originPix, SpriteEffects.None, 0f);
@@ -2495,8 +2558,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             dc.RawDrawSprite(animation, positionRaw);
         }
@@ -2519,8 +2582,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             dc.RawDrawSprite(animation, positionRaw, null, null, color, rotation);
         }
@@ -2545,8 +2608,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
             
             dc.RawDrawSprite(animation, positionRaw, null, null, color, rotation, effects, layerDepth);
         }
@@ -2571,8 +2634,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
             var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
@@ -2602,8 +2665,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
             var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
@@ -2635,8 +2698,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var positionRaw = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(positionPix.X, MidpointRounding.AwayFromZero) : positionPix.X),
-                (positionIsRounded ? (Single)Math.Round(positionPix.Y, MidpointRounding.AwayFromZero) : positionPix.Y));
+                (positionIsRounded ? (Single)Math.Floor(positionPix.X) : positionPix.X),
+                (positionIsRounded ? (Single)Math.Floor(positionPix.Y) : positionPix.Y));
 
             var widthRaw = (Single)Display.DipsToPixels(width.GetValueOrDefault(RenderSize.Width));
             var heightRaw = (Single)Display.DipsToPixels(height.GetValueOrDefault(RenderSize.Height));
@@ -2690,8 +2753,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var positionIsRounded = !dc.IsTransformed;
             var position = new Vector2(
-                (positionIsRounded ? (Single)Math.Round(imageAreaPix.X, MidpointRounding.AwayFromZero) : imageAreaPix.X) + originPix.X,
-                (positionIsRounded ? (Single)Math.Round(imageAreaPix.Y, MidpointRounding.AwayFromZero) : imageAreaPix.Y) + originPix.Y);
+                (positionIsRounded ? (Single)Math.Floor(imageAreaPix.X) : imageAreaPix.X) + originPix.X,
+                (positionIsRounded ? (Single)Math.Floor(imageAreaPix.Y) : imageAreaPix.Y) + originPix.Y);
 
             dc.RawDrawImage(imageResource, position, imageAreaPix.Width, imageAreaPix.Height,
                 color, 0f, originPix, SpriteEffects.None, 0f);
@@ -2828,6 +2891,38 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private static void OnViewModelChangedProxy(DependencyObject element, RoutedEventData data)
         {
             ((UIElement)element).OnViewModelChanged();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.PreviewExecutedEvent"/> routed event.
+        /// </summary>
+        private static void OnPreviewExecutedProxy(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
+        {
+            CommandManager.HandlePreviewExecuted(element, command, parameter, data);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.ExecutedEvent"/> routed event.
+        /// </summary>
+        private static void OnExecutedProxy(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
+        {
+            CommandManager.HandleExecuted(element, command, parameter, data);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.PreviewCanExecuteEvent"/> routed event.
+        /// </summary>
+        private static void OnPreviewCanExecuteProxy(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            CommandManager.HandlePreviewCanExecute(element, command, parameter, data);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CommandManager.PreviewCanExecuteEvent"/> routed event.
+        /// </summary>
+        private static void OnCanExecuteProxy(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData args)
+        {
+            CommandManager.HandleCanExecute(element, command, parameter, args);
         }
 
         /// <summary>
@@ -3250,6 +3345,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean isStyleValid;
         private Boolean isMeasureValid;
         private Boolean isArrangeValid;
+        private Boolean isRenderSizeChangedPending;
         private Point2D renderOffset;
         private Size2D renderSize;
         private Size2D desiredSize;
@@ -3276,12 +3372,16 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         private Boolean forceInvalidatePosition;
         private Boolean suppressCacheLayoutParameters;
 
+        // Commanding.
+        private InputBindingCollection inputBindings;
+        private CommandBindingCollection commandBindings;
+
         // State values.
         private Boolean isStyling;
         private Boolean isMeasuring;
         private Boolean isArranging;
         private Boolean isVisuallyConnectedToViewRoot;
-        private Int32 requiredOutOfBandTargets;
+        private Int32 requiredOutOfBandTargets;        
         
         // The collection of active storyboard instances on this element.
         private readonly Dictionary<Storyboard, UpfPool<StoryboardInstance>.PooledObject> storyboardInstances = 

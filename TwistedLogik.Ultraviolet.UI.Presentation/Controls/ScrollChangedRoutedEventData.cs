@@ -17,7 +17,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
         /// <returns>The <see cref="ScrollChangedRoutedEventData"/> instance that was retrieved.</returns>
-        public static new ScrollChangedRoutedEventData Retrieve(DependencyObject source, Boolean handled = false, Boolean autorelease = true)
+        public static new ScrollChangedRoutedEventData Retrieve(Object source, Boolean handled = false, Boolean autorelease = true)
         {
             return Retrieve(source, default(ScrollChangedInfo), handled, autorelease);
         }
@@ -32,7 +32,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
         /// <returns>The <see cref="ScrollChangedRoutedEventData"/> instance that was retrieved.</returns>
-        public static ScrollChangedRoutedEventData Retrieve(DependencyObject source, ScrollChangedInfo info, Boolean handled = false, Boolean autorelease = true)
+        public static ScrollChangedRoutedEventData Retrieve(Object source, ScrollChangedInfo info, Boolean handled = false, Boolean autorelease = true)
         {
             var data = default(ScrollChangedRoutedEventData);
 
@@ -117,7 +117,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public Double ViewportHeightChange { get; private set; }
 
         /// <inheritdoc/>
-        protected override void OnRetrieved(IPool origin, DependencyObject source, Boolean handled, Boolean autorelease)
+        protected override void OnRetrieved(IPool origin, Object source, Boolean handled, Boolean autorelease)
         {
             HorizontalOffset = 0;
             HorizontalChange = 0;
@@ -154,7 +154,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             base.OnReleased();
         }
 
-        // The global pool of cursor query data objects.
+        // The global pool of scroll changed data objects.
         private static readonly Pool<ScrollChangedRoutedEventData> pool =
             new ExpandingPool<ScrollChangedRoutedEventData>(1, 4, () => new ScrollChangedRoutedEventData());
     }

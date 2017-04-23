@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <View>
+    <Image Class="thumb-image" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+  </View>
+</ComponentTemplate>

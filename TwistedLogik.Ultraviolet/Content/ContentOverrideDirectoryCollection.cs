@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using TwistedLogik.Nucleus;
 
 namespace TwistedLogik.Ultraviolet.Content
@@ -8,6 +10,12 @@ namespace TwistedLogik.Ultraviolet.Content
     /// </summary>
     public sealed class ContentOverrideDirectoryCollection : UltravioletCollection<String>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentOverrideDirectoryCollection"/> class.
+        /// </summary>
+        internal ContentOverrideDirectoryCollection()
+        { }
+
         /// <summary>
         /// Clears the collection.
         /// </summary>
@@ -48,5 +56,116 @@ namespace TwistedLogik.Ultraviolet.Content
         {
             return ContainsInternal(directory);
         }
+
+        /// <summary>
+        /// Gets the <see cref="FileSystemWatcher"/> instance for the specified
+        /// directory, if one has been created.
+        /// </summary>
+        /// <param name="directory">The directory for which to retrieve a file system watcher.</param>
+        /// <returns>The <see cref="FileSystemWatcher"/> for the specified directory,
+        /// or <see langword="null"/> if no watcher exists for the directory.</returns>
+        internal FileSystemWatcher GetFileSystemWatcherForDirectory(String directory)
+        {
+            return watchers?[directory];
+        }
+
+        /// <summary>
+        /// Creates file system watchers for all of the directories which are added to the collection,
+        /// as well as any directories which are subsequently added to the collection.
+        /// </summary>
+        internal void CreateFileSystemWatchers()
+        {
+            if (watchers != null)
+                return;
+
+            watchers = new Dictionary<String, FileSystemWatcher>();
+            CreateFileSystemWatchersForKnownDirectories();
+        }
+
+        /// <summary>
+        /// Destroys any file system watchers which have been created by this collection.
+        /// </summary>
+        internal void DestroyFileSystemWatchers()
+        {
+            if (watchers != null)
+            {
+                foreach (var kvp in watchers)
+                    kvp.Value.Dispose();
+
+                watchers = null;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void ClearInternal()
+        {
+            if (watchers != null)
+            {
+                foreach (var kvp in watchers)
+                    kvp.Value.Dispose();
+
+                watchers.Clear();
+            }
+            base.ClearInternal();
+        }
+
+        /// <inheritdoc/>
+        protected override void AddInternal(String item)
+        {
+            if (IsWatchingFileSystem)
+                CreateFileSystemWatcherForDirectory(item);
+
+            base.AddInternal(item);
+        }
+
+        /// <inheritdoc/>
+        protected override Boolean RemoveInternal(String item)
+        {
+            if (watchers != null)
+            {
+                FileSystemWatcher watcher;
+                if (watchers.TryGetValue(item, out watcher))
+                {
+                    watcher.Dispose();
+                    watchers.Remove(item);
+                }
+            }
+            return base.RemoveInternal(item);
+        }
+
+        /// <summary>
+        /// Creates a file system watcher for any known directory which doesn't
+        /// already have a watcher.
+        /// </summary>
+        private void CreateFileSystemWatchersForKnownDirectories()
+        {
+            foreach (var directory in this)
+            {
+                if (!watchers.ContainsKey(directory))
+                    CreateFileSystemWatcherForDirectory(directory);
+            }
+        }
+
+        /// <summary>
+        /// Creates a file system watcher for the specified directory.
+        /// </summary>
+        private void CreateFileSystemWatcherForDirectory(String directory)
+        {
+            var watcher = new FileSystemWatcher(directory);
+            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
+
+            watchers.Add(directory, watcher);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the collection is watching the file system
+        /// for changes to the directories which it contains.
+        /// </summary>
+        private Boolean IsWatchingFileSystem => watchers != null;
+
+        // State values.
+        private Dictionary<String, FileSystemWatcher> watchers;
     }
 }

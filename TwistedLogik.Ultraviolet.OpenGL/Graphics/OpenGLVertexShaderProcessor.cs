@@ -9,13 +9,13 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
     /// </summary>
     [Preserve(AllMembers = true)]
     [ContentProcessor]
-    public sealed class OpenGLVertexShaderProcessor : ShaderProcessor<OpenGLVertexShader>
+    public sealed class OpenGLVertexShaderProcessor : ContentProcessor<String, OpenGLVertexShader>
     {
         /// <inheritdoc/>
         public override OpenGLVertexShader Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
-            var source = ProcessShaderDirectives(manager, metadata, input);
-            return new OpenGLVertexShader(manager.Ultraviolet, new[] { source });
+            var source = ShaderSource.ProcessRawSource(manager, metadata, input);
+            return new OpenGLVertexShader(manager.Ultraviolet, new[] { (String)source });
         }
     }
 }

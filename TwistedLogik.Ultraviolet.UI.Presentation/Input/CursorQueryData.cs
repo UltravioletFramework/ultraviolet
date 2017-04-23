@@ -23,7 +23,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <param name="autorelease">A value indicating whether the data is automatically released
         /// back to the global pool after it has been used by an event handler delegate.</param>
         /// <returns>The <see cref="CursorQueryRoutedEventData"/> instance that was retrieved.</returns>
-        public static new CursorQueryRoutedEventData Retrieve(DependencyObject source, Boolean handled = false, Boolean autorelease = true)
+        public static new CursorQueryRoutedEventData Retrieve(Object source, Boolean handled = false, Boolean autorelease = true)
         {
             var data = default(CursorQueryRoutedEventData);
 
@@ -40,7 +40,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public Cursor Cursor { get; set; }
 
         /// <inheritdoc/>
-        protected override void OnRetrieved(IPool origin, DependencyObject source, Boolean handled, Boolean autorelease)
+        protected override void OnRetrieved(IPool origin, Object source, Boolean handled, Boolean autorelease)
         {
             Cursor = null;
 

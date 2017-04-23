@@ -575,4 +575,14 @@
       <Variant>Coordinates for this device cannot be converted because it is not bound to a window and there is no primary window.</Variant>
     </en-US>
   </String>
+  <String Key="EXCEPTION_DURING_CONTENT_RELOADING">
+    <en-US>
+      <Variant>Exception thrown while attempting to reload a content asset:</Variant>
+    </en-US>
+  </String>
+  <String Key="EXCEPTION_DURING_VIEW_RELOADING">
+    <en-US>
+      <Variant>Exception thrown while attempting to reload a view:</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

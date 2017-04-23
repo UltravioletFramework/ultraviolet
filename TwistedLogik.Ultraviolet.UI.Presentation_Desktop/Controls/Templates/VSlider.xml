@@ -12,7 +12,13 @@
              Class="slider-track slider-track-vertical"
              HorizontalAlignment="Center"
              VerticalAlignment="Stretch"
-             Orientation="Vertical"/>
+             Orientation="Vertical"
+             IsDirectionReversed="{{IsDirectionReversed}}"
+             Delay="{{Delay}}"
+             Interval="{{Interval}}"
+             Minimum="{{Minimum}}"
+             Maximum="{{Maximum}}"
+             Value="{{Value}}"/>
       <Image Class="slider-focus-image"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"

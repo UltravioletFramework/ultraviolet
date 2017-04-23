@@ -18,6 +18,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 StringDatabase.LoadFromStream(stream);
             }
+            using (var stream = asm.GetManifestResourceStream("TwistedLogik.Ultraviolet.UI.Presentation.Resources.Commands.xml"))
+            {
+                StringDatabase.LoadFromStream(stream);
+            }
         }
 
         private static readonly LocalizationDatabase StringDatabase = new LocalizationDatabase();
@@ -99,6 +103,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         public static readonly StringResource CollectionContainsInvalidResources   = new StringResource(StringDatabase, "COLLECTION_CONTAINS_INVALID_RESOURCES");
         public static readonly StringResource PooledResourceAlreadyReleased        = new StringResource(StringDatabase, "POOLED_RESOURCE_ALREADY_RELEASED");
         public static readonly StringResource TemplateMustSpecifyViewModelType     = new StringResource(StringDatabase, "TEMPLATE_MUST_SPECIFY_VIEW_MODEL_TYPE");
+        public static readonly StringResource ElementDoesNotBelongToView           = new StringResource(StringDatabase, "ELEMENT_DOES_NOT_BELONG_TO_VIEW");
+        public static readonly StringResource DelegateCommandParamTypeMismatch     = new StringResource(StringDatabase, "DELEGATE_COMMAND_PARAM_TYPE_MISMATCH");
 #pragma warning restore 1591
     }
 }

@@ -220,4 +220,14 @@
       <Variant>The specified operation is invalid because the render buffer is already attached to a render target.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_INCLUDED_RESOURCE">
+    <en-US>
+      <Variant>The included shader resource '{0}' could not be found.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_INCLUDE_SHADER_HEADERS_IN_STREAM">
+    <en-US>
+      <Variant>The #include directive is not supported in shaders which are loaded from in-memory streams.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

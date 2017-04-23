@@ -37,6 +37,15 @@
   </Target>
     
   <!-- DESKTOP -->	
+  <Target Name="RepackArchives">
+    <!-- TODO: Get this target working on non-Windows platforms -->
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebugSandbox_Android/Content.uvarc UvDebugSandbox_Desktop/Content"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Ultraviolet Framework Samples/Sample12_UPF_Android/Content.uvarc&quot; &quot;Ultraviolet Framework Samples/Sample12_UPF_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Ultraviolet Framework Samples/Sample13_UPFAdvanced_Android/Content.uvarc&quot; &quot;Ultraviolet Framework Samples/Sample13_UPFAdvanced_Desktop/Content&quot;"/>
+  </Target>
   <Target Name="RestoreWindows">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows)&quot;"/>

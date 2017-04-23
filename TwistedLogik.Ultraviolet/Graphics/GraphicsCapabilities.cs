@@ -37,10 +37,16 @@ namespace TwistedLogik.Ultraviolet.Graphics
         public abstract Boolean SupportsIndependentSamplerState { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the current decide supports vertex attributes
-        /// which have integral types.
+        /// Gets a value indicating whether the current device supports vertex attributes
+        /// which have integer types.
         /// </summary>
-        public abstract Boolean SupportsIntegralVertexAttributes { get; }
+        public abstract Boolean SupportsIntegerVertexAttributes { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the current device supports vertex attributes
+        /// which have double-precision floating point types.
+        /// </summary>
+        public abstract Boolean SupportsDoublePrecisionVertexAttributes { get; }
 
         /// <summary>
         /// Gets the maximum texture size supported by the device.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -33,13 +34,14 @@ namespace TwistedLogik.Ultraviolet.UI
         protected UIScreen(UltravioletContext uv, String rootDirectory, String definitionAsset, ContentManager globalContent)
             : base(uv, rootDirectory, globalContent)
         {
-            var definition = LoadPanelDefinition(definitionAsset);
-            if (definition != null)
+            var definitionWrapper = LoadPanelDefinition(definitionAsset);
+            if (definitionWrapper?.IsValid ?? false)
             {
+                var definition = definitionWrapper.Value;
                 DefaultOpenTransitionDuration = definition.DefaultOpenTransitionDuration;
                 DefaultCloseTransitionDuration = definition.DefaultCloseTransitionDuration;
 
-                PrepareView(definition);
+                PrepareView(definitionWrapper);
             }
         }
 
@@ -259,9 +261,64 @@ namespace TwistedLogik.Ultraviolet.UI
         /// </summary>
         /// <param name="asset">The name of the asset that contains the panel definition.</param>
         /// <returns>The panel definition that was loaded from the specified asset.</returns>
-        protected virtual UIPanelDefinition LoadPanelDefinition(String asset)
+        protected virtual UIPanelDefinitionWrapper LoadPanelDefinition(String asset)
         {
-            return String.IsNullOrEmpty(asset) ? null : LocalContent.Load<UIPanelDefinition>(asset);
+            if (String.IsNullOrEmpty(asset))
+                return null;
+            
+            var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
+            if (watch)
+            {
+                var definition = LocalContent.LoadWatched<UIPanelDefinition>(asset, () =>
+                {
+                    if (State == UIPanelState.Open)
+                    {
+                        var currentViewModel = View?.ViewModel;
+                        var currentView = View;
+                        if (currentView != null)
+                        {
+                            currentView.OnClosing();
+                            currentView.OnClosed();
+                            UnloadView();
+                        }
+
+                        FinishLoadingView();
+
+                        var updatedView = View;
+                        if (updatedView != null)
+                        {
+                            try
+                            {
+                                if (currentViewModel != null)
+                                    updatedView.SetViewModel(currentViewModel);
+
+                                updatedView.OnOpening();
+                                updatedView.OnOpened();
+                            }
+                            catch (Exception e)
+                            {
+                                UnloadView();
+
+                                Debug.WriteLine(UltravioletStrings.ExceptionDuringViewReloading);
+                                Debug.WriteLine(e);
+
+                                return false;                                
+                            }
+                        }
+                    }
+                    return true;
+                });
+
+                foreach (var styleSheetAsset in definition.Value.StyleSheetAssets)
+                    LocalContent.AddWatchedDependency(asset, styleSheetAsset);
+
+                return new UIPanelDefinitionWrapper(definition);
+            }
+            else
+            {
+                var definition = LocalContent.Load<UIPanelDefinition>(asset);
+                return new UIPanelDefinitionWrapper(definition);
+            }
         }
 
         // Property values.

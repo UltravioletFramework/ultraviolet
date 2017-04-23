@@ -14,6 +14,7 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetMetadata"/> class.
         /// </summary>
+        /// <param name="overrideDirectory">The override directory from which the asset was loaded.</param>
         /// <param name="assetPath">The asset path of the asset being loaded.</param>
         /// <param name="assetFilePath">The path to the file that contains the asset being loaded.</param>
         /// <param name="importerMetadata">The asset's importer metadata.</param>
@@ -21,8 +22,12 @@ namespace TwistedLogik.Ultraviolet.Content
         /// <param name="isFile">A value indicating whether the asset was loaded from a file.</param>
         /// <param name="isStream">A value indicating whether the asset was loaded from a stream.</param>
         /// <param name="isJson">A value indicating whether the asset metadata is JSON.</param>
-        public AssetMetadata(String assetPath, String assetFilePath, Object importerMetadata, Object processorMetadata, Boolean isFile, Boolean isStream, Boolean isJson = false)
+        /// <param name="isLoadedFromSln">A value indicating whether the asset is being loaded from the 
+        /// application's solution rather than the binaries folder.</param>
+        public AssetMetadata(String overrideDirectory, String assetPath, String assetFilePath, 
+            Object importerMetadata, Object processorMetadata, Boolean isFile, Boolean isStream, Boolean isJson, Boolean isLoadedFromSln)
         {
+            this.OverrideDirectory = overrideDirectory;
             this.AssetPath = assetPath;
             this.AssetFilePath = assetFilePath;
             this.AssetFileName = (assetFilePath == null) ? null : System.IO.Path.GetFileName(assetFilePath);
@@ -32,6 +37,7 @@ namespace TwistedLogik.Ultraviolet.Content
             this.IsFile = isFile;
             this.IsStream = isStream;
             this.IsJson = isJson;
+            this.IsLoadedFromSolution = isLoadedFromSln;
         }
 
         /// <summary>
@@ -80,6 +86,15 @@ namespace TwistedLogik.Ultraviolet.Content
                 }
             }
             return new T();
+        }
+        
+        /// <summary>
+        /// Gets the override directory from which the asset was loaded.
+        /// </summary>
+        public String OverrideDirectory
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -164,13 +179,31 @@ namespace TwistedLogik.Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets a value indicating whether this asset was loaded from an override directory.
+        /// </summary>
+        public Boolean IsOverridden
+        {
+            get { return !String.IsNullOrEmpty(OverrideDirectory); }
+        }
+        
+        /// <summary>
+        /// Gets a value indicating whether the asset is being loaded from the solution,
+        /// rather than the binaries folder of the application.
+        /// </summary>
+        public Boolean IsLoadedFromSolution
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Represents an empty asset metadata object for assets loaded from streams.
         /// </summary>
-        public static readonly AssetMetadata StreamMetadata = new AssetMetadata(null, null, null, null, false, true);
+        public static readonly AssetMetadata StreamMetadata = new AssetMetadata(null, null, null, null, null, false, true, false, false);
 
         /// <summary>
         /// Represents an empty asset metadata object for assets loaded in-memory.
         /// </summary>
-        public static readonly AssetMetadata InMemoryMetadata = new AssetMetadata(null, null, null, null, false, false);
+        public static readonly AssetMetadata InMemoryMetadata = new AssetMetadata(null, null, null, null, null, false, false, false, false);
     }
 }

@@ -340,4 +340,9 @@
       <Variant>Value cannot be null.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_MODIFY_READ_ONLY_COLLECTION">
+    <en-US>
+      <Variant>The specified collection cannot be modified because it is read-only.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

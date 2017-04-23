@@ -56,12 +56,12 @@ namespace UltravioletSample.Sample4_ContentManagement
 
             this.effect = BasicEffect.Create();
 
-            this.vbuffer = VertexBuffer.Create<VertexPositionColorTexture>(3);
+            this.vbuffer = VertexBuffer.Create<VertexPositionTexture>(3);
             this.vbuffer.SetData(new[]
             {
-                new VertexPositionColorTexture(new Vector3(0, 1, 0), Color.Lime, new Vector2(0, 1)),
-                new VertexPositionColorTexture(new Vector3(1, -1, 0), Color.Blue, new Vector2(1, 1)),
-                new VertexPositionColorTexture(new Vector3(-1, -1, 0), Color.Red, new Vector2(0, 0))
+                new VertexPositionTexture(new Vector3(0, 1, 0), new Vector2(0, 1)),
+                new VertexPositionTexture(new Vector3(1, -1, 0), new Vector2(1, 1)),
+                new VertexPositionTexture(new Vector3(-1, -1, 0), new Vector2(0, 0))
             });
 
             this.geometryStream = GeometryStream.Create();

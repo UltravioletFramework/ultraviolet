@@ -1,6 +1,6 @@
-<#@ template debug="false" hostspecific="true" language="C#" #>
-<#@ output extension=".cs" #>
-<#
+<#@ template debug="false" hostspecific="true" language="C#" 
+#><#@ output extension=".cs" 
+#><#
 var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_ultraviolet_buildNumber");
 var buildConfig = System.Environment.GetEnvironmentVariable("BAMBOO_buildType");
 var buildBranch = System.Environment.GetEnvironmentVariable("BAMBOO_planRepository_branchName");
@@ -12,8 +12,7 @@ var asmInfoVersion = String.IsNullOrEmpty(buildNumber) ?
 		String.IsNullOrEmpty(buildBranch) ? String.Empty : String.Format(" ({0})", buildBranch));
 var yearStart = 2014;
 var yearEnd = DateTime.Now.Year;
-#>
-using System.Reflection;
+#>using System.Reflection;
 
 [assembly: AssemblyProduct("Ultraviolet Framework")]
 [assembly: AssemblyCompany("TwistedLogik Software")]
@@ -21,4 +20,4 @@ using System.Reflection;
 
 [assembly: AssemblyVersion("<#=asmVersion#>")]
 [assembly: AssemblyFileVersion("<#=asmFileVersion#>")]
-[assembly: AssemblyInformationalVersion("<#=asmInfoVersion#>")]
+[assembly: AssemblyInformationalVersion("<#=asmInfoVersion#>")] 

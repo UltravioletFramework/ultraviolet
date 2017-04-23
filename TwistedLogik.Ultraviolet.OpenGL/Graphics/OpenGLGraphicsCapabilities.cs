@@ -46,7 +46,8 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
             this.SupportsIndependentSamplerState = (gl.IsGLES ? gl.IsVersionAtLeast(3, 0) : gl.IsVersionAtLeast(3, 3)) ||
             gl.IsExtensionSupported("GL_ARB_sampler_objects");
 
-            this.SupportsIntegralVertexAttributes = !gl.IsGLES2 || gl.IsExtensionSupported("GL_EXT_gpu_shader4");
+            this.SupportsIntegerVertexAttributes = !gl.IsGLES2 || gl.IsExtensionSupported("GL_EXT_gpu_shader4");
+            this.SupportsDoublePrecisionVertexAttributes = !gl.IsGLES && gl.IsVersionAtLeast(4, 1);
 
             this.SupportsMapBufferRange = true;
             if (gl.IsGLES2)
@@ -97,7 +98,10 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         public override Boolean SupportsIndependentSamplerState { get; }
 
         /// <inheritdoc/>
-        public override Boolean SupportsIntegralVertexAttributes { get; }
+        public override Boolean SupportsIntegerVertexAttributes { get; }
+
+        /// <inheritdoc/>
+        public override Boolean SupportsDoublePrecisionVertexAttributes { get; }
 
         /// <summary>
         /// Gets a value indicating whether the OpenGL context supports glMapBufferRange().

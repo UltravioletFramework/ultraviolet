@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using TwistedLogik.Nucleus;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
@@ -85,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition, vmfactory);
 
-            var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheets);
+            var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheetSources);
             var uvssdoc = UvssDocument.Compile(uv, uvss);
 
             view.SetStyleSheet(uvssdoc);
@@ -330,6 +329,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
 
+            CommandManager.InvalidateRequerySuggested();
+
             return true;
         }
 
@@ -361,6 +362,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             UpdateIsDefaulted();
 
             wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2009,6 +2012,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2153,6 +2158,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2293,7 +2300,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 return;
 
             var originalFocus = elementWithFocus;
-            var performGamePadNav = true;
 
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
@@ -2302,12 +2308,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 GamePad.RaisePreviewAxisDown(recipient, device, axis, value, repeat, gamePadAxisPressedData);
                 GamePad.RaiseAxisDown(recipient, device, axis, value, repeat, gamePadAxisPressedData);
                 gamePadAxisPressedData.Release();
-
-                performGamePadNav = !gamePadAxisPressedData.Handled;
             }
-
-            if (performGamePadNav)
-                FocusNavigator.PerformNavigation(this, device, axis);
 
             if (originalFocus != elementWithFocus)
                 wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
@@ -2334,6 +2335,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2350,29 +2353,25 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             var recipient = elementWithFocus as DependencyObject;
             if (recipient != null)
             {
-                var gamePadAxisChangedData = RoutedEventData.Retrieve(recipient, autorelease: false);
-                GamePad.RaisePreviewButtonDown(recipient, device, button, repeat, gamePadAxisChangedData);
-                GamePad.RaiseButtonDown(recipient, device, button, repeat, gamePadAxisChangedData);
-                gamePadAxisChangedData.Release();
+                var gamePadButtonDownData = RoutedEventData.Retrieve(recipient, autorelease: false);
+                GamePad.RaisePreviewButtonDown(recipient, device, button, repeat, gamePadButtonDownData);
+                GamePad.RaiseButtonDown(recipient, device, button, repeat, gamePadButtonDownData);
 
-                suppressGamePadNav = gamePadAxisChangedData.Handled;
+                suppressGamePadNav = gamePadButtonDownData.Handled;
+
+                gamePadButtonDownData.Release();
             }
 
             if (!suppressGamePadNav)
             {
-                if (FocusNavigator.PerformNavigation(this, device, button))
-                    return;
-
-                if (GamePad.ConfirmButton == button)
+                if (!FocusNavigator.PerformNavigation(this, device, button))
                 {
-                    ActivateDefaultOrCancelButton(defaultButtons);
-                    return;
-                }
+                    var buttons =
+                        (GamePad.ConfirmButton == button) ? defaultButtons :
+                        (GamePad.CancelButton == button) ? cancelButtons : null;
 
-                if (GamePad.CancelButton == button)
-                {
-                    ActivateDefaultOrCancelButton(cancelButtons);
-                    return;
+                    if (buttons != null)
+                        ActivateDefaultOrCancelButton(buttons);
                 }
             }
 
@@ -2401,6 +2400,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 if (originalFocus != elementWithFocus)
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = true;
             }
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -2505,7 +2506,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     wasFocusMostRecentlyChangedByKeyboardOrGamePad = false;
             }
 
-            touchCursorTrackers.FinishTracking(touchID);
+            touchCursorTrackers.FinishTracking(touchID);            
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>

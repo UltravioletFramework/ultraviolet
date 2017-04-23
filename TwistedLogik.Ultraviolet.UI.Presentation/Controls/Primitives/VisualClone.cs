@@ -81,8 +81,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 dc.End();
 
                 var offsetRaw = Display.DipsToPixels(clonedElement.UntransformedAbsoluteBounds.Location - clonedElement.UntransformedRelativeBounds.Location);
-                var offsetX = dc.IsTransformed ? offsetRaw.X : Math.Round(offsetRaw.X, MidpointRounding.AwayFromZero);
-                var offsetY = dc.IsTransformed ? offsetRaw.Y : Math.Round(offsetRaw.Y, MidpointRounding.AwayFromZero);
+                var offsetX = dc.IsTransformed ? offsetRaw.X : Math.Floor(offsetRaw.X);
+                var offsetY = dc.IsTransformed ? offsetRaw.Y : Math.Floor(offsetRaw.Y);
                 var offset = new Vector2((Single)offsetX, (Single)offsetY);
                 
                 var mtxTransform = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
@@ -94,9 +94,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
                 if (!dc.IsTransformed && !clonedElement.HasNonIdentityTransform)
                 {
                     mtxTransform = new Matrix(
-                        mtxTransform.M11, mtxTransform.M12, mtxTransform.M13, (Single)Math.Round(mtxTransform.M14, MidpointRounding.AwayFromZero),
-                        mtxTransform.M21, mtxTransform.M22, mtxTransform.M23, (Single)Math.Round(mtxTransform.M24, MidpointRounding.AwayFromZero),
-                        mtxTransform.M31, mtxTransform.M32, mtxTransform.M33, (Single)Math.Round(mtxTransform.M34, MidpointRounding.AwayFromZero),
+                        mtxTransform.M11, mtxTransform.M12, mtxTransform.M13, (Single)Math.Floor(mtxTransform.M14),
+                        mtxTransform.M21, mtxTransform.M22, mtxTransform.M23, (Single)Math.Floor(mtxTransform.M24),
+                        mtxTransform.M31, mtxTransform.M32, mtxTransform.M33, (Single)Math.Floor(mtxTransform.M34),
                         mtxTransform.M41, mtxTransform.M42, mtxTransform.M43, mtxTransform.M44);
                 }
 

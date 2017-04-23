@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 
 namespace TwistedLogik.Nucleus.Text
 {
@@ -80,6 +81,8 @@ namespace TwistedLogik.Nucleus.Text
                     strings[result.Key][key] = result.Value;
                 }
             }
+
+            InvalidateFallbackCultures();
         }
 
         /// <summary>
@@ -112,6 +115,8 @@ namespace TwistedLogik.Nucleus.Text
                     }
                 }
             }
+
+            InvalidateFallbackCultures();
         }
 
         /// <summary>
@@ -201,6 +206,7 @@ namespace TwistedLogik.Nucleus.Text
         public void Unload()
         {
             strings.Clear();
+            InvalidateFallbackCultures();
         }
 
         /// <summary>
@@ -210,6 +216,7 @@ namespace TwistedLogik.Nucleus.Text
         public void UnloadCulture(String culture)
         {
             strings.Remove(culture);
+            InvalidateFallbackCultures();
         }
 
         /// <summary>
@@ -292,6 +299,35 @@ namespace TwistedLogik.Nucleus.Text
         }
 
         /// <summary>
+        /// Gets the culture which is currently being used as the fallback for the specified culture.
+        /// </summary>
+        /// <param name="culture">The culture for which to find a fallback culture.</param>
+        /// <returns>The culture which is currently being used as the fallback for the specified
+        /// culture, or <see langword="null"/> if the culture does not have a fallback.</returns>
+        public String GetFallbackCulture(String culture)
+        {
+            var fallback = String.Empty;
+            if (fallbackCultures.TryGetValue(culture, out fallback))
+                return fallback;
+            
+            try
+            {
+                var cultureInfo = new CultureInfo(culture);
+                var cultureMatch = strings.Keys.Select(c => new CultureInfo(c))
+                    .Where(c => c.TwoLetterISOLanguageName == cultureInfo.TwoLetterISOLanguageName).OrderBy(c => c.Name).FirstOrDefault();
+
+                fallback = cultureMatch?.Name;
+            }
+            catch (CultureNotFoundException)
+            {
+                fallback = null;
+            }
+
+            fallbackCultures[culture] = fallback;
+            return fallback;
+        }
+
+        /// <summary>
         /// Gets the number of strings defined in this database.
         /// </summary>
         public Int32 StringCount
@@ -308,8 +344,8 @@ namespace TwistedLogik.Nucleus.Text
         {
             if (!strings.ContainsKey(culture))
             {
-                culture = "en-US";
-                if (!strings.ContainsKey(culture))
+                culture = GetFallbackCulture(culture);
+                if (culture == null || !strings.ContainsKey(culture))
                 {
                     strings[culture] = new Dictionary<String, LocalizedString>();
                 }
@@ -317,8 +353,28 @@ namespace TwistedLogik.Nucleus.Text
             return strings[culture];
         }
 
+        /// <summary>
+        /// Invalidates the fallback culture for the specified culture.
+        /// </summary>
+        private void InvalidateFallbackCulture(String culture)
+        {
+            fallbackCultures.Remove(culture);
+        }
+
+        /// <summary>
+        /// Invalidates all known fallback cultures.
+        /// </summary>
+        private void InvalidateFallbackCultures()
+        {
+            fallbackCultures.Clear();
+        }
+
         // A dictionary associating cultures with dictionaries of localized strings.
         private readonly Dictionary<String, Dictionary<String, LocalizedString>> strings = 
             new Dictionary<String, Dictionary<String, LocalizedString>>();
+
+        // A dictionary associating cultures with their closest fallback cultures of the same language.
+        private readonly Dictionary<String, String> fallbackCultures =
+            new Dictionary<String, String>();
     }
 }

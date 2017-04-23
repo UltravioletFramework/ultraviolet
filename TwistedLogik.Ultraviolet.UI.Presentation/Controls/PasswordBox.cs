@@ -14,7 +14,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "TwistedLogik.Ultraviolet.UI.Presentation.Controls.Templates.PasswordBox.xml")]
-    public sealed class PasswordBox : Control
+    public sealed class PasswordBox : TextEditingControl
     {
         /// <summary>
         /// Initializes the <see cref="PasswordBox"/> type.
@@ -437,15 +437,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
-        {
-            if (PART_Editor != null)
-                PART_Editor.HandleKeyDown(device, key, modifiers, data);
-
-            base.OnKeyDown(device, key, modifiers, data);
-        }
-
-        /// <inheritdoc/>
         protected override void OnTextInput(KeyboardDevice device, RoutedEventData data)
         {
             if (PART_Editor != null)
@@ -462,6 +453,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnTextEditing(device, data);
         }
+
+        /// <inheritdoc/>
+        protected override TextEditor TextEditor => PART_Editor;
 
         /// <summary>
         /// Occurs when the control handles a <see cref="TextBoxBase.SelectionChangedEvent"/> routed event.

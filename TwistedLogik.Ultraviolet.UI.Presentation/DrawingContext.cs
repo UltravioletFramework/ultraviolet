@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TwistedLogik.Nucleus;
@@ -513,9 +513,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
-        /// <param name="width">The width in device-dependent pixels of the destination 
+        /// <param name="width">The width in device-dependent pixels of the destination
         /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
-        /// <param name="height">The height in device-dependent pixels of the destination 
+        /// <param name="height">The height in device-dependent pixels of the destination
         /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
@@ -527,6 +527,51 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
 
             SpriteBatch.DrawSprite(animation, position, width, height, color * Opacity, rotation, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
+        /// <param name="width">The width in device-dependent pixels of the destination
+        /// rectangle, or <see langword="null"/> to use the width of the sprite.</param>
+        /// <param name="height">The height in device-dependent pixels of the destination
+        /// rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        /// <param name="originX">The distance in pixels between the left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="originY">The distance in pixels between the top edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void RawDrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Single? originX, Single? originY, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawSprite(animation, position, width, height,originX, originY, color * Opacity, rotation, effects, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a sprite animation.
+        /// </summary>
+        /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
+        /// <param name="position">The sprite's position in device-dependent screen coordinates.</param>
+        /// <param name="scale">The sprite's scale factor.</param>
+        /// <param name="origin">The distance in pixels between the top-left edge of the sprite and its rotational origin, or <see langword="null"/> to 
+        /// use the sprite's predefined origin position.</param>
+        /// <param name="color">The sprite's tint color.</param>
+        /// <param name="rotation">The sprite's rotation in radians.</param>
+        /// <param name="effects">The sprite's rendering effects.</param>
+        /// <param name="layerDepth">The sprite's layer depth.</param>
+        public void RawDrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Vector2? origin, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
+        {
+            if (SpriteBatch == null)
+                throw new InvalidOperationException(PresentationStrings.DrawingContextDoesNotHaveSpriteBatch);
+
+            SpriteBatch.DrawScaledSprite(animation, position, scale, origin, color * Opacity, rotation, effects, layerDepth);
         }
 
         /// <summary>

@@ -326,21 +326,6 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnGamePadAxisDown(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
-        {
-            if (IsDropDownOpen)
-            {
-                OnGamePadAxisDown_DropDownOpen(device, axis, value, repeat, data);
-            }
-            else
-            {
-                OnGamePadAxisDown_DropDownClosed(device, axis, value, repeat, data);
-            }
-
-            base.OnGamePadAxisDown(device, axis, value, repeat, data);
-        }
-
-        /// <inheritdoc/>
         protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
             if (IsDropDownOpen)
@@ -442,11 +427,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
 
                 case Key.Left:
+                    PART_ScrollViewer?.LineLeft();
+                    data.Handled = true;
+                    break;
+
                 case Key.Right:
-                    if (PART_ScrollViewer != null)
-                    {
-                        PART_ScrollViewer.HandleKeyScrolling(key, modifiers, data);
-                    }
+                    PART_ScrollViewer?.LineRight();
                     data.Handled = true;
                     break;
             }
@@ -480,73 +466,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
                     break;
             }
         }
-
-        /// <summary>
-        /// Handles <see cref="GamePad.AxisDownEvent"/> when the drop down is open.
-        /// </summary>
-        private void OnGamePadAxisDown_DropDownOpen(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
-        {
-            if (GamePad.UseAxisForDirectionalNavigation)
-            {
-                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
-                {
-                    var direction = device.GetJoystickDirectionFromAxis(axis);
-                    switch (direction)
-                    {
-                        case GamePadJoystickDirection.Up:
-                            MoveItemFocus(-1);
-                            break;
-
-                        case GamePadJoystickDirection.Down:
-                            MoveItemFocus(1);
-                            break;
-
-                        case GamePadJoystickDirection.Left:
-                            if (PART_ScrollViewer != null)
-                            {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
-                            }
-                            break;
-                            
-                        case GamePadJoystickDirection.Right:
-                            if (PART_ScrollViewer != null)
-                            {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
-                            }
-                            break;
-                    }
-                    data.Handled = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles <see cref="GamePad.AxisDownEvent"/> when the drop down is closed.
-        /// </summary>
-        private void OnGamePadAxisDown_DropDownClosed(GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
-        {
-            if (GamePad.UseAxisForDirectionalNavigation)
-            {
-                if (GamePad.DirectionalNavigationAxisX == axis || GamePad.DirectionalNavigationAxisY == axis)
-                {
-                    var direction = device.GetJoystickDirectionFromAxis(axis);
-                    switch (direction)
-                    {
-                        case GamePadJoystickDirection.Up:
-                        case GamePadJoystickDirection.Left:
-                            MoveItemSelection(-1);
-                            break;
-
-                        case GamePadJoystickDirection.Down:
-                        case GamePadJoystickDirection.Right:
-                            MoveItemSelection(1);
-                            break;
-                    }
-                    data.Handled = true;
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Handles <see cref="GamePad.ButtonDownEvent"/> when the drop down is open.
         /// </summary>
@@ -575,33 +495,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             else
             {
-                if (!GamePad.UseAxisForDirectionalNavigation)
+                switch (button)
                 {
-                    switch (button)
-                    {
-                        case GamePadButton.DPadUp:
-                            MoveItemSelection(-1);
-                            break;
+                    case GamePadButton.LeftStickUp:
+                        MoveItemFocus(-1);
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadDown:
-                            MoveItemSelection(1);
-                            break;
+                    case GamePadButton.LeftStickDown:
+                        MoveItemFocus(1);
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadLeft:
-                            if (PART_ScrollViewer != null)
-                            {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Left, ModifierKeys.None, data);
-                            }
-                            break;
+                    case GamePadButton.LeftStickLeft:
+                        PART_ScrollViewer?.LineLeft();
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadRight:
-                            if (PART_ScrollViewer != null)
-                            {
-                                PART_ScrollViewer.HandleKeyScrolling(Key.Right, ModifierKeys.None, data);
-                            }
-                            break;
-                    }
-                    data.Handled = true;
+                    case GamePadButton.LeftStickRight:
+                        PART_ScrollViewer?.LineRight();
+                        data.Handled = true;
+                        break;
                 }
             }
         }
@@ -618,21 +532,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             }
             else
             {
-                if (!GamePad.UseAxisForDirectionalNavigation)
+                switch (button)
                 {
-                    switch (button)
-                    {
-                        case GamePadButton.DPadUp:
-                        case GamePadButton.DPadLeft:
-                            MoveItemSelection(-1);
-                            break;
+                    case GamePadButton.LeftStickUp:
+                    case GamePadButton.LeftStickLeft:
+                        MoveItemSelection(-1);
+                        data.Handled = true;
+                        break;
 
-                        case GamePadButton.DPadDown:
-                        case GamePadButton.DPadRight:
-                            MoveItemSelection(1);
-                            break;
-                    }
-                    data.Handled = true;
+                    case GamePadButton.LeftStickDown:
+                    case GamePadButton.LeftStickRight:
+                        MoveItemSelection(1);
+                        data.Handled = true;
+                        break;
                 }
             }
         }

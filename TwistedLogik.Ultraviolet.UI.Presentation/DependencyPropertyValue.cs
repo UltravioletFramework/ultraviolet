@@ -28,10 +28,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 this.owner = owner;
                 this.property = property;
                 this.comparer = BindingExpressions.GetComparisonFunction(typeof(T));
+                this.metadata = property.GetMetadataForOwner(owner.GetType());                
+                this.flags = DependencyPropertyValueFlags.None;
 
-                this.metadata = property.GetMetadataForOwner(owner.GetType());
-                this.isReferenceType = typeof(T).IsClass;
-                this.isValueType = typeof(T).IsValueType;
+                if (typeof(T).IsClass)
+                    flags |= DependencyPropertyValueFlags.IsReferenceType;
+                if (typeof(T).IsValueType)
+                    flags |= DependencyPropertyValueFlags.IsValueType;
 
                 if (metadata.HasDefaultValue)
                 {
@@ -48,10 +51,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void RaisePendingChangeEvent()
             {
-                if (!isPendingChangeEvent)
+                if (!IsPendingChangeEvent)
                     return;
 
-                isPendingChangeEvent = false;
+                IsPendingChangeEvent = false;
 
                 var oldValue = defaultValue;
                 var newValue = GetValue();
@@ -75,7 +78,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void DigestImmediately()
             {
-                if (isPendingChangeEvent && !IsDeferringChangeEvents())
+                if (IsPendingChangeEvent && !IsDeferringChangeEvents())
                 {
                     RaisePendingChangeEvent();
                 }
@@ -107,19 +110,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 Contract.Require(animation, nameof(animation));
                 Contract.Require(clock, nameof(clock));
 
-                if (this.animation == animation && this.animationClock == clock)
+                var animState = GetAnimationState();
+                if (animState.Animation == animation && animState.Clock == clock)
                     return;
 
                 var oldValue = GetValue();
 
                 ClearAnimation();
 
-                this.animation            = (Animation<T>)animation;
-                this.animationClock       = clock;
-                this.animatedValue        = GetInitialAnimatedValue(oldValue);
-                this.animatedHandOffValue = oldValue;
-
-                this.animationClock.Subscribe(this);
+                animState.Animation = (Animation<T>)animation;
+                animState.CurrentValue = GetInitialAnimatedValue(oldValue);
+                animState.HandOffValue = oldValue;
+                animState.Clock = clock;
+                animState.Clock.Subscribe(this);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -138,14 +141,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 ClearAnimation();
 
-                this.animation            = null;
-                this.animationClock       = clock;
-                this.animatedValue        = GetInitialAnimatedValue(oldValue);
-                this.animatedTargetValue  = value;
-                this.animatedHandOffValue = oldValue;
-                this.animationEasing      = fn ?? Easings.EaseInLinear;
-
-                this.animationClock.Subscribe(this);
+                var animState = GetAnimationState();
+                animState.Animation = null;
+                animState.CurrentValue = GetInitialAnimatedValue(oldValue);
+                animState.TargetValue = value;
+                animState.HandOffValue = oldValue;
+                animState.EasingFunction = fn ?? Easings.EaseInLinear;
+                animState.Clock = clock;
+                animState.Clock.Subscribe(this);
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -173,13 +176,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             public void BeginStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance)
             {
                 Animate(animation, storyboardInstance.StoryboardClock);
-                this.storyboardInstance = storyboardInstance;
+
+                var animState = GetAnimationState();
+                animState.StoryboardInstance = storyboardInstance;
             }
 
             /// <inheritdoc/>
             public void StopStoryboard(AnimationBase animation, StoryboardInstance storyboardInstance)
             {
-                if (this.storyboardInstance != storyboardInstance)
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return;
+
+                if (animState.StoryboardInstance != storyboardInstance)
                     return;
 
                 ClearAnimation();
@@ -193,7 +202,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
                 var oldValue = GetValue();
 
-                bound = true;
+                IsDataBound = true;
                 CreateCachedBoundValue(dataSourceType, expression);
 
                 UpdateRequiresDigest(oldValue);
@@ -202,11 +211,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public void Unbind()
             {
-                if (bound)
+                if (IsDataBound)
                 {
                     var oldValue = GetValue();
 
-                    bound = false;
+                    IsDataBound = false;
 
                     cachedBoundValue.HandleDataSourceChanged(null);
                     cachedBoundValue = null;
@@ -245,15 +254,19 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var oldValue = GetValue();
 
-                if (this.animationClock != null)
-                    this.animationClock.Unsubscribe(this);
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return;
+
+                if (animState.Clock != null)
+                    animState.Clock.Unsubscribe(this);
 
                 ReleasePooledAnimationClock();
 
-                this.animation          = null;
-                this.animationClock     = null;
-                this.animationEasing    = null;
-                this.storyboardInstance = null;
+                animState.Animation = null;
+                animState.Clock = null;
+                animState.EasingFunction = null;
+                animState.StoryboardInstance = null;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -263,7 +276,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var oldValue = GetValue();
 
-                hasLocalValue = false;
+                HasLocalValue = false;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -273,7 +286,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 var oldValue = GetValue();
 
-                hasStyledValue = false;
+                HasStyledValue = false;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -357,7 +370,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     value = UpdateCoercedValue(value);
 
                     localValue = value;
-                    hasLocalValue = true;
+                    HasLocalValue = true;
 
                     UpdateRequiresDigest(oldValue);
                 }
@@ -376,7 +389,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                     value = UpdateCoercedValue(value);
 
                     styledValue = value;
-                    hasStyledValue = true;
+                    HasStyledValue = true;
                     UpdateRequiresDigest(oldValue);
                 }
             }
@@ -418,28 +431,59 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 get { return property; }
             }
 
+            /// <summary>
+            /// Gets a value indicating whether the value must be digested.
+            /// </summary>
+            public Boolean RequiresDigest
+            {
+                get { return (flags & DependencyPropertyValueFlags.RequiresDigest) != 0; }
+                private set
+                {
+                    flags = (flags & ~DependencyPropertyValueFlags.RequiresDigest) |
+                        (value ? DependencyPropertyValueFlags.RequiresDigest : DependencyPropertyValueFlags.None);
+                }
+            }
+
+            /// <summary>
+            /// Gets a value indicating whether a change event is going to be raised.
+            /// </summary>
+            public Boolean IsPendingChangeEvent
+            {
+                get { return (flags & DependencyPropertyValueFlags.IsPendingChangeEvent) != 0; }
+                private set
+                {
+                    flags = (flags & ~DependencyPropertyValueFlags.IsPendingChangeEvent) |
+                        (value ? DependencyPropertyValueFlags.IsPendingChangeEvent : DependencyPropertyValueFlags.None);
+                }
+            }
+
             /// <inheritdoc/>
             public Boolean IsReferenceType
             {
-                get { return isReferenceType; }
+                get { return (flags & DependencyPropertyValueFlags.IsReferenceType) != 0; }
             }
 
             /// <inheritdoc/>
             public Boolean IsValueType
             {
-                get { return isValueType; }
+                get { return (flags & DependencyPropertyValueFlags.IsValueType) != 0; }
             }
 
             /// <inheritdoc/>
             public Boolean IsDataBound
             {
-                get { return bound; }
+                get { return (flags & DependencyPropertyValueFlags.IsDataBound) != 0; }
+                set
+                {
+                    flags = (flags & ~DependencyPropertyValueFlags.IsDataBound) |
+                        (value ? DependencyPropertyValueFlags.IsDataBound : DependencyPropertyValueFlags.None);
+                }
             }
 
             /// <inheritdoc/>
             public Boolean IsAnimated
             {
-                get { return animationClock != null; }
+                get { return GetAnimationState(false)?.Clock != null; }
             }
 
             /// <inheritdoc/>
@@ -451,13 +495,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public Boolean HasLocalValue
             {
-                get { return hasLocalValue; }
+                get { return (flags & DependencyPropertyValueFlags.HasLocalValue) != 0; }
+                private set
+                {
+                    flags = (flags & ~DependencyPropertyValueFlags.HasLocalValue) |
+                        (value ? DependencyPropertyValueFlags.HasLocalValue : DependencyPropertyValueFlags.None);
+                }
             }
 
             /// <inheritdoc/>
             public Boolean HasStyledValue
             {
-                get { return hasStyledValue; }
+                get { return (flags & DependencyPropertyValueFlags.HasStyledValue) != 0; }
+                private set
+                {
+                    flags = (flags & ~DependencyPropertyValueFlags.HasStyledValue) |
+                        (value ? DependencyPropertyValueFlags.HasStyledValue : DependencyPropertyValueFlags.None);
+                }
             }
 
             /// <inheritdoc/>
@@ -478,7 +532,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <inheritdoc/>
             public Clock AnimationClock
             {
-                get { return animationClock; }
+                get { return GetAnimationState(false)?.Clock; }
             }
 
             /// <inheritdoc/>
@@ -593,6 +647,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             }
 
             /// <summary>
+            /// Gets the value's animation state.
+            /// </summary>
+            private DependencyPropertyValueAnimationState<T> GetAnimationState(Boolean instantiate = true)
+            {
+                if (animationState == null)
+                {
+                    if (!instantiate)
+                        return null;
+
+                    animationState = new DependencyPropertyValueAnimationState<T>();
+                }
+                return animationState;
+            }
+
+            /// <summary>
             /// Compares two values using the dependency property's comparer function.
             /// </summary>
             private Boolean Compare(T value1, T value2)
@@ -628,7 +697,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             {
                 if (IsDeferringChangeEvents())
                 {
-                    isPendingChangeEvent = true;
+                    IsPendingChangeEvent = true;
                 }
                 else
                 {
@@ -762,7 +831,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             private void UpdateRequiresDigest(T oldValue)
             {
                 var requiresDigestNew = IsDataBound || IsAnimated || 
-                    (metadata.IsInherited && !hasLocalValue && !hasStyledValue);
+                    (metadata.IsInherited && !HasLocalValue && !HasStyledValue);
 
                 if (GetValueSource() == ValueSource.BoundValue)
                 {
@@ -770,10 +839,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                         requiresDigestNew = false;
                 }
 
-                if (requiresDigestNew != requiresDigest)
+                if (requiresDigestNew != RequiresDigest)
                 {
                     Owner.UpdateDigestParticipation(this, requiresDigestNew);
-                    requiresDigest = requiresDigestNew;
+                    RequiresDigest = requiresDigestNew;
                 }
 
                 var newValue = GetValue();
@@ -791,7 +860,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
             private void UpdateAnimation(UltravioletTime time)
             {
-                if (animation != null)
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return;
+
+                if (animState.Animation != null)
                 {
                     UpdateStoryboardAnimation(time);
                 }
@@ -807,6 +880,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
             private void UpdateStoryboardAnimation(UltravioletTime time)
             {
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return;
+
+                var animation = animState.Animation;
+                var animationClock = animState.Clock;
+
                 // If our animation has become invalid since it was applied, remove it.
                 if (animation.Target == null || animation.Target.Storyboard == null || animation.Keyframes.Count == 0)
                 {
@@ -819,7 +899,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 animation.GetKeyframes(animationClock.ElapsedTime, out kf1, out kf2);
 
                 // Determine which values correspond to our keyframes.
-                T value1 = (kf1 == null) ? animatedHandOffValue : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
+                T value1 = (kf1 == null) ? animState.HandOffValue : (!kf1.HasValue) ? GetValueInternal(false) : kf1.Value;
                 T value2 = default(T);
                 if (kf2 == null)
                 {
@@ -836,27 +916,27 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 else
                 {
-                    value2 = kf2.HasValue ?  kf2.Value : GetValueInternal(false);
+                    value2 = kf2.HasValue ? kf2.Value : GetValueInternal(false);
                 }
 
                 // Interpolate between our keyframes.
-                var time1    = (kf1 == null) ? 0.0 : kf1.Time.TotalMilliseconds;
-                var time2    = (kf2 == null) ? animation.Target.Storyboard.Duration.TotalMilliseconds : kf2.Time.TotalMilliseconds;
-                var easing   = (kf2 == null) ? null : kf2.EasingFunction;
+                var time1 = (kf1 == null) ? 0.0 : kf1.Time.TotalMilliseconds;
+                var time2 = (kf2 == null) ? animation.Target.Storyboard.Duration.TotalMilliseconds : kf2.Time.TotalMilliseconds;
+                var easing = (kf2 == null) ? null : kf2.EasingFunction;
                 var duration = time2 - time1;
                 if (duration == 0)
                 {
-                    animatedValue = value2;
+                    animState.CurrentValue = value2;
                 }
                 else
                 {
                     var factor = (float)((animationClock.ElapsedTime.TotalMilliseconds - time1) / duration);
-                    animatedValue = animation.InterpolateValues(value1, value2, easing, factor);
+                    animState.CurrentValue = animation.InterpolateValues(value1, value2, easing, factor);
                 }
 
                 if (IsCoerced)
                 {
-                    animatedValue = UpdateCoercedValue(animatedValue);
+                    animState.CurrentValue = UpdateCoercedValue(animState.CurrentValue);
                 }
             }
 
@@ -866,17 +946,21 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
             private void UpdateSimpleAnimation(UltravioletTime time)
             {
-                var factor            = (Single)(animationClock.ElapsedTime.TotalMilliseconds / animationClock.Duration.TotalMilliseconds);
-                var valueStart        = animatedHandOffValue;
-                var valueEnd          = animatedTargetValue;
-                var valueInterpolated = Tweening.Tween(valueStart, valueEnd, animationEasing, factor);
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return;
+
+                var factor = (Single)(animState.Clock.ElapsedTime.TotalMilliseconds / animState.Clock.Duration.TotalMilliseconds);
+                var valueStart = animState.HandOffValue;
+                var valueEnd = animState.TargetValue;
+                var valueInterpolated = Tweening.Tween(valueStart, valueEnd, animState.EasingFunction, factor);
 
                 if (IsCoerced)
                 {
                     valueInterpolated = metadata.CoerceValue<T>(owner, valueInterpolated);
                 }
 
-                animatedValue = valueInterpolated;
+                animState.CurrentValue = valueInterpolated;
             }
 
             /// <summary>
@@ -885,14 +969,18 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// </summary>
             private void ReleasePooledAnimationClock()
             {
-                var simpleClock = animationClock as SimpleClock;
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return;
+
+                var simpleClock = animState.Clock as SimpleClock;
                 if (simpleClock == null)
                     return;
 
                 if (simpleClock.PooledObject != null)
                 {
                     SimpleClockPool.Instance.Release(simpleClock.PooledObject);
-                    animationClock = null;
+                    animState.Clock = null;
                 }
             }
 
@@ -903,9 +991,13 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             /// <returns>The value to which the property should change.</returns>
             private T GetInitialAnimatedValue(T oldValue)
             {
-                if (animation != null && animation.Keyframes.Count > 0)
+                var animState = GetAnimationState(false);
+                if (animState == null)
+                    return default(T);
+
+                if (animState.Animation != null && animState.Animation.Keyframes.Count > 0)
                 {
-                    var keyframe = animation.Keyframes[0];
+                    var keyframe = animState.Animation.Keyframes[0];
                     if (keyframe.HasValue && keyframe.Time == TimeSpan.Zero)
                     {
                         return keyframe.Value;
@@ -928,7 +1020,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 if (includeAnimation && IsAnimated)
                 {
-                    return animatedValue;
+                    return GetAnimationState().CurrentValue;
                 }
                 if (IsDataBound)
                 {
@@ -1005,16 +1097,12 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 }
                 return ValueSource.DefaultValue;
             }
-
+                        
             // Property values.
             private readonly DependencyObject owner;
             private readonly DependencyProperty property;
             private readonly PropertyMetadata metadata;
-            private readonly Boolean isReferenceType;
-            private readonly Boolean isValueType;
-            private Boolean isPendingChangeEvent;
-            private Boolean hasLocalValue;
-            private Boolean hasStyledValue;
+            private DependencyPropertyValueFlags flags;
             private T localValue;
             private T styledValue;
             private T defaultValue;
@@ -1025,18 +1113,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
 
             // State values.
             private readonly Delegate comparer;
-            private Boolean requiresDigest;
-            private Boolean bound;
             private IDependencyBoundValue<T> cachedBoundValue;
-
-            // Animation state.
-            private Clock animationClock;
-            private Animation<T> animation;
-            private T animatedValue;
-            private T animatedTargetValue;
-            private T animatedHandOffValue;
-            private EasingFunction animationEasing;
-            private StoryboardInstance storyboardInstance;
+            private DependencyPropertyValueAnimationState<T> animationState;
 
             // Cached constructor delegates for bound values.
             private static readonly Dictionary<Type, Delegate> cachedBoundValueCtors =

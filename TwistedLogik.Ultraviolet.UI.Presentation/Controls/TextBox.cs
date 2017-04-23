@@ -576,7 +576,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - fontLineHeight);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.ContentVerticalOffset - fontLineHeight);
         }
 
         /// <inheritdoc/>
@@ -591,7 +591,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             var scrollViewer = TextEditorScrollViewer;
             if (scrollViewer != null)
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + fontLineHeight);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.ContentVerticalOffset + fontLineHeight);
         }
         
         /// <inheritdoc/>
@@ -772,16 +772,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
 
             base.OnLostKeyboardFocus(device, oldFocus, newFocus, data);
         }
-
-        /// <inheritdoc/>
-        protected override void OnKeyDown(KeyboardDevice device, Key key, ModifierKeys modifiers, RoutedEventData data)
-        {
-            if (TextEditor != null)
-                TextEditor.HandleKeyDown(device, key, modifiers, data);
-            
-            base.OnKeyDown(device, key, modifiers, data);
-        }
-
+        
         /// <inheritdoc/>
         protected override void OnTextInput(KeyboardDevice device, RoutedEventData data)
         {

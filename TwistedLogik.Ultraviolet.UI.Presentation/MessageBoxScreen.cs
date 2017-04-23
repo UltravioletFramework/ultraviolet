@@ -24,14 +24,14 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         }
         
         /// <inheritdoc/>
-        protected override UIPanelDefinition LoadPanelDefinition(String asset)
+        protected override UIPanelDefinitionWrapper LoadPanelDefinition(String asset)
         {
             if (String.IsNullOrEmpty(asset))
                 return null;
             
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(asset))
             {
-                return LocalContent.LoadFromStream<UIPanelDefinition>(stream, "xml");
+                return new UIPanelDefinitionWrapper(LocalContent.LoadFromStream<UIPanelDefinition>(stream, "xml"));
             }
         }
     }

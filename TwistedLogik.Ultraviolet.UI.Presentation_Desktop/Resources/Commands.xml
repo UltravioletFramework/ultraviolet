@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <!-- Application Commands -->
+  <String Key="APPLICATION_COMMAND_CUT">
+    <en-US>
+      <Variant>Cut</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_COPY">
+    <en-US>
+      <Variant>Copy</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_PASTE">
+    <en-US>
+      <Variant>Paste</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_UNDO">
+    <en-US>
+      <Variant>Undo</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_REDO">
+    <en-US>
+      <Variant>Redo</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_DELETE">
+    <en-US>
+      <Variant>Delete</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_FIND">
+    <en-US>
+      <Variant>Find</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_REPLACE">
+    <en-US>
+      <Variant>Replace</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_HELP">
+    <en-US>
+      <Variant>Help</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_SELECT_ALL">
+    <en-US>
+      <Variant>Select All</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_NEW">
+    <en-US>
+      <Variant>New</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_OPEN">
+    <en-US>
+      <Variant>Open</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_SAVE">
+    <en-US>
+      <Variant>Save</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_SAVE_AS">
+    <en-US>
+      <Variant>Save As</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_PRINT">
+    <en-US>
+      <Variant>Print</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_CANCEL_PRINT">
+    <en-US>
+      <Variant>Cancel Print</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_PRINT_PREVIEW">
+    <en-US>
+      <Variant>Print Preview</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_CLOSE">
+    <en-US>
+      <Variant>Close</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_PROPERTIES">
+    <en-US>
+      <Variant>Properties</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_CONTEXT_MENU">
+    <en-US>
+      <Variant>Context Menu</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_CORRECTION_LIST">
+    <en-US>
+      <Variant>Correction List</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_COMMAND_STOP">
+    <en-US>
+      <Variant>Stop</Variant>
+    </en-US>
+  </String>
+  <String Key="APPLICATION_COMMAND_NOT_A_COMMAND">
+    <en-US>
+      <Variant>Not a Command</Variant>
+    </en-US>
+  </String>
+  
+  <!-- Component Commands -->
+  <String Key="COMPONENT_COMMAND_EXTEND_SELECTION_DOWN">
+    <en-US>
+      <Variant>Extend Selection Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_EXTEND_SELECTION_LEFT">
+    <en-US>
+      <Variant>Extend Selection Left</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_EXTEND_SELECTION_RIGHT">
+    <en-US>
+      <Variant>Extend Selection Right</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_EXTEND_SELECTION_UP">
+    <en-US>
+      <Variant>Extend Selection Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_DOWN">
+    <en-US>
+      <Variant>Move Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_LEFT">
+    <en-US>
+      <Variant>Move Left</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_RIGHT">
+    <en-US>
+      <Variant>Move Right</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_UP">
+    <en-US>
+      <Variant>Move Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_TO_END">
+    <en-US>
+      <Variant>Move to End</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_TO_HOME">
+    <en-US>
+      <Variant>Move to Home</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_TO_PAGE_DOWN">
+    <en-US>
+      <Variant>Move to Page Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_TO_PAGE_UP">
+    <en-US>
+      <Variant>Move to Page Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_BACK">
+    <en-US>
+      <Variant>Move Focus Back</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_FORWARD">
+    <en-US>
+      <Variant>Move Focus Forward</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_UP">
+    <en-US>
+      <Variant>Move Focus Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_DOWN">
+    <en-US>
+      <Variant>Move Focus Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_PAGE_UP">
+    <en-US>
+      <Variant>Move Focus Page Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_MOVE_FOCUS_PAGE_DOWN">
+    <en-US>
+      <Variant>Move Focus Page Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_DOWN">
+    <en-US>
+      <Variant>Scroll Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_LEFT">
+    <en-US>
+      <Variant>Scroll Left</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_RIGHT">
+    <en-US>
+      <Variant>Scroll Right</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_UP">
+    <en-US>
+      <Variant>Scroll Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_DOWN">
+    <en-US>
+      <Variant>Scroll Page Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_LEFT">
+    <en-US>
+      <Variant>Scroll Page Left</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_RIGHT">
+    <en-US>
+      <Variant>Scroll Page Right</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_PAGE_UP">
+    <en-US>
+      <Variant>Scroll Page Up</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SCROLL_BY_LINE">
+    <en-US>
+      <Variant>Scroll by Line</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SELECT_TO_END">
+    <en-US>
+      <Variant>Select to End</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SELECT_TO_HOME">
+    <en-US>
+      <Variant>Select to Home</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SELECT_TO_PAGE_DOWN">
+    <en-US>
+      <Variant>Select to Page Down</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_COMMAND_SELECT_TO_PAGE_UP">
+    <en-US>
+      <Variant>Select to Page Up</Variant>
+    </en-US>
+  </String>
+
+  <!-- Media Commands -->
+  <String Key="MEDIA_COMMAND_PLAY">
+    <en-US>
+      <Variant>Play</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_PAUSE">
+    <en-US>
+      <Variant>Pause</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_STOP">
+    <en-US>
+      <Variant>Stop</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_RECORD">
+    <en-US>
+      <Variant>Record</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_NEXT_TRACK">
+    <en-US>
+      <Variant>Next Track</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_PREVIOUS_TRACK">
+    <en-US>
+      <Variant>Previous Track</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_FAST_FORWARD">
+    <en-US>
+      <Variant>Fast Forward</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_REWIND">
+    <en-US>
+      <Variant>Rewind</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_CHANNEL_UP">
+    <en-US>
+      <Variant>Channel Up</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_CHANNEL_DOWN">
+    <en-US>
+      <Variant>Channel Down</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_TOGGLE_PLAY_PAUSE">
+    <en-US>
+      <Variant>Toggle Play/Pause</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_INCREASE_VOLUME">
+    <en-US>
+      <Variant>Increase Volume</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_DECREASE_VOLUME">
+    <en-US>
+      <Variant>Decrease Volume</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_MUTE_VOLUME">
+    <en-US>
+      <Variant>Mute Volume</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_INCREASE_TREBLE">
+    <en-US>
+      <Variant>Increase Treble</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_DECREASE_TREBLE">
+    <en-US>
+      <Variant>Decrease Treble</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_INCREASE_BASS">
+    <en-US>
+      <Variant>Increase Bass</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_DECREASE_BASS">
+    <en-US>
+      <Variant>Decrease Bass</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_BOOST_BASS">
+    <en-US>
+      <Variant>Boost Bass</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_INCREASE_MICROPHONE_VOLUME">
+    <en-US>
+      <Variant>Increase Microphone Volume</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_DECREASE_MICROPHONE_VOLUME">
+    <en-US>
+      <Variant>Decrease Microphone Volume</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_MUTE_MICROPHONE_VOLUME">
+    <en-US>
+      <Variant>Mute Microphone Volume</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_TOGGLE_MICROPHONE_ON_OFF">
+    <en-US>
+      <Variant>Toggle Microphone On/Off</Variant>
+    </en-US>
+  </String>
+  <String Key="MEDIA_COMMAND_SELECT">
+    <en-US>
+      <Variant>Select</Variant>
+    </en-US>
+  </String>
+
+  <!-- Navigation Commands -->
+  <String Key="NAVIGATION_COMMAND_BROWSE_BACK">
+    <en-US>
+      <Variant>Browse Back</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_BROWSE_FORWARD">
+    <en-US>
+      <Variant>Browse Forward</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_BROWSE_HOME">
+    <en-US>
+      <Variant>Browse Home</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_BROWSE_STOP">
+    <en-US>
+      <Variant>Browse Stop</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_REFRESH">
+    <en-US>
+      <Variant>Refresh</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_FAVORITES">
+    <en-US>
+      <Variant>Favorites</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_SEARCH">
+    <en-US>
+      <Variant>Search</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_INCREASE_ZOOM">
+    <en-US>
+      <Variant>Increase Zoom</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_DECREASE_ZOOM">
+    <en-US>
+      <Variant>Decrease Zoom</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_ZOOM">
+    <en-US>
+      <Variant>Zoom</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_NEXT_PAGE">
+    <en-US>
+      <Variant>Next Page</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_PREVIOUS_PAGE">
+    <en-US>
+      <Variant>Previous Page</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_FIRST_PAGE">
+    <en-US>
+      <Variant>First Page</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_LAST_PAGE">
+    <en-US>
+      <Variant>Last Page</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_GO_TO_PAGE">
+    <en-US>
+      <Variant>Go to Page</Variant>
+    </en-US>
+  </String>
+  <String Key="NAVIGATION_COMMAND_NAVIGATE_JOURNAL">
+    <en-US>
+      <Variant>Navigate Journal</Variant>
+    </en-US>
+  </String>
+  
+  <!-- Text Editor Commands -->
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_START_OF_LINE">
+    <en-US>
+      <Variant>Move to Start of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_END_OF_LINE">
+    <en-US>
+      <Variant>Move to End of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_START_OF_TEXT">
+    <en-US>
+      <Variant>Move to Start of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_MOVE_TO_END_OF_TEXT">
+    <en-US>
+      <Variant>Move to End of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_START_OF_LINE">
+    <en-US>
+      <Variant>Extend Selection to Start of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_END_OF_LINE">
+    <en-US>
+      <Variant>Extend Selection to End of Line</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_START_OF_TEXT">
+    <en-US>
+      <Variant>Extend Selection to Start of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_EXTEND_SELECTION_TO_END_OF_TEXT">
+    <en-US>
+      <Variant>Extend Selection to End of Text</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_EDITOR_COMMAND_TOGGLE_INSERTION_MODE">
+    <en-US>
+      <Variant>Toggle Insertion Mode</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

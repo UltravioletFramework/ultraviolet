@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentArchiveStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentBinaryReaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentBinaryWriterExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentCacheData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporterAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporterRegistry.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\WatchedAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlUtil.cs" />
@@ -127,7 +129,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationName.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteBatchFallback.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameGroupBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFrameBatchDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationController.cs" />
@@ -359,6 +360,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinitionWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinitionProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelState.cs" />

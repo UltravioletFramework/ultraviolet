@@ -62,6 +62,7 @@ namespace TwistedLogik.Ultraviolet
         public T this[Int32 ix]
         {
             get { return storage[ix]; }
+            protected set { storage[ix] = value; }
         }
 
         /// <summary>
@@ -90,6 +91,34 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
+        /// Adds the items in the specified collection to the end of the collection.
+        /// </summary>
+        /// <param name="collection">The collection whose items should be added to the end of the collection.</param>
+        protected virtual void AddRangeInternal(IEnumerable<T> collection)
+        {
+            storage.AddRange(collection);
+        }
+
+        /// <summary>
+        /// Inserts the specified item at the specified index within the collection.
+        /// </summary>
+        /// <param name="index">The index at which to insert the item.</param>
+        /// <param name="item">The item to insert into the collection.</param>
+        protected virtual void InsertInternal(Int32 index, T item)
+        {
+            storage.Insert(index, item);
+        }
+
+        /// <summary>
+        /// Removes the element at the specified index within the collection.
+        /// </summary>
+        /// <param name="index">The index of the item to remove from the collection.</param>
+        protected virtual void RemoveAtInternal(Int32 index)
+        {
+            storage.RemoveAt(index);
+        }
+
+        /// <summary>
         /// Removes an item from the collection.
         /// </summary>
         /// <param name="item">The item to remove from the collection.</param>
@@ -107,6 +136,16 @@ namespace TwistedLogik.Ultraviolet
         protected virtual Boolean ContainsInternal(T item)
         {
             return storage.Contains(item);
+        }
+
+        /// <summary>
+        /// Gets the index of the specified item.
+        /// </summary>
+        /// <param name="item">The item for which to retrieve an index.</param>
+        /// <returns>The index of the specified item within the collection, or -1 if the collection does not contain the item.</returns>
+        protected virtual Int32 IndexOfInternal(T item)
+        {
+            return storage.IndexOf(item);
         }
 
         /// <summary>

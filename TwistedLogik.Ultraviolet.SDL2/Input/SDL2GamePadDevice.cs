@@ -14,14 +14,6 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
-        /// Initializes the <see cref="SDL2GamePadDevice"/> type.
-        /// </summary>
-        static SDL2GamePadDevice()
-        {
-            sdlButtons = (SDL_GameControllerButton[])Enum.GetValues(typeof(SDL_GameControllerButton));
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SDL2GamePadDevice"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -42,7 +34,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             }
 
             this.name = SDL.GameControllerNameForIndex(joystickIndex);
-            this.states = new InternalButtonState[sdlButtons.Length];
+            this.states = new InternalButtonState[Enum.GetValues(typeof(GamePadButton)).Length];
             this.playerIndex = playerIndex;
 
             var joystick = SDL.GameControllerGetJoystick(controller);
@@ -726,13 +718,17 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var axisIsDown = IsAxisDown(currentValue);
 
             // Axis went from pressed->pressed but changed direction.
-            if (Math.Sign(currentValue) != Math.Sign(previousValue))
+            if (axisIsDown && axisWasDown && Math.Sign(currentValue) != Math.Sign(previousValue))
             {
                 timeLastPressAxis[axisIndex] = lastUpdateTime;
                 repeatingAxis[axisIndex] = false;
 
                 OnAxisReleased(axis, 0f);
+                OnButtonReleased(ButtonFromAxis(axis, previousValue));
+
                 OnAxisPressed(axis, currentValue, false);
+                OnButtonPressed(ButtonFromAxis(axis, currentValue), false);
+                      
                 return;
             }
 
@@ -745,10 +741,12 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
                     repeatingAxis[axisIndex] = false;
 
                     OnAxisPressed(axis, currentValue, false);
+                    OnButtonPressed(ButtonFromAxis(axis, currentValue), false);
                 }
                 else
                 {
                     OnAxisReleased(axis, currentValue);
+                    OnButtonReleased(ButtonFromAxis(axis, currentValue));
                 }
                 return;
             }
@@ -773,6 +771,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
 
                     var value = GetAxisValue(axis);
                     OnAxisPressed(axis, value, true);
+                    OnButtonPressed(ButtonFromAxis(axis, value), true);
                 }
             }
 
@@ -838,6 +837,35 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
         }
 
         /// <summary>
+        /// Gets the <see cref="GamePadButton"/> value that corresponds to the specified axis and value.
+        /// </summary>
+        private GamePadButton ButtonFromAxis(GamePadAxis axis, Single value)
+        {
+            switch (axis)
+            {
+                case GamePadAxis.LeftJoystickX:
+                    return Math.Sign(value) < 0 ? GamePadButton.LeftStickLeft : GamePadButton.LeftStickRight;
+
+                case GamePadAxis.LeftJoystickY:
+                    return Math.Sign(value) < 0 ? GamePadButton.LeftStickUp : GamePadButton.LeftStickDown;
+
+                case GamePadAxis.RightJoystickX:
+                    return Math.Sign(value) < 0 ? GamePadButton.RightStickLeft : GamePadButton.RightStickRight;
+
+                case GamePadAxis.RightJoystickY:
+                    return Math.Sign(value) < 0 ? GamePadButton.RightStickUp : GamePadButton.RightStickDown;
+
+                case GamePadAxis.LeftTrigger:
+                    return GamePadButton.LeftTrigger;
+
+                case GamePadAxis.RightTrigger:
+                    return GamePadButton.RightTrigger;
+            }
+
+            return GamePadButton.None;
+        }
+
+        /// <summary>
         /// Flags the device as registered.
         /// </summary>
         private void Register()
@@ -845,10 +873,7 @@ namespace TwistedLogik.Ultraviolet.SDL2.Input
             var input = (SDL2UltravioletInput)Ultraviolet.GetInput();
             if (input.RegisterGamePadDevice(this))
                 isRegistered = true;
-        }
-
-        // The values of the SDL_GameControllerButton enumeration.
-        private static readonly SDL_GameControllerButton[] sdlButtons;        
+        }    
 
         // State values.
         private readonly Int32 instanceID;
