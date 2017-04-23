@@ -344,8 +344,8 @@ namespace TwistedLogik.Nucleus.Text
         {
             if (!strings.ContainsKey(culture))
             {
-                culture = GetFallbackCulture(culture);
-                if (culture == null || !strings.ContainsKey(culture))
+                culture = GetFallbackCulture(culture) ?? "en-US";
+                if (!strings.ContainsKey(culture))
                 {
                     strings[culture] = new Dictionary<String, LocalizedString>();
                 }
