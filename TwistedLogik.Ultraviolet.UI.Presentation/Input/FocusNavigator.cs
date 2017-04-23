@@ -188,6 +188,24 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
+        /// Updates the value of <see cref="KeyboardNavigation.LastFocusedElementProperty"/> for containers with
+        /// a navigation mode of <see cref="KeyboardNavigationMode.Once"/>.
+        /// </summary>
+        public static Boolean UpdateLastFocusedElement(DependencyObject element)
+        {
+            var navContainer = FindNavigationContainer(element, KeyboardNavigation.TabNavigationProperty, false);
+            if (navContainer == null || navContainer == element)
+                return false;
+
+            if (KeyboardNavigation.GetTabNavigation(navContainer) == KeyboardNavigationMode.Once)
+            {
+                KeyboardNavigation.SetLastFocusedElement(navContainer, element);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Prepares for keyboard navigation and potentially changes the current element and direction.
         /// </summary>
         /// <param name="view">The view for which to perform navigation.</param>
@@ -441,10 +459,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                 current = TraverseVisualTreeNext(navContainer, current, navProp);
                 if (current == null)
                     break;
-
-                var selectedTab = GetSelectedTab(current as UIElement);
-                if (selectedTab != null)
-                    current = selectedTab;
+                
+                var lastFocusedElement = KeyboardNavigation.GetLastFocusedElement(current);
+                if (lastFocusedElement != null)
+                    current = lastFocusedElement;
 
                 if (!IsNavigationStop(current) && !IsNavigationContainer(current, navProp))
                     continue;
@@ -475,8 +493,8 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             {
                 if (IsNavigationStop(navContainer))
                     return navContainer;
-
-                var selectedTab = GetSelectedTab(navContainer as UIElement);
+                
+                var selectedTab = KeyboardNavigation.GetLastFocusedElement(navContainer);
                 if (selectedTab != null)
                     return FindNextNavigationStop(view, selectedTab, null, navProp, local);
             }
@@ -710,9 +728,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
 
             if (navElement == null)
             {
-                var selectedTab = GetSelectedTab(navContainer as UIElement);
-                if (selectedTab != null)
-                    return FindPrevNavigationStop(view, selectedTab, null, navProp, local);
+                var lastFocusedElement = KeyboardNavigation.GetLastFocusedElement(navContainer);
+                if (lastFocusedElement != null)
+                    return FindPrevNavigationStop(view, lastFocusedElement, null, navProp, local);
             }
 
             if (navElement != null && (navMode == KeyboardNavigationMode.Once || navMode == KeyboardNavigationMode.None))
@@ -1033,44 +1051,15 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
                         return null;
                 }
             }
-            else
-            {
-                if (IsNavigationContainer(bestMatch, navProp))
-                {
-                    bestMatch = FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction, true) ?? bestMatch;
-                }
-            }
 
-            return IsNavigationStop(bestMatch) ? bestMatch : null;
-        }
+            if (IsNavigationStop(bestMatch))
+                return bestMatch;
 
-        /// <summary>
-        /// If the specified element is a <see cref="TabPanel"/>, this method returns the currently-selected <see cref="TabItem"/> for that panel.
-        /// </summary>
-        private static UIElement GetSelectedTab(UIElement element)
-        {
-            if (element == null)
-                return null;
+            var bestMatchLastFocused = KeyboardNavigation.GetLastFocusedElementRecursive(bestMatch);
+            if (bestMatchLastFocused != null)
+                return bestMatchLastFocused;
 
-            var tabPanel = element as TabPanel;
-            if (tabPanel == null)
-                return null;
-
-            var tabControl = tabPanel.TemplatedParent as TabControl;
-            if (tabControl == null)
-                return null;
-
-            var index = tabControl.SelectedIndex;
-            if (index >= 0)
-            {
-                var container = tabControl.ItemContainerGenerator.ContainerFromIndex(index);
-                if (container != null)
-                {
-                    return (container as UIElement) ?? element;
-                }
-            }
-
-            return null;
+            return FindNavigationStopInDirection(view, bestMatch, navElementBounds, navProp, direction);
         }
 
         /// <summary>

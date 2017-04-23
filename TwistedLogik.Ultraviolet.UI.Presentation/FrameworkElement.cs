@@ -33,6 +33,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             EventManager.RegisterClassHandler(typeof(FrameworkElement), Mouse.QueryCursorEvent, new UpfQueryCursorEventHandler(HandleQueryCursor), true);
 
             EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.PreviewGotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(HandlePreviewGotKeyboardFocus));
+            EventManager.RegisterClassHandler(typeof(FrameworkElement), Keyboard.GotKeyboardFocusEvent, new UpfKeyboardFocusChangedEventHandler(HandleGotKeyboardFocus));
 
             EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipOpeningEvent, new UpfToolTipEventHandler(OnToolTipOpeningProxy));
             EventManager.RegisterClassHandler(typeof(FrameworkElement), ToolTipService.ToolTipClosingEvent, new UpfToolTipEventHandler(OnToolTipClosingProxy));
@@ -1246,6 +1247,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
                 data.Handled = true;
                 return;
             }
+        }
+
+        /// <summary>
+        /// Occurs when the <see cref="Keyboard.GotKeyboardFocusEvent"/> attached event is raised on an instance of <see cref="FrameworkElement"/>.
+        /// </summary>
+        private static void HandleGotKeyboardFocus(DependencyObject dobj, KeyboardDevice device, IInputElement oldFocus, IInputElement newFocus, RoutedEventData data)
+        {
+            if (data.OriginalSource != dobj)
+                return;
+
+            FocusNavigator.UpdateLastFocusedElement(dobj);
         }
 
         /// <summary>
