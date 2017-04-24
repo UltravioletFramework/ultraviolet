@@ -84,28 +84,26 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
     <Reference Include="Ultraviolet.OpenGL.Bindings">
       <HintPath>..\Dependencies\Android\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\Android\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.Android">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.Android.dll</HintPath>
+    <Reference Include="Ultraviolet.Android">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Android.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.BASS">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\Dependencies\Android\Ultraviolet.BASS.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\Android\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\Dependencies\Android\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +178,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="beed8045-00d0-45e7-bca4-d13f1d93fda8" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="beed8045-00d0-45e7-bca4-d13f1d93fda8" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -39,11 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,25 +83,25 @@
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
+      <Name>Ultraviolet.BASS (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
+    <ProjectReference Include="..\Ultraviolet.Desktop\Ultraviolet.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
-      <Name>TwistedLogik.Ultraviolet.Desktop</Name>
+      <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
+      <Name>Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 (Desktop)</Name>
+      <Name>Ultraviolet.SDL2 (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
+      <Name>Ultraviolet (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

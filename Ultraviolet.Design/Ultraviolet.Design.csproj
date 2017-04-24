@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C22A440C-8F08-4341-B7D5-F7DEC58CDE58}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ultraviolet.Design</RootNamespace>
+    <AssemblyName>Ultraviolet.Design</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\Ultraviolet.Design.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Ultraviolet.Design.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
+    <DocumentationFile>bin\Signed\Ultraviolet.Design.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CircleFTypeConverter.cs" />
+    <Compile Include="RadiansEditor.cs" />
+    <Compile Include="RadiansEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RadiansEditorControl.Designer.cs">
+      <DependentUpon>RadiansEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RadiansTypeConverter.cs" />
+    <Compile Include="RectangleFTypeConverter.cs" />
+    <Compile Include="RectangleTypeConverter.cs" />
+    <Compile Include="ColorEditor.cs" />
+    <Compile Include="Content\ContentManifestTypeConverter.cs" />
+    <Compile Include="MatrixEditor.cs" />
+    <Compile Include="MatrixEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MatrixEditorControl.Designer.cs">
+      <DependentUpon>MatrixEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CircleTypeConverter.cs" />
+    <Compile Include="Size3FTypeConverter.cs" />
+    <Compile Include="Size2FTypeConverter.cs" />
+    <Compile Include="Size3TypeConverter.cs" />
+    <Compile Include="UltravioletDesign.cs" />
+    <Compile Include="UltravioletExpandableObjectConverter.cs" />
+    <Compile Include="ColorTypeConverter.cs" />
+    <Compile Include="MatrixTypeConverter.cs" />
+    <Compile Include="Size2TypeConverter.cs" />
+    <Compile Include="Vector4TypeConverter.cs" />
+    <Compile Include="Vector3TypeConverter.cs" />
+    <Compile Include="Vector2TypeConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
+      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
+      <Name>Ultraviolet.Core.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Core.Design\Ultraviolet.Core.Design.csproj">
+      <Project>{8dfd999d-53ea-4e73-9933-eeba1289c7b3}</Project>
+      <Name>Ultraviolet.Core.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
+      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
+      <Name>Ultraviolet %28Desktop%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Ultraviolet.Design.Licenses">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\TwistedLogik.Public.snk">
+      <Link>TwistedLogik.Public.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Vector2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Vector3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Vector4.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Color.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Matrix.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MatrixEditorControl.resx">
+      <DependentUpon>MatrixEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Size2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Size3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Size2F.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Size3F.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rectangle.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RectangleF.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Circle.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CircleF.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Radians.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

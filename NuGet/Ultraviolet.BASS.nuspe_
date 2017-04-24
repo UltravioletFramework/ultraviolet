@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.BASS</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the BASS implementation of the Framework's audio subsystem.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+    <dependency id="Ultraviolet" version="UV_VERSION" />
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="Ultraviolet.BASS\build\net40\Ultraviolet.BASS.targets" target="build\net40\Ultraviolet.BASS.targets"/>
+    <file src="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS.dll.config" target="lib\net40\Ultraviolet.BASS.dll.config"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.XML" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.pdb" target="lib\net40\"/>
+    
+    <file src="..\Binaries\Android\Signed\Ultraviolet.BASS.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.BASS.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.BASS.pdb" target="lib\MonoAndroid60\"/>
+
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.BASS.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.BASS.XML" target="lib\Xamarin.iOS10\"/>
+  </files>  
+</package>

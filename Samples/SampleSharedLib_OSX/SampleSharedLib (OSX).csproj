@@ -79,14 +79,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OSX">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OSX.dll</HintPath>
+    <Reference Include="Ultraviolet.OSX">
+      <HintPath>..\Dependencies\Ultraviolet.OSX.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

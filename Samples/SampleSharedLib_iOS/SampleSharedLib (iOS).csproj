@@ -32,14 +32,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit_iOS">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS.dll</HintPath>
+    <Reference Include="Ultraviolet.SDL2.UIKit_iOS">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.SDL2.UIKit_iOS.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>

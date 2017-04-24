@@ -25,14 +25,14 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.XML" />
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.xml" />
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.XML" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.xml" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.UI.Presentation.xml" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.xml" />
       <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" />
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll" />
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll" />
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" />
-      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.xml" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.dll" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.UI.Presentation.dll" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.UI.Presentation.Uvss.dll" />
+      <DocumentationSource sourceFile="..\Binaries\AnyCPU\Signed\Ultraviolet.UI.Presentation.Uvss.xml" />
     </DocumentationSources>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
@@ -48,15 +48,15 @@
       <Filter entryType="Namespace" fullName="Ultraviolet.Core" isExposed="True">
         <Filter entryType="Class" fullName="Ultraviolet.Core.CoreStrings" filterName="CoreStrings" isExposed="False" />
       </Filter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet" isExposed="True">
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Ultraviolet" isExposed="True">
+        <Filter entryType="Class" fullName="Ultraviolet.UltravioletStrings" filterName="UltravioletStrings" isExposed="False" />
       </Filter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation" isExposed="True">
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.MessageBoxViewModel_Impl" filterName="MessageBoxViewModel_Impl" isExposed="False" />
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Ultraviolet.UI.Presentation" isExposed="True">
+        <Filter entryType="Class" fullName="Ultraviolet.UI.Presentation.MessageBoxViewModel_Impl" filterName="MessageBoxViewModel_Impl" isExposed="False" />
+        <Filter entryType="Class" fullName="Ultraviolet.UI.Presentation.PresentationStrings" filterName="PresentationStrings" isExposed="False" />
       </Filter>
-      <Filter entryType="Namespace" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss" isExposed="True">
-        <Filter entryType="Class" fullName="TwistedLogik.Ultraviolet.UI.Presentation.Uvss.UvssStrings" filterName="UvssStrings" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Ultraviolet.UI.Presentation.Uvss" isExposed="True">
+        <Filter entryType="Class" fullName="Ultraviolet.UI.Presentation.Uvss.UvssStrings" filterName="UvssStrings" isExposed="False" />
       </Filter>
     </ApiFilter>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
@@ -106,11 +106,11 @@
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Binaries\AnyCPU\Signed\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
-      <HintPath>..\Binaries\AnyCPU\Signed\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
+    <Reference Include="Ultraviolet.UI.Presentation">
+      <HintPath>..\Binaries\AnyCPU\Signed\Ultraviolet.UI.Presentation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

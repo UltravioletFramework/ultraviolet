@@ -17,9 +17,9 @@ namespace Ultraviolet.OpenGL
         {
             var version = Assembly.GetExecutingAssembly().GetName().Version; 
 #if SIGNED
-            AudioSubsystemAssembly = String.Format("TwistedLogik.Ultraviolet.BASS, Version={0}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
+            AudioSubsystemAssembly = String.Format("Ultraviolet.BASS, Version={0}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
 #else
-            AudioSubsystemAssembly = String.Format("TwistedLogik.Ultraviolet.BASS, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
+            AudioSubsystemAssembly = String.Format("Ultraviolet.BASS, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
 #endif
         }
 

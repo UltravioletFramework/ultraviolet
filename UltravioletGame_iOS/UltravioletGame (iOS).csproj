@@ -218,18 +218,18 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>TwistedLogik.Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_iOS\TwistedLogik.Ultraviolet.OpenGL %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL (iOS)</Name>
+      <Name>Ultraviolet.OpenGL (iOS)</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
       <Project>{65ECB0C3-FD4E-494A-A000-43500B9CB851}</Project>
@@ -239,17 +239,17 @@
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS\TwistedLogik.Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2.UIKit (iOS)</Name>
+      <Name>Ultraviolet.SDL2.UIKit (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 %28iOS%29.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 (iOS)</Name>
+      <Name>Ultraviolet.SDL2 (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_iOS\TwistedLogik.Ultraviolet.BASS %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS_iOS\Ultraviolet.BASS %28iOS%29.csproj">
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS (iOS)</Name>
+      <Name>Ultraviolet.BASS (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

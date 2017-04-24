@@ -42,16 +42,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\Android\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.Android">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.Android.dll</HintPath>
+    <Reference Include="Ultraviolet.Android">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

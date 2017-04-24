@@ -23,7 +23,7 @@
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Ultraviolet.OpenGL.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,14 +37,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>IOS</DefineConstants>
-    <DocumentationFile>bin\Release\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Ultraviolet.OpenGL.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>SIGNED;IOS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Signed\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\Signed\Ultraviolet.OpenGL.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
@@ -71,9 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.xml.Linq" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
@@ -177,13 +177,13 @@
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet (iOS).csproj">
+    <ProjectReference Include="..\..\Ultraviolet_iOS\Ultraviolet (iOS).csproj">
       <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
-      <Name>TwistedLogik.Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 %28iOS%29.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 (iOS)</Name>
+      <Name>Ultraviolet.SDL2 (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

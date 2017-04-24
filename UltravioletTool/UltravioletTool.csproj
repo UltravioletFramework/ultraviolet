@@ -119,14 +119,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GlobalFontID.cs" />
@@ -173,29 +173,29 @@
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
+      <Name>Ultraviolet.BASS (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Desktop\TwistedLogik.Ultraviolet.Desktop.csproj">
+    <ProjectReference Include="..\Ultraviolet.Desktop\Ultraviolet.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
-      <Name>TwistedLogik.Ultraviolet.Desktop</Name>
+      <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
+      <Name>Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 (Desktop)</Name>
+      <Name>Ultraviolet.SDL2 (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.WindowsForms\TwistedLogik.Ultraviolet.WindowsForms.csproj">
+    <ProjectReference Include="..\Ultraviolet.WindowsForms\Ultraviolet.WindowsForms.csproj">
       <Project>{6C5385CC-D39D-403A-BC91-08E775AA7AD3}</Project>
-      <Name>TwistedLogik.Ultraviolet.WindowsForms</Name>
+      <Name>Ultraviolet.WindowsForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
+      <Name>Ultraviolet (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

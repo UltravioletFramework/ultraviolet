@@ -23,7 +23,7 @@ namespace UvStressTest
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
-        public Game() : base("TwistedLogik", "UvStressTest")
+        public Game() : base("Ultraviolet", "UvStressTest")
         {
             PlatformSpecificInitialization();
         }

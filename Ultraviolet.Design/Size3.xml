@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="Ultraviolet, Version=1.0.0.0">
+    <Types>
+      <Type Name="Ultraviolet.Size3">
+        <TypeConverter>Ultraviolet.Design.Size3TypeConverter, Ultraviolet.Design</TypeConverter>
+        <DefaultValue>0 0 0</DefaultValue>
+        <Properties>
+          <Width>
+            <Description>The volume's width.</Description>
+          </Width>
+          <Height>
+            <Description>The volume's height.</Description>
+          </Height>
+          <Depth>
+            <Description>The volume's depth.</Description>
+          </Depth>
+          <Volume>
+            <Browsable>false</Browsable>
+          </Volume>
+        </Properties>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

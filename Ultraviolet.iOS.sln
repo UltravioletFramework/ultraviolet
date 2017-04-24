@@ -7,19 +7,19 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Core", "Ultraviolet.Core\Shared\Ultraviolet.Core.shproj", "{803B586B-CBAC-4E46-A787-BDF837E1EF46}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet", "TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet", "Ultraviolet\Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.BASS", "TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.shproj", "{62E8C883-B858-4FCC-82EC-C313FEFBAD34}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.BASS", "Ultraviolet.BASS\Ultraviolet.BASS.shproj", "{62E8C883-B858-4FCC-82EC-C313FEFBAD34}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL", "Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.shproj", "{F04E0C37-AFC2-4B85-90C7-9D77DCFD074C}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.SDL2", "TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.shproj", "{97309779-3045-4D98-8DE0-5F40A8DC1C5B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.SDL2", "Ultraviolet.SDL2\Ultraviolet.SDL2.shproj", "{97309779-3045-4D98-8DE0-5F40A8DC1C5B}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation", "TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.shproj", "{4E921721-BE4A-4F69-BEE4-61E8A18E0774}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.UI.Presentation", "Ultraviolet.UI.Presentation\Ultraviolet.UI.Presentation.shproj", "{4E921721-BE4A-4F69-BEE4-61E8A18E0774}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.UI.Presentation.Uvss", "Ultraviolet.UI.Presentation.Uvss\Ultraviolet.UI.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.iOS", "Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj", "{65ECB0C3-FD4E-494A-A000-43500B9CB851}"
 EndProject
@@ -27,25 +27,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.iOS", "Ult
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.iOS", "Ultraviolet.OpenGL\iOS\Ultraviolet.OpenGL.iOS.csproj", "{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_iOS\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS).csproj", "{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.UI.Presentation.Uvss (iOS)", "Ultraviolet.UI.Presentation.Uvss_iOS\Ultraviolet.UI.Presentation.Uvss (iOS).csproj", "{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation_iOS\TwistedLogik.Ultraviolet.UI.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.UI.Presentation (iOS)", "Ultraviolet.UI.Presentation_iOS\Ultraviolet.UI.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (iOS)", "UvDebugSandbox_iOS\UvDebugSandbox (iOS).csproj", "{00DFA15E-9CB3-4EBB-91C1-4837335B083C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (iOS)", "UltravioletGame_iOS\UltravioletGame (iOS).csproj", "{37B9C072-2799-4C6A-B952-63A848DAAC0A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace", "TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS)", "TwistedLogik.Ultraviolet.Profiler.dotTrace_iOS\TwistedLogik.Ultraviolet.Profiler.dotTrace (iOS).csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace (iOS)", "Ultraviolet.Profiler.dotTrace_iOS\Ultraviolet.Profiler.dotTrace (iOS).csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet (iOS)", "TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet (iOS).csproj", "{8F9F44FB-E63C-48DE-8752-19B745111559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet (iOS)", "Ultraviolet_iOS\Ultraviolet (iOS).csproj", "{8F9F44FB-E63C-48DE-8752-19B745111559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.BASS (iOS)", "TwistedLogik.Ultraviolet.BASS_iOS\TwistedLogik.Ultraviolet.BASS (iOS).csproj", "{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS (iOS)", "Ultraviolet.BASS_iOS\Ultraviolet.BASS (iOS).csproj", "{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (iOS)", "TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 (iOS).csproj", "{89FC9118-5303-44C8-8AFE-20CB48A3F99E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2 (iOS)", "Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 (iOS).csproj", "{89FC9118-5303-44C8-8AFE-20CB48A3F99E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2.UIKit (iOS)", "TwistedLogik.Ultraviolet.SDL2.UIKit_iOS\TwistedLogik.Ultraviolet.SDL2.UIKit (iOS).csproj", "{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.UIKit (iOS)", "Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit (iOS).csproj", "{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject
@@ -53,26 +53,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest (iOS)", "UvStr
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
+		Ultraviolet.UI.Presentation\Ultraviolet.UI.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{6355ebda-2aee-47d2-a74f-efb38054fabd}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
+		Ultraviolet.UI.Presentation\Ultraviolet.UI.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
+		Ultraviolet.SDL2\Ultraviolet.SDL2.projitems*{6355ebda-2aee-47d2-a74f-efb38054fabd}*SharedItemsImports = 4
+		Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
 		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
+		Ultraviolet.UI.Presentation.Uvss\Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		UvDebugSandbox\UvDebugSandbox.projitems*{00dfa15e-9cb3-4ebb-91c1-4837335b083c}*SharedItemsImports = 4
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{65ecb0c3-fd4e-494a-a000-43500b9cb851}*SharedItemsImports = 4
 		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{ddc2077d-a8e5-4866-8c74-5ebb1ca7f8e1}*SharedItemsImports = 4
+		Ultraviolet.SDL2\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
+		Ultraviolet.BASS\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
+		Ultraviolet.UI.Presentation.Uvss\Ultraviolet.UI.Presentation.Uvss.projitems*{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}*SharedItemsImports = 4
+		Ultraviolet\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
+		Ultraviolet.BASS\Ultraviolet.BASS.projitems*{ddc2077d-a8e5-4866-8c74-5ebb1ca7f8e1}*SharedItemsImports = 4
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{8f9f44fb-e63c-48de-8752-19b745111559}*SharedItemsImports = 4
+		Ultraviolet\Ultraviolet.projitems*{8f9f44fb-e63c-48de-8752-19b745111559}*SharedItemsImports = 4
 		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{4628df73-2c5c-4cd1-ab2c-197f6233504f}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{7afdad33-ac46-46a0-80e7-a041a3ba44e8}*SharedItemsImports = 4
+		Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.projitems*{7afdad33-ac46-46a0-80e7-a041a3ba44e8}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU

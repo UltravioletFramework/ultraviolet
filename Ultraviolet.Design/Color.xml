@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="Ultraviolet, Version=1.0.0.0">
+    <Types>
+      <Type Name="Ultraviolet.Color">
+        <TypeConverter>Ultraviolet.Design.ColorTypeConverter, Ultraviolet.Design</TypeConverter>
+        <Editor>Ultraviolet.Design.ColorEditor, Ultraviolet.Design</Editor>
+        <DefaultValue>#00000000</DefaultValue>
+        <Properties>
+          <A>
+            <Description>The color's alpha component.</Description>
+          </A>
+          <R>
+            <Description>The color's red component.</Description>
+          </R>
+          <G>
+            <Description>The color's green component.</Description>
+          </G>
+          <B>
+            <Description>The color's blue component.</Description>
+          </B>
+          <PackedValue>
+            <Browsable>false</Browsable>
+          </PackedValue>
+        </Properties>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

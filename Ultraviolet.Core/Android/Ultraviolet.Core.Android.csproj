@@ -71,8 +71,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml.Linq" />
+    <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\TwistedLogik.Public.snk">

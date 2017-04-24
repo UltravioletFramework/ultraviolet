@@ -85,8 +85,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
     <Reference Include="Ultraviolet.OpenGL.Bindings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\Ultraviolet.OpenGL.Bindings.dll</HintPath>
@@ -95,24 +93,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.dll</HintPath>
+      <HintPath>..\Dependencies\Android\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.Android">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.Android.dll</HintPath>
+    <Reference Include="Ultraviolet.Android">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Android.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.BASS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.BASS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
+      <HintPath>..\Dependencies\Android\Ultraviolet.BASS.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.SDL2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
+      <HintPath>..\Dependencies\Android\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +178,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="254c229d-ba03-4ced-a139-f4213f8af6d9" />
+      <UserProperties ProjectLinkReference="254c229d-ba03-4ced-a139-f4213f8af6d9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.OpenGL</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the OpenGL implementation of the Framework's graphics subsystem.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+    <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />
+    <dependency id="Ultraviolet" version="UV_VERSION" />
+    <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.OpenGL.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.OpenGL.XML" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.OpenGL.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.dll.mdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.XML" target="lib\Xamarin.iOS10\"/>
+  </files>  
+</package>

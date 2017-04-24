@@ -266,11 +266,11 @@
   <ItemGroup>
     <Reference Include="Mono.Dynamic.Interpreter" />
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions">
-      <HintPath>Presentation\TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
+    <Reference Include="Ultraviolet.UI.Presentation.CompiledExpressions">
+      <HintPath>Presentation\Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />
@@ -283,33 +283,33 @@
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_iOS\TwistedLogik.Ultraviolet.OpenGL %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL (iOS)</Name>
+      <Name>Ultraviolet.OpenGL (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation_iOS\TwistedLogik.Ultraviolet.UI.Presentation %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.UI.Presentation_iOS\Ultraviolet.UI.Presentation %28iOS%29.csproj">
       <Project>{4F741CCA-6FBF-439E-A26A-ABB189619101}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation (iOS)</Name>
+      <Name>Ultraviolet.UI.Presentation (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss_iOS\TwistedLogik.Ultraviolet.UI.Presentation.Uvss %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.UI.Presentation.Uvss_iOS\Ultraviolet.UI.Presentation.Uvss %28iOS%29.csproj">
       <Project>{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}</Project>
-      <Name>TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)</Name>
+      <Name>Ultraviolet.UI.Presentation.Uvss (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_iOS\TwistedLogik.Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>TwistedLogik.Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_iOS\TwistedLogik.Ultraviolet.SDL2 %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 %28iOS%29.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 (iOS)</Name>
+      <Name>Ultraviolet.SDL2 (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2.UIKit_iOS\TwistedLogik.Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2.UIKit (iOS)</Name>
+      <Name>Ultraviolet.SDL2.UIKit (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_iOS\TwistedLogik.Ultraviolet.BASS %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS_iOS\Ultraviolet.BASS %28iOS%29.csproj">
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
-      <Name>TwistedLogik.Ultraviolet.BASS (iOS)</Name>
+      <Name>Ultraviolet.BASS (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -338,7 +338,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
     <Message Text="Copying binding expressions assembly from OS X project..." />
-    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the OS X project has been built before building the iOS project." />
-    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
+    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the OS X project has been built before building the iOS project." />
+    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
   </Target>
 </Project>

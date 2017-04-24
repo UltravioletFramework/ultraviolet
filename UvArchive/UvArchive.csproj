@@ -56,11 +56,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Version.cs">
@@ -79,13 +79,13 @@
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj">
+    <ProjectReference Include="..\Ultraviolet.Tooling\Ultraviolet.Tooling.csproj">
       <Project>{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}</Project>
-      <Name>TwistedLogik.Ultraviolet.Tooling</Name>
+      <Name>Ultraviolet.Tooling</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
+      <Name>Ultraviolet (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

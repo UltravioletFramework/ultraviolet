@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet Core Library, which defines the Framework's primary abstraction layer.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.XML" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.dll.mdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.XML" target="lib\Xamarin.iOS10\"/>
+  </files>  
+</package>

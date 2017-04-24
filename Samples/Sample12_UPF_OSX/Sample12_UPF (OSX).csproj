@@ -85,29 +85,29 @@
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.BASS">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\Dependencies\Ultraviolet.BASS.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OSX">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OSX.dll</HintPath>
+    <Reference Include="Ultraviolet.OSX">
+      <HintPath>..\Dependencies\Ultraviolet.OSX.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Compiler">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.dll</HintPath>
+    <Reference Include="Ultraviolet.UI.Presentation.Compiler">
+      <HintPath>..\Dependencies\Ultraviolet.UI.Presentation.Compiler.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.UI.Presentation.dll</HintPath>
+    <Reference Include="Ultraviolet.UI.Presentation">
+      <HintPath>..\Dependencies\Ultraviolet.UI.Presentation.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.UI.Presentation.Uvss">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+    <Reference Include="Ultraviolet.UI.Presentation.Uvss">
+      <HintPath>..\Dependencies\Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -52,31 +52,31 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
     <Reference Include="Ultraviolet.OpenGL.Bindings">
       <HintPath>..\Dependencies\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.BASS">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\Dependencies\Ultraviolet.BASS.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.Desktop">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.Desktop.dll</HintPath>
+    <Reference Include="Ultraviolet.Desktop">
+      <HintPath>..\Dependencies\Ultraviolet.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -111,12 +111,12 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="..\Dependencies\TwistedLogik.Ultraviolet.BASS.dll.config">
-      <Link>TwistedLogik.Ultraviolet.BASS.dll.config</Link>
+    <None Include="..\Dependencies\Ultraviolet.BASS.dll.config">
+      <Link>Ultraviolet.BASS.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll.config">
-      <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
+    <None Include="..\Dependencies\Ultraviolet.SDL2.dll.config">
+      <Link>Ultraviolet.SDL2.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Dependencies\x64\osx\libSDL2.dylib">

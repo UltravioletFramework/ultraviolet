@@ -14,53 +14,53 @@ nuget pack Ultraviolet.OpenGL.Bindings.nuspec -Symbols
 powershell -Command "(gc Ultraviolet.Core.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Core.nuspec"
 nuget pack Ultraviolet.Core.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Android.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Android.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Android.nuspec"
+nuget pack Ultraviolet.Android.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.BASS.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.BASS.Native.nuspec"
-nuget pack TwistedLogik.Ultraviolet.BASS.Native.nuspec
+powershell -Command "(gc Ultraviolet.BASS.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.BASS.Native.nuspec"
+nuget pack Ultraviolet.BASS.Native.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.BASS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.BASS.nuspec"
-nuget pack TwistedLogik.Ultraviolet.BASS.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.BASS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.BASS.nuspec"
+nuget pack Ultraviolet.BASS.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Desktop.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Desktop.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Desktop.nuspec"
+nuget pack Ultraviolet.Desktop.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.nuspec"
-nuget pack TwistedLogik.Ultraviolet.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.nuspec"
+nuget pack Ultraviolet.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.OpenGL.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.OpenGL.nuspec"
-nuget pack TwistedLogik.Ultraviolet.OpenGL.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.OpenGL.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.OpenGL.nuspec"
+nuget pack Ultraviolet.OpenGL.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.OSX.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.OSX.nuspec"
-nuget pack TwistedLogik.Ultraviolet.OSX.nuspec
+powershell -Command "(gc Ultraviolet.OSX.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.OSX.nuspec"
+nuget pack Ultraviolet.OSX.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.SDL2.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.SDL2.Native.nuspec"
-nuget pack TwistedLogik.Ultraviolet.SDL2.Native.nuspec
+powershell -Command "(gc Ultraviolet.SDL2.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.SDL2.Native.nuspec"
+nuget pack Ultraviolet.SDL2.Native.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.SDL2.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.SDL2.nuspec"
-nuget pack TwistedLogik.Ultraviolet.SDL2.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.SDL2.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.SDL2.nuspec"
+nuget pack Ultraviolet.SDL2.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.SDL2.UIKit.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.SDL2.UIKit.nuspec"
-nuget pack TwistedLogik.Ultraviolet.SDL2.UIKit.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.SDL2.UIKit.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.SDL2.UIKit.nuspec"
+nuget pack Ultraviolet.SDL2.UIKit.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspec"
-nuget pack TwistedLogik.Ultraviolet.UI.Presentation.Compiler.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.UI.Presentation.Compiler.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.UI.Presentation.Compiler.nuspec"
+nuget pack Ultraviolet.UI.Presentation.Compiler.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.UI.Presentation.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.UI.Presentation.nuspec"
-nuget pack TwistedLogik.Ultraviolet.UI.Presentation.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.UI.Presentation.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.UI.Presentation.nuspec"
+nuget pack Ultraviolet.UI.Presentation.nuspec -Symbols
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Tools.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Tools.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Tools.nuspec
+powershell -Command "(gc Ultraviolet.Tools.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Tools.nuspec"
+nuget pack Ultraviolet.Tools.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Game.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.Desktop.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Game.Desktop.nuspec
+powershell -Command "(gc Ultraviolet.Game.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.Desktop.nuspec"
+nuget pack Ultraviolet.Game.Desktop.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Game.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.Android.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Game.Android.nuspec
+powershell -Command "(gc Ultraviolet.Game.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.Android.nuspec"
+nuget pack Ultraviolet.Game.Android.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Game.iOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.iOS.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Game.iOS.nuspec
+powershell -Command "(gc Ultraviolet.Game.iOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.iOS.nuspec"
+nuget pack Ultraviolet.Game.iOS.nuspec
 
-powershell -Command "(gc TwistedLogik.Ultraviolet.Game.OSX.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Ultraviolet.Game.OSX.nuspec"
-nuget pack TwistedLogik.Ultraviolet.Game.OSX.nuspec
+powershell -Command "(gc Ultraviolet.Game.OSX.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.OSX.nuspec"
+nuget pack Ultraviolet.Game.OSX.nuspec

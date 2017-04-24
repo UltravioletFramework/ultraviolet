@@ -24,7 +24,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Ultraviolet.OpenGL.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Ultraviolet.OpenGL.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -62,7 +62,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\x86\Release\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\x86\Release\Ultraviolet.OpenGL.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -96,7 +96,7 @@
     <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;SIGNED;DESKTOP</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Signed\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\Signed\Ultraviolet.OpenGL.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -109,7 +109,7 @@
     <OutputPath>bin\x86\Signed\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\x86\Release\TwistedLogik.Ultraviolet.OpenGL.XML</DocumentationFile>
+    <DocumentationFile>bin\x86\Release\Ultraviolet.OpenGL.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -142,11 +142,11 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Version.cs">
@@ -166,13 +166,13 @@
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>TwistedLogik.Ultraviolet.SDL2 (Desktop)</Name>
+      <Name>Ultraviolet.SDL2 (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>TwistedLogik.Ultraviolet (Desktop)</Name>
+      <Name>Ultraviolet (Desktop)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

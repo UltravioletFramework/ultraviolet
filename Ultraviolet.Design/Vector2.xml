@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TypeDescription>
+  <Assembly Name="Ultraviolet, Version=1.0.0.0">
+    <Types>
+      <Type Name="Ultraviolet.Vector2">
+        <TypeConverter>Ultraviolet.Design.Vector2TypeConverter, Ultraviolet.Design</TypeConverter>
+        <DefaultValue>0 0</DefaultValue>
+        <Properties>
+          <X>
+            <Description>The vector's x-coordinate.</Description>
+          </X>
+          <Y>
+            <Description>The vector's y-coordinate.</Description>
+          </Y>
+        </Properties>
+      </Type>
+    </Types>
+  </Assembly>
+</TypeDescription>

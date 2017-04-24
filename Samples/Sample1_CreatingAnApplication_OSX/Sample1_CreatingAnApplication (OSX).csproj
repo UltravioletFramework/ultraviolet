@@ -82,20 +82,20 @@
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.BASS">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\Dependencies\Ultraviolet.BASS.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.dll</HintPath>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\Dependencies\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OSX">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OSX.dll</HintPath>
+    <Reference Include="Ultraviolet.OSX">
+      <HintPath>..\Dependencies\Ultraviolet.OSX.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.SDL2">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Dependencies\Newtonsoft.Json.dll</HintPath>
