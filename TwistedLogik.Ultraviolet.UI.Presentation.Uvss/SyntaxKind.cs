@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+﻿namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents the types of nodes, tokens, and trivia in a UVSS syntax tree.

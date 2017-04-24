@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
+namespace Ultraviolet.Presentation.Animations
 {
     /// <summary>
     /// Specifies how an animated value is calculated when the animation is outside of

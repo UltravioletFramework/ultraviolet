@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the method that is called when a touch enters or leaves an interface element.
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotTouchCapture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotTouchCapture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -309,7 +309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotNewTouchCapture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotNewTouchCapture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostTouchCapture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostTouchCapture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -337,7 +337,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostNewTouchCapture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostNewTouchCapture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchMove"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchMove"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -365,7 +365,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchDown"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchDown"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -379,7 +379,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchUp"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchUp"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -393,7 +393,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchTap"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchTap"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -407,7 +407,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchLongPress"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -421,7 +421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewMultiGesture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -435,7 +435,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewDollarGesture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -449,7 +449,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchMove"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -463,7 +463,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchDown"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchDown"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -477,7 +477,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchUp"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchUp"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -491,7 +491,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchTap"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchTap"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -505,7 +505,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
         
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPressEvent"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLongPressEvent"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -519,7 +519,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.MultiGesture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -533,7 +533,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.DollarGesture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -547,7 +547,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotTouchCapture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotTouchCapture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -561,7 +561,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotNewTouchCapture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotNewTouchCapture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -575,7 +575,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostTouchCapture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostTouchCapture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -589,7 +589,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostNewTouchCapture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostNewTouchCapture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -603,7 +603,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchMove"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchMove"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -617,7 +617,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchDown"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchDown"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -631,7 +631,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchUp"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchUp"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -645,7 +645,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchTap"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchTap"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -659,7 +659,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchLongPress"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -673,7 +673,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewMultiGesture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -687,7 +687,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewDollarGesture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -701,7 +701,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchMove"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -715,7 +715,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchDown"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchDown"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -729,7 +729,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchUp"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchUp"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -743,7 +743,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchTap"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchTap"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -757,7 +757,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLongPress"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -771,7 +771,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.MultiGesture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -785,7 +785,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Touch.DollarGesture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -799,10 +799,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotTouchCapture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotTouchCapture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotTouchCapture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotTouchCapture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -821,10 +821,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotNewTouchCapture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotNewTouchCapture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotNewTouchCapture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotNewTouchCapture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -843,10 +843,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostTouchCapture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostTouchCapture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostTouchCapture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostTouchCapture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -865,10 +865,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostNewTouchCapture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostNewTouchCapture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostNewTouchCapture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostNewTouchCapture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -887,10 +887,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchMove"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchMove"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewTouchMove"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewTouchMove"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -906,7 +906,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchMove"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -915,10 +915,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchMoveEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchDown"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchDown"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchDown"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchDown"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -934,7 +934,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -943,10 +943,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchDownEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchUp"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchUp"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchUp"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchUp"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -962,7 +962,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -971,10 +971,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchUpEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchTap"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchTap"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchTap"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchTap"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -990,7 +990,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchTap"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchTap"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -999,10 +999,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchTapEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongTap"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchLongTap"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongTap"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchLongTap"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1018,7 +1018,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLongPress"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1027,10 +1027,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchLongPressEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewMultiGesture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewMultiGesture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1046,7 +1046,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.MultiGesture"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1055,10 +1055,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMultiGestureEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewDollarGesture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewDollarGesture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1074,7 +1074,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.DollarGesture"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1083,10 +1083,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfDollarGestureEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchMove"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchMove"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1102,7 +1102,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchMove"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchMove"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1111,10 +1111,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchMoveEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchDown"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchDown"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchDown"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchDown"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1130,7 +1130,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1139,10 +1139,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchDownEventHandler), typeof(Touch));
         
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchUp"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchUp"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchUp"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchUp"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1158,7 +1158,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1167,10 +1167,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchUpEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchTap"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchTap"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchTap"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchTap"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1186,7 +1186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchTap"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchTap"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1195,10 +1195,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchTapEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLongPress"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLongPress"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1214,7 +1214,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchLongPress"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1223,10 +1223,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchLongPressEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.MultiGesture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.MultiGesture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1242,7 +1242,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewMultiGesture"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1251,10 +1251,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMultiGestureEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.DollarGesture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.DollarGesture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1270,7 +1270,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewDollarGesture"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1279,10 +1279,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfDollarGestureEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchEnter"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchEnter"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchEnter"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchEnter"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1301,10 +1301,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfTouchEventHandler), typeof(Touch));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLeave"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLeave"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLeave"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLeave"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1335,7 +1335,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotTouchCapture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotTouchCapture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseGotTouchCapture(DependencyObject element, TouchDevice device,
@@ -1346,7 +1346,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.GotNewTouchCapture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.GotNewTouchCapture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseGotNewTouchCapture(DependencyObject element, RoutedEventData data)
@@ -1356,7 +1356,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostTouchCapture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostTouchCapture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseLostTouchCapture(DependencyObject element, TouchDevice device,
@@ -1367,7 +1367,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.LostNewTouchCapture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.LostNewTouchCapture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseLostNewTouchCapture(DependencyObject element, RoutedEventData data)
@@ -1377,7 +1377,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchMove"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchMove"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTouchMove(DependencyObject element, TouchDevice device,
@@ -1388,7 +1388,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchDown"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchDown"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTouchDown(DependencyObject element, TouchDevice device,
@@ -1399,7 +1399,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchUp"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchUp"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTouchUp(DependencyObject element, TouchDevice device,
@@ -1410,7 +1410,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchTap"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchTap"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTouchTap(DependencyObject element, TouchDevice device,
@@ -1421,7 +1421,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewTouchLongPress"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewTouchLongPress"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewTouchLongPress(DependencyObject element, TouchDevice device,
@@ -1432,7 +1432,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewMultiGesture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewMultiGesture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMultiGesture(DependencyObject element, TouchDevice device,
@@ -1443,7 +1443,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.PreviewDollarGesture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.PreviewDollarGesture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewDollarGesture(DependencyObject element, TouchDevice device,
@@ -1454,7 +1454,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchMove"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchMove"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchMove(DependencyObject element, TouchDevice device,
@@ -1465,7 +1465,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchDown"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchDown"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchDown(DependencyObject element, TouchDevice device,
@@ -1476,7 +1476,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchUp"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchUp"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchUp(DependencyObject element, TouchDevice device,
@@ -1487,7 +1487,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchTap"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchTap"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchTap(DependencyObject element, TouchDevice device,
@@ -1498,7 +1498,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLongPress"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLongPress"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchLongPress(DependencyObject element, TouchDevice device,
@@ -1509,7 +1509,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.MultiGesture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.MultiGesture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMultiGesture(DependencyObject element, TouchDevice device,
@@ -1520,7 +1520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.DollarGesture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.DollarGesture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseDollarGesture(DependencyObject element, TouchDevice device,
@@ -1531,7 +1531,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchEnter"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchEnter"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchEnter(DependencyObject element, TouchDevice device,
@@ -1542,7 +1542,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Touch.TouchLeave"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Touch.TouchLeave"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseTouchLeave(DependencyObject element, TouchDevice device,

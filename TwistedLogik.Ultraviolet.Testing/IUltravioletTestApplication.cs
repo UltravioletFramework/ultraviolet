@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Content;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// Represents an Ultraviolet application used in unit tests.

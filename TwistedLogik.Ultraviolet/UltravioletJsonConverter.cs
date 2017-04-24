@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a custom JSON converter which supports Ultraviolet's core types.

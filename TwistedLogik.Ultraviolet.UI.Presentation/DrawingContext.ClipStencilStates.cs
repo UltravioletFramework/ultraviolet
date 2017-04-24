@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Graphics;
+﻿using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     partial class DrawingContext
     {

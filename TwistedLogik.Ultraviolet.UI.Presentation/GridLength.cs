@@ -2,7 +2,7 @@
 using System.Globalization;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the length of a row or column in a grid.

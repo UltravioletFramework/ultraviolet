@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using TwistedLogik.Ultraviolet.BASS.Native;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.BASS.Native;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.BASS.Audio
+namespace Ultraviolet.BASS.Audio
 {
     partial class BASSSong
     {

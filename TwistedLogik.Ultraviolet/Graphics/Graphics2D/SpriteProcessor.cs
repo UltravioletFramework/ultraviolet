@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TwistedLogik.Ultraviolet.Content;
+using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a content processor which loads sprites.

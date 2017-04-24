@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content processor which loads text assets.

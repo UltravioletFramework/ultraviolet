@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Contains extension methods for the <see cref="System.IO.BinaryReader"/> class.

@@ -1,7 +1,7 @@
 ﻿using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.SDL2.Native;
+using Ultraviolet.SDL2.Native;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Messages
+namespace Ultraviolet.SDL2.Messages
 {
     /// <summary>
     /// Represents the message data for an SDL2Event message.

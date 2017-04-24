@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Color Schema",
+  "title": "Ultraviolet.Color Schema",
   "type": "array",
   "minItems": 3,
   "maxItems": 4,

@@ -8,12 +8,12 @@
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.CodeDom.Compiler" #>
-<#@ import namespace="TwistedLogik.Ultraviolet.UI.Presentation" #>
-<#@ import namespace="TwistedLogik.Ultraviolet.UI.Presentation.Compiler" #>
+<#@ import namespace="Ultraviolet.Presentation" #>
+<#@ import namespace="Ultraviolet.Presentation.Compiler" #>
 <#@ output extension=".cs" #>
 <#+ private string GenerateSourceCodeForViewModel(String @namespace, String name, String path)
 {
-	var compiler = new TwistedLogik.Ultraviolet.UI.Presentation.Compiler.ExpressionCompiler();
+	var compiler = new Ultraviolet.Presentation.Compiler.ExpressionCompiler();
 
 	var options = new BindingExpressionCompilerOptions();
 	options.WorkInTemporaryDirectory = true;

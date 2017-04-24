@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the placement of a <see cref="Popup"/> control.

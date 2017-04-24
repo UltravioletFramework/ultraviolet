@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the Ultraviolet Framework's audio subsystem.

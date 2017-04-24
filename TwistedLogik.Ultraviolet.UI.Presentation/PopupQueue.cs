@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the queue that manages the Presentation Foundation's list of active popup windows.

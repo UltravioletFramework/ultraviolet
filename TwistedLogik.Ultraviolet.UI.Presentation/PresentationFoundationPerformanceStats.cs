@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents various statistics relating to performance which are collected by the Ultraviolet Presentation Foundation.

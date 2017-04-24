@@ -1,7 +1,7 @@
 ﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
+namespace Ultraviolet.Presentation.Documents
 {
     /// <summary>
     /// Represents an element which decorates another selement.

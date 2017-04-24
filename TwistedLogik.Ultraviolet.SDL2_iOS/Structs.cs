@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.SDL2_iOS
+namespace Ultraviolet.SDL2.iOS
 {
 }
 

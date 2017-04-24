@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Uvss;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents an Ultraviolet Style Sheet (UVSS) document.

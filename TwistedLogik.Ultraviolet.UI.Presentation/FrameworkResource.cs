@@ -1,7 +1,7 @@
-﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
+﻿using Ultraviolet.Content;
+using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a resource used by the Presentation Foundation.

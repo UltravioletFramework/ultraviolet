@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the different events which can raise a <see cref="ScrollBar.Scroll"/> event.

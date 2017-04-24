@@ -1,9 +1,9 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
+namespace Ultraviolet.Presentation.Media.Effects
 {
     /// <summary>
     /// Represents an effect that blurs target element.

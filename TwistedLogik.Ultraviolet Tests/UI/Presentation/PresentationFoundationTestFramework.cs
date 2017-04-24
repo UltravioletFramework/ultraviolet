@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
+using Ultraviolet.Content;
 using Ultraviolet.Core.TestFramework;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Testing;
-using TwistedLogik.Ultraviolet.UI;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Styles;
+using Ultraviolet.Testing;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
+namespace Ultraviolet.Tests.UI.Presentation
 {
     /// <summary>
     /// Represents the base class for tests which require the Presentation Foundation.

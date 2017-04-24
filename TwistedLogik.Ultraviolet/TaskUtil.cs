@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Contains utility methods for creating Task objects.

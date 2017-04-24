@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the context in which a layout is being drawn, and provides methods

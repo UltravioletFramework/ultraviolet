@@ -1,6 +1,6 @@
 ﻿using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="SpriteBatchEffect"/> class.

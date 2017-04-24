@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
+using Ultraviolet.VisualStudio.Uvss.Errors;
+using Ultraviolet.VisualStudio.Uvss.Parsing;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
+namespace Ultraviolet.VisualStudio.Uvss.Tagging
 {
-	/// <summary>
-	/// Represents a tagger which puts squigglies under parser errors.
-	/// </summary>
-	internal sealed class SyntaxErrorTagger : ITagger<IErrorTag>
+    /// <summary>
+    /// Represents a tagger which puts squigglies under parser errors.
+    /// </summary>
+    internal sealed class SyntaxErrorTagger : ITagger<IErrorTag>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SyntaxErrorTagger"/> class.

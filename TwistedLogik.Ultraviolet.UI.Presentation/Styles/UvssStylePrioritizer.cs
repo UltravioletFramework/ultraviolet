@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Contains methods for managing a prioritized set of styles which will be applied to an element.

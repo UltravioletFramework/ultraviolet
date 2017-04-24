@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Documents;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains utility methods useful for laying out framework elements.

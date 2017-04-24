@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a collection of content override directories.

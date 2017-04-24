@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     partial class CanExecuteChangedEventManager
     {

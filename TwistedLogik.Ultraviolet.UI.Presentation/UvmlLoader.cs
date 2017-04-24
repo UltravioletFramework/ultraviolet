@@ -5,11 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvml;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Documents;
+using Ultraviolet.Presentation.Uvml;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains methods for loading UI elements from UVML.

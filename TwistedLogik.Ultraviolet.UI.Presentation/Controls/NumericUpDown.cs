@@ -1,11 +1,11 @@
 ﻿using System;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a button on a user interface.

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Ultraviolet.Audio;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a method which compares two data bound values for equality.
@@ -374,7 +374,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(Double)] = new DataBindingComparer<Double>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Double?)] = new DataBindingComparer<Double?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet
+            // Ultraviolet
             comparerRegistry[typeof(Circle)] = new DataBindingComparer<Circle>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Circle?)] = new DataBindingComparer<Circle?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(CircleF)] = new DataBindingComparer<CircleF>((v1, v2) => v1 == v2);
@@ -426,17 +426,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(UltravioletSingletonFlags)] = new DataBindingComparer<UltravioletSingletonFlags>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(UltravioletSingletonFlags?)] = new DataBindingComparer<UltravioletSingletonFlags?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Audio
+            // Ultraviolet.Audio
             comparerRegistry[typeof(PlaybackState)] = new DataBindingComparer<PlaybackState>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(PlaybackState?)] = new DataBindingComparer<PlaybackState?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Content
+            // Ultraviolet.Content
             comparerRegistry[typeof(AssetID)] = new DataBindingComparer<AssetID>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(AssetID?)] = new DataBindingComparer<AssetID?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(AssetFlags)] = new DataBindingComparer<AssetFlags>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(AssetFlags?)] = new DataBindingComparer<AssetFlags?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Input
+            // Ultraviolet.Input
             comparerRegistry[typeof(ButtonState)] = new DataBindingComparer<ButtonState>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(ButtonState?)] = new DataBindingComparer<ButtonState?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(GamePadAxis)] = new DataBindingComparer<GamePadAxis>((v1, v2) => v1 == v2);
@@ -456,7 +456,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(Scancode)] = new DataBindingComparer<Scancode>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Scancode?)] = new DataBindingComparer<Scancode?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Graphics
+            // Ultraviolet.Graphics
             comparerRegistry[typeof(Blend)] = new DataBindingComparer<Blend>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Blend?)] = new DataBindingComparer<Blend?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(BlendFunction)] = new DataBindingComparer<BlendFunction>((v1, v2) => v1 == v2);
@@ -502,7 +502,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(Viewport)] = new DataBindingComparer<Viewport>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Viewport?)] = new DataBindingComparer<Viewport?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Graphics.Graphics2D
+            // Ultraviolet.Graphics.Graphics2D
             comparerRegistry[typeof(SpriteFontStyle)] = new DataBindingComparer<SpriteFontStyle>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SpriteFontStyle?)] = new DataBindingComparer<SpriteFontStyle?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SpriteAnimationID)] = new DataBindingComparer<SpriteAnimationID>((v1, v2) => v1 == v2);
@@ -510,7 +510,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(SpriteAnimationName)] = new DataBindingComparer<SpriteAnimationName>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SpriteAnimationName?)] = new DataBindingComparer<SpriteAnimationName?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+            // Ultraviolet.Graphics.Graphics2D.Text
             comparerRegistry[typeof(TextFlags)] = new DataBindingComparer<TextFlags>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextFlags?)] = new DataBindingComparer<TextFlags?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextLayoutCommandType)] = new DataBindingComparer<TextLayoutCommandType>((v1, v2) => v1 == v2);
@@ -522,7 +522,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(TextParserTokenType)] = new DataBindingComparer<TextParserTokenType>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextParserTokenType?)] = new DataBindingComparer<TextParserTokenType?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.Platform
+            // Ultraviolet.Platform
             comparerRegistry[typeof(ScreenDensityBucket)] = new DataBindingComparer<ScreenDensityBucket>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(ScreenDensityBucket?)] = new DataBindingComparer<ScreenDensityBucket?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(ScreenRotation)] = new DataBindingComparer<ScreenRotation>((v1, v2) => v1 == v2);
@@ -534,7 +534,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(WindowState)] = new DataBindingComparer<WindowState>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(WindowState?)] = new DataBindingComparer<WindowState?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.UI.Presentation
+            // Ultraviolet.Presentation
             comparerRegistry[typeof(GridLength)] = new DataBindingComparer<GridLength>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(GridLength?)] = new DataBindingComparer<GridLength?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SourcedAssetID)] = new DataBindingComparer<SourcedAssetID>((v1, v2) => v1 == v2);
@@ -554,11 +554,11 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(VersionedStringSource)] = new DataBindingComparer<VersionedStringSource>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(VersionedStringSource?)] = new DataBindingComparer<VersionedStringSource?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+            // Ultraviolet.Presentation.Controls.Primitives
             comparerRegistry[typeof(PlacementMode)] = new DataBindingComparer<PlacementMode>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(PlacementMode?)] = new DataBindingComparer<PlacementMode?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.UI.Presentation.Controls
+            // Ultraviolet.Presentation.Controls
             comparerRegistry[typeof(CharacterCasing)] = new DataBindingComparer<CharacterCasing>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(CharacterCasing?)] = new DataBindingComparer<CharacterCasing?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(ClickMode)] = new DataBindingComparer<ClickMode>((v1, v2) => v1 == v2);
@@ -572,7 +572,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
             comparerRegistry[typeof(SelectionMode)] = new DataBindingComparer<SelectionMode>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SelectionMode?)] = new DataBindingComparer<SelectionMode?>((v1, v2) => v1 == v2);
 
-            // TwistedLogik.Ultraviolet.UI.Presentation.Input
+            // Ultraviolet.Presentation.Input
             comparerRegistry[typeof(CaptureMode)] = new DataBindingComparer<CaptureMode>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(CaptureMode?)] = new DataBindingComparer<CaptureMode?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(FocusNavigationDirection)] = new DataBindingComparer<FocusNavigationDirection?>((v1, v2) => v1 == v2);

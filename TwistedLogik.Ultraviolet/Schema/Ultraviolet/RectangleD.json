@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.RectangleD Schema",
+  "title": "Ultraviolet.RectangleD Schema",
   "type": "object",
   "properties": {
     "x": {

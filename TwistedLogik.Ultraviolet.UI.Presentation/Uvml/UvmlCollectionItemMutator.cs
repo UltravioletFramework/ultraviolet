@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents a UVML mutator which sets the items for an object which is itself a collection.

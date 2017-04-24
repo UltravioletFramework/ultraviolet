@@ -91,8 +91,8 @@
     <Reference Include="TwistedLogik.Ultraviolet">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.OSX">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OSX.dll</HintPath>

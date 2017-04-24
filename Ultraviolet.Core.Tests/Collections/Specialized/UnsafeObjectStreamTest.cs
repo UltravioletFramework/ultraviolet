@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 using Ultraviolet.Core.Collections.Specialized;
 using Ultraviolet.Core.TestFramework;
 

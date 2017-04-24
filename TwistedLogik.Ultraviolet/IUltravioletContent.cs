@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using TwistedLogik.Ultraviolet.Content;
+using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the Ultraviolet Framework's content management subsystem.

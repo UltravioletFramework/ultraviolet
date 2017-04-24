@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// Represents a unit test result containing a two-dimensional vector value.

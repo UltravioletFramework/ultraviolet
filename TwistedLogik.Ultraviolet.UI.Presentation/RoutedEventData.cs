@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the extended event data for a routed event.

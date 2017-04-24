@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont Schema",
+  "title": "Ultraviolet.Graphics.Graphics2D.SpriteFont Schema",
   "type": "object",
   "properties": {
     "faces": {
@@ -30,7 +30,7 @@
       "type": "object",
       "properties": {
         "texture": { "type": "string" },
-        "textureRegion": { "$ref": "http://schema.ultraviolet.tl/uv/Ultraviolet/Rectangle.json" },
+        "textureRegion": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Rectangle.json" },
         "glyphs": {
           "type": "object",
           "properties": {            

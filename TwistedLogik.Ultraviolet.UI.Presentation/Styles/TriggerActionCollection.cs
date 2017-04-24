@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a trigger's collection of associated actions.

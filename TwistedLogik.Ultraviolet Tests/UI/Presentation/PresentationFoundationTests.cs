@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Tests.UI.Presentation.Screens;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
+namespace Ultraviolet.Tests.UI.Presentation
 {
     [TestFixture]
     public class PresentationFoundationTests : PresentationFoundationTestFramework

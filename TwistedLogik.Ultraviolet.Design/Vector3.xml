@@ -2,8 +2,8 @@
 <TypeDescription>
   <Assembly Name="TwistedLogik.Ultraviolet, Version=1.0.0.0">
     <Types>
-      <Type Name="TwistedLogik.Ultraviolet.Vector3">
-        <TypeConverter>TwistedLogik.Ultraviolet.Design.Vector3TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+      <Type Name="Ultraviolet.Vector3">
+        <TypeConverter>Ultraviolet.Design.Vector3TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0 0</DefaultValue>
         <Properties>
           <X>

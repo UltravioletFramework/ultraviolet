@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.BASS_iOS
+namespace Ultraviolet.BASS.iOS
 {
 }
 

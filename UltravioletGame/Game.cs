@@ -3,14 +3,14 @@ using System.IO;
 using System.Text;
 using SAFE_PROJECT_NAME.Assets;
 using SAFE_PROJECT_NAME.Input;
+using Ultraviolet;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.OpenGL;
+using Ultraviolet.Platform;
 
 namespace SAFE_PROJECT_NAME
 {

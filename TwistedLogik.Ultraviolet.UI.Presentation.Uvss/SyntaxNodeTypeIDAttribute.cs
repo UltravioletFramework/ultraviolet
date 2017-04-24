@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents an attribute which assigns a type identifier to a syntax

@@ -1,9 +1,9 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the method that handles a <see cref="ScrollBar.Scroll"/> event.

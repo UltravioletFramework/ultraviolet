@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Platform;
+﻿using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.OSX.Platform
+namespace Ultraviolet.OSX.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenRotationService"/> class for the OS X platform.

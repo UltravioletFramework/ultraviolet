@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics
+﻿namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents an effect which exposes a texture size parameter.

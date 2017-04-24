@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a collection of screen stacks organized by window.

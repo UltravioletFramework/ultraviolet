@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
+namespace Ultraviolet.Presentation.Animations
 {
     /// <summary>
     /// Represents a pool of <see cref="SimpleClock"/> instances.

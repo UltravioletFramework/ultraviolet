@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
+using NUnit.Framework;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
+namespace Ultraviolet.Presentation.Uvss.Testing
 {
     /// <summary>
     /// Represents a unit test result containing a syntax node.

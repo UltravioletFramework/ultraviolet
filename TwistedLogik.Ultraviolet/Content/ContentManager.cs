@@ -11,9 +11,9 @@ using Newtonsoft.Json.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Core.Xml;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a collection of related content assets.

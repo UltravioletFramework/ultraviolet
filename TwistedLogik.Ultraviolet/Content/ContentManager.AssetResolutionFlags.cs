@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Content
-{  
+namespace Ultraviolet.Content
+{
     partial class ContentManager
     {
         /// <summary>

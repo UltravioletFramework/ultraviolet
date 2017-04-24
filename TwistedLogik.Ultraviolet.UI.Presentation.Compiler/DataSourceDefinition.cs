@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Linq;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
+namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Represents the definition of a view model or control for which expressions are being compiled.

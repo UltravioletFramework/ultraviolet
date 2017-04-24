@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an Ultraviolet application's internal settings.

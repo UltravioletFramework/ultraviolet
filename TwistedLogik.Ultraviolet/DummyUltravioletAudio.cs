@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a dummy implementation of <see cref="IUltravioletAudio"/>.

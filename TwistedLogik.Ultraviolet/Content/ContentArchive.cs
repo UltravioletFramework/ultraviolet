@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents an archive containing multiple content files.

@@ -1,6 +1,6 @@
 ﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI;
-using TwistedLogik.Ultraviolet.UI.Presentation;
+using Ultraviolet.Presentation;
+using Ultraviolet.UI;
 using UvDebugSandbox.UI.Screens;
 
 namespace UvDebugSandbox.UI.Dialogs

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an object which hosts instances of the Ultraviolet Framework.

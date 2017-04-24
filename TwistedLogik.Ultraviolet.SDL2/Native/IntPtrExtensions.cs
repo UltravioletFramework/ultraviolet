@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     /// <summary>
     /// Contains extension methods for the IntPtr structure.

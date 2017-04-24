@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// An intermediate representation of a related batch of frames within a sprite animation.

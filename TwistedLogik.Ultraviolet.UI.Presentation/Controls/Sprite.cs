@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a framework element which displays a particular sprite animation.

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains methods for displaying modal dialogs.

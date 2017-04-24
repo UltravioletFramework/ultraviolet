@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an error which is raised during binding expression compilation.

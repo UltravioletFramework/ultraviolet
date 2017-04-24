@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an object which injects factory methods into the Ultraviolet context.

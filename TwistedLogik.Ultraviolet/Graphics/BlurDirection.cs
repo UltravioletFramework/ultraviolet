@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics
+﻿namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents the direction of the blur applied by <see cref="BlurEffect"/>.

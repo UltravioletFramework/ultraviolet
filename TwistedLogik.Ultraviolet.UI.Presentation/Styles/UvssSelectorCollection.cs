@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a list of selectors in an Ultraviolet Style Sheet (UVSS) document.

@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.WindowsForms
+namespace Ultraviolet.WindowsForms
 {
     /// <summary>
     /// Represents Ultraviolet's supported methods for ticking a Windows Forms-based application.

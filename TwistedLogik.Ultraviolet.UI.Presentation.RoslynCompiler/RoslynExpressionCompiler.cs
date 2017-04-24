@@ -1,7 +1,7 @@
 ﻿using Microsoft.CSharp;
-using TwistedLogik.Ultraviolet.UI.Presentation.Compiler;
+using Ultraviolet.Presentation.Compiler;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler
+namespace Ultraviolet.Presentation.RoslynCompiler
 {
     /// <summary>
     /// Represents a binding expression compiler which is backed by the .NET Compiler Platform ("Roslyn").

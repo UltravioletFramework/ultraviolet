@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using Ultraviolet.Presentation.Controls;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents a function which instantiates templated object instances.

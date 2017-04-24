@@ -2,7 +2,7 @@
 using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+namespace Ultraviolet.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the component of a UVSS selector part which specifies the selected name.

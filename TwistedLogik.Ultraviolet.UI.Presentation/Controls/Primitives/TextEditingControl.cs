@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Documents;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents a control which hosts a text editor.

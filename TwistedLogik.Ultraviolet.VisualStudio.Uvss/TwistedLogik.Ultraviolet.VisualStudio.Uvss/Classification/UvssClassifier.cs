@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
+using Ultraviolet.VisualStudio.Uvss.Parsing;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
+namespace Ultraviolet.VisualStudio.Uvss.Classification
 {
-	/// <summary>
-	/// Classifies UVSS source text.
-	/// </summary>
-	internal class UvssClassifier : IClassifier
+    /// <summary>
+    /// Classifies UVSS source text.
+    /// </summary>
+    internal class UvssClassifier : IClassifier
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssClassifier"/> class.

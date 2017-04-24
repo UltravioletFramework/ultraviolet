@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+﻿using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
+namespace Ultraviolet.Presentation.Animations
 {
     /// <summary>
     /// Represents an element which is the target of an animation.

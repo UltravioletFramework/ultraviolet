@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Contains core functionality for Ultraviolet host processes.

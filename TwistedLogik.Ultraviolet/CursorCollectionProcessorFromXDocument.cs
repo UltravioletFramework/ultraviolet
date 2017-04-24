@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.SDL2
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Represents a content processor that loads cursor collections.

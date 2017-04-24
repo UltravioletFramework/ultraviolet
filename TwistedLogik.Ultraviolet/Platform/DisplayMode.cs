@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// <para>Represents a display mode.</para>

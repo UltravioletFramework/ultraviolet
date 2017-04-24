@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a UI panel's definition file.

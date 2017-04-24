@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents the header data for a batched <see cref="Sprite"/>.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Stores and manages the collection of component templates that are

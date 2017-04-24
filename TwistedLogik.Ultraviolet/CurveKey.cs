@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a key point in a curve.

@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.

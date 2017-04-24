@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Input
+namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents the virtual, mapped keys on a keyboard.

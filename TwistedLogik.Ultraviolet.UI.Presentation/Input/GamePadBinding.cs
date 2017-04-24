@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents an association between a game pad gesture and a command.

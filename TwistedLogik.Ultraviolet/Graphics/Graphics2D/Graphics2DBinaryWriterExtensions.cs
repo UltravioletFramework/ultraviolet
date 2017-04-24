@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using TwistedLogik.Ultraviolet.Content;
+using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Contains extensoin methods for the <see cref="BinaryWriter"/> class.

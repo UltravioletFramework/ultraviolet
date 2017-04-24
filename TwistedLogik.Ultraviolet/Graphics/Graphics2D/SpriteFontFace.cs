@@ -4,7 +4,7 @@ using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents one of a sprite font's font faces.

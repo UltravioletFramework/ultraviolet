@@ -5,12 +5,12 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
+namespace Ultraviolet.VisualStudio.Uvss.Errors
 {
-	/// <summary>
-	/// Manages the error list attached to text view.
-	/// </summary>
-	[Export(typeof(IWpfTextViewCreationListener))]
+    /// <summary>
+    /// Manages the error list attached to text view.
+    /// </summary>
+    [Export(typeof(IWpfTextViewCreationListener))]
     [ContentType("uvss")]
     [TextViewRole(PredefinedTextViewRoles.Interactive)]
     public sealed class ErrorListManager : IWpfTextViewCreationListener

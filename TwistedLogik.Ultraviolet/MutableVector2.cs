@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// The <see cref="MutableVector2"/> structure is a mutable version of the <see cref="Vector2"/> structure used 

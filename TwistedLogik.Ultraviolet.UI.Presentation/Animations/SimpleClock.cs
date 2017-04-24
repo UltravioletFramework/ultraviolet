@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
+namespace Ultraviolet.Presentation.Animations
 {
     /// <summary>
     /// Represents a clock which tracks the timing state of a simple animations.

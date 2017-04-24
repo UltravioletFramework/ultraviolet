@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using Ultraviolet;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Controls;
 
 namespace UvDebugSandbox.UI.Controls
 {

@@ -1,8 +1,7 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Api;
-using System;
+﻿using System;
+using NUnit.Framework;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// Represents a unit test result containing an angle in radians.

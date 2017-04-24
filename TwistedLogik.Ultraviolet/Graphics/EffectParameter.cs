@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents an effect parameter.

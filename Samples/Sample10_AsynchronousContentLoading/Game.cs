@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample10_AsynchronousContentLoading.Assets;
 using UltravioletSample.Sample10_AsynchronousContentLoading.Input;
 using UltravioletSample.Sample10_AsynchronousContentLoading.UI;
@@ -19,7 +19,7 @@ namespace UltravioletSample.Sample10_AsynchronousContentLoading
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 10 - Asynchronous Content Loading", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 10 - Asynchronous Content Loading", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

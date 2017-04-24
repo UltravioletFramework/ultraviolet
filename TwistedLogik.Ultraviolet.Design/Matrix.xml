@@ -2,9 +2,9 @@
 <TypeDescription>
   <Assembly Name="TwistedLogik.Ultraviolet, Version=1.0.0.0">
     <Types>
-      <Type Name="TwistedLogik.Ultraviolet.Matrix">
-        <TypeConverter>TwistedLogik.Ultraviolet.Design.MatrixTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
-        <Editor>TwistedLogik.Ultraviolet.Design.MatrixEditor, TwistedLogik.Ultraviolet.Design</Editor>
+      <Type Name="Ultraviolet.Matrix">
+        <TypeConverter>Ultraviolet.Design.MatrixTypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+        <Editor>Ultraviolet.Design.MatrixEditor, TwistedLogik.Ultraviolet.Design</Editor>
         <DefaultValue>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</DefaultValue>
         <Properties>
           <M11>

@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Input
+namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents the axes available on a <see cref="GamePadDevice"/>.

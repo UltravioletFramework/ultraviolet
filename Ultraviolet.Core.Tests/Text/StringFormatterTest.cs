@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Text;
+using NUnit.Framework;
 using Ultraviolet.Core.TestFramework;
 using Ultraviolet.Core.Text;
 

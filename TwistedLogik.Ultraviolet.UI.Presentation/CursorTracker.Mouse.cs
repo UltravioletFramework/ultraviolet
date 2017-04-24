@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     partial class CursorTracker
     {

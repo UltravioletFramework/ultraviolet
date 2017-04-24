@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     public sealed partial class ListBoxSelectedItems : IEnumerable<Object>
     {

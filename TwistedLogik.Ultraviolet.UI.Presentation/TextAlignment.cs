@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a value which specifies how to align a block of text.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains configurable options for the UVSS lexer.

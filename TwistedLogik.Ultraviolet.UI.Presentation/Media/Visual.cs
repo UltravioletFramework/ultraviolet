@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
+namespace Ultraviolet.Presentation.Media
 {
     /// <summary>
     /// Represents the base class for all visually rendered objects

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// An intermediate representation of an image in a <see cref="TextureAtlas"/> which is used during content processing.

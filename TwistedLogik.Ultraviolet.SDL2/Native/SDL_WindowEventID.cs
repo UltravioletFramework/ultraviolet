@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 1591
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     public enum SDL_WindowEventID : byte
     {

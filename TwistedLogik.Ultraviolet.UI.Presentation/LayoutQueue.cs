@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a queue of elements with invalidated layouts.

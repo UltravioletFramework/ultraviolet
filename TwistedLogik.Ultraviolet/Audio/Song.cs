@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Audio
+namespace Ultraviolet.Audio
 {
     /// <summary>
     /// <para>Represents a song.</para>

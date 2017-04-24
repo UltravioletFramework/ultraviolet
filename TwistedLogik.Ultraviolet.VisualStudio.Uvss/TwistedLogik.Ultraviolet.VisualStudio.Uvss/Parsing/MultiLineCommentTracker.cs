@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.Text;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
     /// <summary>
     /// Tracks the positions of multi-line comments in a UVSS document.

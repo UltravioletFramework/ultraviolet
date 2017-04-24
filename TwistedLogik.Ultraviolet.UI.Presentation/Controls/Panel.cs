@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a framework element with child elements.
@@ -57,10 +57,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Panel.ZIndex"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Panel.ZIndex"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Panel.ZIndex"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Panel.ZIndex"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>

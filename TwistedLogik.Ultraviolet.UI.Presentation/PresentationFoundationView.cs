@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Media;
+using Ultraviolet.Presentation.Media.Effects;
+using Ultraviolet.Presentation.Styles;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the top-level container for UI elements.
@@ -97,7 +98,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static String DataSourceWrapperNamespaceForViews
         {
-            get { return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions"; }
+            get { return "Ultraviolet.Presentation.CompiledExpressions"; }
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
         /// </summary>
         public static String DataSourceWrapperNamespaceForComponentTemplates
         {
-            get { return "TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions"; }
+            get { return "Ultraviolet.Presentation.CompiledExpressions"; }
         }
 
         /// <inheritdoc/>

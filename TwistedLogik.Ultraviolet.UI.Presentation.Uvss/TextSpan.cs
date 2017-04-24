@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents a span of text in source code.

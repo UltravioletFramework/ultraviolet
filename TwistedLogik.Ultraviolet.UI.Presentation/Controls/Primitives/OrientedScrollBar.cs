@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the base class for horizontal and vertical scroll bars.

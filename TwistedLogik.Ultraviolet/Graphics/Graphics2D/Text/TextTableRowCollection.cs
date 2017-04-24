@@ -1,6 +1,6 @@
 ﻿using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents a collection of rows in a <see cref="TextTable{ViewModelType}"/>.

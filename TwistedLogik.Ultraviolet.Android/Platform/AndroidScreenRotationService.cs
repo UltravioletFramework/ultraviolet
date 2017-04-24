@@ -1,6 +1,6 @@
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Android.Platform
+namespace Ultraviolet.Android.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenRotationService"/> class for the Android platform.

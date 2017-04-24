@@ -1,12 +1,12 @@
 ﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Desktop.Graphics;
-using TwistedLogik.Ultraviolet.Desktop.Input;
-using TwistedLogik.Ultraviolet.Desktop.Platform;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Desktop.Graphics;
+using Ultraviolet.Desktop.Input;
+using Ultraviolet.Desktop.Platform;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Desktop
+namespace Ultraviolet.Desktop
 {
     /// <summary>
     /// Initializes factory methods for the Desktop platform compatibility shim.

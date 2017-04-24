@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Ultraviolet.Core.Splinq;
 using Ultraviolet.Core.TestFramework;
-using NUnit.Framework;
 
 namespace Ultraviolet.CoreTests.Splinq
 {

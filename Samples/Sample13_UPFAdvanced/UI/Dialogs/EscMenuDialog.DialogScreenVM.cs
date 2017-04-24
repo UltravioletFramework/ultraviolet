@@ -1,6 +1,6 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation;
+using Ultraviolet.Presentation;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
 {

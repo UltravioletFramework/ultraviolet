@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the data for a cursor query event.

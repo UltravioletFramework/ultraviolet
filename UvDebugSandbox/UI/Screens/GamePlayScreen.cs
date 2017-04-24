@@ -1,8 +1,8 @@
 ﻿using System;
+using Ultraviolet;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.UI;
 using UvDebugSandbox.UI.Dialogs;
 
 namespace UvDebugSandbox.UI.Screens

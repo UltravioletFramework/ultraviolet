@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     partial class Grid
     {

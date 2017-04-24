@@ -1,9 +1,9 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.SDL2.Native;
+using Ultraviolet.Input;
+using Ultraviolet.SDL2.Native;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Input
+namespace Ultraviolet.SDL2.Input
 {
     /// <summary>
     /// Manages the Ultraviolet context's connected touch devices.

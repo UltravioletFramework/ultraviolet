@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.WindowsForms
+﻿namespace Ultraviolet.WindowsForms
 {
     partial class UltravioletPanel
     {

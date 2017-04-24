@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents an object which is scoped to a text style within the text layout or rendering engines.

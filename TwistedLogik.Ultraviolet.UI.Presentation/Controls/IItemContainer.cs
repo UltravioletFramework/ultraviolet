@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents an item container used to wrap a particular item within an <see cref="ItemsControl"/>.

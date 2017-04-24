@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the part of a <see cref="TabControl"/> which displays the tabbed list of items.

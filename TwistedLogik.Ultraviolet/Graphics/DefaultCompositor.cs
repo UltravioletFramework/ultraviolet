@@ -1,7 +1,7 @@
 ﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents Ultraviolet's default compositor, which renders

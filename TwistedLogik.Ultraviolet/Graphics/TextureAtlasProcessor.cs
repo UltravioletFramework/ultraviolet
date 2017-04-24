@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using sspack;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a content processor which loads texture atlases.
     /// </summary>
-    /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see TwistedLogik.Ultraviolet.Licenses.txt).</remarks>
+    /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see Ultraviolet.Licenses.txt).</remarks>
     internal sealed partial class TextureAtlasProcessor : ContentProcessor<TextureAtlasDescription, TextureAtlas>
     {
         /// <inheritdoc/>

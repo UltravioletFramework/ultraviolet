@@ -1,13 +1,13 @@
 ﻿using System;
 using SAFE_PROJECT_NAME.Assets;
+using Ultraviolet;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.WindowsForms;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.OpenGL;
+using Ultraviolet.WindowsForms;
 
 namespace SAFE_PROJECT_NAME
 {

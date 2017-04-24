@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+﻿namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents the types of commands produced by the text layout engine.

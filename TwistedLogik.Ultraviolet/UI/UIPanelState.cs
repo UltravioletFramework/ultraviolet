@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a UI panel's possible transition states.

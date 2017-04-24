@@ -1,10 +1,10 @@
 ﻿{
-  "$schema": "http://schema.ultraviolet.tl/uv/Ultraviolet/Content/ContentManifest.json",
+  "$schema": "http://schema.ultraviolet.tl/Ultraviolet/Content/ContentManifest.json",
   "name": "Test",
   "groups": [
     {
       "name": "Textures",
-      "type": "TwistedLogik.Ultraviolet.Graphics.Texture2D",
+      "type": "Ultraviolet.Graphics.Texture2D",
       "directory": "Textures",
       "assets": [
         {

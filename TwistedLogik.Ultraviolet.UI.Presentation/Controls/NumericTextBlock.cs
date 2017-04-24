@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a text block that is optimized for displaying numeric values.

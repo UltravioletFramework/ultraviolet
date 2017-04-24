@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class RainbowGlyphShader : GlyphShader
     {

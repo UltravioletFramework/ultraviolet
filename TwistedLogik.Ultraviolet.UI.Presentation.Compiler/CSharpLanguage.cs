@@ -2,7 +2,7 @@
 using System.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Contains methods relating to C# language production.

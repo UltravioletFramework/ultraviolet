@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Contains utility methods for manipulating texture data.

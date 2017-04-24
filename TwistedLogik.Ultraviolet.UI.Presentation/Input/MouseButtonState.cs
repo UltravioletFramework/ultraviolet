@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the possible states of a mouse button.

@@ -1,11 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an animation identifier which is flagged as being either globally- or locally-sourced.

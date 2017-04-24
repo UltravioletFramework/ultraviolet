@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Represents the game screen's rotation relative to its default position.

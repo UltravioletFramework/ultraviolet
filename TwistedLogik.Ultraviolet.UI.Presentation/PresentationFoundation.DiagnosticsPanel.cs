@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Presentation.Animations;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     partial class PresentationFoundation
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Input;
+using Ultraviolet.UI;
 using UltravioletSample.Sample9_ManagingStateWithUIScreens.Assets;
 
 namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.UI.Screens

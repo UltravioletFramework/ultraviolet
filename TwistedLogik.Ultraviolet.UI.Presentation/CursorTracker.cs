@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an object which tracks the position of a cursor (mouse or touch) within a particular view.

@@ -2,7 +2,7 @@
 using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents UVSS trivia, such as a comment or white space.

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents the collection which makes up the content of an <see cref="ItemsControl"/>.

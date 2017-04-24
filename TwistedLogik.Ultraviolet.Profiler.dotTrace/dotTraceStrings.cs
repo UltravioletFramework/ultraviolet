@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
+namespace Ultraviolet.Profiler.dotTrace
 {
     /// <summary>
     /// Contains Ultraviolet's string resources.

@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a "set" trigger action, which sets the value of a dependency property when it is activated.

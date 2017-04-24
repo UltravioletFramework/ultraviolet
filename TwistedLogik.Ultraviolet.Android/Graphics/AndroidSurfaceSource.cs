@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Android.Graphics;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Android.Graphics
+namespace Ultraviolet.Android.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for the Android platform.

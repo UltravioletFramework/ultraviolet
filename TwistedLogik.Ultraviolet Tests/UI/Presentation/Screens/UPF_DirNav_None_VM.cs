@@ -1,7 +1,7 @@
-﻿using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+﻿using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Controls;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_DirNav_None_VM
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents an uninitialized object instance produced by a UVML template.

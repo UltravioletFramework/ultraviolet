@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents an exception that is thrown when the <see cref="UvssLexer"/> class encounters an error

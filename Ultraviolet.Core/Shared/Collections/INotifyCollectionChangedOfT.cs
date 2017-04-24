@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ultraviolet.Core.Collections
+﻿namespace Ultraviolet.Core.Collections
 {
     /// <summary>
     /// Represents the method that is called when the <see cref="INotifyCollectionChanged{TKey, TValue}.CollectionReset"/> event is raised.

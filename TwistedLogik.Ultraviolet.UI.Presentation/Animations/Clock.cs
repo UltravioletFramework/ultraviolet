@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
+namespace Ultraviolet.Presentation.Animations
 {
     /// <summary>
     /// Represents the method that is called when a clock's state changes.

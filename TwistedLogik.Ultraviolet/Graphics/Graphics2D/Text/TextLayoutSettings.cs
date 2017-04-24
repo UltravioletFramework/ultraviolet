@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents the settings used to specify the behavior of a <see cref="TextLayoutEngine"/>.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using Ultraviolet.Presentation.Uvss;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a content processor for the *.uvss file type.

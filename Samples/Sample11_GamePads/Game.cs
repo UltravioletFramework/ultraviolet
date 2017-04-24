@@ -2,13 +2,13 @@
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Input;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample11_GamePads.Assets;
 using UltravioletSample.Sample11_GamePads.Input;
 
@@ -23,7 +23,7 @@ namespace UltravioletSample.Sample11_GamePads
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 11 - Game Pads", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 11 - Game Pads", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }
@@ -126,7 +126,7 @@ namespace UltravioletSample.Sample11_GamePads
             textFormatter.Reset();
             textFormatter.AddArgument(playerIndex + 1);
             textFormatter.AddArgument(device == null ? "(not connected)" : device.Name);
-            textFormatter.AddArgument((device == null) ? "" : device.GetButtonState(TwistedLogik.Ultraviolet.Input.GamePadButton.A).ToString());
+            textFormatter.AddArgument((device == null) ? "" : device.GetButtonState(GamePadButton.A).ToString());
             textFormatter.Format("|c:FFFFFF00|Player {0}|c|\n{1}", textBuffer);
 
             var headerSettings = new TextLayoutSettings(font, area.Width, area.Height, TextFlags.AlignCenter | TextFlags.AlignTop);

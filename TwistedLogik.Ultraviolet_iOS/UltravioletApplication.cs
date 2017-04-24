@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 using System.Xml;
 using Foundation;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Messages;
+using Ultraviolet.Messages;
 using UIKit;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     partial class UltravioletApplication
     {

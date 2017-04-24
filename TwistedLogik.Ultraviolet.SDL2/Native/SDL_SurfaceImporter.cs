@@ -1,8 +1,8 @@
 ﻿using System.IO;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     /// <summary>
     /// Imports .bmp, .png, and .jpg files.

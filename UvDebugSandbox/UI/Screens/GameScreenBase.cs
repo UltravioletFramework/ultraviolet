@@ -1,7 +1,7 @@
 ﻿using System;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.UI;
 
 namespace UvDebugSandbox.UI.Screens
 {

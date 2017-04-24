@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.Desktop.Input
+namespace Ultraviolet.Desktop.Input
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for desktop platforms.

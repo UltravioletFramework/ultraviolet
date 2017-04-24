@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.Audio
+namespace Ultraviolet.Audio
 {
     /// <summary>
     /// Represents a tag which is part of a song's metadata.

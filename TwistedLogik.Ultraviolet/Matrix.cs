@@ -4,7 +4,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a 4x4 transformation matrix.

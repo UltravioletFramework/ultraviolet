@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a file or directory in an Ultraviolet content archive.

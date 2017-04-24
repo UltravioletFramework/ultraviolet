@@ -1,8 +1,8 @@
 ﻿using Foundation;
-using TwistedLogik.Ultraviolet.SDL2.UIKit;
+using Ultraviolet.SDL2.UIKit;
 using UIKit;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the Ultraviolet Framework's application delegate.

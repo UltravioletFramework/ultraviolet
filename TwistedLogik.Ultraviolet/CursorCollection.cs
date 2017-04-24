@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a collection of named <see cref="Cursor"/> objects.

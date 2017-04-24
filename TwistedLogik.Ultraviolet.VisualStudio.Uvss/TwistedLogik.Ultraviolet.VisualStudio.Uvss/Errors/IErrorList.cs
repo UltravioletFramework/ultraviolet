@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
+namespace Ultraviolet.VisualStudio.Uvss.Errors
 {
     /// <summary>
     /// Represents the error list for a document.

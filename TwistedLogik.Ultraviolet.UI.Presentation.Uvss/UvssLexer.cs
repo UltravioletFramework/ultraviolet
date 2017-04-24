@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents an Ultraviolet StyleSheets (UVSS) lexer which takes a raw string as its input and produces a 

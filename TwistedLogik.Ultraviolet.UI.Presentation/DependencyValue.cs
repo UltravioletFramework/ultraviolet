@@ -2,7 +2,7 @@
 using System.Globalization;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a raw dependency property value plus the culture with which it should be parsed. 

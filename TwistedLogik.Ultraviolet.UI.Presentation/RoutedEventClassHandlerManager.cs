@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the storage for class handlers for a particular UI element type.

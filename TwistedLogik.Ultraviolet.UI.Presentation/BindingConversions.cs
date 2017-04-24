@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains methods for performing conversions between values used by binding expressions.

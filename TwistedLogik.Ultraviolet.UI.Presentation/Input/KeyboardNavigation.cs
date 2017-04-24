@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Contains methods and attached properties used for performing keyboard navigation.
@@ -161,10 +161,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.AcceptsReturn"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.AcceptsReturn"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.AcceptsReturn"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.AcceptsReturn"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -184,10 +184,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.IsTabStop"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.IsTabStop"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.IsTabStop"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.IsTabStop"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -207,10 +207,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabIndex"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.TabIndex"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabIndex"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.TabIndex"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -230,10 +230,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabNavigation"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.TabNavigation"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.TabNavigation"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.TabNavigation"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -253,10 +253,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
         
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.ControlTabNavigation"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -276,10 +276,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Continue, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.DirectionalNavigation"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.DirectionalNavigation"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.KeyboardNavigation.DirectionalNavigation"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.KeyboardNavigation.DirectionalNavigation"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>

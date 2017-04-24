@@ -4,7 +4,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a circle with single-precision floating point radius and position.

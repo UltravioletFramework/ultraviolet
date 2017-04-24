@@ -4,7 +4,7 @@ using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Encapsulates the named resources used by an instance of the <see cref="TextLayoutCommandStream"/> class.

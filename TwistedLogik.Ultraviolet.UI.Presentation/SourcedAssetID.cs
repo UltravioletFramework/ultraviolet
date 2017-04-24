@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an asset identifier which is flagged as being either globally- or locally-sourced.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents a layout command containing information about the subsequent line of text.

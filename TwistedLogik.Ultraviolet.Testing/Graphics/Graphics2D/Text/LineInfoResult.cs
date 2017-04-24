@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+﻿using System;
+using NUnit.Framework;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
-namespace TwistedLogik.Ultraviolet.Testing.Graphics.Graphics2D.Text
+namespace Ultraviolet.Testing.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents a unit test result containing a <see cref="LineInfo"/> structure.

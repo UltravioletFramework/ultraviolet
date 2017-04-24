@@ -106,9 +106,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.BASS.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OpenGL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.OpenGL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Android\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
+      <HintPath>..\Dependencies\Android\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.SDL2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

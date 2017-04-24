@@ -2,7 +2,7 @@
 using System.Threading;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an identifier for a message send through the Ultraviolet context's message queue. 

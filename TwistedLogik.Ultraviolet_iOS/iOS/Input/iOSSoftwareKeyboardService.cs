@@ -1,9 +1,9 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.SDL2.UIKit;
+using Ultraviolet.Input;
+using Ultraviolet.SDL2.UIKit;
 using UIKit;
 
-namespace TwistedLogik.Ultraviolet.iOS.Input
+namespace Ultraviolet.iOS.Input
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for the iOS platform.

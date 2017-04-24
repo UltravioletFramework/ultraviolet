@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the set of lists in a Presentation Foundation resource pool that a particular object can be associated with.

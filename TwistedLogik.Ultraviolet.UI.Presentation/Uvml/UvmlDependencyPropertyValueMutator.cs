@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents a UVML mutator which sets a dependency property value.

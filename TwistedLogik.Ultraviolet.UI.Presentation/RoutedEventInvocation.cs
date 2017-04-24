@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains methods for generating invocation delegates for routed events.

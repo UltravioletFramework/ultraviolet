@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the supported types of continuity between a curve's keys.

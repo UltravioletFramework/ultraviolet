@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a panel which allows its children to dock to one of its four edges.
@@ -64,10 +64,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.DockPanel.Dock"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.DockPanel.Dock"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.DockPanel.Dock"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.DockPanel.Dock"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>

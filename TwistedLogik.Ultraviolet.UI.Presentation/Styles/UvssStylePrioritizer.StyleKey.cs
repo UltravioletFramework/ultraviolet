@@ -1,9 +1,9 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
-	partial class UvssStylePrioritizer
+    partial class UvssStylePrioritizer
 	{
 		/// <summary>
 		/// Represents the key which identifies a style + navigation expression.

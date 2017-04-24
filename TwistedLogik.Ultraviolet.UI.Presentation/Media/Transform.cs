@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
+namespace Ultraviolet.Presentation.Media
 {
     /// <summary>
     /// Represents a two-dimensional transformation.

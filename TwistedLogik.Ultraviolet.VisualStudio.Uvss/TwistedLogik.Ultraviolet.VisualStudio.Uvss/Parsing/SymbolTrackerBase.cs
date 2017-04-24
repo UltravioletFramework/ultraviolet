@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.Text;
-using System;
+﻿using System;
+using Microsoft.VisualStudio.Text;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
     /// <summary>
     /// Represents the base class for implementations of the <see cref="ISymbolTracker"/> interface.

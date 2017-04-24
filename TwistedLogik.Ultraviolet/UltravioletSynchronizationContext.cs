@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a custom synchronization context which marshalls asynchronous

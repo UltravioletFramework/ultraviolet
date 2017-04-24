@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents the context in which a glyph shader executes.

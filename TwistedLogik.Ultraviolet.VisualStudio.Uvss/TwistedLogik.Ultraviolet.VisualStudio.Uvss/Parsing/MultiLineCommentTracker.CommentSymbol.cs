@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.Text;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
     partial class MultiLineCommentTracker
     {

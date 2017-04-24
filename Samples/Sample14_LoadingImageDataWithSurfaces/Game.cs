@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Assets;
 using UltravioletSample.Sample14_LoadingImageDataWithSurfaces.Input;
 
@@ -19,7 +19,7 @@ namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 14 - Loading Image Data with Surfaces", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 14 - Loading Image Data with Surfaces", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

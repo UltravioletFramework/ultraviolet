@@ -2,7 +2,7 @@
 using System.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     partial class ContentImporterRegistry
     {

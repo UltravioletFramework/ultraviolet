@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ultraviolet;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Input;
 using UvDebugSandbox.UI.Dialogs;
 
 namespace UvDebugSandbox.UI.Screens

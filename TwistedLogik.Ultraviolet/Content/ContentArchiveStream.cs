@@ -2,7 +2,7 @@
 using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a <see cref="Stream"/> which exposes a resource contained by a <see cref="ContentArchive"/>.

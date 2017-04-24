@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+﻿namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents one of the actions that can be performed by the mouse.

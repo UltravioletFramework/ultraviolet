@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="FileSystemService"/> class.

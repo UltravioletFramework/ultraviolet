@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains extension methods used for serializing abstract syntax trees.

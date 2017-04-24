@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Input
+namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents the method that is called when an input action is pressed or released.

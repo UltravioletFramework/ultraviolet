@@ -1,12 +1,12 @@
 ﻿using System;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Testing;
-using TwistedLogik.Ultraviolet.Testing.Graphics.Graphics2D.Text;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Testing;
+using Ultraviolet.Testing.Graphics.Graphics2D.Text;
 
-namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
+namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
     [TestFixture]
     public class TextRendererTests : UltravioletApplicationTestFramework

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents an animated two-dimensional image.

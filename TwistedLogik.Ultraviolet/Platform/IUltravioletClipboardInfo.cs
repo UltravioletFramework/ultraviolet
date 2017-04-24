@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Contains methods for interacting with the system clipboard.

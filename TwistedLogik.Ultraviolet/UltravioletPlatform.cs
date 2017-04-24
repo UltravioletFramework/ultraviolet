@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the platforms on which an Ultraviolet application can run.

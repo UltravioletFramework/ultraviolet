@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ultraviolet.Core.Collections;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     partial class UIElementCollection
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Audio
+namespace Ultraviolet.Audio
 {
     /// <summary>
     /// Represents a song's collection of tags.

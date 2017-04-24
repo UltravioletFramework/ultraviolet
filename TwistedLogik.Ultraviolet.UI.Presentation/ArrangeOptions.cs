@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the options that can be specified for the <see cref="UIElement.Arrange(RectangleD, ArrangeOptions)"/> method.

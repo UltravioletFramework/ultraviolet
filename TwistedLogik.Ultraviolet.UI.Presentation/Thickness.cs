@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the thickness of a frame around a rectangle.

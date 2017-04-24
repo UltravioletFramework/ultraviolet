@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains routed events relating to view lifetimes.

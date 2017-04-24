@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the Ultraviolet Framework's graphics subsystem.

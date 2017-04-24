@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents an instance of <see cref="DataObjectRegistry{T}"/> which is designed for use with the Ultraviolet Framework.

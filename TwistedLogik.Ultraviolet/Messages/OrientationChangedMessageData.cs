@@ -1,7 +1,7 @@
 ﻿using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.Platform; 
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Messages
+namespace Ultraviolet.Messages
 {
     /// <summary>
     /// Represents the message data for an Orientation Changed message.

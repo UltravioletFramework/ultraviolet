@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the configuration settings for the Ultraviolet Presentation Foundation.

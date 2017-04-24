@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet
+﻿namespace Ultraviolet
 {
     /// <summary>
     /// Represents a collection of flags which modify the behavior of an instance of

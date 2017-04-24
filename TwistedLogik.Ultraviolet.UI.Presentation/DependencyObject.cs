@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an object that participates in the dependency property system.

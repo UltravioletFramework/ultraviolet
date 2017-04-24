@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
-    /// The <see cref="TwistedLogik.Ultraviolet.UI.Presentation"/> namespace contains core types relating to the Ultraviolet Presentation
+    /// The <see cref="Ultraviolet.Presentation"/> namespace contains core types relating to the Ultraviolet Presentation
     /// Foundation, which provides for the creation of XML-based graphical user interfaces.
     /// </summary>
     [CompilerGenerated]

@@ -1,5 +1,5 @@
-﻿using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Input;
+﻿using Ultraviolet;
+using Ultraviolet.Input;
 
 namespace UltravioletSample.Sample5_RenderingSprites.Input
 {

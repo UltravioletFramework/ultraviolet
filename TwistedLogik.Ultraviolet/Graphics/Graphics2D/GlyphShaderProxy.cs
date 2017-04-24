@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Core;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a proxy for a <see cref="GlyphShader"/> instance or a stack of <see cref="GlyphShader"/> instances.

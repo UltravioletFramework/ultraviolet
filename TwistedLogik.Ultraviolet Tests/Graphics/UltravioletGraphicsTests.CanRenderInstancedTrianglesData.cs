@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Tests.Graphics
+namespace Ultraviolet.Tests.Graphics
 {
     partial class UltravioletGraphicsTests
     {

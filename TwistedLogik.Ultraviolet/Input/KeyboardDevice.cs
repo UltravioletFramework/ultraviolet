@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Input
+namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents the method that is called when a keyboard button is pressed or released.

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// An intermediate representation of <see cref="Cursor"/> used during content processing.

@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents the arithmetic functions that may be used when blending alpha values.

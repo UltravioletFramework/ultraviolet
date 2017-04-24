@@ -2,9 +2,9 @@
 using System.IO;
 using Android.Graphics;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Android.Graphics
+namespace Ultraviolet.Android.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for the Android platform.

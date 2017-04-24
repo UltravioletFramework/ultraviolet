@@ -1,6 +1,6 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.OpenGL;
 
 namespace UltravioletSample.Sample1_CreatingAnApplication
 {
@@ -15,7 +15,7 @@ namespace UltravioletSample.Sample1_CreatingAnApplication
 #endif
     {
         public Game()
-            : base("TwistedLogik", "Sample 1 - Creating an Application")
+            : base("Ultraviolet", "Sample 1 - Creating an Application")
         {
             PlatformSpecificInitialization();
         }

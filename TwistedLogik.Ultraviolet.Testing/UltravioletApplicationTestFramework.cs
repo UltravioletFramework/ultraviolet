@@ -4,10 +4,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// Represents a unit test framework which hosts an instance of the Ultraviolet Framework.

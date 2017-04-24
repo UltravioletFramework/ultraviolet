@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains extension methods for the <see cref="SyntaxNode"/> class.

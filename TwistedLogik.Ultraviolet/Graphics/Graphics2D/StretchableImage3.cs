@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a stretchable 2D image with three segments.

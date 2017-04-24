@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet.Content;
+using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a Ultraviolet Style Sheet (UVSS) document which is composed of multiple smaller documents.

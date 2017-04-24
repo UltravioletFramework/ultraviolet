@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Input;
+﻿using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     partial class Keyboard
     {

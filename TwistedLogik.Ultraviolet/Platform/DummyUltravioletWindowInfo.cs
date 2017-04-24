@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Represents a dummy implementation of <see cref="IUltravioletWindowInfo"/>.

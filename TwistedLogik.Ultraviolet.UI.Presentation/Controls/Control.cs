@@ -1,11 +1,11 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Presentation.Documents;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a framework element which consists of multiple component elements.

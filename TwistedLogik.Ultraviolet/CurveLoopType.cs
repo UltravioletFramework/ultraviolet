@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the ways that a curve's values can loop after passing its beginning or end.

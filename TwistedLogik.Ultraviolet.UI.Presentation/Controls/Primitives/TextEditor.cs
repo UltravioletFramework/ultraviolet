@@ -2,12 +2,12 @@
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents the method that is called when a <see cref="TextEditor"/> is validating a character for entry.
@@ -39,7 +39,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -53,7 +53,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -1365,9 +1365,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<Color>(Color.Silver * 0.4f, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.TextEditor.TextEntryValidation"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when the text editor is validating text that has been entered.

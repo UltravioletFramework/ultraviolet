@@ -1,6 +1,6 @@
 ﻿using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a key identifying and providing write access to a particular read-only dependency property.

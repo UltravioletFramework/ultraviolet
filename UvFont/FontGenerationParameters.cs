@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TwistedLogik.Ultraviolet.Tooling;
+using Ultraviolet.Tooling;
 
 namespace UvFont
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.Text;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
+namespace Ultraviolet.VisualStudio.Uvss.Errors
 {
     /// <summary>
     /// Represents an error in a UVSS document.

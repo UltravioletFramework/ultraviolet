@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
+namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Represents the information needed to generate a data source wrapper.

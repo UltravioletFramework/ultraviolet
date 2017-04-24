@@ -1,11 +1,11 @@
 ﻿using System;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a vertex containing 2D position, color, and texture coordinate data, which is
-    /// used by the <see cref="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteBatch"/> class
+    /// used by the <see cref="Ultraviolet.Graphics.Graphics2D.SpriteBatch"/> class
     /// to render standard sprites.
     /// </summary>
     [Preserve(AllMembers = true)]

@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Content;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.Content
+namespace Ultraviolet.Tests.Content
 {
     [TestFixture]
     public class AssetIDTests : UltravioletApplicationTestFramework

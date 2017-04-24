@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using NUnit.Framework;
 using Ultraviolet.Core.Data;
 using Ultraviolet.Core.TestFramework;
 

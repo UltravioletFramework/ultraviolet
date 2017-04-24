@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents the instance data for a standard <see cref="SpriteBatch"/> sprite.

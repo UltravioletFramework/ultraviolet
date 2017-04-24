@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents the method that is called when a <see cref="UIPanel"/> raises an event.

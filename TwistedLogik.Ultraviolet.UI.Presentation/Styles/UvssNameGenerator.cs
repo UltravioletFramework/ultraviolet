@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Contains methods for generating standard UVSS-style names from C#-style names.

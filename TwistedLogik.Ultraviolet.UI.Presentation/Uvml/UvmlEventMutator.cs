@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents the base class for UVML mutators which modify event handlers.

@@ -1,10 +1,10 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
 using Ultraviolet.Core;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a slider.

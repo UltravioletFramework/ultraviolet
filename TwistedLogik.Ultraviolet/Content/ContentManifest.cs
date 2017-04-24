@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
-using TwistedLogik.Ultraviolet.Platform;
-using Newtonsoft.Json;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a manifest containing a list of related content assets.

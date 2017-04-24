@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.BASS.Native;
+using Ultraviolet.BASS.Native;
 
-namespace TwistedLogik.Ultraviolet.BASS.Audio
+namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
     /// Contains methods for manipulating BASS resources.

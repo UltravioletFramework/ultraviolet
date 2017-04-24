@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents a mouse gesture.

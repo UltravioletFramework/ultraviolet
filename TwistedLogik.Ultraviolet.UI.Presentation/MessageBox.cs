@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a modal message box.

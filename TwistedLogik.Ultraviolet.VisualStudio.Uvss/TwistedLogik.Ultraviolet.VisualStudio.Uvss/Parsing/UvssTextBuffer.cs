@@ -2,13 +2,13 @@
 using Microsoft.VisualStudio.Text;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
-	/// <summary>
-	/// Represents a wrapper around a text buffer which tracks various parameters
-	/// required by the UVSS document parser.
-	/// </summary>
-	public sealed class UvssTextBuffer
+    /// <summary>
+    /// Represents a wrapper around a text buffer which tracks various parameters
+    /// required by the UVSS document parser.
+    /// </summary>
+    public sealed class UvssTextBuffer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UvssTextBuffer"/> class.

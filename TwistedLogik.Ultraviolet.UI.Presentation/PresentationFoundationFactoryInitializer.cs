@@ -1,6 +1,7 @@
 ﻿using Ultraviolet.Core;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Initializes factory methods for the Ultraviolet Presentation Foundation.

@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents a token of formatted text after it has been positioned by the layout engine.

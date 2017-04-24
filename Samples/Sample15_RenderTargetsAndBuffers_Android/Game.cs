@@ -2,7 +2,7 @@
 using System.IO;
 using Android.Media;
 using Android.Webkit;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 using AndroidEnvironment = Android.OS.Environment;
 
 namespace UltravioletSample.Sample15_RenderTargetsAndBuffers

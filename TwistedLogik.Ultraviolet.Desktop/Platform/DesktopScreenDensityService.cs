@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Desktop.Platform
+namespace Ultraviolet.Desktop.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenDensityService"/> class for desktop platforms.

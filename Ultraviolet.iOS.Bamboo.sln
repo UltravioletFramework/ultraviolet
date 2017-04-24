@@ -10,7 +10,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.BASS", "TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.shproj", "{62E8C883-B858-4FCC-82EC-C313FEFBAD34}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.OpenGL", "TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.shproj", "{F04E0C37-AFC2-4B85-90C7-9D77DCFD074C}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL", "Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.shproj", "{F04E0C37-AFC2-4B85-90C7-9D77DCFD074C}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.SDL2", "TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.shproj", "{97309779-3045-4D98-8DE0-5F40A8DC1C5B}"
 EndProject
@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.iOS", "Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj", "{4628DF73-2C5C-4CD1-AB2C-197F6233504F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (iOS)", "TwistedLogik.Ultraviolet.OpenGL_iOS\TwistedLogik.Ultraviolet.OpenGL (iOS).csproj", "{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.iOS", "Ultraviolet.OpenGL\iOS\Ultraviolet.OpenGL.iOS.csproj", "{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS)", "TwistedLogik.Ultraviolet.UI.Presentation.Uvss_iOS\TwistedLogik.Ultraviolet.UI.Presentation.Uvss (iOS).csproj", "{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}"
 EndProject
@@ -43,11 +43,11 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}*SharedItemsImports = 4
+		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{356ec667-7f8b-4dbe-a854-c70b7bb9adb3}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.Profiler.dotTrace\TwistedLogik.Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
+		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{65ecb0c3-fd4e-494a-a000-43500b9cb851}*SharedItemsImports = 4
 		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13

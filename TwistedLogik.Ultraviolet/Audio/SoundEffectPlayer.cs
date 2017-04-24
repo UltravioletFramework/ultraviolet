@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Audio
+namespace Ultraviolet.Audio
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="SoundEffectPlayer"/> class.

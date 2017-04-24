@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents an Ultraviolet Style Sheet document's representation of an animation keyframe.

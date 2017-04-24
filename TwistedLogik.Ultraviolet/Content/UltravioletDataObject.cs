@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents an instance of <see cref="DataObject"/> which is designed for use with the Ultraviolet Framework.

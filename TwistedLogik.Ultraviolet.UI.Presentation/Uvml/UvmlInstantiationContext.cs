@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using Ultraviolet.Presentation.Controls;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents the instantiation context for a UVML template.

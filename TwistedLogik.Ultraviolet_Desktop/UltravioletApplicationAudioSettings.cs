@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an Ultraviolet application's internal audio settings.

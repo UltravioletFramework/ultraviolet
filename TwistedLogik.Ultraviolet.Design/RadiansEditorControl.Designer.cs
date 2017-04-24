@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Design
+﻿namespace Ultraviolet.Design
 {
     partial class RadiansEditorControl
     {

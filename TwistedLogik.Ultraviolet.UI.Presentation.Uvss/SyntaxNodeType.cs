@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+﻿namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains the types of syntax nodes which are recognized by the serialization system.

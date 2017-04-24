@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a pooled collection of <see cref="CursorTracker"/> instances used for

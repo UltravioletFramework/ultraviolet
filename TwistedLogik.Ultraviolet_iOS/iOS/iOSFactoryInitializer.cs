@@ -1,12 +1,12 @@
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.iOS.Graphics;
-using TwistedLogik.Ultraviolet.iOS.Input;
-using TwistedLogik.Ultraviolet.iOS.Platform;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.iOS.Graphics;
+using Ultraviolet.iOS.Input;
+using Ultraviolet.iOS.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.iOS
+namespace Ultraviolet.iOS
 {
     /// <summary>
     /// Initializes factory methods for the iOS platform compatibility shim.

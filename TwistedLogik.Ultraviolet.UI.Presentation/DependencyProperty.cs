@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a method which sets the value of a styled property on a dependency object.

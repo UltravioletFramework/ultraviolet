@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an application component which participates in an Ultraviolet context.

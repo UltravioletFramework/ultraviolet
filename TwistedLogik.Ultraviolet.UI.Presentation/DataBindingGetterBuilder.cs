@@ -6,7 +6,7 @@ using System.Reflection;
 using Ultraviolet.Core;
 #endif
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an object which builds instances of <see cref="DataBindingGetter{T}"/>.

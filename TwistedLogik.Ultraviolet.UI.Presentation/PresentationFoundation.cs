@@ -1,6 +1,4 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using Ultraviolet.Core.Data;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,12 +6,13 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
 using Ultraviolet.Core.Collections;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the state of the Ultraviolet Presentation Foundation.

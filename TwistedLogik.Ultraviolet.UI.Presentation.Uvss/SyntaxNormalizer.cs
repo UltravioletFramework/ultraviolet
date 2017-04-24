@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using System.Linq;
+using System.Text;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents a syntax visitor which normalizes white space.

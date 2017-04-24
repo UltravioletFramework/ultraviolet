@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_ArrangesComplexScreenCorrectly : TestScreenBase<UPF_ArrangesComplexScreenCorrectly_VM>
     {

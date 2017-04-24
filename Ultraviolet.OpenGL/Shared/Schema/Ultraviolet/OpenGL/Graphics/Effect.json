@@ -1,0 +1,44 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.OpenGL.Graphics.OpenGLEffectImplementation Schema",
+  "type": "object",
+  "properties": {
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "techniques": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "passes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "stages": {
+                  "type": "object",
+                  "properties": {
+                    "vert": { "type": "string" },
+                    "gles_vert": { "type": "string" },
+                    "frag": { "type": "string" },
+                    "gles_frag": { "type": "string" }
+                  },
+                  "required": [ "vert", "frag" ]
+                }
+              },
+              "required": [ "stages" ]
+            }
+          }
+        },
+        "required": [ "passes" ]
+      }
+    }
+  },
+  "required": [ "techniques" ]
+}

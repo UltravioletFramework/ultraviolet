@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents the token stream produced by parsing formatted text.

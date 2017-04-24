@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.BASS.Native
+namespace Ultraviolet.BASS.Native
 {
     internal delegate UInt32 StreamProc(UInt32 handle, IntPtr buffer, UInt32 length, IntPtr user);
 

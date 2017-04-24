@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+﻿namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents a set of values which determine how keyboard controls navigate through a particular element.

@@ -1,8 +1,8 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.Content;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public abstract class TestScreenBase<TViewModel> : UIScreen
         where TViewModel : class, new()

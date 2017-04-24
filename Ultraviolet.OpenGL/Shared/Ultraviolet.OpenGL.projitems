@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f04e0c37-afc2-4b85-90c7-9d77dcfd074c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Ultraviolet.OpenGL</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendEquation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedCapability.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearDepth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearStencil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedColorMask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedCulledFace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedDepthFunc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedDepthMask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedFrontFace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedPolygonMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedPolygonOffset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedStencilFunc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedStencilOp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\EffectImplementationProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteBatchEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\OpenGLSpriteFontTextureProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\CharacterRegionDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFacesDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFaceGlyphsDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontFaceDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontDescription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IBindableResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IOpenGLResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLAttribCategory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBasicEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlendState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLBlurEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLDepthStencilState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocumentV2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocumentV1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectImplementationProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectParameterDataType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectPass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectPassCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectTechnique.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectTechniqueCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShader.cs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShaderImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShaderProcessor.cs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLGeometryStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLGeometryStream.VertexBufferBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLGraphicsCapabilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLIndexBuffer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRasterizerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRenderBuffer2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLRenderTarget2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSamplerObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSamplerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgram.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderProgramCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderUniform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderUniformCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLStateInteger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSurface2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSurface2DProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessorMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexBuffer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursorProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphicsFactoryInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletPlatform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletClipboardInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletDisplay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletDisplayInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletWindow.NativeMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletWindowInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
+    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.OpenGL.Licenses.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

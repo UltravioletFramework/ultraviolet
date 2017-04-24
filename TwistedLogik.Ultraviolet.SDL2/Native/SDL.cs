@@ -5,7 +5,7 @@ using Ultraviolet.Core;
 
 #pragma warning disable 1591
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     /// <summary>
     /// Contains bindings for native SDL2 function calls.

@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+﻿namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents the supported options for searching within a <see cref="TextLayoutCommandStream"/> for a particular glyph or insertion point.

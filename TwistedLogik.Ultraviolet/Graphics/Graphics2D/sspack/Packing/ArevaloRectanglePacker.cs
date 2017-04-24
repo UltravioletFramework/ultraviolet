@@ -26,7 +26,7 @@
 
 using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet;
+using Ultraviolet;
 
 namespace sspack
 {

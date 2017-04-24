@@ -1,9 +1,9 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Presentation.Media;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents a UI element which is a visual clone of another UI element.

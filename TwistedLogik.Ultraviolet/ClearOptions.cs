@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the set of buffers which will be cleared by the <see cref="IUltravioletGraphics.Clear(ClearOptions, Color, Double, Int32)"/> method.

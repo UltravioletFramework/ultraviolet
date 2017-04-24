@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 using UIKit;
 
-namespace TwistedLogik.Ultraviolet.iOS.Platform
+namespace Ultraviolet.iOS.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenDensityService"/> class for the iOS platform.

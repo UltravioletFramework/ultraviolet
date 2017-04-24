@@ -1,6 +1,7 @@
 ﻿using System;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains methods for initializing the Presentation Foundation.

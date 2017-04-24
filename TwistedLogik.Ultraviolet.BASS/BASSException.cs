@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet.BASS.Native;
+using Ultraviolet.BASS.Native;
 
-namespace TwistedLogik.Ultraviolet.BASS
+namespace Ultraviolet.BASS
 {
     /// <summary>
     /// Represents an exception thrown as a result of a BASS API error.

@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D
+namespace Ultraviolet.Tests.Graphics.Graphics2D
 {
     [TestFixture]
     public class SpriteBatchTests : UltravioletApplicationTestFramework

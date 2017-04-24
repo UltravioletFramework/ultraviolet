@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
+namespace Ultraviolet.Presentation.Media
 {
     /// <summary>
     /// Contains helper methods for performing hit testing.

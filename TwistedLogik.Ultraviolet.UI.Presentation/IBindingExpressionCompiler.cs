@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an object which can compile an application's UPF binding expressions into a managed assembly.

@@ -1,9 +1,9 @@
 ﻿using System;
+using Ultraviolet.Audio;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.BASS.Audio
+namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
     /// Loads song assets.

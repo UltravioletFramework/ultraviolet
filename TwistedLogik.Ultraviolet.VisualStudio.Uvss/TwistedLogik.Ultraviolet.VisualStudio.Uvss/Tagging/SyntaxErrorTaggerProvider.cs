@@ -4,9 +4,9 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Tagging
+namespace Ultraviolet.VisualStudio.Uvss.Tagging
 {
-	[Export(typeof(IViewTaggerProvider))]
+    [Export(typeof(IViewTaggerProvider))]
     [TagType(typeof(IErrorTag))]
     [ContentType("uvss")]
     internal sealed class SyntaxErrorTaggerProvider : IViewTaggerProvider

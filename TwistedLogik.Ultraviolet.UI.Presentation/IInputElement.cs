@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents an element capable of basic input handling.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+namespace Ultraviolet.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a UVSS selector with a trailing navigation expression.

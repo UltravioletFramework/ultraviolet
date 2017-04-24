@@ -6,15 +6,15 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
-using TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
+using Ultraviolet.VisualStudio.Uvss.Parsing;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
+namespace Ultraviolet.VisualStudio.Uvss.Errors
 {
-	/// <summary>
-	/// Represents the error list for a document.
-	/// </summary>
-	public sealed class ErrorList : IErrorList, IDisposable
+    /// <summary>
+    /// Represents the error list for a document.
+    /// </summary>
+    public sealed class ErrorList : IErrorList, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorList"/> class.

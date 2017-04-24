@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+﻿namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents the directions in which the user can navigate through the text editor.

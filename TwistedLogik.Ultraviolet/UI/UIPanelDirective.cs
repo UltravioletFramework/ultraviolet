@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a directive indicating how a <see cref="UIPanelDefinition"/> should be processed.

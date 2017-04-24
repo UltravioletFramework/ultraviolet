@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_KeyNav_SuppressTab_VM, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_KeyNav_SuppressTab_VM, TwistedLogik.Ultraviolet.Tests">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
       <TextBox Name="tb1" Width="200"/>

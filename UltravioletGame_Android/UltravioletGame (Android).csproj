@@ -176,7 +176,7 @@
       <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_Android\TwistedLogik.Ultraviolet.OpenGL %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL\Android\Ultraviolet.OpenGL.Android.csproj">
       <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
       <Name>TwistedLogik.Ultraviolet.OpenGL %28Android%29</Name>
     </ProjectReference>
@@ -195,7 +195,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f6c64886-59bf-4dfd-af10-53c1700ee20d" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

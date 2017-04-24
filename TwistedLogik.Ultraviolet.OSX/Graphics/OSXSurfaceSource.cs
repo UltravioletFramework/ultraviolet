@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 using AppKit;
 using CoreGraphics;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.OSX.Graphics
+namespace Ultraviolet.OSX.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for Mac OS X.

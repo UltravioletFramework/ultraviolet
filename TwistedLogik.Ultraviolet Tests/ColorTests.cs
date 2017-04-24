@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests
+namespace Ultraviolet.Tests
 {
     [TestFixture]
     public class ColorTests : UltravioletTestFramework

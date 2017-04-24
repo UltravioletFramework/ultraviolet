@@ -6,7 +6,7 @@ using ObjCRuntime;
 using OpenGLES;
 using UIKit;
 
-namespace TwistedLogik.Ultraviolet.SDL2.UIKit
+namespace Ultraviolet.SDL2.UIKit
 {
     // @interface SDLUIKitDelegate : NSObject <UIApplicationDelegate>
     [BaseType (typeof (UIApplicationDelegate))]

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample2_HandlingInput.Input;
 
 namespace UltravioletSample.Sample2_HandlingInput
@@ -17,7 +17,7 @@ namespace UltravioletSample.Sample2_HandlingInput
 #endif
     {
         public Game()
-            : base("TwistedLogik", "Sample 2 - Handling Input")
+            : base("Ultraviolet", "Sample 2 - Handling Input")
         {
             PlatformSpecificInitialization();
         }

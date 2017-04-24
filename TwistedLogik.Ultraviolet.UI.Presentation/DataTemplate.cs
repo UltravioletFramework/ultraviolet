@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Xml.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvml;
+using Ultraviolet.Presentation.Uvml;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Describes the visual structure of a data object.

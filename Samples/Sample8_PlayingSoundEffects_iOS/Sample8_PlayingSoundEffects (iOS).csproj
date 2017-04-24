@@ -186,8 +186,8 @@
     <Reference Include="TwistedLogik.Ultraviolet.SDL2.UIKit">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.UIKit.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\iOS\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>

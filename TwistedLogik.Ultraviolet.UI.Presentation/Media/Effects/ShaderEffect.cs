@@ -1,7 +1,7 @@
-﻿using TwistedLogik.Ultraviolet.Content;
-using GraphicsEffect = TwistedLogik.Ultraviolet.Graphics.Effect;
+﻿using Ultraviolet.Content;
+using GraphicsEffect = Ultraviolet.Graphics.Effect;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
+namespace Ultraviolet.Presentation.Media.Effects
 {
     /// <summary>
     /// Represents the base class for <see cref="Effect"/> types which use a graphical shader effect to provide their effect.

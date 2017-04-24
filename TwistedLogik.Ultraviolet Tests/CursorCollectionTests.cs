@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests
+namespace Ultraviolet.Tests
 {
     [TestFixture]
     [Category("Content")]

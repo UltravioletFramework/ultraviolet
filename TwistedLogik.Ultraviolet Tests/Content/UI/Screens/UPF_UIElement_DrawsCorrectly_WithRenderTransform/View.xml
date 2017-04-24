@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_UIElement_DrawsCorrectly_WithRenderTransform_VM, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_UIElement_DrawsCorrectly_WithRenderTransform_VM, TwistedLogik.Ultraviolet.Tests">
 
     <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FillColor="#ffffffff"/>
     

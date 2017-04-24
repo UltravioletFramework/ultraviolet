@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.SDL2;
-using TwistedLogik.Ultraviolet.SDL2.Messages;
-using TwistedLogik.Ultraviolet.SDL2.Native;
-using TwistedLogik.Ultraviolet.Testing.Graphics;
-using TwistedLogik.Ultraviolet.UI.Presentation;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.OpenGL;
+using Ultraviolet.Presentation;
+using Ultraviolet.SDL2;
+using Ultraviolet.SDL2.Messages;
+using Ultraviolet.SDL2.Native;
+using Ultraviolet.Testing.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// An Ultraviolet application used for unit testing.

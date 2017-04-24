@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+namespace Ultraviolet.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents a trigger node which does not have enough information to determine

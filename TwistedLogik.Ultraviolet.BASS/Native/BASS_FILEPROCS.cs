@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.BASS.Native
+namespace Ultraviolet.BASS.Native
 {
     internal delegate void FileCloseProc(IntPtr user);
     internal delegate UInt64 FileLenProc(IntPtr user);

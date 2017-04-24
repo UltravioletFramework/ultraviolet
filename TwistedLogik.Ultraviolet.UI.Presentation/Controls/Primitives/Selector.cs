@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
+namespace Ultraviolet.Presentation.Controls.Primitives
 {
     /// <summary>
     /// Represents a control that allows the user to select items.
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Selected"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the event handler.</param>
@@ -84,7 +84,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Unselected"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the event handler.</param>
@@ -95,7 +95,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Selected"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the event handler.</param>
@@ -106,7 +106,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Unselected"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the event handler.</param>
@@ -185,23 +185,23 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             new PropertyMetadata<Object>(null, HandleSelectedItemChanged));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Primitives.Selector.IsSelected"/> attached property.</value>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.RegisterAttached("IsSelected", typeof(Boolean), typeof(Selector), 
             new PropertyMetadata<Boolean>());
 
         /// <summary>
-        /// The private access key for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> read-only attached dependency property.
+        /// The private access key for the <see cref="P:Ultraviolet.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> read-only attached dependency property.
         /// </summary>
         private static readonly DependencyPropertyKey IsSelectionActivePropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsSelectionActive", typeof(Boolean), typeof(Selector),
             new PropertyMetadata<Boolean>());
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> 
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> 
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> 
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Primitives.Selector.IsSelectionActive"/> 
         /// attached property.</value>
         public static readonly DependencyProperty IsSelectionActiveProperty = IsSelectionActivePropertyKey.DependencyProperty;
 
@@ -213,9 +213,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/> attached event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Selected"/> attached event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Selected"/> attached event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Selected"/> attached event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when an item within a selector is selected.
@@ -233,9 +233,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives
             typeof(UpfRoutedEventHandler), typeof(Selector));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/> attached event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Unselected"/> attached event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives.Selector.Unselected"/> attached event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Controls.Primitives.Selector.Unselected"/> attached event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when an item within a selector is unselected.

@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
+namespace Ultraviolet.Profiler.dotTrace
 {
     partial class dotTraceProfiler
     {

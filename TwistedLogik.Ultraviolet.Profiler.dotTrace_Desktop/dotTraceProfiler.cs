@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JetBrains.dotTrace.Api;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
+namespace Ultraviolet.Profiler.dotTrace
 {
     /// <summary>
     /// Represents an Ultraviolet profiler that uses the JetBrains dotTrace API for profiling.

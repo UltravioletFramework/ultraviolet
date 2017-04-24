@@ -3,10 +3,10 @@ using System.IO;
 using CoreGraphics;
 using Foundation;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 using UIKit;
 
-namespace TwistedLogik.Ultraviolet.iOS.Graphics
+namespace Ultraviolet.iOS.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for the iOS platform.

@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents the comparison functions used by alpha, stencil, and depth buffer tests.

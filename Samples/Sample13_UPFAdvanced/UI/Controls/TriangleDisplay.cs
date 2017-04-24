@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Input;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.Content.UI.Controls
 {

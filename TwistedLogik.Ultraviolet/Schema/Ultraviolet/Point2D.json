@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Point2D Schema",
+  "title": "Ultraviolet.Point2D Schema",
   "type": "object",
   "properties": {
     "x": {

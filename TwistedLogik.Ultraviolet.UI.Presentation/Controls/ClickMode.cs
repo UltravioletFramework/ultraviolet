@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+﻿namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents the time at which a button should raise its <see cref="Primitives.ButtonBase.Click"/> event.

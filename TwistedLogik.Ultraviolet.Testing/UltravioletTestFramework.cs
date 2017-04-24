@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Ultraviolet.Core.TestFramework;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// Represents the test framework for Ultraviolet unit tests.

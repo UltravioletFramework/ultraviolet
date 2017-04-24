@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+﻿namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents the casing which is applies to characters in a <see cref="TextBox"/> control.

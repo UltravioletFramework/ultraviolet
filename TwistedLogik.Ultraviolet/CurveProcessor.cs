@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a content processor which processes XNA-formatted 

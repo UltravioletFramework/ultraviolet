@@ -2,7 +2,7 @@
 using Ultraviolet.Core.Collections;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the extended event data for a <see cref="UpfCanExecuteRoutedEventHandler"/> delegate.

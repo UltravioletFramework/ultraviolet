@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents the ways in which a sprite batch can sort its sprites.

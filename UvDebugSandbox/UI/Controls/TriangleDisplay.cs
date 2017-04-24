@@ -1,10 +1,10 @@
 ﻿using System;
+using Ultraviolet;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Input;
 
 namespace UvDebugSandbox.Content.UI.Controls
 {

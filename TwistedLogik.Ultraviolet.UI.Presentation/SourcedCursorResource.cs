@@ -1,9 +1,9 @@
 ﻿using System;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the underlying cursor resource of a <see cref="SourcedCursor"/> structure.

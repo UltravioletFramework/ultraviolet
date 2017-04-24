@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the Ultraviolet Framework's configuration settings.
@@ -30,7 +30,7 @@ namespace TwistedLogik.Ultraviolet
 
         /// <summary>
         /// Gets or sets the full name of the assembly which is responsible for
-        /// creating and managing instances of the <see cref="TwistedLogik.Ultraviolet.UI.UIView"/> class.
+        /// creating and managing instances of the <see cref="Ultraviolet.UI.UIView"/> class.
         /// </summary>
         public String ViewProviderAssembly
         {

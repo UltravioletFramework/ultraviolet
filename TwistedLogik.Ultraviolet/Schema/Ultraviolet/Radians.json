@@ -1,5 +1,5 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Radians Schema",
+  "title": "Ultraviolet.Radians Schema",
   "type": "number"
 }

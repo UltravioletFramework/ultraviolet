@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Vector3 Schema",
+  "title": "Ultraviolet.Vector3 Schema",
   "type": "object",
   "properties": {
     "x": {

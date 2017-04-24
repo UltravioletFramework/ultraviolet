@@ -1,8 +1,8 @@
-﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.BASS.Audio;
+﻿using Ultraviolet.Audio;
+using Ultraviolet.BASS.Audio;
+using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.BASS
+namespace Ultraviolet.BASS
 {
     /// <summary>
     /// Initializes factory methods for the BASS implementation of the audio subsystem.

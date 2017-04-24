@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace TwistedLogik.Ultraviolet.Audio
+namespace Ultraviolet.Audio
 {
     /// <summary>
-    /// The <see cref="TwistedLogik.Ultraviolet.Audio"/> namespace contains types relating to Ultraviolet's audio subsystem.
+    /// The <see cref="Ultraviolet.Audio"/> namespace contains types relating to Ultraviolet's audio subsystem.
     /// </summary>
     [CompilerGenerated]
     class NamespaceDoc

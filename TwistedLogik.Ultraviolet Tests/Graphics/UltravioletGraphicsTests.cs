@@ -1,10 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.Graphics
+namespace Ultraviolet.Tests.Graphics
 {
     [TestFixture]
     public partial class UltravioletGraphicsTests : UltravioletApplicationTestFramework

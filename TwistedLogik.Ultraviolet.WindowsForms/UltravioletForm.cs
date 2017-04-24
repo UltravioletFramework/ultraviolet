@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Ultraviolet.Core;
 using Timer = System.Windows.Forms.Timer;
 
-namespace TwistedLogik.Ultraviolet.WindowsForms
+namespace Ultraviolet.WindowsForms
 {
     /// <summary>
     /// Represents the primary Form for a Windows Forms application using the Ultraviolet engine.

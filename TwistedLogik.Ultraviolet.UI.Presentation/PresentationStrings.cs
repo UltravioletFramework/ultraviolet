@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains the Ultraviolet Presentation Foundation's string resources.

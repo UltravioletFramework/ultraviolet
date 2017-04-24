@@ -4,7 +4,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents a UVML node which produces a literal value.

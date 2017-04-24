@@ -1,9 +1,9 @@
 ﻿using System;
+using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.BASS.Native;
 
-namespace TwistedLogik.Ultraviolet.BASS
+namespace Ultraviolet.BASS
 {
     /// <summary>
     /// Represents the BASS implementation of the Ultraviolet audio subsystem.

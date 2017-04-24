@@ -1,12 +1,12 @@
-﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Android.Graphics;
-using TwistedLogik.Ultraviolet.Android.Input;
-using TwistedLogik.Ultraviolet.Android.Platform;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
+﻿using Ultraviolet.Android.Graphics;
+using Ultraviolet.Android.Input;
+using Ultraviolet.Android.Platform;
+using Ultraviolet.Core;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Android
+namespace Ultraviolet.Android
 {
     /// <summary>
     /// Initializes factory methods for the Android platform compatibility shim.

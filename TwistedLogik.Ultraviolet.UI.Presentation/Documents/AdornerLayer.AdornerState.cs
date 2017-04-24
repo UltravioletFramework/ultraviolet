@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
+namespace Ultraviolet.Presentation.Documents
 {
     partial class AdornerLayer
     {

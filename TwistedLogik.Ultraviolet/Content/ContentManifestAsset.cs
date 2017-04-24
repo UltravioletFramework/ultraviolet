@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents an individual asset within a content manifest.

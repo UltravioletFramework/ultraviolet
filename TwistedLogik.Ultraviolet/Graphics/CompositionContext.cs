@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics
+﻿namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents the various composition contexts exposed by Ultraviolet which can be used by

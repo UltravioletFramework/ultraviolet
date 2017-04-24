@@ -3,9 +3,9 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
+namespace Ultraviolet.VisualStudio.Uvss.Classification
 {
-	[Export(typeof(IClassifierProvider))]
+    [Export(typeof(IClassifierProvider))]
     [ContentType("uvss")]
     internal class UvssClassifierProvider : IClassifierProvider
     {

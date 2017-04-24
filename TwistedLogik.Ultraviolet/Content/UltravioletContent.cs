@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents the core implementation of the Ultraviolet content subsystem.

@@ -7,7 +7,7 @@ using Ultraviolet.Core;
 using System.Linq.Expressions;
 #endif
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a custom interpolation function.

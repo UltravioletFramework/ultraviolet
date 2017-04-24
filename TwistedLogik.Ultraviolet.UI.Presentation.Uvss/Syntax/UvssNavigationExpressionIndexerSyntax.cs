@@ -2,7 +2,7 @@
 using System.IO;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax
+namespace Ultraviolet.Presentation.Uvss.Syntax
 {
     /// <summary>
     /// Represents the indexing operator of a UVSS navigation expression.

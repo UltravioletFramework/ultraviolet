@@ -1,6 +1,6 @@
 ﻿using System;
-using Ultraviolet.Core.Data;
 using Newtonsoft.Json;
+using Ultraviolet.Core.Data;
 
 namespace Ultraviolet.Core.Tests.Data
 {

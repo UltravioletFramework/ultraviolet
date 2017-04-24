@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
-using System.Reflection;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the method that is called when a command is executed.
@@ -45,7 +45,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewExecuted"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -59,7 +59,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.Executed"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.Executed"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewCanExecute"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewCanExecute"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -87,7 +87,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.CanExecute"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.CanExecute"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -101,7 +101,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewExecuted"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -115,7 +115,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.Executed"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.Executed"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -129,7 +129,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewCanExecute"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewCanExecute"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -143,7 +143,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.CanExecute"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.CanExecute"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -224,10 +224,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewExecuted"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewExecuted"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -243,7 +243,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.Executed"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.CommandManager.Executed"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -252,10 +252,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             RoutingStrategy.Tunnel, typeof(UpfExecutedRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.Executed"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.Executed"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.Executed"/>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.Executed"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -271,7 +271,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewExecuted"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewExecuted"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -280,10 +280,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             RoutingStrategy.Bubble, typeof(UpfExecutedRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewCanExecute"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewCanExecute"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewCanExecute"/>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewCanExecute"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -299,7 +299,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.CanExecute"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.CommandManager.CanExecute"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -308,10 +308,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             RoutingStrategy.Tunnel, typeof(UpfCanExecuteRoutedEventHandler), typeof(CommandManager));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.CanExecute"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.CanExecute"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.CanExecute"/>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.CommandManager.CanExecute"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -327,7 +327,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.CommandManager.PreviewCanExecute"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.CommandManager.PreviewCanExecute"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>

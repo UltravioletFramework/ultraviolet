@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Contains useful debugging methods.

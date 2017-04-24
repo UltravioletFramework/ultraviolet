@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an enumerable collection of named objects.
@@ -43,7 +43,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets a collection containing the keys in the <see cref="TwistedLogik.Ultraviolet.UltravioletNamedCollection{T}"/>.
+        /// Gets a collection containing the keys in the <see cref="Ultraviolet.UltravioletNamedCollection{T}"/>.
         /// </summary>
         public Dictionary<String, T>.KeyCollection Keys
         {
@@ -51,7 +51,7 @@ namespace TwistedLogik.Ultraviolet
         }
 
         /// <summary>
-        /// Gets a collection containing the values in the <see cref="TwistedLogik.Ultraviolet.UltravioletNamedCollection{T}"/>.
+        /// Gets a collection containing the values in the <see cref="Ultraviolet.UltravioletNamedCollection{T}"/>.
         /// </summary>
         public Dictionary<String, T>.ValueCollection Values
         {

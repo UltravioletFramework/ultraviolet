@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the method that is called when a UI element receives an axis changed event from a game pad device.
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisChanged"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -99,7 +99,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -113,7 +113,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisUp"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -127,7 +127,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonDown"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -141,7 +141,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonUp"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -155,7 +155,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisChanged"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -169,7 +169,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisDown"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -183,7 +183,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisUp"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -197,7 +197,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonDown"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -211,7 +211,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonUp"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -225,7 +225,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisChanged"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -239,7 +239,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -253,7 +253,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisUp"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -267,7 +267,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonDown"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -281,7 +281,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonUp"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -295,7 +295,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisChanged"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -309,7 +309,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisUp"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisDown"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -337,7 +337,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonDown"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -351,7 +351,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonUp"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -410,9 +410,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisChanged"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisChanged"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when the value of a game pad axis changes while the element has focus.
@@ -427,7 +427,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisChanged"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -436,9 +436,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadAxisChangedEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad axis moves crosses over the <see cref="GamePadDevice.AxisDownThreshold"/> value into the "down" state
@@ -454,7 +454,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -463,9 +463,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadAxisDownEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisUp"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisUp"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad axis crosses over the <see cref="GamePadDevice.AxisDownThreshold"/> value into the "up" state
@@ -481,7 +481,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -490,9 +490,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadAxisUpEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonDown"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonDown"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad button enters the "down" state while the element has focus.
@@ -507,7 +507,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -516,9 +516,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadButtonDownEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonUp"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonUp"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad button enters the "up" state while the element has focus.
@@ -533,7 +533,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -542,9 +542,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadButtonUpEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisChanged"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisChanged"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when the value of a game pad axis changes while the element has focus.
@@ -559,7 +559,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisChanged"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -568,9 +568,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadAxisChangedEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisDown"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisDown"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad axis moves crosses over the <see cref="GamePadDevice.AxisDownThreshold"/> value into the "down" state
@@ -586,7 +586,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -595,9 +595,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadAxisDownEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisUp"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisUp"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad axis moves crosses over the <see cref="GamePadDevice.AxisDownThreshold"/> value into the "down" state
@@ -613,7 +613,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -622,9 +622,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadAxisUpEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonDown"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonDown"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad button enters the "down" state while the element has focus.
@@ -639,7 +639,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -648,9 +648,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfGamePadButtonDownEventHandler), typeof(GamePad));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> attached routed event.
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonUp"/> attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> attached routed event.</value>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonUp"/> attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
         /// Occurs when a game pad button enters the "up" state while the element has focus.
@@ -665,7 +665,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -679,7 +679,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         public static GamePadDevice PrimaryDevice => gamePadState.Value.PrimaryDevice;
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisChanged"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisChanged"/> attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
         {
@@ -688,7 +688,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/> attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
@@ -697,7 +697,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisUp"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisUp"/> attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data)
         {
@@ -706,7 +706,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewAxisDown"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewAxisDown"/> attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
@@ -715,7 +715,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.PreviewButtonUp"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.PreviewButtonUp"/> attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data)
         {
@@ -724,7 +724,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisChanged"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisChanged"/> attached event for the specified element.
         /// </summary>
         internal static void RaiseAxisChanged(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, RoutedEventData data)
         {
@@ -733,7 +733,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisDown"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisDown"/> attached event for the specified element.
         /// </summary>
         internal static void RaiseAxisDown(DependencyObject element, GamePadDevice device, GamePadAxis axis, Single value, Boolean repeat, RoutedEventData data)
         {
@@ -742,7 +742,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.AxisUp"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.AxisUp"/> attached event for the specified element.
         /// </summary>
         internal static void RaiseAxisUp(DependencyObject element, GamePadDevice device, GamePadAxis axis, RoutedEventData data)
         {
@@ -751,7 +751,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonDown"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonDown"/> attached event for the specified element.
         /// </summary>
         internal static void RaiseButtonDown(DependencyObject element, GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
@@ -760,7 +760,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.GamePad.ButtonUp"/> attached event for the specified element.
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.GamePad.ButtonUp"/> attached event for the specified element.
         /// </summary>
         internal static void RaiseButtonUp(DependencyObject element, GamePadDevice device, GamePadButton button, RoutedEventData data)
         {

@@ -5,7 +5,7 @@ using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents a method which determines the color with which to draw a link.

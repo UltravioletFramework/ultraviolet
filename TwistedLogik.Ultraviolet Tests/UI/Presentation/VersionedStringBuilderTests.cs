@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Testing;
-using TwistedLogik.Ultraviolet.UI.Presentation;
+using Ultraviolet.Presentation;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation
+namespace Ultraviolet.Tests.UI.Presentation
 {
     [TestFixture]
     public class VersionedStringBuilderTests : UltravioletTestFramework

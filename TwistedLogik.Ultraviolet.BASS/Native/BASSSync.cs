@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.BASS.Native
+namespace Ultraviolet.BASS.Native
 {
     internal enum BASSSync : uint
     {

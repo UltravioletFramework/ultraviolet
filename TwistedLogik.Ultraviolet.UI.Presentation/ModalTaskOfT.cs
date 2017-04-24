@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a task which completes when the modal dialog that spawned the task is closed.

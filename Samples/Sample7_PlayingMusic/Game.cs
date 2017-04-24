@@ -2,13 +2,13 @@
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Audio;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample7_PlayingMusic.Assets;
 using UltravioletSample.Sample7_PlayingMusic.Input;
 
@@ -23,7 +23,7 @@ namespace UltravioletSample.Sample7_PlayingMusic
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 7 - Playing Music", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 7 - Playing Music", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

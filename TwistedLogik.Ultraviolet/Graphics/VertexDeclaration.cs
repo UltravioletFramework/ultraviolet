@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a vertex declaration, which defines the structure of vertex data.

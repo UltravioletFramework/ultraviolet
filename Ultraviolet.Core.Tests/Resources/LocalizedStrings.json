@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "http://schema.ultraviolet.tl/uv/Core/Text/LocalizationDatabase.json",
+  "$schema": "http://schema.ultraviolet.tl/Ultraviolet/Core/Text/LocalizationDatabase.json",
   "strings": [
     {
       "key": "LOCALIZED_RESOURCE",

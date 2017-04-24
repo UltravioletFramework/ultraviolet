@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
+﻿namespace Ultraviolet.Presentation.Uvss.Diagnostics
 {
     /// <summary>
     /// Identifies the kinds of warnings and errors reported via diagnostics.

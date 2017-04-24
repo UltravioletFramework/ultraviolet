@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text.TextTableLayout Schema",
+  "title": "Ultraviolet.Graphics.Graphics2D.Text.TextTableLayout Schema",
   "type": "object",
   "properties": {
     "width": {

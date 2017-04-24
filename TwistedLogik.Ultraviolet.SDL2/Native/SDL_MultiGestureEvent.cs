@@ -5,7 +5,7 @@ using SDL_TouchID = System.Int64;
 
 #pragma warning disable 1591
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]

@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
-	/// <summary>
-	/// Represents the method that is called when the parsing service
-	/// finishes parsing a document.
-	/// </summary>
-	/// <param name="sender">The object that raised the event.</param>
-	/// <param name="args">A <see cref="UvssTextParserEventArgs"/> that contains the event data.</param>
-	public delegate void UvssTextParserEventHandler(Object sender, UvssTextParserEventArgs args);
+    /// <summary>
+    /// Represents the method that is called when the parsing service
+    /// finishes parsing a document.
+    /// </summary>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="args">A <see cref="UvssTextParserEventArgs"/> that contains the event data.</param>
+    public delegate void UvssTextParserEventHandler(Object sender, UvssTextParserEventArgs args);
 
 	/// <summary>
 	/// Represents the arguments for the event that is raised when the parsing

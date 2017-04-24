@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.Text.Classification;
+﻿using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
-using System.ComponentModel.Composition;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Classification
+namespace Ultraviolet.VisualStudio.Uvss.Classification
 {
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "UvssComment")]

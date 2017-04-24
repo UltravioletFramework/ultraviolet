@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Contains attached properties relating to logical focus and focus scopes.
@@ -91,7 +91,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.GotFocus"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.GotFocus"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -105,7 +105,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.LostFocus"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.LostFocus"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -119,7 +119,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.GotFocus"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.GotFocus"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -133,7 +133,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.LostFocus"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.LostFocus"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -147,9 +147,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.FocusManager.FocusedElement"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.FocusManager.FocusedElement"/> attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
         /// Gets or sets the element with logical focus within its focus scope.
@@ -168,9 +168,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<IInputElement>(null, PropertyMetadataOptions.None, HandleFocusedElementChanged));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.IsFocusScope"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Input.FocusManager.IsFocusScope"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.IsFocusScope"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Input.FocusManager.IsFocusScope"/> attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
         /// Gets or sets a value indicating whether the specified element is a focus scope.
@@ -189,10 +189,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
         
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.GotFocus"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.GotFocus"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier of the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.GotFocus"/>
+        /// <value>The identifier of the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.GotFocus"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -211,10 +211,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(FocusManager));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.LostFocus"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.LostFocus"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier of the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.LostFocus"/>
+        /// <value>The identifier of the <see cref="E:Ultraviolet.Presentation.Input.FocusManager.LostFocus"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -261,7 +261,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Occurs when the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Input.FocusManager.FocusedElement"/>
+        /// Occurs when the value of the <see cref="P:Ultraviolet.Presentation.Input.FocusManager.FocusedElement"/>
         /// attached property changes.
         /// </summary>
         private static void HandleFocusedElementChanged(DependencyObject dobj, IInputElement oldValue, IInputElement newValue)

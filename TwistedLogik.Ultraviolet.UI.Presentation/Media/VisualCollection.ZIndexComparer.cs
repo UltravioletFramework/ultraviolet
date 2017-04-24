@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using Ultraviolet.Presentation.Controls;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
+namespace Ultraviolet.Presentation.Media
 {
     partial class VisualCollection
     {

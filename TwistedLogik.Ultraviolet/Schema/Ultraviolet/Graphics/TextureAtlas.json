@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Graphics.TextureAtlas Schema",
+  "title": "Ultraviolet.Graphics.TextureAtlas Schema",
   "type": "object",
   "properties": {
     "metadata": {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
-	/// <summary>
-	/// Tracks the positions of braces in a UVSS document.
-	/// </summary>
-	public sealed partial class BraceTracker : SymbolTrackerBase
+    /// <summary>
+    /// Tracks the positions of braces in a UVSS document.
+    /// </summary>
+    public sealed partial class BraceTracker : SymbolTrackerBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BraceTracker"/> class.

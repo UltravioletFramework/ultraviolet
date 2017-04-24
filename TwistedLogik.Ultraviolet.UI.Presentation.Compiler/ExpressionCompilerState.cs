@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using Microsoft.CSharp;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
+namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Represents the state of a compilation performed by the <see cref="ExpressionCompiler"/> class.

@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Linq;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Contains utility methods for handling XML files.

@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using Microsoft.CSharp;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
+namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Contains methods for compiling UPF binding expressions into a managed assembly.
@@ -686,7 +686,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
             // Class declaration
             writer.WriteLine("[System.CLSCompliant(false)]");
             writer.WriteLine("[System.CodeDom.Compiler.GeneratedCode(\"UPF Binding Expression Compiler\", \"{0}\")]", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
-            writer.WriteLine("[TwistedLogik.Ultraviolet.UI.Presentation.WrappedDataSource(typeof({0}))]", CSharpLanguage.GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
+            writer.WriteLine("[Ultraviolet.Presentation.WrappedDataSource(typeof({0}))]", CSharpLanguage.GetCSharpTypeName(dataSourceWrapperInfo.DataSourceType));
             writer.WriteLine("public sealed partial class {0} : {1}", dataSourceWrapperInfo.DataSourceWrapperName, CSharpLanguage.GetCSharpTypeName(typeof(CompiledDataSourceWrapper)));
             writer.WriteLine("{");
 

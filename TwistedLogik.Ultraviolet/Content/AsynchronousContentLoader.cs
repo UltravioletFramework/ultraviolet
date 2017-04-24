@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents an object which can asynchronously load content assets on a background thread.

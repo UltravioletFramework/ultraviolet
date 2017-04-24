@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation
+﻿namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the initialization state of a <see cref="FrameworkElement"/> instance.

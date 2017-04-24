@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Media;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the method that is called when an element requests that it be brought into view.

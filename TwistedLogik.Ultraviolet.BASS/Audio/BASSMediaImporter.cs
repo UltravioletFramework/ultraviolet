@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.BASS.Audio
+namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
     /// Imports .mp3, .ogg, and .wav files.

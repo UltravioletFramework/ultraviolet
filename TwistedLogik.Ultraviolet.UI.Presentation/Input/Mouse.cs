@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents the method that is called when the mouse cursor enters or leaves an interface element.
@@ -156,7 +156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.QueryCursor"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.QueryCursor"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -170,7 +170,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
         
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.GotMouseCapture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -184,7 +184,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.LostMouseCapture"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -198,7 +198,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseMove"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -212,7 +212,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDown"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -226,7 +226,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseUp"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -240,7 +240,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseClick"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -254,7 +254,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -268,7 +268,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseWheel"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -282,7 +282,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseMove"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -296,7 +296,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseUp"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -310,7 +310,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDown"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -324,7 +324,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseClick"/>
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -338,7 +338,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDoubleClick"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -352,7 +352,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseWheel"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -366,7 +366,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
         
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseEnter"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -380,7 +380,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseLeave"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -394,7 +394,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.QueryCursor"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.QueryCursor"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -408,7 +408,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
         
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.GotMouseCapture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -422,7 +422,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.LostMouseCapture"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -436,7 +436,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseMove"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -450,7 +450,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDown"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -464,7 +464,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseUp"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -478,7 +478,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseClick"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -492,7 +492,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -506,7 +506,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseWheel"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -520,7 +520,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseMove"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -534,7 +534,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDown"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -548,7 +548,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseUp"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -562,7 +562,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseClick"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -576,7 +576,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDoubleClick"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -590,7 +590,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseWheel"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -604,7 +604,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseEnter"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -618,7 +618,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/>
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseLeave"/>
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element to which to remove the handler.</param>
@@ -632,10 +632,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.QueryCursor"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.QueryCursor"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.QueryCursor"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.QueryCursor"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -654,10 +654,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfQueryCursorEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.GotMouseCapture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.GotMouseCapture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -676,10 +676,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.LostMouseCapture"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.LostMouseCapture"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -698,10 +698,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfRoutedEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseMove"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseMove"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -717,7 +717,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseMove"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -726,10 +726,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDown"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDown"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -745,7 +745,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -754,10 +754,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseUp"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseUp"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -773,7 +773,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -782,10 +782,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseClick"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseClick"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -801,7 +801,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseClick"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -810,10 +810,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDoubleClick"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDoubleClick"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -830,7 +830,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDoubleClick"/>.</description>
         ///     </item>
         /// </list>
         /// </AttachedEventComments>
@@ -838,10 +838,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseWheel"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseWheel"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -857,7 +857,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding bubbling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseWheel"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -866,10 +866,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseMove"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseMove"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -885,7 +885,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseMove"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -894,10 +894,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseMoveEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDown"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDown"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -913,7 +913,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDown"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -922,10 +922,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseUp"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseUp"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -941,7 +941,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseUp"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -950,10 +950,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseClick"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseClick"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -969,7 +969,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseClick"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -978,10 +978,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDoubleClick"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDoubleClick"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -997,7 +997,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1006,10 +1006,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseButtonEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseWheel"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseWheel"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1025,7 +1025,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         /// <list type="bullet">
         ///     <item>
         ///         <description>The corresponding tunneling event is 
-        ///         <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/>.</description>
+        ///         <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseWheel"/>.</description>
         ///     </item>
         /// </list>
         /// </remarks>
@@ -1034,10 +1034,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseWheelEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseEnter"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseEnter"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1056,10 +1056,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
             typeof(UpfMouseEventHandler), typeof(Mouse));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseLeave"/> 
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/> 
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseLeave"/> 
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -1126,7 +1126,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.GotMouseCapture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.GotMouseCapture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseGotMouseCapture(DependencyObject element, RoutedEventData data)
@@ -1136,7 +1136,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.LostMouseCapture"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.LostMouseCapture"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseLostMouseCapture(DependencyObject element, RoutedEventData data)
@@ -1146,7 +1146,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseMove"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseMove"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
@@ -1156,7 +1156,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDown"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDown"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMouseDown(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1166,7 +1166,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseUp"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseUp"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMouseUp(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1176,7 +1176,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseClick"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseClick"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMouseClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1186,7 +1186,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseDoubleClick"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1196,7 +1196,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.PreviewMouseWheel"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.PreviewMouseWheel"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaisePreviewMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)
@@ -1206,7 +1206,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseMove"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseMove"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseMove(DependencyObject element, MouseDevice device, Double x, Double y, Double dx, Double dy, RoutedEventData data)
@@ -1216,7 +1216,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseEnter"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseEnter"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseEnter(DependencyObject element, MouseDevice device, RoutedEventData data)
@@ -1226,7 +1226,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseLeave"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseLeave"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseLeave(DependencyObject element, MouseDevice device, RoutedEventData data)
@@ -1236,7 +1236,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDown"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDown"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseDown(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1246,7 +1246,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseUp"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseUp"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseUp(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1256,7 +1256,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseClick"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseClick"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1266,7 +1266,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseDoubleClick"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseDoubleClick"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseDoubleClick(DependencyObject element, MouseDevice device, MouseButton button, RoutedEventData data)
@@ -1276,7 +1276,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
         }
 
         /// <summary>
-        /// Raises the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Input.Mouse.MouseWheel"/>
+        /// Raises the <see cref="E:Ultraviolet.Presentation.Input.Mouse.MouseWheel"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseMouseWheel(DependencyObject element, MouseDevice device, Double x, Double y, RoutedEventData data)

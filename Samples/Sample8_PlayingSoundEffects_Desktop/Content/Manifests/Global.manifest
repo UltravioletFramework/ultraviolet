@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentManifest Name="Global">
-  <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
+  <ContentGroup Name="Fonts" Directory="Fonts" Type="Ultraviolet.Graphics.Graphics2D.SpriteFont">
     <Asset Name="SegoeUI">SegoeUI</Asset>
   </ContentGroup>
-  <ContentGroup Name="SoundEffects" Directory="SoundEffects" Type="TwistedLogik.Ultraviolet.Audio.SoundEffect">
+  <ContentGroup Name="SoundEffects" Directory="SoundEffects" Type="Ultraviolet.Audio.SoundEffect">
     <Asset Name="Explosion">grenade</Asset>
   </ContentGroup>
 </ContentManifest>

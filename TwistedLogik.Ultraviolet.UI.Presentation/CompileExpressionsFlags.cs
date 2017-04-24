@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a set of values which can be passed to the <see cref="PresentationFoundation.CompileExpressions(string, CompileExpressionsFlags)"/> method

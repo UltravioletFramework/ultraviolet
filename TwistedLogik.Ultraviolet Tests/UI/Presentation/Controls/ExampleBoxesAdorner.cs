@@ -1,8 +1,8 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Documents;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Controls
+namespace Ultraviolet.Tests.UI.Presentation.Controls
 {
     /// <summary>
     /// Represents an example adorner which renders colored boxes on top of the adorned element.

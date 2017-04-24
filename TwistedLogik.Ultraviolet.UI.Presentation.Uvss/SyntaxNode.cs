@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents a node in a UVSS syntax tree.

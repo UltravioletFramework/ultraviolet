@@ -24,7 +24,7 @@
 
 #endregion
 
-using TwistedLogik.Ultraviolet;
+using Ultraviolet;
 
 namespace sspack
 {

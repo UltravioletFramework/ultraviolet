@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample9_ManagingStateWithUIScreens.Assets;
 using UltravioletSample.Sample9_ManagingStateWithUIScreens.Input;
 using UltravioletSample.Sample9_ManagingStateWithUIScreens.UI;
@@ -19,7 +19,7 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 9 - Managing State with UI Screens", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 9 - Managing State with UI Screens", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

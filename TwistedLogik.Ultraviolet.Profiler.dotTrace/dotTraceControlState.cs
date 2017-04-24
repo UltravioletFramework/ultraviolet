@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TwistedLogik.Ultraviolet.Profiler.dotTrace
+﻿namespace Ultraviolet.Profiler.dotTrace
 {
     public enum dotTraceControlState
     {

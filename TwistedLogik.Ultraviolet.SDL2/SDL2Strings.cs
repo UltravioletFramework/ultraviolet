@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.SDL2
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Contains the implementation's string resources.

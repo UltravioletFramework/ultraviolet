@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a collection of images that have been composited onto a single texture.

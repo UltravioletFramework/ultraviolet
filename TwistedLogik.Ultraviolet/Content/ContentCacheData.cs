@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represent an entry in a <see cref="ContentManager"/> instance's internal content cache.

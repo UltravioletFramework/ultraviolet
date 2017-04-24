@@ -1,12 +1,12 @@
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.OSX.Graphics;
-using TwistedLogik.Ultraviolet.OSX.Input;
-using TwistedLogik.Ultraviolet.OSX.Platform;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.OSX.Graphics;
+using Ultraviolet.OSX.Input;
+using Ultraviolet.OSX.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.OSX
+namespace Ultraviolet.OSX
 {
     [Preserve(AllMembers = true)]
     internal sealed class OSXFactoryInitializer : IUltravioletFactoryInitializer

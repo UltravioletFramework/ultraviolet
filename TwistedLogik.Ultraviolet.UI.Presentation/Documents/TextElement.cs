@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Documents
+namespace Ultraviolet.Presentation.Documents
 {
     /// <summary>
     /// Represents an element which draws text.

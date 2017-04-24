@@ -2,9 +2,9 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.SDL2.Native;
+using Ultraviolet.SDL2.Native;
 
-namespace TwistedLogik.Ultraviolet.SDL2
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Represents a wrapper around a <see cref="System.IO.Stream"/> which is compatible with SDL2's RWops API.

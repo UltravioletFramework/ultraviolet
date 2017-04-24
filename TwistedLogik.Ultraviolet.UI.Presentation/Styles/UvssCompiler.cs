@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Uvss;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Contains methods for compiling UVSS syntax trees into UVSS documents.

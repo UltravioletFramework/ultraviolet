@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading;
 
 namespace Ultraviolet.Core.Text
-{    
+{
     /// <summary>
     /// Represents a method which is used to determine the plurality group associated with a specified quantity.
     /// </summary>

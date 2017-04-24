@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_Grid_ArrangesAutoCellsCorrectly_VM, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_Grid_ArrangesAutoCellsCorrectly_VM, TwistedLogik.Ultraviolet.Tests">
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
       <Grid.ColumnDefinitions>

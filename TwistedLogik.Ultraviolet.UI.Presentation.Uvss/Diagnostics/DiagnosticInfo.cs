@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
+namespace Ultraviolet.Presentation.Uvss.Diagnostics
 {
     /// <summary>
     /// Represents a diagnostic warning or error message attached to a syntax node.

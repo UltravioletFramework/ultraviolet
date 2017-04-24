@@ -9,7 +9,7 @@ using System.Text;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
+namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Represents a cache manifest for a compiled binding expressions assembly, which is used to determine if a recompilation is necessary.

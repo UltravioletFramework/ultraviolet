@@ -4,9 +4,9 @@ using System.Drawing.Design;
 using System.Security;
 using GdiColor = System.Drawing.Color;
 using GdiColorEditor = System.Drawing.Design.ColorEditor;
-using UvColor = TwistedLogik.Ultraviolet.Color;
+using UvColor = Ultraviolet.Color;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace Ultraviolet.Design
 {
     /// <summary>
     /// Represents a custom property editor for the <see cref="Color"/> structure.

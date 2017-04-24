@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 
 namespace Ultraviolet.Core.TestFramework
 {

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_UIElement_DrawsCorrectly_WithEffectAndTransform_VM, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_UIElement_DrawsCorrectly_WithEffectAndTransform_VM, TwistedLogik.Ultraviolet.Tests">
 
     <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 

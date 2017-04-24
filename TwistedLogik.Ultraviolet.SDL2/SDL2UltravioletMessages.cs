@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.SDL2
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Contains the implementation's Ultraviolet engine events.

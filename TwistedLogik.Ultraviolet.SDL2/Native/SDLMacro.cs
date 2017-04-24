@@ -2,7 +2,7 @@
 
 #pragma warning disable 1591
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     /// <summary>
     /// Contains SDL2 preprocessor macros.

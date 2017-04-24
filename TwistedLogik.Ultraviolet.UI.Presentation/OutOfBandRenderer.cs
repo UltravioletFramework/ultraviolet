@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains methods for rendering UI elements out-of-band, that is, prior to rendering the rest of the

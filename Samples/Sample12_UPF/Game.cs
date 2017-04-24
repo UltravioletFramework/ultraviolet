@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.OpenGL;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Styles;
 using UltravioletSample.Sample12_UPF.Input;
 using UltravioletSample.Sample12_UPF.UI;
 using UltravioletSample.Sample12_UPF.UI.Screens;
@@ -20,7 +20,7 @@ namespace UltravioletSample.Sample12_UPF
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 12 - UPF", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 12 - UPF", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

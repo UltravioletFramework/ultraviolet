@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_ListBox_ArrangesItemsCorrectly_VM, TwistedLogik.Ultraviolet.Tests">
+  <View ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_ListBox_ArrangesItemsCorrectly_VM, TwistedLogik.Ultraviolet.Tests">
 
     <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685"/>
 
@@ -38,7 +38,7 @@
       <ListBox SelectedIndex="1" Margin="4 8 8 4" Grid.Row="0" Grid.Column="1"
                ItemsSource="{{TestItemsSource}}">
         <ListBox.ItemTemplate>
-          <DataTemplate ViewModelType="TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens.UPF_ListBox_ArrangesItemsCorrectly_VM+CustomItemModel, TwistedLogik.Ultraviolet.Tests">
+          <DataTemplate ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_ListBox_ArrangesItemsCorrectly_VM+CustomItemModel, TwistedLogik.Ultraviolet.Tests">
             <StackPanel Orientation="Horizontal">
               <Rectangle FillColor="{{Color}}" Width="24" Margin="0 0 8 0"/>
               <TextBlock>{{Name}}</TextBlock>

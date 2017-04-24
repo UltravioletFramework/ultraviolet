@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
+using NUnit.Framework;
 
-namespace TwistedLogik.Ultraviolet.Testing
+namespace Ultraviolet.Testing
 {
     /// <summary>
     /// Represents a unit test result containing a bitmap image.

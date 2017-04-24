@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using Ultraviolet.Presentation.Uvss;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
 
-	/// <summary>
-	/// Performs parsing of documents for a text buffer.
-	/// </summary>
-	public sealed class UvssTextParser
+    /// <summary>
+    /// Performs parsing of documents for a text buffer.
+    /// </summary>
+    public sealed class UvssTextParser
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UvssTextParser"/> class.

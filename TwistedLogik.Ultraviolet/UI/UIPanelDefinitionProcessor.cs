@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a content processor which processes XML panel

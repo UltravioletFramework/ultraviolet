@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents a command which uses delegates to implement the <see cref="ICommand.Execute"/> and <see cref="ICommand.CanExecute"/> methods.

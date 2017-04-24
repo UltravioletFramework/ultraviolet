@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+﻿namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents the types of tokens which are produced by the UVSS lexer.

@@ -1,11 +1,11 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample6_RenderingText.Assets;
 using UltravioletSample.Sample6_RenderingText.Input;
 
@@ -20,7 +20,7 @@ namespace UltravioletSample.Sample6_RenderingText
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 6 - Rendering Text", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 6 - Rendering Text", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

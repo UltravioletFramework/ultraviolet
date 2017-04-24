@@ -1,2 +1,2 @@
 <#@ include file="..\..\..\..\..\BindingExpressionCompilerTemplate.t4" 
-#><#= GenerateSourceCodeForViewModel("TwistedLogik.Ultraviolet.UI.Presentation", "MessageBoxViewModel_Impl", "MessageBoxScreen.xml") #>
+#><#= GenerateSourceCodeForViewModel("Ultraviolet.Presentation", "MessageBoxViewModel_Impl", "MessageBoxScreen.xml") #>

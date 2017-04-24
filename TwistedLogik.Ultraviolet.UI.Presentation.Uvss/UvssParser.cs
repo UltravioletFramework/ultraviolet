@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using Ultraviolet.Presentation.Uvss.Diagnostics;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents a method which produces a parsed node from the specified inputs.

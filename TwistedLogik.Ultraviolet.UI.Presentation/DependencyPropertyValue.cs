@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     partial class DependencyObject
     {

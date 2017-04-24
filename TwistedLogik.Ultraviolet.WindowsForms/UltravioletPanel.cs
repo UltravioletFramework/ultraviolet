@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.WindowsForms
+namespace Ultraviolet.WindowsForms
 {
     /// <summary>
     /// Represents a panel designed to be enlisted into an Ultraviolet context.

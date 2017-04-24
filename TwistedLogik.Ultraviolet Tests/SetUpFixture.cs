@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using TwistedLogik.Ultraviolet.Testing;
+using NUnit.Framework;
+using Ultraviolet.Testing;
 
 [SetUpFixture]
 public sealed class SetUpFixture

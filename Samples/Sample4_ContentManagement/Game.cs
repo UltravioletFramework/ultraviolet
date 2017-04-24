@@ -1,9 +1,9 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample4_ContentManagement.Assets;
 using UltravioletSample.Sample4_ContentManagement.Input;
 
@@ -18,7 +18,7 @@ namespace UltravioletSample.Sample4_ContentManagement
     public partial class Game : SampleApplicationBase1
     {
         public Game()
-            : base("TwistedLogik", "Sample 4 - Content Management", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 4 - Content Management", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

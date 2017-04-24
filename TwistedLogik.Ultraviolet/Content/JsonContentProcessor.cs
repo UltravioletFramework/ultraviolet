@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content processor which loads XML documents.

@@ -4,7 +4,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 using Ultraviolet.Core.Xml;
 
-namespace TwistedLogik.Ultraviolet.Input
+namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents a game pad input binding.

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents the types of storyboard loop specifiers which are understood by the UVSS parser.

@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Testing;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
+namespace Ultraviolet.Tests.UI.Presentation.Input
 {
     [TestFixture]
     public class KeyGestureTests : UltravioletTestFramework

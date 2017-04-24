@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Graphics;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample3_RenderingGeometry.Input;
 
 namespace UltravioletSample.Sample3_RenderingGeometry
@@ -16,7 +16,7 @@ namespace UltravioletSample.Sample3_RenderingGeometry
     public partial class Game : SampleApplicationBase1
     {
         public Game()
-            : base("TwistedLogik", "Sample 3 - Rendering Geometry", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 3 - Rendering Geometry", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

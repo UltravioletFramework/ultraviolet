@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.BASS.Native
+namespace Ultraviolet.BASS.Native
 {
     [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]

@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Core.Design;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace Ultraviolet.Design
 {
     /// <summary>
     /// Contains methods for loading type metadata for Ultraviolet's basic data types.
@@ -44,20 +44,20 @@ namespace TwistedLogik.Ultraviolet.Design
         // State values.
         private static readonly String[] metadata = new[]
         {
-            "TwistedLogik.Ultraviolet.Design.Circle.xml",
-            "TwistedLogik.Ultraviolet.Design.CircleF.xml",
-            "TwistedLogik.Ultraviolet.Design.Color.xml",
-            "TwistedLogik.Ultraviolet.Design.Matrix.xml",
-            "TwistedLogik.Ultraviolet.Design.Radians.xml",
-            "TwistedLogik.Ultraviolet.Design.Rectangle.xml",
-            "TwistedLogik.Ultraviolet.Design.RectangleF.xml",
-            "TwistedLogik.Ultraviolet.Design.Size2.xml",
-            "TwistedLogik.Ultraviolet.Design.Size2F.xml",
-            "TwistedLogik.Ultraviolet.Design.Size3.xml",
-            "TwistedLogik.Ultraviolet.Design.Size3F.xml",
-            "TwistedLogik.Ultraviolet.Design.Vector2.xml",
-            "TwistedLogik.Ultraviolet.Design.Vector3.xml",
-            "TwistedLogik.Ultraviolet.Design.Vector4.xml",
+            "Ultraviolet.Design.Circle.xml",
+            "Ultraviolet.Design.CircleF.xml",
+            "Ultraviolet.Design.Color.xml",
+            "Ultraviolet.Design.Matrix.xml",
+            "Ultraviolet.Design.Radians.xml",
+            "Ultraviolet.Design.Rectangle.xml",
+            "Ultraviolet.Design.RectangleF.xml",
+            "Ultraviolet.Design.Size2.xml",
+            "Ultraviolet.Design.Size2F.xml",
+            "Ultraviolet.Design.Size3.xml",
+            "Ultraviolet.Design.Size3F.xml",
+            "Ultraviolet.Design.Vector2.xml",
+            "Ultraviolet.Design.Vector3.xml",
+            "Ultraviolet.Design.Vector4.xml",
         };
     }
 }

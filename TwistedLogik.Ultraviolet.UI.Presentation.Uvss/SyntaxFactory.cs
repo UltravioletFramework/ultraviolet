@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
 using System.Linq;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains factory methods for constructing UVSS syntax nodes.

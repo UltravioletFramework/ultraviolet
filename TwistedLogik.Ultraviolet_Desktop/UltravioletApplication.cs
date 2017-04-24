@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     partial class UltravioletApplication
     {

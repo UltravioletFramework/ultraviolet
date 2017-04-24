@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a content importer which loads sprite definition files.

@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvml
+﻿namespace Ultraviolet.Presentation.Uvml
 {
     /// <summary>
     /// Represents the types of properties and events which can be mutated by a UVML mutator.

@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using Ultraviolet;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Controls;
 
 namespace UltravioletSample.Sample12_UPF.UI.Screens
 {

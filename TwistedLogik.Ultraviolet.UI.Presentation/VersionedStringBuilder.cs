@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a wrapper around a <see cref="StringBuilder"/> which maintains a version number that is incremented

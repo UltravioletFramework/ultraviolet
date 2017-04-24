@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Input
+﻿namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents the joysticks on a game pad.

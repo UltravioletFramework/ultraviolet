@@ -2,8 +2,8 @@
 <TypeDescription>
   <Assembly Name="TwistedLogik.Ultraviolet, Version=1.0.0.0">
     <Types>
-      <Type Name="TwistedLogik.Ultraviolet.Size2">
-        <TypeConverter>TwistedLogik.Ultraviolet.Design.Size2TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
+      <Type Name="Ultraviolet.Size2">
+        <TypeConverter>Ultraviolet.Design.Size2TypeConverter, TwistedLogik.Ultraviolet.Design</TypeConverter>
         <DefaultValue>0 0</DefaultValue>
         <Properties>
           <Width>

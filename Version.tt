@@ -15,7 +15,6 @@ var yearEnd = DateTime.Now.Year;
 #>using System.Reflection;
 
 [assembly: AssemblyProduct("Ultraviolet Framework")]
-[assembly: AssemblyCompany("TwistedLogik Software")]
 [assembly: AssemblyCopyright("Copyright © Cole Campbell <#=yearStart#>-<#=yearEnd#>")]
 
 [assembly: AssemblyVersion("<#=asmVersion#>")]

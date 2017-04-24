@@ -6,7 +6,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 using Ultraviolet.Core.Collections.Specialized;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Represents an event manager which allows controls to weakly attach event handlers to the <see cref="ICommand.CanExecuteChanged"/> event.

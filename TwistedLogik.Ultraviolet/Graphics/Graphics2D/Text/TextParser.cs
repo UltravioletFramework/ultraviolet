@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text
+namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents a lexer/parser which takes a string as input and produces a stream of formatted text tokens.

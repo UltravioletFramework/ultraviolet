@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_TextBox_BindsCorrectlyToViewModel_VM
     {

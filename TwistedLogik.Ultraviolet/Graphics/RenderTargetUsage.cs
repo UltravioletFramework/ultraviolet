@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.Graphics
+﻿namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Specifies whether a render target's data is preserved or discarded

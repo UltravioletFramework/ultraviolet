@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Content;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an application running on top of the Ultraviolet Framework.

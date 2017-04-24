@@ -1,6 +1,6 @@
 ﻿using Ultraviolet.Core.TestFramework;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Testing
+namespace Ultraviolet.Presentation.Uvss.Testing
 {
     /// <summary>
     /// Represents the test framework for UVSS unit tests.

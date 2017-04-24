@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Represents the buckets into which Ultraviolet classifies the pixel density of a display device.

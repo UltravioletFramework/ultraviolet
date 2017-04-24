@@ -6,15 +6,15 @@ using System.Threading;
 using System.Xml;
 using Android.Text;
 using Org.Libsdl.App;
+using Ultraviolet.Android.Input;
+using Ultraviolet.Android.Platform;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.Android.Input;
-using TwistedLogik.Ultraviolet.Android.Platform;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Messages;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Messages;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an <see cref="Activity"/> which hosts and runs an Ultraviolet application.

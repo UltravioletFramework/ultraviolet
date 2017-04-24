@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,14 +6,15 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.Platform;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents a callback that is invoked when the Ultraviolet Framework logs a debug message.

@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+﻿namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
     partial class BraceTracker
     {

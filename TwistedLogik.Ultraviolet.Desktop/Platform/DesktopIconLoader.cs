@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using TwistedLogik.Ultraviolet.Desktop.Graphics;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Desktop.Graphics;
+using Ultraviolet.Graphics;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Desktop.Platform
+namespace Ultraviolet.Desktop.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="IconLoader"/> class for desktop platforms.

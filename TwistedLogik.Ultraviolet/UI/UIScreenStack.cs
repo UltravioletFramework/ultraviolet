@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a window's stack of active screens.

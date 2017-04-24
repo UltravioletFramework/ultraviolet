@@ -1,7 +1,7 @@
-﻿using TwistedLogik.Ultraviolet.Input;
-using System;
+﻿using System;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     partial class GamePad
     {

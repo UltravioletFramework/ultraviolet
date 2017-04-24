@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation : TestScreenBase<UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM>
     {

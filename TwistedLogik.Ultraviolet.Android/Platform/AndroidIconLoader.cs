@@ -1,7 +1,7 @@
-﻿using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Platform;
+﻿using Ultraviolet.Graphics;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Android.Platform
+namespace Ultraviolet.Android.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="IconLoader"/> class for the Android platform.

@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an Ultraviolet application's internal window settings.

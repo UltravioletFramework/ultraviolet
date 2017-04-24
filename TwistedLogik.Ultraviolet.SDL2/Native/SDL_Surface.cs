@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Native
 {
     /// <summary>
     /// Represents an SDL surface.

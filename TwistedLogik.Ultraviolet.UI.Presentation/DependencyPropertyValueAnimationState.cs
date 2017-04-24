@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+﻿using Ultraviolet.Presentation.Animations;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     partial class DependencyObject
     {

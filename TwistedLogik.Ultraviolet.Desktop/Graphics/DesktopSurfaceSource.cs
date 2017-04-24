@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Desktop.Graphics
+namespace Ultraviolet.Desktop.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for desktop platforms.

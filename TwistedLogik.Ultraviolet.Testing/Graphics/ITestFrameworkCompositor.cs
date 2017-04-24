@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Graphics;
+﻿using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Testing.Graphics
+namespace Ultraviolet.Testing.Graphics
 {
     /// <summary>
     /// Represents a compositor which works within the context of the Ultraviolet testing framework.

@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Core;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// An internal representation of a <see cref="TextStyle"/> used during deserialization.

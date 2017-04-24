@@ -1,7 +1,7 @@
 ﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Initializes factory methods for the Framework core.

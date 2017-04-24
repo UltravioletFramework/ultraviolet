@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using Ultraviolet.Core.TestFramework;
-using static TwistedLogik.Ultraviolet.UI.Presentation.Uvss.SyntaxFactory;
+using static Ultraviolet.Presentation.Uvss.SyntaxFactory;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Tests
+namespace Ultraviolet.Presentation.Uvss.Tests
 {
     [TestFixture]
     public class SyntaxNormalizerTests : CoreTestFramework

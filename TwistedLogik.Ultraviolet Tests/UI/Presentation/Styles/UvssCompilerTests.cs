@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Testing;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss;
+using Ultraviolet.Presentation.Styles;
+using Ultraviolet.Presentation.Uvss;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Styles
+namespace Ultraviolet.Tests.UI.Presentation.Styles
 {
     [TestFixture]
     public class UvssCompilerTests : UltravioletApplicationTestFramework

@@ -1,9 +1,9 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.SDL2.Native;
+using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Native;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Platform
+namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
     /// Represents the SDL2 implementation of the <see cref="PowerManagementService"/> class.

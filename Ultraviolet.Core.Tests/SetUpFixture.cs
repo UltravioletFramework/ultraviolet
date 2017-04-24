@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Threading;
+using NUnit.Framework;
 
 [SetUpFixture]
 public sealed class SetUpFixture

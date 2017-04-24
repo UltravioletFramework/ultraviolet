@@ -1,13 +1,13 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.OpenGL;
+using Ultraviolet;
+using Ultraviolet.Audio;
+using Ultraviolet.Content;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Input;
+using Ultraviolet.OpenGL;
 using UltravioletSample.Sample8_PlayingSoundEffects.Assets;
 using UltravioletSample.Sample8_PlayingSoundEffects.Input;
 
@@ -22,7 +22,7 @@ namespace UltravioletSample.Sample8_PlayingSoundEffects
     public partial class Game : SampleApplicationBase2
     {
         public Game()
-            : base("TwistedLogik", "Sample 8 - Playing Sound Effects", uv => uv.GetInput().GetActions())
+            : base("Ultraviolet", "Sample 8 - Playing Sound Effects", uv => uv.GetInput().GetActions())
         {
             PlatformSpecificInitialization();
         }

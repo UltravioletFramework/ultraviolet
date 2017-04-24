@@ -69,8 +69,8 @@
     <Reference Include="TwistedLogik.Ultraviolet.Desktop">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Ultraviolet.OpenGL">
-      <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.OpenGL.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
     <Reference Include="TwistedLogik.Ultraviolet.SDL2">
       <HintPath>..\Dependencies\TwistedLogik.Ultraviolet.SDL2.dll</HintPath>

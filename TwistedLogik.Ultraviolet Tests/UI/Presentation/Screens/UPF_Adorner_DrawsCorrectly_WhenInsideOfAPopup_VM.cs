@@ -1,9 +1,9 @@
-﻿using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
-using TwistedLogik.Ultraviolet.UI.Presentation.Documents;
+﻿using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Presentation.Documents;
+using Ultraviolet.Tests.UI.Presentation.Controls;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup_VM
     {

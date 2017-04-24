@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Represents a window's maximization or minimization state.

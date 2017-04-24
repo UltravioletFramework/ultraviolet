@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.Size2 Schema",
+  "title": "Ultraviolet.Size2 Schema",
   "type": "object",
   "properties": {
     "width": {

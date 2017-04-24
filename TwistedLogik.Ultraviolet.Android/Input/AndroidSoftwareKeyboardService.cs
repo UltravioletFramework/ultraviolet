@@ -1,8 +1,8 @@
 using System;
 using Android.Text;
-using TwistedLogik.Ultraviolet.Input;
+using Ultraviolet.Input;
 
-namespace TwistedLogik.Ultraviolet.Android.Input
+namespace Ultraviolet.Android.Input
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for the Android platform.

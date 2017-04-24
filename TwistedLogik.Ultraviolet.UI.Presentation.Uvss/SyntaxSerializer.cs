@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains methods for serializing and deserializing syntax trees.

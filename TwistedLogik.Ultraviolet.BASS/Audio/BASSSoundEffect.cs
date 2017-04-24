@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Ultraviolet.Audio;
+using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.BASS.Native;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.BASS.Audio
+namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
     /// Represents the BASS implementation of the SoundEffect class.

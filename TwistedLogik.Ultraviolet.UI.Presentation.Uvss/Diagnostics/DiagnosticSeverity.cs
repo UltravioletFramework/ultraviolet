@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Diagnostics
+﻿namespace Ultraviolet.Presentation.Uvss.Diagnostics
 {
     /// <summary>
     /// Represents the severity of a diagnostic message.

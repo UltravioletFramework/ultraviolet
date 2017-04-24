@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains common boxed values of the Presentation Foundation's value types.
@@ -8,231 +8,231 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation
     public static class PresentationBoxedValues
     {
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Orientation"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.Controls.Orientation"/> values.
         /// </summary>
         public static class Orientation
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Orientation.Horizontal"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.Orientation.Horizontal"/>.
             /// </summary>
             public static readonly Object Horizontal =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.Orientation.Horizontal;
+                Ultraviolet.Presentation.Controls.Orientation.Horizontal;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Orientation.Vertical"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.Orientation.Vertical"/>.
             /// </summary>
             public static readonly Object Vertical =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.Orientation.Vertical;
+                Ultraviolet.Presentation.Controls.Orientation.Vertical;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Thickness"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.Thickness"/> values.
         /// </summary>
         public static class Thickness
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Thickness.Zero"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Thickness.Zero"/>.
             /// </summary>
             public static readonly Object Zero =
-                TwistedLogik.Ultraviolet.UI.Presentation.Thickness.Zero;
+                Ultraviolet.Presentation.Thickness.Zero;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Thickness.One"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Thickness.One"/>.
             /// </summary>
             public static readonly Object One =
-                TwistedLogik.Ultraviolet.UI.Presentation.Thickness.One;
+                Ultraviolet.Presentation.Thickness.One;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.HorizontalAlignment"/> values.
         /// </summary>
         public static class HorizontalAlignment
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Left"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.HorizontalAlignment.Left"/>.
             /// </summary>
             public static readonly Object Left =
-                TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Left;
+                Ultraviolet.Presentation.HorizontalAlignment.Left;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Center"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.HorizontalAlignment.Center"/>.
             /// </summary>
             public static readonly Object Center =
-                TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Center;
+                Ultraviolet.Presentation.HorizontalAlignment.Center;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Right"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.HorizontalAlignment.Right"/>.
             /// </summary>
             public static readonly Object Right =
-                TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Right;
+                Ultraviolet.Presentation.HorizontalAlignment.Right;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Stretch"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.HorizontalAlignment.Stretch"/>.
             /// </summary>
             public static readonly Object Stretch =
-                TwistedLogik.Ultraviolet.UI.Presentation.HorizontalAlignment.Stretch;
+                Ultraviolet.Presentation.HorizontalAlignment.Stretch;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.VerticalAlignment"/> values.
         /// </summary>
         public static class VerticalAlignment
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Top"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.VerticalAlignment.Top"/>.
             /// </summary>
             public static readonly Object Top =
-                TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Top;
+                Ultraviolet.Presentation.VerticalAlignment.Top;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Center"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.VerticalAlignment.Center"/>.
             /// </summary>
             public static readonly Object Center =
-                TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Center;
+                Ultraviolet.Presentation.VerticalAlignment.Center;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Bottom"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.VerticalAlignment.Bottom"/>.
             /// </summary>
             public static readonly Object Bottom =
-                TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Bottom;
+                Ultraviolet.Presentation.VerticalAlignment.Bottom;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Stretch"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.VerticalAlignment.Stretch"/>.
             /// </summary>
             public static readonly Object Stretch =
-                TwistedLogik.Ultraviolet.UI.Presentation.VerticalAlignment.Stretch;
+                Ultraviolet.Presentation.VerticalAlignment.Stretch;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.GridLength"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.GridLength"/> values.
         /// </summary>
         public static class GridLength
         {
             /// <summary>
-            /// The cached box for a <see cref="TwistedLogik.Ultraviolet.UI.Presentation.GridLength"/> of zero pixels.
+            /// The cached box for a <see cref="Ultraviolet.Presentation.GridLength"/> of zero pixels.
             /// </summary>
             public static readonly Object Zero =
-                new TwistedLogik.Ultraviolet.UI.Presentation.GridLength(0);
+                new Ultraviolet.Presentation.GridLength(0);
 
             /// <summary>
-            /// The cached box for a <see cref="TwistedLogik.Ultraviolet.UI.Presentation.GridLength"/> of one pixel.
+            /// The cached box for a <see cref="Ultraviolet.Presentation.GridLength"/> of one pixel.
             /// </summary>
             public static readonly Object One =
-                new TwistedLogik.Ultraviolet.UI.Presentation.GridLength(1);
+                new Ultraviolet.Presentation.GridLength(1);
 
             /// <summary>
-            /// The cached box for an auto-sized <see cref="TwistedLogik.Ultraviolet.UI.Presentation.GridLength"/>.
+            /// The cached box for an auto-sized <see cref="Ultraviolet.Presentation.GridLength"/>.
             /// </summary>
             public static readonly Object Auto =
-                TwistedLogik.Ultraviolet.UI.Presentation.GridLength.Auto;
+                Ultraviolet.Presentation.GridLength.Auto;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.Controls.Dock"/> values.
         /// </summary>
         public static class Dock
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Left"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.Dock.Left"/>.
             /// </summary>
             public static readonly Object Left =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Left;
+                Ultraviolet.Presentation.Controls.Dock.Left;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Top"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.Dock.Top"/>.
             /// </summary>
             public static readonly Object Top =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Top;
+                Ultraviolet.Presentation.Controls.Dock.Top;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Right"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.Dock.Right"/>.
             /// </summary>
             public static readonly Object Right =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Right;
+                Ultraviolet.Presentation.Controls.Dock.Right;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Bottom"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.Dock.Bottom"/>.
             /// </summary>
             public static readonly Object Bottom =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.Dock.Bottom;
+                Ultraviolet.Presentation.Controls.Dock.Bottom;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.Controls.ClickMode"/> values.
         /// </summary>
         public static class ClickMode
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode.Hover"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ClickMode.Hover"/>.
             /// </summary>
             public static readonly Object Hover =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode.Hover;
+                Ultraviolet.Presentation.Controls.ClickMode.Hover;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode.Press"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ClickMode.Press"/>.
             /// </summary>
             public static readonly Object Press =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode.Press;
+                Ultraviolet.Presentation.Controls.ClickMode.Press;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode.Release"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ClickMode.Release"/>.
             /// </summary>
             public static readonly Object Release =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ClickMode.Release;
+                Ultraviolet.Presentation.Controls.ClickMode.Release;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.Controls.ScrollBarVisibility"/> values.
         /// </summary>
         public static class ScrollBarVisibility
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Auto"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ScrollBarVisibility.Auto"/>.
             /// </summary>
             public static readonly Object Auto =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Auto;
+                Ultraviolet.Presentation.Controls.ScrollBarVisibility.Auto;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Disabled"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ScrollBarVisibility.Disabled"/>.
             /// </summary>
             public static readonly Object Disabled =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Disabled;
+                Ultraviolet.Presentation.Controls.ScrollBarVisibility.Disabled;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Hidden"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ScrollBarVisibility.Hidden"/>.
             /// </summary>
             public static readonly Object Hidden =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Hidden;
+                Ultraviolet.Presentation.Controls.ScrollBarVisibility.Hidden;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Visible"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Controls.ScrollBarVisibility.Visible"/>.
             /// </summary>
             public static readonly Object Visible =
-                TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollBarVisibility.Visible;
+                Ultraviolet.Presentation.Controls.ScrollBarVisibility.Visible;
         }
 
         /// <summary>
-        /// Contains boxed <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Visibility"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Presentation.Visibility"/> values.
         /// </summary>
         public static class Visibility
         {
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Visibility.Collapsed"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Visibility.Collapsed"/>.
             /// </summary>
             public static readonly Object Collapsed =
-                TwistedLogik.Ultraviolet.UI.Presentation.Visibility.Collapsed;
+                Ultraviolet.Presentation.Visibility.Collapsed;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Visibility.Hidden"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Visibility.Hidden"/>.
             /// </summary>
             public static readonly Object Hidden =
-                TwistedLogik.Ultraviolet.UI.Presentation.Visibility.Hidden;
+                Ultraviolet.Presentation.Visibility.Hidden;
 
             /// <summary>
-            /// The cached box for the value <see cref="TwistedLogik.Ultraviolet.UI.Presentation.Visibility.Visible"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Presentation.Visibility.Visible"/>.
             /// </summary>
             public static readonly Object Visible =
-                TwistedLogik.Ultraviolet.UI.Presentation.Visibility.Visible;
+                Ultraviolet.Presentation.Visibility.Visible;
         }
     }
 }

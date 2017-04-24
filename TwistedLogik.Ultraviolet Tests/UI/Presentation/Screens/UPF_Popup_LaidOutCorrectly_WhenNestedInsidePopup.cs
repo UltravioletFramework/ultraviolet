@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup : TestScreenBase<UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup_VM>
     {

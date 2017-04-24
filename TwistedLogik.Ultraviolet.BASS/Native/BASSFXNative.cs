@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.BASS.Native
+namespace Ultraviolet.BASS.Native
 {
     [SuppressUnmanagedCodeSecurity]
     internal static class BASSFXNative

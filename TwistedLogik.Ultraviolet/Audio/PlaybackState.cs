@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Audio
+namespace Ultraviolet.Audio
 {
     /// <summary>
     /// Represents the playback state of a song or sound effect.

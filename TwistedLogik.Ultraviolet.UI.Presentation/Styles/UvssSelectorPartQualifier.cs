@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+﻿namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents the special type of a <see cref="UvssSelectorPart"/>.

@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace Ultraviolet.Design
 {
     /// <summary>
     /// Represents a control which allows the user to edit the values of a <see cref="Matrix"/> structure.

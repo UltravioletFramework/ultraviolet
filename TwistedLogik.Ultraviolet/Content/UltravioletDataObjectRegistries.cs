@@ -2,7 +2,7 @@
 using System.Reflection;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Maintains the application's collection of data object registries.

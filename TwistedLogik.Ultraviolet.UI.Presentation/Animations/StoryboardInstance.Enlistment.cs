@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet.UI.Presentation.Animations
+﻿namespace Ultraviolet.Presentation.Animations
 {
     partial class StoryboardInstance
     {

@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.Audio;
+﻿using Ultraviolet.Audio;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a trigger action which plays a specified sound effect.

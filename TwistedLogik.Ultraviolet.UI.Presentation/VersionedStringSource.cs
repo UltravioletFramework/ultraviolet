@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a source of string data with an attached version value which is used to track changes to mutable sources.

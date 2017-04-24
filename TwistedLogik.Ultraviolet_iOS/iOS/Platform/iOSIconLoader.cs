@@ -1,7 +1,7 @@
-﻿using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Platform;
+﻿using Ultraviolet.Graphics;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.iOS.Platform
+namespace Ultraviolet.iOS.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="IconLoader"/> class for the iOS platform.

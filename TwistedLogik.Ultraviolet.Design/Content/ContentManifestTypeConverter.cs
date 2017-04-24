@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Design.Content
+namespace Ultraviolet.Design.Content
 {
     /// <summary>
     /// Represents a type converter which produces a list of asset identifier values corresponding

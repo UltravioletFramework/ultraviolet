@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Represents the easing function names which are recognized by the UVSS parser.

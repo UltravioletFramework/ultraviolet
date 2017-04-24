@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TwistedLogik.Ultraviolet.Platform
+namespace Ultraviolet.Platform
 {
     /// <summary>
     /// Represents a source of file data.

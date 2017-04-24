@@ -1,10 +1,10 @@
 ﻿using System;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a method which constructs view model instances for the specified view.

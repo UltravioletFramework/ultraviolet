@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Audio;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Audio;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.Audio
+namespace Ultraviolet.Tests.Audio
 {
     [TestFixture]
     public class SongTests : UltravioletApplicationTestFramework

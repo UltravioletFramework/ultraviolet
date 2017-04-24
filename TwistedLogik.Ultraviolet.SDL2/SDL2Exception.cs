@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.SDL2.Native;
+using Ultraviolet.SDL2.Native;
 
-namespace TwistedLogik.Ultraviolet.SDL2
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Represents an exception thrown as a result of an SDL2 API error.

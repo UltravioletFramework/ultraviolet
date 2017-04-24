@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet Tests", "TwistedLogik.Ultraviolet Tests\TwistedLogik.Ultraviolet Tests.csproj", "{0447F779-E020-4E82-BF73-EB87C0E420D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.OpenGL (Desktop)", "TwistedLogik.Ultraviolet.OpenGL_Desktop\TwistedLogik.Ultraviolet.OpenGL (Desktop).csproj", "{40D272DB-90E1-4332-A32F-6EFFEB44FE87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Desktop", "Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj", "{40D272DB-90E1-4332-A32F-6EFFEB44FE87}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.SDL2 (Desktop)", "TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 (Desktop).csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
 EndProject
@@ -49,7 +49,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Core", "Ultravi
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.BASS", "TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.shproj", "{62E8C883-B858-4FCC-82EC-C313FEFBAD34}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.OpenGL", "TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.shproj", "{F04E0C37-AFC2-4B85-90C7-9D77DCFD074C}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL", "Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.shproj", "{F04E0C37-AFC2-4B85-90C7-9D77DCFD074C}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TwistedLogik.Ultraviolet.SDL2", "TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.shproj", "{97309779-3045-4D98-8DE0-5F40A8DC1C5B}"
 EndProject
@@ -85,7 +85,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
-		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
+		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation\TwistedLogik.Ultraviolet.UI.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.SDL2\TwistedLogik.Ultraviolet.SDL2.projitems*{50aefa93-fe53-414a-89fc-c061c165c673}*SharedItemsImports = 4
@@ -102,7 +102,7 @@ Global
 		TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler\TwistedLogik.Ultraviolet.UI.Presentation.RoslynCompiler.projitems*{ca57b4bc-a395-4c1c-a4cf-6286fa7b9c80}*SharedItemsImports = 4
 		TwistedLogik.Ultraviolet.UI.Presentation.Compiler\TwistedLogik.Ultraviolet.UI.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.BASS\TwistedLogik.Ultraviolet.BASS.projitems*{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}*SharedItemsImports = 4
-		TwistedLogik.Ultraviolet.OpenGL\TwistedLogik.Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
+		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet\TwistedLogik.Ultraviolet.projitems*{f071abe3-05e5-4df9-a929-cf71b01ec50a}*SharedItemsImports = 4
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4

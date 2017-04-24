@@ -2,10 +2,10 @@
 using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
 
 namespace UltravioletSample
 {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a content processor which loads XML definition files as texture atlases.

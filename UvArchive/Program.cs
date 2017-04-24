@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Tooling;
+using Ultraviolet.Content;
+using Ultraviolet.Tooling;
 
 namespace UvArchive
 {

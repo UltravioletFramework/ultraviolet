@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Contains extensoin methods for the <see cref="System.IO.BinaryReader"/> class.

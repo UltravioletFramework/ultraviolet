@@ -4,12 +4,12 @@ using System.IO;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.SDL2.Messages;
-using TwistedLogik.Ultraviolet.SDL2.Native;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Messages;
+using Ultraviolet.SDL2.Native;
 
-namespace TwistedLogik.Ultraviolet.SDL2.Input
+namespace Ultraviolet.SDL2.Input
 {
     /// <summary>
     /// Represents the SDL2 implementation of the <see cref="TouchDevice"/> class.

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D.Text;
-using TwistedLogik.Ultraviolet.Testing;
+using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.Testing;
 
-namespace TwistedLogik.Ultraviolet.Tests.Graphics.Graphics2D.Text
+namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 {
     [TestFixture]
     public class TextParserTests : UltravioletApplicationTestFramework

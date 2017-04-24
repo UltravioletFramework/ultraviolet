@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using Ultraviolet.Presentation.Animations;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents one of a UI element's visual state groups.

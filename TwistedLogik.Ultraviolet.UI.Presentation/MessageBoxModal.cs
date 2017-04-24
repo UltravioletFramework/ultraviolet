@@ -1,7 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="UIScreen"/> class that implement the <see cref="MessageBox"/> modal.

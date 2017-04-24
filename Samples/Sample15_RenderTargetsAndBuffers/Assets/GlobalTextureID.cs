@@ -1,4 +1,4 @@
-﻿using TwistedLogik.Ultraviolet.Content;
+﻿using Ultraviolet.Content;
 
 namespace UltravioletSample.Sample15_RenderTargetsAndBuffers.Assets
 {

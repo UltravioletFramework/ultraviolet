@@ -1,6 +1,6 @@
 ﻿using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a vertex containing only 3D position data.

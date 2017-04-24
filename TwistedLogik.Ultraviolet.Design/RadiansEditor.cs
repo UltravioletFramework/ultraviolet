@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace Ultraviolet.Design
 {
     /// <summary>
     /// Represents an type editor for the <see cref="Radians"/> structure.

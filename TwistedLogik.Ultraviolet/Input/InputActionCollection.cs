@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
 
-namespace TwistedLogik.Ultraviolet.Input
+namespace Ultraviolet.Input
 {
     /// <summary>
     /// Represents a collection of named input actions.
@@ -349,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.Input
         /// <returns>An XML document that represents the input actions.</returns>
         private XDocument SerializeToXml()
         {
-            return new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), new XElement("Actions",
+            return new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), new XElement("Actions", new XAttribute("Version", "2.0"),
                 from a in actions
                 select new XElement("Action", new XAttribute("Name", a.Key),
                     a.Value.Primary == null ? null : a.Value.Primary.ToXml("Primary"),
@@ -364,6 +364,8 @@ namespace TwistedLogik.Ultraviolet.Input
         {
             OnLoading();
 
+            var version = Version.Parse((String)xml.Root.Attribute("Version") ?? "1.0");
+
             foreach (var kvp in this)
             {
                 var element = xml.Root.Elements("Action").Where(x => x.AttributeValueString("Name") == kvp.Key).SingleOrDefault();
@@ -372,8 +374,8 @@ namespace TwistedLogik.Ultraviolet.Input
                     var primary = (element == null) ? null : element.Element("Primary");
                     var secondary = (element == null) ? null : element.Element("Secondary");
 
-                    kvp.Value.Primary = CreateBindingFromXml(primary);
-                    kvp.Value.Secondary = CreateBindingFromXml(secondary);
+                    kvp.Value.Primary = CreateBindingFromXml(primary, version);
+                    kvp.Value.Secondary = CreateBindingFromXml(secondary, version);
                 }
             }
 
@@ -384,8 +386,9 @@ namespace TwistedLogik.Ultraviolet.Input
         /// Creates an input binding from the specified XML element.
         /// </summary>
         /// <param name="element">The XML element that represents the input binding to create.</param>
+        /// <param name="version">The version of the file that is being loaded.</param>
         /// <returns>The input binding that was created.</returns>
-        private InputBinding CreateBindingFromXml(XElement element)
+        private InputBinding CreateBindingFromXml(XElement element, Version version)
         {
             if (element == null)
                 return null;
@@ -393,6 +396,10 @@ namespace TwistedLogik.Ultraviolet.Input
             var typeName = element.AttributeValueString("Type");
             if (String.IsNullOrEmpty(typeName))
                 throw new InvalidOperationException();
+
+            // For legacy compatibility, map from old namespaces to new namespaves.
+            if (version.Major < 2)
+                typeName = typeName.Substring("TwistedLogik.".Length);
 
             var type = Type.GetType(typeName);
             var ctor = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(UltravioletContext), typeof(XElement) }, null);

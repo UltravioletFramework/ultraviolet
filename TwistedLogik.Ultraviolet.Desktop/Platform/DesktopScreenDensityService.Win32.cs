@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace TwistedLogik.Ultraviolet.Desktop.Platform
+namespace Ultraviolet.Desktop.Platform
 {
     partial class DesktopScreenDensityService
     {

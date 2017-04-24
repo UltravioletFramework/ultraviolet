@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace Ultraviolet.Design
 {
     /// <summary>
     /// Represents an expandable object converter for Ultraviolet value types.

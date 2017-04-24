@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ultraviolet.Core;
-using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains methods for building syntax lists.

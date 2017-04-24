@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Content;
+using Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.UI
+namespace Ultraviolet.UI
 {
     /// <summary>
     /// Represents a <see cref="UIPanelDefinition"/> asset which has been loaded for use by a <see cref="UIPanel"/>.

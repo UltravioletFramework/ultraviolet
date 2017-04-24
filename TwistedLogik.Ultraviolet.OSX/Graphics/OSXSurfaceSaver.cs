@@ -3,9 +3,9 @@ using System.IO;
 using AppKit;
 using Foundation;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.OSX.Graphics
+namespace Ultraviolet.OSX.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for Mac OS X.

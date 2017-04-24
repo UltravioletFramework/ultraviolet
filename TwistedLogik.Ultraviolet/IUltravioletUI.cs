@@ -1,8 +1,8 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.Platform;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents the Ultraviolet Framework's UI subsystem.

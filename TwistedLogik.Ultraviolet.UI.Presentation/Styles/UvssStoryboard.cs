@@ -1,7 +1,7 @@
 ﻿using System;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
+using Ultraviolet.Presentation.Animations;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents an Ultraviolet Style Sheet document's representation of a storyboard animation.

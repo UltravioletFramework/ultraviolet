@@ -1,9 +1,9 @@
 using System;
 using Android.App;
 using Android.Util;
-using TwistedLogik.Ultraviolet.Platform;
+using Ultraviolet.Platform;
 
-namespace TwistedLogik.Ultraviolet.Android.Platform
+namespace Ultraviolet.Android.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenDensityService"/> class for the Android platform.

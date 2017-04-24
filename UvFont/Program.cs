@@ -14,8 +14,8 @@ using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Tooling;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Tooling;
 
 namespace UvFont
 {

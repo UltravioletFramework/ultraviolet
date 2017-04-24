@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.Text;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Errors
+namespace Ultraviolet.VisualStudio.Uvss.Errors
 {
     /// <summary>
     /// Contains extension methods relating to error handling.

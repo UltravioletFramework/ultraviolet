@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Compiler
+namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Contains methods for writing the source code for a data source wrapper.

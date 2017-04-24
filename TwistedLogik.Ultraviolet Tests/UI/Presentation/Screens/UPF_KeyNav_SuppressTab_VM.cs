@@ -1,8 +1,8 @@
-﻿using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+﻿using Ultraviolet.Input;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens
+namespace Ultraviolet.Tests.UI.Presentation.Screens
 {
     public class UPF_KeyNav_SuppressTab_VM
     {

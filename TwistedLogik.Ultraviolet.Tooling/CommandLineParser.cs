@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
-namespace TwistedLogik.Ultraviolet.Tooling
+namespace Ultraviolet.Tooling
 {
     /// <summary>
     /// Contains methods for parsing command line arguments.

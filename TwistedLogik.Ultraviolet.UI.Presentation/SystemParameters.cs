@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Contains properties which expose system settings.

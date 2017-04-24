@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Ultraviolet.Core.Collections;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Input
+namespace Ultraviolet.Presentation.Input
 {
     /// <summary>
     /// Maintains a list of weak references to objects which are listening to the <see cref="CommandManager.RequerySuggested"/> event.

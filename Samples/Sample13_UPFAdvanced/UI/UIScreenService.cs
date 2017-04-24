@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet.Content;
+using Ultraviolet.UI;
 using UltravioletSample.Sample13_UPFAdvanced.UI.Screens;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.UI

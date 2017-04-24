@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using TwistedLogik.Ultraviolet.Content;
+using Ultraviolet.Content;
+using Ultraviolet.UI;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the screen that provides the default implementation for the <see cref="MessageBox"/> modal.

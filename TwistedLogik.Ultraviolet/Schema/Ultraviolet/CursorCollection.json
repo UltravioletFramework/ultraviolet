@@ -1,6 +1,6 @@
 ﻿{
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TwistedLogik.Ultraviolet.CursorCollection Schema",
+  "title": "Ultraviolet.CursorCollection Schema",
   "type": "object",
   "properties": {
     "texture": { "type": "string" },
@@ -12,8 +12,8 @@
           "name": {
             "type": "string"
           },
-          "area": { "$ref": "http://schema.ultraviolet.tl/uv/Ultraviolet/Rectangle.json" },
-          "hotspot": { "$ref": "http://schema.ultraviolet.tl/uv/Ultraviolet/Point2.json" }
+          "area": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Rectangle.json" },
+          "hotspot": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Point2.json" }
         }
       }
     }

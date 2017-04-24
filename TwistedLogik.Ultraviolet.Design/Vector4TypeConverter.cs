@@ -2,7 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 
-namespace TwistedLogik.Ultraviolet.Design
+namespace Ultraviolet.Design
 {
     /// <summary>
     /// Represents a type converter for the <see cref="Vector4"/> structure.

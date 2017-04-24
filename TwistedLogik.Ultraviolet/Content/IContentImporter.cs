@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TwistedLogik.Ultraviolet.Content
+namespace Ultraviolet.Content
 {
     /// <summary>
     /// Represents a content importer.

@@ -1,8 +1,7 @@
 ﻿using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media
+namespace Ultraviolet.Presentation.Media
 {
     public partial class VisualCollection : IList<Visual>
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a hint to the underlying driver as to whether buffer data will be overwritten by a <c>SetData()</c> operation.

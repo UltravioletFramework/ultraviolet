@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text;
+using Ultraviolet;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.OpenGL;
 
 namespace UvStressTest
 {

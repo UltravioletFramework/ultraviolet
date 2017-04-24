@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet
+namespace Ultraviolet
 {
     /// <summary>
     /// Represents an Ultraviolet context's object factory.

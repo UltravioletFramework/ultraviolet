@@ -298,9 +298,9 @@
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>TwistedLogik.Ultraviolet.BASS (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Ultraviolet.OpenGL_Desktop\TwistedLogik.Ultraviolet.OpenGL %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
-      <Name>TwistedLogik.Ultraviolet.OpenGL (Desktop)</Name>
+      <Name>TwistedLogik.Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.SDL2_Desktop\TwistedLogik.Ultraviolet.SDL2 %28Desktop%29.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>

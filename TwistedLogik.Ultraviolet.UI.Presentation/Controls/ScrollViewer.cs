@@ -1,10 +1,10 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents the method that is called in response to a <see cref="ScrollViewer.ScrollChanged"/> routed event.
@@ -73,7 +73,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.
+        /// Sets the value of the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.
         /// </summary>
         /// <param name="element">The element on which to set the property.</param>
         /// <param name="value">The property value to set on the element.</param>
@@ -85,7 +85,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property
+        /// Gets the value of the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property
         /// on the specified object.
         /// </summary>
         /// <param name="element">The element for which to retrieve the property value.</param>
@@ -97,7 +97,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.
+        /// Sets the value of the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.
         /// </summary>
         /// <param name="element">The element on which to set the property.</param>
         /// <param name="value">The property value to set on the element.</param>
@@ -109,7 +109,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property
+        /// Gets the value of the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property
         /// on the specified object.
         /// </summary>
         /// <param name="element">The element for which to retrieve the property value.</param>
@@ -122,7 +122,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
+        /// Sets the value of the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
         /// </summary>
         /// <param name="element">The element on which to set the property.</param>
         /// <param name="value">The property value to set on the element.</param>
@@ -134,7 +134,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets the value of the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property
+        /// Gets the value of the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property
         /// on the specified object.
         /// </summary>
         /// <param name="element">The element for which to retrieve the property value.</param>
@@ -526,9 +526,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty ComputedVerticalScrollBarVisibilityProperty = ComputedVerticalScrollBarVisibilityPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.HorizontalScrollBarVisibility"/> attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
         /// Gets or sets a value indicating whether the scroll viewer's horizontal scroll bar should be visible.
@@ -547,9 +547,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Disabled, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.VerticalScrollBarVisibility"/> attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
         /// Gets or sets a value indicating whether the scroll viewer's vertical scroll bar should be visible.
@@ -582,9 +582,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleContentClippedChanged));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.</value>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ScrollViewer.IsDeferredScrollingEnabled"/> attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="ScrollViewer"/> should defer

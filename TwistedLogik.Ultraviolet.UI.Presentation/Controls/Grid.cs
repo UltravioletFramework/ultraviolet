@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
+using Ultraviolet.Presentation.Media;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents a grid of columns and columns which can contain child elements in each cell.
@@ -137,10 +137,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Row"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Grid.Row"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Row"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Grid.Row"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -160,10 +160,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleRowChanged));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Column"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Grid.Column"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.Column"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Grid.Column"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -183,10 +183,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Int32>(null, PropertyMetadataOptions.AffectsMeasure, HandleColumnChanged));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.RowSpan"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Grid.RowSpan"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.RowSpan"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Grid.RowSpan"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -206,10 +206,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Int32>(CommonBoxedValues.Int32.One));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.ColumnSpan"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.Grid.ColumnSpan"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.Grid.ColumnSpan"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.Grid.ColumnSpan"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>

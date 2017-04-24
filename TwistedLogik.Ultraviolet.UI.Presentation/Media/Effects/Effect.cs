@@ -1,10 +1,10 @@
 ﻿using System;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using GraphicsEffect = TwistedLogik.Ultraviolet.Graphics.Effect;
+using Ultraviolet.Graphics.Graphics2D;
+using GraphicsEffect = Ultraviolet.Graphics.Effect;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects
+namespace Ultraviolet.Presentation.Media.Effects
 {
     /// <summary>
     /// Represents a custom effect which can be applied to UI elements.

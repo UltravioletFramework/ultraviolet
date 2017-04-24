@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.UI.Presentation.Animations;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
-using TwistedLogik.Ultraviolet.UI.Presentation.Input;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media;
-using TwistedLogik.Ultraviolet.UI.Presentation.Media.Effects;
-using TwistedLogik.Ultraviolet.UI.Presentation.Styles;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
+using Ultraviolet.Presentation.Animations;
+using Ultraviolet.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Media;
+using Ultraviolet.Presentation.Media.Effects;
+using Ultraviolet.Presentation.Styles;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents the method that is called when a class is added to or removed from a UI element.

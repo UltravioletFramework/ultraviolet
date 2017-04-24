@@ -1,8 +1,7 @@
-﻿using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.Graphics;
+﻿using Ultraviolet.Content;
+using Ultraviolet.Graphics;
 
-namespace TwistedLogik.Ultraviolet.SDL2
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Represents a content processor that loads cursor collections.

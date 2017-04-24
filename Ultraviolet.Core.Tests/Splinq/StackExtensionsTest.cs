@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Ultraviolet.Core.Splinq;
 using Ultraviolet.Core.TestFramework;
 

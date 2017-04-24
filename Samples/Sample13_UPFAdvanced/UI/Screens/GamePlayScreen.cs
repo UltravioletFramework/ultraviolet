@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.UI;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.UI;
 using UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens

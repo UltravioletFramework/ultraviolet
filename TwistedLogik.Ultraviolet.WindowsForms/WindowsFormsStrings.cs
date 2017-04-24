@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Ultraviolet.Core.Text;
 
-namespace TwistedLogik.Ultraviolet.WindowsForms
+namespace Ultraviolet.WindowsForms
 {
     /// <summary>
     /// Contains the Windows Forms Ultraviolet host's string resources.

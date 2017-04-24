@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace TwistedLogik.Ultraviolet.Graphics
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a region of the screen in which rendering takes place.

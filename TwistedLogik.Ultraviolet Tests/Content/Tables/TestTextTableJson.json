@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "http://schema.ultraviolet.tl/uv/Ultraviolet/Graphics/Graphics2D/Text/TextTableLayout.json",
+  "$schema": "http://schema.ultraviolet.tl/Ultraviolet/Graphics/Graphics2D/Text/TextTableLayout.json",
   "width": 300,
   "rows": [
     {

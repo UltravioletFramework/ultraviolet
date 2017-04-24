@@ -2,7 +2,7 @@
 using System.Collections;
 using Ultraviolet.Core;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Styles
+namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a navigation expression. Navigation expressions are used to drill into a dependency object,

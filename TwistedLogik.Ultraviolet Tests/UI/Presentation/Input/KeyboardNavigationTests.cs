@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using TwistedLogik.Ultraviolet.Input;
-using TwistedLogik.Ultraviolet.Tests.UI.Presentation.Screens;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls;
+using Ultraviolet.Input;
+using Ultraviolet.Presentation.Controls;
+using Ultraviolet.Tests.UI.Presentation.Screens;
 
-namespace TwistedLogik.Ultraviolet.Tests.UI.Presentation.Input
+namespace Ultraviolet.Tests.UI.Presentation.Input
 {
     [TestFixture]
     public class KeyboardNavigationTests : PresentationFoundationTestFramework

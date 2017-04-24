@@ -1,4 +1,4 @@
-﻿namespace TwistedLogik.Ultraviolet
+﻿namespace Ultraviolet
 {
     /// <summary>
     /// Represents the types of message box which can be displayed by the <see cref="IUltravioletPlatform.ShowMessageBox"/> method.

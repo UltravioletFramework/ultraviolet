@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="SpriteBatch"/> class.

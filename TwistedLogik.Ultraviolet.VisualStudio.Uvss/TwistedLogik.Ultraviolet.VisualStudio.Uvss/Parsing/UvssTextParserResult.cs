@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.Text;
-using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
-	/// <summary>
-	/// Represents the result of parsing a UVSS document.
-	/// </summary>
-	public struct UvssTextParserResult
+    /// <summary>
+    /// Represents the result of parsing a UVSS document.
+    /// </summary>
+    public struct UvssTextParserResult
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UvssTextParserResult"/> structure.

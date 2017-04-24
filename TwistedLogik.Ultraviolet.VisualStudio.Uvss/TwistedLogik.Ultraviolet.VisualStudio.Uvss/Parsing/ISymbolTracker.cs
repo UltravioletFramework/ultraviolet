@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.Text;
 
-namespace TwistedLogik.Ultraviolet.VisualStudio.Uvss.Parsing
+namespace Ultraviolet.VisualStudio.Uvss.Parsing
 {
     /// <summary>
     /// Represents the method that is called when a symbol tracker invalidates a span of text.

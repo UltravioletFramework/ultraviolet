@@ -1,8 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.UI.Presentation.Controls.Primitives;
+using Ultraviolet.Presentation.Controls.Primitives;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
+namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents the method that is called when a tool tip is opened or closed.
@@ -323,7 +323,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipOpening"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -336,7 +336,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Adds a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/> 
+        /// Adds a handler for the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipClosing"/> 
         /// attached event to the specified element.
         /// </summary>
         /// <param name="element">The element to which to add the handler.</param>
@@ -349,7 +349,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipOpening"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -362,7 +362,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Removes a handler for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/> 
+        /// Removes a handler for the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipClosing"/> 
         /// attached event from the specified element.
         /// </summary>
         /// <param name="element">The element from which to remove the handler.</param>
@@ -375,10 +375,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HorizontalOffset"/> 
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.HorizontalOffset"/> 
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HorizontalOffset"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.HorizontalOffset"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -398,10 +398,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.VerticalOffset"/> 
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.VerticalOffset"/> 
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.VerticalOffset"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.VerticalOffset"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -421,10 +421,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.InitialShowDelay"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.InitialShowDelay"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.VerticalOffset"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.VerticalOffset"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -442,10 +442,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Double>(SystemParameters.MouseHoverTime, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.BetweenShowDelay"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.BetweenShowDelay"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.InitialShowDelay"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.InitialShowDelay"/>
         /// attached property.</value>
         /// <remarks>
         /// <summary>
@@ -464,10 +464,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Double>(100.0, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowDuration"/> 
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ShowDuration"/> 
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowDuration"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ShowDuration"/>
         /// attached property.</value>
         /// <remarks>
         /// <summary>
@@ -485,9 +485,9 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Double>(5000.0, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsEnabled"/> attached property.
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.IsEnabled"/> attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsEnabled"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.IsEnabled"/>
         /// attached property.</value>
         /// <summary>
         /// Gets or sets a value indicating whether a tool tip is displayed for the element.
@@ -505,17 +505,17 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.True, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// The private access key for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsOpen"/> 
+        /// The private access key for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.IsOpen"/> 
         /// read-only attached property.
         /// </summary>
         internal static readonly DependencyPropertyKey IsOpenPropertyKey = DependencyProperty.RegisterReadOnly("IsOpen", typeof(Boolean), typeof(ToolTipService),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsOpen"/> 
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.IsOpen"/> 
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.IsOpen"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.IsOpen"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -534,10 +534,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         public static readonly DependencyProperty IsOpenProperty = IsOpenPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HasDropShadow"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.HasDropShadow"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.HasDropShadow"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.HasDropShadow"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -557,10 +557,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -581,10 +581,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.Placement"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.Placement"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ShowOnDisabled"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -604,10 +604,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<PlacementMode>(PlacementMode.Mouse, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.PlacementRectangle"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.PlacementRectangle"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.Placement"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.Placement"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -627,10 +627,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<RectangleD>(RectangleD.Empty, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.PlacementTarget"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.PlacementTarget"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.PlacementRectangle"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.PlacementRectangle"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -650,10 +650,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<UIElement>(null, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTip"/>
+        /// Identifies the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ToolTip"/>
         /// attached property.
         /// </summary>
-        /// <value>The identifier for the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTip"/>
+        /// <value>The identifier for the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ToolTip"/>
         /// attached property.</value>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -673,10 +673,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             new PropertyMetadata<Object>(null, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipOpening"/>
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipOpening"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -693,10 +693,10 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(UpfToolTipEventHandler), typeof(ToolTipService));
 
         /// <summary>
-        /// Identifies the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// Identifies the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipClosing"/>
         /// attached routed event.
         /// </summary>
-        /// <value>The identifier for the <see cref="E:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// <value>The identifier for the <see cref="E:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipClosing"/>
         /// attached routed event.</value>
         /// <AttachedEventComments>
         /// <summary>
@@ -713,7 +713,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
             typeof(UpfToolTipEventHandler), typeof(ToolTipService));
 
         /// <summary>
-        /// Raises the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipOpening"/>
+        /// Raises the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipOpening"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseToolTipOpening(DependencyObject element, RoutedEventData data)
@@ -723,7 +723,7 @@ namespace TwistedLogik.Ultraviolet.UI.Presentation.Controls
         }
 
         /// <summary>
-        /// Raises the <see cref="P:TwistedLogik.Ultraviolet.UI.Presentation.Controls.ToolTipService.ToolTipClosing"/>
+        /// Raises the <see cref="P:Ultraviolet.Presentation.Controls.ToolTipService.ToolTipClosing"/>
         /// attached event for the specified element.
         /// </summary>
         internal static void RaiseToolTipClosing(DependencyObject element, RoutedEventData data)

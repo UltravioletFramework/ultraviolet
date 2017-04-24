@@ -1,6 +1,6 @@
-﻿using TwistedLogik.Ultraviolet.UI.Presentation.Uvss.Syntax;
+﻿using Ultraviolet.Presentation.Uvss.Syntax;
 
-namespace TwistedLogik.Ultraviolet.UI.Presentation.Uvss
+namespace Ultraviolet.Presentation.Uvss
 {
     /// <summary>
     /// Contains methods for visiting the nodes of a UVSS syntax tree.

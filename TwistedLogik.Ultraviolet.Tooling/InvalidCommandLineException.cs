@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwistedLogik.Ultraviolet.Tooling
+namespace Ultraviolet.Tooling
 {
     /// <summary>
     /// Represents the exception that is thrown when an application's command line arguments

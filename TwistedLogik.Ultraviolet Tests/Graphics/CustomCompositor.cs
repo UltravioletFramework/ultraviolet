@@ -1,11 +1,11 @@
 ﻿using System;
 using Ultraviolet.Core;
-using TwistedLogik.Ultraviolet.Graphics;
-using TwistedLogik.Ultraviolet.Graphics.Graphics2D;
-using TwistedLogik.Ultraviolet.Platform;
-using TwistedLogik.Ultraviolet.Testing.Graphics;
+using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
+using Ultraviolet.Testing.Graphics;
 
-namespace TwistedLogik.Ultraviolet.Tests.Graphics
+namespace Ultraviolet.Tests.Graphics
 {
     /// <summary>
     /// Represents a test compositor which renders the scene to a buffer of predetermined size,

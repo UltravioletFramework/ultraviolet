@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
-using TwistedLogik.Ultraviolet.Content;
 
-namespace TwistedLogik.Ultraviolet.Graphics.Graphics2D
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a region on a texture which corresponds to a particular image.
