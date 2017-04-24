@@ -90,9 +90,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>Ultraviolet.Core %28Desktop%29</Name>
+      <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.UI.Presentation.Compiler_Desktop\TwistedLogik.Ultraviolet.UI.Presentation.Compiler %28Desktop%29.csproj">
       <Project>{8f3c2da1-8930-493b-854b-a053bdbf9071}</Project>

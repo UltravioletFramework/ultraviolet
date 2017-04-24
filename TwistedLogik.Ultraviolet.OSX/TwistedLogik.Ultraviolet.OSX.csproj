@@ -98,9 +98,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core (Desktop).csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>Ultraviolet.Core (Desktop)</Name>
+      <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet (Desktop).csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>

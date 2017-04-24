@@ -88,9 +88,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>Ultraviolet.Core %28Desktop%29</Name>
+      <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.Tooling\TwistedLogik.Ultraviolet.Tooling.csproj">
       <Project>{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}</Project>

@@ -103,9 +103,9 @@
     <EmbeddedResource Include="Text\StringResource.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>Ultraviolet.Core %28Desktop%29</Name>
+      <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

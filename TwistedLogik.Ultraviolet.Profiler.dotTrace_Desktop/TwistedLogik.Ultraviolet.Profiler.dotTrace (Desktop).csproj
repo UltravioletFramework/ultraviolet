@@ -75,9 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>Ultraviolet.Core %28Desktop%29</Name>
+      <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet_Desktop\TwistedLogik.Ultraviolet %28Desktop%29.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>

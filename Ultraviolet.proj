@@ -12,23 +12,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Ultraviolet_Windows Include="TwistedLogik.Ultraviolet (Windows).sln">
+    <Ultraviolet_Windows Include="Ultraviolet.Windows.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Windows>
-    <Ultraviolet_Linux Include="TwistedLogik.Ultraviolet (Linux).sln">
+    <Ultraviolet_Linux Include="Ultraviolet.Linux.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Linux>
-    <Ultraviolet_OSX Include="TwistedLogik.Ultraviolet (OSX).sln">
+    <Ultraviolet_OSX Include="Ultraviolet.OSX.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_OSX>
-    <Ultraviolet_OSX_Bamboo Include="TwistedLogik.Ultraviolet (OSX Bamboo).sln">
+    <Ultraviolet_OSX_Bamboo Include="Ultraviolet.OSX.Bamboo.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_OSX_Bamboo>
-    <Ultraviolet_Android Include="TwistedLogik.Ultraviolet (Android).sln">
+    <Ultraviolet_Android Include="Ultraviolet.Android.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Android>
-    <Ultraviolet_iOS_Bamboo Include="TwistedLogik.Ultraviolet (iOS Bamboo).sln"/>
-    <Ultraviolet_iOS Include="TwistedLogik.Ultraviolet (iOS).sln"/>
+    <Ultraviolet_iOS_Bamboo Include="Ultraviolet.iOS.Bamboo.sln"/>
+    <Ultraviolet_iOS Include="Ultraviolet.iOS.sln"/>
   </ItemGroup>
   
   <!-- VERSIONING -->
@@ -171,7 +171,7 @@
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_WindowsForms)" DestinationFiles="@(TwistedLogik_Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
   </Target>
   <Target Name="CopyOSXBinaries">
-    <CreateItem	Include="TwistedLogik.Ultraviolet.OSX/bin/$(Configuration)/TwistedLogik.Ultraviolet.OSX.*">
+    <CreateItem	Include="Ultraviolet.OSX/bin/$(Configuration)/Ultraviolet.OSX.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_OSX_Shim"/>
     </CreateItem>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_OSX_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_OSX_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

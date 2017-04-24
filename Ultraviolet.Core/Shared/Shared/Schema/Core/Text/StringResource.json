@@ -1,0 +1,5 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Core.Text.StringResource Schema",
+  "type": "string"
+}

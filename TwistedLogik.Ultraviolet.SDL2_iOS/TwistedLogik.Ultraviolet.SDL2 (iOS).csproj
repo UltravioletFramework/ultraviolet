@@ -92,7 +92,7 @@
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
       <Name>TwistedLogik.Ultraviolet (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Core_iOS\Ultraviolet.Core %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>

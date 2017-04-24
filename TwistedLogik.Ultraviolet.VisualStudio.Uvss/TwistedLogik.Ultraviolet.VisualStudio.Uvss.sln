@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests", "..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests\TwistedLogik.Ultraviolet.UI.Presentation.Uvss Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core (Desktop)", "..\Ultraviolet.Core_Desktop\Ultraviolet.Core (Desktop).csproj", "{7DA6158B-A0B9-4100-904E-22FD86949608}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Desktop", "..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj", "{7DA6158B-A0B9-4100-904E-22FD86949608}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Core", "..\Ultraviolet.Core\Ultraviolet.Core.shproj", "{803B586B-CBAC-4E46-A787-BDF837E1EF46}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Core", "..\Ultraviolet.Core\Shared\Ultraviolet.Core.shproj", "{803B586B-CBAC-4E46-A787-BDF837E1EF46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.TestFramework", "..\Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj", "{6A17D1A8-AC32-4BB4-8446-D76F6B160246}"
 EndProject
@@ -22,8 +22,8 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
-		..\Ultraviolet.Core\Ultraviolet.Core.projitems*{7da6158b-a0b9-4100-904e-22fd86949608}*SharedItemsImports = 4
-		..\Ultraviolet.Core\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
+		..\Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{7da6158b-a0b9-4100-904e-22fd86949608}*SharedItemsImports = 4
+		..\Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
 		..\TwistedLogik.Ultraviolet.UI.Presentation.Uvss\TwistedLogik.Ultraviolet.UI.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

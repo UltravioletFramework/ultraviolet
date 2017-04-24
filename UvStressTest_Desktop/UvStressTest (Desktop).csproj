@@ -83,9 +83,9 @@
       <Project>{08b2b8d5-152f-45fb-b4eb-8c09010a9908}</Project>
       <Name>TwistedLogik.Gluon (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Core_Desktop\Ultraviolet.Core %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>Ultraviolet.Core %28Desktop%29</Name>
+      <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\TwistedLogik.Ultraviolet.BASS_Desktop\TwistedLogik.Ultraviolet.BASS %28Desktop%29.csproj">
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>

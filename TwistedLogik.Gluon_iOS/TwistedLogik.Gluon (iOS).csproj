@@ -70,7 +70,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core_iOS\Ultraviolet.Core (iOS).csproj">
+    <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
