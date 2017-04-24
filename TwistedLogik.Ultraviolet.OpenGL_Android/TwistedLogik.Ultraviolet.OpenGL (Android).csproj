@@ -75,9 +75,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon_Android\TwistedLogik.Gluon %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Android\Ultraviolet.OpenGL.Bindings.Android.csproj">
       <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
-      <Name>TwistedLogik.Gluon %28Android%29</Name>
+      <Name>Ultraviolet.OpenGL.Bindings.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
       <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>

@@ -79,9 +79,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon_Desktop\TwistedLogik.Gluon %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
       <Project>{08b2b8d5-152f-45fb-b4eb-8c09010a9908}</Project>
-      <Name>TwistedLogik.Gluon (Desktop)</Name>
+      <Name>Ultraviolet.OpenGL.Bindings.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>

@@ -78,9 +78,9 @@
     <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon_Desktop\TwistedLogik.Gluon %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
       <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>
-      <Name>TwistedLogik.Gluon (Desktop)</Name>
+      <Name>Ultraviolet.OpenGL.Bindings.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>

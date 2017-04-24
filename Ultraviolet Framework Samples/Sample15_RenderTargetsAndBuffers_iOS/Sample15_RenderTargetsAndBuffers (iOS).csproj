@@ -183,8 +183,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Dependencies\iOS\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="TwistedLogik.Gluon">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Gluon.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>

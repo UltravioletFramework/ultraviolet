@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 {

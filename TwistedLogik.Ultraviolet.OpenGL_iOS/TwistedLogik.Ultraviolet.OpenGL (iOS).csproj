@@ -169,9 +169,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwistedLogik.Gluon_iOS\TwistedLogik.Gluon (iOS).csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
       <Project>{65ecb0c3-fd4e-494a-a000-43500b9cb851}</Project>
-      <Name>TwistedLogik.Gluon (iOS)</Name>
+      <Name>Ultraviolet.OpenGL.Bindings.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>

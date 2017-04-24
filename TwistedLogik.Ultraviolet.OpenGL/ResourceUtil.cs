@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
 

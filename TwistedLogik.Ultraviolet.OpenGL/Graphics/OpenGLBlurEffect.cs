@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Graphics;
 

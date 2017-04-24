@@ -78,8 +78,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="TwistedLogik.Gluon">
-      <HintPath>..\Dependencies\Android\TwistedLogik.Gluon.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\Dependencies\Android\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>

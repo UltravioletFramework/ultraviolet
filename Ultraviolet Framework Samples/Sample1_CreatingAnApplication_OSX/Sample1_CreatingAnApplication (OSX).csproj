@@ -76,8 +76,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
-    <Reference Include="TwistedLogik.Gluon">
-      <HintPath>..\Dependencies\TwistedLogik.Gluon.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\Dependencies\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>

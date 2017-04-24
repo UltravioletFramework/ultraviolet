@@ -13,7 +13,7 @@
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the Windows and Linux platforms.</description>
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
-        <dependency id="TwistedLogik.Gluon" version="UV_VERSION" />	
+        <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />	
         <dependency id="Ultraviolet.Core" version="UV_VERSION" />
         <dependency id="TwistedLogik.Ultraviolet.BASS" version="UV_VERSION" />
         <dependency id="TwistedLogik.Ultraviolet.BASS.Native" version="UV_VERSION" />

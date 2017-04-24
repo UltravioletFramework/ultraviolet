@@ -1,5 +1,5 @@
 ﻿using System;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 
 namespace TwistedLogik.Ultraviolet.OpenGL.Graphics.Caching
 {

@@ -19,7 +19,7 @@ IF "%1"=="test_uvss" GOTO test_uvss
 
 sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
 sn.exe -R "Ultraviolet.Core.Design.dll" "%TLSN%"
-sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.OpenGL.Bindings.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" "%TLSN%"
@@ -39,7 +39,7 @@ GOTO :eof
 
 :sign_android
 sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
-sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.OpenGL.Bindings.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" "%TLSN%"
@@ -51,7 +51,7 @@ GOTO :eof
 
 :sign_ios
 sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
-sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.OpenGL.Bindings.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" "%TLSN%"
@@ -67,7 +67,7 @@ GOTO :eof
 
 :test_ultraviolet
 sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
-sn.exe -R "TwistedLogik.Gluon.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.OpenGL.Bindings.dll" "%TLSN%" 
 sn.exe -R "TwistedLogik.Ultraviolet.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.dll" "%TLSN%"
 sn.exe -R "TwistedLogik.Ultraviolet.UI.Presentation.Uvss.dll" "%TLSN%"

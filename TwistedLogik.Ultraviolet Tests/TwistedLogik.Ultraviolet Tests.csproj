@@ -330,9 +330,9 @@
       <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
       <Name>TwistedLogik.Ultraviolet.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TwistedLogik.Gluon_Desktop\TwistedLogik.Gluon %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
       <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>
-      <Name>TwistedLogik.Gluon (Desktop)</Name>
+      <Name>Ultraviolet.OpenGL.Bindings.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

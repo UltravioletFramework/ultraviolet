@@ -93,11 +93,11 @@
       <CreateItem Include="packages/Newtonsoft.Json.9.0.1/lib/net40/*.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Core_Desktop/bin/$(Configuration)/Ultraviolet.Core.*">
+    <CreateItem Include="Ultraviolet.Core/Desktop/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Desktop"/>
     </CreateItem>
-    <CreateItem Include="TwistedLogik.Gluon_Desktop/bin/$(Configuration)/TwistedLogik.Gluon.*">
-        <Output TaskParameter="Include" ItemName="TwistedLogik_Gluon_Desktop"/>
+    <CreateItem Include="Ultraviolet.OpenGL.Bindings/Desktop/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_Desktop"/>
     </CreateItem>
     <CreateItem Include="TwistedLogik.Ultraviolet_Desktop/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Desktop"/>
@@ -140,7 +140,7 @@
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Desktop)" DestinationFiles="@(Ultraviolet_Core_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(TwistedLogik_Gluon_Desktop)" DestinationFiles="@(TwistedLogik_Gluon_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Desktop_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_Desktop_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -202,11 +202,11 @@
     <CreateItem Include="packages/Newtonsoft.Json.9.0.1/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Core_Android/bin/$(Configuration)/Ultraviolet.Core.*">
+    <CreateItem Include="Ultraviolet.Core/Android/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Android"/>
     </CreateItem>
-    <CreateItem Include="TwistedLogik.Gluon_Android/bin/$(Configuration)/TwistedLogik.Gluon.*">
-        <Output TaskParameter="Include" ItemName="TwistedLogik_Gluon_Android"/>
+    <CreateItem Include="Ultraviolet.OpenGL.Bindings/Android/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_Android"/>
     </CreateItem>
     <CreateItem Include="TwistedLogik.Ultraviolet_Android/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_Android"/>
@@ -234,7 +234,7 @@
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(TwistedLogik_Gluon_Android)" DestinationFiles="@(TwistedLogik_Gluon_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Android_Shim)" DestinationFiles="@(TwistedLogik_Ultraviolet_Android_Shim->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Android)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -276,11 +276,11 @@
     <CreateItem Include="packages/Newtonsoft.Json.9.0.1/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Core_iOS/bin/$(Configuration)/Ultraviolet.Core.*">
+    <CreateItem Include="Ultraviolet.Core/iOS/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_iOS"/>
     </CreateItem>
-    <CreateItem Include="TwistedLogik.Gluon_iOS/bin/$(Configuration)/TwistedLogik.Gluon.*">
-        <Output TaskParameter="Include" ItemName="TwistedLogik_Gluon_iOS"/>
+    <CreateItem Include="Ultraviolet.OpenGL.Bindings/iOS/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_iOS"/>
     </CreateItem>
     <CreateItem Include="TwistedLogik.Ultraviolet_iOS/bin/$(Configuration)/TwistedLogik.Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="TwistedLogik_Ultraviolet_iOS"/>
@@ -311,7 +311,7 @@
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(TwistedLogik_Gluon_iOS)" DestinationFiles="@(TwistedLogik_Gluon_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_iOS_Bindings)" DestinationFiles="@(TwistedLogik_Ultraviolet_iOS_Bindings->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS)" DestinationFiles="@(TwistedLogik_Ultraviolet_Profiler_dotTrace_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

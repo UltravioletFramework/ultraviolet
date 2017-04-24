@@ -1,5 +1,5 @@
 ﻿using System;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 using TwistedLogik.Ultraviolet.Content;
 using TwistedLogik.Ultraviolet.Graphics;
 

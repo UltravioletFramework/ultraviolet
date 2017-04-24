@@ -201,8 +201,8 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="TwistedLogik.Gluon">
-      <HintPath>..\Dependencies\iOS\TwistedLogik.Gluon.dll</HintPath>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\Dependencies\iOS\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>

@@ -8,8 +8,8 @@
 
 @echo Creating NuGet packages for Ultraviolet Framework %UV_VERSION%...
 
-powershell -Command "(gc TwistedLogik.Gluon.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc TwistedLogik.Gluon.nuspec"
-nuget pack TwistedLogik.Gluon.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.OpenGL.Bindings.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.OpenGL.Bindings.nuspec"
+nuget pack Ultraviolet.OpenGL.Bindings.nuspec -Symbols
 
 powershell -Command "(gc Ultraviolet.Core.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Core.nuspec"
 nuget pack Ultraviolet.Core.nuspec -Symbols

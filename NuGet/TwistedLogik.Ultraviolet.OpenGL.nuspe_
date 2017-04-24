@@ -13,7 +13,7 @@
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-    <dependency id="TwistedLogik.Gluon" version="UV_VERSION" />
+    <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />
     <dependency id="TwistedLogik.Ultraviolet" version="UV_VERSION" />
     <dependency id="TwistedLogik.Ultraviolet.SDL2" version="UV_VERSION" />
   </dependencies>

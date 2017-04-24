@@ -1,12 +1,12 @@
 ﻿using System;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 using TwistedLogik.Ultraviolet.SDL2.Native;
 
 namespace TwistedLogik.Ultraviolet.OpenGL
 {
     /// <summary>
     /// Represents an object capable of querying the OpenGL driver for information 
-    /// required by the Gluon initialization process.
+    /// required by Ultraviolet's OpenGL initialization process.
     /// </summary>
     public sealed class OpenGLInitializer : IOpenGLInitializer
     {

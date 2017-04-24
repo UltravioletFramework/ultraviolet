@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using TwistedLogik.Gluon;
+using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.Core;
 using TwistedLogik.Ultraviolet.Graphics;
 using TwistedLogik.Ultraviolet.OpenGL.Graphics;
