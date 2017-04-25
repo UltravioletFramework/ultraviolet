@@ -139,7 +139,7 @@
     <CreateItem Include="Ultraviolet.SDL2/Desktop/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.*">
+    <CreateItem Include="Ultraviolet.Presentation/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Desktop"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Presentation.Uvss/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
@@ -248,7 +248,7 @@
     <CreateItem Include="Ultraviolet.SDL2/Android/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation_Android/bin/$(Configuration)/Ultraviolet.Presentation.*">
+    <CreateItem Include="Ultraviolet.Presentation/Android/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Android"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Presentation.Uvss/Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
@@ -325,7 +325,7 @@
     <CreateItem Include="Ultraviolet.SDL2.UIKit_iOS/bin/$(Configuration)/Ultraviolet.SDL2.UIKit.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_UIKit_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation_iOS/bin/$(Configuration)/Ultraviolet.Presentation.*">
+    <CreateItem Include="Ultraviolet.Presentation/iOS/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_iOS"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Presentation.Uvss/iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">

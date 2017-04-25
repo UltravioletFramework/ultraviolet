@@ -86,9 +86,9 @@
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
       <Name>Ultraviolet.Presentation.Uvss.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.Presentation_Desktop\Ultraviolet.Presentation (Desktop).csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\Desktop\Ultraviolet.Presentation.Desktop.csproj">
       <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
-      <Name>Ultraviolet.Presentation (Desktop)</Name>
+      <Name>Ultraviolet.Presentation.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
