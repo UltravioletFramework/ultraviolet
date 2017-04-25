@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Ultraviolet.Core.Text;
 
-namespace Ultraviolet.WindowsForms
+namespace Ultraviolet.Windows.Forms
 {
     /// <summary>
     /// Contains the Windows Forms Ultraviolet host's string resources.
@@ -14,7 +14,7 @@ namespace Ultraviolet.WindowsForms
         static WindowsFormsStrings()
         {
             var asm = Assembly.GetExecutingAssembly();
-            using (var stream = asm.GetManifestResourceStream("Ultraviolet.WindowsForms.Resources.Strings.xml"))
+            using (var stream = asm.GetManifestResourceStream("Ultraviolet.Windows.Forms.Resources.Strings.xml"))
             {
                 StringDatabase.LoadFromStream(stream);
             }

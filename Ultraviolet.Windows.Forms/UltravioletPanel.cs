@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
-namespace Ultraviolet.WindowsForms
+namespace Ultraviolet.Windows.Forms
 {
     /// <summary>
     /// Represents a panel designed to be enlisted into an Ultraviolet context.

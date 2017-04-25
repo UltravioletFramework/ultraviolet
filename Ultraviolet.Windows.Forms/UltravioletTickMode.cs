@@ -1,5 +1,5 @@
 ﻿
-namespace Ultraviolet.WindowsForms
+namespace Ultraviolet.Windows.Forms
 {
     /// <summary>
     /// Represents Ultraviolet's supported methods for ticking a Windows Forms-based application.

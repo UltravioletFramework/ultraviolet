@@ -7,8 +7,8 @@
     <ProjectGuid>{6C5385CC-D39D-403A-BC91-08E775AA7AD3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ultraviolet.WindowsForms</RootNamespace>
-    <AssemblyName>Ultraviolet.WindowsForms</AssemblyName>
+    <RootNamespace>Ultraviolet.Windows.Forms</RootNamespace>
+    <AssemblyName>Ultraviolet.Windows.Forms</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\Ultraviolet.WindowsForms.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Ultraviolet.Windows.Forms.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
@@ -85,12 +85,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\x86\Release\Ultraviolet.WindowsForms.xml</DocumentationFile>
+    <DocumentationFile>bin\x86\Release\Ultraviolet.Windows.Forms.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;SIGNED</DefineConstants>
-    <DocumentationFile>bin\Signed\Ultraviolet.WindowsForms.xml</DocumentationFile>
+    <DocumentationFile>bin\Signed\Ultraviolet.Windows.Forms.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -178,16 +178,12 @@
     <EmbeddedResource Include="Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Ultraviolet.WindowsForms.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <Content Include="Ultraviolet.Windows.Forms.Licenses.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

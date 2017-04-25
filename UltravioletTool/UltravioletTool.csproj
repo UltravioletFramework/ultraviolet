@@ -189,7 +189,7 @@
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
       <Name>Ultraviolet.SDL2 (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.WindowsForms\Ultraviolet.WindowsForms.csproj">
+    <ProjectReference Include="..\Ultraviolet.Windows.Forms\Ultraviolet.Windows.Forms.csproj">
       <Project>{6C5385CC-D39D-403A-BC91-08E775AA7AD3}</Project>
       <Name>Ultraviolet.WindowsForms</Name>
     </ProjectReference>

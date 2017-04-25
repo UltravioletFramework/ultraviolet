@@ -31,8 +31,8 @@
             this.fILEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ultravioletPanel1 = new Ultraviolet.WindowsForms.UltravioletPanel();
-            this.ultravioletPanel2 = new Ultraviolet.WindowsForms.UltravioletPanel();
+            this.ultravioletPanel1 = new Ultraviolet.Windows.Forms.UltravioletPanel();
+            this.ultravioletPanel2 = new Ultraviolet.Windows.Forms.UltravioletPanel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -127,8 +127,8 @@
         private System.Windows.Forms.ToolStripMenuItem fILEToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private Ultraviolet.WindowsForms.UltravioletPanel ultravioletPanel1;
-        private Ultraviolet.WindowsForms.UltravioletPanel ultravioletPanel2;
+        private Ultraviolet.Windows.Forms.UltravioletPanel ultravioletPanel1;
+        private Ultraviolet.Windows.Forms.UltravioletPanel ultravioletPanel2;
     }
 }
 

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet (Desktop)", "Ul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Desktop", "Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj", "{7DA6158B-A0B9-4100-904E-22FD86949608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.WindowsForms", "Ultraviolet.WindowsForms\Ultraviolet.WindowsForms.csproj", "{6C5385CC-D39D-403A-BC91-08E775AA7AD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Windows.Forms", "Ultraviolet.Windows.Forms\Ultraviolet.Windows.Forms.csproj", "{6C5385CC-D39D-403A-BC91-08E775AA7AD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.Desktop", "Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj", "{08B2B8D5-152F-45FB-B4EB-8C09010A9908}"
 EndProject

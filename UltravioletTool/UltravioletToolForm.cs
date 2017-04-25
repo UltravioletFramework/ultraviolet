@@ -7,7 +7,7 @@ using Ultraviolet.Core.Text;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.OpenGL;
-using Ultraviolet.WindowsForms;
+using Ultraviolet.Windows.Forms;
 
 namespace SAFE_PROJECT_NAME
 {
