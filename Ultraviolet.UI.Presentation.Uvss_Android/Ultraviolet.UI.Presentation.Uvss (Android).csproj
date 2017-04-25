@@ -57,11 +57,11 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\Ultraviolet.SDL2\TwistedLogik.Public.snk">
-      <Link>TwistedLogik.Public.snk</Link>
+    <None Include="..\Ultraviolet.SDL2\Ultraviolet.Public.snk">
+      <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>
   <ItemGroup>

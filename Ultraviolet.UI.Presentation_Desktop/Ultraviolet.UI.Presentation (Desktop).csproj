@@ -50,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
@@ -86,8 +86,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TwistedLogik.Public.snk">
-      <Link>TwistedLogik.Public.snk</Link>
+    <None Include="..\Ultraviolet.Public.snk">
+      <Link>Ultraviolet.Public.snk</Link>
     </None>
     <None Include="BindingExpressionCompilerTemplate.t4" />
   </ItemGroup>

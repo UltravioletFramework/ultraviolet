@@ -39,7 +39,7 @@
     <DocumentationFile>bin\Release\Ultraviolet.SDL2.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -163,7 +163,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TwistedLogik.Public.snk" />
+    <None Include="Ultraviolet.Public.snk" />
     <None Include="Ultraviolet.SDL2.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -39,7 +39,7 @@
     <DocumentationFile>bin\Release\Ultraviolet.BASS.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -163,8 +163,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TwistedLogik.Public.snk">
-      <Link>TwistedLogik.Public.snk</Link>
+    <None Include="..\Ultraviolet.Public.snk">
+      <Link>Ultraviolet.Public.snk</Link>
     </None>
     <None Include="Ultraviolet.BASS.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

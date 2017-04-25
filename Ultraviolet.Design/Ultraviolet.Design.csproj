@@ -36,7 +36,7 @@
     <DocumentationFile>bin\Release\Ultraviolet.Design.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\TwistedLogik.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -128,8 +128,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TwistedLogik.Public.snk">
-      <Link>TwistedLogik.Public.snk</Link>
+    <None Include="..\Ultraviolet.Public.snk">
+      <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
