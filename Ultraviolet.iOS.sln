@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.iOS", "Ult
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2 (iOS)", "Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 (iOS).csproj", "{89FC9118-5303-44C8-8AFE-20CB48A3F99E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.UIKit (iOS)", "Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit (iOS).csproj", "{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.UIKit", "Ultraviolet.SDL2.UIKit\Ultraviolet.SDL2.UIKit.csproj", "{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject
