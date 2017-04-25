@@ -42,6 +42,9 @@ namespace UvDebugSandbox
         /// <param name="args">An array containing the application's command line arguments.</param>
         public static void Main(String[] args)
         {
+            // Hello, world!
+            // This is a test
+
             using (var game = new Game())
             {
                 game.resolveContent = args.Contains("-resolve:content");
