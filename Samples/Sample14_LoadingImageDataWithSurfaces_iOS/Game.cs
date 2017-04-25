@@ -1,4 +1,4 @@
-﻿using TwistedLogik.Ultraviolet.BASS;
+﻿using Ultraviolet.BASS;
 
 namespace UltravioletSample.Sample14_LoadingImageDataWithSurfaces
 {

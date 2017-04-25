@@ -6,8 +6,8 @@ namespace UvDebugSandbox
     {
         partial void PlatformSpecificInitialization()
         {
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
+            EnsureAssemblyIsLinked<Ultraviolet.BASS.BASSUltravioletAudio>();
+            EnsureAssemblyIsLinked<Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
         }
     }
 }

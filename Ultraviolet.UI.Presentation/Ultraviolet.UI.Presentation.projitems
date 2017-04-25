@@ -6,7 +6,7 @@
     <SharedGUID>4e921721-be4a-4f69-bee4-61e8a18e0774</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TwistedLogik.Ultraviolet.UI.Presentation</Import_RootNamespace>
+    <Import_RootNamespace>Ultraviolet.UI.Presentation</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Animations\Animation.cs" />

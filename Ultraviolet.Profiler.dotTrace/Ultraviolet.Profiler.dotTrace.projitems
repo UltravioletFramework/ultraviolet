@@ -6,14 +6,14 @@
     <SharedGUID>4062c348-1341-4a91-8354-fbb227ad7def</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TwistedLogik.Ultraviolet.Profiler.dotTrace</Import_RootNamespace>
+    <Import_RootNamespace>Ultraviolet.Profiler.dotTrace</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)dotTraceControlState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)dotTraceStrings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.Profiler.dotTrace.Licenses.txt">
+    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.Profiler.dotTrace.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

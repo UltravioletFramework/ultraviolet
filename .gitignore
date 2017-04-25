@@ -169,7 +169,7 @@ gen/
 # Ultraviolet stuff
 # =========================
 *.uvarc
-TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions.dll
+Ultraviolet.UI.Presentation.CompiledExpressions.dll
 /packages
 /Samples/packages
 /Samples/Dependencies

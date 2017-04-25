@@ -4,7 +4,7 @@
     {
         partial void PlatformSpecificInitialization()
         {
-            EnsureAssemblyIsLinked<TwistedLogik.Ultraviolet.BASS.BASSUltravioletAudio>();
+            EnsureAssemblyIsLinked<Ultraviolet.BASS.BASSUltravioletAudio>();
         }
     }
 }

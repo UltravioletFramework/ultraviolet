@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 13 - UPF (Advanced)</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample13_UPFAdvanced</string>
+	<string>net.Sample13_UPFAdvanced</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

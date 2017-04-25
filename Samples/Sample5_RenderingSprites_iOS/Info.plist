@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 5 - Rendering Sprites</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample5_RenderingSprites</string>
+	<string>net.Sample5_RenderingSprites</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

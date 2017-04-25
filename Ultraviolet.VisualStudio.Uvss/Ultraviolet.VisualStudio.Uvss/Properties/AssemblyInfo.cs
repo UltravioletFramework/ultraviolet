@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TwistedLogik.Ultraviolet.VisualStudio.UVSS")]
+[assembly: AssemblyTitle("Ultraviolet.VisualStudio.UVSS")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TwistedLogik.Ultraviolet.VisualStudio.UVSS")]
+[assembly: AssemblyProduct("Ultraviolet.VisualStudio.UVSS")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

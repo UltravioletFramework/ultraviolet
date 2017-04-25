@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 14 - Loading Image Data with Surfaces</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample14_LoadingImageDataWithSurfaces</string>
+	<string>net.Sample14_LoadingImageDataWithSurfaces</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

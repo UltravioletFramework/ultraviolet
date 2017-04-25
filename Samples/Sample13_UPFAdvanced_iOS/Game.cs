@@ -1,5 +1,5 @@
-﻿using TwistedLogik.Ultraviolet.BASS;
-using TwistedLogik.Ultraviolet.UI.Presentation.CompiledExpressions;
+﻿using Ultraviolet.BASS;
+using Ultraviolet.UI.Presentation.CompiledExpressions;
 
 namespace UltravioletSample.Sample13_UPFAdvanced
 {

@@ -6,7 +6,7 @@
     <SharedGUID>f04e0c37-afc2-4b85-90c7-9d77dcfd074c</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TwistedLogik.Ultraviolet.OpenGL</Import_RootNamespace>
+    <Import_RootNamespace>Ultraviolet.OpenGL</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionInfo.cs" />

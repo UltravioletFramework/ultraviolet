@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 6 - Rendering Text</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample6_RenderingText</string>
+	<string>net.Sample6_RenderingText</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

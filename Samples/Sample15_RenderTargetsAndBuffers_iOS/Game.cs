@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using TwistedLogik.Ultraviolet.BASS;
-using TwistedLogik.Ultraviolet.Graphics;
+using Ultraviolet.BASS;
+using Ultraviolet.Graphics;
 
 namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
 {

@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 16 - Custom Text Layout Commands</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample16_CustomTextLayoutCommands</string>
+	<string>net.Sample16_CustomTextLayoutCommands</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

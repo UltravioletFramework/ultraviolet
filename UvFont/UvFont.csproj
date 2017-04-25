@@ -7,7 +7,7 @@
     <ProjectGuid>{F224C80E-2D2F-403D-AB1A-29FE13AF726B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TwistedLogik.UvFont</RootNamespace>
+    <RootNamespace>UvFont</RootNamespace>
     <AssemblyName>uvfont</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

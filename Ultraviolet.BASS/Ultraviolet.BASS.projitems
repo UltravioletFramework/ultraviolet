@@ -6,7 +6,7 @@
     <SharedGUID>62e8c883-b858-4fcc-82ec-c313fefbad34</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TwistedLogik.Ultraviolet.BASS</Import_RootNamespace>
+    <Import_RootNamespace>Ultraviolet.BASS</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSMediaImporter.cs" />
@@ -32,7 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)TwistedLogik.Ultraviolet.BASS.Licenses.txt">
+    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.BASS.Licenses.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

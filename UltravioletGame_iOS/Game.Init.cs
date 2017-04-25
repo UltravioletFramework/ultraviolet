@@ -1,4 +1,4 @@
-﻿using TwistedLogik.Ultraviolet.BASS;
+﻿using Ultraviolet.BASS;
 
 namespace SAFE_PROJECT_NAME
 {

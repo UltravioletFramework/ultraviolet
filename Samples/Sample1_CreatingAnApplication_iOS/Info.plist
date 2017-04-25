@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 1 - Creating an Application</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample1_CreatingAnApplication</string>
+	<string>net.Sample1_CreatingAnApplication</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 7 - Playing Music</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.twistedlogik.Sample7_PlayingMusic</string>
+	<string>net.Sample7_PlayingMusic</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
