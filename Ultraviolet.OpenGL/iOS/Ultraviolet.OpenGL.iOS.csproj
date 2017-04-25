@@ -177,9 +177,9 @@
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet_iOS\Ultraviolet (iOS).csproj">
+    <ProjectReference Include="..\..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
-      <Name>Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 %28iOS%29.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>

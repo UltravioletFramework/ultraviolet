@@ -227,9 +227,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>

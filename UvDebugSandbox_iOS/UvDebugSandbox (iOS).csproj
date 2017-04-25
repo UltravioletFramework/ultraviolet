@@ -299,9 +299,9 @@
       <Project>{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}</Project>
       <Name>Ultraviolet.Presentation.Uvss (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.SDL2_iOS\Ultraviolet.SDL2 %28iOS%29.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>

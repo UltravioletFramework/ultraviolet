@@ -193,9 +193,9 @@
       <Project>{6C5385CC-D39D-403A-BC91-08E775AA7AD3}</Project>
       <Name>Ultraviolet.WindowsForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>Ultraviolet (Desktop)</Name>
+      <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

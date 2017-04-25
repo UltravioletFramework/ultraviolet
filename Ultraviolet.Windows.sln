@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet (Desktop)", "Ultraviolet_Desktop\Ultraviolet (Desktop).csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Desktop", "Ultraviolet\Desktop\Ultraviolet.Desktop.csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Desktop", "Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj", "{7DA6158B-A0B9-4100-904E-22FD86949608}"
 EndProject
@@ -75,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Ro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Compiler (Desktop)", "Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler (Desktop).csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet", "Ultraviolet\Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet", "Ultraviolet\Shared\Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject

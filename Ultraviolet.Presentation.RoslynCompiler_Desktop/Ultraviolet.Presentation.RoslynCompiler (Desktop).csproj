@@ -98,9 +98,9 @@
       <Project>{8f3c2da1-8930-493b-854b-a053bdbf9071}</Project>
       <Name>Ultraviolet.Presentation.Compiler %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>Ultraviolet %28Desktop%29</Name>
+      <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

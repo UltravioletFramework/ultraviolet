@@ -94,9 +94,9 @@
     </NativeReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>Ultraviolet (iOS)</Name>
+      <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>

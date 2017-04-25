@@ -109,9 +109,9 @@
       <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>Ultraviolet (Desktop)</Name>
+      <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL_Desktop\Ultraviolet.OpenGL %28Desktop%29.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>

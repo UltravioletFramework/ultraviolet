@@ -117,9 +117,9 @@
       <Project>{8dfd999d-53ea-4e73-9933-eeba1289c7b3}</Project>
       <Name>Ultraviolet.Core.Design</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>Ultraviolet %28Desktop%29</Name>
+      <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Android", "Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj", "{7EB671F1-6B46-426D-8A27-730D2B682043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet (Android)", "Ultraviolet_Android\Ultraviolet (Android).csproj", "{0B17931C-1595-4ADA-9086-F26E5F5A387D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Android", "Ultraviolet\Android\Ultraviolet.Android.csproj", "{0B17931C-1595-4ADA-9086-F26E5F5A387D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.Android", "Ultraviolet.BASS\Android\Ultraviolet.BASS.Android.csproj", "{381B05EB-E12E-451C-A272-2F5C2FD9C106}"
 EndProject
@@ -27,7 +27,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Core", "Ultraviolet.Core\Shared\Ultraviolet.Core.shproj", "{803B586B-CBAC-4E46-A787-BDF837E1EF46}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet", "Ultraviolet\Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet", "Ultraviolet\Shared\Ultraviolet.shproj", "{979EFFAE-5CDF-4CA8-90D0-E3DBF091DE0A}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.BASS", "Ultraviolet.BASS\Shared\Ultraviolet.BASS.shproj", "{62E8C883-B858-4FCC-82EC-C313FEFBAD34}"
 EndProject

@@ -149,9 +149,9 @@
       <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
       <Name>Ultraviolet.SDL2 (Android)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet_Android\Ultraviolet %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet\Android\Ultraviolet.Android.csproj">
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
-      <Name>Ultraviolet (Android)</Name>
+      <Name>Ultraviolet.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\UvStressTest\UvStressTest.projitems" Label="Shared" />
