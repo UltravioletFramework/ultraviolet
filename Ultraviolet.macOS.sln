@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Desktop", "Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj", "{40D272DB-90E1-4332-A32F-6EFFEB44FE87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2 (Desktop)", "Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 (Desktop).csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.Desktop", "Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame", "UltravioletGame\UltravioletGame.csproj", "{F6C64886-59BF-4DFD-AF10-53C1700EE20D}"
 EndProject
@@ -37,7 +37,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.BASS", "Ultravi
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL", "Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.shproj", "{F04E0C37-AFC2-4B85-90C7-9D77DCFD074C}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.SDL2", "Ultraviolet.SDL2\Ultraviolet.SDL2.shproj", "{97309779-3045-4D98-8DE0-5F40A8DC1C5B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.SDL2", "Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.shproj", "{97309779-3045-4D98-8DE0-5F40A8DC1C5B}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation", "Ultraviolet.Presentation\Ultraviolet.Presentation.shproj", "{4E921721-BE4A-4F69-BEE4-61E8A18E0774}"
 EndProject

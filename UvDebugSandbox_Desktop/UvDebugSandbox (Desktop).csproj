@@ -149,9 +149,9 @@
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
       <Name>Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>Ultraviolet.SDL2 (Desktop)</Name>
+      <Name>Ultraviolet.SDL2.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler %28Desktop%29.csproj">
       <Project>{8f3c2da1-8930-493b-854b-a053bdbf9071}</Project>

@@ -124,9 +124,9 @@
       <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
       <Name>Ultraviolet.Shims.macOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>Ultraviolet.SDL2 (Desktop)</Name>
+      <Name>Ultraviolet.SDL2.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
