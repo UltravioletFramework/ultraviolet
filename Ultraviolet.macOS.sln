@@ -51,9 +51,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (OSX)", "UvD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (OSX)", "UltravioletGame_OSX\UltravioletGame (OSX).csproj", "{AE469C94-75D7-4387-A030-D3C53CCA90B1}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Compiler", "Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.shproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Compiler", "Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.shproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Compiler (Desktop)", "Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler (Desktop).csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Compiler.Desktop", "Ultraviolet.Presentation.Compiler\Desktop\Ultraviolet.Presentation.Compiler.Desktop.csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject

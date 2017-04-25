@@ -42,7 +42,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
@@ -58,7 +58,7 @@
     <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Version.cs">
+    <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -67,7 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Version.tt">
+    <Content Include="..\..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
@@ -78,29 +78,29 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss (Desktop).csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss (Desktop).csproj">
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
       <Name>Ultraviolet.Presentation.Uvss (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation_Desktop\Ultraviolet.Presentation (Desktop).csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Presentation_Desktop\Ultraviolet.Presentation (Desktop).csproj">
       <Project>{7379d9e1-bb01-4b05-b4f7-5d39b393348f}</Project>
       <Name>Ultraviolet.Presentation (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
       <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Ultraviolet.Public.snk">
+    <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>
-  <Import Project="..\Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.projitems" Label="Shared" />
+  <Import Project="..\Shared\Ultraviolet.Presentation.Compiler.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

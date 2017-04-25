@@ -137,9 +137,9 @@
       <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
       <Name>Ultraviolet.Shims.macOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Compiler\Desktop\Ultraviolet.Presentation.Compiler.Desktop.csproj">
       <Project>{8F3C2DA1-8930-493B-854B-A053BDBF9071}</Project>
-      <Name>Ultraviolet.Presentation.Compiler (Desktop)</Name>
+      <Name>Ultraviolet.Presentation.Compiler.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
