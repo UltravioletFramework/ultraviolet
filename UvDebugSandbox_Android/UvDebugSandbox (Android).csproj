@@ -166,9 +166,9 @@
       <Project>{35bfcf7e-1756-4fe1-864c-6a0aaff97799}</Project>
       <Name>Ultraviolet.Presentation %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Android\Ultraviolet.Presentation.Uvss %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\Android\Ultraviolet.Presentation.Uvss.Android.csproj">
       <Project>{c9da531d-4fdc-4c41-8e2c-f3c68dae5aea}</Project>
-      <Name>Ultraviolet.Presentation.Uvss %28Android%29</Name>
+      <Name>Ultraviolet.Presentation.Uvss.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

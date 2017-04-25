@@ -89,9 +89,9 @@
       <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>
       <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_iOS\Ultraviolet.Presentation.Uvss (iOS).csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\iOS\Ultraviolet.Presentation.Uvss.iOS.csproj">
       <Project>{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}</Project>
-      <Name>Ultraviolet.Presentation.Uvss (iOS)</Name>
+      <Name>Ultraviolet.Presentation.Uvss.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

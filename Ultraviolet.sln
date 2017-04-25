@@ -100,11 +100,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", 
 		VersionString.txt = VersionString.txt
 	EndProjectSection
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Uvss", "Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Uvss", "Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss (Desktop)", "Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss (Desktop).csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Desktop", "Ultraviolet.Presentation.Uvss\Desktop\Ultraviolet.Presentation.Uvss.Desktop.csproj", "{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss (Android)", "Ultraviolet.Presentation.Uvss_Android\Ultraviolet.Presentation.Uvss (Android).csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Android", "Ultraviolet.Presentation.Uvss\Android\Ultraviolet.Presentation.Uvss.Android.csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Tests", "Ultraviolet.Presentation.Uvss.Tests\Ultraviolet.Presentation.Uvss.Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
 EndProject

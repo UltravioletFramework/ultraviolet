@@ -121,10 +121,10 @@
     <CreateItem Include="Ultraviolet.OpenGL.Bindings/Desktop/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet_Desktop/bin/$(Configuration)/Ultraviolet.*">
+    <CreateItem Include="Ultraviolet/Desktop/bin/$(Configuration)/Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Profiler.dotTrace_Desktop/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="Ultraviolet.Profiler.dotTrace/Desktop/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_Desktop"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Shims.Desktop/bin/$(Configuration)/Ultraviolet.Shims.Desktop.*">
@@ -136,19 +136,19 @@
     <CreateItem Include="Ultraviolet.OpenGL/Desktop/bin/$(Configuration)/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.SDL2_Desktop/bin/$(Configuration)/Ultraviolet.SDL2.*">
+    <CreateItem Include="Ultraviolet.SDL2/Desktop/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Desktop"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+    <CreateItem Include="Ultraviolet.Presentation.Uvss/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation.Compiler_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Compiler.*">
+    <CreateItem Include="Ultraviolet.Presentation.Compiler/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Compiler.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation.RoslynCompiler_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
+    <CreateItem Include="Ultraviolet.Presentation.RoslynCompiler/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler_Desktop"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Tooling/bin/$(Configuration)/Ultraviolet.Tooling.*">
@@ -230,13 +230,13 @@
     <CreateItem Include="Ultraviolet.OpenGL.Bindings/Android/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet_Android/bin/$(Configuration)/Ultraviolet.*">
+    <CreateItem Include="Ultraviolet/Android/bin/$(Configuration)/Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Android"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Shims.Android/bin/$(Configuration)/Ultraviolet.Shims.Android.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Profiler.dotTrace_Android/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="Ultraviolet.Profiler.dotTrace/Android/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_Android"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.BASS/Android/bin/$(Configuration)/Ultraviolet.BASS.*">
@@ -245,13 +245,13 @@
     <CreateItem Include="Ultraviolet.OpenGL/Android/bin/$(Configuration)/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.SDL2_Android/bin/$(Configuration)/Ultraviolet.SDL2.*">
+    <CreateItem Include="Ultraviolet.SDL2/Android/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Android"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Presentation_Android/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation_Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+    <CreateItem Include="Ultraviolet.Presentation.Uvss/Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -304,10 +304,10 @@
     <CreateItem Include="Ultraviolet.OpenGL.Bindings/iOS/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet_iOS/bin/$(Configuration)/Ultraviolet.*">
+    <CreateItem Include="Ultraviolet/iOS/bin/$(Configuration)/Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Profiler.dotTrace_iOS/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="Ultraviolet.Profiler.dotTrace/iOS/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_iOS"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.iOS.Bindings/bin/$(Configuration)/Ultraviolet.iOS.Bindings.*">
@@ -319,7 +319,7 @@
     <CreateItem Include="Ultraviolet.OpenGL/iOS/bin/$(Configuration)/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.SDL2_iOS/bin/$(Configuration)/Ultraviolet.SDL2.*">
+    <CreateItem Include="Ultraviolet.SDL2/iOS/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_iOS"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.SDL2.UIKit_iOS/bin/$(Configuration)/Ultraviolet.SDL2.UIKit.*">
@@ -328,7 +328,7 @@
     <CreateItem Include="Ultraviolet.Presentation_iOS/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Presentation_iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+    <CreateItem Include="Ultraviolet.Presentation.Uvss/iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

@@ -79,9 +79,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\Desktop\Ultraviolet.Presentation.Uvss.Desktop.csproj">
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
-      <Name>Ultraviolet.Presentation.Uvss %28Desktop%29</Name>
+      <Name>Ultraviolet.Presentation.Uvss.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj">
       <Project>{6a17d1a8-ac32-4bb4-8446-d76f6b160246}</Project>

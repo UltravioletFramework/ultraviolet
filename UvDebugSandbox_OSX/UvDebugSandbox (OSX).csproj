@@ -125,9 +125,9 @@
       <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
       <Name>Ultraviolet.Presentation (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\Desktop\Ultraviolet.Presentation.Uvss.Desktop.csproj">
       <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
-      <Name>Ultraviolet.Presentation.Uvss (Desktop)</Name>
+      <Name>Ultraviolet.Presentation.Uvss.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>

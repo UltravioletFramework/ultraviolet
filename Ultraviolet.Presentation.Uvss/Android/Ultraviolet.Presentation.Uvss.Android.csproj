@@ -57,10 +57,10 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\Ultraviolet.SDL2\Ultraviolet.Public.snk">
+    <None Include="..\..\Ultraviolet.SDL2\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>
@@ -73,10 +73,10 @@
     <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Ultraviolet.Presentation.Uvss_Desktop\Properties\AssemblyInfo.cs">
+    <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Version.cs">
+    <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,7 +84,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Version.tt">
+    <None Include="..\..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
@@ -94,7 +94,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
       <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
       <Name>Ultraviolet.Core.Android</Name>
     </ProjectReference>
@@ -102,7 +102,7 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
-  <Import Project="..\Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.projitems" Label="Shared" />
+  <Import Project="..\Shared\Ultraviolet.Presentation.Uvss.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
