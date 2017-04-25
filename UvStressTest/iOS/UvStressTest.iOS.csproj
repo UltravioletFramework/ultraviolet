@@ -115,35 +115,35 @@
     <None Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
       <Project>{65ECB0C3-FD4E-494A-A000-43500B9CB851}</Project>
       <Name>Ultraviolet.OpenGL.Bindings.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
       <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
       <Name>Ultraviolet.BASS.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
       <Name>Ultraviolet.OpenGL (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Profiler.dotTrace\iOS\Ultraviolet.Profiler.dotTrace.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Profiler.dotTrace\iOS\Ultraviolet.Profiler.dotTrace.iOS.csproj">
       <Project>{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}</Project>
       <Name>Ultraviolet.Profiler.dotTrace.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
       <Name>Ultraviolet.SDL2.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
       <Name>Ultraviolet.SDL2.UIKit (iOS)</Name>
     </ProjectReference>
@@ -152,25 +152,25 @@
     <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\UvStressTest_Desktop\Content\Sprites\HexagonsTexture.png">
+    <BundleResource Include="..\Desktop\Content\Sprites\HexagonsTexture.png">
       <Link>Content\Sprites\HexagonsTexture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvStressTest_Desktop\Content\Fonts\SegoeUITexture.png">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
       <Link>Content\Fonts\SegoeUITexture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvStressTest_Desktop\Content\Sprites\Hexagons.xml">
+    <BundleResource Include="..\Desktop\Content\Sprites\Hexagons.xml">
       <Link>Content\Sprites\Hexagons.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvStressTest_Desktop\Content\Sprites\HexagonsLicense.txt">
+    <BundleResource Include="..\Desktop\Content\Sprites\HexagonsLicense.txt">
       <Link>Content\Sprites\HexagonsLicense.txt</Link>
     </BundleResource>
-    <BundleResource Include="..\UvStressTest_Desktop\Content\Fonts\SegoeUI.xml">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
   </ItemGroup>
-  <Import Project="..\UvStressTest\UvStressTest.projitems" Label="Shared" Condition="Exists('..\UvStressTest\UvStressTest.projitems')" />
+  <Import Project="..\Shared\UvStressTest.projitems" Label="Shared" Condition="Exists('..\Shared\UvStressTest.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

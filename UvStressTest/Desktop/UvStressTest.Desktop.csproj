@@ -45,27 +45,27 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\BASS\x64\unix\libbass.so">
+    <None Include="..\..\Dependencies\BASS\x64\unix\libbass.so">
       <Link>x64\unix\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\BASS\x64\unix\libbass_fx.so">
+    <None Include="..\..\Dependencies\BASS\x64\unix\libbass_fx.so">
       <Link>x64\unix\libbass_fx.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\BASS\x86\unix\libbass.so">
+    <None Include="..\..\Dependencies\BASS\x86\unix\libbass.so">
       <Link>x86\unix\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\BASS\x86\unix\libbass_fx.so">
+    <None Include="..\..\Dependencies\BASS\x86\unix\libbass_fx.so">
       <Link>x86\unix\libbass_fx.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\SDL2\x64\unix\libSDL2.so">
+    <None Include="..\..\Dependencies\SDL2\x64\unix\libSDL2.so">
       <Link>x64\unix\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\SDL2\x86\unix\libSDL2.so">
+    <None Include="..\..\Dependencies\SDL2\x86\unix\libSDL2.so">
       <Link>x86\unix\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -75,45 +75,45 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
       <Project>{08b2b8d5-152f-45fb-b4eb-8c09010a9908}</Project>
       <Name>Ultraviolet.OpenGL.Bindings.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
       <Name>Ultraviolet.BASS.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
       <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
       <Name>Ultraviolet.OpenGL %28Desktop%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
       <Name>Ultraviolet.SDL2.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
+    <ProjectReference Include="..\..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
       <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\BASS\x64\win32nt\bass.dll">
+    <None Include="..\..\Dependencies\BASS\x64\win32nt\bass.dll">
       <Link>x64\win32nt\bass.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\BASS\x64\win32nt\bass_fx.dll">
+    <None Include="..\..\Dependencies\BASS\x64\win32nt\bass_fx.dll">
       <Link>x64\win32nt\bass_fx.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\SDL2\x64\win32nt\SDL2.dll">
+    <None Include="..\..\Dependencies\SDL2\x64\win32nt\SDL2.dll">
       <Link>x64\win32nt\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -130,15 +130,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dependencies\BASS\x86\win32nt\bass.dll">
+    <None Include="..\..\Dependencies\BASS\x86\win32nt\bass.dll">
       <Link>x86\win32nt\bass.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\BASS\x86\win32nt\bass_fx.dll">
+    <None Include="..\..\Dependencies\BASS\x86\win32nt\bass_fx.dll">
       <Link>x86\win32nt\bass_fx.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
+    <None Include="..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
       <Link>x86\win32nt\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -151,7 +151,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Import Project="..\UvStressTest\UvStressTest.projitems" Label="Shared" />
+  <Import Project="..\Shared\UvStressTest.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

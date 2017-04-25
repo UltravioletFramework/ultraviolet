@@ -183,85 +183,85 @@
     <MtouchFloat32>False</MtouchFloat32>
   </PropertyGroup>
   <ItemGroup>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Manifests\Global.manifest">
+    <BundleResource Include="\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Sprites\InterfaceIcons.sprite">
+    <BundleResource Include="\Desktop\Content\Sprites\InterfaceIcons.sprite">
       <Link>Content\Sprites\InterfaceIcons.sprite</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
       <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIStyles.uvss">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUIStyles.uvss">
       <Link>Content\UI\DefaultUIStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+    <BundleResource Include="\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
       <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\GameStyles.uvss">
+    <BundleResource Include="\Desktop\Content\UI\GameStyles.uvss">
       <Link>Content\UI\GameStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+    <BundleResource Include="\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
       <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
+    <BundleResource Include="\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
     </BundleResource>
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUI.png">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUI.png">
       <Link>Content\UI\DefaultUI.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIBackground.png">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUIBackground.png">
       <Link>Content\UI\DefaultUIBackground.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUI-mdpi.png">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUI-mdpi.png">
       <Link>Content\UI\DefaultUI-mdpi.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Textures\Logo.png">
+    <BundleResource Include="\Desktop\Content\Textures\Logo.png">
       <Link>Content\Textures\Logo.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Cursors\Cursors.xml">
+    <BundleResource Include="\Desktop\Content\Cursors\Cursors.xml">
       <Link>Content\Cursors\Cursors.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Cursors\CursorsImage.png">
+    <BundleResource Include="\Desktop\Content\Cursors\CursorsImage.png">
       <Link>Content\Cursors\CursorsImage.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Fonts\SegoeUI.xml">
+    <BundleResource Include="\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Fonts\SegoeUITexture.png">
+    <BundleResource Include="\Desktop\Content\Fonts\SegoeUITexture.png">
       <Link>Content\Fonts\SegoeUITexture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\Localization\GameStrings.xml">
+    <BundleResource Include="\Desktop\Content\Localization\GameStrings.xml">
       <Link>Content\Localization\GameStrings.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\Click1.wav">
+    <BundleResource Include="\Desktop\Content\SoundEffects\Click1.wav">
       <Link>Content\SoundEffects\Click1.wav</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\rollover1.wav">
+    <BundleResource Include="\Desktop\Content\SoundEffects\rollover1.wav">
       <Link>Content\SoundEffects\rollover1.wav</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\rollover2.wav">
+    <BundleResource Include="\Desktop\Content\SoundEffects\rollover2.wav">
       <Link>Content\SoundEffects\rollover2.wav</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\SoundEffects\rollover3.wav">
+    <BundleResource Include="\Desktop\Content\SoundEffects\rollover3.wav">
       <Link>Content\SoundEffects\rollover3.wav</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIFont-mdpi.xml">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUIFont-mdpi.xml">
       <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\DefaultUIFont.xml">
+    <BundleResource Include="\Desktop\Content\UI\DefaultUIFont.xml">
       <Link>Content\UI\DefaultUIFont.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
+    <BundleResource Include="\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
       <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+    <BundleResource Include="\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
       <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\UvDebugSandbox_Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+    <BundleResource Include="\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
       <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
     </BundleResource>
     <Content Include="Entitlements.plist" />
@@ -279,39 +279,39 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
       <Project>{65ECB0C3-FD4E-494A-A000-43500B9CB851}</Project>
       <Name>Ultraviolet.OpenGL.Bindings.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
       <Name>Ultraviolet.OpenGL (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation\iOS\Ultraviolet.Presentation.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\iOS\Ultraviolet.Presentation.iOS.csproj">
       <Project>{4F741CCA-6FBF-439E-A26A-ABB189619101}</Project>
       <Name>Ultraviolet.Presentation.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss\iOS\Ultraviolet.Presentation.Uvss.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\iOS\Ultraviolet.Presentation.Uvss.iOS.csproj">
       <Project>{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}</Project>
       <Name>Ultraviolet.Presentation.Uvss.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
       <Name>Ultraviolet.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
       <Name>Ultraviolet.SDL2.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
       <Name>Ultraviolet.SDL2.UIKit (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
       <Name>Ultraviolet.BASS.iOS</Name>
     </ProjectReference>
@@ -364,11 +364,11 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\UvDebugSandbox_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
+    <EmbeddedResource Include="\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
       <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="..\UvDebugSandbox\UvDebugSandbox.projitems" Label="Shared" />
+  <Import Project="..\Shared\UvDebugSandbox.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
     <Message Text="Copying binding expressions assembly from OS X project..." />

@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Desktop"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.Desktop", "Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame", "UltravioletGame\UltravioletGame.csproj", "{F6C64886-59BF-4DFD-AF10-53C1700EE20D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame", "UltravioletGame\Shared\UltravioletGame.csproj", "{F6C64886-59BF-4DFD-AF10-53C1700EE20D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletTool", "UltravioletTool\UltravioletTool.csproj", "{CE278CD0-2D1A-460D-9567-6FD01FFB1198}"
 EndProject
@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.Android", "Ultraviolet.SDL2\Android\Ultraviolet.SDL2.Android.csproj", "{B5502009-935A-40BA-B415-ABBF55427CAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame_Android\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame.Android", "UltravioletGame\Android\UltravioletGame.Android.csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7} = {40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}
 	EndProjectSection
@@ -58,13 +58,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Desktop)", "UvDebugSandbox_Desktop\UvDebugSandbox (Desktop).csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox.Desktop", "UvDebugSandbox\Desktop\UvDebugSandbox.Desktop.csproj", "{A8C85C23-03C2-41C6-8331-48835D257634}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Desktop", "Ultraviolet.Presentation\Desktop\Ultraviolet.Presentation.Desktop.csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Android", "Ultraviolet.Presentation\Android\Ultraviolet.Presentation.Android.csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox (Android)", "UvDebugSandbox_Android\UvDebugSandbox (Android).csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebugSandbox.Android", "UvDebugSandbox\Android\UvDebugSandbox.Android.csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A8C85C23-03C2-41C6-8331-48835D257634} = {A8C85C23-03C2-41C6-8331-48835D257634}
 	EndProjectSection
@@ -85,7 +85,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.Desktop", "Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj", "{08B2B8D5-152F-45FB-B4EB-8C09010A9908}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\Shared\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
@@ -118,11 +118,11 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Ro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.RoslynCompiler.Desktop", "Ultraviolet.Presentation.RoslynCompiler\Desktop\Ultraviolet.Presentation.RoslynCompiler.Desktop.csproj", "{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\Shared\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest (Android)", "UvStressTest_Android\UvStressTest (Android).csproj", "{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest.Android", "UvStressTest\Android\UvStressTest.Android.csproj", "{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest (Desktop)", "UvStressTest_Desktop\UvStressTest (Desktop).csproj", "{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest.Desktop", "UvStressTest\Desktop\UvStressTest.Desktop.csproj", "{AB20567C-1D12-4B38-AB86-AD7DC9D769F6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -135,7 +135,7 @@ Global
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{381b05eb-e12e-451c-a272-2f5c2fd9c106}*SharedItemsImports = 4
 		Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
-		UvDebugSandbox\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
+		UvDebugSandbox\Shared\UvDebugSandbox.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{49a66667-2355-4755-a3ad-4ef9ca638534}*SharedItemsImports = 4
 		Ultraviolet.Presentation\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		Ultraviolet.SDL2\Ultraviolet.SDL2.projitems*{50aefa93-fe53-414a-89fc-c061c165c673}*SharedItemsImports = 4
@@ -147,22 +147,22 @@ Global
 		Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.projitems*{8f3c2da1-8930-493b-854b-a053bdbf9071}*SharedItemsImports = 4
 		Ultraviolet.SDL2\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
 		Ultraviolet\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
-		UvStressTest\UvStressTest.projitems*{97cd0bfb-4bdb-4862-ac0d-153e81a2a9a1}*SharedItemsImports = 13
-		UvDebugSandbox\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
-		UvStressTest\UvStressTest.projitems*{ab20567c-1d12-4b38-ab86-ad7dc9d769f6}*SharedItemsImports = 4
+		UvStressTest\Shared\UvStressTest.projitems*{97cd0bfb-4bdb-4862-ac0d-153e81a2a9a1}*SharedItemsImports = 13
+		UvDebugSandbox\Shared\UvDebugSandbox.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
+		UvStressTest\Shared\UvStressTest.projitems*{ab20567c-1d12-4b38-ab86-ad7dc9d769f6}*SharedItemsImports = 4
 		Ultraviolet.SDL2\Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.projitems*{c9da531d-4fdc-4c41-8e2c-f3c68dae5aea}*SharedItemsImports = 4
 		Ultraviolet.Presentation.RoslynCompiler\Ultraviolet.Presentation.RoslynCompiler.projitems*{ca57b4bc-a395-4c1c-a4cf-6286fa7b9c80}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.projitems*{e1cd102c-6d6d-4eb2-abed-1fad59c9730f}*SharedItemsImports = 4
-		UvStressTest\UvStressTest.projitems*{e3e291b3-a2d1-4f64-a1fe-fdd9fa160713}*SharedItemsImports = 4
+		UvStressTest\Shared\UvStressTest.projitems*{e3e291b3-a2d1-4f64-a1fe-fdd9fa160713}*SharedItemsImports = 4
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}*SharedItemsImports = 4
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		Ultraviolet\Ultraviolet.projitems*{f071abe3-05e5-4df9-a929-cf71b01ec50a}*SharedItemsImports = 4
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Ultraviolet.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
 		Ultraviolet.Presentation.RoslynCompiler\Ultraviolet.Presentation.RoslynCompiler.projitems*{f95ff829-661d-4809-8150-145114b787aa}*SharedItemsImports = 13
-		UvDebugSandbox\UvDebugSandbox.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
+		UvDebugSandbox\Shared\UvDebugSandbox.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -431,7 +431,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = UltravioletGame\UltravioletGame.csproj
+		StartupItem = UltravioletGame\Shared\UltravioletGame.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
