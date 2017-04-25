@@ -168,11 +168,16 @@ gen/
 # =========================
 # Ultraviolet stuff
 # =========================
-*.uvarc
-Ultraviolet.UI.Presentation.CompiledExpressions.dll
+Ultraviolet.Presentation.CompiledExpressions.dll
 /packages
 /Samples/packages
-/Samples/Dependencies
+/Samples/Dependencies/*
+!/Samples/Dependencies/x86
+!/Samples/Dependencies/x64
+!/Samples/Dependencies/Android/armeabi
+!/Samples/Dependencies/Android/armeabi-v7a
+!/Samples/Dependencies/Android/x86
+!/Samples/Dependencies/iOS
 /Samples/Version.cs
 */packages/
 /Binaries

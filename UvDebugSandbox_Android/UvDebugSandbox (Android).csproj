@@ -78,9 +78,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Ultraviolet.UI.Presentation.CompiledExpressions, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.Presentation.CompiledExpressions, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Presentation\Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
+      <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -162,17 +162,17 @@
       <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
       <Name>Ultraviolet.SDL2 %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.UI.Presentation_Android\Ultraviolet.UI.Presentation %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation_Android\Ultraviolet.Presentation %28Android%29.csproj">
       <Project>{35bfcf7e-1756-4fe1-864c-6a0aaff97799}</Project>
-      <Name>Ultraviolet.UI.Presentation %28Android%29</Name>
+      <Name>Ultraviolet.Presentation %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.UI.Presentation.Uvss_Android\Ultraviolet.UI.Presentation.Uvss %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Android\Ultraviolet.Presentation.Uvss %28Android%29.csproj">
       <Project>{c9da531d-4fdc-4c41-8e2c-f3c68dae5aea}</Project>
-      <Name>Ultraviolet.UI.Presentation.Uvss %28Android%29</Name>
+      <Name>Ultraviolet.Presentation.Uvss %28Android%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Presentation\Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
+    <EmbeddedResource Include="Presentation\Ultraviolet.Presentation.CompiledExpressions.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\UvDebugSandbox_Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
@@ -208,9 +208,9 @@
   <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
     <Message Text="Copying content archive and binding expressions assembly from $(DesktopProjectName) project..." />
     <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
-    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
+    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
     <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Content.uvarc" DestinationFolder="$(ProjectDir)" />
-    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
+    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

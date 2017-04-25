@@ -44,11 +44,11 @@ nuget pack Ultraviolet.SDL2.nuspec -Symbols
 powershell -Command "(gc Ultraviolet.SDL2.UIKit.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.SDL2.UIKit.nuspec"
 nuget pack Ultraviolet.SDL2.UIKit.nuspec -Symbols
 
-powershell -Command "(gc Ultraviolet.UI.Presentation.Compiler.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.UI.Presentation.Compiler.nuspec"
-nuget pack Ultraviolet.UI.Presentation.Compiler.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.Presentation.Compiler.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Presentation.Compiler.nuspec"
+nuget pack Ultraviolet.Presentation.Compiler.nuspec -Symbols
 
-powershell -Command "(gc Ultraviolet.UI.Presentation.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.UI.Presentation.nuspec"
-nuget pack Ultraviolet.UI.Presentation.nuspec -Symbols
+powershell -Command "(gc Ultraviolet.Presentation.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Presentation.nuspec"
+nuget pack Ultraviolet.Presentation.nuspec -Symbols
 
 powershell -Command "(gc Ultraviolet.Tools.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Tools.nuspec"
 nuget pack Ultraviolet.Tools.nuspec

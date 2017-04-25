@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.Presentation</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet Presentation Foundation, a WPF-like framework for building user interfaces in the Ultraviolet Framework.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+    <dependency id="Ultraviolet" version="UV_VERSION" />
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.XML" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.XML" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\Xamarin.iOS10\"/>
+  </files>  
+</package>

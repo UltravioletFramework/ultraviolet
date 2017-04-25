@@ -7,7 +7,7 @@ namespace UvDebugSandbox
         partial void PlatformSpecificInitialization()
         {
             EnsureAssemblyIsLinked<Ultraviolet.BASS.BASSUltravioletAudio>();
-            EnsureAssemblyIsLinked<Ultraviolet.UI.Presentation.CompiledExpressions.CompilerMetadata>();
+            EnsureAssemblyIsLinked<Ultraviolet.Presentation.CompiledExpressions.CompilerMetadata>();
         }
     }
 }

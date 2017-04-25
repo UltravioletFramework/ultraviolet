@@ -1,5 +1,5 @@
 ﻿using Ultraviolet.BASS;
-using Ultraviolet.UI.Presentation.CompiledExpressions;
+using Ultraviolet.Presentation.CompiledExpressions;
 
 namespace UltravioletSample.Sample13_UPFAdvanced
 {

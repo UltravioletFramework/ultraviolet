@@ -78,14 +78,14 @@
     <Reference Include="Ultraviolet.SDL2">
       <HintPath>..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.UI.Presentation">
-      <HintPath>..\Dependencies\Ultraviolet.UI.Presentation.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation">
+      <HintPath>..\Dependencies\Ultraviolet.Presentation.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.UI.Presentation.Compiler">
-      <HintPath>..\Dependencies\Ultraviolet.UI.Presentation.Compiler.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation.Compiler">
+      <HintPath>..\Dependencies\Ultraviolet.Presentation.Compiler.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.UI.Presentation.Uvss">
-      <HintPath>..\Dependencies\Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation.Uvss">
+      <HintPath>..\Dependencies\Ultraviolet.Presentation.Uvss.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

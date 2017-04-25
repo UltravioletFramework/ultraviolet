@@ -273,8 +273,8 @@
     <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Ultraviolet.UI.Presentation.CompiledExpressions">
-      <HintPath>Presentation\Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation.CompiledExpressions">
+      <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />
@@ -291,13 +291,13 @@
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
       <Name>Ultraviolet.OpenGL (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.UI.Presentation_iOS\Ultraviolet.UI.Presentation %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation_iOS\Ultraviolet.Presentation %28iOS%29.csproj">
       <Project>{4F741CCA-6FBF-439E-A26A-ABB189619101}</Project>
-      <Name>Ultraviolet.UI.Presentation (iOS)</Name>
+      <Name>Ultraviolet.Presentation (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.UI.Presentation.Uvss_iOS\Ultraviolet.UI.Presentation.Uvss %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_iOS\Ultraviolet.Presentation.Uvss %28iOS%29.csproj">
       <Project>{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}</Project>
-      <Name>Ultraviolet.UI.Presentation.Uvss (iOS)</Name>
+      <Name>Ultraviolet.Presentation.Uvss (iOS)</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
@@ -372,7 +372,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
     <Message Text="Copying binding expressions assembly from OS X project..." />
-    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Ultraviolet.UI.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the OS X project has been built before building the iOS project." />
-    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Ultraviolet.UI.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
+    <Error Condition="!Exists('$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the OS X project has been built before building the iOS project." />
+    <Copy SourceFiles="$(ProjectDir)../UvDebugSandbox_OSX/bin/$(ConfigurationName)/UvDebugSandbox.app/Contents/Resources/Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
   </Target>
 </Project>

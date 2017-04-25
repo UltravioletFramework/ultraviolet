@@ -120,17 +120,17 @@
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
       <Name>Ultraviolet.SDL2 (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.UI.Presentation_Desktop\Ultraviolet.UI.Presentation %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation_Desktop\Ultraviolet.Presentation %28Desktop%29.csproj">
       <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
-      <Name>Ultraviolet.UI.Presentation (Desktop)</Name>
+      <Name>Ultraviolet.Presentation (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
       <Name>Ultraviolet (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.UI.Presentation.Uvss_Desktop\Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss %28Desktop%29.csproj">
       <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
-      <Name>Ultraviolet.UI.Presentation.Uvss (Desktop)</Name>
+      <Name>Ultraviolet.Presentation.Uvss (Desktop)</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
       <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>

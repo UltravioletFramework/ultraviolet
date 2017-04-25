@@ -97,14 +97,14 @@
     <Reference Include="Ultraviolet.SDL2">
       <HintPath>..\Dependencies\Android\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.UI.Presentation">
-      <HintPath>..\Dependencies\Android\Ultraviolet.UI.Presentation.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Presentation.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.UI.Presentation.CompiledExpressions">
-      <HintPath>Presentation\Ultraviolet.UI.Presentation.CompiledExpressions.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation.CompiledExpressions">
+      <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.UI.Presentation.Uvss">
-      <HintPath>..\Dependencies\Android\Ultraviolet.UI.Presentation.Uvss.dll</HintPath>
+    <Reference Include="Ultraviolet.Presentation.Uvss">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Presentation.Uvss.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +169,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Presentation\Ultraviolet.UI.Presentation.CompiledExpressions.dll" />
+    <None Include="Presentation\Ultraviolet.Presentation.CompiledExpressions.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleSharedLib_Android\SampleSharedLib (Android).csproj">

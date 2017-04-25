@@ -139,9 +139,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.UI.Presentation.Uvss_Desktop\Ultraviolet.UI.Presentation.Uvss %28Desktop%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss %28Desktop%29.csproj">
       <Project>{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}</Project>
-      <Name>Ultraviolet.UI.Presentation.Uvss %28Desktop%29</Name>
+      <Name>Ultraviolet.Presentation.Uvss %28Desktop%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>

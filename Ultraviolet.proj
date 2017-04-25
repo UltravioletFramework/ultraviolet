@@ -42,9 +42,31 @@
     <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebugSandbox_Android/Content.uvarc UvDebugSandbox_Desktop/Content"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement_Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample5_RenderingSprites_Android/Content.uvarc&quot; &quot;Samples/Sample5_RenderingSprites_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample6_RenderingText_Android/Content.uvarc&quot; &quot;Samples/Sample6_RenderingText_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample7_PlayingMusic_Android/Content.uvarc&quot; &quot;Samples/Sample7_PlayingMusic_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample8_PlayingSoundEffects_Android/Content.uvarc&quot; &quot;Samples/Sample8_PlayingSoundEffects_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample9_ManagingStateWithUIScreens_Android/Content.uvarc&quot; &quot;Samples/Sample9_ManagingStateWithUIScreens_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample10_AsynchronousContentLoading_Android/Content.uvarc&quot; &quot;Samples/Sample10_AsynchronousContentLoading_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample11_GamePads_Android/Content.uvarc&quot; &quot;Samples/Sample11_GamePads_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample12_UPF_Android/Content.uvarc&quot; &quot;Samples/Sample12_UPF_Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample13_UPFAdvanced_Android/Content.uvarc&quot; &quot;Samples/Sample13_UPFAdvanced_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample14_LoadingImageDataWithSurfaces_Android/Content.uvarc&quot; &quot;Samples/Sample14_LoadingImageDataWithSurfaces_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample15_RenderTargetsAndBuffers_Android/Content.uvarc&quot; &quot;Samples/Sample15_RenderTargetsAndBuffers_Desktop/Content&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample16_CustomTextLayoutCommands_Android/Content.uvarc&quot; &quot;Samples/Sample16_CustomTextLayoutCommands_Desktop/Content&quot;"/>
   </Target>
   <Target Name="RestoreWindows">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
@@ -117,17 +139,17 @@
     <CreateItem Include="Ultraviolet.SDL2_Desktop/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.UI.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_Desktop"/>
+    <CreateItem Include="Ultraviolet.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.UI.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_Uvss_Desktop"/>
+    <CreateItem Include="Ultraviolet.Presentation_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation.Compiler_Desktop/bin/$(Configuration)/Ultraviolet.UI.Presentation.Compiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_Compiler_Desktop"/>
+    <CreateItem Include="Ultraviolet.Presentation.Compiler_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.Compiler.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation.RoslynCompiler_Desktop/bin/$(Configuration)/Ultraviolet.UI.Presentation.RoslynCompiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_RoslynCompiler_Desktop"/>
+    <CreateItem Include="Ultraviolet.Presentation.RoslynCompiler_Desktop/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler_Desktop"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Tooling/bin/$(Configuration)/Ultraviolet.Tooling.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
@@ -147,10 +169,10 @@
     <Copy SourceFiles="@(Ultraviolet_BASS_Desktop)" DestinationFiles="@(Ultraviolet_BASS_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_Desktop)" DestinationFiles="@(Ultraviolet_SDL2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_Desktop)" DestinationFiles="@(Ultraviolet_UI_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_Uvss_Desktop)" DestinationFiles="@(Ultraviolet_UI_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_Compiler_Desktop)" DestinationFiles="@(Ultraviolet_UI_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_RoslynCompiler_Desktop)" DestinationFiles="@(Ultraviolet_UI_Presentation_RoslynCompiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Compiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_RoslynCompiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_RoslynCompiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -226,11 +248,11 @@
     <CreateItem Include="Ultraviolet.SDL2_Android/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation_Android/bin/$(Configuration)/Ultraviolet.UI.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_Android"/>
+    <CreateItem Include="Ultraviolet.Presentation_Android/bin/$(Configuration)/Ultraviolet.Presentation.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation_Android/bin/$(Configuration)/Ultraviolet.UI.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_Uvss_Android"/>
+    <CreateItem Include="Ultraviolet.Presentation_Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -241,8 +263,8 @@
     <Copy SourceFiles="@(Ultraviolet_BASS_Android)" DestinationFiles="@(Ultraviolet_BASS_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_Android)" DestinationFiles="@(Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_Android)" DestinationFiles="@(Ultraviolet_UI_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_Uvss_Android)" DestinationFiles="@(Ultraviolet_UI_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Android)" DestinationFiles="@(Ultraviolet_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Android)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <CallTarget Targets="CopyAndroidSampleDependencies"/>
   </Target>
   <Target Name="CopyAndroidSampleDependencies">
@@ -303,11 +325,11 @@
     <CreateItem Include="Ultraviolet.SDL2.UIKit_iOS/bin/$(Configuration)/Ultraviolet.SDL2.UIKit.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_UIKit_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/Ultraviolet.UI.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_iOS"/>
+    <CreateItem Include="Ultraviolet.Presentation_iOS/bin/$(Configuration)/Ultraviolet.Presentation.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_iOS"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.UI.Presentation_iOS/bin/$(Configuration)/Ultraviolet.UI.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_UI_Presentation_Uvss_iOS"/>
+    <CreateItem Include="Ultraviolet.Presentation_iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -319,8 +341,8 @@
     <Copy SourceFiles="@(Ultraviolet_OpenGL_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_iOS)" DestinationFiles="@(Ultraviolet_SDL2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_UIKit_iOS)" DestinationFiles="@(Ultraviolet_SDL2_UIKit_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_iOS)" DestinationFiles="@(Ultraviolet_UI_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_UI_Presentation_Uvss_iOS)" DestinationFiles="@(Ultraviolet_UI_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_iOS)" DestinationFiles="@(Ultraviolet_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_iOS)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <CallTarget Targets="CopyiOSSampleDependencies"/>
   </Target>
   <Target Name="CopyiOSSampleDependencies">
