@@ -85,8 +85,8 @@
     <Reference Include="Ultraviolet.Core">
       <HintPath>..\Dependencies\Ultraviolet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.OSX">
-      <HintPath>..\Dependencies\Ultraviolet.OSX.dll</HintPath>
+    <Reference Include="Ultraviolet.Shims.macOS">
+      <HintPath>..\Dependencies\Ultraviolet.Shims.macOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

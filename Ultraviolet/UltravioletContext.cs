@@ -1212,15 +1212,15 @@ namespace Ultraviolet
                 {
                     case UltravioletPlatform.Windows:
                     case UltravioletPlatform.Linux:
-                        shim = Assembly.Load("Ultraviolet.Desktop");
+                        shim = Assembly.Load("Ultraviolet.Shims.Desktop");
                         break;
 
-                    case UltravioletPlatform.OSX:
-                        shim = Assembly.Load("Ultraviolet.OSX");
+                    case UltravioletPlatform.macOS:
+                        shim = Assembly.Load("Ultraviolet.Shims.macOS");
                         break;
 
                     case UltravioletPlatform.Android:
-                        shim = Assembly.Load("Ultraviolet.Android.dll");
+                        shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
                         break;
 
                     case UltravioletPlatform.iOS:
@@ -1334,7 +1334,7 @@ namespace Ultraviolet
                                 var os = Marshal.PtrToStringAnsi(buf);
                                 if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    this.platform = UltravioletPlatform.OSX;
+                                    this.platform = UltravioletPlatform.macOS;
                                 }
                                 else
                                 {

@@ -46,9 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.Desktop, Version=1.3.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+    <Reference Include="Ultraviolet.Shims.Desktop, Version=1.3.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Ultraviolet.Desktop.dll</HintPath>
+      <HintPath>..\Dependencies\Ultraviolet.Shims.Desktop.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

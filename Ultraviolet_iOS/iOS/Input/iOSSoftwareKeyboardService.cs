@@ -3,7 +3,7 @@ using Ultraviolet.Input;
 using Ultraviolet.SDL2.UIKit;
 using UIKit;
 
-namespace Ultraviolet.iOS.Input
+namespace Ultraviolet.Shims.iOS.Input
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for the iOS platform.

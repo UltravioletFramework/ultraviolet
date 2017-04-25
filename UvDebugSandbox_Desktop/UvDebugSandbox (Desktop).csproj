@@ -141,9 +141,9 @@
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>Ultraviolet.BASS (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Desktop\Ultraviolet.Desktop.csproj">
+    <ProjectReference Include="..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
-      <Name>Ultraviolet.Desktop</Name>
+      <Name>Ultraviolet.Shims.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>

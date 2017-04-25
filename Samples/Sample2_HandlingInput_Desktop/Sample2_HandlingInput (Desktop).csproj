@@ -70,8 +70,8 @@
     <Reference Include="Ultraviolet.BASS">
       <HintPath>..\Dependencies\Ultraviolet.BASS.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.Desktop">
-      <HintPath>..\Dependencies\Ultraviolet.Desktop.dll</HintPath>
+    <Reference Include="Ultraviolet.Shims.Desktop">
+      <HintPath>..\Dependencies\Ultraviolet.Shims.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL">
       <HintPath>..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>

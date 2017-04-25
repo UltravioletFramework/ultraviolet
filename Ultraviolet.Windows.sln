@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Design", "Ultra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csproj", "{F224C80E-2D2F-403D-AB1A-29FE13AF726B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Desktop", "Ultraviolet.Desktop\Ultraviolet.Desktop.csproj", "{073CAFC1-86CB-414D-A71E-46440E25A3F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.Desktop", "Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj", "{073CAFC1-86CB-414D-A71E-46440E25A3F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvArchive.csproj", "{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}"
 EndProject

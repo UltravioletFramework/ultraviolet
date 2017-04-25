@@ -142,9 +142,9 @@
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
       <Name>Ultraviolet %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Android\Ultraviolet.Android.csproj">
+    <ProjectReference Include="..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
       <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
-      <Name>Ultraviolet.Android</Name>
+      <Name>Ultraviolet.Shims.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.BASS_Android\Ultraviolet.BASS %28Android%29.csproj">
       <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
@@ -190,7 +190,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

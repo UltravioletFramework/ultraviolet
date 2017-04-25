@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2 (Android)"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame (Android)", "UltravioletGame_Android\UltravioletGame (Android).csproj", "{DBEFD71F-C99B-4128-8CF1-A998104A2B8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Android", "Ultraviolet.Android\Ultraviolet.Android.csproj", "{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.Android", "Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj", "{1EBCAE25-9FC2-420A-8E62-C5B6733BAC9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation (Android)", "Ultraviolet.Presentation_Android\Ultraviolet.Presentation (Android).csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
 EndProject

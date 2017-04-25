@@ -133,9 +133,9 @@
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>Ultraviolet.BASS (Desktop)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.OSX\Ultraviolet.OSX.csproj">
+    <ProjectReference Include="..\Ultraviolet.Shims.macOS\Ultraviolet.Shims.macOS.csproj">
       <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
-      <Name>Ultraviolet.OSX</Name>
+      <Name>Ultraviolet.Shims.macOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler %28Desktop%29.csproj">
       <Project>{8F3C2DA1-8930-493B-854B-A053BDBF9071}</Project>

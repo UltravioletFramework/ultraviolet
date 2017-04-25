@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Platform;
 using UIKit;
 
-namespace Ultraviolet.iOS.Platform
+namespace Ultraviolet.Shims.iOS.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenDensityService"/> class for the iOS platform.

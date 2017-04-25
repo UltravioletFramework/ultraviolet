@@ -232,7 +232,7 @@ namespace Ultraviolet.Presentation
                     {
                         case UltravioletPlatform.Windows:
                         case UltravioletPlatform.Linux:
-                        case UltravioletPlatform.OSX:
+                        case UltravioletPlatform.macOS:
                             compiledExpressionsAssembly = Assembly.LoadFrom(CompiledExpressionsAssemblyName);
                             break;
 

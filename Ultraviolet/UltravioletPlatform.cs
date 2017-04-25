@@ -22,9 +22,9 @@ namespace Ultraviolet
         Android,
 
         /// <summary>
-        /// Mac OS X.
+        /// Desktop macOS.
         /// </summary>
-        OSX,
+        macOS,
 
         /// <summary>
         /// Mobile iOS.

@@ -30,8 +30,8 @@ sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.WindowsForms.dll" "%TLSN%"
-sn.exe -R "Ultraviolet.Desktop.dll" "%TLSN%"
-sn.exe -R "Ultraviolet.OSX.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Shims.Desktop.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Shims.macOS.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Tooling.dll" "%TLSN%"
 sn.exe -R "uvfont.exe" "%TLSN%"
 sn.exe -R "uvarchive.exe" "%TLSN%"
@@ -46,7 +46,7 @@ sn.exe -R "Ultraviolet.Presentation.Uvss.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
-sn.exe -R "Ultraviolet.Android.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Shims.Android.dll" "%TLSN%"
 GOTO :eof
 
 :sign_ios
@@ -75,7 +75,7 @@ sn.exe -R "Ultraviolet.Presentation.Compiler.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
-sn.exe -R "Ultraviolet.Desktop.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Shims.Desktop.dll" "%TLSN%"
 GOTO :eof
 
 :test_uvss

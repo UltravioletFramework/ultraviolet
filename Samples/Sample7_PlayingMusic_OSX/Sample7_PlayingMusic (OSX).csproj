@@ -97,8 +97,8 @@
     <Reference Include="Ultraviolet.SDL2">
       <HintPath>..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.OSX">
-      <HintPath>..\Dependencies\Ultraviolet.OSX.dll</HintPath>
+    <Reference Include="Ultraviolet.Shims.macOS">
+      <HintPath>..\Dependencies\Ultraviolet.Shims.macOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

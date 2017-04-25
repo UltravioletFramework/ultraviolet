@@ -48,8 +48,8 @@
     <Reference Include="Ultraviolet">
       <HintPath>..\Dependencies\Android\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.Android">
-      <HintPath>..\Dependencies\Android\Ultraviolet.Android.dll</HintPath>
+    <Reference Include="Ultraviolet.Shims.Android">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Shims.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

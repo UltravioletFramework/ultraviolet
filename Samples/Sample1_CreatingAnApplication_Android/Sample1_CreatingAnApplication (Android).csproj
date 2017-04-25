@@ -97,8 +97,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Android\Ultraviolet.dll</HintPath>
     </Reference>
-    <Reference Include="Ultraviolet.Android">
-      <HintPath>..\Dependencies\Android\Ultraviolet.Android.dll</HintPath>
+    <Reference Include="Ultraviolet.Shims.Android">
+      <HintPath>..\Dependencies\Android\Ultraviolet.Shims.Android.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.BASS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildOSX">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildMacOS">
   <PropertyGroup Condition="'$(Configuration)' == ''">
     <Configuration>Debug</Configuration>
   </PropertyGroup>
@@ -18,12 +18,12 @@
     <Ultraviolet_Linux Include="Ultraviolet.Linux.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Linux>
-    <Ultraviolet_OSX Include="Ultraviolet.OSX.sln">
+    <Ultraviolet_MacOS Include="Ultraviolet.macOS.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_OSX>
-    <Ultraviolet_OSX_Bamboo Include="Ultraviolet.OSX.Bamboo.sln">
+    </Ultraviolet_MacOS>
+    <Ultraviolet_MacOS_Bamboo Include="Ultraviolet.MacOS.Bamboo.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_OSX_Bamboo>
+    </Ultraviolet_MacOS_Bamboo>
     <Ultraviolet_Android Include="Ultraviolet.Android.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Android>
@@ -80,11 +80,11 @@
     <Exec Condition="'$(OS)'=='Unix'" 
       Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Linux)&quot;"/>
   </Target>
-  <Target Name="RestoreOSX">
+  <Target Name="RestoreMacOS">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_OSX)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_MacOS)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_OSX)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_MacOS)&quot;"/>
   </Target>
   
   <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
@@ -98,16 +98,16 @@
     <MSBuild Projects="@(Ultraviolet_Linux)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
-  <Target Name="BuildOSX" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
-    <CallTarget Targets="RestoreOSX"/>
-    <MSBuild Projects="@(Ultraviolet_OSX)"/>
-    <CallTarget Targets="CopyOSXBinaries"/>
+  <Target Name="BuildMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
+    <CallTarget Targets="RestoreMacOS"/>
+    <MSBuild Projects="@(Ultraviolet_MacOS)"/>
+    <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
-  <Target Name="BuildOSXBamboo" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
-    <CallTarget Targets="RestoreOSX"/>
-    <MSBuild Projects="@(Ultraviolet_OSX_Bamboo)"/>
-    <CallTarget Targets="CopyOSXBinaries"/>
+  <Target Name="BuildMacOSBamboo" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
+    <CallTarget Targets="RestoreMacOS"/>
+    <MSBuild Projects="@(Ultraviolet_MacOS_Bamboo)"/>
+    <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
       
@@ -127,8 +127,8 @@
     <CreateItem Include="Ultraviolet.Profiler.dotTrace_Desktop/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Desktop/bin/$(Configuration)/Ultraviolet.Desktop.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Desktop_Shim"/>
+    <CreateItem Include="Ultraviolet.Shims.Desktop/bin/$(Configuration)/Ultraviolet.Shims.Desktop.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Desktop"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.BASS_Desktop/bin/$(Configuration)/Ultraviolet.BASS.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_Desktop"/>
@@ -164,7 +164,7 @@
     <Copy SourceFiles="@(Ultraviolet_Core_Desktop)" DestinationFiles="@(Ultraviolet_Core_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Desktop)" DestinationFiles="@(Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Desktop_Shim)" DestinationFiles="@(Ultraviolet_Desktop_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_Desktop)" DestinationFiles="@(Ultraviolet_Shims_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_Desktop)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_BASS_Desktop)" DestinationFiles="@(Ultraviolet_BASS_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -192,11 +192,11 @@
     <Copy SourceFiles="@(Ultraviolet_Design)" DestinationFiles="@(Ultraviolet_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_WindowsForms)" DestinationFiles="@(Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
   </Target>
-  <Target Name="CopyOSXBinaries">
-    <CreateItem	Include="Ultraviolet.OSX/bin/$(Configuration)/Ultraviolet.OSX.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OSX_Shim"/>
+  <Target Name="CopyMacOSBinaries">
+    <CreateItem	Include="Ultraviolet.Shims.macOS/bin/$(Configuration)/Ultraviolet.Shims.macOS.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_macOS"/>
     </CreateItem>
-    <Copy SourceFiles="@(Ultraviolet_OSX_Shim)" DestinationFiles="@(Ultraviolet_OSX_Shim->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_macOS)" DestinationFiles="@(Ultraviolet_Shims_macOS->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
   <Target Name="CopyDesktopSampleDependencies">
     <CreateItem Include="Binaries/AnyCPU/$(Configuration)/*.*">
@@ -233,8 +233,8 @@
     <CreateItem Include="Ultraviolet_Android/bin/$(Configuration)/Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Android"/>
     </CreateItem>
-    <CreateItem Include="Ultraviolet.Android/bin/$(Configuration)/Ultraviolet.Android.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Android_Shim"/>
+    <CreateItem Include="Ultraviolet.Shims.Android/bin/$(Configuration)/Ultraviolet.Shims.Android.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_Android"/>
     </CreateItem>
     <CreateItem Include="Ultraviolet.Profiler.dotTrace_Android/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_Android"/>
@@ -258,7 +258,7 @@
     <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Android)" DestinationFiles="@(Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_Android_Shim)" DestinationFiles="@(Ultraviolet_Android_Shim->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_Android)" DestinationFiles="@(Ultraviolet_Shims_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_Android)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_BASS_Android)" DestinationFiles="@(Ultraviolet_BASS_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

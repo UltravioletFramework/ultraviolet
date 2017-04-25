@@ -1,12 +1,12 @@
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.Input;
-using Ultraviolet.iOS.Graphics;
-using Ultraviolet.iOS.Input;
-using Ultraviolet.iOS.Platform;
 using Ultraviolet.Platform;
+using Ultraviolet.Shims.iOS.Graphics;
+using Ultraviolet.Shims.iOS.Input;
+using Ultraviolet.Shims.iOS.Platform;
 
-namespace Ultraviolet.iOS
+namespace Ultraviolet.Shims.iOS
 {
     /// <summary>
     /// Initializes factory methods for the iOS platform compatibility shim.
