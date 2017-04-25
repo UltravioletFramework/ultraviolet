@@ -53,13 +53,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.TestFramew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Tests", "Ultraviolet.Core.Tests\Ultraviolet.Core.Tests.csproj", "{535D248F-F774-4DC0-B314-A15FA25026C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Testing", "Ultraviolet.Testing\Ultraviolet.Testing.csproj", "{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.TestFramework", "Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj", "{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet Tests", "Ultraviolet Tests\Ultraviolet Tests.csproj", "{0447F779-E020-4E82-BF73-EB87C0E420D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Tests", "Ultraviolet.Tests\Ultraviolet.Tests.csproj", "{0447F779-E020-4E82-BF73-EB87C0E420D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Testing", "Ultraviolet.Presentation.Uvss.Testing\Ultraviolet.Presentation.Uvss.Testing.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.TestFramework", "Ultraviolet.Presentation.Uvss.TestFramework\Ultraviolet.Presentation.Uvss.TestFramework.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss Tests", "Ultraviolet.Presentation.Uvss Tests\Ultraviolet.Presentation.Uvss Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Tests", "Ultraviolet.Presentation.Uvss.Tests\Ultraviolet.Presentation.Uvss.Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Compiler", "Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.shproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
 EndProject

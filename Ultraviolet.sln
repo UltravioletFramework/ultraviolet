@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Desktop", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Windows.Forms", "Ultraviolet.Windows.Forms\Ultraviolet.Windows.Forms.csproj", "{6C5385CC-D39D-403A-BC91-08E775AA7AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet Tests", "Ultraviolet Tests\Ultraviolet Tests.csproj", "{0447F779-E020-4E82-BF73-EB87C0E420D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Tests", "Ultraviolet.Tests\Ultraviolet.Tests.csproj", "{0447F779-E020-4E82-BF73-EB87C0E420D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Desktop", "Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj", "{40D272DB-90E1-4332-A32F-6EFFEB44FE87}"
 EndProject
@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Tests", "U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.TestFramework", "Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj", "{6A17D1A8-AC32-4BB4-8446-D76F6B160246}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Testing", "Ultraviolet.Testing\Ultraviolet.Testing.csproj", "{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.TestFramework", "Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj", "{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.Design", "Ultraviolet.Core.Design\Ultraviolet.Core.Design.csproj", "{8DFD999D-53EA-4E73-9933-EEBA1289C7B3}"
 EndProject
@@ -106,9 +106,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss (Android)", "Ultraviolet.Presentation.Uvss_Android\Ultraviolet.Presentation.Uvss (Android).csproj", "{C9DA531D-4FDC-4C41-8E2C-F3C68DAE5AEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss Tests", "Ultraviolet.Presentation.Uvss Tests\Ultraviolet.Presentation.Uvss Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Tests", "Ultraviolet.Presentation.Uvss.Tests\Ultraviolet.Presentation.Uvss.Tests.csproj", "{CF34BD88-6364-4C5E-BEAA-61D5DBD07914}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.Testing", "Ultraviolet.Presentation.Uvss.Testing\Ultraviolet.Presentation.Uvss.Testing.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.TestFramework", "Ultraviolet.Presentation.Uvss.TestFramework\Ultraviolet.Presentation.Uvss.TestFramework.csproj", "{40A4A236-BFC4-4B7F-AB0D-5F91C0DB6107}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Compiler", "Ultraviolet.Presentation.Compiler\Ultraviolet.Presentation.Compiler.shproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
 EndProject

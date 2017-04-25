@@ -1,0 +1,1133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0447F779-E020-4E82-BF73-EB87C0E420D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ultraviolet.Tests</RootNamespace>
+    <AssemblyName>Ultraviolet.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|x64'">
+    <OutputPath>bin\x64\Signed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|x86'">
+    <OutputPath>bin\x86\Signed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net40\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise />
+  </Choose>
+  <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Audio\SongTests.cs" />
+    <Compile Include="CursorCollectionTests.cs" />
+    <Compile Include="Content\AssetIDTests.cs" />
+    <Compile Include="Graphics\Graphics2D\SpriteFontTests.cs" />
+    <Compile Include="Graphics\Graphics2D\SpriteTests.cs" />
+    <Compile Include="Graphics\Texture2DTests.cs" />
+    <Compile Include="Graphics\TextureAtlasTests.cs" />
+    <Compile Include="SetUpFixture.cs" />
+    <Compile Include="Audio\SoundEffectPlayerTests.cs" />
+    <Compile Include="Audio\SongPlayerTests.cs" />
+    <Compile Include="CircleDTests.cs" />
+    <Compile Include="Graphics\CustomCompositor.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\TextParserTests.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\TextRendererTestContent.cs" />
+    <Compile Include="Graphics\UltravioletGraphicsTests.CanRenderInstancedTrianglesData.cs" />
+    <Compile Include="UI\Presentation\Controls\ExampleBoxesAdorner.cs" />
+    <Compile Include="Graphics\Graphics2D\SpriteBatchTests.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\TextTableTests.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\TextRendererTests.cs" />
+    <Compile Include="Graphics\UltravioletGraphicsTests.cs" />
+    <Compile Include="RadiansTest.cs" />
+    <Compile Include="RectangleDTests.cs" />
+    <Compile Include="Point2DTests.cs" />
+    <Compile Include="Size2DTests.cs" />
+    <Compile Include="Point2FTests.cs" />
+    <Compile Include="Size2FTests.cs" />
+    <Compile Include="RectangleFTests.cs" />
+    <Compile Include="RectangleTests.cs" />
+    <Compile Include="Point2Tests.cs" />
+    <Compile Include="Size3DTests.cs" />
+    <Compile Include="Size3FTests.cs" />
+    <Compile Include="MatrixTests.cs" />
+    <Compile Include="UI\Presentation\Input\KeyboardNavigationTests.cs" />
+    <Compile Include="UI\Presentation\Input\GamePadGestureTests.cs" />
+    <Compile Include="UI\Presentation\Input\MouseGestureTests.cs" />
+    <Compile Include="UI\Presentation\Input\KeyGestureTests.cs" />
+    <Compile Include="UI\Presentation\PresentationFoundationTestFramework.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesAutoCellsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesChildrenCorrectly2.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesChildrenCorrectly2_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesStarCellsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesAutoCellsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesStarCellsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_TextBox_BindsCorrectlyToViewModel.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_TextBox_BindsCorrectlyToViewModel_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_LoadsTextFormattingParameters_AsViewResources.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_LoadsTextFormattingParameters_AsViewResources_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Cycle.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Continue.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Contained.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Cycle_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Continue_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Once.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_None.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Contained_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_Once_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DirNav_None_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ComboBox_ArrangesItemsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ListBox_ArrangesItemsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ComboBox_ArrangesItemsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ListBox_ArrangesItemsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_TabControl_ArrangesChildrenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_TabControl_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndicesLocal.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndices.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndicesLocal_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_TabIndices_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_None.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Contained.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Once.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_None_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Contained_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Once_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Cycle_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Cycle.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_SuppressTab.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Simple.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_SuppressTab_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_KeyNav_Simple_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_VisualClone_DrawsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Adorner_DrawsCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Canvas_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffect.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ArrangesComplexScreenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithEffect_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_ArrangesComplexScreenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Canvas_ArrangesChildrenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DockPanel_ArrangesChildrenCorrectly.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_DockPanel_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesChildrenCorrectly_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_Grid_ArrangesChildrenCorrectly.cs" />
+    <Compile Include="UI\Presentation\PresentationFoundationTests.cs" />
+    <Compile Include="UI\Presentation\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM.cs" />
+    <Compile Include="UI\Presentation\Screens\TestScreenBase.cs" />
+    <Compile Include="UI\Presentation\Styles\UvssCompilerTests.cs" />
+    <Compile Include="UI\Presentation\VersionedStringSourceTests.cs" />
+    <Compile Include="UI\Presentation\VersionedStringBuilderTests.cs" />
+    <Compile Include="Vector4Tests.cs" />
+    <Compile Include="Vector3Tests.cs" />
+    <Compile Include="Vector2Tests.cs" />
+    <Compile Include="Size3Tests.cs" />
+    <Compile Include="ColorTests.cs" />
+    <Compile Include="CircleFTests.cs" />
+    <Compile Include="CircleTests.cs" />
+    <Compile Include="Size2Tests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
+      <Name>Ultraviolet.Core.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Core.TestFramework\Ultraviolet.Core.TestFramework.csproj">
+      <Project>{6A17D1A8-AC32-4BB4-8446-D76F6B160246}</Project>
+      <Name>Ultraviolet.Core.TestFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS %28Desktop%29.csproj">
+      <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
+      <Name>Ultraviolet.BASS (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
+      <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
+      <Name>Ultraviolet.OpenGL %28Desktop%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2 %28Desktop%29.csproj">
+      <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
+      <Name>Ultraviolet.SDL2 (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.TestFramework\Ultraviolet.TestFramework.csproj">
+      <Project>{BF3C3975-5E7C-40C0-B49B-9A0CBD22BFCB}</Project>
+      <Name>Ultraviolet.TestFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler %28Desktop%29.csproj">
+      <Project>{8f3c2da1-8930-493b-854b-a053bdbf9071}</Project>
+      <Name>Ultraviolet.Presentation.Compiler %28Desktop%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Presentation_Desktop\Ultraviolet.Presentation %28Desktop%29.csproj">
+      <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
+      <Name>Ultraviolet.Presentation (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet_Desktop\Ultraviolet %28Desktop%29.csproj">
+      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
+      <Name>Ultraviolet (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Presentation.Uvss_Desktop\Ultraviolet.Presentation.Uvss %28Desktop%29.csproj">
+      <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
+      <Name>Ultraviolet.Presentation.Uvss (Desktop)</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
+      <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
+      <Name>Ultraviolet.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
+      <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>
+      <Name>Ultraviolet.OpenGL.Bindings.Desktop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Data\TextShaders.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Data\TextIcons.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Data\TextFonts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Data\TextStyles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\InstancedRenderingTestShader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\InstancedRenderingTestShader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\Arial16JsonSubstitution.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\Arial16Json.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\MSGothic16.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\SegoeUI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\SegoeUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Manifests\Test.manifest">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Manifests\Global.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\Dependencies\SDL2\x64\unix\libSDL2.so">
+      <Link>x64\unix\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x64\unix\libbass.so">
+      <Link>x64\unix\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x64\unix\libbass_fx.so">
+      <Link>x64\unix\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\unix\libbass.so">
+      <Link>x86\unix\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\unix\libbass_fx.so">
+      <Link>x86\unix\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x86\unix\libSDL2.so">
+      <Link>x86\unix\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Manifests\TestJson.jsmanifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Songs\Deep Haze.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Songs\Tone.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\ExplosionJson.jssprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\ExplosionXml_Preprocessed.sprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\InterfaceIcons.sprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\FaceNonPremultiplied.jsmeta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\Triangle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Tables\TestTextTable.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Fonts\Garamond.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\GaramondTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SoundEffects\grenade.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\DefaultUIStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\ScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderColoredStrings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanRenderStyledStrings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyAlignsKernedTextAcrossTokenBoundaries.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextTable_RendersFromViewModel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_ArrangesComplexScreenCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_ArrangesComplexScreenCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\DefaultUIBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\DefaultUIFont.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_Canvas_ArrangesChildrenCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_DockPanel_ArrangesChildrenCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Canvas_ArrangesChildrenCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_DockPanel_ArrangesChildrenCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Grid_ArrangesChildrenCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithHorizontalOrientation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithRenderTransform\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SoundEffects\Click1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\SoundEffects\rollover3.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\DefaultUI.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffect\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffect.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithRenderTransform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTarget\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementRectangle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTarget.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetAndTransform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_CanBeConstructedProgrammatically.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Grid_ArrangesChildrenCorrectly2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Grid_ArrangesAutoCellsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Grid_ArrangesStarCellsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_TextBox_BindsCorrectlyToViewModel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_LoadsTextFormattingParameters_AsViewResources.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_LoadsLinkHandlerMethods_AsViewResources.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersLinks_WithColorizer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersLinks.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Texture2D_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextTable_LoadsAndRendersCorrectly_FromJson.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_RendersDefaultSubstitutionGlyphForSpriteFont.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_RendersSpecifiedSubstitutionGlyphForSpriteFont.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromJson.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromXml.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromJson.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Sprite_LoadsAndRendersCorrectly_FromXml.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromPreprocessedAsset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromJson.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\TextureAtlas_LoadsAndRendersCorrectly_FromXml.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Texture2D_LoadsNonPremultiplied_WhenGivenContentMetadata.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderInstancedTriangles.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_ComboBox_ArrangesItemsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_ListBox_ArrangesItemsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_TabControl_ArrangesChildrenCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_DoesNotBreakOnNonBreakingSpace_WhenBreakingSpaceIsAvailable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithCenterAlignment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithRightAlignment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksAtLastBreakingSpace_WithLeftAlignment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSubstrings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText_Stretch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionOutsideText.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Simple\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_SuppressTab\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Cycle\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Once\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_None\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_Contained\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_TabIndicesLocal\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_KeyNav_TabIndices\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Cycle\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Continue\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Contained\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_Once\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_DirNav_None\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Cursors\Cursors.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Cursors\CursorsImage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x64\win32nt\bass.dll">
+      <Link>x64\win32nt\bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x64\win32nt\bass_fx.dll">
+      <Link>x64\win32nt\bass_fx.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x64\win32nt\SDL2.dll">
+      <Link>x64\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\win32nt\bass.dll">
+      <Link>x86\win32nt\bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\BASS\x86\win32nt\bass_fx.dll">
+      <Link>x86\win32nt\bass_fx.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
+      <Link>x86\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </Content>
+    <None Include="Content\UI\Screens\UPF_TabControl_ArrangesChildrenCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_ListBox_ArrangesItemsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\UI\Screens\UPF_ComboBox_ArrangesItemsCorrectly\View.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\InstancedRenderingTestEffect.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\Face.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\ExplosionAtlasXml.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_02.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_03.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_04.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_05.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_06.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_07.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_08.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_09.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_17.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_18.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_19.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_20.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_21.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_22.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_23.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_24.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_25.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_26.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_27.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_28.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion_29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\ExplosionAtlasJson.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\ExplosionAtlasXml_Preprocessed.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\Textures\Explosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\ExplosionXml.sprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\Arial16Xml.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\Arial16Texture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\Arial16Xml_Preprocessed.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\MSGothic16Texture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Tables\TestTextTableJson.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\Triangle_Preprocessed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Cursors\CursorsJson.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\ScreenStyles.uvss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_TextBox_BindsCorrectlyToViewModel\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_Grid_ArrangesStarCellsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_Grid_ArrangesAutoCellsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_Grid_ArrangesChildrenCorrectly2\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\HexagonsLicense.txt" />
+    <None Include="Content\Textures\HexagonsTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_LoadsLinkHandlerMethods_AsViewResources\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly_WithTransformedParent\View.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_VisualClone_DrawsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_VisualClone_DrawsCorrectly_WhenParentIsTransformed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_Adorner_DrawsCorrectly\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_ArrangesCorrectly_WithLayoutTransform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly_WhenInsideOfAPopup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Adorner_DrawsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_UIElement_DrawsCorrectly_WithEffectAndTransform\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithTransformedPlacementTarget_WhenNestedInsidePopup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WhenNestedInsidePopup\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\UI\Screens\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\Screens\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup\View.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_DrawsCorrectly_WithPlacementTargetInsidePopupAndEffect.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\UI\Presentation\UPF_Popup_LaidOutCorrectly_WithPlacementTargetInsidePopup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup />
+</Project>
