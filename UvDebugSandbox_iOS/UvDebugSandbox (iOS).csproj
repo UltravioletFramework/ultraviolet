@@ -311,9 +311,9 @@
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
       <Name>Ultraviolet.SDL2.UIKit (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS_iOS\Ultraviolet.BASS %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
-      <Name>Ultraviolet.BASS (iOS)</Name>
+      <Name>Ultraviolet.BASS.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

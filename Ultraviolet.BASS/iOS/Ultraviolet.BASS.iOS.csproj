@@ -53,10 +53,10 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>  
   <ItemGroup>
-    <None Include="..\Ultraviolet.Public.snk">
+    <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Version.cs">
+    <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,13 +80,13 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\Dependencies\BASS\iOS\libbass_fx.a">
+    <NativeReference Include="..\..\Dependencies\BASS\iOS\libbass_fx.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
       <ForceLoad>True</ForceLoad>
       <IsCxx>true</IsCxx>
     </NativeReference>
-    <NativeReference Include="..\Dependencies\BASS\iOS\libbass.a">
+    <NativeReference Include="..\..\Dependencies\BASS\iOS\libbass.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
       <ForceLoad>True</ForceLoad>
@@ -94,23 +94,23 @@
     </NativeReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet_iOS\Ultraviolet %28iOS%29.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
       <Name>Ultraviolet (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core (iOS)</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="..\Ultraviolet.BASS_Desktop\Resources\Strings.xml">
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Version.tt">
+    <Content Include="..\..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
@@ -119,6 +119,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <Import Project="..\Ultraviolet.BASS\Ultraviolet.BASS.projitems" Label="Shared" Condition="Exists('..\Ultraviolet.BASS\Ultraviolet.BASS.projitems')" />
+  <Import Project="..\Shared\Ultraviolet.BASS.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.BASS.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
 </Project>

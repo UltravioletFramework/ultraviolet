@@ -104,9 +104,9 @@
       <Project>{6A17D1A8-AC32-4BB4-8446-D76F6B160246}</Project>
       <Name>Ultraviolet.Core.TestFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
-      <Name>Ultraviolet.BASS (Desktop)</Name>
+      <Name>Ultraviolet.BASS.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
       <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>

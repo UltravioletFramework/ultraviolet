@@ -251,9 +251,9 @@
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
       <Name>Ultraviolet.SDL2 (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS_iOS\Ultraviolet.BASS %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
-      <Name>Ultraviolet.BASS (iOS)</Name>
+      <Name>Ultraviolet.BASS.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -83,9 +83,9 @@
       <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
       <Name>Ultraviolet.Core.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS %28Desktop%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
       <Project>{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}</Project>
-      <Name>Ultraviolet.BASS (Desktop)</Name>
+      <Name>Ultraviolet.BASS.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>

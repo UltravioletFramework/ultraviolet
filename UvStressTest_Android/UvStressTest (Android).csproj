@@ -137,9 +137,9 @@
       <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
       <Name>Ultraviolet.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.BASS_Android\Ultraviolet.BASS %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.BASS\Android\Ultraviolet.BASS.Android.csproj">
       <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
-      <Name>Ultraviolet.BASS (Android)</Name>
+      <Name>Ultraviolet.BASS.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL\Android\Ultraviolet.OpenGL.Android.csproj">
       <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
