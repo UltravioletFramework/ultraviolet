@@ -65,9 +65,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Compiler (Desktop)", "Ultraviolet.Presentation.Compiler_Desktop\Ultraviolet.Presentation.Compiler (Desktop).csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace (Desktop)", "Ultraviolet.Profiler.dotTrace_Desktop\Ultraviolet.Profiler.dotTrace (Desktop).csproj", "{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace.Desktop", "Ultraviolet.Profiler.dotTrace\Desktop\Ultraviolet.Profiler.dotTrace.Desktop.csproj", "{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTest\UvStressTest.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject

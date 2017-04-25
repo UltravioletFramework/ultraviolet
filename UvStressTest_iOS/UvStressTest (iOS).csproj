@@ -135,9 +135,9 @@
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
       <Name>Ultraviolet.OpenGL (iOS)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Profiler.dotTrace_iOS\Ultraviolet.Profiler.dotTrace %28iOS%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Profiler.dotTrace\iOS\Ultraviolet.Profiler.dotTrace.iOS.csproj">
       <Project>{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}</Project>
-      <Name>Ultraviolet.Profiler.dotTrace (iOS)</Name>
+      <Name>Ultraviolet.Profiler.dotTrace.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>

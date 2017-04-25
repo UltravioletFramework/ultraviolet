@@ -87,11 +87,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebugSandbox", "UvDebugSandbox\UvDebugSandbox.shproj", "{41B16059-BFE0-4704-8EEE-44339B3834C5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace (Desktop)", "Ultraviolet.Profiler.dotTrace_Desktop\Ultraviolet.Profiler.dotTrace (Desktop).csproj", "{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace.Desktop", "Ultraviolet.Profiler.dotTrace\Desktop\Ultraviolet.Profiler.dotTrace.Desktop.csproj", "{E1CD102C-6D6D-4EB2-ABED-1FAD59C9730F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace (Android)", "Ultraviolet.Profiler.dotTrace_Android\Ultraviolet.Profiler.dotTrace (Android).csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace.Android", "Ultraviolet.Profiler.dotTrace\Android\Ultraviolet.Profiler.dotTrace.Android.csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Versioning", "Versioning", "{903EB0FA-C534-4717-B659-85635CE51A55}"
 	ProjectSection(SolutionItems) = preProject

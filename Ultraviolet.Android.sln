@@ -47,9 +47,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStressTest", "UvStressTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStressTest (Android)", "UvStressTest_Android\UvStressTest (Android).csproj", "{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace (Android)", "Ultraviolet.Profiler.dotTrace_Android\Ultraviolet.Profiler.dotTrace (Android).csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace.Android", "Ultraviolet.Profiler.dotTrace\Android\Ultraviolet.Profiler.dotTrace.Android.csproj", "{003BE843-DB95-40D7-A4D9-E50F599E59E1}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

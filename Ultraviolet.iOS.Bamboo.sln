@@ -28,9 +28,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation (iOS)", "Ultraviolet.Presentation_iOS\Ultraviolet.Presentation (iOS).csproj", "{4F741CCA-6FBF-439E-A26A-ABB189619101}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Profiler.dotTrace", "Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.shproj", "{4062C348-1341-4A91-8354-FBB227AD7DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace (iOS)", "Ultraviolet.Profiler.dotTrace_iOS\Ultraviolet.Profiler.dotTrace (iOS).csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Profiler.dotTrace.iOS", "Ultraviolet.Profiler.dotTrace\iOS\Ultraviolet.Profiler.dotTrace.iOS.csproj", "{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.iOS", "Ultraviolet\iOS\Ultraviolet.iOS.csproj", "{8F9F44FB-E63C-48DE-8752-19B745111559}"
 EndProject

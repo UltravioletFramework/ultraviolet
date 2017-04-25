@@ -154,9 +154,9 @@
       <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
       <Name>Ultraviolet.OpenGL %28Android%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Profiler.dotTrace_Android\Ultraviolet.Profiler.dotTrace %28Android%29.csproj">
+    <ProjectReference Include="..\Ultraviolet.Profiler.dotTrace\Android\Ultraviolet.Profiler.dotTrace.Android.csproj">
       <Project>{003be843-db95-40d7-a4d9-e50f599e59e1}</Project>
-      <Name>Ultraviolet.Profiler.dotTrace %28Android%29</Name>
+      <Name>Ultraviolet.Profiler.dotTrace.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.SDL2\Android\Ultraviolet.SDL2.Android.csproj">
       <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
