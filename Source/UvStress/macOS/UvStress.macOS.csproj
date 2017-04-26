@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AE469C94-75D7-4387-A030-D3C53CCA90B1}</ProjectGuid>
+    <ProjectGuid>{4D230D6E-DFF0-4DA3-85DF-CBF70BC57F89}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SAFE_PROJECT_NAME</RootNamespace>
-    <AssemblyName>UltravioletGame</AssemblyName>
+    <RootNamespace>UvStress</RootNamespace>
+    <AssemblyName>UvStress</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <UseXamMacFullFramework>true</UseXamMacFullFramework>
@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;MACOS</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -33,12 +33,11 @@
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
-    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>MACOS</DefineConstants>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -52,30 +51,9 @@
     <LinkMode>None</LinkMode>
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
-    <XamMacArch></XamMacArch>
-    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <XamMacArch>x86_64</XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants>MACOS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <EnableCodeSigning>false</EnableCodeSigning>
-    <CodeSigningKey>Developer ID Application</CodeSigningKey>
-    <CreatePackage>false</CreatePackage>
-    <EnablePackageSigning>false</EnablePackageSigning>
-    <IncludeMonoRuntime>true</IncludeMonoRuntime>
-    <UseSGen>true</UseSGen>
-    <UseRefCounting>true</UseRefCounting>
-    <LinkMode>None</LinkMode>
-    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
-    <TlsProvider>Default</TlsProvider>
-    <XamMacArch></XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
-    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -84,20 +62,20 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-128%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-16%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-256%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-32%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv16.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv32.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv64.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv128.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv256.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv512.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv1024.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
-    <None Include="..\Shared\README-SDL.txt">
-      <Link>README-SDL.txt</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
@@ -130,61 +108,43 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="x64\" />
-    <Folder Include="x64\macOS\" />
-    <Folder Include="Assets\" />
-    <Folder Include="Content\" />
-    <Folder Include="Input\" />
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\macOS\libSDL2.dylib">
-      <Link>x64\macOS\libSDL2.dylib</Link>
-    </BundleResource>
+    <Folder Include="x64\" />
+    <Folder Include="x64\macOS\" />
+  </ItemGroup>
+  <ItemGroup>
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\macOS\libbass_fx.dylib">
       <Link>x64\macOS\libbass_fx.dylib</Link>
     </BundleResource>
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\macOS\libbass.dylib">
       <Link>x64\macOS\libbass.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Cursors\CursorsImage.png">
-      <Link>Content\Cursors\CursorsImage.png</Link>
+    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\macOS\libSDL2.dylib">
+      <Link>x64\macOS\libSDL2.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\DefaultUI.png">
-      <Link>Content\Fonts\DefaultUI.png</Link>
-    </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\SegoeUITexture.png">
-      <Link>Content\Fonts\SegoeUITexture.png</Link>
-    </BundleResource>
-    <BundleResource Include="..\Shared\Content\Cursors\Cursors.xml">
-      <Link>Content\Cursors\Cursors.xml</Link>
-    </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\DefaultUIFont.xml">
-      <Link>Content\Fonts\DefaultUIFont.xml</Link>
-    </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\SegoeUI.xml">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Localization\GameStrings.xml">
-      <Link>Content\Localization\GameStrings.xml</Link>
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Manifests\Global.manifest">
-      <Link>Content\Manifests\Global.manifest</Link>
+    <BundleResource Include="..\Desktop\Content\Sprites\Hexagons.xml">
+      <Link>Content\Sprites\Hexagons.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Sprites\HexagonsLicense.txt">
+      <Link>Content\Sprites\HexagonsLicense.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Sprites\HexagonsTexture.png">
+      <Link>Content\Sprites\HexagonsTexture.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Shared\Game.cs">
-      <Link>Game.cs</Link>
-    </Compile>
-    <Compile Include="..\Shared\Assets\GlobalFontID.cs">
-      <Link>Assets\GlobalFontID.cs</Link>
-    </Compile>
-    <Compile Include="..\Shared\Input\GameInputActions.cs">
-      <Link>Input\GameInputActions.cs</Link>
-    </Compile>
-    <Compile Include="..\Shared\Input\IUltravioletInputExtensions.cs">
-      <Link>Input\IUltravioletInputExtensions.cs</Link>
-    </Compile>
-    <Compile Include="Game.Init.cs" />
-  </ItemGroup>
+  <Import Project="..\Shared\UvStress.projitems" Label="Shared" Condition="Exists('..\Shared\UvStress.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

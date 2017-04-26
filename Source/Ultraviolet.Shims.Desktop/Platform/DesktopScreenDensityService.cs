@@ -18,7 +18,7 @@ namespace Ultraviolet.Shims.Desktop.Platform
             if (InitWindows8_1(uv, display))
                 return;
 
-            if (InitOSX(uv, display))
+            if (InitMacOS(uv, display))
                 return;
 
             InitFallback(uv, display);
@@ -66,9 +66,9 @@ namespace Ultraviolet.Shims.Desktop.Platform
         }
 
         /// <summary>
-        /// Retrieves DPI information on OS X when the Mac-specific compatibility shim is missing.
+        /// Retrieves DPI information on macOS when the Mac-specific compatibility shim is missing.
         /// </summary>
-        private Boolean InitOSX(UltravioletContext uv, IUltravioletDisplay display)
+        private Boolean InitMacOS(UltravioletContext uv, IUltravioletDisplay display)
         {
             if (uv.Platform != UltravioletPlatform.macOS)
                 return false;

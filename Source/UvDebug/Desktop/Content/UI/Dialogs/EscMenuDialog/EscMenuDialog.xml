@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition
+  DefaultOpenTransitionDuration="500.0"
+  DefaultCloseTransitionDuration="500.0">
+  <StyleSheet>EscMenuDialogStyles</StyleSheet>
+  <View Class="msgbox" ViewModelType="UvDebug.UI.Dialogs.EscMenuDialog+DialogScreenVM, UvDebug">
+
+    <Rectangle Class="msgbox-fade"/>
+    <Grid Class="msgbox-box" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.Effect>
+        <DropShadowEffect/>
+      </Grid.Effect>
+      <Grid.RenderTransform>
+        <TranslateTransform X="0" Y="0"/>
+      </Grid.RenderTransform>
+
+      <Image Class="msgbox-box-background"/>
+      <StackPanel Class="msgbox-box-content">
+
+        <TextBlock Name="PART_TextBlockCaption"
+                   Class="msgbox-caption"
+                   HorizontalAlignment="Center">Menu</TextBlock>
+
+        <StackPanel Class="msgbox-btn-panel">
+
+          <Button Name="btn-resume"
+                  Class="msgbox-btn"
+                  Click="HandleClickResume" IsCancel="true">Resume</Button>
+          <Button Name="btn-exit"
+                  Class="msgbox-btn"
+                  Click="HandleClickExit">Exit</Button>
+          <Button Name="btn-exit-desktop"
+                  Class="msgbox-btn"
+                  Click="HandleClickExitToDesktop">Exit to Desktop</Button>
+
+        </StackPanel>
+
+      </StackPanel>
+
+    </Grid>
+
+  </View>
+</UIPanelDefinition>

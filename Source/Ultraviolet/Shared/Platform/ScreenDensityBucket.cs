@@ -17,7 +17,7 @@ namespace Ultraviolet.Platform
         Low,
 
         /// <summary>
-        /// OS X Retina DPI (~144 dpi).
+        /// macOS Retina DPI (~144 dpi).
         /// </summary>
         Retina,
 
@@ -27,7 +27,7 @@ namespace Ultraviolet.Platform
         Medium,
 
         /// <summary>
-        /// OS X Retina HD DPI (~216 DPI).
+        /// macOS Retina HD DPI (~216 DPI).
         /// </summary>
         RetinaHD,
 
