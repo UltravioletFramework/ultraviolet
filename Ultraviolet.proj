@@ -42,31 +42,31 @@
     <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebugSandbox_Android/Content.uvarc UvDebugSandbox_Desktop/Content"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement_Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement_Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample5_RenderingSprites_Android/Content.uvarc&quot; &quot;Samples/Sample5_RenderingSprites_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample5_RenderingSprites_Android/Content.uvarc&quot; &quot;Samples/Sample5_RenderingSprites/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample6_RenderingText_Android/Content.uvarc&quot; &quot;Samples/Sample6_RenderingText_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample6_RenderingText_Android/Content.uvarc&quot; &quot;Samples/Sample6_RenderingText/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample7_PlayingMusic_Android/Content.uvarc&quot; &quot;Samples/Sample7_PlayingMusic_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample7_PlayingMusic_Android/Content.uvarc&quot; &quot;Samples/Sample7_PlayingMusic/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample8_PlayingSoundEffects_Android/Content.uvarc&quot; &quot;Samples/Sample8_PlayingSoundEffects_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample8_PlayingSoundEffects_Android/Content.uvarc&quot; &quot;Samples/Sample8_PlayingSoundEffects/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample9_ManagingStateWithUIScreens_Android/Content.uvarc&quot; &quot;Samples/Sample9_ManagingStateWithUIScreens_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample9_ManagingStateWithUIScreens_Android/Content.uvarc&quot; &quot;Samples/Sample9_ManagingStateWithUIScreens/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample10_AsynchronousContentLoading_Android/Content.uvarc&quot; &quot;Samples/Sample10_AsynchronousContentLoading_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample10_AsynchronousContentLoading_Android/Content.uvarc&quot; &quot;Samples/Sample10_AsynchronousContentLoading/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample11_GamePads_Android/Content.uvarc&quot; &quot;Samples/Sample11_GamePads_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample11_GamePads_Android/Content.uvarc&quot; &quot;Samples/Sample11_GamePads/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample12_UPF_Android/Content.uvarc&quot; &quot;Samples/Sample12_UPF_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample12_UPF_Android/Content.uvarc&quot; &quot;Samples/Sample12_UPF/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample13_UPFAdvanced_Android/Content.uvarc&quot; &quot;Samples/Sample13_UPFAdvanced_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample13_UPFAdvanced_Android/Content.uvarc&quot; &quot;Samples/Sample13_UPFAdvanced/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample14_LoadingImageDataWithSurfaces_Android/Content.uvarc&quot; &quot;Samples/Sample14_LoadingImageDataWithSurfaces_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample14_LoadingImageDataWithSurfaces_Android/Content.uvarc&quot; &quot;Samples/Sample14_LoadingImageDataWithSurfaces/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample15_RenderTargetsAndBuffers_Android/Content.uvarc&quot; &quot;Samples/Sample15_RenderTargetsAndBuffers_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample15_RenderTargetsAndBuffers_Android/Content.uvarc&quot; &quot;Samples/Sample15_RenderTargetsAndBuffers/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample16_CustomTextLayoutCommands_Android/Content.uvarc&quot; &quot;Samples/Sample16_CustomTextLayoutCommands_Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample16_CustomTextLayoutCommands_Android/Content.uvarc&quot; &quot;Samples/Sample16_CustomTextLayoutCommands/Desktop/Content&quot;"/>
   </Target>
   <Target Name="RestoreWindows">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
@@ -199,7 +199,7 @@
     <Copy SourceFiles="@(Ultraviolet_Shims_macOS)" DestinationFiles="@(Ultraviolet_Shims_macOS->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
   <Target Name="CopyDesktopSampleDependencies">
-    <CreateItem Include="Source/Binaries/AnyCPU/$(Configuration)/*.*">
+    <CreateItem Include="Binaries/AnyCPU/$(Configuration)/*.*">
       <Output TaskParameter="Include" ItemName="SampleDependencies_Desktop"/>
     </CreateItem>
     <Copy SourceFiles="@(SampleDependencies_Desktop)" DestinationFiles="@(SampleDependencies_Desktop->'Samples/Dependencies/%(RecursiveDir)%(Filename)%(Extension)')"/>	
@@ -268,7 +268,7 @@
     <CallTarget Targets="CopyAndroidSampleDependencies"/>
   </Target>
   <Target Name="CopyAndroidSampleDependencies">
-    <CreateItem Include="Source/Binaries/Android/$(Configuration)/*.*">
+    <CreateItem Include="Binaries/Android/$(Configuration)/*.*">
       <Output TaskParameter="Include" ItemName="SampleDependencies_Android"/>
     </CreateItem>
     <Copy SourceFiles="@(SampleDependencies_Android)" DestinationFiles="@(SampleDependencies_Android->'Samples/Dependencies/Android/%(RecursiveDir)%(Filename)%(Extension)')"/>	
@@ -346,7 +346,7 @@
     <CallTarget Targets="CopyiOSSampleDependencies"/>
   </Target>
   <Target Name="CopyiOSSampleDependencies">
-    <CreateItem Include="Source/Binaries/iOS/$(Configuration)/*.*">
+    <CreateItem Include="Binaries/iOS/$(Configuration)/*.*">
       <Output TaskParameter="Include" ItemName="SampleDependencies_iOS"/>
     </CreateItem>
     <Copy SourceFiles="@(SampleDependencies_iOS)" DestinationFiles="@(SampleDependencies_iOS->'Samples/Dependencies/iOS/%(RecursiveDir)%(Filename)%(Extension)')"/>	

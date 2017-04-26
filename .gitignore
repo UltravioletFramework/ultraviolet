@@ -168,7 +168,6 @@ gen/
 # =========================
 # Ultraviolet stuff
 # =========================
-Ultraviolet.Presentation.CompiledExpressions.dll
 /packages
 /Samples/packages
 /Samples/Dependencies/*

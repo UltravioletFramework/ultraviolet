@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{067AE3A0-BBF6-47B1-8371-3710F199DA65}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UltravioletSample.Sample14_LoadingImageDataWithSurfaces</RootNamespace>
+    <AssemblyName>Sample14_LoadingImageDataWithSurfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
+    <OutputPath>bin\Signed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>uv.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.xml" />
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\..\Dependencies\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\..\Dependencies\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\..\Dependencies\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\..\Dependencies\Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.Desktop">
+      <HintPath>..\..\Dependencies\Ultraviolet.Shims.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\..\Dependencies\Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Dependencies\x64\unix\libbass.so">
+      <Link>x64\unix\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\unix\libbass_fx.so">
+      <Link>x64\unix\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\unix\libSDL2.so">
+      <Link>x64\unix\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\unix\libbass.so">
+      <Link>x86\unix\libbass.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\unix\libbass_fx.so">
+      <Link>x86\unix\libbass_fx.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\unix\libSDL2.so">
+      <Link>x86\unix\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Compile Include="..\..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="..\..\Dependencies\Ultraviolet.BASS.dll.config">
+      <Link>Ultraviolet.BASS.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\Ultraviolet.SDL2.dll.config">
+      <Link>Ultraviolet.SDL2.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Manifests\Global.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SampleSharedLib\Desktop\SampleSharedLib.Desktop.csproj">
+      <Project>{9f505c43-6e37-425f-b348-be4de7ab2f0b}</Project>
+      <Name>SampleSharedLib.Desktop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Dependencies\x64\win32nt\bass.dll">
+      <Link>x64\win32nt\bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\win32nt\bass_fx.dll">
+      <Link>x64\win32nt\bass_fx.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\win32nt\SDL2.dll">
+      <Link>x64\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\win32nt\bass.dll">
+      <Link>x86\win32nt\bass.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\win32nt\bass_fx.dll">
+      <Link>x86\win32nt\bass_fx.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\win32nt\SDL2.dll">
+      <Link>x86\win32nt\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <None Include="Content\Fonts\SegoeUI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\SegoeUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Data\Face.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="uv.ico" />
+  </ItemGroup>
+  <Import Project="..\Shared\Sample14_LoadingImageDataWithSurfaces.projitems" Label="Shared" />
+</Project>

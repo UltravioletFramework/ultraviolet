@@ -70,9 +70,9 @@
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Org.Libsdl.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="org.libsdl.app, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\SDL2\Android\Org.Libsdl.App.dll</HintPath>
+      <HintPath>..\..\..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

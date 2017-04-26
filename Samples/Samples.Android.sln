@@ -37,73 +37,73 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unix", "unix", "{C86FC06A-1
 		Dependencies\x86\unix\libSDL2.so = Dependencies\x86\unix\libSDL2.so
 	EndProjectSection
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample1_CreatingAnApplication", "Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.shproj", "{FD1AC1B5-C403-4C80-8169-9DFA1277E81A}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample1_CreatingAnApplication", "Sample1_CreatingAnApplication\Shared\Sample1_CreatingAnApplication.shproj", "{FD1AC1B5-C403-4C80-8169-9DFA1277E81A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample2_HandlingInput", "Sample2_HandlingInput\Sample2_HandlingInput.shproj", "{D00E3FF5-72A2-4BD9-BEDA-BA189F7B0829}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample2_HandlingInput", "Sample2_HandlingInput\Shared\Sample2_HandlingInput.shproj", "{D00E3FF5-72A2-4BD9-BEDA-BA189F7B0829}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample3_RenderingGeometry", "Sample3_RenderingGeometry\Sample3_RenderingGeometry.shproj", "{A4EC586B-92E6-4980-AA87-958BF9E45E8F}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample3_RenderingGeometry", "Sample3_RenderingGeometry\Shared\Sample3_RenderingGeometry.shproj", "{A4EC586B-92E6-4980-AA87-958BF9E45E8F}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample4_ContentManagement", "Sample4_ContentManagement\Sample4_ContentManagement.shproj", "{BDA0A4E0-468A-4FA7-A070-EF25FB15CF08}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample4_ContentManagement", "Sample4_ContentManagement\Shared\Sample4_ContentManagement.shproj", "{BDA0A4E0-468A-4FA7-A070-EF25FB15CF08}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample5_RenderingSprites", "Sample5_RenderingSprites\Sample5_RenderingSprites.shproj", "{0ECFAA60-2D08-4330-8533-A2262447DD1F}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample5_RenderingSprites", "Sample5_RenderingSprites\Shared\Sample5_RenderingSprites.shproj", "{0ECFAA60-2D08-4330-8533-A2262447DD1F}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample6_RenderingText", "Sample6_RenderingText\Sample6_RenderingText.shproj", "{92C3587D-B6D3-493C-98C0-C0983E622A80}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample6_RenderingText", "Sample6_RenderingText\Shared\Sample6_RenderingText.shproj", "{92C3587D-B6D3-493C-98C0-C0983E622A80}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample7_PlayingMusic", "Sample7_PlayingMusic\Sample7_PlayingMusic.shproj", "{A42C4424-5A92-40B2-A2B3-9FCB43237E12}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample7_PlayingMusic", "Sample7_PlayingMusic\Shared\Sample7_PlayingMusic.shproj", "{A42C4424-5A92-40B2-A2B3-9FCB43237E12}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample8_PlayingSoundEffects", "Sample8_PlayingSoundEffects\Sample8_PlayingSoundEffects.shproj", "{658A523E-FDA7-4E1F-A3F2-932B401A50D9}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample8_PlayingSoundEffects", "Sample8_PlayingSoundEffects\Shared\Sample8_PlayingSoundEffects.shproj", "{658A523E-FDA7-4E1F-A3F2-932B401A50D9}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample9_ManagingStateWithUIScreens", "Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.shproj", "{0A93613C-B14A-41D8-BAB5-E01AA6D33D89}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample9_ManagingStateWithUIScreens", "Sample9_ManagingStateWithUIScreens\Shared\Sample9_ManagingStateWithUIScreens.shproj", "{0A93613C-B14A-41D8-BAB5-E01AA6D33D89}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample10_AsynchronousContentLoading", "Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.shproj", "{9491B997-483C-4F11-8A96-13B122E5419A}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample10_AsynchronousContentLoading", "Sample10_AsynchronousContentLoading\Shared\Sample10_AsynchronousContentLoading.shproj", "{9491B997-483C-4F11-8A96-13B122E5419A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample11_GamePads", "Sample11_GamePads\Sample11_GamePads.shproj", "{10F3B9D4-DF14-457A-8012-4697522A181A}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample11_GamePads", "Sample11_GamePads\Shared\Sample11_GamePads.shproj", "{10F3B9D4-DF14-457A-8012-4697522A181A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample12_UPF", "Sample12_UPF\Sample12_UPF.shproj", "{6BE6DA33-0089-41C0-A4E1-B51F145A22EF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample12_UPF", "Sample12_UPF\Shared\Sample12_UPF.shproj", "{6BE6DA33-0089-41C0-A4E1-B51F145A22EF}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample13_UPFAdvanced", "Sample13_UPFAdvanced\Sample13_UPFAdvanced.shproj", "{9D1BFE26-E1AA-4270-BFCB-6511768414D3}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample13_UPFAdvanced", "Sample13_UPFAdvanced\Shared\Sample13_UPFAdvanced.shproj", "{9D1BFE26-E1AA-4270-BFCB-6511768414D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1_CreatingAnApplication (Android)", "Sample1_CreatingAnApplication_Android\Sample1_CreatingAnApplication (Android).csproj", "{677767F0-C665-4A84-A1D2-3FFBA90D25B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1_CreatingAnApplication.Android", "Sample1_CreatingAnApplication\Android\Sample1_CreatingAnApplication.Android.csproj", "{677767F0-C665-4A84-A1D2-3FFBA90D25B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2_HandlingInput (Android)", "Sample2_HandlingInput_Android\Sample2_HandlingInput (Android).csproj", "{04F40541-38E9-4730-8F21-25B745621184}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2_HandlingInput.Android", "Sample2_HandlingInput\Android\Sample2_HandlingInput.Android.csproj", "{04F40541-38E9-4730-8F21-25B745621184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3_RenderingGeometry (Android)", "Sample3_RenderingGeometry_Android\Sample3_RenderingGeometry (Android).csproj", "{3E90954A-0BD4-4855-AE3D-698761D95E5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3_RenderingGeometry.Android", "Sample3_RenderingGeometry\Android\Sample3_RenderingGeometry.Android.csproj", "{3E90954A-0BD4-4855-AE3D-698761D95E5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4_ContentManagement (Android)", "Sample4_ContentManagement_Android\Sample4_ContentManagement (Android).csproj", "{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4_ContentManagement.Android", "Sample4_ContentManagement\Android\Sample4_ContentManagement.Android.csproj", "{BAC2B005-82B1-40A9-A2C3-1D2A21AB1185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample5_RenderingSprites (Android)", "Sample5_RenderingSprites_Android\Sample5_RenderingSprites (Android).csproj", "{32E5ED1F-0378-430F-98EC-173A80C10213}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample5_RenderingSprites.Android", "Sample5_RenderingSprites\Android\Sample5_RenderingSprites.Android.csproj", "{32E5ED1F-0378-430F-98EC-173A80C10213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample6_RenderingText (Android)", "Sample6_RenderingText_Android\Sample6_RenderingText (Android).csproj", "{DF1DE1B8-4FF9-4001-9541-73B4F7858BC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample6_RenderingText.Android", "Sample6_RenderingText\Android\Sample6_RenderingText.Android.csproj", "{DF1DE1B8-4FF9-4001-9541-73B4F7858BC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample7_PlayingMusic (Android)", "Sample7_PlayingMusic_Android\Sample7_PlayingMusic (Android).csproj", "{E02E7F67-AF9F-480D-94DA-CBC6D1D53019}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample7_PlayingMusic.Android", "Sample7_PlayingMusic\Android\Sample7_PlayingMusic.Android.csproj", "{E02E7F67-AF9F-480D-94DA-CBC6D1D53019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample8_PlayingSoundEffects (Android)", "Sample8_PlayingSoundEffects_Android\Sample8_PlayingSoundEffects (Android).csproj", "{B0D5ECE3-C07D-40DB-90E6-92D16C3800FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample8_PlayingSoundEffects.Android", "Sample8_PlayingSoundEffects\Android\Sample8_PlayingSoundEffects.Android.csproj", "{B0D5ECE3-C07D-40DB-90E6-92D16C3800FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample9_ManagingStateWithUIScreens (Android)", "Sample9_ManagingStateWithUIScreens_Android\Sample9_ManagingStateWithUIScreens (Android).csproj", "{FE4CC454-0475-4F11-8E04-D9674B5A811F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample9_ManagingStateWithUIScreens.Android", "Sample9_ManagingStateWithUIScreens\Android\Sample9_ManagingStateWithUIScreens.Android.csproj", "{FE4CC454-0475-4F11-8E04-D9674B5A811F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample11_GamePads (Android)", "Sample11_GamePads_Android\Sample11_GamePads (Android).csproj", "{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample11_GamePads.Android", "Sample11_GamePads\Android\Sample11_GamePads.Android.csproj", "{5CC7C3F8-D523-4ED2-A2B1-1957699C7907}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF (Android)", "Sample12_UPF_Android\Sample12_UPF (Android).csproj", "{AE5864B1-81FA-49C6-B0B6-F70F68175054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF.Android", "Sample12_UPF\Android\Sample12_UPF.Android.csproj", "{AE5864B1-81FA-49C6-B0B6-F70F68175054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced (Android)", "Sample13_UPFAdvanced_Android\Sample13_UPFAdvanced (Android).csproj", "{2DCB1219-E0EE-44F0-A4C2-AC120D0CA386}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced.Android", "Sample13_UPFAdvanced\Android\Sample13_UPFAdvanced.Android.csproj", "{2DCB1219-E0EE-44F0-A4C2-AC120D0CA386}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample14_LoadingImageDataWithSurfaces", "Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.shproj", "{013EE98F-8DE7-48E9-8F2B-C39F056C0615}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample14_LoadingImageDataWithSurfaces", "Sample14_LoadingImageDataWithSurfaces\Shared\Sample14_LoadingImageDataWithSurfaces.shproj", "{013EE98F-8DE7-48E9-8F2B-C39F056C0615}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces (Android)", "Sample14_LoadingImageDataWithSurfaces_Android\Sample14_LoadingImageDataWithSurfaces (Android).csproj", "{D5E143AC-BD19-4136-99C4-056F278E7AD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces.Android", "Sample14_LoadingImageDataWithSurfaces\Android\Sample14_LoadingImageDataWithSurfaces.Android.csproj", "{D5E143AC-BD19-4136-99C4-056F278E7AD0}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample15_RenderTargetsAndBuffers", "Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.shproj", "{06B65153-1D88-4805-B2FD-A5B3BCAB3587}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample15_RenderTargetsAndBuffers", "Sample15_RenderTargetsAndBuffers\Shared\Sample15_RenderTargetsAndBuffers.shproj", "{06B65153-1D88-4805-B2FD-A5B3BCAB3587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers (Android)", "Sample15_RenderTargetsAndBuffers_Android\Sample15_RenderTargetsAndBuffers (Android).csproj", "{7377B092-0887-4180-A7DC-83EB29C48825}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers.Android", "Sample15_RenderTargetsAndBuffers\Android\Sample15_RenderTargetsAndBuffers.Android.csproj", "{7377B092-0887-4180-A7DC-83EB29C48825}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleSharedLib", "SampleSharedLib\SampleSharedLib.shproj", "{F07C30F1-B571-4516-9019-D9F5F8EFA15B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SampleSharedLib", "SampleSharedLib\Shared\SampleSharedLib.shproj", "{F07C30F1-B571-4516-9019-D9F5F8EFA15B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib (Android)", "SampleSharedLib_Android\SampleSharedLib (Android).csproj", "{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib.Android", "SampleSharedLib\Android\SampleSharedLib.Android.csproj", "{B238A15B-E99B-45F5-99FC-DA32CE11EF4D}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample16_CustomTextLayoutCommands", "Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.shproj", "{D11DDE73-67C6-4D43-8270-67ACAF9ACC10}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample16_CustomTextLayoutCommands", "Sample16_CustomTextLayoutCommands\Shared\Sample16_CustomTextLayoutCommands.shproj", "{D11DDE73-67C6-4D43-8270-67ACAF9ACC10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands (Android)", "Sample16_CustomTextLayoutCommands_Android\Sample16_CustomTextLayoutCommands (Android).csproj", "{16B24506-8FDD-4E65-9C82-6B5076A3517F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands.Android", "Sample16_CustomTextLayoutCommands\Android\Sample16_CustomTextLayoutCommands.Android.csproj", "{16B24506-8FDD-4E65-9C82-6B5076A3517F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample10_AsynchronousContentLoading (Android)", "Sample10_AsynchronousContentLoading_Android\Sample10_AsynchronousContentLoading (Android).csproj", "{156C7E00-6FF0-4A2B-AA84-844F4E7ACDF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample10_AsynchronousContentLoading.Android", "Sample10_AsynchronousContentLoading\Android\Sample10_AsynchronousContentLoading.Android.csproj", "{156C7E00-6FF0-4A2B-AA84-844F4E7ACDF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -289,40 +289,40 @@ Global
 		StartupItem = UltravioletSample8\UltravioletSample8.csproj
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SampleSharedLib\SampleSharedLib.projitems*{b238a15b-e99b-45f5-99fc-da32ce11ef4d}*SharedItemsImports = 4
-		Sample5_RenderingSprites\Sample5_RenderingSprites.projitems*{0ecfaa60-2d08-4330-8533-a2262447dd1f}*SharedItemsImports = 13
-		Sample7_PlayingMusic\Sample7_PlayingMusic.projitems*{e02e7f67-af9f-480d-94da-cbc6d1d53019}*SharedItemsImports = 4
-		Sample11_GamePads\Sample11_GamePads.projitems*{10f3b9d4-df14-457a-8012-4697522a181a}*SharedItemsImports = 13
-		Sample11_GamePads\Sample11_GamePads.projitems*{5cc7c3f8-d523-4ed2-a2b1-1957699c7907}*SharedItemsImports = 4
-		SampleSharedLib\SampleSharedLib.projitems*{f07c30f1-b571-4516-9019-d9f5f8efa15b}*SharedItemsImports = 13
-		Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.projitems*{677767f0-c665-4a84-a1d2-3ffba90d25b7}*SharedItemsImports = 4
-		Sample3_RenderingGeometry\Sample3_RenderingGeometry.projitems*{a4ec586b-92e6-4980-aa87-958bf9e45e8f}*SharedItemsImports = 13
-		Sample1_CreatingAnApplication\Sample1_CreatingAnApplication.projitems*{fd1ac1b5-c403-4c80-8169-9dfa1277e81a}*SharedItemsImports = 13
-		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{06b65153-1d88-4805-b2fd-a5b3bcab3587}*SharedItemsImports = 13
-		Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems*{9491b997-483c-4f11-8a96-13b122e5419a}*SharedItemsImports = 13
-		Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.projitems*{d11dde73-67c6-4d43-8270-67acaf9acc10}*SharedItemsImports = 13
-		Sample12_UPF\Sample12_UPF.projitems*{ae5864b1-81fa-49c6-b0b6-f70f68175054}*SharedItemsImports = 4
-		Sample12_UPF\Sample12_UPF.projitems*{6be6da33-0089-41c0-a4e1-b51f145a22ef}*SharedItemsImports = 13
-		Sample8_PlayingSoundEffects\Sample8_PlayingSoundEffects.projitems*{b0d5ece3-c07d-40db-90e6-92d16c3800fc}*SharedItemsImports = 4
-		Sample6_RenderingText\Sample6_RenderingText.projitems*{df1de1b8-4ff9-4001-9541-73b4f7858bc3}*SharedItemsImports = 4
-		Sample6_RenderingText\Sample6_RenderingText.projitems*{92c3587d-b6d3-493c-98c0-c0983e622a80}*SharedItemsImports = 13
-		Sample16_CustomTextLayoutCommands\Sample16_CustomTextLayoutCommands.projitems*{16b24506-8fdd-4e65-9c82-6b5076a3517f}*SharedItemsImports = 4
-		Sample15_RenderTargetsAndBuffers\Sample15_RenderTargetsAndBuffers.projitems*{7377b092-0887-4180-a7dc-83eb29c48825}*SharedItemsImports = 4
-		Sample10_AsynchronousContentLoading\Sample10_AsynchronousContentLoading.projitems*{156c7e00-6ff0-4a2b-aa84-844f4e7acdf2}*SharedItemsImports = 4
-		Sample8_PlayingSoundEffects\Sample8_PlayingSoundEffects.projitems*{658a523e-fda7-4e1f-a3f2-932b401a50d9}*SharedItemsImports = 13
-		Sample4_ContentManagement\Sample4_ContentManagement.projitems*{bda0a4e0-468a-4fa7-a070-ef25fb15cf08}*SharedItemsImports = 13
-		Sample2_HandlingInput\Sample2_HandlingInput.projitems*{d00e3ff5-72a2-4bd9-beda-ba189f7b0829}*SharedItemsImports = 13
-		Sample2_HandlingInput\Sample2_HandlingInput.projitems*{04f40541-38e9-4730-8f21-25b745621184}*SharedItemsImports = 4
-		Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems*{9d1bfe26-e1aa-4270-bfcb-6511768414d3}*SharedItemsImports = 13
-		Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems*{fe4cc454-0475-4f11-8e04-d9674b5a811f}*SharedItemsImports = 4
-		Sample4_ContentManagement\Sample4_ContentManagement.projitems*{bac2b005-82b1-40a9-a2c3-1d2a21ab1185}*SharedItemsImports = 4
-		Sample5_RenderingSprites\Sample5_RenderingSprites.projitems*{32e5ed1f-0378-430f-98ec-173a80c10213}*SharedItemsImports = 4
-		Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.projitems*{013ee98f-8de7-48e9-8f2b-c39f056c0615}*SharedItemsImports = 13
-		Sample9_ManagingStateWithUIScreens\Sample9_ManagingStateWithUIScreens.projitems*{0a93613c-b14a-41d8-bab5-e01aa6d33d89}*SharedItemsImports = 13
-		Sample3_RenderingGeometry\Sample3_RenderingGeometry.projitems*{3e90954a-0bd4-4855-ae3d-698761d95e5e}*SharedItemsImports = 4
-		Sample13_UPFAdvanced\Sample13_UPFAdvanced.projitems*{2dcb1219-e0ee-44f0-a4c2-ac120d0ca386}*SharedItemsImports = 4
-		Sample7_PlayingMusic\Sample7_PlayingMusic.projitems*{a42c4424-5a92-40b2-a2b3-9fcb43237e12}*SharedItemsImports = 13
-		Sample14_LoadingImageDataWithSurfaces\Sample14_LoadingImageDataWithSurfaces.projitems*{d5e143ac-bd19-4136-99c4-056f278e7ad0}*SharedItemsImports = 4
+		SampleSharedLib\Shared\SampleSharedLib.projitems*{b238a15b-e99b-45f5-99fc-da32ce11ef4d}*SharedItemsImports = 4
+		Sample5_RenderingSprites\Shared\Sample5_RenderingSprites.projitems*{0ecfaa60-2d08-4330-8533-a2262447dd1f}*SharedItemsImports = 13
+		Sample7_PlayingMusic\Shared\Sample7_PlayingMusic.projitems*{e02e7f67-af9f-480d-94da-cbc6d1d53019}*SharedItemsImports = 4
+		Sample11_GamePads\Shared\Sample11_GamePads.projitems*{10f3b9d4-df14-457a-8012-4697522a181a}*SharedItemsImports = 13
+		Sample11_GamePads\Shared\Sample11_GamePads.projitems*{5cc7c3f8-d523-4ed2-a2b1-1957699c7907}*SharedItemsImports = 4
+		SampleSharedLib\Shared\SampleSharedLib.projitems*{f07c30f1-b571-4516-9019-d9f5f8efa15b}*SharedItemsImports = 13
+		Sample1_CreatingAnApplication\Shared\Sample1_CreatingAnApplication.projitems*{677767f0-c665-4a84-a1d2-3ffba90d25b7}*SharedItemsImports = 4
+		Sample3_RenderingGeometry\Shared\Sample3_RenderingGeometry.projitems*{a4ec586b-92e6-4980-aa87-958bf9e45e8f}*SharedItemsImports = 13
+		Sample1_CreatingAnApplication\Shared\Sample1_CreatingAnApplication.projitems*{fd1ac1b5-c403-4c80-8169-9dfa1277e81a}*SharedItemsImports = 13
+		Sample15_RenderTargetsAndBuffers\Shared\Sample15_RenderTargetsAndBuffers.projitems*{06b65153-1d88-4805-b2fd-a5b3bcab3587}*SharedItemsImports = 13
+		Sample10_AsynchronousContentLoading\Shared\Sample10_AsynchronousContentLoading.projitems*{9491b997-483c-4f11-8a96-13b122e5419a}*SharedItemsImports = 13
+		Sample16_CustomTextLayoutCommands\Shared\Sample16_CustomTextLayoutCommands.projitems*{d11dde73-67c6-4d43-8270-67acaf9acc10}*SharedItemsImports = 13
+		Sample12_UPF\Shared\Sample12_UPF.projitems*{ae5864b1-81fa-49c6-b0b6-f70f68175054}*SharedItemsImports = 4
+		Sample12_UPF\Shared\Sample12_UPF.projitems*{6be6da33-0089-41c0-a4e1-b51f145a22ef}*SharedItemsImports = 13
+		Sample8_PlayingSoundEffects\Shared\Sample8_PlayingSoundEffects.projitems*{b0d5ece3-c07d-40db-90e6-92d16c3800fc}*SharedItemsImports = 4
+		Sample6_RenderingText\Shared\Sample6_RenderingText.projitems*{df1de1b8-4ff9-4001-9541-73b4f7858bc3}*SharedItemsImports = 4
+		Sample6_RenderingText\Shared\Sample6_RenderingText.projitems*{92c3587d-b6d3-493c-98c0-c0983e622a80}*SharedItemsImports = 13
+		Sample16_CustomTextLayoutCommands\Shared\Sample16_CustomTextLayoutCommands.projitems*{16b24506-8fdd-4e65-9c82-6b5076a3517f}*SharedItemsImports = 4
+		Sample15_RenderTargetsAndBuffers\Shared\Sample15_RenderTargetsAndBuffers.projitems*{7377b092-0887-4180-a7dc-83eb29c48825}*SharedItemsImports = 4
+		Sample10_AsynchronousContentLoading\Shared\Sample10_AsynchronousContentLoading.projitems*{156c7e00-6ff0-4a2b-aa84-844f4e7acdf2}*SharedItemsImports = 4
+		Sample8_PlayingSoundEffects\Shared\Sample8_PlayingSoundEffects.projitems*{658a523e-fda7-4e1f-a3f2-932b401a50d9}*SharedItemsImports = 13
+		Sample4_ContentManagement\Shared\Sample4_ContentManagement.projitems*{bda0a4e0-468a-4fa7-a070-ef25fb15cf08}*SharedItemsImports = 13
+		Sample2_HandlingInput\Shared\Sample2_HandlingInput.projitems*{d00e3ff5-72a2-4bd9-beda-ba189f7b0829}*SharedItemsImports = 13
+		Sample2_HandlingInput\Shared\Sample2_HandlingInput.projitems*{04f40541-38e9-4730-8f21-25b745621184}*SharedItemsImports = 4
+		Sample13_UPFAdvanced\Shared\Sample13_UPFAdvanced.projitems*{9d1bfe26-e1aa-4270-bfcb-6511768414d3}*SharedItemsImports = 13
+		Sample9_ManagingStateWithUIScreens\Shared\Sample9_ManagingStateWithUIScreens.projitems*{fe4cc454-0475-4f11-8e04-d9674b5a811f}*SharedItemsImports = 4
+		Sample4_ContentManagement\Shared\Sample4_ContentManagement.projitems*{bac2b005-82b1-40a9-a2c3-1d2a21ab1185}*SharedItemsImports = 4
+		Sample5_RenderingSprites\Shared\Sample5_RenderingSprites.projitems*{32e5ed1f-0378-430f-98ec-173a80c10213}*SharedItemsImports = 4
+		Sample14_LoadingImageDataWithSurfaces\Shared\Sample14_LoadingImageDataWithSurfaces.projitems*{013ee98f-8de7-48e9-8f2b-c39f056c0615}*SharedItemsImports = 13
+		Sample9_ManagingStateWithUIScreens\Shared\Sample9_ManagingStateWithUIScreens.projitems*{0a93613c-b14a-41d8-bab5-e01aa6d33d89}*SharedItemsImports = 13
+		Sample3_RenderingGeometry\Shared\Sample3_RenderingGeometry.projitems*{3e90954a-0bd4-4855-ae3d-698761d95e5e}*SharedItemsImports = 4
+		Sample13_UPFAdvanced\Shared\Sample13_UPFAdvanced.projitems*{2dcb1219-e0ee-44f0-a4c2-ac120d0ca386}*SharedItemsImports = 4
+		Sample7_PlayingMusic\Shared\Sample7_PlayingMusic.projitems*{a42c4424-5a92-40b2-a2b3-9fcb43237e12}*SharedItemsImports = 13
+		Sample14_LoadingImageDataWithSurfaces\Shared\Sample14_LoadingImageDataWithSurfaces.projitems*{d5e143ac-bd19-4136-99c4-056f278e7ad0}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
