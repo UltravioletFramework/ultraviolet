@@ -1,6 +1,4 @@
-===============================================================================
-                         SPRITE SHEET PACKER LICENSE
-===============================================================================
+# SPRITE SHEET PACKER LICENSE
 
 Copyright (c) 2009 Nick Gravelyn (nick@gravelyn.com), 
 Markus Ewald (cygon@nuclex.org)
@@ -22,9 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-===============================================================================
-                                 SDL2 LICENSE
-===============================================================================
+# SDL2 LICENSE
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
@@ -42,9 +38,7 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 
-===============================================================================
-                              JSON.NET LICENSE
-===============================================================================
+# JSON.NET LICENSE
 
 Copyright (c) 2007 James Newton-King
 
@@ -65,9 +59,7 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-===============================================================================
-                                BASS LICENSE
-===============================================================================
+# BASS LICENSE
 
 Copyright (c) 1999-2013 Un4seen Developments Ltd. All rights reserved.
 
@@ -153,9 +145,7 @@ NOTE: When using the OS's MP3 decoder, BASS still does the file handling
 NOTE: Linux does not include an MP3 decoder as standard. The "MP3-FREE"
       BASS version will make use of the libmpg123 decoder, if installed.
 
-===============================================================================
-                               BASS_FX LICENSE
-===============================================================================
+# BASS_FX LICENSE
 
 Copyright (c) 2002-2013 JOBnik! [Arthur Aminov, ISRAEL]
 All rights reserved!
@@ -179,9 +169,7 @@ charged and all the files remain INTACT AND UNMODIFIED.
 All trademarks and other registered names contained in the BASS_FX
 package are the property of their respective owners.
 
-===============================================================================
-                               dotTrace LICENSE
-===============================================================================
+# dotTrace LICENSE
 
 The assemblies "JetBrains.dotTrace.ProfilingApi.dll" and 
 "JetBrains.Profiler.Core.Api.dll" are included in this project
