@@ -162,6 +162,6 @@
       <Name>SampleSharedLib.macOS</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Shared\Sample6_RenderingText.projitems')" />
+  <Import Project="..\Shared\Sample6_RenderingText.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

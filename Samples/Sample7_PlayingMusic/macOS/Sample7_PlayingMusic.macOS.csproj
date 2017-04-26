@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;OSX</DefineConstants>
+    <DefineConstants>DEBUG;MACOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -37,7 +37,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>OSX</DefineConstants>
+    <DefineConstants>MACOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -56,7 +56,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants>OSX</DefineConstants>
+    <DefineConstants>MACOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -142,11 +142,11 @@
     <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SampleSharedLib\OSX\SampleSharedLib.macOS.csproj">
+    <ProjectReference Include="..\..\SampleSharedLib\macOS\SampleSharedLib.macOS.csproj">
       <Project>{44E65162-EF15-4076-91C2-319AAC6A22AC}</Project>
       <Name>SampleSharedLib.macOS</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Shared\Sample7_PlayingMusic.projitems')" />
+  <Import Project="..\Shared\Sample7_PlayingMusic.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

@@ -135,6 +135,6 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
   </ItemGroup>
-  <Import Project="..\Shared\Sample3_RenderingGeometry.projitems')" />
+  <Import Project="..\Shared\Sample3_RenderingGeometry.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

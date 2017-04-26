@@ -159,6 +159,6 @@
       <Name>SampleSharedLib.macOS</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Shared\Sample9_ManagingStateWithUIScreens.projitems')" />
+  <Import Project="..\Shared\Sample9_ManagingStateWithUIScreens.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

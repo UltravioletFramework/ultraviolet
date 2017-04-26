@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="BuildWindows;BuildLinux;BuildMacOS">
-  <PropertyGroup Condition="'$(Configuration)' == ''">
-    <Configuration>Debug</Configuration>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)' == ''">
-    <Platform>Any CPU</Platform>
-  </PropertyGroup>
   <PropertyGroup>
     <IsMac>false</IsMac>
     <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == ''">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == ''">
+    <Platform Condition="!$(IsMac)">Any CPU</Platform>
+    <Platform Condition="$(IsMac)">iPhoneSimulator</Platform>
+  </PropertyGroup>
 
   <ItemGroup>
-    <Ultraviolet_Windows Include="Source/Ultraviolet.Windows.sln">
+    <Ultraviolet_Windows_Solution Include="Source/Ultraviolet.Windows.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Windows>
-    <Ultraviolet_Linux Include="Source/Ultraviolet.Linux.sln">
+    </Ultraviolet_Windows_Solution>
+    <Ultraviolet_Linux_Solution Include="Source/Ultraviolet.Linux.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Linux>
-    <Ultraviolet_MacOS Include="Source/Ultraviolet.macOS.sln">
+    </Ultraviolet_Linux_Solution>
+    <Ultraviolet_MacOS_Solution Include="Source/Ultraviolet.macOS.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_MacOS>
-    <Ultraviolet_MacOS_Bamboo Include="Source/Ultraviolet.MacOS.Bamboo.sln">
+    </Ultraviolet_MacOS_Solution>
+    <Ultraviolet_MacOS_Bamboo_Solution Include="Source/Ultraviolet.MacOS.Bamboo.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_MacOS_Bamboo>
-    <Ultraviolet_Android Include="Source/Ultraviolet.Android.sln">
+    </Ultraviolet_MacOS_Bamboo_Solution>
+    <Ultraviolet_Android_Solution Include="Source/Ultraviolet.Android.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Android>
-    <Ultraviolet_iOS_Bamboo Include="Source/Ultraviolet.iOS.Bamboo.sln"/>
-    <Ultraviolet_iOS Include="Source/Ultraviolet.iOS.sln"/>
+    </Ultraviolet_Android_Solution>
+    <Ultraviolet_iOS_Bamboo_Solution Include="Source/Ultraviolet.iOS.Bamboo.sln"/>
+    <Ultraviolet_iOS_Solution Include="Source/Ultraviolet.iOS.sln"/>
   </ItemGroup>
   
   <!-- VERSIONING -->
@@ -40,73 +41,73 @@
   <Target Name="RepackArchives">
     <!-- TODO: Get this target working on non-Windows platforms -->
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebugSandbox_Android/Content.uvarc UvDebugSandbox_Desktop/Content"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebugSandbox/Android/Content.uvarc UvDebugSandbox_Desktop/Content"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement_Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement/Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample5_RenderingSprites_Android/Content.uvarc&quot; &quot;Samples/Sample5_RenderingSprites/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample5_RenderingSprites/Android/Content.uvarc&quot; &quot;Samples/Sample5_RenderingSprites/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample6_RenderingText_Android/Content.uvarc&quot; &quot;Samples/Sample6_RenderingText/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample6_RenderingText/Android/Content.uvarc&quot; &quot;Samples/Sample6_RenderingText/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample7_PlayingMusic_Android/Content.uvarc&quot; &quot;Samples/Sample7_PlayingMusic/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample7_PlayingMusic/Android/Content.uvarc&quot; &quot;Samples/Sample7_PlayingMusic/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample8_PlayingSoundEffects_Android/Content.uvarc&quot; &quot;Samples/Sample8_PlayingSoundEffects/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample8_PlayingSoundEffects/Android/Content.uvarc&quot; &quot;Samples/Sample8_PlayingSoundEffects/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample9_ManagingStateWithUIScreens_Android/Content.uvarc&quot; &quot;Samples/Sample9_ManagingStateWithUIScreens/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample9_ManagingStateWithUIScreens/Android/Content.uvarc&quot; &quot;Samples/Sample9_ManagingStateWithUIScreens/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample10_AsynchronousContentLoading_Android/Content.uvarc&quot; &quot;Samples/Sample10_AsynchronousContentLoading/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample10_AsynchronousContentLoading/Android/Content.uvarc&quot; &quot;Samples/Sample10_AsynchronousContentLoading/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample11_GamePads_Android/Content.uvarc&quot; &quot;Samples/Sample11_GamePads/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample11_GamePads/Android/Content.uvarc&quot; &quot;Samples/Sample11_GamePads/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample12_UPF_Android/Content.uvarc&quot; &quot;Samples/Sample12_UPF/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample12_UPF/Android/Content.uvarc&quot; &quot;Samples/Sample12_UPF/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample13_UPFAdvanced_Android/Content.uvarc&quot; &quot;Samples/Sample13_UPFAdvanced/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample13_UPFAdvanced/Android/Content.uvarc&quot; &quot;Samples/Sample13_UPFAdvanced/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample14_LoadingImageDataWithSurfaces_Android/Content.uvarc&quot; &quot;Samples/Sample14_LoadingImageDataWithSurfaces/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample14_LoadingImageDataWithSurfaces/Android/Content.uvarc&quot; &quot;Samples/Sample14_LoadingImageDataWithSurfaces/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample15_RenderTargetsAndBuffers_Android/Content.uvarc&quot; &quot;Samples/Sample15_RenderTargetsAndBuffers/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample15_RenderTargetsAndBuffers/Android/Content.uvarc&quot; &quot;Samples/Sample15_RenderTargetsAndBuffers/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample16_CustomTextLayoutCommands_Android/Content.uvarc&quot; &quot;Samples/Sample16_CustomTextLayoutCommands/Desktop/Content&quot;"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample16_CustomTextLayoutCommands/Android/Content.uvarc&quot; &quot;Samples/Sample16_CustomTextLayoutCommands/Desktop/Content&quot;"/>
   </Target>
   <Target Name="RestoreWindows">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Windows)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
   </Target>
   <Target Name="RestoreLinux">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Linux)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Linux_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Linux)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Linux_Solution)&quot;"/>
   </Target>
   <Target Name="RestoreMacOS">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_MacOS)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_MacOS)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
   </Target>
   
   <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
     <CallTarget Targets="RestoreWindows"/>
-    <MSBuild Projects="@(Ultraviolet_Windows)"/>
+    <MSBuild Projects="@(Ultraviolet_Windows_Solution)"/>
     <CallTarget Targets="CopyWindowsBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
   <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
     <CallTarget Targets="RestoreLinux"/>
-    <MSBuild Projects="@(Ultraviolet_Linux)"/>
+    <MSBuild Projects="@(Ultraviolet_Linux_Solution)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
   <Target Name="BuildMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <CallTarget Targets="RestoreMacOS"/>
-    <MSBuild Projects="@(Ultraviolet_MacOS)"/>
+    <MSBuild Projects="@(Ultraviolet_MacOS_Solution)"/>
     <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
   <Target Name="BuildMacOSBamboo" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <CallTarget Targets="RestoreMacOS"/>
-    <MSBuild Projects="@(Ultraviolet_MacOS_Bamboo)"/>
+    <MSBuild Projects="@(Ultraviolet_MacOS_Bamboo_Solution)"/>
     <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
@@ -193,7 +194,7 @@
     <Copy SourceFiles="@(Ultraviolet_WindowsForms)" DestinationFiles="@(Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
   </Target>
   <Target Name="CopyMacOSBinaries">
-    <CreateItem	Include="Ultraviolet.Shims.macOS/bin/$(Configuration)/Ultraviolet.Shims.macOS.*">
+    <CreateItem	Include="Source/Ultraviolet.Shims.macOS/bin/$(Configuration)/Ultraviolet.Shims.macOS.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_macOS"/>
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Shims_macOS)" DestinationFiles="@(Ultraviolet_Shims_macOS->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -209,14 +210,14 @@
   <!-- ANDROID -->
   <Target Name="RestoreAndroid">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Android)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
   </Target>
   
   <Target Name="BuildAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
     <CallTarget Targets="RestoreAndroid"/>
-    <MSBuild Projects="@(Ultraviolet_Android)"/>
+    <MSBuild Projects="@(Ultraviolet_Android_Solution)"/>
     <CallTarget Targets="CopyAndroidBinaries"/>
   </Target>
       
@@ -278,19 +279,19 @@
   <!-- IOS -->	
   <Target Name="RestoreiOS">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
   </Target>
   
   <Target Name="BuildiOS" Condition="$(IsMac)">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS)" Properties="Configuration=$(Configuration);Platform=$(Platform)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Properties="Configuration=$(Configuration);Platform=$(Platform)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
   <Target Name="BuildiOSBamboo" Condition="$(IsMac) Or '$(ServerAddress)'!=''">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo)" Properties="Configuration=$(Configuration);Platform=$(Platform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo_Solution)" Properties="Configuration=$(Configuration);Platform=$(Platform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
         

@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unix", "unix", "{9B08B9AD-5
 		Dependencies\x64\unix\libSDL2.so = Dependencies\x64\unix\libSDL2.so
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "osx", "osx", "{0DE26177-C231-4546-A551-52196B3B9FAA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "macOS", "macOS", "{0DE26177-C231-4546-A551-52196B3B9FAA}"
 	ProjectSection(SolutionItems) = preProject
-		Dependencies\x64\osx\libbass.dylib = Dependencies\x64\osx\libbass.dylib
-		Dependencies\x64\osx\libbass_fx.dylib = Dependencies\x64\osx\libbass_fx.dylib
-		Dependencies\x64\osx\libSDL2.dylib = Dependencies\x64\osx\libSDL2.dylib
+		Dependencies\x64\macOS\libbass.dylib = Dependencies\x64\macOS\libbass.dylib
+		Dependencies\x64\macOS\libbass_fx.dylib = Dependencies\x64\macOS\libbass_fx.dylib
+		Dependencies\x64\macOS\libSDL2.dylib = Dependencies\x64\macOS\libSDL2.dylib
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{9EA40D30-2860-4671-9E5D-D427FD296B5B}"
@@ -78,39 +78,39 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample15_RenderTargetsAndBu
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample16_CustomTextLayoutCommands", "Sample16_CustomTextLayoutCommands\Shared\Sample16_CustomTextLayoutCommands.shproj", "{D11DDE73-67C6-4D43-8270-67ACAF9ACC10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1_CreatingAnApplication\OSX", "Sample1_CreatingAnApplication\OSX\Sample1_CreatingAnApplication.OSX.csproj", "{EB911FCB-F6D7-4006-8757-C0E17AAE1960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1_CreatingAnApplication.macOS", "Sample1_CreatingAnApplication\macOS\Sample1_CreatingAnApplication.macOS.csproj", "{EB911FCB-F6D7-4006-8757-C0E17AAE1960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample10_AsynchronousContentLoading\OSX", "Sample10_AsynchronousContentLoading\OSX\Sample10_AsynchronousContentLoading.OSX.csproj", "{17567953-360D-4066-B959-8BC530E1798B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample10_AsynchronousContentLoading.macOS", "Sample10_AsynchronousContentLoading\macOS\Sample10_AsynchronousContentLoading.macOS.csproj", "{17567953-360D-4066-B959-8BC530E1798B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib\OSX", "SampleSharedLib\OSX\SampleSharedLib.OSX.csproj", "{44E65162-EF15-4076-91C2-319AAC6A22AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedLib.macOS", "SampleSharedLib\macOS\SampleSharedLib.macOS.csproj", "{44E65162-EF15-4076-91C2-319AAC6A22AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample11_GamePads\OSX", "Sample11_GamePads\OSX\Sample11_GamePads.OSX.csproj", "{AAEC0AD1-CB53-478A-BCBD-DF155237E5B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample11_GamePads.macOS", "Sample11_GamePads\macOS\Sample11_GamePads.macOS.csproj", "{AAEC0AD1-CB53-478A-BCBD-DF155237E5B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2_HandlingInput\OSX", "Sample2_HandlingInput\OSX\Sample2_HandlingInput.OSX.csproj", "{1D8AF710-5A2F-4989-8D93-6DA5B320CCB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2_HandlingInput.macOS", "Sample2_HandlingInput\macOS\Sample2_HandlingInput.macOS.csproj", "{1D8AF710-5A2F-4989-8D93-6DA5B320CCB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3_RenderingGeometry\OSX", "Sample3_RenderingGeometry\OSX\Sample3_RenderingGeometry.OSX.csproj", "{454FA7A9-D08B-4B64-9807-FB9CE76D21B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3_RenderingGeometry.macOS", "Sample3_RenderingGeometry\macOS\Sample3_RenderingGeometry.macOS.csproj", "{454FA7A9-D08B-4B64-9807-FB9CE76D21B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4_ContentManagement\OSX", "Sample4_ContentManagement\OSX\Sample4_ContentManagement.OSX.csproj", "{32B69A65-2DE2-42F3-A839-7106EF0589D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4_ContentManagement.macOS", "Sample4_ContentManagement\macOS\Sample4_ContentManagement.macOS.csproj", "{32B69A65-2DE2-42F3-A839-7106EF0589D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF\OSX", "Sample12_UPF\OSX\Sample12_UPF.OSX.csproj", "{C81160A0-4407-4530-8EC9-09E86D131476}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample12_UPF.macOS", "Sample12_UPF\macOS\Sample12_UPF.macOS.csproj", "{C81160A0-4407-4530-8EC9-09E86D131476}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced\OSX", "Sample13_UPFAdvanced\OSX\Sample13_UPFAdvanced.OSX.csproj", "{198813BE-F6D9-4E60-9191-7FB6FC4DEC48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample13_UPFAdvanced.macOS", "Sample13_UPFAdvanced\macOS\Sample13_UPFAdvanced.macOS.csproj", "{198813BE-F6D9-4E60-9191-7FB6FC4DEC48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces\OSX", "Sample14_LoadingImageDataWithSurfaces\OSX\Sample14_LoadingImageDataWithSurfaces.OSX.csproj", "{1C70C798-1609-4468-88E3-991A93409C85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample14_LoadingImageDataWithSurfaces.macOS", "Sample14_LoadingImageDataWithSurfaces\macOS\Sample14_LoadingImageDataWithSurfaces.macOS.csproj", "{1C70C798-1609-4468-88E3-991A93409C85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers\OSX", "Sample15_RenderTargetsAndBuffers\OSX\Sample15_RenderTargetsAndBuffers.OSX.csproj", "{5191A32A-3B4A-4036-9BCD-4ABA9F6F8D25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample15_RenderTargetsAndBuffers.macOS", "Sample15_RenderTargetsAndBuffers\macOS\Sample15_RenderTargetsAndBuffers.macOS.csproj", "{5191A32A-3B4A-4036-9BCD-4ABA9F6F8D25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands\OSX", "Sample16_CustomTextLayoutCommands\OSX\Sample16_CustomTextLayoutCommands.OSX.csproj", "{962F6D6B-445C-4C4C-9B6F-DBCB9F15A1CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample16_CustomTextLayoutCommands.macOS", "Sample16_CustomTextLayoutCommands\macOS\Sample16_CustomTextLayoutCommands.macOS.csproj", "{962F6D6B-445C-4C4C-9B6F-DBCB9F15A1CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample5_RenderingSprites\OSX", "Sample5_RenderingSprites\OSX\Sample5_RenderingSprites.OSX.csproj", "{F9A28734-1CE1-43FE-B52E-DF86AC7250B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample5_RenderingSprites.macOS", "Sample5_RenderingSprites\macOS\Sample5_RenderingSprites.macOS.csproj", "{F9A28734-1CE1-43FE-B52E-DF86AC7250B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample6_RenderingText\OSX", "Sample6_RenderingText\OSX\Sample6_RenderingText.OSX.csproj", "{0F11C774-48D1-4FD1-9065-E38E4AF7A82F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample6_RenderingText.macOS", "Sample6_RenderingText\macOS\Sample6_RenderingText.macOS.csproj", "{0F11C774-48D1-4FD1-9065-E38E4AF7A82F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample7_PlayingMusic\OSX", "Sample7_PlayingMusic\OSX\Sample7_PlayingMusic.OSX.csproj", "{170D2E81-0F6E-4C32-BF27-3F311467161E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample7_PlayingMusic.macOS", "Sample7_PlayingMusic\macOS\Sample7_PlayingMusic.macOS.csproj", "{170D2E81-0F6E-4C32-BF27-3F311467161E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample8_PlayingSoundEffects\OSX", "Sample8_PlayingSoundEffects\OSX\Sample8_PlayingSoundEffects.OSX.csproj", "{D2CCDAB8-3A02-4C6E-9DED-47BBF401A6A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample8_PlayingSoundEffects.macOS", "Sample8_PlayingSoundEffects\macOS\Sample8_PlayingSoundEffects.macOS.csproj", "{D2CCDAB8-3A02-4C6E-9DED-47BBF401A6A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample9_ManagingStatewithUIScreens\OSX", "Sample9_ManagingStatewithUIScreens\OSX\Sample9_ManagingStatewithUIScreens.OSX.csproj", "{5365273B-ADC2-4ED6-A439-547032801849}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample9_ManagingStatewithUIScreens.macOS", "Sample9_ManagingStatewithUIScreens\macOS\Sample9_ManagingStatewithUIScreens.macOS.csproj", "{5365273B-ADC2-4ED6-A439-547032801849}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -268,42 +268,6 @@ Global
 		$4.inheritsSet = VisualStudio
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Sample5_RenderingSprites\Shared\Sample5_RenderingSprites.projitems*{0ecfaa60-2d08-4330-8533-a2262447dd1f}*SharedItemsImports = 13
-		Sample11_GamePads\Shared\Sample11_GamePads.projitems*{10f3b9d4-df14-457a-8012-4697522a181a}*SharedItemsImports = 13
-		Sample14_LoadingImageDataWithSurfaces\Shared\Sample14_LoadingImageDataWithSurfaces.projitems*{067ae3a0-bbf6-47b1-8371-3710f199da65}*SharedItemsImports = 4
-		Sample4_ContentManagement\Shared\Sample4_ContentManagement.projitems*{2c6b942e-3d19-4211-af85-82402fd31a73}*SharedItemsImports = 4
-		SampleSharedLib\Shared\SampleSharedLib.projitems*{f07c30f1-b571-4516-9019-d9f5f8efa15b}*SharedItemsImports = 13
-		Sample16_CustomTextLayoutCommands\Shared\Sample16_CustomTextLayoutCommands.projitems*{1c57ebc6-7048-4add-a17d-f2bce8953210}*SharedItemsImports = 4
-		Sample3_RenderingGeometry\Shared\Sample3_RenderingGeometry.projitems*{a4ec586b-92e6-4980-aa87-958bf9e45e8f}*SharedItemsImports = 13
-		Sample1_CreatingAnApplication\Shared\Sample1_CreatingAnApplication.projitems*{fd1ac1b5-c403-4c80-8169-9dfa1277e81a}*SharedItemsImports = 13
-		Sample6_RenderingText\Shared\Sample6_RenderingText.projitems*{b689c7be-e5e6-49af-a594-f7771a74c7d4}*SharedItemsImports = 4
-		Sample2_HandlingInput\Shared\Sample2_HandlingInput.projitems*{b13372ad-66ea-4829-a5de-6032bb60af7c}*SharedItemsImports = 4
-		Sample15_RenderTargetsAndBuffers\Shared\Sample15_RenderTargetsAndBuffers.projitems*{06b65153-1d88-4805-b2fd-a5b3bcab3587}*SharedItemsImports = 13
-		Sample10_AsynchronousContentLoading\Shared\Sample10_AsynchronousContentLoading.projitems*{9491b997-483c-4f11-8a96-13b122e5419a}*SharedItemsImports = 13
-		Sample16_CustomTextLayoutCommands\Shared\Sample16_CustomTextLayoutCommands.projitems*{d11dde73-67c6-4d43-8270-67acaf9acc10}*SharedItemsImports = 13
-		Sample12_UPF\Shared\Sample12_UPF.projitems*{6be6da33-0089-41c0-a4e1-b51f145a22ef}*SharedItemsImports = 13
-		Sample6_RenderingText\Shared\Sample6_RenderingText.projitems*{92c3587d-b6d3-493c-98c0-c0983e622a80}*SharedItemsImports = 13
-		Sample13_UPFAdvanced\Shared\Sample13_UPFAdvanced.projitems*{e7a444cb-f7ab-46d9-8406-e21e5db850f9}*SharedItemsImports = 4
-		Sample10_AsynchronousContentLoading\Shared\Sample10_AsynchronousContentLoading.projitems*{573824f0-2acc-46f4-95ee-79b78b0e36d6}*SharedItemsImports = 4
-		Sample8_PlayingSoundEffects\Shared\Sample8_PlayingSoundEffects.projitems*{658a523e-fda7-4e1f-a3f2-932b401a50d9}*SharedItemsImports = 13
-		Sample4_ContentManagement\Shared\Sample4_ContentManagement.projitems*{bda0a4e0-468a-4fa7-a070-ef25fb15cf08}*SharedItemsImports = 13
-		Sample2_HandlingInput\Shared\Sample2_HandlingInput.projitems*{d00e3ff5-72a2-4bd9-beda-ba189f7b0829}*SharedItemsImports = 13
-		Sample13_UPFAdvanced\Shared\Sample13_UPFAdvanced.projitems*{9d1bfe26-e1aa-4270-bfcb-6511768414d3}*SharedItemsImports = 13
-		Sample7_PlayingMusic\Shared\Sample7_PlayingMusic.projitems*{990b2616-f387-4d0b-90a3-765ce28f3595}*SharedItemsImports = 4
-		Sample3_RenderingGeometry\Shared\Sample3_RenderingGeometry.projitems*{7ccfa0d4-f43d-4c66-8de1-b23fa1afe41e}*SharedItemsImports = 4
-		Sample9_ManagingStateWithUIScreens\Shared\Sample9_ManagingStateWithUIScreens.projitems*{dbd61736-8eb2-4d5c-bbb2-110fc9a10c7d}*SharedItemsImports = 4
-		Sample12_UPF\Shared\Sample12_UPF.projitems*{3dfdef78-d6c3-4be4-9f99-a62294c72a1f}*SharedItemsImports = 4
-		SampleSharedLib\Shared\SampleSharedLib.projitems*{9f505c43-6e37-425f-b348-be4de7ab2f0b}*SharedItemsImports = 4
-		Sample14_LoadingImageDataWithSurfaces\Shared\Sample14_LoadingImageDataWithSurfaces.projitems*{013ee98f-8de7-48e9-8f2b-c39f056c0615}*SharedItemsImports = 13
-		Sample15_RenderTargetsAndBuffers\Shared\Sample15_RenderTargetsAndBuffers.projitems*{03638242-3adb-4881-88c7-63519f4a377b}*SharedItemsImports = 4
-		Sample9_ManagingStateWithUIScreens\Shared\Sample9_ManagingStateWithUIScreens.projitems*{0a93613c-b14a-41d8-bab5-e01aa6d33d89}*SharedItemsImports = 13
-		Sample7_PlayingMusic\Shared\Sample7_PlayingMusic.projitems*{a42c4424-5a92-40b2-a2b3-9fcb43237e12}*SharedItemsImports = 13
-		Sample1_CreatingAnApplication\Shared\Sample1_CreatingAnApplication.projitems*{254c229d-ba03-4ced-a139-f4213f8af6d9}*SharedItemsImports = 4
-		Sample8_PlayingSoundEffects\Shared\Sample8_PlayingSoundEffects.projitems*{beed8045-00d0-45e7-bca4-d13f1d93fda8}*SharedItemsImports = 4
-		Sample11_GamePads\Shared\Sample11_GamePads.projitems*{844f907a-e757-4d55-8b66-13a2ca51467d}*SharedItemsImports = 4
-		Sample5_RenderingSprites\Shared\Sample5_RenderingSprites.projitems*{ab3abbd1-b987-4346-91fc-69d0694008a9}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

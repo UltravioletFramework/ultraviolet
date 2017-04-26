@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for OS X.</description>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for macOS.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />

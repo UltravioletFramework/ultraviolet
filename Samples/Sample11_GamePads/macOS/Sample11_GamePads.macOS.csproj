@@ -150,6 +150,6 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
   </ItemGroup>
-  <Import Project="..\Shared\Sample11_GamePads.projitems')" />
+  <Import Project="..\Shared\Sample11_GamePads.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

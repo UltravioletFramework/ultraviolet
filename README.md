@@ -9,7 +9,7 @@ What is Ultraviolet?
 
 Ultraviolet is a cross-platform, .NET game development framework written in C# and released under the [MIT License](http://opensource.org/licenses/MIT). It is heavily inspired by Microsoft's XNA Framework, and is intended to be easy for XNA developers to quickly pick up and start using. However, unlike [MonoGame](http://www.monogame.net/) and similar projects, Ultraviolet is not intended to be a drop-in replacement for XNA. Its current implementation is written on top of [SDL2](https://www.libsdl.org/) and [OpenGL](https://www.opengl.org/), but its modular design makes it (relatively) easy to re-implement using other technologies if it becomes necessary to do so in the future.
 
-At present, Ultraviolet officially supports Windows, Linux, Mac OS X, and Android. Support for additional platforms will be forthcoming in future releases. 
+At present, Ultraviolet officially supports Windows, Linux, macOS, iOS, and Android.
 
 Some core features of the Ultraviolet Framework:
 
@@ -49,7 +49,9 @@ Building the mobile projects requires the appropriate Xamarin tools to be instal
 The following platforms are supported for building the Framework:
 * Windows
 * Linux (Ubuntu)
-* OS X
+* Android
+* macOS
+* iOS
 
 Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work provided that they can run Mono, but only Ubuntu has been thoroughly tested.
 
@@ -70,7 +72,7 @@ With Mono installed, navigate to the root of the Ultraviolet source tree and run
 
     xbuild Ultraviolet.proj
     
-This will build the Desktop version of the Framework assemblies, plus the OS X compatibility shim if you are building on a Mac, and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+This will build the Desktop version of the Framework assemblies, plus the macOS compatibility shim if you are building on a Mac, and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
 
 __Mobile Platforms__
 

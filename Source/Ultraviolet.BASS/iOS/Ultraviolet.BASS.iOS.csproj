@@ -21,6 +21,7 @@
     <DocumentationFile>bin\Debug\Ultraviolet.BASS.xml</DocumentationFile>
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +34,7 @@
     <DocumentationFile>bin\Release\Ultraviolet.BASS.xml</DocumentationFile>
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -100,7 +102,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
-      <Name>Ultraviolet.Core (iOS)</Name>
+      <Name>Ultraviolet.Core.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

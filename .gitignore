@@ -171,12 +171,13 @@ gen/
 /packages
 /Samples/packages
 /Samples/Dependencies/*
+!/Samples/Dependencies/*.dll.config
 !/Samples/Dependencies/x86
 !/Samples/Dependencies/x64
 !/Samples/Dependencies/Android/armeabi
 !/Samples/Dependencies/Android/armeabi-v7a
 !/Samples/Dependencies/Android/x86
-!/Samples/Dependencies/iOS
+!/Samples/Dependencies/iOS/*.a
 /Samples/Version.cs
 */packages/
 /Binaries

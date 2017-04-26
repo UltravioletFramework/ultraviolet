@@ -21,11 +21,9 @@
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
-    <MtouchFastDev>true</MtouchFastDev>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchFastDev>false</MtouchFastDev>
     <MtouchFloat32>true</MtouchFloat32>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignEntitlements></CodesignEntitlements>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>i386</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
@@ -41,8 +39,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -59,10 +55,8 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignEntitlements></CodesignEntitlements>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>i386</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
@@ -81,8 +75,6 @@
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>true</MtouchFastDev>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -92,7 +84,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
@@ -121,7 +112,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
-      <Name>Ultraviolet.Core (iOS)</Name>
+      <Name>Ultraviolet.Core.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
@@ -131,9 +122,9 @@
       <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
       <Name>Ultraviolet.BASS.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL_iOS\Ultraviolet.OpenGL %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\iOS\Ultraviolet.OpenGL.iOS.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
-      <Name>Ultraviolet.OpenGL (iOS)</Name>
+      <Name>Ultraviolet.OpenGL.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Profiler.dotTrace\iOS\Ultraviolet.Profiler.dotTrace.iOS.csproj">
       <Project>{7AFDAD33-AC46-46A0-80E7-A041A3BA44E8}</Project>
@@ -143,9 +134,9 @@
       <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
       <Name>Ultraviolet.SDL2.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.SDL2.UIKit_iOS\Ultraviolet.SDL2.UIKit %28iOS%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.SDL2.UIKit\Ultraviolet.SDL2.UIKit.csproj">
       <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
-      <Name>Ultraviolet.SDL2.UIKit (iOS)</Name>
+      <Name>Ultraviolet.SDL2.UIKit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

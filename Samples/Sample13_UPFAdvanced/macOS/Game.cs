@@ -1,4 +1,5 @@
-﻿using AppKit;
+﻿using System.Reflection;
+using AppKit;
 
 namespace UltravioletSample.Sample13_UPFAdvanced
 {
@@ -6,6 +7,15 @@ namespace UltravioletSample.Sample13_UPFAdvanced
     {
         partial void PlatformSpecificInitialization()
         {
+            // HACK: Addresses a race condition in the current version of Xamarin
+            try
+            {
+                Assembly.Load("System.Configuration")
+                        ?.GetType("System.Configuration.ConfigurationManager")
+						?.GetMethod("GetSection", BindingFlags.Static | BindingFlags.Public)
+						?.Invoke(null, new[] { "configuration" });
+            }
+            catch { }
             NSApplication.Init();
         }
     }

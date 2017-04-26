@@ -147,6 +147,6 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
   </ItemGroup>
-  <Import Project="..\Shared\Sample8_PlayingSoundEffects.projitems')" />
+  <Import Project="..\Shared\Sample8_PlayingSoundEffects.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

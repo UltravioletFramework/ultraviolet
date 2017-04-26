@@ -167,6 +167,6 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
   </ItemGroup>
-  <Import Project="..\Shared\Sample10_AsynchronousContentLoading.projitems')" />
+  <Import Project="..\Shared\Sample10_AsynchronousContentLoading.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

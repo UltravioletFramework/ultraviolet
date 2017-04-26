@@ -23,6 +23,7 @@
     <ConsolePause>false</ConsolePause>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +36,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefineConstants>IOS</DefineConstants>
     <DocumentationFile>bin\Release\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -97,7 +99,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
-      <Name>Ultraviolet.Core (iOS)</Name>
+      <Name>Ultraviolet.Core.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.Presentation.Uvss.projitems" Label="Shared" />

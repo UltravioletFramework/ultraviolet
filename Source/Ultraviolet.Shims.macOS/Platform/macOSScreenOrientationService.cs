@@ -3,7 +3,7 @@
 namespace Ultraviolet.Shims.macOS.Platform
 {
     /// <summary>
-    /// Represents an implementation of the <see cref="ScreenRotationService"/> class for the OS X platform.
+    /// Represents an implementation of the <see cref="ScreenRotationService"/> class for the macOS platform.
     /// </summary>
     public sealed class macOSScreenOrientationService : ScreenRotationService
     {

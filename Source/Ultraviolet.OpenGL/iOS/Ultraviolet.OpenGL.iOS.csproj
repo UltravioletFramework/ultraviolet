@@ -175,7 +175,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628df73-2c5c-4cd1-ab2c-197f6233504f}</Project>
-      <Name>Ultraviolet.Core (iOS)</Name>
+      <Name>Ultraviolet.Core.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
       <Project>{8f9f44fb-e63c-48de-8752-19b745111559}</Project>

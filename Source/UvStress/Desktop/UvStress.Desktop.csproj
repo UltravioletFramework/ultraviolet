@@ -93,7 +93,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40d272db-90e1-4332-a32f-6effeb44fe87}</Project>
-      <Name>Ultraviolet.OpenGL %28Desktop%29</Name>
+      <Name>Ultraviolet.OpenGL.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>

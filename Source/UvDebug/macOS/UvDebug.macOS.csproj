@@ -113,9 +113,9 @@
       <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
       <Name>Ultraviolet.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL_Desktop\Ultraviolet.OpenGL %28Desktop%29.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
-      <Name>Ultraviolet.OpenGL (Desktop)</Name>
+      <Name>Ultraviolet.OpenGL.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
       <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
@@ -154,91 +154,91 @@
     </BundleResource>
   </ItemGroup>
   <ItemGroup>    
-    <BundleResource Include="\Desktop\Content\Cursors\CursorsImage.png">
+    <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
       <Link>Content\Cursors\CursorsImage.png</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Effects\TestEffect.json">
+    <BundleResource Include="..\Desktop\Content\Effects\TestEffect.json">
       <Link>Content\Effects\TestEffect.json</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Fonts\SegoeUITexture.png">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
       <Link>Content\Fonts\SegoeUITexture.png</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Textures\Logo.png">
+    <BundleResource Include="..\Desktop\Content\Textures\Logo.png">
       <Link>Content\Textures\Logo.png</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUI-mdpi.png">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUI-mdpi.png">
       <Link>Content\UI\DefaultUI-mdpi.png</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUI.png">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUI.png">
       <Link>Content\UI\DefaultUI.png</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUIBackground.png">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUIBackground.png">
       <Link>Content\UI\DefaultUIBackground.png</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUIFont-mdpi.xml">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUIFont-mdpi.xml">
       <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUIFont.xml">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUIFont.xml">
       <Link>Content\UI\DefaultUIFont.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
       <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\DefaultUIStyles.uvss">
+    <BundleResource Include="..\Desktop\Content\UI\DefaultUIStyles.uvss">
       <Link>Content\UI\DefaultUIStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\GameStyles.uvss">
+    <BundleResource Include="..\Desktop\Content\UI\GameStyles.uvss">
       <Link>Content\UI\GameStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
+    <BundleResource Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
       <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+    <BundleResource Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
       <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+    <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
       <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+    <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
       <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+    <BundleResource Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
       <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
+    <BundleResource Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Cursors\Cursors.xml">
+    <BundleResource Include="..\Desktop\Content\Cursors\Cursors.xml">
       <Link>Content\Cursors\Cursors.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Effects\Test.frag">
+    <BundleResource Include="..\Desktop\Content\Effects\Test.frag">
       <Link>Content\Effects\Test.frag</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Effects\Test.vert">
+    <BundleResource Include="..\Desktop\Content\Effects\Test.vert">
       <Link>Content\Effects\Test.vert</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Fonts\SegoeUI.xml">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Localization\GameStrings.xml">
+    <BundleResource Include="..\Desktop\Content\Localization\GameStrings.xml">
       <Link>Content\Localization\GameStrings.xml</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Manifests\Global.manifest">
+    <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\SoundEffects\Click1.wav">
+    <BundleResource Include="..\Desktop\Content\SoundEffects\Click1.wav">
       <Link>Content\SoundEffects\Click1.wav</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\SoundEffects\rollover1.wav">
+    <BundleResource Include="..\Desktop\Content\SoundEffects\rollover1.wav">
       <Link>Content\SoundEffects\rollover1.wav</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\SoundEffects\rollover2.wav">
+    <BundleResource Include="..\Desktop\Content\SoundEffects\rollover2.wav">
       <Link>Content\SoundEffects\rollover2.wav</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\SoundEffects\rollover3.wav">
+    <BundleResource Include="..\Desktop\Content\SoundEffects\rollover3.wav">
       <Link>Content\SoundEffects\rollover3.wav</Link>
     </BundleResource>
-    <BundleResource Include="\Desktop\Content\Sprites\InterfaceIcons.sprite">
+    <BundleResource Include="..\Desktop\Content\Sprites\InterfaceIcons.sprite">
       <Link>Content\Sprites\InterfaceIcons.sprite</Link>
     </BundleResource>
   </ItemGroup>
@@ -253,7 +253,7 @@
     <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
+    <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
       <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
     </EmbeddedResource>
   </ItemGroup>

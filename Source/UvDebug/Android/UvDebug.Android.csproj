@@ -152,7 +152,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\Android\Ultraviolet.OpenGL.Android.csproj">
       <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
-      <Name>Ultraviolet.OpenGL %28Android%29</Name>
+      <Name>Ultraviolet.OpenGL.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Profiler.dotTrace\Android\Ultraviolet.Profiler.dotTrace.Android.csproj">
       <Project>{003be843-db95-40d7-a4d9-e50f599e59e1}</Project>
