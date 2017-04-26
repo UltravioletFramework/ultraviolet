@@ -117,17 +117,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="x64\" />
-    <Folder Include="x64\macOS\" />
+    <Folder Include="x64\osx\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libbass_fx.dylib">
-      <Link>x64\macOS\libbass_fx.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libbass.dylib">
-      <Link>x64\macOS\libbass.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libSDL2.dylib">
-      <Link>x64\macOS\libSDL2.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>

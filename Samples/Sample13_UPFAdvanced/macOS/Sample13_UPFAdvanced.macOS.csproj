@@ -125,14 +125,14 @@
     <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libSDL2.dylib">
-      <Link>x64\macOS\libSDL2.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libbass.dylib">
-      <Link>x64\macOS\libbass.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libbass_fx.dylib">
-      <Link>x64\macOS\libbass_fx.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\UI\DefaultUI-mdpi.png">
       <Link>Content\UI\DefaultUI-mdpi.png</Link>

@@ -203,14 +203,14 @@
     <BundleResource Include="..\Desktop\Content\Sprites\Textures\Explosion_29.png">
       <Link>Content\Sprites\Textures\Explosion_29.png</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libSDL2.dylib">
-      <Link>x64\macOS\libSDL2.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libbass.dylib">
-      <Link>x64\macOS\libbass.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\macOS\libbass_fx.dylib">
-      <Link>x64\macOS\libbass_fx.dylib</Link>
+    <BundleResource Include="..\..\Dependencies\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>

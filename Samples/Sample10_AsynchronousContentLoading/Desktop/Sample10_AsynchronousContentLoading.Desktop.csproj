@@ -123,16 +123,16 @@
       <Link>Ultraviolet.SDL2.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Dependencies\x64\macOS\libSDL2.dylib">
-      <Link>x64\macOS\libSDL2.dylib</Link>
+    <None Include="..\..\Dependencies\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Dependencies\x64\macOS\libbass.dylib">
-      <Link>x64\macOS\libbass.dylib</Link>
+    <None Include="..\..\Dependencies\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Dependencies\x64\macOS\libbass_fx.dylib">
-      <Link>x64\macOS\libbass_fx.dylib</Link>
+    <None Include="..\..\Dependencies\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -198,7 +198,7 @@
   </Target>
   -->
   <ItemGroup>
-    <Folder Include="x64\macOS\macOS\" />
+    <Folder Include="x64\osx\macOS\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SampleSharedLib\Desktop\SampleSharedLib.Desktop.csproj">
