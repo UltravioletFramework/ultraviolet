@@ -467,9 +467,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)UvmlDefaultPropertyAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WrappedDataSourceAttribute.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

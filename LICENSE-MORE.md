@@ -1,8 +1,9 @@
-﻿===============================================================================
-                         ULTRAVIOLET FRAMEWORK LICENSE
+===============================================================================
+                         SPRITE SHEET PACKER LICENSE
 ===============================================================================
 
-Copyright (c) 2014-2016 Cole Campbell (cole.campbell@ultraviolet.tl) 
+Copyright (c) 2009 Nick Gravelyn (nick@gravelyn.com), 
+Markus Ewald (cygon@nuclex.org)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -19,6 +20,49 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+===============================================================================
+                                 SDL2 LICENSE
+===============================================================================
+
+This software is provided 'as-is', without any express or implied
+warranty.  In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+   claim that you wrote the original software. If you use this software
+   in a product, an acknowledgment in the product documentation would be
+   appreciated but is not required.
+2. Altered source versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+3. This notice may not be removed or altered from any source distribution.
+
+===============================================================================
+                              JSON.NET LICENSE
+===============================================================================
+
+Copyright (c) 2007 James Newton-King
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ===============================================================================
@@ -134,3 +178,42 @@ charged and all the files remain INTACT AND UNMODIFIED.
 
 All trademarks and other registered names contained in the BASS_FX
 package are the property of their respective owners.
+
+===============================================================================
+                               dotTrace LICENSE
+===============================================================================
+
+The assemblies "JetBrains.dotTrace.ProfilingApi.dll" and 
+"JetBrains.Profiler.Core.Api.dll" are included in this project
+under the terms of version 10 of the personal license agreement for dotTrace:
+
+    5. REDISTRIBUTABLE FILES
+
+    (a) In addition to the license granted under Section 4 of this 
+    Agreement, Licensor grants to Licensee a non-exclusive, limited,
+    royalty-free license to reproduce and distribute certain files 
+    stored in dotTrace Performance directories SDK\Lib and/or 
+    SDK\Redist ("Redistributable Files"), provided that:
+    (i) Licensee will distribute Redistributable Files as complete, 
+    unmodified and only as part of software applications created by 
+    Licensee; and
+    (ii) Licensee will not derive the source code of Redistributable 
+    Files provided by Licensor in executable (binary) form only, or 
+    reproduce, modify, use, or distribute the source code of such 
+    files.
+
+    (b) REDISTRIBUTABLE FILES ARE PROVIDED BY LICENSOR "AS IS" AND 
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
+    TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL LICENSOR 
+    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
+    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+    THE POSSIBILITY OF SUCH DAMAGE.
+
+The dotTrace personal license agreement is available in its entirety at: 
+https://www.jetbrains.com/profiler/buy/license_personal.html

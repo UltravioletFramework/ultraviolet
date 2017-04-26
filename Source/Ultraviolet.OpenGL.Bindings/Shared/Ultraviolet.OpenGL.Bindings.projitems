@@ -53,9 +53,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)IOpenGLInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RequireAttribute.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.OpenGL.Bindings.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

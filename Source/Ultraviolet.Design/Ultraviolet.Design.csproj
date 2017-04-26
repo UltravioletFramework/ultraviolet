@@ -123,11 +123,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Ultraviolet.Design.Licenses">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>

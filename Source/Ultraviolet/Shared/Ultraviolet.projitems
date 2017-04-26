@@ -428,9 +428,6 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector3.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector2.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleF.json" />
-    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)uv.ico" />
   </ItemGroup>
   <ItemGroup>

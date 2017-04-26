@@ -31,9 +31,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_FILEPROCS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.BASS.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

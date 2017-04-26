@@ -89,11 +89,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Ultraviolet.Core.Design.Licenses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="MaskedUInt32.xml" />
   </ItemGroup>
   <ItemGroup>

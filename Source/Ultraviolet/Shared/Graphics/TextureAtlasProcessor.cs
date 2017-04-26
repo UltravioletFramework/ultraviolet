@@ -11,7 +11,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents a content processor which loads texture atlases.
     /// </summary>
-    /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see Ultraviolet.Licenses.txt).</remarks>
+    /// <remarks>This class is based on code taken from the Sprite Sheet Packer library (see LICENSES.MORE.md).</remarks>
     internal sealed partial class TextureAtlasProcessor : ContentProcessor<TextureAtlasDescription, TextureAtlas>
     {
         /// <inheritdoc/>
