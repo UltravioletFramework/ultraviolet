@@ -16,9 +16,9 @@
     <Ultraviolet_Windows_Solution Include="Source/Ultraviolet.Windows.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_Windows_Solution>
-    <Ultraviolet_Linux_Solution Include="Source/Ultraviolet.Linux.sln">
+    <Ultraviolet_Desktop_Solution Include="Source/Ultraviolet.Desktop.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
-    </Ultraviolet_Linux_Solution>
+    </Ultraviolet_Desktop_Solution>
     <Ultraviolet_MacOS_Solution Include="Source/Ultraviolet.macOS.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_MacOS_Solution>
@@ -77,9 +77,9 @@
   </Target>
   <Target Name="RestoreLinux">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Linux_Solution)&quot;"/>
+      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Linux_Solution)&quot;"/>
+      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
   </Target>
   <Target Name="RestoreMacOS">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
@@ -96,7 +96,7 @@
   </Target>
   <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
     <CallTarget Targets="RestoreLinux"/>
-    <MSBuild Projects="@(Ultraviolet_Linux_Solution)"/>
+    <MSBuild Projects="@(Ultraviolet_Desktop_Solution)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
   <Target Name="BuildMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
