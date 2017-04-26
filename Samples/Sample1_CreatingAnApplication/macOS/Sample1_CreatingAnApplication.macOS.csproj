@@ -118,6 +118,7 @@
   <ItemGroup>
     <Folder Include="x64\" />
     <Folder Include="x64\osx\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\..\Dependencies\x64\osx\libbass_fx.dylib">
@@ -132,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="..\Shared\Sample1_CreatingAnApplication.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
