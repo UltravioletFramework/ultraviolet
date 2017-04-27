@@ -78,7 +78,6 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 var includePath = includeMatch.Groups["file"].Value;
                 includePath = ContentManager.NormalizeAssetPath(Path.Combine(Path.GetDirectoryName(metadata.AssetPath), includePath));
-                includePath = manager.ResolveAssetFilePath(includePath);
 
                 var includeSrc = manager.Load<ShaderSource>(includePath, cache: false);
                 output.AppendLine(includeSrc);
@@ -166,7 +165,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
 
                 if (dirSatisfied)
-                    output.AppendLine(source);
+                    output.AppendLine(ProcessRawSource(manager, metadata, source));
 
                 return true;
             }
