@@ -408,6 +408,5 @@ Global
 		$2.SpacingAfterMethodDeclarationName = False
 		$2.SpaceAfterMethodCallName = False
 		$2.SpaceBeforeOpenSquareBracket = False
-		StartupItem = UltravioletGame\Shared\UltravioletGame.csproj
 	EndGlobalSection
 EndGlobal

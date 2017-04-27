@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
-    <None Include="..\Shared\README-SDL.txt">
+    <None Include="..\Desktop\README-SDL.txt">
       <Link>README-SDL.txt</Link>
     </None>
   </ItemGroup>
@@ -146,42 +146,42 @@
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
       <Link>x64\osx\libbass.dylib</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Cursors\CursorsImage.png">
+    <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
       <Link>Content\Cursors\CursorsImage.png</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\DefaultUI.png">
+    <BundleResource Include="..\Desktop\Content\Fonts\DefaultUI.png">
       <Link>Content\Fonts\DefaultUI.png</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\SegoeUITexture.png">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
       <Link>Content\Fonts\SegoeUITexture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Cursors\Cursors.xml">
+    <BundleResource Include="..\Desktop\Content\Cursors\Cursors.xml">
       <Link>Content\Cursors\Cursors.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\DefaultUIFont.xml">
+    <BundleResource Include="..\Desktop\Content\Fonts\DefaultUIFont.xml">
       <Link>Content\Fonts\DefaultUIFont.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\SegoeUI.xml">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Localization\GameStrings.xml">
+    <BundleResource Include="..\Desktop\Content\Localization\GameStrings.xml">
       <Link>Content\Localization\GameStrings.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Manifests\Global.manifest">
+    <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\Game.cs">
+    <Compile Include="..\Desktop\Game.cs">
       <Link>Game.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Assets\GlobalFontID.cs">
+    <Compile Include="..\Desktop\Assets\GlobalFontID.cs">
       <Link>Assets\GlobalFontID.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Input\GameInputActions.cs">
+    <Compile Include="..\Desktop\Input\GameInputActions.cs">
       <Link>Input\GameInputActions.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Input\IUltravioletInputExtensions.cs">
+    <Compile Include="..\Desktop\Input\IUltravioletInputExtensions.cs">
       <Link>Input\IUltravioletInputExtensions.cs</Link>
     </Compile>
     <Compile Include="Game.Init.cs" />

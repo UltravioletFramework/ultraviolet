@@ -121,37 +121,37 @@
     <MtouchFloat32>False</MtouchFloat32>
   </PropertyGroup>
   <ItemGroup>
-    <BundleResource Include="..\Shared\Content\Manifests\Global.manifest">
+    <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Resources\Content\Manifests\Global.manifest</Link>
     </BundleResource>
     <None Include="Info.plist" />
-    <Compile Include="..\Shared\Assets\GlobalFontID.cs">
+    <Compile Include="..\Desktop\Assets\GlobalFontID.cs">
       <Link>Assets\GlobalFontID.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Game.cs">
+    <Compile Include="..\Desktop\Game.cs">
       <Link>Game.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Input\GameInputActions.cs">
+    <Compile Include="..\Desktop\Input\GameInputActions.cs">
       <Link>Input\GameInputActions.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Input\IUltravioletInputExtensions.cs">
+    <Compile Include="..\Desktop\Input\IUltravioletInputExtensions.cs">
       <Link>Input\IUltravioletInputExtensions.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <BundleResource Include="..\Shared\Content\Localization\GameStrings.xml">
+    <BundleResource Include="..\Desktop\Content\Localization\GameStrings.xml">
       <Link>Resources\Content\Localization\GameStrings.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\SegoeUI.xml">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Resources\Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Fonts\SegoeUITexture.png">
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
       <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Cursors\Cursors.xml">
+    <BundleResource Include="..\Desktop\Content\Cursors\Cursors.xml">
       <Link>Resources\Content\Cursors\Cursors.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Shared\Content\Cursors\CursorsImage.png">
+    <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
       <Link>Resources\Content\Cursors\CursorsImage.png</Link>
     </BundleResource>
     <Content Include="Entitlements.plist" />

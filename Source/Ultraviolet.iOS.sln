@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL.Bindings", "Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.shproj", "{F2660B00-B04A-4301-9DFB-226DD9D0798B}"
 EndProject
@@ -52,13 +51,37 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStress.iOS", "UvStress\iOS\UvStress.iOS.csproj", "{0BB70208-18D4-4CC1-B056-63FC5C40106C}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		UvDebug\Shared\UvDebug.projitems*{00dfa15e-9cb3-4ebb-91c1-4837335b083c}*SharedItemsImports = 4
+		UvStress\Shared\UvStress.projitems*{0bb70208-18d4-4cc1-b056-63fc5c40106c}*SharedItemsImports = 4
+		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
+		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{356ec667-7f8b-4dbe-a854-c70b7bb9adb3}*SharedItemsImports = 4
+		Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
+		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
+		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{4628df73-2c5c-4cd1-ab2c-197f6233504f}*SharedItemsImports = 4
+		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{480c60a0-20c2-4bbc-8d87-e5383ee66ff8}*SharedItemsImports = 4
+		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
+		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4f741cca-6fbf-439e-a26a-abb189619101}*SharedItemsImports = 4
+		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{6115a978-b4b6-46d3-ad13-f0dc358b8bd3}*SharedItemsImports = 4
+		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
+		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{65ecb0c3-fd4e-494a-a000-43500b9cb851}*SharedItemsImports = 4
+		Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.projitems*{7afdad33-ac46-46a0-80e7-a041a3ba44e8}*SharedItemsImports = 4
+		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
+		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{89fc9118-5303-44c8-8afe-20cb48a3f99e}*SharedItemsImports = 4
+		Ultraviolet\Shared\Ultraviolet.projitems*{8f9f44fb-e63c-48de-8752-19b745111559}*SharedItemsImports = 4
+		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
+		Ultraviolet\Shared\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
+		UvStress\Shared\UvStress.projitems*{97cd0bfb-4bdb-4862-ac0d-153e81a2a9a1}*SharedItemsImports = 13
+		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
+		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|iPhoneSimulator = Debug|iPhoneSimulator
 		Debug|iPhone = Debug|iPhone
-		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
 		Release|iPhone = Release|iPhone
-		Signed|iPhoneSimulator = Signed|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
 		Signed|iPhone = Signed|iPhone
+		Signed|iPhoneSimulator = Signed|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{65ECB0C3-FD4E-494A-A000-43500B9CB851}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -266,6 +289,6 @@ Global
 		$2.SpacingAfterMethodDeclarationName = False
 		$2.SpaceAfterMethodCallName = False
 		$2.SpaceBeforeOpenSquareBracket = False
-		StartupItem = UltravioletGame\Shared\UltravioletGame.csproj
+		StartupItem = UltravioletGame\iOS\UltravioletGame.iOS.csproj
 	EndGlobalSection
 EndGlobal

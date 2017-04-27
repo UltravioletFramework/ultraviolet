@@ -82,16 +82,16 @@
     <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\Assets\GlobalFontID.cs">
+    <Compile Include="..\Desktop\Assets\GlobalFontID.cs">
       <Link>Assets\GlobalFontID.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Game.cs">
+    <Compile Include="..\Desktop\Game.cs">
       <Link>Game.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Input\GameInputActions.cs">
+    <Compile Include="..\Desktop\Input\GameInputActions.cs">
       <Link>Input\GameInputActions.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\Input\IUltravioletInputExtensions.cs">
+    <Compile Include="..\Desktop\Input\IUltravioletInputExtensions.cs">
       <Link>Input\IUltravioletInputExtensions.cs</Link>
     </Compile>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -150,7 +150,7 @@
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Shared\README-SDL.txt">
+    <None Include="..\Desktop\README-SDL.txt">
       <Link>README-SDL.txt</Link>
     </None>
     <None Include="Properties\AndroidManifest.xml" />

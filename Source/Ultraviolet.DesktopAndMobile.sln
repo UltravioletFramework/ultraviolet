@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Desktop"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.Desktop", "Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj", "{50AEFA93-FE53-414A-89FC-C061C165C673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame", "UltravioletGame\Shared\UltravioletGame.csproj", "{F6C64886-59BF-4DFD-AF10-53C1700EE20D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame.Desktop", "UltravioletGame\Desktop\UltravioletGame.Desktop.csproj", "{F6C64886-59BF-4DFD-AF10-53C1700EE20D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletTool", "UltravioletTool\UltravioletTool.csproj", "{CE278CD0-2D1A-460D-9567-6FD01FFB1198}"
 EndProject
@@ -185,7 +185,6 @@ Global
 		UvStress\Shared\UvStress.projitems*{ab20567c-1d12-4b38-ab86-ad7dc9d769f6}*SharedItemsImports = 4
 		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{b5502009-935a-40ba-b415-abbf55427cad}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{c9da531d-4fdc-4c41-8e2c-f3c68dae5aea}*SharedItemsImports = 4
-		Ultraviolet.Presentation.RoslynCompiler\Shared\Ultraviolet.Presentation.RoslynCompiler.projitems*{ca57b4bc-a395-4c1c-a4cf-6286fa7b9c80}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.projitems*{e1cd102c-6d6d-4eb2-abed-1fad59c9730f}*SharedItemsImports = 4
 		UvStress\Shared\UvStress.projitems*{e3e291b3-a2d1-4f64-a1fe-fdd9fa160713}*SharedItemsImports = 4
@@ -194,7 +193,6 @@ Global
 		Ultraviolet\Shared\Ultraviolet.projitems*{f071abe3-05e5-4df9-a929-cf71b01ec50a}*SharedItemsImports = 4
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
-		Ultraviolet.Presentation.RoslynCompiler\Shared\Ultraviolet.Presentation.RoslynCompiler.projitems*{f95ff829-661d-4809-8150-145114b787aa}*SharedItemsImports = 13
 		UvDebug\Shared\UvDebug.projitems*{fec3b657-42e7-4e8e-8760-9fd7eff1d0e5}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1189,7 +1187,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = UltravioletGame\Shared\UltravioletGame.csproj
+		StartupItem = UltravioletGame\Desktop\UltravioletGame.Desktop.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120
