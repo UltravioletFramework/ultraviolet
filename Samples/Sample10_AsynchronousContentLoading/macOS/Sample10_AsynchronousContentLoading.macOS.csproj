@@ -77,9 +77,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Dependencies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Ultraviolet.OpenGL.Bindings">
       <HintPath>..\..\Dependencies\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
@@ -101,6 +98,9 @@
     <Reference Include="Ultraviolet.SDL2">
       <HintPath>..\..\Dependencies\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json" />
@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="x64\" />
