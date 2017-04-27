@@ -113,9 +113,6 @@
   </Target>
       
   <Target Name="CopyDesktopBinaries">
-      <CreateItem Include="Source/packages/Newtonsoft.Json.9.0.1/lib/net40/*.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
-    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Desktop"/>
     </CreateItem>
@@ -161,7 +158,6 @@
     <CreateItem Include="Source/UvArchive/bin/$(Configuration)/uvarchive.exe">
         <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
     </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Desktop)" DestinationFiles="@(Ultraviolet_Core_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Desktop)" DestinationFiles="@(Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -222,9 +218,6 @@
   </Target>
       
   <Target Name="CopyAndroidBinaries">
-    <CreateItem Include="Source/packages/Newtonsoft.Json.9.0.1/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
-    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Android"/>
     </CreateItem>
@@ -255,7 +248,6 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
     </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Android)" DestinationFiles="@(Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -296,9 +288,6 @@
   </Target>
         
   <Target Name="CopyiOSBinaries">
-    <CreateItem Include="Source/packages/Newtonsoft.Json.9.0.1/lib/portable-net40+sl5+wp80+win8+wpa81/*.*">
-        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
-    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_iOS"/>
     </CreateItem>
@@ -332,7 +321,6 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
     </CreateItem>
-    <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_iOS)" DestinationFiles="@(Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
