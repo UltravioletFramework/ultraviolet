@@ -143,35 +143,27 @@
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\NoiseEffect.json">
       <Link>Content\Effects\NoiseEffect.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\Noise.frag">
       <Link>Content\Effects\Noise.frag</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\Noise.vert">
       <Link>Content\Effects\Noise.vert</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\NoiseCommon.fragh">
       <Link>Content\Effects\NoiseCommon.fragh</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\NoiseES.frag">
       <Link>Content\Effects\NoiseES.frag</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\NoiseGL.frag">
       <Link>Content\Effects\NoiseGL.frag</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\NoiseES.vert">
       <Link>Content\Effects\NoiseES.vert</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Effects\NoiseGL.vert">
       <Link>Content\Effects\NoiseGL.vert</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
