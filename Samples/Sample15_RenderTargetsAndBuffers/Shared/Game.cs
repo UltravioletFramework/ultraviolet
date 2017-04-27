@@ -113,7 +113,7 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
 
             var effect = content.Load<Effect>(GlobalEffectID.Noise);
             var effectTime = (Single)time.TotalTime.TotalSeconds * 0.1f;
-            effect.Parameters["time"].SetValue(effectTime);
+            effect.Parameters["Time"].SetValue(effectTime);
 
             var blank = content.Load<Texture2D>(GlobalTextureID.Blank);
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, effect);

@@ -1,5 +1,5 @@
 ﻿{
-  "parameters": [ "time", "MatrixTransform" ],
+  "parameters": [ "Time", "TextureSampler", "TextureSize", "MatrixTransform" ],
   "techniques": [
     {
       "name": "Technique0",
