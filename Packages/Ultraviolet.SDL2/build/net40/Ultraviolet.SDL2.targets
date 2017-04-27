@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Condition="$(UseXamMacFullFramework) == ''">
-    <None Include="$(MSBuildThisFileDirectory)../../lib/net40/TwistedLogik.Ultraviolet.SDL2.dll.config">
-      <Link>TwistedLogik.Ultraviolet.SDL2.dll.config</Link>
+    <None Include="$(MSBuildThisFileDirectory)../../lib/net40/Ultraviolet.SDL2.dll.config">
+      <Link>Ultraviolet.SDL2.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

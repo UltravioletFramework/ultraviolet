@@ -17,7 +17,7 @@
         <dependency id="Ultraviolet.Core" version="UV_VERSION" />
         <dependency id="Ultraviolet.BASS" version="UV_VERSION" />
         <dependency id="Ultraviolet.BASS.Native" version="UV_VERSION" />
-        <dependency id="Ultraviolet.Desktop" version="UV_VERSION" />
+        <dependency id="Ultraviolet.Shims.Desktop" version="UV_VERSION" />
         <dependency id="Ultraviolet" version="UV_VERSION" />
         <dependency id="Ultraviolet.OpenGL" version="UV_VERSION" />
         <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
