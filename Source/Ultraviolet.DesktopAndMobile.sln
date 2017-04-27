@@ -114,10 +114,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Compiler.Desktop", "Ultraviolet.Presentation.Compiler\Desktop\Ultraviolet.Presentation.Compiler.Desktop.csproj", "{8F3C2DA1-8930-493B-854B-A053BDBF9071}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.RoslynCompiler", "Ultraviolet.Presentation.RoslynCompiler\Shared\Ultraviolet.Presentation.RoslynCompiler.shproj", "{F95FF829-661D-4809-8150-145114B787AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.RoslynCompiler.Desktop", "Ultraviolet.Presentation.RoslynCompiler\Desktop\Ultraviolet.Presentation.RoslynCompiler.Desktop.csproj", "{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvStress", "UvStress\Shared\UvStress.shproj", "{97CD0BFB-4BDB-4862-AC0D-153E81A2A9A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStress.Android", "UvStress\Android\UvStress.Android.csproj", "{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}"
@@ -916,24 +912,6 @@ Global
 		{8F3C2DA1-8930-493B-854B-A053BDBF9071}.Signed|iPhone.Build.0 = Signed|Any CPU
 		{8F3C2DA1-8930-493B-854B-A053BDBF9071}.Signed|iPhoneSimulator.ActiveCfg = Signed|Any CPU
 		{8F3C2DA1-8930-493B-854B-A053BDBF9071}.Signed|iPhoneSimulator.Build.0 = Signed|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|iPhone.Build.0 = Release|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|Any CPU.Build.0 = Signed|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|iPhone.ActiveCfg = Signed|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|iPhone.Build.0 = Signed|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|iPhoneSimulator.ActiveCfg = Signed|Any CPU
-		{CA57B4BC-A395-4C1C-A4CF-6286FA7B9C80}.Signed|iPhoneSimulator.Build.0 = Signed|Any CPU
 		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3E291B3-A2D1-4F64-A1FE-FDD9FA160713}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

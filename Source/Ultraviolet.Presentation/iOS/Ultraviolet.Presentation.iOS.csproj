@@ -80,6 +80,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.xml.Linq" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.ObjectModel" />
+    <Reference Include="System.Dynamic.Runtime" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <IsMac>false</IsMac>
     <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,14 +33,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
-    <BundleAssemblies>False</BundleAssemblies>
-    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,7 +46,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -62,7 +58,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkSkip />
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
@@ -199,18 +194,18 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsMac)' == 'false' ">
     <DesktopProjectName>Desktop</DesktopProjectName>
-    <DesktopProjectDir>Desktop</DesktopProjectDir>
+    <DesktopProjectDir>Desktop/bin/$(ConfigurationName)</DesktopProjectDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsMac)' == 'true' ">
     <DesktopProjectName>macOS</DesktopProjectName>
-    <DesktopProjectDir>macOS</DesktopProjectDir>
+    <DesktopProjectDir>macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources</DesktopProjectDir>
   </PropertyGroup>
   <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
     <Message Text="Copying content archive and binding expressions assembly from $(DesktopProjectName) project..." />
-    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
-    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
-    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Content.uvarc" DestinationFolder="$(ProjectDir)" />
-    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/bin/$(ConfigurationName)/Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
+    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
+    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
+    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/Content.uvarc" DestinationFolder="$(ProjectDir)" />
+    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

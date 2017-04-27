@@ -29,6 +29,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RegisterForComInterop>false</RegisterForComInterop>
     <DocumentationFile>bin\Debug\Ultraviolet.xml</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,6 +41,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\Ultraviolet.xml</DocumentationFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -78,6 +80,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.ObjectModel" />
+    <Reference Include="System.Dynamic.Runtime" />
+    <Reference Include="System.IO" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Ultraviolet.Public.snk">

@@ -328,7 +328,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
       <Project>{073CAFC1-86CB-414D-A71E-46440E25A3F4}</Project>
-      <Name>Ultraviolet.Desktop</Name>
+      <Name>Ultraviolet.Shims.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
       <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>
