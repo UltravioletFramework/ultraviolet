@@ -18,7 +18,7 @@
   </metadata>
   <files>
     <file src="Ultraviolet.SDL2\build\net40\Ultraviolet.SDL2.targets" target="build\net40\Ultraviolet.SDL2.targets"/>
-    <file src="..\Ultraviolet.SDL2_Desktop\Ultraviolet.SDL2.dll.config" target="lib\net40\Ultraviolet.SDL2.dll.config"/>
+    <file src="..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.dll.config" target="lib\net40\Ultraviolet.SDL2.dll.config"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.dll" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.pdb" target="lib\net40\"/>

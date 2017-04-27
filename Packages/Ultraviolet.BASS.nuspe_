@@ -18,7 +18,7 @@
   </metadata>
   <files>
     <file src="Ultraviolet.BASS\build\net40\Ultraviolet.BASS.targets" target="build\net40\Ultraviolet.BASS.targets"/>
-    <file src="..\Ultraviolet.BASS_Desktop\Ultraviolet.BASS.dll.config" target="lib\net40\Ultraviolet.BASS.dll.config"/>
+    <file src="..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.dll.config" target="lib\net40\Ultraviolet.BASS.dll.config"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.dll" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.pdb" target="lib\net40\"/>

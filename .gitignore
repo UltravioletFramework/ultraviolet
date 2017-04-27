@@ -168,7 +168,8 @@ gen/
 # =========================
 # Ultraviolet stuff
 # =========================
-/packages
+/Packages/*.nuspec
+/Packages/*.nupkg
 /Samples/packages
 /Samples/Dependencies/*
 !/Samples/Dependencies/*.dll.config
