@@ -2644,11 +2644,21 @@ namespace Ultraviolet.Graphics.Graphics2D
             var graphics = Ultraviolet.GetGraphics();
             graphics.SetTexture(0, texture);
 
-            var effectTextureSizes = customEffect as IEffectTextureSize;
-            if (effectTextureSizes != null)
+            // Set the texture size via a shader parameter.
+            var effectTextureSize = customEffect as IEffectTextureSize;
+            if (effectTextureSize != null)
             {
-                effectTextureSizes.TextureSize = (texture == null) ? Size2.Zero :
-                    new Size2(texture.Width, texture.Height);
+                effectTextureSize.TextureSize = (texture == null) ?
+                    Size2.Zero : new Size2(texture.Width, texture.Height); ;
+            }
+            else
+            {
+                var textureSizeParam = customEffect.Parameters["TextureSize"];
+                if (textureSizeParam != null)
+                {
+                    textureSizeParam.SetValue((texture == null) ?
+                        Vector2.Zero : new Vector2(texture.Width, texture.Height));
+                }
             }
 
             // Draw the sprites in this batch.
