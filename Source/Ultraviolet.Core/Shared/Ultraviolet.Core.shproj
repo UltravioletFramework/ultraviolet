@@ -12,7 +12,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets')" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties />
+      <UserProperties Schema_4Core_4Text_4LocalizedString_1json__JSONSchema="http://json.schemastore.org/settings.job" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

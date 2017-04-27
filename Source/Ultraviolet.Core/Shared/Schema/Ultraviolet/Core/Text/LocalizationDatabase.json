@@ -4,7 +4,7 @@
   "properties": {
     "strings": {
       "type": "array",
-      "items": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Core/Text/LocalizedString.json" }
+      "items": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizedString.json" }
     }
   }
 }

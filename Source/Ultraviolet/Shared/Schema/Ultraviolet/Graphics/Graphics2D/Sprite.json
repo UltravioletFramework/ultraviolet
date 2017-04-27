@@ -42,7 +42,7 @@
           "type": "number",
           "multipleOf": 1.0
         },
-        "origin": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Point2.json" }
+        "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
       }
     },
     "frameGroupDefaults": {
@@ -81,7 +81,7 @@
           "type": "number",
           "multipleOf": 1.0
         },
-        "origin": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Point2.json" }
+        "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
       }
     },
     "animationBatch": {
@@ -155,7 +155,7 @@
                 "type": "number",
                 "multipleOf": 1.0
               },
-              "origin": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Point2.json" }
+              "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
             }
           }
         }
@@ -204,7 +204,7 @@
                 "type": "number",
                 "multipleOf": 1.0
               },
-              "origin": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Point2.json" }
+              "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
             }
           }
         }

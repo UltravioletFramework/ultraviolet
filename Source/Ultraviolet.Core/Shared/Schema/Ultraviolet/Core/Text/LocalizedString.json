@@ -12,9 +12,9 @@
           { "type": "string" },
           {
             "type": "array",
-            "items": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Core/Text/LocalizedStringVariant.json" }
+            "items": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizedStringVariant.json" }
           },
-          { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Core/Text/LocalizedStringVariantCollection.json" }
+          { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizedStringVariantCollection.json" }
         ]
       }
     }

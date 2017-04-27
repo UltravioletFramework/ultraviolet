@@ -130,12 +130,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xml\XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\MaskedUInt32.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\MaskedUInt64.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\Text\LocalizationDatabase.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\Text\LocalizedString.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\Text\LocalizedStringVariantCollection.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\Text\LocalizedStringVariant.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Core\Text\StringResource.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\MaskedUInt32.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\MaskedUInt64.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizationDatabase.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizedString.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizedStringVariant.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizedStringVariantCollection.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\StringResource.json" />
   </ItemGroup>
 </Project>

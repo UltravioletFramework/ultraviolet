@@ -12,8 +12,8 @@
           "name": {
             "type": "string"
           },
-          "area": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Rectangle.json" },
-          "hotspot": { "$ref": "http://schema.ultraviolet.tl/Ultraviolet/Point2.json" }
+          "area": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Rectangle.json" },
+          "hotspot": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
         }
       }
     }

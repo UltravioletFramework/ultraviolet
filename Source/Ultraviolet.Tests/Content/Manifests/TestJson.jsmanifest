@@ -1,5 +1,5 @@
 ﻿{
-  "$schema": "http://schema.ultraviolet.tl/Ultraviolet/Content/ContentManifest.json",
+  "$schema": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Content/ContentManifest.json",
   "name": "Test",
   "groups": [
     {
