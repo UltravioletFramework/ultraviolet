@@ -141,8 +141,8 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -214,9 +214,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
-    <None Include="packages.config" />
     <EmbeddedResource Include="Resources\HeaderES.verth" />
     <EmbeddedResource Include="Resources\HeaderES.fragh" />
+    <None Include="packages.config" />
     <None Include="Resources\BlurEffectRadius1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BlurEffectRadius1.frag</LastGenOutput>
