@@ -132,10 +132,6 @@
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libSDL2main.so">
-      <Link>lib\armeabi-v7a\libSDL2main.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -148,10 +144,6 @@
       <Link>lib\armeabi\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libSDL2main.so">
-      <Link>lib\armeabi\libSDL2main.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -162,10 +154,6 @@
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2main.so">
-      <Link>lib\x86\libSDL2main.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
     <EmbeddedResource Include="Content.uvarc" />
@@ -194,7 +182,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="dbd61736-8eb2-4d5c-bbb2-110fc9a10c7d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="dbd61736-8eb2-4d5c-bbb2-110fc9a10c7d" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
