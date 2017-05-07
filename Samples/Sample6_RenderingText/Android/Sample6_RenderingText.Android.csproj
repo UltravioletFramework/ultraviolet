@@ -130,9 +130,6 @@
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libSDL2.so">
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libSDL2main.so">
-      <Link>lib\armeabi-v7a\libSDL2main.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -142,9 +139,6 @@
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libSDL2.so">
       <Link>lib\armeabi\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libSDL2main.so">
-      <Link>lib\armeabi\libSDL2main.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -153,9 +147,6 @@
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2main.so">
-      <Link>lib\x86\libSDL2main.so</Link>
     </AndroidNativeLibrary>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -182,7 +173,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" />
+      <UserProperties ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

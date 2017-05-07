@@ -130,9 +130,6 @@
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libSDL2.so">
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libSDL2main.so">
-      <Link>lib\armeabi-v7a\libSDL2main.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -142,9 +139,6 @@
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libSDL2.so">
       <Link>lib\armeabi\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libSDL2main.so">
-      <Link>lib\armeabi\libSDL2main.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -153,9 +147,6 @@
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2main.so">
-      <Link>lib\x86\libSDL2main.so</Link>
     </AndroidNativeLibrary>
     <EmbeddedResource Include="Content.uvarc" />
     <None Include="packages.config" />
