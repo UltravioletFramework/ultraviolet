@@ -455,7 +455,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         if (gl.IsGLES2)
                         {
                             if (frequency != 0)
-                                throw new NotSupportedException();
+                                throw new NotSupportedException(OpenGLStrings.InstancedRenderingNotSupported);
                         }
                         else
                         {
@@ -479,7 +479,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         case OpenGLAttribCategory.Double:
                             {
                                 if (!caps.SupportsDoublePrecisionVertexAttributes)
-                                    throw new NotSupportedException();
+                                    throw new NotSupportedException(OpenGLStrings.DoublePrecisionVAttribsNotSupported);
 
                                 gl.VertexAttribLPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                                 gl.ThrowIfError();
@@ -489,7 +489,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         case OpenGLAttribCategory.Integer:
                             {
                                 if (!caps.SupportsIntegerVertexAttributes)
-                                    throw new NotSupportedException();
+                                    throw new NotSupportedException(OpenGLStrings.IntegerVAttribsNotSupported);
 
                                 gl.VertexAttribIPointer(location, size, type, vbuffer.VertexDeclaration.VertexStride, (void*)(position));
                                 gl.ThrowIfError();
@@ -556,7 +556,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                     case OpenGLAttribCategory.Double:
                                         {
                                             if (!caps.SupportsDoublePrecisionVertexAttributes)
-                                                throw new NotSupportedException();
+                                                throw new NotSupportedException(OpenGLStrings.DoublePrecisionVAttribsNotSupported);
 
                                             gl.VertexArrayAttribLFormat(vao, location, size, type, position);
                                             gl.ThrowIfError();
@@ -566,7 +566,7 @@ namespace Ultraviolet.OpenGL.Graphics
                                     case OpenGLAttribCategory.Integer:
                                         {
                                             if (!caps.SupportsIntegerVertexAttributes)
-                                                throw new NotSupportedException();
+                                                throw new NotSupportedException(OpenGLStrings.IntegerVAttribsNotSupported);
 
                                             gl.VertexArrayAttribIFormat(vao, location, size, type, position);
                                             gl.ThrowIfError();

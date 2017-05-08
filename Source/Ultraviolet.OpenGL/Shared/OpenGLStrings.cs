@@ -70,6 +70,10 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource RenderBufferAlreadyAttached           = new StringResource(StringDatabase, "RENDER_BUFFER_ALREADY_ATTACHED");
         public static readonly StringResource InvalidIncludedResource               = new StringResource(StringDatabase, "INVALID_INCLUDED_RESOURCE");
         public static readonly StringResource CannotIncludeShaderHeadersInStream    = new StringResource(StringDatabase, "CANNOT_INCLUDE_SHADER_HEADERS_IN_STREAM");
+        public static readonly StringResource InstancedRenderingNotSupported        = new StringResource(StringDatabase, "INSTANCED_RENDERING_NOT_SUPPORTED");
+        public static readonly StringResource DoublePrecisionVAttribsNotSupported   = new StringResource(StringDatabase, "DOUBLE_PRECISION_VATTRIBS_NOT_SUPPORTED");
+        public static readonly StringResource IntegerVAttribsNotSupported           = new StringResource(StringDatabase, "INTEGER_VATTRIBS_NOT_SUPPORTED");
+        public static readonly StringResource NonZeroBaseInstanceNotSupported       = new StringResource(StringDatabase, "NON_ZERO_BASE_INSTANCE_NOT_SUPPORTED");
 #pragma warning restore 1591
     }
 }

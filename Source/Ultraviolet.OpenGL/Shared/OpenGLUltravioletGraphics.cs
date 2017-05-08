@@ -650,7 +650,7 @@ namespace Ultraviolet.OpenGL
                 else
                 {
                     if (!Capabilities.SupportsNonZeroBaseInstance)
-                        throw new NotSupportedException();
+                        throw new NotSupportedException(OpenGLStrings.NonZeroBaseInstanceNotSupported);
 
                     gl.DrawElementsInstancedBaseInstance(glPrimitiveType, glVerts, glIndexType, glOffset, instances, (uint)baseInstance);
                     gl.ThrowIfError();

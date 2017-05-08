@@ -230,4 +230,24 @@
       <Variant>The #include directive is not supported in shaders which are loaded from in-memory streams.</Variant>
     </en-US>
   </String>
+  <String Key="INSTANCED_RENDERING_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Instanced rendering is not supported by the current OpenGL driver.</Variant>
+    </en-US>
+  </String>
+  <String Key="DOUBLE_PRECISION_VATTRIBS_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Double-precision vertex attributes are not supported by the current OpenGL driver.</Variant>
+    </en-US>
+  </String>
+  <String Key="INTEGER_VATTRIBS_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Integer vertex attributes are not supported by the current OpenGL driver.</Variant>
+    </en-US>
+  </String>
+  <String Key="NON_ZERO_BASE_INSTANCE_NOT_SUPPORTED">
+    <en-US>
+      <Variant>A non-zero base instance value is not supported by the current OpenGL driver.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
