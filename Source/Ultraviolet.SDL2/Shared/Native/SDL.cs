@@ -384,5 +384,11 @@ namespace Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ShowSimpleMessageBox")]
         public static extern Int32 ShowSimpleMessageBox(UInt32 flags, [MarshalAs(UnmanagedType.LPStr)] String title, [MarshalAs(UnmanagedType.LPStr)] String message, IntPtr window);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetWindowOpacity")]
+        public static extern Int32 SetWindowOpacity(IntPtr window, Single opacity);
+
+        [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowOpacity")]
+        public static extern Int32 GetWindowOpacity(IntPtr window, Single* opacity);
     }
 }

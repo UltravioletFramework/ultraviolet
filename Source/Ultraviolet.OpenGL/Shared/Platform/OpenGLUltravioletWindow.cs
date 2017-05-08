@@ -590,9 +590,16 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenWindowed
         {
-            get { return grabsMouseWhenWindowed; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return grabsMouseWhenWindowed;
+            }
             set
             {
+                Contract.EnsureNotDisposed(this, Disposed);
+
                 grabsMouseWhenWindowed = value;
                 UpdateMouseGrab();
             }
@@ -601,9 +608,16 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenFullscreenWindowed
         {
-            get { return grabsMouseWhenFullscreenWindowed; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return grabsMouseWhenFullscreenWindowed;
+            }
             set
             {
+                Contract.EnsureNotDisposed(this, Disposed);
+
                 grabsMouseWhenFullscreenWindowed = value;
                 UpdateMouseGrab();
             }
@@ -612,11 +626,38 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenFullscreen
         {
-            get { return grabsMouseWhenFullscreen; }
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return grabsMouseWhenFullscreen;
+            }
             set
             {
+                Contract.EnsureNotDisposed(this, Disposed);
+
                 grabsMouseWhenFullscreen = value;
                 UpdateMouseGrab();
+            }
+        }
+
+        /// <inheritdoc/>
+        public Single Opacity
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                Single opacity;
+                SDL.GetWindowOpacity(ptr, &opacity);
+                return opacity;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                value = MathUtil.Clamp(value, 0.0f, 1.0f);
+                SDL.SetWindowOpacity(ptr, value);
             }
         }
 

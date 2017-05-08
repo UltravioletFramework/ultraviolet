@@ -245,6 +245,15 @@ namespace Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Gets or sets a value (from 0.0f to 1.0f) representing the window's opacity.
+        /// </summary>
+        Single Opacity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the window's icon.
         /// </summary>
         Surface2D Icon
