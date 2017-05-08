@@ -46,6 +46,9 @@ namespace Ultraviolet.OpenGL
                 SDL_Init.TIMER | SDL_Init.EVENTS :
                 SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.JOYSTICK | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS;
 
+            if (Platform == UltravioletPlatform.Windows)
+                SDL.SetHint(SDL_Hint.HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
+
             if (SDL.Init(sdlFlags) != 0)
                 throw new SDL2Exception();
 
