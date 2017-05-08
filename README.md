@@ -66,7 +66,7 @@ From the Developer Command Prompt for VS2015, navigate to the root of the Ultrav
 
     msbuild Ultraviolet.proj
     
-This will build the Desktop version of the Framework assemblies and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+This will build the Desktop version of the Framework assemblies and copy them into the `Samples/Dependencies` directory so that the sample projects can be built.
 
 __On Unix__
 
@@ -74,7 +74,7 @@ With Mono installed, navigate to the root of the Ultraviolet source tree and run
 
     xbuild Ultraviolet.proj
     
-This will build the Desktop version of the Framework assemblies, plus the macOS compatibility shim if you are building on a Mac, and copy them into the `Ultraviolet Framework Samples/Dependencies` directory so that the sample projects can be built.
+This will build the Desktop version of the Framework assemblies, plus the macOS compatibility shim if you are building on a Mac, and copy them into the `Samples/Dependencies` directory so that the sample projects can be built.
 
 __Mobile Platforms__
 
@@ -90,7 +90,7 @@ Building the iOS version of the Framework should only be done on a Mac. While Xa
    
 __Sample Projects__
 
-The sample projects in the `Ultraviolet Framework Samples` directory cannot be built until the Framework itself has been built and its output files have been copied into the `Ultraviolet Framework Samples/Dependencies` directory. Once that has been done, simply run `msbuild` or `xbuild` on the appropriate solution (`.sln`) file in the samples directory.
+The sample projects in the `Samples` directory cannot be built until the Framework itself has been built and its output files have been copied into the `Samples/Dependencies` directory. Once that has been done, simply run `msbuild` or `xbuild` on the appropriate solution (`.sln`) file in the samples directory.
 
 Known Issues
 ============
