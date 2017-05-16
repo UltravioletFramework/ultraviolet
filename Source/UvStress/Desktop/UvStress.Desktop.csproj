@@ -101,6 +101,10 @@
       <Project>{50aefa93-fe53-414a-89fc-c061c165c673}</Project>
       <Name>Ultraviolet.SDL2.Desktop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
+      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
+      <Name>Ultraviolet.Shims.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
       <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
       <Name>Ultraviolet.Desktop</Name>

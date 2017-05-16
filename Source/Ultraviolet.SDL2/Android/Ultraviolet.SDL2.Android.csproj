@@ -50,7 +50,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Signed\Ultraviolet.SDL2.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
@@ -67,11 +66,9 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.xml.Linq" />
-    <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Ultraviolet.SDL2\Ultraviolet.Public.snk">
+    <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>

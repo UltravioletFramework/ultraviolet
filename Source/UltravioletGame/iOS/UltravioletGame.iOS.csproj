@@ -96,7 +96,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|iPhone'">
     <OutputPath>bin\iPhone\Signed\</OutputPath>
@@ -105,7 +104,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <MtouchSdkVersion>9.3</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchDebug>False</MtouchDebug>

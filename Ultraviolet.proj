@@ -8,8 +8,10 @@
     <Configuration>Debug</Configuration>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == ''">
-    <Platform Condition="!$(IsMac)">Any CPU</Platform>
-    <Platform Condition="$(IsMac)">iPhoneSimulator</Platform>
+    <Platform>Any CPU</Platform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(iOSPlatform)' == ''">
+    <iOSPlatform>iPhoneSimulator</iOSPlatform>
   </PropertyGroup>
 
   <ItemGroup>
@@ -113,6 +115,12 @@
   </Target>
       
   <Target Name="CopyDesktopBinaries">
+    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Newtonsoft.Json.*">
+        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/System.Numerics.Vectors.*">
+        <Output TaskParameter="Include" ItemName="System_Numerics_Vectors_Desktop"/>    
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Desktop"/>
     </CreateItem>
@@ -158,6 +166,8 @@
     <CreateItem Include="Source/UvArchive/bin/$(Configuration)/uvarchive.exe">
         <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
     </CreateItem>
+    <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(System_Numerics_Vectors_Desktop)" DestinationFiles="@(System_Numerics_Vectors_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Desktop)" DestinationFiles="@(Ultraviolet_Core_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Desktop)" DestinationFiles="@(Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -218,6 +228,9 @@
   </Target>
       
   <Target Name="CopyAndroidBinaries">
+    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Newtonsoft.Json.*">
+        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Android"/>
     </CreateItem>
@@ -248,6 +261,7 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
     </CreateItem>
+    <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Android)" DestinationFiles="@(Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -278,16 +292,19 @@
   
   <Target Name="BuildiOS" Condition="$(IsMac)">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Properties="Configuration=$(Configuration);Platform=$(Platform)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
   <Target Name="BuildiOSBamboo" Condition="$(IsMac) Or '$(ServerAddress)'!=''">
     <CallTarget Targets="RestoreiOS"/>
-    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo_Solution)" Properties="Configuration=$(Configuration);Platform=$(Platform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Bamboo_Solution)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform);ServerAddress=$(ServerAddress);ServerUser=$(ServerUser);ServerPassword=$(ServerPassword)"/>
     <CallTarget Targets="CopyiOSBinaries"/>
   </Target>
         
   <Target Name="CopyiOSBinaries">
+    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Newtonsoft.Json.*">
+        <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_iOS"/>
     </CreateItem>
@@ -321,6 +338,7 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
     </CreateItem>
+    <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_iOS)" DestinationFiles="@(Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

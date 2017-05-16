@@ -174,7 +174,6 @@
     <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Mono.Dynamic.Interpreter" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />

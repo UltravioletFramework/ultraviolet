@@ -48,7 +48,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Signed\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -62,7 +61,7 @@
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\Ultraviolet.SDL2\Ultraviolet.Public.snk">
+    <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
   </ItemGroup>
@@ -71,8 +70,6 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.xml.Linq" />
-    <Reference Include="System.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">

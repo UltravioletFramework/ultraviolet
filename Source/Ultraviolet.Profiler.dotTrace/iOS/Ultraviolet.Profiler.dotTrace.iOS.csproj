@@ -43,7 +43,6 @@
     <PlatformTarget>anycpu</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
@@ -61,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>

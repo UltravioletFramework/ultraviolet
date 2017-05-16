@@ -50,7 +50,6 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Signed\Ultraviolet.Presentation.xml</DocumentationFile>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>

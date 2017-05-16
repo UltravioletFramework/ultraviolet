@@ -52,7 +52,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Signed\Ultraviolet.Presentation.xml</DocumentationFile>
   </PropertyGroup>
@@ -76,9 +75,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.ObjectModel" />
-    <Reference Include="System.Dynamic.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
