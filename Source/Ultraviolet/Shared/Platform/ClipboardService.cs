@@ -16,7 +16,7 @@ namespace Ultraviolet.Platform
         /// <summary>
         /// Creates a new instance of the <see cref="ClipboardService"/> class.
         /// </summary>
-        /// <returns>The instance of <see cref="ScreenRotationService"/> that was created.</returns>
+        /// <returns>The instance of <see cref="ClipboardService"/> that was created.</returns>
         public static ClipboardService Create()
         {
             var uv = UltravioletContext.DemandCurrent();

@@ -5,7 +5,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
-    /// Represents the SDL implementation of the <see cref="ClipboardService"/> class.
+    /// Represents the SDL2 implementation of the <see cref="ClipboardService"/> class.
     /// </summary>
     public sealed class SDL2ClipboardService : ClipboardService
     {

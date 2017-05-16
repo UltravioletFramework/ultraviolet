@@ -88,6 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_WindowEventID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_WindowFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2ClipboardService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2MessageBoxService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2PowerManagementService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Exception.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.SDL_RWops.cs" />

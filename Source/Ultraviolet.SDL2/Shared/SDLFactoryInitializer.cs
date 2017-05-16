@@ -15,6 +15,9 @@ namespace Ultraviolet.SDL2
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             // Platform services
+            var msgboxService = new SDL2MessageBoxService();
+            factory.SetFactoryMethod<MessageBoxServiceFactory>(() => msgboxService);
+
             var clipboardService = new SDL2ClipboardService();
             factory.SetFactoryMethod<ClipboardServiceFactory>(() => clipboardService);
 
