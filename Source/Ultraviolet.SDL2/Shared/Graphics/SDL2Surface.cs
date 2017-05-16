@@ -157,6 +157,14 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
+        public override Texture2D CreateTexture()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return CreateTexture(true, Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
+        }
+
+        /// <inheritdoc/>
         public override Texture2D CreateTexture(Boolean premultiply, Boolean flip)
         {
             Contract.EnsureNotDisposed(this, Disposed);

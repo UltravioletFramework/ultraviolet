@@ -157,6 +157,12 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Creates a texture from the surface.
         /// </summary>
+        /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
+        public abstract Texture2D CreateTexture();
+
+        /// <summary>
+        /// Creates a texture from the surface.
+        /// </summary>
         /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
         /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
         /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
