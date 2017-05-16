@@ -2,6 +2,7 @@
 using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
 
 namespace Ultraviolet.SDL2
@@ -21,7 +22,6 @@ namespace Ultraviolet.SDL2
             : base(uv)
         {
             this.clipboard = ClipboardService.Create();
-            this.cursorService = CursorService.Create();
             this.messageBoxService = MessageBoxService.Create();
             this.windows = new SDL2UltravioletWindowInfo(uv, uvconfig, sdlconfig);
             this.displays = new SDL2UltravioletDisplayInfo();
@@ -54,13 +54,19 @@ namespace Ultraviolet.SDL2
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return cursorService.Cursor;
+                return cursor;
             }
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                cursorService.Cursor = value;
+                cursor = value;
+
+                unsafe
+                {
+                    var sdlCursor = (value == null) ? SDL.GetDefaultCursor() : ((SDL2Cursor)value).Native;
+                    SDL.SetCursor(sdlCursor);
+                }
             }
         }
 
@@ -122,8 +128,8 @@ namespace Ultraviolet.SDL2
             Updating?.Invoke(this, time);
 
         // Property values.
+        private Cursor cursor;
         private readonly ClipboardService clipboard;
-        private readonly CursorService cursorService;
         private readonly MessageBoxService messageBoxService;
         private readonly SDL2UltravioletWindowInfo windows;
         private readonly SDL2UltravioletDisplayInfo displays;

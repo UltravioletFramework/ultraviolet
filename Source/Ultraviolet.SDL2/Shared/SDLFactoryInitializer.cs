@@ -27,10 +27,7 @@ namespace Ultraviolet.SDL2
             // Platform services
             var msgboxService = new SDL2MessageBoxService();
             factory.SetFactoryMethod<MessageBoxServiceFactory>(() => msgboxService);
-
-            var cursorService = new SDL2CursorService();
-            factory.SetFactoryMethod<CursorServiceFactory>(() => cursorService);
-
+            
             var clipboardService = new SDL2ClipboardService();
             factory.SetFactoryMethod<ClipboardServiceFactory>(() => clipboardService);
 

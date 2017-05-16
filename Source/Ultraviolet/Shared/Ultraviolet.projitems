@@ -335,7 +335,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\IUltravioletWindowInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\MessageBoxService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\NamespaceDoc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Platform\CursorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\PowerManagementService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\ScreenDensityBucket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\ScreenDensityService.cs" />
