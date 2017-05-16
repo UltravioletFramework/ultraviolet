@@ -8,7 +8,7 @@ namespace Ultraviolet.SDL2.Native
 {
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct SDL_Surface_Native
+    public unsafe struct SDL_Surface
     {
         public UInt32 flags;
         public SDL_PixelFormat* format;

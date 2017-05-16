@@ -13,10 +13,10 @@ namespace Ultraviolet.SDL2.Native
         {
             version->major = 2;
             version->minor = 0;
-            version->patch = 4;
+            version->patch = 5;
         }
 
-        public static Boolean MUSTLOCK(SDL_Surface_Native* surface)
+        public static Boolean MUSTLOCK(SDL_Surface* surface)
         {
             const uint SDL_RLEACCEL = 0x00000002;
             return (surface->flags & SDL_RLEACCEL) != 0;

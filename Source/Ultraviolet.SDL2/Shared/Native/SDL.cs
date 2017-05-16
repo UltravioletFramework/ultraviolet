@@ -158,17 +158,17 @@ namespace Ultraviolet.SDL2.Native
         public static extern void FreeRW(IntPtr area);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LoadBMP_RW")]
-        public static extern SDL_Surface_Native* LoadBMP_RW(IntPtr src, Int32 freesrc);
+        public static extern SDL_Surface* LoadBMP_RW(IntPtr src, Int32 freesrc);
 
-        public static SDL_Surface_Native* LoadBMP(String file)
+        public static SDL_Surface* LoadBMP(String file)
         {
             return LoadBMP_RW(RWFromFile(file, "r"), 1);
         }
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SaveBMP_RW")]
-        public static extern Int32 SaveBMP_RW(SDL_Surface_Native* surface, IntPtr dst, Int32 freedst);
+        public static extern Int32 SaveBMP_RW(SDL_Surface* surface, IntPtr dst, Int32 freedst);
 
-        public static Int32 SaveBMP(SDL_Surface_Native* surface, String file)
+        public static Int32 SaveBMP(SDL_Surface* surface, String file)
         {
             return SaveBMP_RW(surface, RWFromFile(file, "wb"), 1);
         }
@@ -189,41 +189,41 @@ namespace Ultraviolet.SDL2.Native
         public static extern Boolean SetHint([MarshalAs(UnmanagedType.LPStr)] String name, [MarshalAs(UnmanagedType.LPStr)] String value);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateRGBSurface")]
-        public static extern SDL_Surface_Native* CreateRGBSurface(UInt32 flags, Int32 width, Int32 height, Int32 depth, UInt32 Rmask, UInt32 Gmask, UInt32 Bmask, UInt32 Amask);
+        public static extern SDL_Surface* CreateRGBSurface(UInt32 flags, Int32 width, Int32 height, Int32 depth, UInt32 Rmask, UInt32 Gmask, UInt32 Bmask, UInt32 Amask);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeSurface")]
-        public static extern void FreeSurface(SDL_Surface_Native* surface);
+        public static extern void FreeSurface(SDL_Surface* surface);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LockSurface")]
-        public static extern Int32 LockSurface(SDL_Surface_Native* surface);
+        public static extern Int32 LockSurface(SDL_Surface* surface);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UnlockSurface")]
-        public static extern void UnlockSurface(SDL_Surface_Native* surface);
+        public static extern void UnlockSurface(SDL_Surface* surface);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UpperBlit")]
-        private static extern Int32 UpperBlit(SDL_Surface_Native* src, SDL_Rect* srcrect, SDL_Surface_Native* dst, SDL_Rect* dstrect);
+        private static extern Int32 UpperBlit(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
 
-        public static Int32 BlitSurface(SDL_Surface_Native* src, SDL_Rect* srcrect, SDL_Surface_Native* dst, SDL_Rect* dstrect)
+        public static Int32 BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect)
         {
             return UpperBlit(src, srcrect, dst, dstrect);
         }
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UpperBlitScaled")]
-        private static extern Int32 UpperBlitScaled(SDL_Surface_Native* src, SDL_Rect* srcrect, SDL_Surface_Native* dst, SDL_Rect* dstrect);
+        private static extern Int32 UpperBlitScaled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
 
-        public static Int32 BlitScaled(SDL_Surface_Native* src, SDL_Rect* srcrect, SDL_Surface_Native* dst, SDL_Rect* dstrect)
+        public static Int32 BlitScaled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect)
         {
             return UpperBlitScaled(src, srcrect, dst, dstrect);
         }
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetSurfaceBlendMode")]
-        public static extern Int32 SetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode blendMode);
+        public static extern Int32 SetSurfaceBlendMode(SDL_Surface* surface, SDL_BlendMode blendMode);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetSurfaceBlendMode")]
-        public static extern Int32 GetSurfaceBlendMode(SDL_Surface_Native* surface, SDL_BlendMode* blendMode);
+        public static extern Int32 GetSurfaceBlendMode(SDL_Surface* surface, SDL_BlendMode* blendMode);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_CreateColorCursor")]
-        public static extern SDL_Cursor* CreateColorCursor(SDL_Surface_Native* surface, Int32 hot_x, Int32 hot_y);
+        public static extern SDL_Cursor* CreateColorCursor(SDL_Surface* surface, Int32 hot_x, Int32 hot_y);
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_FreeCursor")]
         public static extern void FreeCursor(SDL_Cursor* cursor);

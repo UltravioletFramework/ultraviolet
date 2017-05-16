@@ -25,7 +25,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// Initializes a new instance of the <see cref="SDL2PlatformNativeSurface"/> class.
         /// </summary>
         /// <param name="src">A pointer to the native SDL surface.</param>
-        public SDL2PlatformNativeSurface(SDL_Surface_Native* src)
+        public SDL2PlatformNativeSurface(SDL_Surface* src)
         {
             if (src == null)
                 throw new ArgumentNullException("src");
@@ -310,9 +310,9 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <summary> 
-        /// Gets a pointer to the surface's underlying <see cref="SDL_Surface_Native"/> structure.
+        /// Gets a pointer to the surface's underlying <see cref="SDL_Surface"/> structure.
         /// </summary>
-        public SDL_Surface_Native* NativePtr => ptr;
+        public SDL_Surface* NativePtr => ptr;
 
         /// <inheritdoc/>
         protected override void Dispose(bool disposing)
@@ -330,7 +330,7 @@ namespace Ultraviolet.SDL2.Graphics
         private static readonly UInt32 amask = 0xff000000u;
 
         // State values.
-        private SDL_Surface_Native* ptr;
+        private SDL_Surface* ptr;
         private Boolean readyForTextureExport;
     }
 }

@@ -239,7 +239,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <summary>
         /// Gets a pointer to the native SDL surface that is encapsulated by this object.
         /// </summary>
-        public SDL_Surface_Native* NativePtr
+        public SDL_Surface* NativePtr
         {
             get
             {

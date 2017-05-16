@@ -69,7 +69,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_QuitEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Rect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Scancode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Surface_Native.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Surface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfoUnion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo_cocoa.cs" />
