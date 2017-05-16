@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Ultraviolet.Core;
-using Ultraviolet.OpenGL.Platform;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Platform;
 
@@ -20,10 +19,15 @@ namespace Ultraviolet.OpenGL
         public OpenGLUltravioletPlatform(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
+            var winconfig = new SDL2WindowConfiguration();
+            winconfig.WindowType = SDL2WindowType.OpenGL;
+            winconfig.MultiSampleBuffers = configuration.MultiSampleBuffers;
+            winconfig.MultiSampleSamples = configuration.MultiSampleSamples;
+
             this.clipboard = ClipboardService.Create();
             this.cursorService = CursorService.Create();
             this.messageBoxService = MessageBoxService.Create();
-            this.windows = new OpenGLUltravioletWindowInfo(uv, configuration);
+            this.windows = new SDL2UltravioletWindowInfo(uv, configuration, winconfig);
             this.displays = new SDL2UltravioletDisplayInfo();
         }
 
@@ -43,7 +47,7 @@ namespace Ultraviolet.OpenGL
             if (parent == null)
                 parent = Windows.GetPrimary();
             
-            var window = (parent == null) ? IntPtr.Zero : (IntPtr)((OpenGLUltravioletWindow)parent);
+            var window = (parent == null) ? IntPtr.Zero : (IntPtr)((SDL2UltravioletWindow)parent);
             messageBoxService.ShowMessageBox(type, title, message, window);
         }
 
@@ -105,8 +109,8 @@ namespace Ultraviolet.OpenGL
         {
             if (disposing && !Disposed)
             {
-                windows.DesignateCurrent(null, IntPtr.Zero);
-                foreach (OpenGLUltravioletWindow window in windows.ToList())
+                ((SDL2UltravioletWindowInfo)windows).DesignateCurrent(null, IntPtr.Zero);
+                foreach (SDL2UltravioletWindow window in windows.ToList())
                 {
                     windows.Destroy(window);
                 }
@@ -125,7 +129,7 @@ namespace Ultraviolet.OpenGL
         private readonly ClipboardService clipboard;
         private readonly CursorService cursorService;
         private readonly MessageBoxService messageBoxService;
-        private readonly OpenGLUltravioletWindowInfo windows;
+        private readonly IUltravioletWindowInfo windows;
         private readonly IUltravioletDisplayInfo displays;
     }
 }

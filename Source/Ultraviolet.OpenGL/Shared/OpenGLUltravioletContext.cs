@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
-using Ultraviolet.OpenGL.Platform;
 using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
+using Ultraviolet.SDL2.Platform;
 using Ultraviolet.UI;
 
 namespace Ultraviolet.OpenGL
@@ -213,8 +213,8 @@ namespace Ultraviolet.OpenGL
             if (oglgfx != null)
             {
                 var glcontext = oglgfx.OpenGLContext;
-                var windowInfo = ((OpenGLUltravioletWindowInfo)platform.Windows);
-                foreach (OpenGLUltravioletWindow window in windowInfo)
+                var windowInfo = ((SDL2UltravioletWindowInfo)platform.Windows);
+                foreach (SDL2UltravioletWindow window in windowInfo)
                 {
                     windowInfo.DesignateCurrent(window, glcontext);
 
@@ -424,7 +424,7 @@ namespace Ultraviolet.OpenGL
                     case SDL_EventType.WINDOWEVENT:
                         if (@event.window.@event == SDL_WindowEventID.CLOSE)
                         {
-                            var glWindowInfo = (OpenGLUltravioletWindowInfo)GetPlatform().Windows;
+                            var glWindowInfo = (SDL2UltravioletWindowInfo)GetPlatform().Windows;
                             if (glWindowInfo.DestroyByID((int)@event.window.windowID))
                             {
                                 Messages.Publish(UltravioletMessages.Quit, null);

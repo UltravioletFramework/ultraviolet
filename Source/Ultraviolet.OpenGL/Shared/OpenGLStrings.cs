@@ -62,7 +62,6 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource ShaderUniformHasNoSource              = new StringResource(StringDatabase, "SHADER_UNIFORM_HAS_NO_SOURCE");
         public static readonly StringResource UnsupportedFillModeGLES               = new StringResource(StringDatabase, "UNSUPPORTED_FILLMODE_GLES");
         public static readonly StringResource UnsupportedLODBiasGLES                = new StringResource(StringDatabase, "UNSUPPORTED_LOD_BIAS_GLES");
-        public static readonly StringResource CannotCreateHeadlessContextOnMobile   = new StringResource(StringDatabase, "CANNOT_CREATE_HEADLESS_CONTEXT_ON_MOBILE");
         public static readonly StringResource InvalidOperationWhileBound            = new StringResource(StringDatabase, "INVALID_OPERATION_WHILE_BOUND");
         public static readonly StringResource CannotResizeAttachedRenderBuffer      = new StringResource(StringDatabase, "CANNOT_RESIZE_ATTACHED_RENDER_BUFFER");
         public static readonly StringResource TextureIsImmutable                    = new StringResource(StringDatabase, "TEXTURE_IS_IMMUTABLE");

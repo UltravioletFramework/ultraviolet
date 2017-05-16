@@ -5,30 +5,31 @@ using System.Diagnostics.CodeAnalysis;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL.Platform
+namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
     /// Represents the OpenGL implementation of the IUltravioletWindowInfo interface.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public sealed class OpenGLUltravioletWindowInfo : IUltravioletWindowInfo, IUltravioletComponent
+    public sealed class SDL2UltravioletWindowInfo : IUltravioletWindowInfo, IUltravioletComponent
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLUltravioletWindowInfo class.
+        /// Initializes a new instance of the <see cref="SDL2UltravioletWindowInfo"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
-        internal OpenGLUltravioletWindowInfo(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
+        /// <param name="uvconfig">The Ultraviolet configuration settings for the current context.</param>
+        /// <param name="winconfig">The window configuration settings for the current context.</param>
+        public SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2WindowConfiguration winconfig)
         {
             Contract.Require(uv, nameof(uv));
-            Contract.Require(configuration, nameof(configuration));
+            Contract.Require(uvconfig, nameof(uvconfig));
+            Contract.Require(winconfig, nameof(winconfig));
 
             this.uv = uv;
 
-            InitializePrimaryWindow(configuration);
+            InitializePrimaryWindow(uvconfig, winconfig);
         }
 
         /// <summary>
@@ -37,8 +38,8 @@ namespace Ultraviolet.OpenGL.Platform
         /// <param name="time">Time elapsed since the last call to Draw.</param>
         public void Draw(UltravioletTime time)
         {
-            var oglwin = (OpenGLUltravioletWindow)current;
-            
+            var oglwin = (SDL2UltravioletWindow)current;
+
             oglwin.Draw(time);
         }
 
@@ -47,7 +48,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// </summary>
         public void Swap()
         {
-            var oglwin = (OpenGLUltravioletWindow)current;
+            var oglwin = (SDL2UltravioletWindow)current;
 
             SDL.GL_SwapWindow((IntPtr)oglwin);
         }
@@ -82,13 +83,13 @@ namespace Ultraviolet.OpenGL.Platform
             {
                 OnCurrentWindowChanging();
 
-                var glCurrentOld = current as OpenGLUltravioletWindow;
+                var glCurrentOld = current as SDL2UltravioletWindow;
                 if (glCurrentOld != null)
                     glCurrentOld.IsCurrentWindow = false;
 
                 current = window;
 
-                var glCurrentNew = current as OpenGLUltravioletWindow;
+                var glCurrentNew = current as SDL2UltravioletWindow;
                 if (glCurrentNew != null)
                     glCurrentNew.IsCurrentWindow = true;
 
@@ -112,8 +113,8 @@ namespace Ultraviolet.OpenGL.Platform
         /// <returns>The window with the specified identifier, or null if no such window exists.</returns>
         public IUltravioletWindow GetByID(Int32 id)
         {
-            var match = default(OpenGLUltravioletWindow);
-            foreach (OpenGLUltravioletWindow window in windows)
+            var match = default(SDL2UltravioletWindow);
+            foreach (SDL2UltravioletWindow window in windows)
             {
                 if (SDL.GetWindowID((IntPtr)window) == (UInt32)id)
                 {
@@ -133,7 +134,7 @@ namespace Ultraviolet.OpenGL.Platform
             var window = GetByID(id);
             if (window != null)
             {
-                return (IntPtr)(OpenGLUltravioletWindow)window;
+                return (IntPtr)(SDL2UltravioletWindow)window;
             }
             return IntPtr.Zero;
         }
@@ -153,7 +154,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <returns>A pointer to the SDL2 window object encapsulated by the master window.</returns>
         public IntPtr GetMasterPointer()
         {
-            return (IntPtr)(OpenGLUltravioletWindow)master;
+            return (IntPtr)(SDL2UltravioletWindow)master;
         }
 
         /// <summary>
@@ -171,7 +172,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <returns>A pointer to the SDL2 window object encapsulated by the primary window.</returns>
         public IntPtr GetPrimaryPointer()
         {
-            return (IntPtr)(OpenGLUltravioletWindow)primary;
+            return (IntPtr)(SDL2UltravioletWindow)primary;
         }
 
         /// <summary>
@@ -189,7 +190,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <returns>A pointer to the SDL2 window object encapsulated by the current window.</returns>
         public IntPtr GetCurrentPointer()
         {
-            return (IntPtr)(OpenGLUltravioletWindow)current;
+            return (IntPtr)(SDL2UltravioletWindow)current;
         }
 
         /// <summary>
@@ -204,7 +205,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <returns>The Ultraviolet window that was created.</returns>
         public IUltravioletWindow Create(String caption, Int32 x, Int32 y, Int32 width, Int32 height, WindowFlags flags = WindowFlags.None)
         {
-            var sdlflags = SDL_WindowFlags.OPENGL;
+            var sdlflags = (windowType == SDL2WindowType.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
                 sdlflags |= SDL_WindowFlags.ALLOW_HIGHDPI;
@@ -224,7 +225,7 @@ namespace Ultraviolet.OpenGL.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new OpenGLUltravioletWindow(Ultraviolet, sdlptr);
+            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -245,7 +246,7 @@ namespace Ultraviolet.OpenGL.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new OpenGLUltravioletWindow(Ultraviolet, sdlptr);
+            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -280,7 +281,7 @@ namespace Ultraviolet.OpenGL.Platform
             if (window == glwin && glcontext != IntPtr.Zero)
                 DesignateCurrentOpenGLWindow(null, glcontext);
 
-            var sdlwin = (OpenGLUltravioletWindow)window;
+            var sdlwin = (SDL2UltravioletWindow)window;
             Ultraviolet.Messages.Unsubscribe(sdlwin, SDL2UltravioletMessages.SDLEvent);
 
             var native = sdlwin.Native;
@@ -372,29 +373,38 @@ namespace Ultraviolet.OpenGL.Platform
         /// <summary>
         /// Initializes the context's primary window.
         /// </summary>
-        /// <param name="configuration">The Ultraviolet Framg</param>
-        private void InitializePrimaryWindow(OpenGLUltravioletConfiguration configuration)
+        private void InitializePrimaryWindow(UltravioletConfiguration uvconfig, SDL2WindowConfiguration winconfig)
         {
+            // Make sure we've been given a valid window type.
+            if (winconfig.WindowType != SDL2WindowType.OpenGL)
+                throw new NotSupportedException();
+
+            windowType = winconfig.WindowType;
+
             // Retrieve the caption for our window.
-            var caption = Localization.Strings.Contains("WINDOW_CAPTION") ? 
+            var caption = Localization.Strings.Contains("WINDOW_CAPTION") ?
                 Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
 
-            // Set the OpenGL attributes for the window we're about to create.
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, configuration.MultiSampleBuffers) < 0)
-                throw new SDL2Exception();
+            // If this is an OpenGL window, set the appropriate attributes.
+            if (winconfig.WindowType == SDL2WindowType.OpenGL)
+            {
+                // Set the OpenGL attributes for the window we're about to create.
+                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, winconfig.MultiSampleBuffers) < 0)
+                    throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, configuration.MultiSampleSamples) < 0)
-                throw new SDL2Exception();
-
+                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, winconfig.MultiSampleSamples) < 0)
+                    throw new SDL2Exception();
+            }
+            
             // If we're running on Android or iOS, we can't create a headless context.
             var isRunningOnMobile = (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS);
-            if (isRunningOnMobile && configuration.Headless)
-                throw new InvalidOperationException(OpenGLStrings.CannotCreateHeadlessContextOnMobile);
+            if (isRunningOnMobile && uvconfig.Headless)
+                throw new InvalidOperationException(SDL2Strings.CannotCreateHeadlessContextOnMobile);
 
             // Initialize the hidden master window used to create the OpenGL context.
             var masterWidth = 0;
             var masterHeight = 0;
-            var masterFlags = SDL_WindowFlags.OPENGL;
+            var masterFlags = (windowType == SDL2WindowType.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
                 masterFlags |= SDL_WindowFlags.ALLOW_HIGHDPI;
@@ -425,7 +435,7 @@ namespace Ultraviolet.OpenGL.Platform
                 }
             }
 
-            this.master = new OpenGLUltravioletWindow(Ultraviolet, masterptr);
+            this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr);
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
@@ -433,7 +443,7 @@ namespace Ultraviolet.OpenGL.Platform
                 throw new SDL2Exception();
 
             // If this is not a headless context, create the primary application window.
-            if (!configuration.Headless)
+            if (!uvconfig.Headless)
             {
                 if (isRunningOnMobile)
                 {
@@ -442,19 +452,19 @@ namespace Ultraviolet.OpenGL.Platform
                 }
                 else
                 {
-                    var flags = configuration.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
+                    var flags = uvconfig.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
 
-                    if (configuration.WindowIsResizable)
+                    if (uvconfig.WindowIsResizable)
                         flags |= WindowFlags.Resizable;
 
-                    if (configuration.WindowIsBorderless)
+                    if (uvconfig.WindowIsBorderless)
                         flags |= WindowFlags.Borderless;
 
                     var primary = Create(caption,
-                        configuration.InitialWindowPosition.X,
-                        configuration.InitialWindowPosition.Y,
-                        configuration.InitialWindowPosition.Width,
-                        configuration.InitialWindowPosition.Height, flags);
+                        uvconfig.InitialWindowPosition.X,
+                        uvconfig.InitialWindowPosition.Y,
+                        uvconfig.InitialWindowPosition.Width,
+                        uvconfig.InitialWindowPosition.Height, flags);
                     DesignatePrimary(primary);
                 }
             }
@@ -514,7 +524,7 @@ namespace Ultraviolet.OpenGL.Platform
                 context = glcontext;
             }
 
-            var win = (OpenGLUltravioletWindow)(window ?? master);
+            var win = (SDL2UltravioletWindow)(window ?? master);
             var winptr = (IntPtr)win;
             if (SDL.GL_MakeCurrent(winptr, context) < 0)
                 throw new SDL2Exception();
@@ -534,6 +544,7 @@ namespace Ultraviolet.OpenGL.Platform
         private readonly List<IUltravioletWindow> windows = new List<IUltravioletWindow>();
 
         // The primary and active windows.
+        private SDL2WindowType windowType;
         private IUltravioletWindow master;
         private IUltravioletWindow primary;
         private IUltravioletWindow current;

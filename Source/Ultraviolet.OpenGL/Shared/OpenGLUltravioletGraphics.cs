@@ -5,9 +5,9 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.OpenGL.Graphics;
-using Ultraviolet.OpenGL.Platform;
 using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
+using Ultraviolet.SDL2.Platform;
 
 namespace Ultraviolet.OpenGL
 {
@@ -26,7 +26,7 @@ namespace Ultraviolet.OpenGL
         public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested)
             : base(uv)
         {
-            var masterptr = ((OpenGLUltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
+            var masterptr = ((SDL2UltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
             if (!TryInitializeGLContext(masterptr, configuration))
             {
                 var attemptedVersionMajor = 0;
