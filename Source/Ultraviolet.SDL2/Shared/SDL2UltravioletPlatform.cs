@@ -4,30 +4,26 @@ using Ultraviolet.Core;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Platform;
 
-namespace Ultraviolet.OpenGL
+namespace Ultraviolet.SDL2
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the IUltravioletPlatform interface.
+    /// Represents the SDL2 implementation of the <see cref="IUltravioletPlatform"/> interface.
     /// </summary>
-    public sealed class OpenGLUltravioletPlatform : UltravioletResource, IUltravioletPlatform
+    public sealed class SDL2UltravioletPlatform : UltravioletResource, IUltravioletPlatform
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLUltravioletPlatform class.
+        /// Initializes a new instance of the <see cref="SDL2UltravioletPlatform"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
-        public OpenGLUltravioletPlatform(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
+        /// <param name="uvconfig">The Ultraviolet Framework's configuration settings.</param>
+        /// <param name="sdlconfig">The SDL2 platform configuration settings.</param>
+        public SDL2UltravioletPlatform(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration sdlconfig)
             : base(uv)
         {
-            var winconfig = new SDL2WindowConfiguration();
-            winconfig.WindowType = SDL2WindowType.OpenGL;
-            winconfig.MultiSampleBuffers = configuration.MultiSampleBuffers;
-            winconfig.MultiSampleSamples = configuration.MultiSampleSamples;
-
             this.clipboard = ClipboardService.Create();
             this.cursorService = CursorService.Create();
             this.messageBoxService = MessageBoxService.Create();
-            this.windows = new SDL2UltravioletWindowInfo(uv, configuration, winconfig);
+            this.windows = new SDL2UltravioletWindowInfo(uv, uvconfig, sdlconfig);
             this.displays = new SDL2UltravioletDisplayInfo();
         }
 
@@ -46,7 +42,7 @@ namespace Ultraviolet.OpenGL
 
             if (parent == null)
                 parent = Windows.GetPrimary();
-            
+
             var window = (parent == null) ? IntPtr.Zero : (IntPtr)((SDL2UltravioletWindow)parent);
             messageBoxService.ShowMessageBox(type, title, message, window);
         }
@@ -73,8 +69,8 @@ namespace Ultraviolet.OpenGL
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed); 
-                
+                Contract.EnsureNotDisposed(this, Disposed);
+
                 return clipboard;
             }
         }
@@ -109,7 +105,7 @@ namespace Ultraviolet.OpenGL
         {
             if (disposing && !Disposed)
             {
-                ((SDL2UltravioletWindowInfo)windows).DesignateCurrent(null, IntPtr.Zero);
+                windows.DesignateCurrent(null, IntPtr.Zero);
                 foreach (SDL2UltravioletWindow window in windows.ToList())
                 {
                     windows.Destroy(window);
@@ -129,7 +125,7 @@ namespace Ultraviolet.OpenGL
         private readonly ClipboardService clipboard;
         private readonly CursorService cursorService;
         private readonly MessageBoxService messageBoxService;
-        private readonly IUltravioletWindowInfo windows;
-        private readonly IUltravioletDisplayInfo displays;
+        private readonly SDL2UltravioletWindowInfo windows;
+        private readonly SDL2UltravioletDisplayInfo displays;
     }
 }

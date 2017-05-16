@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace Ultraviolet.SDL2.Platform
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Represents the configuration information for SDL2 windows.
     /// </summary>
-    public sealed class SDL2WindowConfiguration
+    public sealed class SDL2PlatformConfiguration
     {
         /// <summary>
-        /// Gets or sets the type of window to create.
+        /// Gets or sets the rendering API which will be used by the application.
         /// </summary>
-        public SDL2WindowType WindowType { get; set; }
+        public SDL2PlatformRenderingAPI RenderingAPI { get; set; }
 
         /// <summary>
         /// Gets the number of buffers used for multisample anti-aliasing.

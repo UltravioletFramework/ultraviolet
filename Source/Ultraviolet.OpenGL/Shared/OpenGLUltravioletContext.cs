@@ -125,7 +125,11 @@ namespace Ultraviolet.OpenGL
             var sdlAssembly = typeof(SDL).Assembly;
             InitializeFactoryMethodsInAssembly(sdlAssembly);
 
-            this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)new DummyUltravioletPlatform(this) : new OpenGLUltravioletPlatform(this, configuration);
+            var sdlconfig = new SDL2PlatformConfiguration();
+            sdlconfig.RenderingAPI = SDL2PlatformRenderingAPI.OpenGL;
+            sdlconfig.MultiSampleBuffers = configuration.MultiSampleBuffers;
+            sdlconfig.MultiSampleSamples = configuration.MultiSampleSamples;
+            this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)new DummyUltravioletPlatform(this) : new SDL2UltravioletPlatform(this, configuration, sdlconfig);
 
             PumpEvents();
 

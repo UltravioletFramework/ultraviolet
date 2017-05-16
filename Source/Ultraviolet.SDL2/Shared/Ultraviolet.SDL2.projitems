@@ -98,8 +98,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindow.NativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindowInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2WindowConfiguration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2WindowType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformRenderingAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Cursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2CursorProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Exception.cs" />
@@ -109,6 +109,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletInput.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo_android.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDLFactoryInitializer.cs" />
   </ItemGroup>
 </Project>

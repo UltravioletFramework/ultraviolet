@@ -21,7 +21,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uvconfig">The Ultraviolet configuration settings for the current context.</param>
         /// <param name="winconfig">The window configuration settings for the current context.</param>
-        public SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2WindowConfiguration winconfig)
+        public SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
         {
             Contract.Require(uv, nameof(uv));
             Contract.Require(uvconfig, nameof(uvconfig));
@@ -205,7 +205,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The Ultraviolet window that was created.</returns>
         public IUltravioletWindow Create(String caption, Int32 x, Int32 y, Int32 width, Int32 height, WindowFlags flags = WindowFlags.None)
         {
-            var sdlflags = (windowType == SDL2WindowType.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
+            var sdlflags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
                 sdlflags |= SDL_WindowFlags.ALLOW_HIGHDPI;
@@ -373,20 +373,20 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Initializes the context's primary window.
         /// </summary>
-        private void InitializePrimaryWindow(UltravioletConfiguration uvconfig, SDL2WindowConfiguration winconfig)
+        private void InitializePrimaryWindow(UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
         {
-            // Make sure we've been given a valid window type.
-            if (winconfig.WindowType != SDL2WindowType.OpenGL)
+            // Make sure we've been given a valid rendering API.
+            if (winconfig.RenderingAPI != SDL2PlatformRenderingAPI.OpenGL)
                 throw new NotSupportedException();
 
-            windowType = winconfig.WindowType;
+            renderingAPI = winconfig.RenderingAPI;
 
             // Retrieve the caption for our window.
             var caption = Localization.Strings.Contains("WINDOW_CAPTION") ?
                 Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
 
             // If this is an OpenGL window, set the appropriate attributes.
-            if (winconfig.WindowType == SDL2WindowType.OpenGL)
+            if (winconfig.RenderingAPI == SDL2PlatformRenderingAPI.OpenGL)
             {
                 // Set the OpenGL attributes for the window we're about to create.
                 if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, winconfig.MultiSampleBuffers) < 0)
@@ -404,7 +404,7 @@ namespace Ultraviolet.SDL2.Platform
             // Initialize the hidden master window used to create the OpenGL context.
             var masterWidth = 0;
             var masterHeight = 0;
-            var masterFlags = (windowType == SDL2WindowType.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
+            var masterFlags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
                 masterFlags |= SDL_WindowFlags.ALLOW_HIGHDPI;
@@ -544,7 +544,7 @@ namespace Ultraviolet.SDL2.Platform
         private readonly List<IUltravioletWindow> windows = new List<IUltravioletWindow>();
 
         // The primary and active windows.
-        private SDL2WindowType windowType;
+        private SDL2PlatformRenderingAPI renderingAPI;
         private IUltravioletWindow master;
         private IUltravioletWindow primary;
         private IUltravioletWindow current;

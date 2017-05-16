@@ -95,7 +95,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphicsFactoryInitializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResourceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
