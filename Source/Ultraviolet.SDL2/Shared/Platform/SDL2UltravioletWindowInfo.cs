@@ -10,10 +10,10 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the IUltravioletWindowInfo interface.
+    /// Represents the SDL2 implementation of the <see cref="IUltravioletWindowInfo"/> interface.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public sealed class SDL2UltravioletWindowInfo : IUltravioletWindowInfo, IUltravioletComponent
+    public abstract class SDL2UltravioletWindowInfo : IUltravioletWindowInfo, IUltravioletComponent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SDL2UltravioletWindowInfo"/> class.
@@ -21,7 +21,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="uvconfig">The Ultraviolet configuration settings for the current context.</param>
         /// <param name="winconfig">The window configuration settings for the current context.</param>
-        public SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
+        internal SDL2UltravioletWindowInfo(UltravioletContext uv, UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
         {
             Contract.Require(uv, nameof(uv));
             Contract.Require(uvconfig, nameof(uvconfig));
@@ -31,28 +31,7 @@ namespace Ultraviolet.SDL2.Platform
 
             InitializePrimaryWindow(uvconfig, winconfig);
         }
-
-        /// <summary>
-        /// Draws the current window.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Draw.</param>
-        public void Draw(UltravioletTime time)
-        {
-            var oglwin = (SDL2UltravioletWindow)current;
-
-            oglwin.Draw(time);
-        }
-
-        /// <summary>
-        /// Swaps the back buffer and the front buffer.
-        /// </summary>
-        public void Swap()
-        {
-            var oglwin = (SDL2UltravioletWindow)current;
-
-            SDL.GL_SwapWindow((IntPtr)oglwin);
-        }
-
+        
         /// <summary>
         /// Designates the specified window as the primary window.
         /// </summary>
@@ -71,42 +50,7 @@ namespace Ultraviolet.SDL2.Platform
                 OnPrimaryWindowChanged();
             }
         }
-
-        /// <summary>
-        /// Makes the specified window the current window.
-        /// </summary>
-        /// <param name="window">The window to make current.</param>
-        /// <param name="context">The OpenGL context.</param>
-        public void DesignateCurrent(IUltravioletWindow window, IntPtr context)
-        {
-            if (current != window)
-            {
-                OnCurrentWindowChanging();
-
-                var glCurrentOld = current as SDL2UltravioletWindow;
-                if (glCurrentOld != null)
-                    glCurrentOld.IsCurrentWindow = false;
-
-                current = window;
-
-                var glCurrentNew = current as SDL2UltravioletWindow;
-                if (glCurrentNew != null)
-                    glCurrentNew.IsCurrentWindow = true;
-
-                if (window != null && (window != glwin || window.SynchronizeWithVerticalRetrace != vsync))
-                {
-                    DesignateCurrentOpenGLWindow(window, context);
-                }
-
-                OnCurrentWindowChanged();
-            }
-
-            if (windows.Count == 0 || (window == null && context == IntPtr.Zero))
-            {
-                DesignateCurrentOpenGLWindow(null, context);
-            }
-        }
-
+        
         /// <summary>
         /// Gets the window with the specified identifier.
         /// </summary>
@@ -278,8 +222,7 @@ namespace Ultraviolet.SDL2.Platform
             if (window == primary)
                 DesignatePrimary(null);
 
-            if (window == glwin && glcontext != IntPtr.Zero)
-                DesignateCurrentOpenGLWindow(null, glcontext);
+            OnWindowCleanup(window);
 
             var sdlwin = (SDL2UltravioletWindow)window;
             Ultraviolet.Messages.Unsubscribe(sdlwin, SDL2UltravioletMessages.SDLEvent);
@@ -371,31 +314,126 @@ namespace Ultraviolet.SDL2.Platform
         public event UltravioletWindowInfoEventHandler CurrentWindowChanging;
 
         /// <summary>
+        /// Initializes the rendering API.
+        /// </summary>
+        /// <param name="sdlconfig">The platform configuration settings.</param>
+        protected virtual void InitializeRenderingAPI(SDL2PlatformConfiguration sdlconfig)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes the rendering API using lower settings in the event that the initial attempt
+        /// to initialize the API failed.
+        /// </summary>
+        /// <param name="sdlconfig">The platform configuration settings.</param>
+        protected virtual void InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig)
+        {
+
+        }
+
+        /// <summary>
+        /// Cleans up a window's resources after it is destroyed.
+        /// </summary>
+        /// <param name="window">The window that was destroyed.</param>
+        protected virtual void OnWindowCleanup(IUltravioletWindow window)
+        { }
+
+        /// <summary>
+        /// Raises the WindowCreated event.
+        /// </summary>
+        /// <param name="window">The window that was created.</param>
+        protected void OnWindowCreated(IUltravioletWindow window) =>
+            WindowCreated?.Invoke(window);
+
+        /// <summary>
+        /// Raises the WindowDestroyed event.
+        /// </summary>
+        /// <param name="window">The window that is being destroyed.</param>
+        protected void OnWindowDestroyed(IUltravioletWindow window) =>
+            WindowDestroyed?.Invoke(window);
+
+        /// <summary>
+        /// Raises the PrimaryWindowChanging event.
+        /// </summary>
+        protected void OnPrimaryWindowChanging() =>
+            PrimaryWindowChanging?.Invoke(primary);
+
+        /// <summary>
+        /// Raises the PrimaryWindowChanged event.
+        /// </summary>
+        protected void OnPrimaryWindowChanged() =>
+            PrimaryWindowChanged?.Invoke(primary);
+
+        /// <summary>
+        /// Raises the CurrentWindowChanging event.
+        /// </summary>
+        protected void OnCurrentWindowChanging() =>
+            CurrentWindowChanging?.Invoke(current);
+
+        /// <summary>
+        /// Raises the CurrentWindowChanged event.
+        /// </summary>
+        protected void OnCurrentWindowChanged() =>
+            CurrentWindowChanged?.Invoke(current);
+
+        /// <summary>
+        /// Gets the window manager's list of windows.
+        /// </summary>
+        protected IList<IUltravioletWindow> Windows { get { return windows; } }
+
+        /// <summary>
+        /// Gets or sets the master window.
+        /// </summary>
+        protected IUltravioletWindow Master
+        {
+            get { return master; }
+            set { master = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the primary window.
+        /// </summary>
+        protected IUltravioletWindow Primary
+        {
+            get { return primary; }
+            set { primary = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the current window.
+        /// </summary>
+        protected IUltravioletWindow Current
+        {
+            get { return current; }
+            set { current = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether vertical sync is enabled.
+        /// </summary>
+        protected Boolean VSync
+        {
+            get { return vsync; }
+            set { vsync = value; }
+        }
+
+        /// <summary>
         /// Initializes the context's primary window.
         /// </summary>
-        private void InitializePrimaryWindow(UltravioletConfiguration uvconfig, SDL2PlatformConfiguration winconfig)
+        private void InitializePrimaryWindow(UltravioletConfiguration uvconfig, SDL2PlatformConfiguration sdlconfig)
         {
-            // Make sure we've been given a valid rendering API.
-            if (winconfig.RenderingAPI != SDL2PlatformRenderingAPI.OpenGL)
+            // Initialize the rendering API.
+            if (sdlconfig.RenderingAPI != SDL2PlatformRenderingAPI.OpenGL)
                 throw new NotSupportedException();
 
-            renderingAPI = winconfig.RenderingAPI;
+            InitializeRenderingAPI(sdlconfig);
+            renderingAPI = sdlconfig.RenderingAPI;
 
             // Retrieve the caption for our window.
             var caption = Localization.Strings.Contains("WINDOW_CAPTION") ?
                 Localization.Get("WINDOW_CAPTION") : UltravioletStrings.DefaultWindowCaption.Value;
 
-            // If this is an OpenGL window, set the appropriate attributes.
-            if (winconfig.RenderingAPI == SDL2PlatformRenderingAPI.OpenGL)
-            {
-                // Set the OpenGL attributes for the window we're about to create.
-                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, winconfig.MultiSampleBuffers) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, winconfig.MultiSampleSamples) < 0)
-                    throw new SDL2Exception();
-            }
-            
             // If we're running on Android or iOS, we can't create a headless context.
             var isRunningOnMobile = (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS);
             if (isRunningOnMobile && uvconfig.Headless)
@@ -418,15 +456,11 @@ namespace Ultraviolet.SDL2.Platform
                 masterFlags |= SDL_WindowFlags.HIDDEN;
             }
 
-            // Attempt to create the OpenGL window. If that fails, reduce our requirements and try again before failing.
+            // Attempt to create the master window. If that fails, reduce our requirements and try again before failing.
             var masterptr = SDL.CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
-                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 0) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
-                    throw new SDL2Exception();
+                InitializeRenderingAPIFallback(sdlconfig);
 
                 masterptr = SDL.CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
                 if (masterptr == IntPtr.Zero)
@@ -470,76 +504,6 @@ namespace Ultraviolet.SDL2.Platform
             }
         }
 
-        /// <summary>
-        /// Raises the WindowCreated event.
-        /// </summary>
-        /// <param name="window">The window that was created.</param>
-        private void OnWindowCreated(IUltravioletWindow window) =>
-            WindowCreated?.Invoke(window);
-
-        /// <summary>
-        /// Raises the WindowDestroyed event.
-        /// </summary>
-        /// <param name="window">The window that is being destroyed.</param>
-        private void OnWindowDestroyed(IUltravioletWindow window) =>
-            WindowDestroyed?.Invoke(window);
-
-        /// <summary>
-        /// Raises the PrimaryWindowChanging event.
-        /// </summary>
-        private void OnPrimaryWindowChanging() =>
-            PrimaryWindowChanging?.Invoke(primary);
-
-        /// <summary>
-        /// Raises the PrimaryWindowChanged event.
-        /// </summary>
-        private void OnPrimaryWindowChanged() =>
-            PrimaryWindowChanged?.Invoke(primary);
-
-        /// <summary>
-        /// Raises the CurrentWindowChanging event.
-        /// </summary>
-        private void OnCurrentWindowChanging() =>
-            CurrentWindowChanging?.Invoke(current);
-
-        /// <summary>
-        /// Raises the CurrentWindowChanged event.
-        /// </summary>
-        private void OnCurrentWindowChanged() =>
-            CurrentWindowChanged?.Invoke(current);
-
-        /// <summary>
-        /// Binds the OpenGL context to the specified window.
-        /// </summary>
-        private void DesignateCurrentOpenGLWindow(IUltravioletWindow window, IntPtr context)
-        {
-            var shuttingDown = (window == null && context == IntPtr.Zero);
-
-            if (context == IntPtr.Zero)
-            {
-                if (glcontext == IntPtr.Zero)
-                {
-                    return;
-                }
-                context = glcontext;
-            }
-
-            var win = (SDL2UltravioletWindow)(window ?? master);
-            var winptr = (IntPtr)win;
-            if (SDL.GL_MakeCurrent(winptr, context) < 0)
-                throw new SDL2Exception();
-
-            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0 && Ultraviolet.Platform != UltravioletPlatform.iOS)
-            {
-                if (!shuttingDown)
-                    throw new SDL2Exception();
-            }
-
-            glwin = win;
-            glcontext = context;
-            vsync = win.SynchronizeWithVerticalRetrace;
-        }
-
         // The context's attached windows.
         private readonly List<IUltravioletWindow> windows = new List<IUltravioletWindow>();
 
@@ -548,8 +512,6 @@ namespace Ultraviolet.SDL2.Platform
         private IUltravioletWindow master;
         private IUltravioletWindow primary;
         private IUltravioletWindow current;
-        private IUltravioletWindow glwin;
-        private IntPtr glcontext;
         private Boolean vsync;
 
         // The Ultraviolet context.

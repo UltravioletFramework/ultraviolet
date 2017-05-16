@@ -40,6 +40,7 @@ namespace Ultraviolet.SDL2.Platform
 
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
+            this.opengl = (flags & SDL_WindowFlags.OPENGL) == SDL_WindowFlags.OPENGL;
 
             ChangeCompositor(DefaultCompositor.Create(this));
         }
@@ -405,7 +406,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
-                SDL.GL_GetDrawableSize(ptr, out w, out h);
+                SDL.GetDrawableSize(ptr, opengl, out w, out h);
 
                 return new Size2(w, h);
             }
@@ -1076,6 +1077,7 @@ namespace Ultraviolet.SDL2.Platform
         private DisplayMode displayMode;
         private Boolean focused;
         private Boolean minimized;
+        private Boolean opengl;
 
         // HACK: Cached style from before entering fullscreen windowed mode.
         private IntPtr win32CachedStyle;

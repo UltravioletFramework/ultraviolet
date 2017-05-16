@@ -99,8 +99,8 @@ namespace Ultraviolet.OpenGL
             if (oglgfx != null)
             {
                 var glcontext = oglgfx.OpenGLContext;
-                var windowInfo = (SDL2UltravioletWindowInfo)platform.Windows;
-                foreach (SDL2UltravioletWindow window in platform.Windows)
+                var windowInfo = (SDL2UltravioletWindowInfoOpenGL)platform.Windows;
+                foreach (var window in platform.Windows)
                 {
                     windowInfo.DesignateCurrent(window, glcontext);
 

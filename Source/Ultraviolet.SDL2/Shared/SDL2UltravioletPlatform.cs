@@ -23,7 +23,7 @@ namespace Ultraviolet.SDL2
         {
             this.clipboard = ClipboardService.Create();
             this.messageBoxService = MessageBoxService.Create();
-            this.windows = new SDL2UltravioletWindowInfo(uv, uvconfig, sdlconfig);
+            this.windows = new SDL2UltravioletWindowInfoOpenGL(uv, uvconfig, sdlconfig);
             this.displays = new SDL2UltravioletDisplayInfo();
         }
 
@@ -131,7 +131,7 @@ namespace Ultraviolet.SDL2
         private Cursor cursor;
         private readonly ClipboardService clipboard;
         private readonly MessageBoxService messageBoxService;
-        private readonly SDL2UltravioletWindowInfo windows;
+        private readonly SDL2UltravioletWindowInfoOpenGL windows;
         private readonly SDL2UltravioletDisplayInfo displays;
     }
 }

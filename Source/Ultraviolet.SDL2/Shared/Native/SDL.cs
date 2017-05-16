@@ -302,6 +302,18 @@ namespace Ultraviolet.SDL2.Native
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GL_GetDrawableSize")]
         public static extern void GL_GetDrawableSize(IntPtr window, out Int32 w, out Int32 h);
 
+        public static void GetDrawableSize(IntPtr window, Boolean opengl, out Int32 w, out Int32 h)
+        {
+            if (opengl)
+            {
+                GL_GetDrawableSize(window, out w, out h);
+            }
+            else
+            {
+                GetWindowSize(window, out w, out h);
+            }
+        }
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_NumJoysticks")]
         public static extern Int32 NumJoysticks();
 

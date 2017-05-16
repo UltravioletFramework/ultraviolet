@@ -96,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletDisplayInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindow.NativeMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindowInfoOpenGL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindowInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformRenderingAPI.cs" />
