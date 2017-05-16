@@ -122,6 +122,9 @@ namespace Ultraviolet.OpenGL
                 }
             }
 
+            var sdlAssembly = typeof(SDL).Assembly;
+            InitializeFactoryMethodsInAssembly(sdlAssembly);
+
             this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)new DummyUltravioletPlatform(this) : new OpenGLUltravioletPlatform(this, configuration);
 
             PumpEvents();
@@ -131,17 +134,14 @@ namespace Ultraviolet.OpenGL
                 ((OpenGLUltravioletGraphics)graphics).ResetDeviceStates();
 
             this.audio = IsRunningInServiceMode ? new DummyUltravioletAudio(this) : InitializeAudioSubsystem(configuration);
-            this.input = IsRunningInServiceMode ? (IUltravioletInput)(new DummyUltravioletInput(this)) : new SDL2UltravioletInput(this);
-            this.content = new UltravioletContent(this);
-            this.ui = new UltravioletUI(this, configuration);
 
-            this.content.RegisterImportersAndProcessors(new[]
-            {
-                typeof(SDL2.Native.SDL).Assembly,
-                String.IsNullOrEmpty(configuration.AudioSubsystemAssembly) ? null : Assembly.Load(configuration.AudioSubsystemAssembly),
-                String.IsNullOrEmpty(configuration.ViewProviderAssembly) ? null : Assembly.Load(configuration.ViewProviderAssembly)
-            });
+            this.input = IsRunningInServiceMode ? (IUltravioletInput)(new DummyUltravioletInput(this)) : new SDL2UltravioletInput(this);
+
+            this.content = new UltravioletContent(this);
+            this.content.RegisterImportersAndProcessors(new[] { sdlAssembly, AudioSubsystemAssembly });
             this.content.Importers.RegisterImporter<XmlContentImporter>("prog");
+
+            this.ui = new UltravioletUI(this, configuration);
 
             PumpEvents();
             
@@ -290,6 +290,19 @@ namespace Ultraviolet.OpenGL
             return ui;
         }
 
+        /// <summary>
+        /// Gets the assembly that implements the audio subsystem.
+        /// </summary>
+        public Assembly AudioSubsystemAssembly
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return audioSubsystemAssembly;
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnShutdown()
         {
@@ -355,6 +368,7 @@ namespace Ultraviolet.OpenGL
             {
                 asm = Assembly.Load(configuration.AudioSubsystemAssembly);
                 InitializeFactoryMethodsInAssembly(asm);
+                audioSubsystemAssembly = asm;
             }
             catch (Exception e)
             {
@@ -463,5 +477,8 @@ namespace Ultraviolet.OpenGL
         // The SDL event filter.
         private readonly SDL.EventFilter eventFilter;
         private readonly IntPtr eventFilterPtr;
+
+        // Property values.
+        private Assembly audioSubsystemAssembly;
     }
 }

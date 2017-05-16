@@ -759,6 +759,32 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets the assembly which provides compatibility services for the current platform.
+        /// </summary>
+        public Assembly PlatformCompatibilityShimAssembly
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return platformCompatibilityShimAssembly;
+            }
+        }
+
+        /// <summary>
+        /// Gets the assembly which implements views for the user interface subsystem.
+        /// </summary>
+        public Assembly ViewProviderAssembly
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return viewProviderAssembly;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the context supports high-density display modes
         /// such as Retina and Retina HD. This allows the application to make use of every physical pixel 
         /// on the screen, rather than being scaled to use logical pixels.
@@ -1189,15 +1215,10 @@ namespace Ultraviolet
 
             InitializeFactoryMethodsInAssembly(asmCore);
             InitializeFactoryMethodsInAssembly(asmImpl);
-            var asmShim = InitializeFactoryMethodsInCompatibilityShim();
-            var asmView = InitializeFactoryMethodsInViewProvider(configuration);
+            InitializeFactoryMethodsInCompatibilityShim();
+            InitializeFactoryMethodsInViewProvider(configuration);
+            
             var asmEntry = Assembly.GetEntryAssembly();
-            var asmMisc = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.StartsWith("Ultraviolet."))
-                .Except(new[] { asmCore, asmImpl, asmShim, asmView, asmEntry }).OrderBy(x => x.FullName);
-
-            foreach (var asm in asmMisc)
-                InitializeFactoryMethodsInAssembly(asm);
-
             if (asmEntry != null)
                 InitializeFactoryMethodsInAssembly(asmEntry);
         }
@@ -1205,7 +1226,7 @@ namespace Ultraviolet
         /// <summary>
         /// Initializes any factory methods exposed by the current platform compatibility shim.
         /// </summary>
-        private Assembly InitializeFactoryMethodsInCompatibilityShim()
+        private void InitializeFactoryMethodsInCompatibilityShim()
         {
             try
             {
@@ -1237,29 +1258,30 @@ namespace Ultraviolet
                 if (shim != null)
                     InitializeFactoryMethodsInAssembly(shim);
 
-                return shim;
+                platformCompatibilityShimAssembly = shim;
             }
             catch (FileNotFoundException e)
             {
                 throw new InvalidCompatibilityShimException(UltravioletStrings.MissingCompatibilityShim.Format(e.FileName));
             }
         }
-
+        
         /// <summary>
         /// Initializes any factory methods exposed by the registered view provider.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        private Assembly InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
+        private void InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
         {
             if (String.IsNullOrEmpty(configuration.ViewProviderAssembly))
-                return null;
+                return;
 
             Assembly asm;
             try
             {
                 asm = Assembly.Load(configuration.ViewProviderAssembly);
                 InitializeFactoryMethodsInAssembly(asm);
-                return asm;
+
+                viewProviderAssembly = asm;
             }
             catch (Exception e)
             {
@@ -1380,6 +1402,8 @@ namespace Ultraviolet
         private readonly UltravioletSynchronizationContext syncContext;
         private readonly UltravioletFactory factory = new UltravioletFactory();
         private readonly Thread thread;
+        private Assembly platformCompatibilityShimAssembly;
+        private Assembly viewProviderAssembly;
         private Boolean supportsHighDensityDisplayModes;
         private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;

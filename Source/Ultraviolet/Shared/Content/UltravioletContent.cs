@@ -22,35 +22,30 @@ namespace Ultraviolet.Content
         }
 
         /// <inheritdoc/>
-        public void RegisterImportersAndProcessors(IEnumerable<Assembly> additionalAssemblies)
+        public void RegisterImportersAndProcessors(Assembly asm)
+        {
+            Contract.Require(asm, nameof(asm));
+
+            importers.RegisterAssembly(asm);
+            processors.RegisterAssembly(asm);
+        }
+
+        /// <inheritdoc/>
+        public void RegisterImportersAndProcessors(IEnumerable<Assembly> additionalAssemblies = null)
         {
             Contract.EnsureNot(registered, UltravioletStrings.ContentHandlersAlreadyRegistered);
 
-            var asmUltravioletCore = typeof(UltravioletContext).Assembly;
-            var asmUltravioletImpl = Ultraviolet.GetType().Assembly;
+            var asmCore = typeof(UltravioletContext).Assembly;
+            var asmImpl = Ultraviolet.GetType().Assembly;
+            var asmEntry = Assembly.GetEntryAssembly();
+            var asmShim = Ultraviolet.PlatformCompatibilityShimAssembly;
+            var asmViews = Ultraviolet.ViewProviderAssembly;
 
-            var asmUltravioletPlatform = Ultraviolet.GetPlatform().GetType().Assembly;
-            var asmUltravioletContent  = Ultraviolet.GetContent().GetType().Assembly;
-            var asmUltravioletGraphics = Ultraviolet.GetGraphics().GetType().Assembly;
-            var asmUltravioletAudio    = Ultraviolet.GetAudio().GetType().Assembly;
-            var asmUltravioletInput    = Ultraviolet.GetInput().GetType().Assembly;
-            var asmUltravioletUI       = Ultraviolet.GetUI().GetType().Assembly;
-
-            var assemblies = new[] { 
-                asmUltravioletCore, 
-                asmUltravioletImpl, 
-                asmUltravioletPlatform,
-                asmUltravioletContent,
-                asmUltravioletGraphics,
-                asmUltravioletAudio,
-                asmUltravioletInput,
-                asmUltravioletUI }.Union(additionalAssemblies ?? Enumerable.Empty<Assembly>()).Where(x => x != null).Distinct();
+            var assemblies = new[] { asmCore, asmImpl, asmShim, asmViews, asmEntry }
+                .Union(additionalAssemblies ?? Enumerable.Empty<Assembly>()).Where(x => x != null).Distinct();
 
             foreach (var asm in assemblies)
-            {
-                importers.RegisterAssembly(asm);
-                processors.RegisterAssembly(asm);
-            }
+                RegisterImportersAndProcessors(asm);
 
             registered = true;
         }
@@ -105,7 +100,7 @@ namespace Ultraviolet.Content
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         private void OnUpdating(UltravioletTime time) =>
             Updating?.Invoke(this, time);
-
+        
         // Registered content importers and processors.
         private Boolean registered;
         private readonly ContentManifestRegistry manifests = new ContentManifestRegistry();
