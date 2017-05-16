@@ -4,7 +4,7 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of <see cref="Ultraviolet.Graphics.BasicEffect"/>.
+    /// Represents the OpenGL implementation of <see cref="Ultraviolet.Graphics.BasicEffect"/>.
     /// </summary>
     public sealed class OpenGLBasicEffect : BasicEffect
     {

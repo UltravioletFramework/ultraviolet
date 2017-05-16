@@ -5,7 +5,7 @@ using Ultraviolet.Graphics.Graphics2D;
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the sprite batch custom effect.
+    /// Represents the OpenGL implementation of the sprite batch custom effect.
     /// </summary>
     public sealed class OpenGLSpriteBatchEffect : SpriteBatchEffect
     {

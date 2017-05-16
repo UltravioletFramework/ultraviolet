@@ -8,7 +8,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the Texture2D class.
+    /// Represents the OpenGL implementation of the Texture2D class.
     /// </summary>
     public unsafe sealed class OpenGLTexture2D : Texture2D, IOpenGLResource, IBindableResource
     {

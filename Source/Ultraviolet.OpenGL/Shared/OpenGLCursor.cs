@@ -7,7 +7,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.OpenGL
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the Cursor class.
+    /// Represents the OpenGL implementation of the Cursor class.
     /// </summary>
     public unsafe sealed class OpenGLCursor : Cursor
     {

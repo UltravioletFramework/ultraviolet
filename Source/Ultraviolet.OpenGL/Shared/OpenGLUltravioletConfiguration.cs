@@ -5,7 +5,7 @@ using Ultraviolet.Core;
 namespace Ultraviolet.OpenGL
 {
     /// <summary>
-    /// Represents the Ultraviolet Framework's configuration settings under the OpenGL/SDL2 implementation.
+    /// Represents the Ultraviolet Framework's configuration settings under the OpenGL implementation.
     /// </summary>
     [CLSCompliant(true)]
     public sealed class OpenGLUltravioletConfiguration : UltravioletConfiguration
@@ -138,7 +138,7 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <summary>
-        /// The default configuration for the OpenGL/SDL2 implementation.
+        /// The default configuration for the OpenGL implementation.
         /// </summary>
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
 

@@ -11,7 +11,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.OpenGL.Platform
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the IUltravioletWindow interface.
+    /// Represents the OpenGL implementation of the IUltravioletWindow interface.
     /// </summary>    
     public sealed unsafe partial class OpenGLUltravioletWindow : UltravioletResource,
         IMessageSubscriber<UltravioletMessageID>,

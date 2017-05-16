@@ -4,7 +4,7 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the EffectParameterCollection class.
+    /// Represents the OpenGL implementation of the EffectParameterCollection class.
     /// </summary>
     public sealed class OpenGLEffectParameterCollection : EffectParameterCollection
     {

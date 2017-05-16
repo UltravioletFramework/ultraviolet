@@ -7,7 +7,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the IndexBuffer class.
+    /// Represents the OpenGL implementation of the IndexBuffer class.
     /// </summary>
     public unsafe sealed class OpenGLIndexBuffer : DynamicIndexBuffer, IOpenGLResource
     {

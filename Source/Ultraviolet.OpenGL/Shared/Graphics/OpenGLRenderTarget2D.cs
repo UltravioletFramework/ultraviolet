@@ -7,7 +7,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the RenderTarget2D class.
+    /// Represents the OpenGL implementation of the RenderTarget2D class.
     /// </summary>
     public sealed class OpenGLRenderTarget2D : RenderTarget2D, IOpenGLResource, IBindableResource
     {
@@ -65,22 +65,22 @@ namespace Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.ValidateResource(buffer);
 
-            var sdlBuffer = (OpenGLRenderBuffer2D)buffer;
+            var oglBuffer = (OpenGLRenderBuffer2D)buffer;
 
             Ultraviolet.QueueWorkItemAndWait(() =>
             {
                 using (OpenGLState.ScopedBindFramebuffer(framebuffer))
                 {
-                    AttachRenderBuffer(sdlBuffer);
+                    AttachRenderBuffer(oglBuffer);
 
                     framebufferStatus = gl.CheckNamedFramebufferStatus(framebuffer, gl.GL_FRAMEBUFFER);
                     gl.ThrowIfError();
                 }
             });
 
-            sdlBuffer.MarkAttached();
+            oglBuffer.MarkAttached();
 
-            buffers.Add(sdlBuffer);
+            buffers.Add(oglBuffer);
         }
 
         /// <inheritdoc/>

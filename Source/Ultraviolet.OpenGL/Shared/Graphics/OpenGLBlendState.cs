@@ -7,7 +7,7 @@ using Ultraviolet.OpenGL.Graphics.Caching;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the BlendState class.
+    /// Represents the OpenGL implementation of the BlendState class.
     /// </summary>
     public class OpenGLBlendState : BlendState
     {

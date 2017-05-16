@@ -7,7 +7,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of <see cref="BlurEffect"/>.
+    /// Represents the OpenGL implementation of <see cref="BlurEffect"/>.
     /// </summary>
     public sealed class OpenGLBlurEffect : BlurEffect
     {

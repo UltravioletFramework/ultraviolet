@@ -12,7 +12,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.OpenGL
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the Ultraviolet Graphics subsystem.
+    /// Represents the OpenGL implementation of the Ultraviolet Graphics subsystem.
     /// </summary>
     public sealed class OpenGLUltravioletGraphics : UltravioletResource, IUltravioletGraphics
     {

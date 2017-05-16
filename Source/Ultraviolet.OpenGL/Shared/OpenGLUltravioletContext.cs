@@ -15,7 +15,7 @@ using Ultraviolet.UI;
 namespace Ultraviolet.OpenGL
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the Ultraviolet context.
+    /// Represents the OpenGL implementation of the Ultraviolet context.
     /// </summary>
     [CLSCompliant(true)]
     public sealed class OpenGLUltravioletContext : UltravioletContext

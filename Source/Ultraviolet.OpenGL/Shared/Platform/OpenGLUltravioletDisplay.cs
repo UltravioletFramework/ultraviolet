@@ -8,7 +8,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.OpenGL.Platform
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the IUltravioletDisplay interface.
+    /// Represents the OpenGL implementation of the IUltravioletDisplay interface.
     /// </summary>
     public sealed unsafe class OpenGLUltravioletDisplay : IUltravioletDisplay
     {

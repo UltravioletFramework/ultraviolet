@@ -6,7 +6,7 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the EffectTechnique class.
+    /// Represents the OpenGL implementation of the EffectTechnique class.
     /// </summary>
     public sealed class OpenGLEffectTechnique : EffectTechnique
     {

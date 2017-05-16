@@ -6,7 +6,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the EffectParameter class.
+    /// Represents the OpenGL implementation of the EffectParameter class.
     /// </summary>
     public sealed class OpenGLEffectParameter : EffectParameter
     {

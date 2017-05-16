@@ -6,7 +6,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the RenderBuffer2D class.
+    /// Represents the OpenGL implementation of the RenderBuffer2D class.
     /// </summary>
     public sealed class OpenGLRenderBuffer2D : RenderBuffer2D, IOpenGLResource, IBindableResource
     {

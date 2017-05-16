@@ -5,7 +5,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents a value associated with an OpenGL context that is cached by the OpenGL/SDL2 implementation
+    /// Represents a value associated with an OpenGL context that is cached by the OpenGL implementation
     /// of Ultraviolet in order to avoid costly calls to glGet() functions.
     /// </summary>
     internal class OpenGLStateInteger

@@ -11,7 +11,7 @@ using Ultraviolet.SDL2.Native;
 namespace Ultraviolet.OpenGL.Platform
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the IUltravioletWindowInfo interface.
+    /// Represents the OpenGL implementation of the IUltravioletWindowInfo interface.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public sealed class OpenGLUltravioletWindowInfo : IUltravioletWindowInfo, IUltravioletComponent

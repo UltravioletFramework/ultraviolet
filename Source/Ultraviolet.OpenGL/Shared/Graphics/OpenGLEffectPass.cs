@@ -6,7 +6,7 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the EffectPass class.
+    /// Represents the OpenGL implementation of the EffectPass class.
     /// </summary>
     public sealed class OpenGLEffectPass : EffectPass
     {

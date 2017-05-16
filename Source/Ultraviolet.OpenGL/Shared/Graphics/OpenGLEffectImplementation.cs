@@ -7,7 +7,7 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of EffectImplementation.
+    /// Represents the OpenGL implementation of EffectImplementation.
     /// </summary>
     public class OpenGLEffectImplementation : EffectImplementation
     {

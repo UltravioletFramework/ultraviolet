@@ -8,7 +8,7 @@ using Ultraviolet.OpenGL.Bindings;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL/SDL2 implementation of the GeometryStream class.
+    /// Represents the OpenGL implementation of the GeometryStream class.
     /// </summary>
     public sealed partial class OpenGLGeometryStream : GeometryStream, IOpenGLResource
     {
@@ -76,20 +76,20 @@ namespace Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.ValidateResource(ibuffer);
 
-            var sdlIndexBuffer = (OpenGLIndexBuffer)ibuffer;
-            var sdlIndexBufferName = sdlIndexBuffer.OpenGLName;
+            var oglIndexBuffer = (OpenGLIndexBuffer)ibuffer;
+            var oglIndexBufferName = oglIndexBuffer.OpenGLName;
 
-            this.ibuffer = sdlIndexBuffer;
+            this.ibuffer = oglIndexBuffer;
 
             if (IsUsingVertexArrayObject)
             {
                 using (OpenGLState.ScopedBindVertexArrayObject(vao, 0, force: true))
                 {
-                    OpenGLState.BindElementArrayBuffer(sdlIndexBufferName);
+                    OpenGLState.BindElementArrayBuffer(oglIndexBufferName);
                 }
             }
 
-            this.glElementArrayBufferBinding = sdlIndexBufferName;
+            this.glElementArrayBufferBinding = oglIndexBufferName;
             this.indexBufferElementType = ibuffer.IndexElementType;
         }
 
@@ -591,10 +591,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 vbuffers = new List<VertexBufferBinding>(1);
 
             var oglVertexBuffer = (OpenGLVertexBuffer)vbuffer;
-            var sdlVertexBufferName = oglVertexBuffer.OpenGLName;
-
             var binding = new VertexBufferBinding(oglVertexBuffer, instanceFrequency);
-            this.vbuffers.Add(binding);
+            vbuffers.Add(binding);
         }
 
         // The names of vertex attributes which correspond to Ultraviolet vertex usages.
