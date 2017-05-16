@@ -4,7 +4,6 @@ using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
-using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.OpenGL.Graphics
 {
@@ -13,16 +12,16 @@ namespace Ultraviolet.OpenGL.Graphics
     /// </summary>
     [Preserve(AllMembers = true)]
     [ContentProcessor]
-    public sealed class OpenGLTexture2DProcessor : ContentProcessor<SDL_Surface, Texture2D>
+    public sealed class OpenGLTexture2DProcessor : ContentProcessor<PlatformNativeSurface, Texture2D>
     {
         /// <inheritdoc/>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SDL_Surface input, Boolean delete)
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, PlatformNativeSurface input, Boolean delete)
         {
             var mdat = metadata.As<OpenGLTexture2DProcessorMetadata>();
 
-            using (var surface = new OpenGLSurface2D(manager.Ultraviolet, input))
+            using (var surface = Surface2D.Create(input))
             {
-                surface.PrepareForTextureExport(mdat.PremultiplyAlpha);
+                surface.PrepareForTextureExport(mdat.PremultiplyAlpha, manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
 
                 using (var memstream = new MemoryStream())
                 {
@@ -43,25 +42,22 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 using (var source = SurfaceSource.Create(stream))
                 {
-                    using (var imgSurface = new SDL_Surface(source.Width, source.Height))
-                    {
-                        var imgTexture = new OpenGLTexture2D(manager.Ultraviolet, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, 
-                            source.Width, source.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, source.Data, true);
+                    var imgTexture = new OpenGLTexture2D(manager.Ultraviolet, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8,
+                        source.Width, source.Height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, source.Data, true);
 
-                        return imgTexture;
-                    }
+                    return imgTexture;
                 }
             }
         }
 
         /// <inheritdoc/>
-        public override Texture2D Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
+        public override Texture2D Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
             var mdat = metadata.As<OpenGLTexture2DProcessorMetadata>();
 
-            using (var surface = new OpenGLSurface2D(manager.Ultraviolet, input))
+            using (var surface = Surface2D.Create(input))
             {
-                return surface.CreateTexture(mdat.PremultiplyAlpha);
+                return surface.CreateTexture(mdat.PremultiplyAlpha, manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
             }
         }
 

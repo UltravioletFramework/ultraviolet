@@ -83,6 +83,9 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Boolean FlippedTextures { get { return true; } }
+
+        /// <inheritdoc/>
         public override Boolean SupportsDepthStencilTextures { get { return supportsDepthStencilTextures; } }
 
         /// <inheritdoc/>

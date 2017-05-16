@@ -19,14 +19,12 @@ namespace Ultraviolet.OpenGL
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             // Core classes
-            factory.SetFactoryMethod<CursorFactory>((uv, surface, hx, hv) => new OpenGLCursor(uv, surface, hx, hv));
             factory.SetFactoryMethod<GeometryStreamFactory>((uv) => new OpenGLGeometryStream(uv));
             factory.SetFactoryMethod<VertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, gl.GL_STATIC_DRAW));
             factory.SetFactoryMethod<IndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_STATIC_DRAW));
             factory.SetFactoryMethod<DynamicVertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, gl.GL_DYNAMIC_DRAW));
             factory.SetFactoryMethod<DynamicIndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_DYNAMIC_DRAW));
-            factory.SetFactoryMethod<Surface2DFactory>((uv, width, height) => new OpenGLSurface2D(uv, width, height));
-            factory.SetFactoryMethod<Surface2DFromSourceFactory>((uv, source) => new OpenGLSurface2D(uv, source));
+            factory.SetFactoryMethod<Texture2DFromRawDataFactory>((uv, pixels, width, height, bytesPerPixel) => new OpenGLTexture2D(uv, pixels, width, height, bytesPerPixel));
             factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, immutable) => new OpenGLTexture2D(uv, width, height, immutable));
             factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height, usage) => new OpenGLRenderTarget2D(uv, width, height, usage));
             factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height, options) => new OpenGLRenderBuffer2D(uv, format, width, height, options));

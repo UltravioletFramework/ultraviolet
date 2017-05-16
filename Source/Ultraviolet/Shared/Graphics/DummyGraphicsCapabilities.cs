@@ -8,6 +8,12 @@ namespace Ultraviolet.Graphics
     public sealed class DummyGraphicsCapabilities : GraphicsCapabilities
     {
         /// <inheritdoc/>
+        public override Boolean FlippedTextures
+        {
+            get { return false; }
+        }
+
+        /// <inheritdoc/>
         public override Boolean SupportsDepthStencilTextures
         {
             get { return false; }

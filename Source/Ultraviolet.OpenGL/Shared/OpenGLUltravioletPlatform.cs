@@ -3,7 +3,6 @@ using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.OpenGL.Platform;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.OpenGL
 {
@@ -20,8 +19,9 @@ namespace Ultraviolet.OpenGL
         public OpenGLUltravioletPlatform(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
-            this.msgbox = MessageBoxService.Create();
             this.clipboard = ClipboardService.Create();
+            this.cursorService = CursorService.Create();
+            this.messageBoxService = MessageBoxService.Create();
             this.windows = new OpenGLUltravioletWindowInfo(uv, configuration);
             this.displays = new OpenGLUltravioletDisplayInfo();
         }
@@ -43,7 +43,7 @@ namespace Ultraviolet.OpenGL
                 parent = Windows.GetPrimary();
             
             var window = (parent == null) ? IntPtr.Zero : (IntPtr)((OpenGLUltravioletWindow)parent);
-            msgbox.ShowMessageBox(type, title, message, window);
+            messageBoxService.ShowMessageBox(type, title, message, window);
         }
 
         /// <inheritdoc/>
@@ -53,27 +53,13 @@ namespace Ultraviolet.OpenGL
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return cursor;
+                return cursorService.Cursor;
             }
             set
             {
-                cursor = value;
+                Contract.EnsureNotDisposed(this, Disposed);
 
-                if (OpenGLCursor.AreCursorsSupported(Ultraviolet))
-                {
-                    unsafe
-                    {
-                        var oglcursor = (OpenGLCursor)value;
-                        if (oglcursor != null)
-                        {
-                            SDL.SetCursor(oglcursor.Native);
-                        }
-                        else
-                        {
-                            SDL.SetCursor(SDL.GetDefaultCursor());
-                        }
-                    }
-                }
+                cursorService.Cursor = value;
             }
         }
 
@@ -135,9 +121,9 @@ namespace Ultraviolet.OpenGL
             Updating?.Invoke(this, time);
 
         // Property values.
-        private Cursor cursor;
-        private readonly MessageBoxService msgbox;
         private readonly ClipboardService clipboard;
+        private readonly CursorService cursorService;
+        private readonly MessageBoxService messageBoxService;
         private readonly OpenGLUltravioletWindowInfo windows;
         private readonly OpenGLUltravioletDisplayInfo displays;
     }

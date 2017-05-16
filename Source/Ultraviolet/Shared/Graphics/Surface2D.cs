@@ -22,6 +22,14 @@ namespace Ultraviolet.Graphics
     public delegate Surface2D Surface2DFromSourceFactory(UltravioletContext uv, SurfaceSource source);
 
     /// <summary>
+    /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class from an instance of <see cref="PlatformNativeSurface"/>.
+    /// </summary>
+    /// <param name="uv">The Ultraviolet context.</param>
+    /// <param name="surface">The native surface from which to create the surface.</param>
+    /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
+    public delegate Surface2D Surface2DFromNativeSurfaceFactory(UltravioletContext uv, PlatformNativeSurface surface);
+
+    /// <summary>
     /// Represents a two-dimensional image which is held in CPU memory.
     /// </summary>
     /// <remarks>A <see cref="Surface2D"/> operates similarly to a <see cref="Texture2D"/>, except that it is held in CPU memory rather
@@ -65,6 +73,26 @@ namespace Ultraviolet.Graphics
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Surface2DFromSourceFactory>()(uv, source);
         }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Surface2D"/> class.
+        /// </summary>
+        /// <param name="surface">The <see cref="PlatformNativeSurface"/> from which to create the surface.</param>
+        /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
+        public static Surface2D Create(PlatformNativeSurface surface)
+        {
+            Contract.Require(surface, nameof(surface));
+
+            var uv = UltravioletContext.DemandCurrent();
+            return uv.GetFactoryMethod<Surface2DFromNativeSurfaceFactory>()(uv, surface);
+        }
+
+        /// <summary>
+        /// Prepares the surface to be exported as texture data.
+        /// </summary>
+        /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
+        /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
+        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip);
 
         /// <summary>
         /// Gets the surface's data.
@@ -129,9 +157,10 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Creates a texture from the surface.
         /// </summary>
-        /// <param name="premultiplyAlpha">A value indicating whether to premultiply the surface's alpha when creating the texture.</param>
+        /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
+        /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
         /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
-        public abstract Texture2D CreateTexture(Boolean premultiplyAlpha = true);
+        public abstract Texture2D CreateTexture(Boolean premultiply, Boolean flip);
 
         /// <summary>
         /// Saves the surface as a JPEG image to the specified stream.

@@ -5,7 +5,6 @@ using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
-using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
@@ -14,10 +13,10 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
     /// </summary>
     [Preserve(AllMembers = true)]
     [ContentProcessor]
-    public sealed class OpenGLSpriteFontTextureProcessor : ContentProcessor<SDL_Surface, SpriteFont>
+    public sealed class OpenGLSpriteFontTextureProcessor : ContentProcessor<PlatformNativeSurface, SpriteFont>
     {
         /// <inheritdoc/>
-        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SDL_Surface input, Boolean delete)
+        public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, PlatformNativeSurface input, Boolean delete)
         {
             var imgData = File.ReadAllBytes(metadata.AssetFilePath);
 
@@ -70,10 +69,10 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
+        public override SpriteFont Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
             var positions = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
-            var texture = manager.Process<SDL_Surface, Texture2D>(input);
+            var texture = manager.Process<PlatformNativeSurface, Texture2D>(input);
             var face = new SpriteFontFace(manager.Ultraviolet, texture, null, positions, true);
             return new SpriteFont(manager.Ultraviolet, face);
         }

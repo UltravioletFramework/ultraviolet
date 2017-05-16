@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ultraviolet.SDL2.Native;
+using Ultraviolet.Graphics;
 
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
@@ -15,7 +15,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <param name="surface">The surface on which to identify glyphs.</param>
         /// <param name="source">The region on the surface in which to look for glyphs, or null to examine the entire surface.</param>
         /// <returns>A collection of rectangles describing the positions of the glyphs on the specified surface.</returns>
-        public static IEnumerable<Rectangle> IdentifyGlyphs(SDL_Surface surface, Rectangle? source = null)
+        public static IEnumerable<Rectangle> IdentifyGlyphs(PlatformNativeSurface surface, Rectangle? source = null)
         {
             if (source.HasValue && (source.Value.Width > surface.Width | source.Value.Height > surface.Height))
                 throw new ArgumentOutOfRangeException("source");

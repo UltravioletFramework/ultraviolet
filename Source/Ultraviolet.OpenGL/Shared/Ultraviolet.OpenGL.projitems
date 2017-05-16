@@ -79,8 +79,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLShaderUniformCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLStateInteger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSurface2D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLSurface2DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessorMetadata.cs" />
@@ -91,8 +89,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceProcessor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OpenGLCursorProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletConfiguration.cs" />

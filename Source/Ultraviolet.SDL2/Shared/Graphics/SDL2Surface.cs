@@ -2,71 +2,64 @@
 using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
-using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL.Graphics
+namespace Ultraviolet.SDL2.Graphics
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the Surface2D class.
+    /// Represents the SDL2 implementation of the <see cref="Surface2D"/> class.
     /// </summary>
-    public unsafe sealed class OpenGLSurface2D : Surface2D
+    public unsafe sealed class SDL2Surface2D : Surface2D
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLSurface2D class.
+        /// Initializes a new instance of the <see cref="SDL2Surface2D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="source">The surface source from which to create the surface.</param>
-        public OpenGLSurface2D(UltravioletContext uv, SurfaceSource source)
-            : this(uv, SDL_Surface.CreateFromSurfaceSource(source))
+        public SDL2Surface2D(UltravioletContext uv, SurfaceSource source)
+            : this(uv, new SDL2PlatformNativeSurface(source))
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the OpenGLSurface2D class.
+        /// Initializes a new instance of the <see cref="SDL2Surface2D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="nativesurf">The native SDL surface that this object represents.</param>
-        public OpenGLSurface2D(UltravioletContext uv, SDL_Surface nativesurf)
+        public SDL2Surface2D(UltravioletContext uv, PlatformNativeSurface nativesurf)
             : base(uv)
         {
             if (nativesurf == null)
                 throw new ArgumentNullException("nativesurf");
 
-            this.nativesurf = nativesurf;
+            this.nativesurf = (SDL2PlatformNativeSurface)nativesurf;
         }
 
         /// <summary>
-        /// Initializes a new instance of the OpenGLSurface2D class.
+        /// Initializes a new instance of the <see cref="SDL2Surface2D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="width">The width of the surface in pixels.</param>
         /// <param name="height">The height of the surface in pixels.</param>
-        public OpenGLSurface2D(UltravioletContext uv, Int32 width, Int32 height)
+        public SDL2Surface2D(UltravioletContext uv, Int32 width, Int32 height)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
-            this.nativesurf = new SDL_Surface(width, height);
+            this.nativesurf = new SDL2PlatformNativeSurface(width, height);
         }
 
-        /// <summary>
-        /// Modifies the surface's pixel data so that it can be written to disk as preprocessed texture data.
-        /// </summary>
-        /// <param name="premultiplyAlpha">A value indicating whether to premultiply the surface's alpha.</param>
-        public void PrepareForTextureExport(Boolean premultiplyAlpha)
+        /// <inheritdoc/>
+        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            nativesurf.PrepareForTextureExport(premultiplyAlpha);
+            nativesurf.PrepareForTextureExport(premultiply, flip);
         }
 
-        /// <summary>
-        /// Gets the surface's data.
-        /// </summary>
-        /// <param name="data">An array to populate with the surface's data.</param>
+        /// <inheritdoc/>
         public override void GetData(Color[] data)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -75,11 +68,7 @@ namespace Ultraviolet.OpenGL.Graphics
             nativesurf.GetData(data, new Rectangle(0, 0, Width, Height));
         }
 
-        /// <summary>
-        /// Gets the surface's data.
-        /// </summary>
-        /// <param name="data">An array to populate with the surface's data.</param>
-        /// <param name="region">The region of the surface from which to retrieve data.</param>
+        /// <inheritdoc/>
         public override void GetData(Color[] data, Rectangle region)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -88,10 +77,7 @@ namespace Ultraviolet.OpenGL.Graphics
             nativesurf.GetData(data, region);
         }
 
-        /// <summary>
-        /// Sets the surface's data.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
+        /// <inheritdoc/>
         public override void SetData(Color[] data)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -100,11 +86,7 @@ namespace Ultraviolet.OpenGL.Graphics
             nativesurf.SetData(data, new Rectangle(0, 0, Width, Height));
         }
 
-        /// <summary>
-        /// Sets the surface's data in the specified region of the surface.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
-        /// <param name="region">The region of the surface to populate with data.</param>
+        /// <inheritdoc/>
         public override void SetData(Color[] data, Rectangle region)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -112,11 +94,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
             nativesurf.SetData(data, region);
         }
-        
-        /// <summary>
-        /// Blits the surface onto the specified destination surface.
-        /// </summary>
-        /// <param name="dst">The destination surface.</param>
+
+        /// <inheritdoc/>
         public override void Blit(Surface2D dst)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -124,14 +103,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.ValidateResource(dst);
 
-            BlitInternal(this, new Rectangle(0, 0, Width, Height), (OpenGLSurface2D)dst, new Rectangle(0, 0, dst.Width, dst.Height));
+            BlitInternal(this, new Rectangle(0, 0, Width, Height), (SDL2Surface2D)dst, new Rectangle(0, 0, dst.Width, dst.Height));
         }
 
-        /// <summary>
-        /// Blits the surface onto the specified destination surface.
-        /// </summary>
-        /// <param name="dst">The destination surface.</param>
-        /// <param name="dstRect">The area on the destination surface to which this surface will be copied.</param>
+        /// <inheritdoc/>
         public override void Blit(Surface2D dst, Rectangle dstRect)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -139,15 +114,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.ValidateResource(dst);
 
-            BlitInternal(this, new Rectangle(0, 0, Width, Height), (OpenGLSurface2D)dst, dstRect);
+            BlitInternal(this, new Rectangle(0, 0, Width, Height), (SDL2Surface2D)dst, dstRect);
         }
 
-        /// <summary>
-        /// Blits the surface onto the specified destination surface.
-        /// </summary>
-        /// <param name="srcRect">The area of this surface that will be copied to the destination surface.</param>
-        /// <param name="dst">The destination surface.</param>
-        /// <param name="dstRect">The area on the destination surface to which this surface will be copied.</param>
+        /// <inheritdoc/>
         public override void Blit(Rectangle srcRect, Surface2D dst, Rectangle dstRect)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -155,26 +125,19 @@ namespace Ultraviolet.OpenGL.Graphics
 
             Ultraviolet.ValidateResource(dst);
 
-            BlitInternal(this, srcRect, (OpenGLSurface2D)dst, dstRect);
+            BlitInternal(this, srcRect, (SDL2Surface2D)dst, dstRect);
         }
 
-        /// <summary>
-        /// Creates a copy of the surface.
-        /// </summary>
-        /// <returns>A new surface which is a copy of this surface.</returns>
+        /// <inheritdoc/>
         public override Surface2D CreateSurface()
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             var copysurf = nativesurf.CreateCopy();
-            return new OpenGLSurface2D(Ultraviolet, copysurf);
+            return new SDL2Surface2D(Ultraviolet, copysurf);
         }
 
-        /// <summary>
-        /// Creates a copy of a region of this surface.
-        /// </summary>
-        /// <param name="region">The region of this surface to copy.</param>
-        /// <returns>A new surface which is a copy of the specified region of this surface.</returns>
+        /// <inheritdoc/>
         public override Surface2D CreateSurface(Rectangle region)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -182,43 +145,36 @@ namespace Ultraviolet.OpenGL.Graphics
             if (region.Left < 0 || region.Top < 0 || region.Right > Width || region.Bottom > Height || region.Width <= 0 || region.Height <= 0)
                 throw new ArgumentOutOfRangeException("region");
 
-            var copysurf = new SDL_Surface(region.Width, region.Height);
+            var copysurf = new SDL2PlatformNativeSurface(region.Width, region.Height);
 
             var srcrect = new SDL_Rect() { x = region.X, y = region.Y, w = region.Width, h = region.Height };
             var dstrect = new SDL_Rect() { x = 0, y = 0, w = region.Width, h = region.Height };
 
-            if (SDL.BlitSurface(nativesurf.Native, &srcrect, copysurf.Native, &dstrect) < 0)
+            if (SDL.BlitSurface(nativesurf.NativePtr, &srcrect, copysurf.NativePtr, &dstrect) < 0)
                 throw new SDL2Exception();
-            
-            return new OpenGLSurface2D(Ultraviolet, copysurf);
+
+            return new SDL2Surface2D(Ultraviolet, copysurf);
         }
 
-        /// <summary>
-        /// Creates a texture from the surface.
-        /// </summary>
-        /// <param name="premultiplyAlpha">A value indicating whether to premultiply the surface's alpha when creating the texture.</param>
-        /// <returns>The texture that was created from the surface.</returns>
-        public override Texture2D CreateTexture(Boolean premultiplyAlpha)
+        /// <inheritdoc/>
+        public override Texture2D CreateTexture(Boolean premultiply, Boolean flip)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            using (var copysurf = new SDL_Surface(Width, Height))
+            using (var copysurf = new SDL2PlatformNativeSurface(Width, Height))
             {
-                if (SDL.SetSurfaceBlendMode(nativesurf.Native, SDL_BlendMode.NONE) < 0)
+                if (SDL.SetSurfaceBlendMode(nativesurf.NativePtr, SDL_BlendMode.NONE) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.BlitSurface(nativesurf.Native, null, copysurf.Native, null) < 0)
+                if (SDL.BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
                     throw new SDL2Exception();
 
-                copysurf.PrepareForTextureExport(premultiplyAlpha);
-                return new OpenGLTexture2D(Ultraviolet, copysurf);
+                copysurf.PrepareForTextureExport(premultiply, flip);
+                return Texture2D.Create((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
             }
         }
 
-        /// <summary>
-        /// Saves the surface as a JPEG image to the specified stream.
-        /// </summary>
-        /// <param name="stream">The stream to which to save the image data.</param>
+        /// <inheritdoc/>
         public override void SaveAsJpeg(Stream stream)
         {
             Contract.Require(stream, nameof(stream));
@@ -227,10 +183,7 @@ namespace Ultraviolet.OpenGL.Graphics
             saver.SaveAsJpeg(this, stream);
         }
 
-        /// <summary>
-        /// Saves the surface as a PNG image to the specified stream.
-        /// </summary>
-        /// <param name="stream">The stream to which to save the image data.</param>
+        /// <inheritdoc/>
         public override void SaveAsPng(Stream stream)
         {
             Contract.Require(stream, nameof(stream));
@@ -239,9 +192,7 @@ namespace Ultraviolet.OpenGL.Graphics
             saver.SaveAsPng(this, stream);
         }
 
-        /// <summary>
-        /// Gets the surface's width in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Width
         {
             get
@@ -252,9 +203,7 @@ namespace Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the surface's height in pixels.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Height
         {
             get
@@ -265,9 +214,7 @@ namespace Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the length of a surface scanline in bytes.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 Pitch
         {
             get
@@ -278,9 +225,7 @@ namespace Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the number of bytes used to represent a single pixel on this surface.
-        /// </summary>
+        /// <inheritdoc/>
         public override Int32 BytesPerPixel
         {
             get
@@ -290,24 +235,21 @@ namespace Ultraviolet.OpenGL.Graphics
                 return nativesurf.BytesPerPixel;
             }
         }
-
+        
         /// <summary>
         /// Gets a pointer to the native SDL surface that is encapsulated by this object.
         /// </summary>
-        public SDL_Surface_Native* Native
+        public SDL_Surface_Native* NativePtr
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return nativesurf.Native;
+                return nativesurf.NativePtr;
             }
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             if (Disposed)
@@ -325,27 +267,27 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="srcRect">The area of this surface that will be copied to the destination surface.</param>
         /// <param name="dst">The destination surface.</param>
         /// <param name="dstRect">The area on the destination surface to which this surface will be copied.</param>
-        private static void BlitInternal(OpenGLSurface2D src, Rectangle srcRect, OpenGLSurface2D dst, Rectangle dstRect)
+        private static void BlitInternal(SDL2Surface2D src, Rectangle srcRect, SDL2Surface2D dst, Rectangle dstRect)
         {
             var sdlSrcRect = new SDL_Rect() { x = srcRect.X, y = srcRect.Y, w = srcRect.Width, h = srcRect.Height };
             var sdlDstRect = new SDL_Rect() { x = dstRect.X, y = dstRect.Y, w = dstRect.Width, h = dstRect.Height };
 
-            if (SDL.SetSurfaceBlendMode(src.nativesurf.Native, SDL_BlendMode.NONE) < 0)
+            if (SDL.SetSurfaceBlendMode(src.nativesurf.NativePtr, SDL_BlendMode.NONE) < 0)
                 throw new SDL2Exception();
 
             if (srcRect.Width != dstRect.Width || srcRect.Height != dstRect.Height)
             {
-                if (SDL.BlitScaled(src.nativesurf.Native, &sdlSrcRect, dst.nativesurf.Native, &sdlDstRect) < 0)
+                if (SDL.BlitScaled(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
                     throw new SDL2Exception();
             }
             else
             {
-                if (SDL.BlitSurface(src.nativesurf.Native, &sdlSrcRect, dst.nativesurf.Native, &sdlDstRect) < 0)
+                if (SDL.BlitSurface(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
                     throw new SDL2Exception();
             }
         }
 
         // State values.
-        private readonly SDL_Surface nativesurf;
+        private readonly SDL2PlatformNativeSurface nativesurf;
     }
 }

@@ -9,6 +9,10 @@
     <Import_RootNamespace>Ultraviolet.SDL2</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2PlatformNativeSurface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2PlatformNativeSurfaceImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2Surface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2SurfaceProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadDeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\InternalButtonState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\SDL2GamePadDevice.cs" />
@@ -65,8 +69,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_QuitEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Rect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Scancode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Surface.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SurfaceImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Surface_Native.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfoUnion.cs" />
@@ -88,8 +90,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_WindowEventID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_WindowFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2ClipboardService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2CursorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2MessageBoxService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2PowerManagementService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2Cursor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SDL2CursorProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Exception.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.SDL_RWops.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2StreamWrapper.cs" />

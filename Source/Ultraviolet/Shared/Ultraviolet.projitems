@@ -235,6 +235,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IndexBufferElementType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IVertexType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\PlatformNativeSurface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\PrimitiveType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RasterizerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderBuffer2D.cs" />
@@ -334,6 +335,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\IUltravioletWindowInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\MessageBoxService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\CursorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\PowerManagementService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\ScreenDensityBucket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\ScreenDensityService.cs" />

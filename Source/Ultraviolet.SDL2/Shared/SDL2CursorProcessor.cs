@@ -1,16 +1,16 @@
 ﻿using Ultraviolet.Content;
 using Ultraviolet.Core;
-using Ultraviolet.OpenGL.Graphics;
-using Ultraviolet.SDL2.Native;
+using Ultraviolet.Graphics;
+using Ultraviolet.SDL2.Graphics;
 
-namespace Ultraviolet.OpenGL
+namespace Ultraviolet.SDL2
 {
     /// <summary>
     /// Loads a cursor from an image.
     /// </summary>
     [Preserve(AllMembers = true)]
     [ContentProcessor]
-    public sealed class OpenGLCursorProcessor : ContentProcessor<SDL_Surface, Cursor>
+    public sealed class SDL2CursorProcessor : ContentProcessor<PlatformNativeSurface, Cursor>
     {
         /// <summary>
         /// Processes the specified data structure into a game asset.
@@ -19,11 +19,11 @@ namespace Ultraviolet.OpenGL
         /// <param name="metadata">The asset's metadata.</param>
         /// <param name="input">The input data structure to process.</param>
         /// <returns>The game asset that was created.</returns>
-        public override Cursor Process(ContentManager manager, IContentProcessorMetadata metadata, SDL_Surface input)
+        public override Cursor Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
-            using (var surface = new OpenGLSurface2D(manager.Ultraviolet, input.CreateCopy()))
+            using (var surface = new SDL2Surface2D(manager.Ultraviolet, input.CreateCopy()))
             {
-                return new OpenGLCursor(manager.Ultraviolet, surface, 0, 0);
+                return new SDL2Cursor(manager.Ultraviolet, surface, 0, 0);
             }
         }
     }

@@ -8,6 +8,11 @@ namespace Ultraviolet.Graphics
     public abstract class GraphicsCapabilities
     {
         /// <summary>
+        /// Gets a value indicating whether the device requires surface data to be flipped upside-down before converting it into a texture.
+        /// </summary>
+        public abstract Boolean FlippedTextures { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the device supports texture which have both depth and stencil components.
         /// </summary>
         public abstract Boolean SupportsDepthStencilTextures { get; }

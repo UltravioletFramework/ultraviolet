@@ -1,34 +1,34 @@
 ﻿using System;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
-using Ultraviolet.OpenGL.Graphics;
+using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL
+namespace Ultraviolet.SDL2
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the Cursor class.
+    /// Represents the SDL2 implementation of the <see cref="Cursor"/> class.
     /// </summary>
-    public unsafe sealed class OpenGLCursor : Cursor
+    public unsafe sealed class SDL2Cursor : Cursor
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLCursor class.
+        /// Initializes a new instance of the <see cref="SDL2Cursor"/> class.
         /// </summary>
-        /// <param name="uv">The UltravioletContext class.</param>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="surface">The surface that contains the cursor image.</param>
         /// <param name="hx">The x-coordinate of the cursor's hotspot.</param>
         /// <param name="hy">The y-coordinate of the cursor's hotspot.</param>
         [Preserve]
-        public OpenGLCursor(UltravioletContext uv, Surface2D surface, Int32 hx, Int32 hy)
+        public SDL2Cursor(UltravioletContext uv, Surface2D surface, Int32 hx, Int32 hy)
             : base(uv)
         {
             Contract.Require(surface, nameof(surface));
 
             uv.ValidateResource(surface);
 
-            if (AreCursorsSupported(uv))
+            if (uv.Platform != UltravioletPlatform.Android && uv.Platform != UltravioletPlatform.iOS)
             {
-                this.cursor = SDL.CreateColorCursor(((OpenGLSurface2D)surface).Native, hx, hy);
+                this.cursor = SDL.CreateColorCursor(((SDL2Surface2D)surface).NativePtr, hx, hy);
                 this.Width = surface.Width;
                 this.Height = surface.Height;
                 this.HotspotX = hx;
@@ -48,20 +48,6 @@ namespace Ultraviolet.OpenGL
                 this.Width = 0;
                 this.Height = 0;
             }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether cursors are supported on the current platform.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <returns><see langword="true"/> if cursors are supported; otherwise, <see langword="false"/>.</returns>
-        public static Boolean AreCursorsSupported(UltravioletContext uv)
-        {
-            Contract.Require(uv, nameof(uv));
-
-            return 
-                uv.Platform != UltravioletPlatform.Android && 
-                uv.Platform != UltravioletPlatform.iOS;
         }
 
         /// <inhertidoc/>

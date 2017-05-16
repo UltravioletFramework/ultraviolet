@@ -16,20 +16,25 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Initializes a new instance of the OpenGLTexture2D class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="surface">The SDL surface from which to create the texture.</param>
-        public OpenGLTexture2D(UltravioletContext uv, SDL_Surface surface)
+        /// <param name="pixels">A pointer to the raw pixel data with which to populate the texture.</param>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        public OpenGLTexture2D(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel)
             : base(uv)
         {
-            Contract.Require(surface, nameof(surface));
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+            Contract.EnsureRange(bytesPerPixel >= 3 || bytesPerPixel <= 4, nameof(bytesPerPixel));
 
             var mode = gl.GL_NONE;
             var internalformat = gl.GL_NONE;
-            if (surface.BytesPerPixel == 3)
+            if (bytesPerPixel == 3)
             {
                 mode = gl.GL_RGB;
                 internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
             }
-            if (surface.BytesPerPixel == 4)
+            if (bytesPerPixel == 4)
             {
                 mode = gl.GL_RGBA;
                 internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
@@ -38,8 +43,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if (mode == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
-            CreateNativeTexture(uv, internalformat, surface.Width, surface.Height, mode, 
-                gl.GL_UNSIGNED_BYTE, surface.Native->pixels, true);
+            CreateNativeTexture(uv, internalformat, width, height, mode, 
+                gl.GL_UNSIGNED_BYTE, (void*)pixels, true);
         }
 
         /// <summary>

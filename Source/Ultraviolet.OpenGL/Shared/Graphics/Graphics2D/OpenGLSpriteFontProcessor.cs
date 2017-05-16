@@ -5,7 +5,6 @@ using System.Linq;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
-using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
@@ -59,7 +58,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             var textures = (new[] { input.Faces?.Regular?.Texture, input.Faces?.Bold?.Texture, input.Faces?.Italic?.Texture, input.Faces?.BoldItalic?.Texture })
                 .Where(x => x != null).Distinct()
                 .Select(x => ResolveDependencyAssetPath(metadata, x))
-                .ToDictionary(x => x, x => manager.Import<SDL_Surface>(x));
+                .ToDictionary(x => x, x => manager.Import<PlatformNativeSurface>(x));
 
             try
             {
@@ -114,7 +113,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 throw new ContentLoadException(OpenGLStrings.InvalidSpriteFontTexture);
 
             var glyphs = default(IEnumerable<Rectangle>);
-            using (var surface = manager.Import<SDL_Surface>(textureName))
+            using (var surface = manager.Import<PlatformNativeSurface>(textureName))
                 glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
 
             var substitution = description.Glyphs?.Substitution ?? '?';            
@@ -205,7 +204,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <summary>
         /// Processes the definition for a single font face.
         /// </summary>
-        private static SpriteFontFace ProcessFace(Dictionary<String, SDL_Surface> textures, ContentManager manager,
+        private static SpriteFontFace ProcessFace(Dictionary<String, PlatformNativeSurface> textures, ContentManager manager,
             IContentProcessorMetadata metadata, SpriteFontFaceDescription description, String style, IEnumerable<CharacterRegion> characterRegions)
         {
             if (description == null)

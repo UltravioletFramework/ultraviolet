@@ -41,11 +41,14 @@ namespace Ultraviolet.Content
             var asmShim = Ultraviolet.PlatformCompatibilityShimAssembly;
             var asmViews = Ultraviolet.ViewProviderAssembly;
 
-            var assemblies = new[] { asmCore, asmImpl, asmShim, asmViews, asmEntry }
+            var assemblies = new[] { asmCore, asmImpl, asmShim, asmViews }
                 .Union(additionalAssemblies ?? Enumerable.Empty<Assembly>()).Where(x => x != null).Distinct();
 
             foreach (var asm in assemblies)
                 RegisterImportersAndProcessors(asm);
+
+            if (asmEntry != null)
+                RegisterImportersAndProcessors(asmEntry);
 
             registered = true;
         }

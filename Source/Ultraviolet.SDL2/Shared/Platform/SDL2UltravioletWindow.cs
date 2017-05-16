@@ -3,27 +3,26 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Graphics;
-using Ultraviolet.OpenGL.Graphics;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2;
+using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL.Platform
+namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the IUltravioletWindow interface.
+    /// Represents the SDL2 implementation of the <see cref="IUltravioletWindow"/> interface.
     /// </summary>    
-    public sealed unsafe partial class OpenGLUltravioletWindow : UltravioletResource,
+    public sealed unsafe partial class SDL2UltravioletWindow : UltravioletResource,
         IMessageSubscriber<UltravioletMessageID>,
-        IUltravioletWindow        
+        IUltravioletWindow
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLUltravioletWindow class.
+        /// Initializes a new instance of the <see cref="SDL2UltravioletWindow"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="ptr">The SDL2 pointer that represents the window.</param>
         /// <param name="native">A value indicating whether the window was created from a native pointer.</param>
-        internal OpenGLUltravioletWindow(UltravioletContext uv, IntPtr ptr, Boolean native = false)
+        internal SDL2UltravioletWindow(UltravioletContext uv, IntPtr ptr, Boolean native = false)
             : base(uv)
         {
             this.ptr = ptr;
@@ -42,7 +41,7 @@ namespace Ultraviolet.OpenGL.Platform
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
 
-            ChangeCompositor(DefaultCompositor.Create(this));            
+            ChangeCompositor(DefaultCompositor.Create(this));
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// </summary>
         /// <param name="window">The Ultraviolet window to convert.</param>
         /// <returns>The window's underlying SDL2 pointer.</returns>
-        public static explicit operator IntPtr(OpenGLUltravioletWindow window)
+        public static explicit operator IntPtr(SDL2UltravioletWindow window)
         {
             return (window == null) ? IntPtr.Zero : window.ptr;
         }
@@ -171,7 +170,7 @@ namespace Ultraviolet.OpenGL.Platform
 
                         SDL.SetWindowSize(ptr, w, h);
                         SDL.SetWindowPosition(ptr, x, y);
-                        
+
                         if (Ultraviolet.Platform == UltravioletPlatform.Windows)
                             win32CachedStyle = IntPtr.Zero;
                     }
@@ -209,7 +208,7 @@ namespace Ultraviolet.OpenGL.Platform
 
                         if (!ApplyWin32FullscreenWindowedFix_FullscreenWindowed())
                             SDL.SetWindowBordered(ptr, false);
-                        
+
                         SDL.SetWindowSize(ptr, displayBounds.Width, displayBounds.Height);
                         SDL.SetWindowPosition(ptr, displayBounds.X, displayBounds.Y);
                     }
@@ -436,7 +435,7 @@ namespace Ultraviolet.OpenGL.Platform
                 SDL.SetWindowSize(ptr, value.Width, value.Height);
             }
         }
-        
+
         /// <inheritdoc/>
         public Size2 WindowedClientSize
         {
@@ -583,7 +582,7 @@ namespace Ultraviolet.OpenGL.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return native; 
+                return native;
             }
         }
 
@@ -842,7 +841,7 @@ namespace Ultraviolet.OpenGL.Platform
                     case 16:
                         sdlMode.format = SDL_PixelFormatEnum.RGB565;
                         break;
-                    
+
                     default:
                         sdlMode.format = SDL_PixelFormatEnum.RGB888;
                         break;
@@ -889,9 +888,8 @@ namespace Ultraviolet.OpenGL.Platform
         /// <param name="surface">The surface that contains the icon to set.</param>
         private void SetIcon(Surface2D surface)
         {
-            // TODO: Fix this
-            //var surfptr = (surface == null) ? null : ((OpenGLSurface2D)surface).Native;
-            //SDL.SetWindowIcon(ptr, (IntPtr)surfptr);
+            var surfptr = (surface == null) ? null : ((SDL2Surface2D)surface).NativePtr;
+            SDL.SetWindowIcon(ptr, (IntPtr)surfptr);
         }
 
         /// <summary>

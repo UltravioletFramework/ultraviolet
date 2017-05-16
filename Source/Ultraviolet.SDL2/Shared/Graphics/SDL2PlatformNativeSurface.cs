@@ -1,31 +1,31 @@
 ﻿using System;
-using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
+using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.SDL2.Native
+namespace Ultraviolet.SDL2.Graphics
 {
     /// <summary>
-    /// Represents an SDL surface.
+    /// Represents an SDL native surface.
     /// </summary>
-    public unsafe sealed partial class SDL_Surface : IDisposable
+    public unsafe sealed class SDL2PlatformNativeSurface : PlatformNativeSurface
     {
         /// <summary>
-        /// Initializes a new instance of the SDL_Surface class.
+        /// Initializes a new instance of the <see cref="SDL2PlatformNativeSurface"/> class.
         /// </summary>
         /// <param name="width">The surface's width.</param>
         /// <param name="height">The surface's height.</param>
-        public SDL_Surface(Int32 width, Int32 height)
+        public SDL2PlatformNativeSurface(Int32 width, Int32 height)
         {
             if ((this.ptr = SDL.CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
                 throw new SDL2Exception();
         }
 
         /// <summary>
-        /// Initializes a new instance of the SDL_Surface class.
+        /// Initializes a new instance of the <see cref="SDL2PlatformNativeSurface"/> class.
         /// </summary>
         /// <param name="src">A pointer to the native SDL surface.</param>
-        public SDL_Surface(SDL_Surface_Native* src)
+        public SDL2PlatformNativeSurface(SDL_Surface_Native* src)
         {
             if (src == null)
                 throw new ArgumentNullException("src");
@@ -41,44 +41,23 @@ namespace Ultraviolet.SDL2.Native
         }
 
         /// <summary>
-        /// Creates a new instance of SDL_Surface from the image data contained in the specified stream.
+        /// Initializes a new instance of the <see cref="SDL2PlatformNativeSurface"/> class.
         /// </summary>
-        /// <param name="stream">The stream that contains the image data from which to create the surface.</param>
-        /// <returns>The instance of SDL_Surface that was created.</returns>
-        public static SDL_Surface CreateFromStream(Stream stream)
-        {
-            Contract.Require(stream, nameof(stream));
-
-            var data = new Byte[stream.Length];
-            stream.Read(data, 0, data.Length);
-
-            using (var mstream = new MemoryStream(data))
-            {
-                using (var src = SurfaceSource.Create(mstream))
-                {
-                    return CreateFromSurfaceSource(src);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates a new instance of SDL_Surface from the image data contained in the specified bitmap.
-        /// </summary>
-        /// <param name="source">The surface source that contains the image data from which to create the surface.</param>
-        /// <returns>The instance of SDL_Surface that was created.</returns>
-        public static SDL_Surface CreateFromSurfaceSource(SurfaceSource source)
+        /// <param name="source">The <see cref="SurfaceSource"/> from which to create the surface.</param>
+        public SDL2PlatformNativeSurface(SurfaceSource source)
         {
             Contract.Require(source, nameof(source));
 
-            var width  = source.Width;
+            var width = source.Width;
             var height = source.Height;
 
-            var bmpSurface = new SDL_Surface(width, height);
+            if ((this.ptr = SDL.CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
+                throw new SDL2Exception();
 
-            var pDstData = (byte*)bmpSurface.Native->pixels;
+            var pDstData = (byte*)ptr->pixels;
             var pSrcData = (byte*)source.Data;
 
-            var dstExtraBytes = bmpSurface.Native->pitch - (bmpSurface.Native->w * 4);
+            var dstExtraBytes = ptr->pitch - (ptr->w * 4);
             var srcExtraBytes = source.Stride - (source.Width * 4);
 
             byte srcR, srcG, srcB, srcA;
@@ -108,27 +87,12 @@ namespace Ultraviolet.SDL2.Native
                 pDstData += dstExtraBytes;
                 pSrcData += srcExtraBytes;
             }
-            
-            return bmpSurface;
         }
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        public void Dispose()
+        /// <inheritdoc/>
+        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Prepares the SDL surface to be exported as OpenGL texture data by
-        /// flipping it upside down and premultiplying its alpha values.
-        /// </summary>
-        /// <param name="premultiplyAlpha">A value indicating whether to premultiply the surface's alpha.</param>
-        public void PrepareForTextureExport(Boolean premultiplyAlpha)
-        {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(readyForTextureExport, SDL2Strings.SurfaceAlreadyPreparedForExport);
 
             var pitch = Pitch;
@@ -140,6 +104,8 @@ namespace Ultraviolet.SDL2.Native
 
             byte srcR, srcG, srcB, srcA;
             byte dstR, dstG, dstB, dstA;
+
+            // TODO: Handle the 'flip' parameter
 
             var rowsToProcess = (ptr->h % 2 == 0) ? ptr->h / 2 : 1 + ptr->h / 2;
             for (var y = 0; y < rowsToProcess; y++)
@@ -166,7 +132,7 @@ namespace Ultraviolet.SDL2.Native
                         srcG = (byte)(srcValue >> 8);
                         srcR = (byte)(srcValue);
 
-                        if (premultiplyAlpha)
+                        if (premultiply)
                         {
                             var factor = srcA / 255f;
                             srcR = (byte)(srcR * factor);
@@ -188,7 +154,7 @@ namespace Ultraviolet.SDL2.Native
                         dstG = (byte)(dstValue >> 8);
                         dstR = (byte)(dstValue);
 
-                        if (premultiplyAlpha)
+                        if (premultiply)
                         {
                             var factor = dstA / 255f;
                             dstR = (byte)(dstR * factor);
@@ -207,14 +173,10 @@ namespace Ultraviolet.SDL2.Native
             readyForTextureExport = true;
         }
 
-        /// <summary>
-        /// Gets the surface's data.
-        /// </summary>
-        /// <param name="data">An array to populate with the surface's data.</param>
-        /// <param name="region">The region of the surface from which to retrieve data.</param>
-        public void GetData(Color[] data, Rectangle region)
+        /// <inheritdoc/>
+        public override void GetData(Color[] data, Rectangle region)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(data, nameof(data));
 
             var top = region.Top;
@@ -242,14 +204,10 @@ namespace Ultraviolet.SDL2.Native
             }
         }
 
-        /// <summary>
-        /// Sets the surface's data in the specified region of the surface.
-        /// </summary>
-        /// <param name="data">An array containing the data to set.</param>
-        /// <param name="region">The region of the surface to populate with data.</param>
-        public void SetData(Color[] data, Rectangle region)
+        /// <inheritdoc/>
+        public override void SetData(Color[] data, Rectangle region)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(data, nameof(data));
 
             var top = region.Top;
@@ -277,15 +235,12 @@ namespace Ultraviolet.SDL2.Native
             }
         }
 
-        /// <summary>
-        /// Creates a copy of the surface.
-        /// </summary>
-        /// <returns>A new surface that is a copy of this surface.</returns>
-        public SDL_Surface CreateCopy()
+        /// <inheritdoc/>
+        public override PlatformNativeSurface CreateCopy()
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            var copy = new SDL_Surface(Width, Height);
+            var copy = new SDL2PlatformNativeSurface(Width, Height);
 
             if (SDL.BlitSurface(ptr, null, copy.ptr, null) < 0)
                 throw new SDL2Exception();
@@ -293,91 +248,79 @@ namespace Ultraviolet.SDL2.Native
             return copy;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the surface has been prepared to be exported as an OpenGL texture.
-        /// </summary>
-        public Boolean ReadyForTextureExport
+        /// <inheritdoc/>
+        public override Boolean ReadyForTextureExport
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return readyForTextureExport;
             }
         }
 
-        /// <summary>
-        /// Gets the number of bytes per pixel on this surface.
-        /// </summary>
-        public Int32 BytesPerPixel
+        /// <inheritdoc/>
+        public override Int32 BytesPerPixel
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return ptr->format->BytesPerPixel;
             }
         }
 
-        /// <summary>
-        /// Gets the surface's width in pixels.
-        /// </summary>
-        public Int32 Width
+        /// <inheritdoc/>
+        public override Int32 Width
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return ptr->w;
             }
         }
 
-        /// <summary>
-        /// Gets the surface's height in pixels.
-        /// </summary>
-        public Int32 Height
+        /// <inheritdoc/>
+        public override Int32 Height
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return ptr->h;
             }
         }
 
-        /// <summary>
-        /// Gets the surface's pitch.
-        /// </summary>
-        public Int32 Pitch
+        /// <inheritdoc/>
+        public override Int32 Pitch
         {
             get
             {
-                Contract.EnsureNotDisposed(this, disposed);
+                Contract.EnsureNotDisposed(this, Disposed);
 
                 return ptr->pitch;
             }
         }
 
-        /// <summary>
-        /// Gets the native surface pointer.
-        /// </summary>
-        public SDL_Surface_Native* Native
+        /// <inheritdoc/>
+        public override IntPtr Native
         {
-            get { return ptr; }
+            get { return (IntPtr)ptr; }
         }
-        
-        /// <summary>
-        /// Releases resources associated with the object.
+
+        /// <summary> 
+        /// Gets a pointer to the surface's underlying <see cref="SDL_Surface_Native"/> structure.
         /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
-        private void Dispose(Boolean disposing)
+        public SDL_Surface_Native* NativePtr => ptr;
+
+        /// <inheritdoc/>
+        protected override void Dispose(bool disposing)
         {
-            if (disposed)
-                return;
+            if (!Disposed)
+                SDL.FreeSurface(ptr);
 
-            SDL.FreeSurface(ptr);
-
-            disposed = true;
+            base.Dispose(disposing);
         }
 
         // The mask values for each color channel.
@@ -388,7 +331,6 @@ namespace Ultraviolet.SDL2.Native
 
         // State values.
         private SDL_Surface_Native* ptr;
-        private Boolean disposed;
         private Boolean readyForTextureExport;
     }
 }

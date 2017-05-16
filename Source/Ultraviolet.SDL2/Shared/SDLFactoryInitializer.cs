@@ -1,6 +1,9 @@
 ﻿using Ultraviolet.Core;
-using Ultraviolet.SDL2.Platform;
+using Ultraviolet.Graphics;
 using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Graphics;
+using Ultraviolet.SDL2.Platform;
+using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.SDL2
 {
@@ -14,9 +17,19 @@ namespace Ultraviolet.SDL2
         /// <inheritdoc/>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
+            // Core classes.
+            factory.SetFactoryMethod<PlatformNativeSurfaceFactory>((source) => new SDL2PlatformNativeSurface(source));
+            factory.SetFactoryMethod<Surface2DFactory>((uv, width, height) => new SDL2Surface2D(uv, width, height));
+            factory.SetFactoryMethod<Surface2DFromSourceFactory>((uv, source) => new SDL2Surface2D(uv, source));
+            factory.SetFactoryMethod<Surface2DFromNativeSurfaceFactory>((uv, surface) => new SDL2Surface2D(uv, surface));
+            factory.SetFactoryMethod<CursorFactory>((uv, surface, hx, hv) => new SDL2Cursor(uv, surface, hx, hv));
+
             // Platform services
             var msgboxService = new SDL2MessageBoxService();
             factory.SetFactoryMethod<MessageBoxServiceFactory>(() => msgboxService);
+
+            var cursorService = new SDL2CursorService();
+            factory.SetFactoryMethod<CursorServiceFactory>(() => cursorService);
 
             var clipboardService = new SDL2ClipboardService();
             factory.SetFactoryMethod<ClipboardServiceFactory>(() => clipboardService);
