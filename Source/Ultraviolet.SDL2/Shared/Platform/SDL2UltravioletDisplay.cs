@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL.Platform
+namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the IUltravioletDisplay interface.
+    /// Represents the SDL2 implementation of the <see cref="IUltravioletDisplay"/> interface.
     /// </summary>
-    public sealed unsafe class OpenGLUltravioletDisplay : IUltravioletDisplay
+    public sealed unsafe class SDL2UltravioletDisplay : IUltravioletDisplay
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletDisplay class.
         /// </summary>
         /// <param name="displayIndex">The SDL2 display index that this object represents.</param>
-        public OpenGLUltravioletDisplay(Int32 displayIndex)
+        public SDL2UltravioletDisplay(Int32 displayIndex)
         {
             this.displayIndex = displayIndex;
             this.displayModes = Enumerable.Range(0, SDL.GetNumDisplayModes(displayIndex))
@@ -32,7 +31,7 @@ namespace Ultraviolet.OpenGL.Platform
             this.desktopDisplayMode = CreateDisplayModeFromSDL(sdlDesktopDisplayMode);
 
             this.screenRotationService = ScreenRotationService.Create(this);
-            this.screenDensityService  = ScreenDensityService.Create(this);
+            this.screenDensityService = ScreenDensityService.Create(this);
         }
 
         /// <inheritdoc/>
@@ -142,7 +141,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Size2D InchesToPixels(Size2D inches)
         {
-            var width  = InchesToPixels(inches.Width);
+            var width = InchesToPixels(inches.Width);
             var height = InchesToPixels(inches.Height);
 
             return new Size2D(width, height);
@@ -151,7 +150,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Size2D PixelsToInches(Size2D pixels)
         {
-            var width  = PixelsToInches(pixels.Width);
+            var width = PixelsToInches(pixels.Width);
             var height = PixelsToInches(pixels.Height);
 
             return new Size2D(width, height);
@@ -160,7 +159,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Size2D DipsToPixels(Size2D dips)
         {
-            var width  = DipsToPixels(dips.Width);
+            var width = DipsToPixels(dips.Width);
             var height = DipsToPixels(dips.Height);
 
             return new Size2D(width, height);
@@ -169,7 +168,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Size2D PixelsToDips(Size2D pixels)
         {
-            var width  = PixelsToDips(pixels.Width);
+            var width = PixelsToDips(pixels.Width);
             var height = PixelsToDips(pixels.Height);
 
             return new Size2D(width, height);
@@ -178,7 +177,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Size2D InchesToDips(Size2D inches)
         {
-            var width  = InchesToDips(inches.Width);
+            var width = InchesToDips(inches.Width);
             var height = InchesToDips(inches.Height);
 
             return new Size2D(width, height);
@@ -187,7 +186,7 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Size2D DipsToInches(Size2D dips)
         {
-            var width  = DipsToInches(dips.Width);
+            var width = DipsToInches(dips.Width);
             var height = DipsToInches(dips.Height);
 
             return new Size2D(width, height);
@@ -196,9 +195,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD InchesToPixels(RectangleD inches)
         {
-            var x      = InchesToPixels(inches.X);
-            var y      = InchesToPixels(inches.Y);
-            var width  = InchesToPixels(inches.Width);
+            var x = InchesToPixels(inches.X);
+            var y = InchesToPixels(inches.Y);
+            var width = InchesToPixels(inches.Width);
             var height = InchesToPixels(inches.Height);
 
             return new RectangleD(x, y, width, height);
@@ -207,9 +206,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD PixelsToInches(RectangleD pixels)
         {
-            var x      = PixelsToInches(pixels.X);
-            var y      = PixelsToInches(pixels.Y);
-            var width  = PixelsToInches(pixels.Width);
+            var x = PixelsToInches(pixels.X);
+            var y = PixelsToInches(pixels.Y);
+            var width = PixelsToInches(pixels.Width);
             var height = PixelsToInches(pixels.Height);
 
             return new RectangleD(x, y, width, height);
@@ -218,9 +217,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD DipsToPixels(RectangleD dips)
         {
-            var x      = DipsToPixels(dips.Left);
-            var y      = DipsToPixels(dips.Top);
-            var width  = DipsToPixels(dips.Width);
+            var x = DipsToPixels(dips.Left);
+            var y = DipsToPixels(dips.Top);
+            var width = DipsToPixels(dips.Width);
             var height = DipsToPixels(dips.Height);
 
             return new RectangleD(x, y, width, height);
@@ -229,9 +228,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD PixelsToDips(RectangleD pixels)
         {
-            var x      = PixelsToDips(pixels.X);
-            var y      = PixelsToDips(pixels.Y);
-            var width  = PixelsToDips(pixels.Width);
+            var x = PixelsToDips(pixels.X);
+            var y = PixelsToDips(pixels.Y);
+            var width = PixelsToDips(pixels.Width);
             var height = PixelsToDips(pixels.Height);
 
             return new RectangleD(x, y, width, height);
@@ -240,9 +239,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD InchesToDips(RectangleD inches)
         {
-            var x      = InchesToDips(inches.X);
-            var y      = InchesToDips(inches.Y);
-            var width  = InchesToDips(inches.Width);
+            var x = InchesToDips(inches.X);
+            var y = InchesToDips(inches.Y);
+            var width = InchesToDips(inches.Width);
             var height = InchesToDips(inches.Height);
 
             return new RectangleD(x, y, width, height);
@@ -251,9 +250,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public RectangleD DipsToInches(RectangleD dips)
         {
-            var x      = DipsToInches(dips.X);
-            var y      = DipsToInches(dips.Y);
-            var width  = DipsToInches(dips.Width);
+            var x = DipsToInches(dips.X);
+            var y = DipsToInches(dips.Y);
+            var width = DipsToInches(dips.Width);
             var height = DipsToInches(dips.Height);
 
             return new RectangleD(x, y, width, height);
@@ -361,9 +360,9 @@ namespace Ultraviolet.OpenGL.Platform
         /// <inheritdoc/>
         public Single DensityScale
         {
-            get 
-            { 
-                return screenDensityService.DensityScale; 
+            get
+            {
+                return screenDensityService.DensityScale;
             }
         }
 

@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
-using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.OpenGL.Graphics
 {

@@ -93,6 +93,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2CursorService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2MessageBoxService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2PowerManagementService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletDisplay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletDisplayInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Cursor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2CursorProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Exception.cs" />

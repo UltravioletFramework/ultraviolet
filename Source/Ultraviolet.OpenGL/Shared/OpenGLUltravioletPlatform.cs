@@ -3,6 +3,7 @@ using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.OpenGL.Platform;
 using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Platform;
 
 namespace Ultraviolet.OpenGL
 {
@@ -23,7 +24,7 @@ namespace Ultraviolet.OpenGL
             this.cursorService = CursorService.Create();
             this.messageBoxService = MessageBoxService.Create();
             this.windows = new OpenGLUltravioletWindowInfo(uv, configuration);
-            this.displays = new OpenGLUltravioletDisplayInfo();
+            this.displays = new SDL2UltravioletDisplayInfo();
         }
 
         /// <inheritdoc/>
@@ -125,6 +126,6 @@ namespace Ultraviolet.OpenGL
         private readonly CursorService cursorService;
         private readonly MessageBoxService messageBoxService;
         private readonly OpenGLUltravioletWindowInfo windows;
-        private readonly OpenGLUltravioletDisplayInfo displays;
+        private readonly IUltravioletDisplayInfo displays;
     }
 }

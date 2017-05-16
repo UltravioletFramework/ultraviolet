@@ -5,20 +5,20 @@ using System.Linq;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL.Platform
+namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the IUltravioletDisplayInfo interface.
+    /// Represents the SDL2 implementation of the <see cref="IUltravioletDisplayInfo"/> interface.
     /// </summary>
-    public sealed class OpenGLUltravioletDisplayInfo : IUltravioletDisplayInfo
+    public sealed class SDL2UltravioletDisplayInfo : IUltravioletDisplayInfo
     {
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletDisplayInfo class.
         /// </summary>
-        public OpenGLUltravioletDisplayInfo()
+        public SDL2UltravioletDisplayInfo()
         {
             this.displays = Enumerable.Range(0, SDL.GetNumVideoDisplays())
-                .Select(x => new OpenGLUltravioletDisplay(x))
+                .Select(x => new SDL2UltravioletDisplay(x))
                 .ToList<IUltravioletDisplay>();
         }
 
