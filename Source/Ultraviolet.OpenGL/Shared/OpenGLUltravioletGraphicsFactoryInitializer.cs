@@ -10,7 +10,7 @@ using Ultraviolet.SDL2.Platform;
 namespace Ultraviolet.OpenGL
 {
     /// <summary>
-    /// Initializes factory methods for the OpenGL/SDL2 implementation of the graphics subsystem.
+    /// Initializes factory methods for the OpenGL implementation of the graphics subsystem.
     /// </summary>
     [Preserve(AllMembers = true)]
     public sealed class OpenGLUltravioletGraphicsFactoryInitializer : IUltravioletFactoryInitializer
@@ -83,10 +83,6 @@ namespace Ultraviolet.OpenGL
             factory.SetFactoryMethod<SamplerStateFactory>("LinearWrap", (uv) => samplerStateLinearWrap);
             factory.SetFactoryMethod<SamplerStateFactory>("AnisotropicClamp", (uv) => samplerStateAnisotropicClamp);
             factory.SetFactoryMethod<SamplerStateFactory>("AnisotropicWrap", (uv) => samplerStateAnisotropicWrap);
-
-            // Platform services
-            var powerManagementService = new SDL2PowerManagementService();
-            factory.SetFactoryMethod<PowerManagementServiceFactory>(() => powerManagementService);
         }
     }
 }
