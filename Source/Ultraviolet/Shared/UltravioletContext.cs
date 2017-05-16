@@ -1189,20 +1189,23 @@ namespace Ultraviolet
 
             InitializeFactoryMethodsInAssembly(asmCore);
             InitializeFactoryMethodsInAssembly(asmImpl);
-            InitializeFactoryMethodsInCompatibilityShim();
-            InitializeFactoryMethodsInViewProvider(configuration);
-
+            var asmShim = InitializeFactoryMethodsInCompatibilityShim();
+            var asmView = InitializeFactoryMethodsInViewProvider(configuration);
             var asmEntry = Assembly.GetEntryAssembly();
+            var asmMisc = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.StartsWith("Ultraviolet."))
+                .Except(new[] { asmCore, asmImpl, asmShim, asmView, asmEntry }).OrderBy(x => x.FullName);
+
+            foreach (var asm in asmMisc)
+                InitializeFactoryMethodsInAssembly(asm);
+
             if (asmEntry != null)
-            {
                 InitializeFactoryMethodsInAssembly(asmEntry);
-            }
         }
 
         /// <summary>
         /// Initializes any factory methods exposed by the current platform compatibility shim.
         /// </summary>
-        private void InitializeFactoryMethodsInCompatibilityShim()
+        private Assembly InitializeFactoryMethodsInCompatibilityShim()
         {
             try
             {
@@ -1232,9 +1235,9 @@ namespace Ultraviolet
                 }
 
                 if (shim != null)
-                {
                     InitializeFactoryMethodsInAssembly(shim);
-                }
+
+                return shim;
             }
             catch (FileNotFoundException e)
             {
@@ -1246,16 +1249,17 @@ namespace Ultraviolet
         /// Initializes any factory methods exposed by the registered view provider.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
-        private void InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
+        private Assembly InitializeFactoryMethodsInViewProvider(UltravioletConfiguration configuration)
         {
             if (String.IsNullOrEmpty(configuration.ViewProviderAssembly))
-                return;
+                return null;
 
             Assembly asm;
             try
             {
                 asm = Assembly.Load(configuration.ViewProviderAssembly);
                 InitializeFactoryMethodsInAssembly(asm);
+                return asm;
             }
             catch (Exception e)
             {
