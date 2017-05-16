@@ -10,6 +10,7 @@ namespace Ultraviolet.SDL2
     /// <summary>
     /// Represents the base class for Ultraviolet implementations which use SDL2.
     /// </summary>
+    [CLSCompliant(true)]
     public abstract class SDL2UltravioletContext : UltravioletContext
     {
         /// <summary>
