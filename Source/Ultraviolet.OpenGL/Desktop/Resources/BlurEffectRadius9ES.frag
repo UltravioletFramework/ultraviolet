@@ -36,7 +36,6 @@ void main()
 	avgValue += texture(Texture, vTextureCoordinate.xy + float(8) * step * Direction) * 0.0327572081038753;
 	avgValue += texture(Texture, vTextureCoordinate.xy - float(9) * step * Direction) * 0.0298603179490361;
 	avgValue += texture(Texture, vTextureCoordinate.xy + float(9) * step * Direction) * 0.0298603179490361;
-
 	vec4 blur = avgValue / 0.743959608948757;
 	vec4 outBlurred = blur * vColor.a;	
 	vec4 outColored = vColor * blur.a;

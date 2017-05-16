@@ -180,5 +180,5 @@ gen/
 !/Samples/Dependencies/Android/x86
 !/Samples/Dependencies/iOS/*.a
 /Samples/Version.cs
-*/packages/
+**/packages/
 /Binaries
