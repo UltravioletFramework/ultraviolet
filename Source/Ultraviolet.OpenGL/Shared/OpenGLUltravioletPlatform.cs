@@ -20,9 +20,9 @@ namespace Ultraviolet.OpenGL
         public OpenGLUltravioletPlatform(UltravioletContext uv, OpenGLUltravioletConfiguration configuration)
             : base(uv)
         {
-            this.clipboard = new OpenGLUltravioletClipboardInfo();
-            this.windows   = new OpenGLUltravioletWindowInfo(uv, configuration);
-            this.displays  = new OpenGLUltravioletDisplayInfo();
+            this.clipboard = ClipboardService.Create();
+            this.windows = new OpenGLUltravioletWindowInfo(uv, configuration);
+            this.displays = new OpenGLUltravioletDisplayInfo();
         }
 
         /// <inheritdoc/>
@@ -80,7 +80,7 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public IUltravioletClipboardInfo Clipboard
+        public ClipboardService Clipboard
         {
             get
             {
@@ -162,7 +162,7 @@ namespace Ultraviolet.OpenGL
 
         // Property values.
         private Cursor cursor;
-        private readonly OpenGLUltravioletClipboardInfo clipboard;
+        private readonly ClipboardService clipboard;
         private readonly OpenGLUltravioletWindowInfo windows;
         private readonly OpenGLUltravioletDisplayInfo displays;
     }

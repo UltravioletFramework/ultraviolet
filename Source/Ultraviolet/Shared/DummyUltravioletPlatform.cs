@@ -16,7 +16,7 @@ namespace Ultraviolet
         public DummyUltravioletPlatform(UltravioletContext uv)
             : base(uv)
         {
-            this.clipboard = new DummyUltravioletClipboardInfo();
+            this.clipboard = new DummyClipboardService();
             this.windows = new DummyUltravioletWindowInfo();
             this.displays = new DummyUltravioletDisplayInfo();
         }
@@ -51,7 +51,7 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public IUltravioletClipboardInfo Clipboard
+        public ClipboardService Clipboard
         {
             get
             {
@@ -87,7 +87,7 @@ namespace Ultraviolet
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         // Property values.
-        private IUltravioletClipboardInfo clipboard;
+        private ClipboardService clipboard;
         private IUltravioletWindowInfo windows;
         private IUltravioletDisplayInfo displays;
     }

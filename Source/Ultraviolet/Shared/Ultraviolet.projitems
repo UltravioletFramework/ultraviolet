@@ -320,14 +320,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)MutableVector3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DisplayMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyUltravioletClipboardInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyClipboardService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyUltravioletDisplayInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyUltravioletWindowInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\FileSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\FileSourceNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\FileSystemService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\IconLoader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Platform\IUltravioletClipboardInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\ClipboardService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\IUltravioletDisplay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\IUltravioletDisplayInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\IUltravioletWindow.cs" />

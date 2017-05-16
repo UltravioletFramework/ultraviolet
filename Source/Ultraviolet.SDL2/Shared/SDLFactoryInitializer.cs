@@ -15,6 +15,9 @@ namespace Ultraviolet.SDL2
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             // Platform services
+            var clipboardService = new SDL2ClipboardService();
+            factory.SetFactoryMethod<ClipboardServiceFactory>(() => clipboardService);
+
             var powerManagementService = new SDL2PowerManagementService();
             factory.SetFactoryMethod<PowerManagementServiceFactory>(() => powerManagementService);
         }

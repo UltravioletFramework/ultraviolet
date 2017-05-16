@@ -100,7 +100,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletGraphicsFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLUltravioletPlatform.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletClipboardInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletDisplay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletDisplayInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\OpenGLUltravioletWindow.cs" />

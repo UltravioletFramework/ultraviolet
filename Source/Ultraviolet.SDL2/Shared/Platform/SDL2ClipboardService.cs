@@ -1,19 +1,18 @@
 ﻿using System;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
 
-namespace Ultraviolet.OpenGL.Platform
+namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
-    /// Represents the OpenGL implementation of the IUltravioletClipboardInfo interface.
+    /// Represents the SDL implementation of the <see cref="ClipboardService"/> class.
     /// </summary>
-    public sealed class OpenGLUltravioletClipboardInfo : IUltravioletClipboardInfo
+    public sealed class SDL2ClipboardService : ClipboardService
     {
         /// <inheritdoc/>
-        public String Text
+        public override String Text
         {
-            get 
+            get
             {
                 if (SDL.HasClipboardText())
                 {

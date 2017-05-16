@@ -3,12 +3,12 @@
 namespace Ultraviolet.Platform
 {
     /// <summary>
-    /// Represents a dummy implementation of <see cref="IUltravioletClipboardInfo"/>.
+    /// Represents a dummy implementation of the <see cref="ClipboardService"/> class.
     /// </summary>
-    public sealed class DummyUltravioletClipboardInfo : IUltravioletClipboardInfo
+    public sealed class DummyClipboardService : ClipboardService
     {
         /// <inheritdoc/>
-        public String Text
+        public override String Text
         {
             get { return null; }
             set { }

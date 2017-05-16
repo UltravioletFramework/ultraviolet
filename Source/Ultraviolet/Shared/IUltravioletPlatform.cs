@@ -30,7 +30,7 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the system clipboard manager.
         /// </summary>
-        IUltravioletClipboardInfo Clipboard
+        ClipboardService Clipboard
         {
             get;
         }
