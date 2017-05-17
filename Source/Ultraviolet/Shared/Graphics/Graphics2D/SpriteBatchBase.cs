@@ -11,7 +11,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// </summary>
     /// <typeparam name="VertexType">The type of vertex used to render the batch's sprites.</typeparam>
     /// <typeparam name="SpriteData">The type of data object associated with each of the batch's sprite instances.</typeparam>
-    [SecuritySafeCritical]
     public abstract unsafe partial class SpriteBatchBase<VertexType, SpriteData> : UltravioletResource
         where VertexType : struct, IVertexType
         where SpriteData : struct

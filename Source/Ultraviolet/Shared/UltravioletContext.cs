@@ -1387,7 +1387,6 @@ namespace Ultraviolet
         /// <summary>
         /// Changes the current thread's synchronization context.
         /// </summary>
-        [SecuritySafeCritical]
         private void ChangeSynchronizationContext(SynchronizationContext syncContext)
         {
             SynchronizationContext.SetSynchronizationContext(syncContext);

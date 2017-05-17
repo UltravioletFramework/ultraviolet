@@ -18,7 +18,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="blockHeight">The height of the block in pixels.</param>
             /// <param name="lengthInLines">The length of the block of text in lines.</param>
             /// <param name="settings">The layout settings.</param>
-            [SecuritySafeCritical]
             public void WriteBlockInfo(TextLayoutCommandStream output, Int32 blockWidth, Int32 blockHeight, Int32 lengthInLines, ref TextLayoutSettings settings)
             {
                 var offset = 0;
@@ -53,7 +52,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="lengthInGlyphs">The length of the line of text in glyphs.</param>
             /// <param name="terminatedByLineBreak">A value indicating whether the line is terminated by a line break.</param>
             /// <param name="settings">The layout settings.</param>
-            [SecuritySafeCritical]
             public void WriteLineInfo(TextLayoutCommandStream output, 
                 Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs, Boolean terminatedByLineBreak, ref TextLayoutSettings settings)
             {
@@ -214,7 +212,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             /// </summary>
             /// <param name="output">The <see cref="TextLayoutCommandStream"/> which is being populated.</param>
             /// <param name="settings">The current layout settings.</param>
-            [SecuritySafeCritical]
             public unsafe Boolean ReplaceLastBreakingSpaceWithLineBreak(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
                 if (!lineBreakCommand.HasValue || !lineBreakOffset.HasValue)
@@ -550,7 +547,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             /// This method corrects the offsets of lines in a layout which is right- or center-aligned but which
             /// did not have a constrained horizontal layout space.
             /// </summary>
-            [SecuritySafeCritical]
             private unsafe void FixHorizontalAlignmentForUnconstrainedLayout(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
                 output.Seek(0);

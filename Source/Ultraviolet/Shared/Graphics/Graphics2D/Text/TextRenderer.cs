@@ -38,7 +38,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Contains methods for rendering formatted text.
     /// </summary>
-    [SecuritySafeCritical]
     public sealed unsafe class TextRenderer
     {
         /// <summary>

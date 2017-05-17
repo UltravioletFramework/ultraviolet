@@ -39,7 +39,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Gets the password which has been entered into the password box.
         /// </summary>
         /// <returns>A string containing the password which has been entered into the password box.</returns>
-        [SecurityCritical]
         public String GetPassword()
         {
             if (PART_Editor != null)
@@ -52,7 +51,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Gets the password which has been entered into the password box.
         /// </summary>
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the password which has been entered into the password box.</param>
-        [SecurityCritical]
         public void GetPassword(StringBuilder stringBuilder)
         {
             Contract.Require(stringBuilder, nameof(stringBuilder));
@@ -65,7 +63,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Sets the password which has been entered into the password box.
         /// </summary>
         /// <param name="value">A <see cref="String"/> containing the password to set.</param>
-        [SecurityCritical]
         public void SetPassword(String value)
         {
             if (PART_Editor != null)
@@ -76,7 +73,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Sets the password which has been entered into the password box.
         /// </summary>
         /// <param name="value">A <see cref="StringBuilder"/> containing password to set.</param>
-        [SecurityCritical]
         public void SetPassword(StringBuilder value)
         {
             if (PART_Editor != null)
@@ -87,7 +83,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Sets the password which has been entered into the password box.
         /// </summary>
         /// <param name="value">A <see cref="StringSegment"/> containing password to set.</param>
-        [SecurityCritical]
         public void SetPassword(StringSegment value)
         {
             if (PART_Editor != null)

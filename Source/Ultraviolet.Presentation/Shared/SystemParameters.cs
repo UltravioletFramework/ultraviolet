@@ -27,7 +27,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public static Double KeyboardDelay
         {
-            [SecuritySafeCritical]
             get
             {
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
@@ -48,7 +47,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public static Double KeyboardSpeed
         {
-            [SecuritySafeCritical]
             get
             {
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
@@ -69,7 +67,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public static Double MouseHoverTime
         {
-            [SecuritySafeCritical]
             get
             {
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)

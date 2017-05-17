@@ -14,7 +14,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// Represents a standard implementation of <see cref="SpriteBatchBase{VertexType, SpriteData}"/> using vertices which
     /// specify position, color, and texture data.
     /// </summary>
-    [SecuritySafeCritical]
     public class SpriteBatch : SpriteBatchBase<SpriteVertex, SpriteBatchData>
     {
         /// <summary>
@@ -48,7 +47,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="offset">The offset of the first sprite being drawn.</param>
         /// <param name="count">The number of sprites being drawn.</param>
         /// <returns>The vertex stride.</returns>
-        [SecuritySafeCritical]
         protected override unsafe void GenerateVertices(Texture2D texture, SpriteHeader[] sprites,
             SpriteVertex[] vertices, SpriteBatchData[] data, Int32 offset, Int32 count)
         {

@@ -6,7 +6,6 @@ namespace Ultraviolet.Core.Data
     /// <summary>
     /// Represents a structure which can store any .NET primitive value type.
     /// </summary>
-    [SecuritySafeCritical]
     public unsafe struct PrimitiveUnion
     {
         /// <summary>

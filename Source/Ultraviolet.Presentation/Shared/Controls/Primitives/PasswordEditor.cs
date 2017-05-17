@@ -29,7 +29,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// Gets the password which has been entered into the editor.
         /// </summary>
         /// <returns>A string containing the password which has been entered into the editor.</returns>
-        [SecurityCritical]
         public String GetPassword()
         {
             var result = default(String);
@@ -54,7 +53,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// Gets the password which has been entered into the editor.
         /// </summary>
         /// <param name="stringBuilder">A <see cref="StringBuilder"/> to populate with the password which has been entered into the editor.</param>
-        [SecurityCritical]
         public void GetPassword(StringBuilder stringBuilder)
         {
             Contract.Require(stringBuilder, nameof(stringBuilder));
@@ -69,7 +67,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// Sets the password which has been entered into the editor.
         /// </summary>
         /// <param name="value">A <see cref="String"/> containing the password to set.</param>
-        [SecurityCritical]
         public void SetPassword(String value)
         {
             SetPassword(new StringSegment(value));
@@ -79,7 +76,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// Sets the password which has been entered into the editor.
         /// </summary>
         /// <param name="value">A <see cref="StringBuilder"/> containing password to set.</param>
-        [SecurityCritical]
         public void SetPassword(StringBuilder value)
         {
             SetPassword(new StringSegment(value));
@@ -89,7 +85,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// Sets the password which has been entered into the editor.
         /// </summary>
         /// <param name="value">A <see cref="StringSegment"/> containing password to set.</param>
-        [SecurityCritical]
         public void SetPassword(StringSegment value)
         {
             settingPassword = true;

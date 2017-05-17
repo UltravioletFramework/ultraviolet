@@ -20,7 +20,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Represents an argument that has been added to the formatter.
         /// </summary>
-        [SecuritySafeCritical]
         private struct StringFormatterArgument
         {
             public StringFormatterArgument(Object obj)
@@ -113,7 +112,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Boolean value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Boolean), *(ulong*)&value));
@@ -123,7 +121,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Byte value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Byte), *(ulong*)&value));
@@ -133,7 +130,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Char value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Char), *(ulong*)&value));
@@ -143,7 +139,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Int16 value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Int16), *(ulong*)&value));
@@ -153,7 +148,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Int32 value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Int32), *(ulong*)&value));
@@ -164,7 +158,6 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
         [CLSCompliant(false)]
-        [SecuritySafeCritical]
         public void AddArgument(UInt16 value)
         {
             arguments.Add(new StringFormatterArgument(typeof(UInt16), *(ulong*)&value));
@@ -175,7 +168,6 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
         [CLSCompliant(false)]
-        [SecuritySafeCritical]
         public void AddArgument(UInt32 value)
         {
             arguments.Add(new StringFormatterArgument(typeof(UInt32), *(ulong*)&value));
@@ -185,7 +177,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Single value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Single), *(ulong*)&value));
@@ -195,7 +186,6 @@ namespace Ultraviolet.Core.Text
         /// Adds an argument to the string formatter.
         /// </summary>
         /// <param name="value">The value to add as an argument.</param>
-        [SecuritySafeCritical]
         public void AddArgument(Double value)
         {
             arguments.Add(new StringFormatterArgument(typeof(Double), *(ulong*)&value));
@@ -472,7 +462,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Adds an argument handler to the argument handler registry.
         /// </summary>
-        [SecuritySafeCritical]
         private static void AddArgumentHandler<T>(StringFormatterArgumentHandler handler)
         {
             argumentHandlers[typeof(T).TypeHandle.Value.ToInt64()] = handler;
@@ -481,7 +470,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Boolean"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Boolean(StringFormatter formatter,
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -502,7 +490,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Byte"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Byte(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -523,7 +510,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Char"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Char(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -544,7 +530,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Int16"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Int16(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -565,7 +550,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Int32"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Int32(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -586,7 +570,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="UInt16"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_UInt16(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -607,7 +590,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="UInt32"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_UInt32(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -628,7 +610,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Single"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Single(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -649,7 +630,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="Double"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_Double(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {
@@ -670,7 +650,6 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Handles <see cref="LocalizedString"/> formatter arguments.
         /// </summary>
-        [SecuritySafeCritical]
         private static void ArgumentHandler_LocalizedString(StringFormatter formatter, 
             String input, StringBuilder output, Int32 position, ref StringFormatterArgument argument, ref StringFormatterCommandInfo cmd)
         {

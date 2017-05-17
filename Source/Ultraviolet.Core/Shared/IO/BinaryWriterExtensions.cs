@@ -155,7 +155,6 @@ namespace Ultraviolet.Core.IO
         /// </summary>
         /// <param name="writer">The <see cref="BinaryWriter"/> with which to write the <see cref="Guid"/>.</param>
         /// <param name="guid">The <see cref="Guid"/> to write to the stream.</param>
-        [SecuritySafeCritical]
         public static void Write(this BinaryWriter writer, Guid guid)
         {
             unsafe

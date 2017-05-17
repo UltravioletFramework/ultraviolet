@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 
 [assembly: CLSCompliant(true)]
-[assembly: AllowPartiallyTrustedCallers]
 
 #if ANDROID
 [assembly: Android.LinkerSafe]

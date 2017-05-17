@@ -19,7 +19,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a stream of commands produced by the text layout engine.
     /// </summary>
-    [SecuritySafeCritical]
     public unsafe class TextLayoutCommandStream
     {
         /// <summary>

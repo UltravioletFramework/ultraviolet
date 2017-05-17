@@ -15,7 +15,6 @@ namespace Ultraviolet.Core
     /// <para>When running under Mono, this functionality can instead be provided by Mono's DllMaps functionality. See
     /// the Mono documentation at http://www.mono-project.com/docs/advanced/pinvoke/dllmap/ for more information.</para>
     /// </remarks>
-    [SecurityCritical]
     public static class LibraryLoader
     {
         /// <summary>

@@ -7,7 +7,6 @@ namespace Ultraviolet.Core.Performance
     /// <summary>
     /// Contains methods for profiling and debugging garbage collection.
     /// </summary>
-    [SecuritySafeCritical]
     public static partial class GCDebug
     {
         /// <summary>

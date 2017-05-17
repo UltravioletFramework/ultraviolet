@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// <summary>
     /// Represents an Ultraviolet context's object factory.
     /// </summary>
-    [SecuritySafeCritical]
     public sealed class UltravioletFactory
     {
         /// <summary>

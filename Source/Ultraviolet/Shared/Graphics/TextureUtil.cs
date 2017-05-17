@@ -7,7 +7,6 @@ namespace Ultraviolet.Graphics
     /// Contains utility methods for manipulating texture data.
     /// </summary>
     [CLSCompliant(false)]
-    [SecurityCritical]
     public static class TextureUtil
     {
         /// <summary>

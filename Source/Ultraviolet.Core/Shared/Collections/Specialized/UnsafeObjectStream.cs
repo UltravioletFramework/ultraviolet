@@ -7,7 +7,6 @@ namespace Ultraviolet.Core.Collections.Specialized
     /// <summary>
     /// Represents a variable-length stream of value-type objects which are accessed via pointers.
     /// </summary>
-    [SecurityCritical]
     public unsafe class UnsafeObjectStream
     {
         /// <summary>

@@ -11,11 +11,9 @@ namespace Ultraviolet.Design
     /// <summary>
     /// Represents a custom property editor for the <see cref="Color"/> structure.
     /// </summary>
-    [SecurityCritical]
     public class ColorEditor : GdiColorEditor
     {
         /// <inheritdoc/>
-        [SecuritySafeCritical]
         public override Object EditValue(ITypeDescriptorContext context, IServiceProvider provider, Object value)
         {
             var xnaColorValue = (value == null) ? UvColor.White : (UvColor)value;
@@ -27,7 +25,6 @@ namespace Ultraviolet.Design
         }
 
         /// <inheritdoc/>
-        [SecuritySafeCritical]
         public override void PaintValue(PaintValueEventArgs e)
         {
             if (e.Value is UvColor)
