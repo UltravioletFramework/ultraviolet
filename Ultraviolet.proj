@@ -90,16 +90,28 @@
       Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
   </Target>
   
+  <Target Name="CleanWindows" Condition="'$(OS)' == 'Windows_NT'">
+    <RemoveDir Directories="Binaries/AnyCPU"/>
+    <MSBuild Projects="@(Ultraviolet_Windows_Solution)" Targets="Clean"/>
+  </Target>
   <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
     <CallTarget Targets="RestoreWindows"/>
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)"/>
     <CallTarget Targets="CopyWindowsBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
+  <Target Name="CleanLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
+    <RemoveDir Directories="Binaries/AnyCPU"/>
+    <MSBuild Projects="@(Ultraviolet_Desktop_Solution)" Targets="Clean"/>
+  </Target>
   <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
     <CallTarget Targets="RestoreLinux"/>
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
+  </Target>
+  <Target Name="CleanMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
+    <RemoveDir Directories="Binaries/AnyCPU"/>
+    <MSBuild Projects="@(Ultraviolet_MacOS_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <CallTarget Targets="RestoreMacOS"/>
@@ -220,7 +232,11 @@
     <Exec Condition="'$(OS)'=='Unix'" 
       Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
   </Target>
-  
+
+  <Target Name="CleanAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
+    <RemoveDir Directories="Binaries/Android"/>
+    <MSBuild Projects="@(Ultraviolet_Android_Solution)" Targets="Clean"/>
+  </Target>  
   <Target Name="BuildAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
     <CallTarget Targets="RestoreAndroid"/>
     <MSBuild Projects="@(Ultraviolet_Android_Solution)"/>
@@ -290,6 +306,10 @@
       Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
   </Target>
   
+  <Target Name="CleaniOS" Condition="$(IsMac)">
+    <RemoveDir Directories="Binaries/iOS"/>
+    <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Targets="Clean"/>
+  </Target>    
   <Target Name="BuildiOS" Condition="$(IsMac)">
     <CallTarget Targets="RestoreiOS"/>
     <MSBuild Projects="@(Ultraviolet_iOS_Solution)" Properties="Configuration=$(Configuration);Platform=$(iOSPlatform)"/>
