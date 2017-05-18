@@ -23,9 +23,9 @@ namespace Ultraviolet
         [JsonConstructor]
         public CircleD(Double x, Double y, Double radius)
         {
-            this.x = x;
-            this.y = y;
-            this.radius = radius;
+            this.X = x;
+            this.Y = y;
+            this.Radius = radius;
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Circle(CircleD circle)
         {
-            return new Circle((Int32)circle.x, (Int32)circle.y, (Int32)circle.radius);
+            return new Circle((Int32)circle.X, (Int32)circle.Y, (Int32)circle.Radius);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator CircleF(CircleD circle)
         {
-            return new CircleF((Single)circle.x, (Single)circle.y, (Single)circle.radius);
+            return new CircleF((Single)circle.X, (Single)circle.Y, (Single)circle.Radius);
         }
 
         /// <summary>
@@ -240,9 +240,9 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + x.GetHashCode();
-                hash = hash * 23 + y.GetHashCode();
-                hash = hash * 23 + radius.GetHashCode();
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
+                hash = hash * 23 + Radius.GetHashCode();
                 return hash;
             }
         }
@@ -263,7 +263,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1} {2}", x, y, radius);
+            return String.Format(provider, "{0} {1} {2}", X, Y, Radius);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Ultraviolet
         /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
         public Boolean Equals(CircleD other)
         {
-            return x == other.x && y == other.y && radius == other.radius;
+            return X == other.X && Y == other.Y && Radius == other.Radius;
         }
 
         /// <summary>
@@ -297,9 +297,9 @@ namespace Ultraviolet
         [Preserve]
         public CircleD Interpolate(CircleD target, Single t)
         {
-            var x      = Tweening.Lerp(this.x, target.x, t);
-            var y      = Tweening.Lerp(this.y, target.y, t);
-            var radius = Tweening.Lerp(this.radius, target.radius, t);
+            var x      = Tweening.Lerp(this.X, target.X, t);
+            var y      = Tweening.Lerp(this.Y, target.Y, t);
+            var radius = Tweening.Lerp(this.Radius, target.Radius, t);
             return new CircleD(x, y, radius);
         }
 
@@ -317,42 +317,28 @@ namespace Ultraviolet
         [JsonIgnore]
         public Point2D Position
         {
-            get { return new Point2D(x, y); }
+            get { return new Point2D(X, Y); }
         }
 
         /// <summary>
-        /// Gets the x-coordinate of the circle's center.
+        /// The x-coordinate of the circle's center.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
-        public Double X
-        {
-            get { return x; }
-        }
+        public Double X;
 
         /// <summary>
-        /// Gets the y-coordinate of the circle's center.
+        /// The y-coordinate of the circle's center.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
-        public Double Y
-        {
-            get { return y; } 
-        }
+        public Double Y;
 
         /// <summary>
-        /// Gets the circle's radius.
+        /// The circle's radius.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "radius", Required = Required.Always)]
-        public Double Radius
-        {
-            get { return radius; }
-        }
-
-        // Property values.
-        private readonly Double x;
-        private readonly Double y;
-        private readonly Double radius;
+        public Double Radius;
     }
 }
