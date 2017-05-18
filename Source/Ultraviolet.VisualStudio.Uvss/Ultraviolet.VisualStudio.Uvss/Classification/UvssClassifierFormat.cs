@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Text.Classification;
+﻿using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
+using System.ComponentModel.Composition;
+using System.Windows.Media;
 
 namespace Ultraviolet.VisualStudio.Uvss.Classification
 {
@@ -14,6 +15,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssCommentFormat()
         {
             this.DisplayName = "UVSS Comment";
+            this.ForegroundColor = Colors.Green;
         }
     }
 
@@ -27,6 +29,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssNumberFormat()
         {
             this.DisplayName = "UVSS Numeric Literal";
+            this.ForegroundColor = Colors.Blue;
         }
     }
 
@@ -40,6 +43,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssKeywordFormat()
         {
             this.DisplayName = "UVSS Keyword";
+            this.ForegroundColor = Colors.Purple;
         }
     }
 
@@ -53,6 +57,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssSelectorFormat()
         {
             this.DisplayName = "UVSS Selector";
+            this.ForegroundColor = Colors.Maroon;
         }
     }
     
@@ -66,6 +71,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssPropertyNameFormat()
         {
             this.DisplayName = "UVSS Property Name";
+            this.ForegroundColor = Colors.Red;
         }
     }
 
@@ -79,6 +85,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssPropertyValueFormat()
         {
             this.DisplayName = "UVSS Property Value";
+            this.ForegroundColor = Colors.Blue;
         }
     }
 
@@ -92,6 +99,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssStoryboardFormat()
         {
             this.DisplayName = "UVSS Storyboard";
+            this.ForegroundColor = Colors.Maroon;
         }
     }
 
@@ -105,6 +113,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
         public UvssTypeNameFormat()
         {
             this.DisplayName = "UVSS Type Name";
+            this.ForegroundColor = Colors.Red;
         }
 	}
 
@@ -118,6 +127,7 @@ namespace Ultraviolet.VisualStudio.Uvss.Classification
 		public UvssDirectiveFormat()
 		{
 			this.DisplayName = "UVSS Directive";
+            this.ForegroundColor = Colors.Maroon;
 		}
 	}
 }
