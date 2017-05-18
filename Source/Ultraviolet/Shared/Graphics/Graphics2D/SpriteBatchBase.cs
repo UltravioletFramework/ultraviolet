@@ -1698,9 +1698,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector2"/>.</param>
         [CLSCompliant(false)]
-        protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, MutableVector2* position)
+        protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, Vector2* position)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -1717,9 +1717,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector3"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector3"/>.</param>
         [CLSCompliant(false)]
-        protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, MutableVector3* position)
+        protected void CalculatePosition(SpriteHeader* metadata, Int32 ix, Vector3* position)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -1743,7 +1743,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             fixed (Vector2* pPosition = &position)
             {
-                CalculatePosition(metadata, ix, (MutableVector2*)pPosition);
+                CalculatePosition(metadata, ix, (Vector2*)pPosition);
             }
         }
 
@@ -1758,7 +1758,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             fixed (Vector3* pPosition = &position)
             {
-                CalculatePosition(metadata, ix, (MutableVector3*)pPosition);
+                CalculatePosition(metadata, ix, (Vector3*)pPosition);
             }
         }
 
@@ -1772,7 +1772,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             fixed (Vector2* pPosition = &position)
             {
-                CalculatePosition((SpriteHeader*)metadata, ix, (MutableVector2*)pPosition);
+                CalculatePosition((SpriteHeader*)metadata, ix, (Vector2*)pPosition);
             }
         }
 
@@ -1786,7 +1786,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             fixed (Vector3* pPosition = &position)
             {
-                CalculatePosition((SpriteHeader*)metadata, ix, (MutableVector3*)pPosition);
+                CalculatePosition((SpriteHeader*)metadata, ix, (Vector3*)pPosition);
             }
         }
 
@@ -1800,7 +1800,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             fixed (Vector2* pTextureCoordinates = &textureCoordinates)
             {
-                CalculateNormalizedTextureCoordinates((SpriteHeader*)metadata, ix, (MutableVector2*)pTextureCoordinates);
+                CalculateNormalizedTextureCoordinates((SpriteHeader*)metadata, ix, (Vector2*)pTextureCoordinates);
             }
         }
 
@@ -1811,7 +1811,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="ix">The index of the current vertex.</param>
         /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
         [CLSCompliant(false)]
-        protected void CalculateNormalizedTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* textureCoordinates)
+        protected void CalculateNormalizedTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector2* textureCoordinates)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -1837,7 +1837,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             fixed (Vector2* pTextureCoordinates = &textureCoordinates)
             {
-                CalculateNormalizedTextureCoordinates(metadata, ix, (MutableVector2*)pTextureCoordinates);
+                CalculateNormalizedTextureCoordinates(metadata, ix, (Vector2*)pTextureCoordinates);
             }
         }
 
@@ -1932,10 +1932,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector3"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector2"/>.</param>
         /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndNormalizedTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* position, MutableVector2* textureCoordinates)
+        protected void CalculatePositionAndNormalizedTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector2* position, Vector2* textureCoordinates)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -1961,10 +1961,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector3"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector3"/>.</param>
         /// <param name="textureCoordinates">The texture coordinates of the current vertex.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndNormalizedTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector3* position, MutableVector2* textureCoordinates)
+        protected void CalculatePositionAndNormalizedTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector3* position, Vector3* textureCoordinates)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -1991,11 +1991,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector2"/>.</param>
         /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
         /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* position, UInt16* u, UInt16* v)
+        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector2* position, UInt16* u, UInt16* v)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -2021,11 +2021,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector2"/>.</param>
         /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
         /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* position, ref UInt16 u, ref UInt16 v)
+        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector2* position, ref UInt16 u, ref UInt16 v)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -2051,11 +2051,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector3"/>.</param>
         /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
         /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector3* position, UInt16* u, UInt16* v)
+        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector3* position, UInt16* u, UInt16* v)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -2082,11 +2082,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector3"/>.</param>
         /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
         /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector3* position, ref UInt16 u, ref UInt16 v)
+        protected void CalculatePositionAndNormalizableTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector3* position, ref UInt16 u, ref UInt16 v)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -2113,11 +2113,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector2"/>.</param>
         /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
         /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector2* position, UInt16* u, UInt16* v)
+        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector2* position, UInt16* u, UInt16* v)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];
@@ -2143,11 +2143,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="metadata">A pointer to the sprite metadata.</param>
         /// <param name="ix">The index of the current vertex.</param>
-        /// <param name="position">The position of the current vertex represented as a <see cref="MutableVector2"/>.</param>
+        /// <param name="position">The position of the current vertex represented as a <see cref="Vector3"/>.</param>
         /// <param name="u">The u-component of the current vertex's texture coordinate.</param>
         /// <param name="v">The v-component of the current vertex's texture coordinate.</param>
         [CLSCompliant(false)]
-        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, MutableVector3* position, UInt16* u, UInt16* v)
+        protected void CalculatePositionAndTextureCoordinates(SpriteHeader* metadata, Int32 ix, Vector3* position, UInt16* u, UInt16* v)
         {
             var x = xCoords[ix];
             var y = yCoords[ix];

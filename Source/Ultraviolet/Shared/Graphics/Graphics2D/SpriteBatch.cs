@@ -66,7 +66,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                     for (int v = 0; v < 4; v++)
                     {
                         CalculatePositionAndTextureCoordinates(pSprites, v,
-                            (MutableVector2*)&pVertices->Position, &pVertices->U, &pVertices->V);
+                            (Vector2*)&pVertices->Position, &pVertices->U, &pVertices->V);
 
                         pVertices->Color = pSprites->Color;
                         pVertices++;

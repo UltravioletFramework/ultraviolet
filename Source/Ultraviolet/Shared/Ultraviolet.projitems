@@ -317,8 +317,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)MessageBoxType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\OrientationChangedMessageData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MutableVector2.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MutableVector3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DisplayMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyClipboardService.cs" />
@@ -427,8 +425,6 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2F.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2D.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector3.json" />
-    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\MutableVector2.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleF.json" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)uv.ico" />
   </ItemGroup>

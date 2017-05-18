@@ -20,10 +20,10 @@ namespace Ultraviolet
         [Preserve]
         public Vector4(Single value)
         {
-            this.x = value;
-            this.y = value;
-            this.z = value;
-            this.w = value;
+            this.X = value;
+            this.Y = value;
+            this.Z = value;
+            this.W = value;
         }
 
         /// <summary>
@@ -37,10 +37,10 @@ namespace Ultraviolet
         [JsonConstructor]
         public Vector4(Single x, Single y, Single z, Single w)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.w = w;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+            this.W = w;
         }
 
         /// <summary>
@@ -53,10 +53,10 @@ namespace Ultraviolet
         [Preserve]
         public Vector4(Vector2 vector, Single z, Single w)
         {
-            this.x = vector.X;
-            this.y = vector.Y;
-            this.z = z;
-            this.w = w;
+            this.X = vector.X;
+            this.Y = vector.Y;
+            this.Z = z;
+            this.W = w;
         }
 
         /// <summary>
@@ -68,10 +68,10 @@ namespace Ultraviolet
         [Preserve]
         public Vector4(Vector3 vector, Single w)
         {
-            this.x = vector.X;
-            this.y = vector.Y;
-            this.z = vector.Z;
-            this.w = w;
+            this.X = vector.X;
+            this.Y = vector.Y;
+            this.Z = vector.Z;
+            this.W = w;
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Ultraviolet
         [Preserve]
         public static Vector4 operator +(Vector4 vector1, Vector4 vector2)
         {
-            return new Vector4(vector1.x + vector2.x, vector1.y + vector2.y, vector1.z + vector2.z, vector1.w + vector2.w);
+            return new Vector4(vector1.X + vector2.X, vector1.Y + vector2.Y, vector1.Z + vector2.Z, vector1.W + vector2.W);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Ultraviolet
         [Preserve]
         public static Vector4 operator -(Vector4 vector1, Vector4 vector2)
         {
-            return new Vector4(vector1.x - vector2.x, vector1.y - vector2.y, vector1.z - vector2.z, vector1.w - vector2.w);
+            return new Vector4(vector1.X - vector2.X, vector1.Y - vector2.Y, vector1.Z - vector2.Z, vector1.W - vector2.W);
         }
 
         /// <summary>
@@ -132,10 +132,10 @@ namespace Ultraviolet
         public static Vector4 operator *(Vector4 vector1, Vector4 vector2)
         {
             return new Vector4(
-                vector1.x * vector2.x, 
-                vector1.y * vector2.y, 
-                vector1.z * vector2.z, 
-                vector1.w * vector2.w
+                vector1.X * vector2.X, 
+                vector1.Y * vector2.Y, 
+                vector1.Z * vector2.Z, 
+                vector1.W * vector2.W
             );
         }
 
@@ -149,10 +149,10 @@ namespace Ultraviolet
         public static Vector4 operator *(Single factor, Vector4 vector)
         {
             return new Vector4(
-                vector.x * factor,
-                vector.y * factor,
-                vector.z * factor,
-                vector.w * factor
+                vector.X * factor,
+                vector.Y * factor,
+                vector.Z * factor,
+                vector.W * factor
             );
         }
 
@@ -166,10 +166,10 @@ namespace Ultraviolet
         public static Vector4 operator *(Vector4 vector, Single factor)
         {
             return new Vector4(
-                vector.x * factor, 
-                vector.y * factor, 
-                vector.z * factor, 
-                vector.w * factor
+                vector.X * factor, 
+                vector.Y * factor, 
+                vector.Z * factor, 
+                vector.W * factor
             );
         }
 
@@ -183,10 +183,10 @@ namespace Ultraviolet
         public static Vector4 operator /(Vector4 vector1, Vector4 vector2)
         {
             return new Vector4(
-                vector1.x / vector2.x,
-                vector1.y / vector2.y,
-                vector1.z / vector2.z,
-                vector1.w / vector2.w
+                vector1.X / vector2.X,
+                vector1.Y / vector2.Y,
+                vector1.Z / vector2.Z,
+                vector1.W / vector2.W
             );
         }
 
@@ -200,10 +200,10 @@ namespace Ultraviolet
         public static Vector4 operator /(Vector4 vector, Single factor)
         {
             return new Vector4(
-                vector.x / factor,
-                vector.y / factor,
-                vector.z / factor,
-                vector.w / factor
+                vector.X / factor,
+                vector.Y / factor,
+                vector.Z / factor,
+                vector.W / factor
             );
         }
 
@@ -215,7 +215,7 @@ namespace Ultraviolet
         [Preserve]
         public static Vector4 operator -(Vector4 vector)
         {
-            return new Vector4(-vector.x, -vector.y, -vector.z, -vector.w);
+            return new Vector4(-vector.X, -vector.Y, -vector.Z, -vector.W);
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace Ultraviolet
         /// <returns>The dot product of the specified vectors.</returns>
         public static Single Dot(Vector4 vector1, Vector4 vector2)
         {
-            return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z + vector1.w * vector2.w;
+            return vector1.X * vector2.X + vector1.Y * vector2.Y + vector1.Z * vector2.Z + vector1.W * vector2.W;
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace Ultraviolet
         /// <param name="result">The dot product of the specified vectors.</param>
         public static void Dot(ref Vector4 vector1, ref Vector4 vector2, out Single result)
         {
-            result = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z + vector1.w * vector2.w;
+            result = vector1.X * vector2.X + vector1.Y * vector2.Y + vector1.Z * vector2.Z + vector1.W * vector2.W;
         }
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
         public static Vector4 Add(Vector4 left, Vector4 right)
         {
-            return new Vector4(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
+            return new Vector4(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector4"/>.</param>
         public static void Add(ref Vector4 left, ref Vector4 right, out Vector4 result)
         {
-            result = new Vector4(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
+            result = new Vector4(left.X + right.X, left.Y + right.Y, left.Z + right.Z, left.W + right.W);
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
         public static Vector4 Subtract(Vector4 left, Vector4 right)
         {
-            return new Vector4(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
+            return new Vector4(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector4"/>.</param>
         public static void Subtract(ref Vector4 left, ref Vector4 right, out Vector4 result)
         {
-            result = new Vector4(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
+            result = new Vector4(left.X - right.X, left.Y - right.Y, left.Z - right.Z, left.W - right.W);
         }
 
         /// <summary>
@@ -368,10 +368,10 @@ namespace Ultraviolet
         public static Vector4 Multiply(Vector4 vector1, Vector4 vector2)
         {
             return new Vector4(
-                vector1.x * vector2.x,
-                vector1.y * vector2.y,
-                vector1.z * vector2.z,
-                vector1.w * vector2.w
+                vector1.X * vector2.X,
+                vector1.Y * vector2.Y,
+                vector1.Z * vector2.Z,
+                vector1.W * vector2.W
             );
         }
 
@@ -384,10 +384,10 @@ namespace Ultraviolet
         public static void Multiply(ref Vector4 vector1, ref Vector4 vector2, out Vector4 result)
         {
             result = new Vector4(
-                vector1.x * vector2.x,
-                vector1.y * vector2.y,
-                vector1.z * vector2.z,
-                vector1.w * vector2.w
+                vector1.X * vector2.X,
+                vector1.Y * vector2.Y,
+                vector1.Z * vector2.Z,
+                vector1.W * vector2.W
             );
         }
 
@@ -400,10 +400,10 @@ namespace Ultraviolet
         public static Vector4 Multiply(Vector4 vector, Single factor)
         {
             return new Vector4(
-                vector.x * factor,
-                vector.y * factor,
-                vector.z * factor,
-                vector.w * factor
+                vector.X * factor,
+                vector.Y * factor,
+                vector.Z * factor,
+                vector.W * factor
             );
         }
 
@@ -416,10 +416,10 @@ namespace Ultraviolet
         public static void Multiply(ref Vector4 vector, Single factor, out Vector4 result)
         {
             result = new Vector4(
-                vector.x * factor,
-                vector.y * factor,
-                vector.z * factor,
-                vector.w * factor
+                vector.X * factor,
+                vector.Y * factor,
+                vector.Z * factor,
+                vector.W * factor
             );
         }
 
@@ -432,10 +432,10 @@ namespace Ultraviolet
         public static Vector4 Divide(Vector4 vector1, Vector4 vector2)
         {
             return new Vector4(
-                vector1.x / vector2.x,
-                vector1.y / vector2.y,
-                vector1.z / vector2.z,
-                vector1.w / vector2.w
+                vector1.X / vector2.X,
+                vector1.Y / vector2.Y,
+                vector1.Z / vector2.Z,
+                vector1.W / vector2.W
             );
         }
 
@@ -448,10 +448,10 @@ namespace Ultraviolet
         public static void Divide(ref Vector4 vector1, ref Vector4 vector2, out Vector4 result)
         {
             result = new Vector4(
-                vector1.x / vector2.x,
-                vector1.y / vector2.y,
-                vector1.z / vector2.z,
-                vector1.w / vector2.w
+                vector1.X / vector2.X,
+                vector1.Y / vector2.Y,
+                vector1.Z / vector2.Z,
+                vector1.W / vector2.W
             );
         }
 
@@ -464,10 +464,10 @@ namespace Ultraviolet
         public static Vector4 Divide(Vector4 vector, Single factor)
         {
             return new Vector4(
-                vector.x / factor,
-                vector.y / factor,
-                vector.z / factor,
-                vector.w / factor
+                vector.X / factor,
+                vector.Y / factor,
+                vector.Z / factor,
+                vector.W / factor
             );
         }
 
@@ -480,10 +480,10 @@ namespace Ultraviolet
         public static void Divide(ref Vector4 vector, Single factor, out Vector4 result)
         {
             result = new Vector4(
-                vector.x / factor,
-                vector.y / factor,
-                vector.z / factor,
-                vector.w / factor
+                vector.X / factor,
+                vector.Y / factor,
+                vector.Z / factor,
+                vector.W / factor
             );
         }
 
@@ -525,7 +525,7 @@ namespace Ultraviolet
         public static Vector4 Normalize(Vector4 vector)
         {
             var inverseMagnitude = 1f / vector.Length();
-            return new Vector4(vector.x * inverseMagnitude, vector.y * inverseMagnitude, vector.z * inverseMagnitude, vector.w * inverseMagnitude);
+            return new Vector4(vector.X * inverseMagnitude, vector.Y * inverseMagnitude, vector.Z * inverseMagnitude, vector.W * inverseMagnitude);
         }
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace Ultraviolet
         public static void Normalize(ref Vector4 vector, out Vector4 result)
         {
             var inverseMagnitude = 1f / vector.Length();
-            result = new Vector4(vector.x * inverseMagnitude, vector.y * inverseMagnitude, vector.z * inverseMagnitude, vector.w * inverseMagnitude);
+            result = new Vector4(vector.X * inverseMagnitude, vector.Y * inverseMagnitude, vector.Z * inverseMagnitude, vector.W * inverseMagnitude);
         }
 
         /// <summary>
@@ -546,7 +546,7 @@ namespace Ultraviolet
         /// <returns>The negated <see cref="Vector4"/>.</returns>
         public static Vector4 Negate(Vector4 vector)
         {
-            return new Vector4(-vector.x, -vector.y, -vector.z, -vector.w);
+            return new Vector4(-vector.X, -vector.Y, -vector.Z, -vector.W);
         }
 
         /// <summary>
@@ -556,7 +556,7 @@ namespace Ultraviolet
         /// <param name="result">The negated <see cref="Vector4"/>.</param>
         public static void Negate(ref Vector4 vector, out Vector4 result)
         {
-            result = new Vector4(-vector.x, -vector.y, -vector.z, -vector.w);
+            result = new Vector4(-vector.X, -vector.Y, -vector.Z, -vector.W);
         }
 
         /// <summary>
@@ -569,10 +569,10 @@ namespace Ultraviolet
         public static Vector4 Clamp(Vector4 vector, Vector4 min, Vector4 max)
         {
             return new Vector4(
-                vector.x < min.x ? min.x : vector.x > max.x ? max.x : vector.x,
-                vector.y < min.y ? min.y : vector.y > max.y ? max.y : vector.y,
-                vector.z < min.z ? min.z : vector.z > max.z ? max.z : vector.z,
-                vector.w < min.w ? min.w : vector.w > max.w ? max.w : vector.w
+                vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X,
+                vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y,
+                vector.Z < min.Z ? min.Z : vector.Z > max.Z ? max.Z : vector.Z,
+                vector.W < min.W ? min.W : vector.W > max.W ? max.W : vector.W
             );
         }
 
@@ -586,10 +586,10 @@ namespace Ultraviolet
         public static void Clamp(ref Vector4 vector, ref Vector4 min, ref Vector4 max, out Vector4 result)
         {
             result = new Vector4(
-                vector.x < min.x ? min.x : vector.x > max.x ? max.x : vector.x,
-                vector.y < min.y ? min.y : vector.y > max.y ? max.y : vector.y,
-                vector.z < min.z ? min.z : vector.z > max.z ? max.z : vector.z,
-                vector.w < min.w ? min.w : vector.w > max.w ? max.w : vector.w
+                vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X,
+                vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y,
+                vector.Z < min.Z ? min.Z : vector.Z > max.Z ? max.Z : vector.Z,
+                vector.W < min.W ? min.W : vector.W > max.W ? max.W : vector.W
             );
         }
 
@@ -602,10 +602,10 @@ namespace Ultraviolet
         public static Vector4 Min(Vector4 vector1, Vector4 vector2)
         {
             return new Vector4(
-                vector1.x < vector2.x ? vector1.x : vector2.x,
-                vector1.y < vector2.y ? vector1.y : vector2.y,
-                vector1.z < vector2.z ? vector1.z : vector2.z,
-                vector1.w < vector2.w ? vector1.w : vector2.w
+                vector1.X < vector2.X ? vector1.X : vector2.X,
+                vector1.Y < vector2.Y ? vector1.Y : vector2.Y,
+                vector1.Z < vector2.Z ? vector1.Z : vector2.Z,
+                vector1.W < vector2.W ? vector1.W : vector2.W
             );
         }
 
@@ -618,10 +618,10 @@ namespace Ultraviolet
         public static void Min(ref Vector4 vector1, ref Vector4 vector2, out Vector4 result)
         {
             result = new Vector4(
-                vector1.x < vector2.x ? vector1.x : vector2.x,
-                vector1.y < vector2.y ? vector1.y : vector2.y,
-                vector1.z < vector2.z ? vector1.z : vector2.z,
-                vector1.w < vector2.w ? vector1.w : vector2.w
+                vector1.X < vector2.X ? vector1.X : vector2.X,
+                vector1.Y < vector2.Y ? vector1.Y : vector2.Y,
+                vector1.Z < vector2.Z ? vector1.Z : vector2.Z,
+                vector1.W < vector2.W ? vector1.W : vector2.W
             );
         }
 
@@ -634,10 +634,10 @@ namespace Ultraviolet
         public static Vector4 Max(Vector4 vector1, Vector4 vector2)
         {
             return new Vector4(
-                vector1.x < vector2.x ? vector2.x : vector1.x,
-                vector1.y < vector2.y ? vector2.y : vector1.y,
-                vector1.z < vector2.z ? vector2.z : vector1.z,
-                vector1.w < vector2.w ? vector2.w : vector1.w
+                vector1.X < vector2.X ? vector2.X : vector1.X,
+                vector1.Y < vector2.Y ? vector2.Y : vector1.Y,
+                vector1.Z < vector2.Z ? vector2.Z : vector1.Z,
+                vector1.W < vector2.W ? vector2.W : vector1.W
             );
         }
 
@@ -650,10 +650,10 @@ namespace Ultraviolet
         public static void Max(ref Vector4 vector1, ref Vector4 vector2, out Vector4 result)
         {
             result = new Vector4(
-                vector1.x < vector2.x ? vector2.x : vector1.x,
-                vector1.y < vector2.y ? vector2.y : vector1.y,
-                vector1.z < vector2.z ? vector2.z : vector1.z,
-                vector1.w < vector2.w ? vector2.w : vector1.w
+                vector1.X < vector2.X ? vector2.X : vector1.X,
+                vector1.Y < vector2.Y ? vector2.Y : vector1.Y,
+                vector1.Z < vector2.Z ? vector2.Z : vector1.Z,
+                vector1.W < vector2.W ? vector2.W : vector1.W
             );
         }
 
@@ -665,13 +665,13 @@ namespace Ultraviolet
         /// <returns>The reflected <see cref="Vector4"/>.</returns>
         public static Vector4 Reflect(Vector4 vector, Vector4 normal)
         {
-            var dot = vector.x * normal.x + vector.y * normal.y + vector.z * normal.z + vector.w * normal.w;
+            var dot = vector.X * normal.X + vector.Y * normal.Y + vector.Z * normal.Z + vector.W * normal.W;
 
             return new Vector4(
-                vector.x - 2f * dot * normal.x,
-                vector.y - 2f * dot * normal.y,
-                vector.z - 2f * dot * normal.z,
-                vector.w - 2f * dot * normal.w
+                vector.X - 2f * dot * normal.X,
+                vector.Y - 2f * dot * normal.Y,
+                vector.Z - 2f * dot * normal.Z,
+                vector.W - 2f * dot * normal.W
             );
         }
 
@@ -683,13 +683,13 @@ namespace Ultraviolet
         /// <param name="result">The reflected <see cref="Vector4"/>.</param>
         public static void Reflect(ref Vector4 vector, ref Vector4 normal, out Vector4 result)
         {
-            var dot = vector.x * normal.x + vector.y * normal.y + vector.z * normal.z + vector.w * normal.w;
+            var dot = vector.X * normal.X + vector.Y * normal.Y + vector.Z * normal.Z + vector.W * normal.W;
 
             result = new Vector4(
-                vector.x - 2f * dot * normal.x,
-                vector.y - 2f * dot * normal.y,
-                vector.z - 2f * dot * normal.z,
-                vector.w - 2f * dot * normal.w
+                vector.X - 2f * dot * normal.X,
+                vector.Y - 2f * dot * normal.Y,
+                vector.Z - 2f * dot * normal.Z,
+                vector.W - 2f * dot * normal.W
             );
         }
 
@@ -703,10 +703,10 @@ namespace Ultraviolet
         public static Vector4 Lerp(Vector4 vector1, Vector4 vector2, Single amount)
         {
             return new Vector4(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount,
-                vector1.z + (vector2.z - vector1.z) * amount,
-                vector1.w + (vector2.w - vector1.w) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount,
+                vector1.Z + (vector2.Z - vector1.Z) * amount,
+                vector1.W + (vector2.W - vector1.W) * amount
             );
         }
 
@@ -720,10 +720,10 @@ namespace Ultraviolet
         public static void Lerp(ref Vector4 vector1, ref Vector4 vector2, Single amount, out Vector4 result)
         {
             result = new Vector4(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount,
-                vector1.z + (vector2.z - vector1.z) * amount,
-                vector1.w + (vector2.w - vector1.w) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount,
+                vector1.Z + (vector2.Z - vector1.Z) * amount,
+                vector1.W + (vector2.W - vector1.W) * amount
             );
         }
 
@@ -747,10 +747,10 @@ namespace Ultraviolet
             var polynomial4 = (t3 - t2);                    // (t^3 - t^2)
 
             return new Vector4(
-                (float)(vector1.x * polynomial1 + tangent1.x * polynomial2 + vector2.x * polynomial3 + tangent2.x * polynomial4),
-                (float)(vector1.y * polynomial1 + tangent1.y * polynomial2 + vector2.y * polynomial3 + tangent2.y * polynomial4),
-                (float)(vector1.z * polynomial1 + tangent1.z * polynomial2 + vector2.z * polynomial3 + tangent2.z * polynomial4),
-                (float)(vector1.w * polynomial1 + tangent1.w * polynomial2 + vector2.w * polynomial3 + tangent2.w * polynomial4)
+                (float)(vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4),
+                (float)(vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4),
+                (float)(vector1.Z * polynomial1 + tangent1.Z * polynomial2 + vector2.Z * polynomial3 + tangent2.Z * polynomial4),
+                (float)(vector1.W * polynomial1 + tangent1.W * polynomial2 + vector2.W * polynomial3 + tangent2.W * polynomial4)
             );
         }
 
@@ -774,10 +774,10 @@ namespace Ultraviolet
             var polynomial4 = (t3 - t2);                    // (t^3 - t^2)
 
             result = new Vector4(
-                (float)(vector1.x * polynomial1 + tangent1.x * polynomial2 + vector2.x * polynomial3 + tangent2.x * polynomial4),
-                (float)(vector1.y * polynomial1 + tangent1.y * polynomial2 + vector2.y * polynomial3 + tangent2.y * polynomial4),
-                (float)(vector1.z * polynomial1 + tangent1.z * polynomial2 + vector2.z * polynomial3 + tangent2.z * polynomial4),
-                (float)(vector1.w * polynomial1 + tangent1.w * polynomial2 + vector2.w * polynomial3 + tangent2.w * polynomial4)
+                (float)(vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4),
+                (float)(vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4),
+                (float)(vector1.Z * polynomial1 + tangent1.Z * polynomial2 + vector2.Z * polynomial3 + tangent2.Z * polynomial4),
+                (float)(vector1.W * polynomial1 + tangent1.W * polynomial2 + vector2.W * polynomial3 + tangent2.W * polynomial4)
             );
         }
 
@@ -794,10 +794,10 @@ namespace Ultraviolet
             amount = (float)(amount * amount * (3.0 - 2.0 * amount));
 
             return new Vector4(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount,
-                vector1.z + (vector2.z - vector1.z) * amount,
-                vector1.w + (vector2.w - vector1.w) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount,
+                vector1.Z + (vector2.Z - vector1.Z) * amount,
+                vector1.W + (vector2.W - vector1.W) * amount
             );
         }
 
@@ -814,10 +814,10 @@ namespace Ultraviolet
             amount = (float)(amount * amount * (3.0 - 2.0 * amount));
 
             result = new Vector4(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount,
-                vector1.z + (vector2.z - vector1.z) * amount,
-                vector1.w + (vector2.w - vector1.w) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount,
+                vector1.Z + (vector2.Z - vector1.Z) * amount,
+                vector1.W + (vector2.W - vector1.W) * amount
             );
         }
 
@@ -873,10 +873,10 @@ namespace Ultraviolet
         /// <returns>The distance between the specified coordinates.</returns>
         public static Single Distance(Vector4 vector1, Vector4 vector2)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
-            var dz = vector2.z - vector1.z;
-            var dw = vector2.w - vector1.w;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
+            var dz = vector2.Z - vector1.Z;
+            var dw = vector2.W - vector1.W;
 
             return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
         }
@@ -889,10 +889,10 @@ namespace Ultraviolet
         /// <param name="result">The distance between the specified coordinates.</param>
         public static void Distance(ref Vector4 vector1, ref Vector4 vector2, out Single result)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
-            var dz = vector2.z - vector1.z;
-            var dw = vector2.w - vector1.w;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
+            var dz = vector2.Z - vector1.Z;
+            var dw = vector2.W - vector1.W;
 
             result = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
         }
@@ -905,10 +905,10 @@ namespace Ultraviolet
         /// <returns>The square of the distance between the specified coordinates.</returns>
         public static Single DistanceSquared(Vector4 vector1, Vector4 vector2)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
-            var dz = vector2.z - vector1.z;
-            var dw = vector2.w - vector1.w;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
+            var dz = vector2.Z - vector1.Z;
+            var dw = vector2.W - vector1.W;
 
             return dx * dx + dy * dy + dz * dz + dw * dw;
         }
@@ -921,10 +921,10 @@ namespace Ultraviolet
         /// <param name="result">The square of the distance between the specified coordinates.</param>
         public static void DistanceSquared(ref Vector4 vector1, ref Vector4 vector2, out Single result)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
-            var dz = vector2.z - vector1.z;
-            var dw = vector2.w - vector1.w;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
+            var dz = vector2.Z - vector1.Z;
+            var dw = vector2.W - vector1.W;
 
             result = dx * dx + dy * dy + dz * dz + dw * dw;
         }
@@ -941,10 +941,10 @@ namespace Ultraviolet
         public static Vector4 Barycentric(Vector4 v1, Vector4 v2, Vector4 v3, Single b2, Single b3)
         {
             var b1 = (1 - b2 - b3);
-            var px = (b1 * v1.x) + (b2 * v2.x) + (b3 * v3.x);
-            var py = (b1 * v1.y) + (b2 * v2.y) + (b3 * v3.y);
-            var pz = (b1 * v1.z) + (b2 * v2.z) + (b3 * v3.z);
-            var pw = (b1 * v1.w) + (b2 * v2.w) + (b3 * v3.w);
+            var px = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
+            var py = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
+            var pz = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
+            var pw = (b1 * v1.W) + (b2 * v2.W) + (b3 * v3.W);
             return new Vector4(px, py, pz, pw);
         }
 
@@ -960,10 +960,10 @@ namespace Ultraviolet
         public static void Barycentric(ref Vector4 v1, ref Vector4 v2, ref Vector4 v3, Single b2, Single b3, out Vector4 result)
         {
             var b1 = (1 - b2 - b3);
-            var px = (b1 * v1.x) + (b2 * v2.x) + (b3 * v3.x);
-            var py = (b1 * v1.y) + (b2 * v2.y) + (b3 * v3.y);
-            var pz = (b1 * v1.z) + (b2 * v2.z) + (b3 * v3.z);
-            var pw = (b1 * v1.w) + (b2 * v2.w) + (b3 * v3.w);
+            var px = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
+            var py = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
+            var pz = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
+            var pw = (b1 * v1.W) + (b2 * v2.W) + (b3 * v3.W);
             result = new Vector4(px, py, pz, pw);
         }
 
@@ -976,10 +976,10 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + x.GetHashCode();
-                hash = hash * 23 + y.GetHashCode();
-                hash = hash * 23 + z.GetHashCode();
-                hash = hash * 23 + w.GetHashCode();
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
+                hash = hash * 23 + Z.GetHashCode();
+                hash = hash * 23 + W.GetHashCode();
                 return hash;
             }
         }
@@ -1000,7 +1000,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1} {2} {3}", x, y, z, w);
+            return String.Format(provider, "{0} {1} {2} {3}", X, Y, Z, W);
         }
 
         /// <summary>
@@ -1024,7 +1024,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Vector4 other)
         {
-            return x == other.x && y == other.y && z == other.z && w == other.w;
+            return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
         }
 
         /// <summary>
@@ -1033,7 +1033,7 @@ namespace Ultraviolet
         /// <returns>The length of the vector.</returns>
         public Single Length()
         {
-            return (float)Math.Sqrt(x * x + y * y + z * z + w * w);
+            return (float)Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
         }
 
         /// <summary>
@@ -1042,7 +1042,7 @@ namespace Ultraviolet
         /// <returns>The squared length of the vector.</returns>
         public Single LengthSquared()
         {
-            return x * x + y * y + z * z + w * w;
+            return X * X + Y * Y + Z * Z + W * W;
         }
 
         /// <summary>
@@ -1054,10 +1054,10 @@ namespace Ultraviolet
         [Preserve]
         public Vector4 Interpolate(Vector4 target, Single t)
         {
-            var x = Tweening.Lerp(this.x, target.x, t);
-            var y = Tweening.Lerp(this.y, target.y, t);
-            var z = Tweening.Lerp(this.z, target.z, t);
-            var w = Tweening.Lerp(this.w, target.w, t);
+            var x = Tweening.Lerp(this.X, target.X, t);
+            var y = Tweening.Lerp(this.Y, target.Y, t);
+            var z = Tweening.Lerp(this.Z, target.Z, t);
+            var w = Tweening.Lerp(this.W, target.W, t);
             return new Vector4(x, y, z, w);
         }
 
@@ -1114,45 +1114,27 @@ namespace Ultraviolet
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
-        public Single X
-        {
-            get { return x; }
-        }
+        public Single X;
 
         /// <summary>
         /// Gets the vector's y-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
-        public Single Y
-        {
-            get { return y; }
-        }
+        public Single Y;
 
         /// <summary>
         /// Gets the vector's z-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "z", Required = Required.Always)]
-        public Single Z
-        {
-            get { return z; }
-        }
+        public Single Z;
 
         /// <summary>
         /// Gets the vector's w-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "w", Required = Required.Always)]
-        public Single W
-        {
-            get { return w; }
-        }
-
-        // Property values.
-        private readonly Single x;
-        private readonly Single y;
-        private readonly Single z;
-        private readonly Single w;
+        public Single W;
     }
 }

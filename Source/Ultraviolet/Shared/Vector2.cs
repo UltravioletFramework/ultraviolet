@@ -20,8 +20,8 @@ namespace Ultraviolet
         [Preserve]
         public Vector2(Single value)
         {
-            this.x = value;
-            this.y = value;
+            this.X = value;
+            this.Y = value;
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace Ultraviolet
         [JsonConstructor]
         public Vector2(Single x, Single y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Ultraviolet
         [Preserve]
         public static Vector2 operator +(Vector2 vector1, Vector2 vector2)
         {
-            return new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
+            return new Vector2(vector1.X + vector2.X, vector1.Y + vector2.Y);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Ultraviolet
         [Preserve]
         public static Vector2 operator -(Vector2 vector1, Vector2 vector2)
         {
-            return new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
+            return new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace Ultraviolet
         public static Vector2 operator *(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
-                vector1.x * vector2.x, 
-                vector1.y * vector2.Y
+                vector1.X * vector2.X, 
+                vector1.Y * vector2.Y
             );
         }
 
@@ -110,8 +110,8 @@ namespace Ultraviolet
         public static Vector2 operator *(Single factor, Vector2 vector)
         {
             return new Vector2(
-                vector.x * factor,
-                vector.y * factor
+                vector.X * factor,
+                vector.Y * factor
             );
         }
 
@@ -125,8 +125,8 @@ namespace Ultraviolet
         public static Vector2 operator *(Vector2 vector, Single factor)
         {
             return new Vector2(
-                vector.x * factor, 
-                vector.y * factor
+                vector.X * factor, 
+                vector.Y * factor
             );
         }
 
@@ -140,8 +140,8 @@ namespace Ultraviolet
         public static Vector2 operator /(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
-                vector1.x / vector2.x,
-                vector1.y / vector2.y
+                vector1.X / vector2.X,
+                vector1.Y / vector2.Y
             );
         }
 
@@ -155,8 +155,8 @@ namespace Ultraviolet
         public static Vector2 operator /(Vector2 vector, Single factor)
         {
             return new Vector2(
-                vector.x / factor,
-                vector.y / factor
+                vector.X / factor,
+                vector.Y / factor
             );
         }
 
@@ -168,7 +168,7 @@ namespace Ultraviolet
         [Preserve]
         public static Vector2 operator -(Vector2 vector)
         {
-            return new Vector2(-vector.x, -vector.y);
+            return new Vector2(-vector.X, -vector.Y);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Ultraviolet
         /// <returns>The dot product of the specified vectors.</returns>
         public static Single Dot(Vector2 vector1, Vector2 vector2)
         {
-            return vector1.x * vector2.x + vector1.y * vector2.y;
+            return vector1.X * vector2.X + vector1.Y * vector2.Y;
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Ultraviolet
         /// <param name="result">The dot product of the specified vectors.</param>
         public static void Dot(ref Vector2 vector1, ref Vector2 vector2, out Single result)
         {
-            result = vector1.x * vector2.x + vector1.y * vector2.y;
+            result = vector1.X * vector2.X + vector1.Y * vector2.Y;
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Add(Vector2 vector1, Vector2 vector2)
         {
-            return new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
+            return new Vector2(vector1.X + vector2.X, vector1.Y + vector2.Y);
         }
 
         /// <summary>
@@ -349,7 +349,7 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Add(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
-            result = new Vector2(vector1.x + vector2.x, vector1.y + vector2.y);
+            result = new Vector2(vector1.X + vector2.X, vector1.Y + vector2.Y);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
         public static Vector2 Subtract(Vector2 vector1, Vector2 vector2)
         {
-            return new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
+            return new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector2"/>.</param>
         public static void Subtract(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
-            result = new Vector2(vector1.x - vector2.x, vector1.y - vector2.y);
+            result = new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
         }
 
         /// <summary>
@@ -383,8 +383,8 @@ namespace Ultraviolet
         public static Vector2 Multiply(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
-                vector1.x * vector2.x,
-                vector1.y * vector2.y
+                vector1.X * vector2.X,
+                vector1.Y * vector2.Y
             );
         }
 
@@ -397,8 +397,8 @@ namespace Ultraviolet
         public static void Multiply(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
-                vector1.x * vector2.x, 
-                vector1.y * vector2.y
+                vector1.X * vector2.X, 
+                vector1.Y * vector2.Y
             );
         }
 
@@ -411,8 +411,8 @@ namespace Ultraviolet
         public static Vector2 Multiply(Vector2 vector, Single factor)
         {
             return new Vector2(
-                vector.x * factor,
-                vector.y * factor
+                vector.X * factor,
+                vector.Y * factor
             );
         }
 
@@ -425,8 +425,8 @@ namespace Ultraviolet
         public static void Multiply(ref Vector2 vector, Single factor, out Vector2 result)
         {
             result = new Vector2(
-                vector.x * factor,
-                vector.y * factor
+                vector.X * factor,
+                vector.Y * factor
             );
         }
 
@@ -439,8 +439,8 @@ namespace Ultraviolet
         public static Vector2 Divide(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
-                vector1.x / vector2.x,
-                vector1.y / vector2.y
+                vector1.X / vector2.X,
+                vector1.Y / vector2.Y
             );
         }
 
@@ -453,8 +453,8 @@ namespace Ultraviolet
         public static void Divide(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
-                vector1.x / vector2.x,
-                vector1.y / vector2.y
+                vector1.X / vector2.X,
+                vector1.Y / vector2.Y
             );
         }
 
@@ -467,8 +467,8 @@ namespace Ultraviolet
         public static Vector2 Divide(Vector2 vector, Single factor)
         {
             return new Vector2(
-                vector.x / factor,
-                vector.y / factor
+                vector.X / factor,
+                vector.Y / factor
             );
         }
 
@@ -481,8 +481,8 @@ namespace Ultraviolet
         public static void Divide(ref Vector2 vector, Single factor, out Vector2 result)
         {
             result = new Vector2(
-                vector.x / factor,
-                vector.y / factor
+                vector.X / factor,
+                vector.Y / factor
             );
         }
 
@@ -546,7 +546,7 @@ namespace Ultraviolet
         public static Vector2 Normalize(Vector2 vector)
         {
             var inverseMagnitude = 1f / vector.Length();
-            return new Vector2(vector.x * inverseMagnitude, vector.y * inverseMagnitude);
+            return new Vector2(vector.X * inverseMagnitude, vector.Y * inverseMagnitude);
         }
 
         /// <summary>
@@ -557,7 +557,7 @@ namespace Ultraviolet
         public static void Normalize(ref Vector2 vector, out Vector2 result)
         {
             var inverseMagnitude = 1f / vector.Length();
-            result = new Vector2(vector.x * inverseMagnitude, vector.y * inverseMagnitude);
+            result = new Vector2(vector.X * inverseMagnitude, vector.Y * inverseMagnitude);
         }
 
         /// <summary>
@@ -567,7 +567,7 @@ namespace Ultraviolet
         /// <returns>The negated <see cref="Vector2"/>.</returns>
         public static Vector2 Negate(Vector2 vector)
         {
-            return new Vector2(-vector.x, -vector.y);
+            return new Vector2(-vector.X, -vector.Y);
         }
 
         /// <summary>
@@ -577,7 +577,7 @@ namespace Ultraviolet
         /// <param name="result">The negated <see cref="Vector2"/>.</param>
         public static void Negate(ref Vector2 vector, out Vector2 result)
         {
-            result = new Vector2(-vector.x, -vector.y);
+            result = new Vector2(-vector.X, -vector.Y);
         }
 
         /// <summary>
@@ -590,8 +590,8 @@ namespace Ultraviolet
         public static Vector2 Clamp(Vector2 vector, Vector2 min, Vector2 max)
         {
             return new Vector2(
-                vector.x < min.x ? min.x : vector.x > max.x ? max.x : vector.x,
-                vector.y < min.y ? min.y : vector.y > max.y ? max.y : vector.y
+                vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X,
+                vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y
             );
         }
 
@@ -605,8 +605,8 @@ namespace Ultraviolet
         public static void Clamp(ref Vector2 vector, ref Vector2 min, ref Vector2 max, out Vector2 result)
         {
             result = new Vector2(
-                vector.x < min.x ? min.x : vector.x > max.x ? max.x : vector.x,
-                vector.y < min.y ? min.y : vector.y > max.y ? max.y : vector.y
+                vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X,
+                vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y
             );
         }
 
@@ -619,8 +619,8 @@ namespace Ultraviolet
         public static Vector2 Min(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
-                vector1.x < vector2.x ? vector1.x : vector2.x,
-                vector1.y < vector2.y ? vector1.y : vector2.y
+                vector1.X < vector2.X ? vector1.X : vector2.X,
+                vector1.Y < vector2.Y ? vector1.Y : vector2.Y
             );
         }
 
@@ -633,8 +633,8 @@ namespace Ultraviolet
         public static void Min(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
-                vector1.x < vector2.x ? vector1.x : vector2.x,
-                vector1.y < vector2.y ? vector1.y : vector2.y
+                vector1.X < vector2.X ? vector1.X : vector2.X,
+                vector1.Y < vector2.Y ? vector1.Y : vector2.Y
             );
         }
 
@@ -647,8 +647,8 @@ namespace Ultraviolet
         public static Vector2 Max(Vector2 vector1, Vector2 vector2)
         {
             return new Vector2(
-                vector1.x < vector2.x ? vector2.x : vector1.x,
-                vector1.y < vector2.y ? vector2.y : vector1.y
+                vector1.X < vector2.X ? vector2.X : vector1.X,
+                vector1.Y < vector2.Y ? vector2.Y : vector1.Y
             );
         }
 
@@ -661,8 +661,8 @@ namespace Ultraviolet
         public static void Max(ref Vector2 vector1, ref Vector2 vector2, out Vector2 result)
         {
             result = new Vector2(
-                vector1.x < vector2.x ? vector2.x : vector1.x,
-                vector1.y < vector2.y ? vector2.y : vector1.y
+                vector1.X < vector2.X ? vector2.X : vector1.X,
+                vector1.Y < vector2.Y ? vector2.Y : vector1.Y
             );
         }
 
@@ -674,11 +674,11 @@ namespace Ultraviolet
         /// <returns>The reflected <see cref="Vector2"/>.</returns>
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
-            var dot = vector.x * normal.x + vector.y * normal.y;
+            var dot = vector.X * normal.X + vector.Y * normal.Y;
 
             return new Vector2(
-                vector.x - 2f * dot * normal.x,
-                vector.y - 2f * dot * normal.y
+                vector.X - 2f * dot * normal.X,
+                vector.Y - 2f * dot * normal.Y
             );
         }
 
@@ -690,11 +690,11 @@ namespace Ultraviolet
         /// <param name="result">The reflected <see cref="Vector2"/>.</param>
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-            var dot = vector.x * normal.x + vector.y * normal.y;
+            var dot = vector.X * normal.X + vector.Y * normal.Y;
 
             result = new Vector2(
-                vector.x - 2f * dot * normal.x,
-                vector.y - 2f * dot * normal.y
+                vector.X - 2f * dot * normal.X,
+                vector.Y - 2f * dot * normal.Y
             );
         }
 
@@ -708,8 +708,8 @@ namespace Ultraviolet
         public static Vector2 Lerp(Vector2 vector1, Vector2 vector2, Single amount)
         {
             return new Vector2(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount
             );
         }
 
@@ -723,8 +723,8 @@ namespace Ultraviolet
         public static void Lerp(ref Vector2 vector1, ref Vector2 vector2, Single amount, out Vector2 result)
         {
             result = new Vector2(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount
             );
         }
 
@@ -748,8 +748,8 @@ namespace Ultraviolet
             var polynomial4 = (t3 - t2);                    // (t^3 - t^2)
 
             return new Vector2(
-                (float)(vector1.x * polynomial1 + tangent1.x * polynomial2 + vector2.x * polynomial3 + tangent2.x * polynomial4),
-                (float)(vector1.y * polynomial1 + tangent1.y * polynomial2 + vector2.y * polynomial3 + tangent2.y * polynomial4)
+                (float)(vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4),
+                (float)(vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4)
             );
         }
 
@@ -773,8 +773,8 @@ namespace Ultraviolet
             var polynomial4 = (t3 - t2);                    // (t^3 - t^2)
 
             result = new Vector2(
-                (float)(vector1.x * polynomial1 + tangent1.x * polynomial2 + vector2.x * polynomial3 + tangent2.x * polynomial4),
-                (float)(vector1.y * polynomial1 + tangent1.y * polynomial2 + vector2.y * polynomial3 + tangent2.y * polynomial4)
+                (float)(vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4),
+                (float)(vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4)
             );
         }
 
@@ -791,8 +791,8 @@ namespace Ultraviolet
             amount = (float)(amount * amount * (3.0 - 2.0 * amount));
 
             return new Vector2(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount
             );
         }
 
@@ -809,8 +809,8 @@ namespace Ultraviolet
             amount = (float)(amount * amount * (3.0 - 2.0 * amount));
 
             result = new Vector2(
-                vector1.x + (vector2.x - vector1.x) * amount,
-                vector1.y + (vector2.y - vector1.y) * amount
+                vector1.X + (vector2.X - vector1.X) * amount,
+                vector1.Y + (vector2.Y - vector1.Y) * amount
             );
         }
 
@@ -862,8 +862,8 @@ namespace Ultraviolet
         /// <returns>The distance between the specified coordinates.</returns>
         public static Single Distance(Vector2 vector1, Vector2 vector2)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
 
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
@@ -876,8 +876,8 @@ namespace Ultraviolet
         /// <param name="result">The distance between the specified coordinates.</param>
         public static void Distance(ref Vector2 vector1, ref Vector2 vector2, out Single result)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
 
             result = (float)Math.Sqrt(dx * dx + dy * dy);
         }
@@ -890,8 +890,8 @@ namespace Ultraviolet
         /// <returns>The square of the distance between the specified coordinates.</returns>
         public static Single DistanceSquared(Vector2 vector1, Vector2 vector2)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
 
             return dx * dx + dy * dy;
         }
@@ -904,8 +904,8 @@ namespace Ultraviolet
         /// <param name="result">The square of the distance between the specified coordinates.</param>
         public static void DistanceSquared(ref Vector2 vector1, ref Vector2 vector2, out Single result)
         {
-            var dx = vector2.x - vector1.x;
-            var dy = vector2.y - vector1.y;
+            var dx = vector2.X - vector1.X;
+            var dy = vector2.Y - vector1.Y;
 
             result = dx * dx + dy * dy;
         }
@@ -922,8 +922,8 @@ namespace Ultraviolet
         public static Vector2 Barycentric(Vector2 v1, Vector2 v2, Vector2 v3, Single b2, Single b3)
         {
             var b1 = (1 - b2 - b3);
-            var px = (b1 * v1.x) + (b2 * v2.x) + (b3 * v3.x);
-            var py = (b1 * v1.y) + (b2 * v2.y) + (b3 * v3.y);
+            var px = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
+            var py = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
             return new Vector2(px, py);
         }
 
@@ -939,8 +939,8 @@ namespace Ultraviolet
         public static void Barycentric(ref Vector2 v1, ref Vector2 v2, ref Vector2 v3, Single b2, Single b3, out Vector2 result)
         {
             var b1 = (1 - b2 - b3);
-            var px = (b1 * v1.x) + (b2 * v2.x) + (b3 * v3.x);
-            var py = (b1 * v1.y) + (b2 * v2.y) + (b3 * v3.y);
+            var px = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
+            var py = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
             result = new Vector2(px, py);
         }
 
@@ -953,8 +953,8 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + x.GetHashCode();
-                hash = hash * 23 + y.GetHashCode();
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
                 return hash;
             }
         }
@@ -975,7 +975,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1}", x, y);
+            return String.Format(provider, "{0} {1}", X, Y);
         }
 
         /// <summary>
@@ -999,7 +999,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Vector2 other)
         {
-            return x == other.x && y == other.y;
+            return X == other.X && Y == other.Y;
         }
 
         /// <summary>
@@ -1008,7 +1008,7 @@ namespace Ultraviolet
         /// <returns>The length of the vector.</returns>
         public Single Length()
         {
-            return (float)Math.Sqrt(x * x + y * y);
+            return (float)Math.Sqrt(X * X + Y * Y);
         }
 
         /// <summary>
@@ -1017,7 +1017,7 @@ namespace Ultraviolet
         /// <returns>The squared length of the vector.</returns>
         public Single LengthSquared()
         {
-            return x * x + y * y;
+            return X * X + Y * Y;
         }
 
         /// <summary>
@@ -1029,8 +1029,8 @@ namespace Ultraviolet
         [Preserve]
         public Vector2 Interpolate(Vector2 target, Single t)
         {
-            var x = Tweening.Lerp(this.x, target.x, t);
-            var y = Tweening.Lerp(this.y, target.y, t);
+            var x = Tweening.Lerp(this.X, target.X, t);
+            var y = Tweening.Lerp(this.Y, target.Y, t);
             return new Vector2(x, y);
         }
 
@@ -1067,27 +1067,17 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the vector's x-coordinate.
+        /// The vector's x-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
-        public Single X
-        {
-            get { return x; }
-        }
+        public Single X;
 
         /// <summary>
-        /// Gets the vector's y-coordinate.
+        /// The vector's y-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
-        public Single Y
-        {
-            get { return y; }
-        }
-
-        // Property values.
-        private readonly Single x;
-        private readonly Single y;
+        public Single Y;
     }
 }
