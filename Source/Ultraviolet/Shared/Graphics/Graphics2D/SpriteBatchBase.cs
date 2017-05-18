@@ -2428,8 +2428,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             var glyphColor = color;
             var glyphPosRaw = Vector2.Zero;
             var glyphPosTransformed = Vector2.Zero;
-            var cx = flipHorizontal ? areaBR.X : areaTL.X;
-            var cy = flipVertical ? areaBR.Y : areaTL.Y;
+            var cx = flipHorizontal ? transformedBR.X : transformedTL.X;
+            var cy = flipVertical ? transformedBR.Y : transformedTL.Y;
             for (int i = 0; i < text.Length; i++)
             {
                 // Retrieve the glyph that we're rendering from the source text.
