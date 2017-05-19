@@ -36,10 +36,10 @@ namespace Ultraviolet
         [JsonConstructor]
         public RectangleF(Single x, Single y, Single width, Single height)
         {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
+            this.X = x;
+            this.Y = y;
+            this.Width = width;
+            this.Height = height;
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Rectangle(RectangleF rect)
         {
-            return new Rectangle((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+            return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
         }
 
         /// <summary>
@@ -463,7 +463,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1} {2} {3}", x, y, width, height);
+            return String.Format(provider, "{0} {1} {2} {3}", X, Y, Width, Height);
         }
 
         /// <summary>
@@ -475,10 +475,10 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + x.GetHashCode();
-                hash = hash * 23 + y.GetHashCode();
-                hash = hash * 23 + width.GetHashCode();
-                hash = hash * 23 + height.GetHashCode();
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
+                hash = hash * 23 + Width.GetHashCode();
+                hash = hash * 23 + Height.GetHashCode();
                 return hash;
             }
         }
@@ -504,7 +504,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(RectangleF other)
         {
-            return x == other.x && y == other.y && width == other.width && height == other.height;
+            return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;
         }
 
         /// <summary>
@@ -544,8 +544,8 @@ namespace Ultraviolet
         public Boolean Contains(Single x, Single y)
         {
             return
-                x >= this.x && x < this.x + this.width &&
-                y >= this.y && y < this.y + this.height;
+                x >= this.X && x < this.X + this.Width &&
+                y >= this.Y && y < this.Y + this.Height;
         }
 
         /// <summary>
@@ -556,8 +556,8 @@ namespace Ultraviolet
         public void Contains(ref Point2F point, out Boolean result)
         {
             result =
-                point.X >= this.x && point.X < this.x + this.width &&
-                point.Y >= this.y && point.Y < this.y + this.height;
+                point.X >= this.X && point.X < this.X + this.Width &&
+                point.Y >= this.Y && point.Y < this.Y + this.Height;
         }
 
         /// <summary>
@@ -568,8 +568,8 @@ namespace Ultraviolet
         public Boolean Contains(Point2F point)
         {
             return
-                point.X >= this.x && point.X < this.x + this.width &&
-                point.Y >= this.y && point.Y < this.y + this.height;
+                point.X >= this.X && point.X < this.X + this.Width &&
+                point.Y >= this.Y && point.Y < this.Y + this.Height;
         }
 
         /// <summary>
@@ -580,8 +580,8 @@ namespace Ultraviolet
         public void Contains(ref Vector2 point, out Boolean result)
         {
             result = 
-                point.X >= this.x && point.X < this.x + this.width &&
-                point.Y >= this.y && point.Y < this.y + this.height;
+                point.X >= this.X && point.X < this.X + this.Width &&
+                point.Y >= this.Y && point.Y < this.Y + this.Height;
         }
 
         /// <summary>
@@ -592,8 +592,8 @@ namespace Ultraviolet
         public Boolean Contains(Vector2 point)
         {
             return
-                point.X >= this.x && point.X < this.x + this.width &&
-                point.Y >= this.y && point.Y < this.y + this.height;
+                point.X >= this.X && point.X < this.X + this.Width &&
+                point.Y >= this.Y && point.Y < this.Y + this.Height;
         }
 
         /// <summary>
@@ -604,8 +604,8 @@ namespace Ultraviolet
         public void Contains(ref RectangleF rectangle, out Boolean result)
         {
             result = 
-                this.x <= rectangle.x && rectangle.x + rectangle.width <= this.x + this.width &&
-                this.y <= rectangle.y && rectangle.y + rectangle.height <= this.y + this.height;
+                this.X <= rectangle.X && rectangle.X + rectangle.Width <= this.X + this.Width &&
+                this.Y <= rectangle.Y && rectangle.Y + rectangle.Height <= this.Y + this.Height;
         }
 
         /// <summary>
@@ -616,8 +616,8 @@ namespace Ultraviolet
         public Boolean Contains(RectangleF rectangle)
         {
             return
-                this.x <= rectangle.x && rectangle.x + rectangle.width <= this.x + this.width &&
-                this.y <= rectangle.y && rectangle.y + rectangle.height <= this.y + this.height;
+                this.X <= rectangle.X && rectangle.X + rectangle.Width <= this.X + this.Width &&
+                this.Y <= rectangle.Y && rectangle.Y + rectangle.Height <= this.Y + this.Height;
         }
 
         /// <summary>
@@ -629,10 +629,10 @@ namespace Ultraviolet
         [Preserve]
         public RectangleF Interpolate(RectangleF target, Single t)
         {
-            var x      = Tweening.Lerp(this.x, target.x, t);
-            var y      = Tweening.Lerp(this.y, target.y, t);
-            var width  = Tweening.Lerp(this.width, target.width, t);
-            var height = Tweening.Lerp(this.height, target.height, t);
+            var x      = Tweening.Lerp(this.X, target.X, t);
+            var y      = Tweening.Lerp(this.Y, target.Y, t);
+            var width  = Tweening.Lerp(this.Width, target.Width, t);
+            var height = Tweening.Lerp(this.Height, target.Height, t);
             return new RectangleF(x, y, width, height);
         }
 
@@ -650,47 +650,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Boolean IsEmpty
         {
-            get { return width == 0 || height == 0; }
-        }
-
-        /// <summary>
-        /// Gets the x-coordinate of the rectangle's top-left corner.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "x", Required = Required.Always)]
-        public Single X
-        {
-            get { return x; }
-        }
-
-        /// <summary>
-        /// Gets the y-coordinate of the rectangle's top-left corner.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "y", Required = Required.Always)]
-        public Single Y
-        {
-            get { return y; }
-        }
-
-        /// <summary>
-        /// Gets the rectangle's width.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
-        public Single Width
-        {
-            get { return width; }
-        }
-
-        /// <summary>
-        /// Gets the rectangle's height.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
-        public Single Height
-        {
-            get { return height; }
+            get { return Width == 0 || Height == 0; }
         }
 
         /// <summary>
@@ -699,7 +659,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Single Top
         {
-            get { return y; }
+            get { return Y; }
         }
 
         /// <summary>
@@ -708,7 +668,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Single Left
         {
-            get { return x; }
+            get { return X; }
         }
 
         /// <summary>
@@ -717,7 +677,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Single Bottom
         {
-            get { return y + height; }
+            get { return Y + Height; }
         }
 
         /// <summary>
@@ -726,7 +686,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Single Right
         {
-            get { return x + width; }
+            get { return X + Width; }
         }
 
         /// <summary>
@@ -735,7 +695,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Point2F Location
         {
-            get { return new Point2F(x, y); }
+            get { return new Point2F(X, Y); }
         }
 
         /// <summary>
@@ -744,7 +704,7 @@ namespace Ultraviolet
         [JsonIgnore]
         public Point2F Center
         {
-            get { return new Point2F(x + (width / 2.0f), y + (height / 2.0f)); }
+            get { return new Point2F(X + (Width / 2.0f), Y + (Height / 2.0f)); }
         }
 
         /// <summary>
@@ -753,13 +713,35 @@ namespace Ultraviolet
         [JsonIgnore]
         public Size2F Size
         {
-            get { return new Size2F(width, height); }
+            get { return new Size2F(Width, Height); }
         }
 
-        // Property values.
-        private readonly Single x;
-        private readonly Single y;
-        private readonly Single width;
-        private readonly Single height;
+        /// <summary>
+        /// The x-coordinate of the rectangle's top-left corner.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "x", Required = Required.Always)]
+        public Single X;
+
+        /// <summary>
+        /// The y-coordinate of the rectangle's top-left corner.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "y", Required = Required.Always)]
+        public Single Y;
+
+        /// <summary>
+        /// The rectangle's width.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        public Single Width;
+
+        /// <summary>
+        /// The rectangle's height.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        public Single Height;
     }
 }
