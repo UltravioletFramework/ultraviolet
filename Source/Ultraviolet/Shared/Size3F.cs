@@ -23,9 +23,9 @@ namespace Ultraviolet
         [JsonConstructor]
         public Size3F(Single width, Single height, Single depth)
         {
-            this.width = width;
-            this.height = height;
-            this.depth = depth;
+            this.Width = width;
+            this.Height = height;
+            this.Depth = depth;
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size3(Size3F size)
         {
-            return new Size3((Int32)size.width, (Int32)size.height, (Int32)size.depth);
+            return new Size3((Int32)size.Width, (Int32)size.Height, (Int32)size.Depth);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Size3D(Size3F size)
         {
-            return new Size3F(size.width, size.height, size.depth);
+            return new Size3F(size.Width, size.Height, size.Depth);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1} {2}", width, height, depth);
+            return String.Format(provider, "{0} {1} {2}", Width, Height, Depth);
         }
 
         /// <summary>
@@ -282,9 +282,9 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + width.GetHashCode();
-                hash = hash * 23 + height.GetHashCode();
-                hash = hash * 23 + depth.GetHashCode();
+                hash = hash * 23 + Width.GetHashCode();
+                hash = hash * 23 + Height.GetHashCode();
+                hash = hash * 23 + Depth.GetHashCode();
                 return hash;
             }
         }
@@ -310,7 +310,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Size3F other)
         {
-            return width == other.width && height == other.height && depth == other.depth;
+            return Width == other.Width && Height == other.Height && Depth == other.Depth;
         }
 
         /// <summary>
@@ -322,9 +322,9 @@ namespace Ultraviolet
         [Preserve]
         public Size3F Interpolate(Size3F target, Single t)
         {
-            var width  = Tweening.Lerp(this.width, target.width, t);
-            var height = Tweening.Lerp(this.height, target.height, t);
-            var depth  = Tweening.Lerp(this.depth, target.depth, t);
+            var width  = Tweening.Lerp(this.Width, target.Width, t);
+            var height = Tweening.Lerp(this.Height, target.Height, t);
+            var depth  = Tweening.Lerp(this.Depth, target.Depth, t);
             return new Size3F(width, height, depth);
         }
 
@@ -337,47 +337,33 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets the size's total volume (width times height times depth).
+        /// </summary>
+        [JsonIgnore]
+        public Single Volume
+        {
+            get { return Width * Height * Depth; }
+        }
+
+        /// <summary>
         /// Gets the size's width.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "width", Required = Required.Always)]
-        public Single Width
-        {
-            get { return width; }
-        }
+        public Single Width;
 
         /// <summary>
         /// Gets the size's height.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "height", Required = Required.Always)]
-        public Single Height
-        {
-            get { return height; }
-        }
+        public Single Height;
 
         /// <summary>
         /// Gets the size's depth.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "depth", Required = Required.Always)]
-        public Single Depth
-        {
-            get { return depth; }
-        }
-
-        /// <summary>
-        /// Gets the size's total volume (width times height times depth).
-        /// </summary>
-        [JsonIgnore]
-        public Single Volume
-        {
-            get { return width * height * depth; }
-        }
-
-        // Property values.
-        private readonly Single width;
-        private readonly Single height;
-        private readonly Single depth;
+        public Single Depth;
     }
 }

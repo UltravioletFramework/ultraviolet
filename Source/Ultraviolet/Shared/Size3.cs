@@ -23,9 +23,9 @@ namespace Ultraviolet
         [JsonConstructor]
         public Size3(Int32 width, Int32 height, Int32 depth)
         {
-            this.width = width;
-            this.height = height;
-            this.depth = depth;
+            this.Width = width;
+            this.Height = height;
+            this.Depth = depth;
         }
 
         /// <summary>
@@ -263,9 +263,9 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + width.GetHashCode();
-                hash = hash * 23 + height.GetHashCode();
-                hash = hash * 23 + depth.GetHashCode();
+                hash = hash * 23 + Width.GetHashCode();
+                hash = hash * 23 + Height.GetHashCode();
+                hash = hash * 23 + Depth.GetHashCode();
                 return hash;
             }
         }
@@ -286,7 +286,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(null, "{0} {1} {2}", width, height, depth);
+            return String.Format(null, "{0} {1} {2}", Width, Height, Depth);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Size3 other)
         {
-            return width == other.width && height == other.height && depth == other.depth;
+            return Width == other.Width && Height == other.Height && Depth == other.Depth;
         }
 
         /// <summary>
@@ -322,9 +322,9 @@ namespace Ultraviolet
         [Preserve]
         public Size3 Interpolate(Size3 target, Single t)
         {
-            var width  = Tweening.Lerp(this.width, target.width, t);
-            var height = Tweening.Lerp(this.height, target.height, t);
-            var depth  = Tweening.Lerp(this.depth, target.depth, t);
+            var width  = Tweening.Lerp(this.Width, target.Width, t);
+            var height = Tweening.Lerp(this.Height, target.Height, t);
+            var depth  = Tweening.Lerp(this.Depth, target.Depth, t);
             return new Size3(width, height, depth);
         }
 
@@ -337,47 +337,33 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the size's width.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
-        public Int32 Width
-        {
-            get { return width; }
-        }
-
-        /// <summary>
-        /// Gets the size's height.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
-        public Int32 Height
-        {
-            get { return height; }
-        }
-
-        /// <summary>
-        /// Gets the size's depth.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "depth", Required = Required.Always)]
-        public Int32 Depth
-        {
-            get { return depth; }
-        }
-
-        /// <summary>
         /// Gets the size's total volume (width times height times depth).
         /// </summary>
         [JsonIgnore]
         public Int32 Volume
         {
-            get { return width * height * depth; }
+            get { return Width * Height * Depth; }
         }
 
-        // Property values.
-        private readonly Int32 width;
-        private readonly Int32 height;
-        private readonly Int32 depth;
+        /// <summary>
+        /// The size's width.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        public Int32 Width;
+
+        /// <summary>
+        /// The size's height.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        public Int32 Height;
+
+        /// <summary>
+        /// The size's depth.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "depth", Required = Required.Always)]
+        public Int32 Depth;
     }
 }

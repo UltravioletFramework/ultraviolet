@@ -22,8 +22,8 @@ namespace Ultraviolet
         [JsonConstructor]
         public Size2(Int32 width, Int32 height)
         {
-            this.width = width;
-            this.height = height;
+            this.Width = width;
+            this.Height = height;
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Size2F(Size2 size)
         {
-            return new Size2F(size.width, size.height);
+            return new Size2F(size.Width, size.Height);
         }
 
         /// <summary>
@@ -292,8 +292,8 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + width.GetHashCode();
-                hash = hash * 23 + height.GetHashCode();
+                hash = hash * 23 + Width.GetHashCode();
+                hash = hash * 23 + Height.GetHashCode();
                 return hash;
             }
         }
@@ -314,7 +314,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1}", width, height);
+            return String.Format(provider, "{0} {1}", Width, Height);
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Size2 other)
         {
-            return width == other.width && height == other.height;
+            return Width == other.Width && Height == other.Height;
         }
 
         /// <summary>
@@ -350,8 +350,8 @@ namespace Ultraviolet
         [Preserve]
         public Size2 Interpolate(Size2 target, Single t)
         {
-            var width  = Tweening.Lerp(this.width, target.width, t);
-            var height = Tweening.Lerp(this.height, target.height, t);
+            var width  = Tweening.Lerp(this.Width, target.Width, t);
+            var height = Tweening.Lerp(this.Height, target.Height, t);
             return new Size2(width, height);
         }
 
@@ -364,36 +364,26 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the size's width.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
-        public Int32 Width
-        {
-            get { return width; }
-        }
-
-        /// <summary>
-        /// Gets the size's height.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
-        public Int32 Height
-        {
-            get { return height; }
-        }
-
-        /// <summary>
         /// Gets the size's total area (width times height).
         /// </summary>
         [JsonIgnore]
         public Int32 Area
         {
-            get { return width * height; }
+            get { return Width * Height; }
         }
 
-        // Property values.
-        private readonly Int32 width;
-        private readonly Int32 height;
+        /// <summary>
+        /// The size's width.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        public Int32 Width;
+
+        /// <summary>
+        /// The size's height.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        public Int32 Height;
     }
 }

@@ -22,8 +22,8 @@ namespace Ultraviolet
         [JsonConstructor]
         public Size2F(Single width, Single height)
         {
-            this.width = width;
-            this.height = height;
+            this.Width = width;
+            this.Height = height;
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2(Size2F size)
         {
-            return new Size2((Int32)size.width, (Int32)size.height);
+            return new Size2((Int32)size.Width, (Int32)size.Height);
         }
 
         /// <summary>
@@ -294,8 +294,8 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + width.GetHashCode();
-                hash = hash * 23 + height.GetHashCode();
+                hash = hash * 23 + Width.GetHashCode();
+                hash = hash * 23 + Height.GetHashCode();
                 return hash;
             }
         }
@@ -316,7 +316,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1}", width, height);
+            return String.Format(provider, "{0} {1}", Width, Height);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Size2F other)
         {
-            return width == other.width && height == other.height;
+            return Width == other.Width && Height == other.Height;
         }
 
         /// <summary>
@@ -352,8 +352,8 @@ namespace Ultraviolet
         [Preserve]
         public Size2F Interpolate(Size2F target, Single t)
         {
-            var width  = Tweening.Lerp(this.width, target.width, t);
-            var height = Tweening.Lerp(this.height, target.height, t);
+            var width  = Tweening.Lerp(this.Width, target.Width, t);
+            var height = Tweening.Lerp(this.Height, target.Height, t);
             return new Size2F(width, height);
         }
 
@@ -366,36 +366,26 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the area's width.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
-        public Single Width
-        {
-            get { return width; }
-        }
-
-        /// <summary>
-        /// Gets the area's height.
-        /// </summary>
-        [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
-        public Single Height
-        {
-            get { return height; }
-        }
-
-        /// <summary>
         /// Gets the size's total area (width times height).
         /// </summary>
         [JsonIgnore]
         public Single Area
         {
-            get { return width * height; }
+            get { return Width * Height; }
         }
 
-        // Property values.
-        private readonly Single width;
-        private readonly Single height;
+        /// <summary>
+        /// The area's width.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        public Single Width;
+
+        /// <summary>
+        /// The area's height.
+        /// </summary>
+        [Preserve]
+        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        public Single Height;
     }
 }
