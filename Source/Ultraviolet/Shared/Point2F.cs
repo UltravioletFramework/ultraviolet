@@ -22,8 +22,8 @@ namespace Ultraviolet
         [JsonConstructor]
         public Point2F(Single x, Single y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
 
         /// <summary>
@@ -368,8 +368,8 @@ namespace Ultraviolet
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + x.GetHashCode();
-                hash = hash * 23 + y.GetHashCode();
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
                 return hash;
             }
         }
@@ -390,7 +390,7 @@ namespace Ultraviolet
         /// <returns>A human-readable string that represents the object.</returns>
         public String ToString(IFormatProvider provider)
         {
-            return String.Format(provider, "{0} {1}", x, y);
+            return String.Format(provider, "{0} {1}", X, Y);
         }
 
         /// <summary>
@@ -414,7 +414,7 @@ namespace Ultraviolet
         [Preserve]
         public Boolean Equals(Point2F other)
         {
-            return x == other.x && y == other.y;
+            return X == other.X && Y == other.Y;
         }
 
         /// <summary>
@@ -426,8 +426,8 @@ namespace Ultraviolet
         [Preserve]
         public Point2F Interpolate(Point2F target, Single t)
         {
-            var width  = Tweening.Lerp(this.x, target.x, t);
-            var height = Tweening.Lerp(this.y, target.y, t);
+            var width  = Tweening.Lerp(this.X, target.X, t);
+            var height = Tweening.Lerp(this.Y, target.Y, t);
             return new Point2F(width, height);
         }
 
@@ -440,27 +440,17 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets the point's x-coordinate.
+        /// The point's x-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "x", Required = Required.Always)]
-        public Single X
-        {
-            get { return x; }
-        }
+        public Single X;
 
         /// <summary>
-        /// Gets the point's y-coordinate.
+        /// The point's y-coordinate.
         /// </summary>
         [Preserve]
         [JsonProperty(PropertyName = "y", Required = Required.Always)]
-        public Single Y
-        {
-            get { return y; }
-        }
-
-        // Property values.
-        private readonly Single x;
-        private readonly Single y;
+        public Single Y;
     }
 }
