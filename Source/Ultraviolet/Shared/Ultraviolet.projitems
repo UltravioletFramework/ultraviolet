@@ -318,6 +318,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\OrientationChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plane.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DisplayMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyClipboardService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\DummyUltravioletDisplayInfo.cs" />
@@ -408,6 +409,7 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Sprite.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\TextureAtlas.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Plane.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector4.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector3.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Vector2.json" />

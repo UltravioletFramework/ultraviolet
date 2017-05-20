@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Plane Schema",
+  "type": "object",
+  "properties": {
+    "normal": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Vector3.json" },
+    "d": {
+      "type": "number"
+    }
+  },
+  "required": [ "normal", "d" ]
+}

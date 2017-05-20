@@ -66,6 +66,7 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="BitmapResult.cs" />
+    <Compile Include="PlaneResult.cs" />
     <Compile Include="CircleDResult.cs" />
     <Compile Include="Graphics\Graphics2D\Text\LineInfoResult.cs" />
     <Compile Include="Graphics\ITestFrameworkCompositor.cs" />

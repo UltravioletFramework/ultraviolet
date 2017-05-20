@@ -138,6 +138,7 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Audio\SongTests.cs" />
+    <Compile Include="PlaneTests.cs" />
     <Compile Include="CursorCollectionTests.cs" />
     <Compile Include="Content\AssetIDTests.cs" />
     <Compile Include="Graphics\Graphics2D\SpriteFontTests.cs" />
