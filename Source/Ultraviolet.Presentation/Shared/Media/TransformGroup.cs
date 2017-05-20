@@ -72,7 +72,7 @@ namespace Ultraviolet.Presentation.Media
                     foreach (var child in children)
                     {
                         value = child.Value;
-                        Matrix.Concat(ref matrix, ref value, out matrix);
+                        Matrix.Multiply(ref matrix, ref value, out matrix);
                     }
                 }
 

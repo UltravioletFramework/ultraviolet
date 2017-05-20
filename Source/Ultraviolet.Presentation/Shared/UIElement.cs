@@ -1588,9 +1588,9 @@ namespace Ultraviolet.Presentation
             var mtxTranslateToScreenSpace = Matrix.CreateTranslation(+pixPosition.X, +pixPosition.Y, 0f);
 
             Matrix mtxFinal;
-            Matrix.Concat(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
-            Matrix.Concat(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
-            Matrix.Concat(ref mtxFinal, ref mtxParentTransform, out mtxFinal);
+            Matrix.Multiply(ref mtxTranslateToClientSpace, ref mtxTransform, out mtxFinal);
+            Matrix.Multiply(ref mtxFinal, ref mtxTranslateToScreenSpace, out mtxFinal);
+            Matrix.Multiply(ref mtxFinal, ref mtxParentTransform, out mtxFinal);
 
             return mtxFinal;
         }
@@ -1999,6 +1999,9 @@ namespace Ultraviolet.Presentation
         /// <inheritdoc/>
         protected override Matrix GetTransformMatrix(Boolean inDevicePixels = false)
         {
+            if (RenderTransform == null || RenderTransform.IsIdentity)
+                return Matrix.Identity;
+
             var scaledRenderSize = inDevicePixels ? Display.DipsToPixels(RenderSize) : RenderSize;
 
             var rtoInClientSpace = new Vector2(
@@ -2006,12 +2009,12 @@ namespace Ultraviolet.Presentation
                 (Single)(scaledRenderSize.Height * RenderTransformOrigin.Y));
 
             var mtxTranslateToOrigin = Matrix.CreateTranslation(-rtoInClientSpace.X, -rtoInClientSpace.Y, 0);
-            var mtxRenderTransform = (RenderTransform ?? Transform.Identity).Value;
+            var mtxRenderTransform = RenderTransform.Value;
             var mtxTranslateToClient = Matrix.CreateTranslation(+rtoInClientSpace.X, +rtoInClientSpace.Y, 0);
 
             Matrix mtxFinal;
-            Matrix.Concat(ref mtxTranslateToOrigin, ref mtxRenderTransform, out mtxFinal);
-            Matrix.Concat(ref mtxFinal, ref mtxTranslateToClient, out mtxFinal);
+            Matrix.Multiply(ref mtxTranslateToOrigin, ref mtxRenderTransform, out mtxFinal);
+            Matrix.Multiply(ref mtxFinal, ref mtxTranslateToClient, out mtxFinal);
 
             return mtxFinal;
         }

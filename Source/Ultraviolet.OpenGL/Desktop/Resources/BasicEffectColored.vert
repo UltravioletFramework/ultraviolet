@@ -12,6 +12,6 @@ out vec4 vColor;
 
 void main()
 {
-	gl_Position = Projection * View * World * uv_Position0;
+	gl_Position = uv_Position0 * World * View * Projection;
 	vColor      = DiffuseColor * uv_Color0;
 }

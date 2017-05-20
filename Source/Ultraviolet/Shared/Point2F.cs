@@ -59,7 +59,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator +(Point2F p1, Point2F p2)
         {
-            return new Point2F(p1.X + p2.X, p1.Y + p2.Y);
+            Point2F result;
+
+            result.X = p1.X + p2.X;
+            result.Y = p1.Y + p2.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -71,7 +76,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator -(Point2F p1, Point2F p2)
         {
-            return new Point2F(p1.X - p2.X, p1.Y - p2.Y);
+            Point2F result;
+
+            result.X = p1.X - p2.X;
+            result.Y = p1.Y - p2.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -83,7 +93,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator -(Point2F point, Size2 offset)
         {
-            return new Point2F(point.X - offset.Width, point.Y - offset.Height);
+            Point2F result;
+
+            result.X = point.X + offset.Width;
+            result.Y = point.Y + offset.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -95,7 +110,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator +(Point2F point, Size2 offset)
         {
-            return new Point2F(point.X + offset.Width, point.Y + offset.Height);
+            Point2F result;
+
+            result.X = point.X + offset.Width;
+            result.Y = point.Y + offset.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -107,7 +127,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator +(Point2F point, Size2F offset)
         {
-            return new Point2F(point.X + offset.Width, point.Y + offset.Height);
+            Point2F result;
+
+            result.X = point.X + offset.Width;
+            result.Y = point.Y + offset.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -119,7 +144,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator -(Point2F point, Size2F offset)
         {
-            return new Point2F(point.X - offset.Width, point.Y - offset.Height);
+            Point2F result;
+
+            result.X = point.X - offset.Width;
+            result.Y = point.Y - offset.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -131,7 +161,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator *(Point2F point, Int32 multiplier)
         {
-            return new Point2F(point.X * multiplier, point.Y * multiplier);
+            Point2F result;
+
+            result.X = point.X * multiplier;
+            result.Y = point.Y * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -143,7 +178,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator *(Point2F point, Single multiplier)
         {
-            return new Point2F(point.X * multiplier, point.Y * multiplier);
+            Point2F result;
+
+            result.X = point.X * multiplier;
+            result.Y = point.Y * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -155,7 +195,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2D operator *(Point2F point, Double multiplier)
         {
-            return new Point2D(point.X * multiplier, point.Y * multiplier);
+            Point2D result;
+
+            result.X = point.X * multiplier;
+            result.Y = point.Y * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -167,7 +212,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator /(Point2F point, Int32 divisor)
         {
-            return new Point2F(point.X / divisor, point.Y / divisor);
+            Point2F result;
+
+            result.X = point.X / divisor;
+            result.Y = point.Y / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -179,7 +229,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator /(Point2F point, Single divisor)
         {
-            return new Point2F(point.X / divisor, point.Y / divisor);
+            Point2F result;
+
+            result.X = point.X / divisor;
+            result.Y = point.Y / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -191,7 +246,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2D operator /(Point2F point, Double divisor)
         {
-            return new Point2D(point.X / divisor, point.Y / divisor);
+            Point2D result;
+
+            result.X = point.X / divisor;
+            result.Y = point.Y / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -202,7 +262,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Vector2(Point2F point)
         {
-            return new Vector2(point.X, point.Y);
+            Vector2 result;
+
+            result.X = point.X;
+            result.Y = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -213,7 +278,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2(Point2F point)
         {
-            return new Size2((Int32)point.X, (Int32)point.Y);
+            Size2 result;
+
+            result.Width = (Int32)point.X;
+            result.Height = (Int32)point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -224,7 +294,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2F(Point2F point)
         {
-            return new Size2F(point.X, point.Y);
+            Size2F result;
+
+            result.Width = point.X;
+            result.Height = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -235,7 +310,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2D(Point2F point)
         {
-            return new Size2D(point.X, point.Y);
+            Size2D result;
+
+            result.Width = point.X;
+            result.Height = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -246,7 +326,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Point2(Point2F point)
         {
-            return new Point2((Int32)point.X, (Int32)point.Y);
+            Point2 result;
+
+            result.X = (Int32)point.X;
+            result.Y = (Int32)point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -257,7 +342,12 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Point2D(Point2F point)
         {
-            return new Point2D(point.X, point.Y);
+            Point2D result;
+
+            result.X = point.X;
+            result.Y = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -341,9 +431,12 @@ namespace Ultraviolet
         /// <returns>The transformed <see cref="Point2F"/>.</returns>
         public static Point2F Transform(Point2F point, Matrix matrix)
         {
-            var x = (matrix.M11 * point.X + matrix.M12 * point.Y) + matrix.M14;
-            var y = (matrix.M21 * point.X + matrix.M22 * point.Y) + matrix.M24;
-            return new Point2F(x, y);
+            Point2F result;
+
+            result.X = (matrix.M11 * point.X + matrix.M21 * point.Y) + matrix.M41;
+            result.Y = (matrix.M12 * point.X + matrix.M22 * point.Y) + matrix.M42;
+
+            return result;
         }
 
         /// <summary>
@@ -354,9 +447,12 @@ namespace Ultraviolet
         /// <param name="result">The transformed <see cref="Point2F"/>.</param>
         public static void Transform(ref Point2F point, ref Matrix matrix, out Point2F result)
         {
-            var x = (matrix.M11 * point.X + matrix.M12 * point.Y) + matrix.M14;
-            var y = (matrix.M21 * point.X + matrix.M22 * point.Y) + matrix.M24;
-            result = new Point2F(x, y);
+            Point2F temp;
+
+            temp.X = (matrix.M11 * point.X + matrix.M21 * point.Y) + matrix.M41;
+            temp.Y = (matrix.M12 * point.X + matrix.M22 * point.Y) + matrix.M42;
+
+            result = temp;
         }
 
         /// <summary>
@@ -426,9 +522,12 @@ namespace Ultraviolet
         [Preserve]
         public Point2F Interpolate(Point2F target, Single t)
         {
-            var width  = Tweening.Lerp(this.X, target.X, t);
-            var height = Tweening.Lerp(this.Y, target.Y, t);
-            return new Point2F(width, height);
+            Point2F result;
+
+            result.X = Tweening.Lerp(this.X, target.X, t);
+            result.Y = Tweening.Lerp(this.Y, target.Y, t);
+
+            return result;
         }
 
         /// <summary>

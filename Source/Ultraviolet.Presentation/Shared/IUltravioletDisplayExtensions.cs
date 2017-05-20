@@ -137,10 +137,10 @@ namespace Ultraviolet.Presentation
             var z = (Single)@this.DipsToPixels(matrix.M34);
 
             return new Matrix(
-                matrix.M11, matrix.M12, matrix.M13, x,
-                matrix.M21, matrix.M22, matrix.M23, y,
-                matrix.M31, matrix.M32, matrix.M33, z,
-                matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+                matrix.M11, matrix.M12, matrix.M13, matrix.M14,
+                matrix.M21, matrix.M22, matrix.M23, matrix.M24,
+                matrix.M31, matrix.M32, matrix.M33, matrix.M34,
+                         x,          y,          z, matrix.M44);
         }
 
         /// <summary>
@@ -157,10 +157,10 @@ namespace Ultraviolet.Presentation
             var z = (Single)@this.DipsToPixels(matrix.M34);
 
             result = new Matrix(
-                matrix.M11, matrix.M12, matrix.M13, x,
-                matrix.M21, matrix.M22, matrix.M23, y,
-                matrix.M31, matrix.M32, matrix.M33, z,
-                matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+                matrix.M11, matrix.M12, matrix.M13, matrix.M14,
+                matrix.M21, matrix.M22, matrix.M23, matrix.M24,
+                matrix.M31, matrix.M32, matrix.M33, matrix.M34,
+                         x,          y,          z, matrix.M44);
         }
     }
 }

@@ -35,7 +35,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2 operator +(Point2 p1, Point2 p2)
         {
-            return new Point2(p1.X + p2.X, p1.Y + p2.Y);
+            Point2 result;
+
+            result.X = p1.X + p2.X;
+            result.Y = p1.Y + p2.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -47,7 +52,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2 operator -(Point2 p1, Point2 p2)
         {
-            return new Point2(p1.X - p2.X, p1.Y - p2.Y);
+            Point2 result;
+
+            result.X = p1.X - p2.X;
+            result.Y = p1.Y - p2.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -59,7 +69,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2 operator +(Point2 point, Size2 offset)
         {
-            return new Point2(point.X + offset.Width, point.Y + offset.Height);
+            Point2 result;
+
+            result.X = point.X + offset.Width;
+            result.Y = point.Y + offset.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -71,7 +86,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2 operator -(Point2 point, Size2 offset)
         {
-            return new Point2(point.X - offset.Width, point.Y - offset.Height);
+            Point2 result;
+
+            result.X = point.X - offset.Width;
+            result.Y = point.Y - offset.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -107,7 +127,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2 operator *(Point2 point, Int32 multiplier)
         {
-            return new Point2(point.X * multiplier, point.Y * multiplier);
+            Point2 result;
+
+            result.X = point.X * multiplier;
+            result.Y = point.Y * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -119,7 +144,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator *(Point2 point, Single multiplier)
         {
-            return new Point2F(point.X * multiplier, point.Y * multiplier);
+            Point2 result;
+
+            result.X = (Int32)(point.X * multiplier);
+            result.Y = (Int32)(point.Y * multiplier);
+
+            return result;
         }
 
         /// <summary>
@@ -131,7 +161,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2D operator *(Point2 point, Double multiplier)
         {
-            return new Point2D(point.X * multiplier, point.Y * multiplier);
+            Point2 result;
+
+            result.X = (Int32)(point.X * multiplier);
+            result.Y = (Int32)(point.Y * multiplier);
+
+            return result;
         }
 
         /// <summary>
@@ -143,7 +178,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2 operator /(Point2 point, Int32 divisor)
         {
-            return new Point2(point.X / divisor, point.Y / divisor);
+            Point2 result;
+
+            result.X = point.X / divisor;
+            result.Y = point.Y / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -155,7 +195,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2F operator /(Point2 point, Single divisor)
         {
-            return new Point2F(point.X / divisor, point.Y / divisor);
+            Point2 result;
+
+            result.X = (Int32)(point.X / divisor);
+            result.Y = (Int32)(point.Y / divisor);
+
+            return result;
         }
 
         /// <summary>
@@ -167,7 +212,12 @@ namespace Ultraviolet
         [Preserve]
         public static Point2D operator /(Point2 point, Double divisor)
         {
-            return new Point2D(point.X / divisor, point.Y / divisor);
+            Point2 result;
+
+            result.X = (Int32)(point.X / divisor);
+            result.Y = (Int32)(point.Y / divisor);
+
+            return result;
         }
 
         /// <summary>
@@ -178,7 +228,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Vector2(Point2 point)
         {
-            return new Vector2(point.X, point.Y);
+            Vector2 result;
+
+            result.X = point.X;
+            result.Y = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -189,7 +244,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2(Point2 point)
         {
-            return new Size2(point.X, point.Y);
+            Size2 result;
+
+            result.Width = point.X;
+            result.Height = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -200,7 +260,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2F(Point2 point)
         {
-            return new Size2F(point.X, point.Y);
+            Size2F result;
+
+            result.Width = point.X;
+            result.Height = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -211,7 +276,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size2D(Point2 point)
         {
-            return new Size2D(point.X, point.Y);
+            Size2D result;
+
+            result.Width = point.X;
+            result.Height = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -222,7 +292,12 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Point2F(Point2 point)
         {
-            return new Point2F(point.X, point.Y);
+            Point2F result;
+
+            result.X = point.X;
+            result.Y = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -233,7 +308,12 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Point2D(Point2 point)
         {
-            return new Point2D(point.X, point.Y);
+            Point2D result;
+
+            result.X = point.X;
+            result.Y = point.Y;
+
+            return result;
         }
 
         /// <summary>
@@ -310,6 +390,38 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Transforms a point by a matrix.
+        /// </summary>
+        /// <param name="point">The <see cref="Point2"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the point.</param>
+        /// <returns>The transformed <see cref="Point2"/>.</returns>
+        public static Point2 Transform(Point2 point, Matrix matrix)
+        {
+            Point2 result;
+
+            result.X = (Int32)((matrix.M11 * point.X + matrix.M21 * point.Y) + matrix.M41);
+            result.Y = (Int32)((matrix.M12 * point.X + matrix.M22 * point.Y) + matrix.M42);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a point by a matrix.
+        /// </summary>
+        /// <param name="point">The <see cref="Point2"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the point.</param>
+        /// <param name="result">The transformed <see cref="Point2"/>.</param>
+        public static void Transform(ref Point2 point, ref Matrix matrix, out Point2 result)
+        {
+            Point2 temp;
+
+            temp.X = (Int32)((matrix.M11 * point.X + matrix.M21 * point.Y) + matrix.M41);
+            temp.Y = (Int32)((matrix.M12 * point.X + matrix.M22 * point.Y) + matrix.M42);
+
+            result = temp;
+        }
+
+        /// <summary>
         /// Gets the object's hash code.
         /// </summary>
         /// <returns>The object's hash code.</returns>
@@ -376,9 +488,12 @@ namespace Ultraviolet
         [Preserve]
         public Point2 Interpolate(Point2 target, Single t)
         {
-            var width  = Tweening.Lerp(this.X, target.X, t);
-            var height = Tweening.Lerp(this.Y, target.Y, t);
-            return new Point2(width, height);
+            Point2 result;
+
+            result.X = Tweening.Lerp(this.X, target.X, t);
+            result.Y = Tweening.Lerp(this.Y, target.Y, t);
+
+            return result;
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -158,28 +159,28 @@ namespace Ultraviolet
         /// <summary>
         /// Adds a <see cref="Matrix"/> to another matrix.
         /// </summary>
-        /// <param name="m1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
-        /// <param name="m2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
+        /// <param name="addend1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
+        /// <param name="addend2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         [Preserve]
-        public static Matrix operator +(Matrix m1, Matrix m2)
+        public static Matrix operator +(Matrix addend1, Matrix addend2)
         {
             Matrix result;
-            Add(ref m1, ref m2, out result);
+            Add(ref addend1, ref addend2, out result);
             return result;
         }
 
         /// <summary>
         /// Subtracts a <see cref="Matrix"/> from another matrix.
         /// </summary>
-        /// <param name="m1">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
-        /// <param name="m2">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
+        /// <param name="minuend">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
+        /// <param name="subtrahend">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         [Preserve]
-        public static Matrix operator -(Matrix m1, Matrix m2)
+        public static Matrix operator -(Matrix minuend, Matrix subtrahend)
         {
             Matrix result;
-            Subtract(ref m1, ref m2, out result);
+            Subtract(ref minuend, ref subtrahend, out result);
             return result;
         }
 
@@ -286,32 +287,29 @@ namespace Ultraviolet
             var normalizedRight = Vector3.Normalize(Vector3.Cross(up, normalizedBackward));
             var normalizedUp = Vector3.Cross(normalizedBackward, normalizedRight);
 
-            var M11 = normalizedRight.X;
-            var M21 = normalizedRight.Y;
-            var M31 = normalizedRight.Z;
-            var M41 = 0f;
+            Matrix result;
 
-            var M12 = normalizedUp.X;
-            var M22 = normalizedUp.Y;
-            var M32 = normalizedUp.Z;
-            var M42 = 0f;
+            result.M11 = normalizedRight.X;
+            result.M12 = normalizedRight.Y;
+            result.M13 = normalizedRight.Z;
+            result.M14 = 0f;
 
-            var M13 = normalizedBackward.X;
-            var M23 = normalizedBackward.Y;
-            var M33 = normalizedBackward.Z;
-            var M43 = 0f;
+            result.M21 = normalizedUp.X;
+            result.M22 = normalizedUp.Y;
+            result.M23 = normalizedUp.Z;
+            result.M24 = 0f;
 
-            var M14 = position.X;
-            var M24 = position.Y;
-            var M34 = position.Z;
-            var M44 = 1f;
+            result.M31 = normalizedBackward.X;
+            result.M32 = normalizedBackward.Y;
+            result.M33 = normalizedBackward.Z;
+            result.M34 = 0f;
 
-            return new Matrix(
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44
-            );
+            result.M41 = position.X;
+            result.M42 = position.Y;
+            result.M43 = position.Z;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -327,32 +325,25 @@ namespace Ultraviolet
             var normalizedRight = Vector3.Normalize(Vector3.Cross(up, normalizedBackward));
             var normalizedUp = Vector3.Cross(normalizedBackward, normalizedRight);
 
-            var M11 = normalizedRight.X;
-            var M21 = normalizedRight.Y;
-            var M31 = normalizedRight.Z;
-            var M41 = 0f;
+            result.M11 = normalizedRight.X;
+            result.M12 = normalizedRight.Y;
+            result.M13 = normalizedRight.Z;
+            result.M14 = 0f;
 
-            var M12 = normalizedUp.X;
-            var M22 = normalizedUp.Y;
-            var M32 = normalizedUp.Z;
-            var M42 = 0f;
+            result.M21 = normalizedUp.X;
+            result.M22 = normalizedUp.Y;
+            result.M23 = normalizedUp.Z;
+            result.M24 = 0f;
 
-            var M13 = normalizedBackward.X;
-            var M23 = normalizedBackward.Y;
-            var M33 = normalizedBackward.Z;
-            var M43 = 0f;
+            result.M31 = normalizedBackward.X;
+            result.M32 = normalizedBackward.Y;
+            result.M33 = normalizedBackward.Z;
+            result.M34 = 0f;
 
-            var M14 = position.X;
-            var M24 = position.Y;
-            var M34 = position.Z;
-            var M44 = 1f;
-
-            result = new Matrix(
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44
-            );
+            result.M41 = position.X;
+            result.M42 = position.Y;
+            result.M43 = position.Z;
+            result.M44 = 1f;            
         }
 
         /// <summary>
@@ -368,15 +359,29 @@ namespace Ultraviolet
             var xAxis = Vector3.Normalize(Vector3.Cross(cameraUp, zAxis));
             var yAxis = Vector3.Cross(zAxis, xAxis);
 
-            var zDot = -Vector3.Dot(zAxis, cameraPosition);
-            var xDot = -Vector3.Dot(xAxis, cameraPosition);
-            var yDot = -Vector3.Dot(yAxis, cameraPosition);
+            Matrix result;
 
-            return new Matrix(
-                xAxis.X, xAxis.Y, xAxis.Z, xDot,
-                yAxis.X, yAxis.Y, yAxis.Z, yDot,
-                zAxis.X, zAxis.Y, zAxis.Z, zDot,
-                      0,       0,       0,    1);
+            result.M11 = xAxis.X;
+            result.M12 = yAxis.X;
+            result.M13 = zAxis.X;
+            result.M14 = 0f;
+
+            result.M21 = xAxis.Y;
+            result.M22 = yAxis.Y;
+            result.M23 = zAxis.Y;
+            result.M24 = 0f;
+
+            result.M31 = xAxis.Z;
+            result.M32 = yAxis.Z;
+            result.M33 = zAxis.Z;
+            result.M34 = 0f;
+
+            result.M41 = -Vector3.Dot(xAxis, cameraPosition);
+            result.M42 = -Vector3.Dot(yAxis, cameraPosition);
+            result.M43 = -Vector3.Dot(zAxis, cameraPosition);
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -391,16 +396,26 @@ namespace Ultraviolet
             var zAxis = Vector3.Normalize(cameraPosition - cameraTarget);
             var xAxis = Vector3.Normalize(Vector3.Cross(cameraUp, zAxis));
             var yAxis = Vector3.Cross(zAxis, xAxis);
-            
-            var zDot = -Vector3.Dot(zAxis, cameraPosition);
-            var xDot = -Vector3.Dot(xAxis, cameraPosition);
-            var yDot = -Vector3.Dot(yAxis, cameraPosition);
 
-            result = new Matrix(
-                xAxis.X, xAxis.Y, xAxis.Z, xDot,
-                yAxis.X, yAxis.Y, yAxis.Z, yDot,
-                zAxis.X, zAxis.Y, zAxis.Z, zDot,
-                      0,       0,       0,    1);
+            result.M11 = xAxis.X;
+            result.M12 = yAxis.X;
+            result.M13 = zAxis.X;
+            result.M14 = 0f;
+
+            result.M21 = xAxis.Y;
+            result.M22 = yAxis.Y;
+            result.M23 = zAxis.Y;
+            result.M24 = 0f;
+
+            result.M31 = xAxis.Z;
+            result.M32 = yAxis.Z;
+            result.M33 = zAxis.Z;
+            result.M34 = 0f;
+
+            result.M41 = -Vector3.Dot(xAxis, cameraPosition);
+            result.M42 = -Vector3.Dot(yAxis, cameraPosition);
+            result.M43 = -Vector3.Dot(zAxis, cameraPosition);
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -413,17 +428,29 @@ namespace Ultraviolet
         /// <returns>The projection <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateOrthographic(Single width, Single height, Single zNearPlane, Single zFarPlane)
         {
-            var M11 = (float)(2.0 / width);
-            var M22 = (float)(2.0 / height);
-            var M33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var M34 = zNearPlane / (zNearPlane - zFarPlane);
+            Matrix result;
 
-            return new Matrix(
-                M11, 0, 0, 0,
-                  0, M22, 0, 0,
-                  0, 0, M33, M34,
-                  0, 0, 0, 1
-            );
+            result.M11 = 2.0f / width;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 2.0f / height;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1.0f / (zNearPlane - zFarPlane);
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = zNearPlane / (zNearPlane - zFarPlane);
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -436,17 +463,25 @@ namespace Ultraviolet
         /// <param name="result">The projection <see cref="Matrix"/> that was created.</param>
         public static void CreateOrthographic(Single width, Single height, Single zNearPlane, Single zFarPlane, out Matrix result)
         {
-            var M11 = (float)(2.0 / width);
-            var M22 = (float)(2.0 / height);
-            var M33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var M34 = zNearPlane / (zNearPlane - zFarPlane);
+            result.M11 = 2.0f / width;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            result = new Matrix(
-                M11, 0, 0, 0,
-                  0, M22, 0, 0,
-                  0, 0, M33, M34,
-                  0, 0, 0, 1
-            );
+            result.M21 = 0f;
+            result.M22 = 2.0f / height;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1.0f / (zNearPlane - zFarPlane);
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = zNearPlane / (zNearPlane - zFarPlane);
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -461,19 +496,29 @@ namespace Ultraviolet
         /// <returns>The projection <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateOrthographicOffCenter(Single left, Single right, Single bottom, Single top, Single zNearPlane, Single zFarPlane)
         {
-            var M11 = (float)(2.0 / (right - left));
-            var M14 = (left + right) / (left - right);
-            var M22 = (float)(2.0 / (top - bottom));
-            var M24 = (top + bottom) / (bottom - top);
-            var M33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var M34 = zNearPlane / (zNearPlane - zFarPlane);
+            Matrix result;
 
-            return new Matrix(
-                M11, 0, 0, M14,
-                  0, M22, 0, M24,
-                  0, 0, M33, M34,
-                  0, 0, 0, 1
-            );
+            result.M11 = 2.0f / (right - left);
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 2.0f / (top - bottom);
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1.0f / (zNearPlane - zFarPlane);
+            result.M34 = 0f;
+
+            result.M41 = (left + right) / (left - right);
+            result.M42 = (top + bottom) / (bottom - top);
+            result.M43 = zNearPlane / (zNearPlane - zFarPlane);
+            result.M44 = 1.0f;
+
+            return result;
         }
 
         /// <summary>
@@ -488,19 +533,25 @@ namespace Ultraviolet
         /// <param name="result">The projection <see cref="Matrix"/> that was created.</param>
         public static void CreateOrthographicOffCenter(Single left, Single right, Single bottom, Single top, Single zNearPlane, Single zFarPlane, out Matrix result)
         {
-            var M11 = (float)(2.0 / (right - left));
-            var M14 = (left + right) / (left - right);
-            var M22 = (float)(2.0 / (top - bottom));
-            var M24 = (top + bottom) / (bottom - top);
-            var M33 = (float)(1.0 / (zNearPlane - zFarPlane));
-            var M34 = zNearPlane / (zNearPlane - zFarPlane);
+            result.M11 = 2.0f / (right - left);
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            result = new Matrix(
-                M11, 0, 0, M14,
-                  0, M22, 0, M24,
-                  0, 0, M33, M34,
-                  0, 0, 0, 1
-            );
+            result.M21 = 0f;
+            result.M22 = 2.0f / (top - bottom);
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1.0f / (zNearPlane - zFarPlane);
+            result.M34 = 0f;
+
+            result.M41 = (left + right) / (left - right);
+            result.M42 = (top + bottom) / (bottom - top);
+            result.M43 = zNearPlane / (zNearPlane - zFarPlane);
+            result.M44 = 1.0f;
         }
 
         /// <summary>
@@ -517,20 +568,31 @@ namespace Ultraviolet
             Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
             Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
-            var nearmfar = nearPlaneDistance - farPlaneDistance;
+            var negFarRange = Single.IsPositiveInfinity(farPlaneDistance) ? -1f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-            var M11 = 2f * nearPlaneDistance / width;
-            var M22 = 2f * nearPlaneDistance / height;
-            var M33 = farPlaneDistance / nearmfar;
-            var M34 = nearPlaneDistance * farPlaneDistance / nearmfar;
-            var M43 = -1f;
+            Matrix result;
 
-            return new Matrix(
-                M11, 0, 0, 0,
-                0, M22, 0, 0,
-                0, 0, M33, M34,
-                0, 0, M43, 0
-            );
+            result.M11 = 2.0f * nearPlaneDistance / width;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 2.0f * nearPlaneDistance / height;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = negFarRange;
+            result.M34 = -1f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = nearPlaneDistance * negFarRange;
+            result.M44 = 0f;
+
+            return result;
         }
 
         /// <summary>
@@ -547,20 +609,27 @@ namespace Ultraviolet
             Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
             Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
-            var nearmfar = nearPlaneDistance - farPlaneDistance;
+            var negFarRange = Single.IsPositiveInfinity(farPlaneDistance) ? -1f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-            var M11 = 2f * nearPlaneDistance / width;
-            var M22 = 2f * nearPlaneDistance / height;
-            var M33 = farPlaneDistance / nearmfar;
-            var M34 = nearPlaneDistance * farPlaneDistance / nearmfar;
-            var M43 = -1f;
+            result.M11 = 2.0f * nearPlaneDistance / width;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            result = new Matrix(
-                M11, 0, 0, 0,
-                0, M22, 0, 0,
-                0, 0, M33, M34,
-                0, 0, M43, 0
-            );
+            result.M21 = 0f;
+            result.M22 = 2.0f * nearPlaneDistance / height;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = negFarRange;
+            result.M34 = -1f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = nearPlaneDistance * negFarRange;
+            result.M44 = 0f;
         }
 
         /// <summary>
@@ -578,22 +647,33 @@ namespace Ultraviolet
             Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
             Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
-            var yScale = 1f / Math.Tan(fieldOfView * 0.5f);
+            var yScale = 1f / (Single)Math.Tan(fieldOfView * 0.5f);
             var xScale = yScale / aspectRatio;
-            var nearmfar = nearPlaneDistance - farPlaneDistance;
+            var negFarRange = Single.IsPositiveInfinity(farPlaneDistance) ? -1f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-            var M11 = (float)xScale;
-            var M22 = (float)yScale;
-            var M33 = farPlaneDistance / nearmfar;
-            var M34 = nearPlaneDistance * farPlaneDistance / nearmfar;
-            var M43 = -1f;
+            Matrix result;
 
-            return new Matrix(
-                M11, 0, 0, 0,
-                0, M22, 0, 0,
-                0, 0, M33, M34,
-                0, 0, M43, 0
-            );
+            result.M11 = xScale;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = yScale;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = negFarRange;
+            result.M34 = -1f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = nearPlaneDistance * negFarRange;
+            result.M44 = 0f;
+
+            return result;            
         }
 
         /// <summary>
@@ -611,22 +691,29 @@ namespace Ultraviolet
             Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
             Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
-            var yScale = 1f / Math.Tan(fieldOfView * 0.5f);
+            var yScale = 1f / (Single)Math.Tan(fieldOfView * 0.5f);
             var xScale = yScale / aspectRatio;
-            var nearmfar = nearPlaneDistance - farPlaneDistance;
+            var negFarRange = Single.IsPositiveInfinity(farPlaneDistance) ? -1f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-            var M11 = (float)xScale;
-            var M22 = (float)yScale;
-            var M33 = farPlaneDistance / nearmfar;
-            var M34 = nearPlaneDistance * farPlaneDistance / nearmfar;
-            var M43 = -1f;
+            result.M11 = xScale;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            result = new Matrix(
-                M11, 0, 0, 0,
-                0, M22, 0, 0,
-                0, 0, M33, M34,
-                0, 0, M43, 0
-            );
+            result.M21 = 0f;
+            result.M22 = yScale;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = negFarRange;
+            result.M34 = -1f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = nearPlaneDistance * negFarRange;
+            result.M44 = 0f;
         }
 
         /// <summary>
@@ -645,27 +732,31 @@ namespace Ultraviolet
             Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
             Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
-            var nearmfar = nearPlaneDistance - farPlaneDistance;
+            var negFarRange = Single.IsPositiveInfinity(farPlaneDistance) ? -1f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-            var rpl = right + left;
-            var rml = right - left;
-            var tpb = top + bottom;
-            var tmb = top - bottom;
+            Matrix result;
 
-            var M11 = (float)(2.0 * nearPlaneDistance / rml);
-            var M13 = rpl / rml;
-            var M22 = (float)(2.0 * nearPlaneDistance / tmb);
-            var M23 = tpb / tmb;            
-            var M33 = farPlaneDistance / nearmfar;
-            var M34 = nearPlaneDistance * farPlaneDistance / nearmfar;
-            var M43 = -1f;
+            result.M11 = 2.0f * nearPlaneDistance / (right - left);
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            return new Matrix(
-                M11, 0, M13, 0,
-                0, M22, M23, 0,
-                0, 0, M33, M34,
-                0, 0, M43, 0
-            );
+            result.M21 = 0f;
+            result.M22 = 2.0f * nearPlaneDistance / (top - bottom);
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = (left + right) / (right - left);
+            result.M32 = (top + bottom) / (top - bottom);
+            result.M33 = negFarRange;
+            result.M34 = -1f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = nearPlaneDistance * negFarRange;
+            result.M44 = 0f;
+
+            return result;
         }
 
         /// <summary>
@@ -684,73 +775,29 @@ namespace Ultraviolet
             Contract.EnsureRange(farPlaneDistance > 0, nameof(farPlaneDistance));
             Contract.EnsureRange(farPlaneDistance > nearPlaneDistance, nameof(nearPlaneDistance));
 
-            var nearmfar = nearPlaneDistance - farPlaneDistance;
+            var negFarRange = Single.IsPositiveInfinity(farPlaneDistance) ? -1f : farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
 
-            var rpl = right + left;
-            var rml = right - left;
-            var tpb = top + bottom;
-            var tmb = top - bottom;
+            result.M11 = 2.0f * nearPlaneDistance / (right - left);
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            var M11 = (float)(2.0 * nearPlaneDistance / rml);
-            var M13 = rpl / rml;
-            var M22 = (float)(2.0 * nearPlaneDistance / tmb);
-            var M23 = tpb / tmb;
-            var M33 = farPlaneDistance / nearmfar;
-            var M34 = nearPlaneDistance * farPlaneDistance / nearmfar;
-            var M43 = -1f;
+            result.M21 = 0f;
+            result.M22 = 2.0f * nearPlaneDistance / (top - bottom);
+            result.M23 = 0f;
+            result.M24 = 0f;
 
-            result = new Matrix(
-                M11, 0, M13, 0,
-                0, M22, M23, 0,
-                0, 0, M33, M34,
-                0, 0, M43, 0
-            );
+            result.M31 = (left + right) / (right - left);
+            result.M32 = (top + bottom) / (top - bottom);
+            result.M33 = negFarRange;
+            result.M34 = -1f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = nearPlaneDistance * negFarRange;
+            result.M44 = 0f;
         }
-
-        /// <summary>
-        /// Creates the projection matrix used by a sprite batch.
-        /// </summary>
-        /// <param name="viewportWidth">The current viewport's width.</param>
-        /// <param name="viewportHeight">The current viewport's height.</param>
-        /// <returns>The projection <see cref="Matrix"/> used by a sprite batch.</returns>
-        public static Matrix CreateSpriteBatchProjection(Single viewportWidth, Single viewportHeight)
-        {
-            Contract.EnsureRange(viewportWidth > 0, nameof(viewportWidth));
-            Contract.EnsureRange(viewportHeight > 0, nameof(viewportHeight));
-
-            var sx = +2f * (1f / viewportWidth);
-            var sy = -2f * (1f / viewportHeight);
-
-            return new Matrix(
-                sx, 0f, 0f, -1f,
-                0f, sy, 0f, 1f,
-                0f, 0f, 1f, 0f,
-                0f, 0f, 0f, 1f
-            );
-        }
-
-        /// <summary>
-        /// Creates the projection matrix used by a sprite batch.
-        /// </summary>
-        /// <param name="viewportWidth">The current viewport's width.</param>
-        /// <param name="viewportHeight">The current viewport's height.</param>
-        /// <param name="result">The projection <see cref="Matrix"/> used by a sprite batch.</param>
-        public static void CreateSpriteBatchProjection(Single viewportWidth, Single viewportHeight, out Matrix result)
-        {
-            Contract.EnsureRange(viewportWidth > 0, nameof(viewportWidth));
-            Contract.EnsureRange(viewportHeight > 0, nameof(viewportHeight));
-
-            var sx = +2f * (1f / viewportWidth);
-            var sy = -2f * (1f / viewportHeight);
-
-            result = new Matrix(
-                sx, 0f, 0f, -1f,
-                0f, sy, 0f, 1f,
-                0f, 0f, 1f, 0f,
-                0f, 0f, 0f, 1f
-            );
-        }
-
+        
         /// <summary>
         /// Creates a translation matrix.
         /// </summary>
@@ -760,12 +807,29 @@ namespace Ultraviolet
         /// <returns>The translation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateTranslation(Single x, Single y, Single z)
         {
-            return new Matrix(
-                1f, 0f, 0f, x,
-                0f, 1f, 0f, y,
-                0f, 0f, 1f, z,
-                0f, 0f, 0f, 1f
-            );
+            Matrix result;
+
+            result.M11 = 1f;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 1f;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1f;
+            result.M34 = 0f;
+
+            result.M41 = x;
+            result.M42 = y;
+            result.M43 = z;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -777,12 +841,25 @@ namespace Ultraviolet
         /// <param name="result">The translation <see cref="Matrix"/> that was created.</param>
         public static void CreateTranslation(Single x, Single y, Single z, out Matrix result)
         {
-            result = new Matrix(
-                1f, 0f, 0f, x,
-                0f, 1f, 0f, y,
-                0f, 0f, 1f, z,
-                0f, 0f, 0f, 1f
-            );
+            result.M11 = 1f;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 1f;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1f;
+            result.M34 = 0f;
+
+            result.M41 = x;
+            result.M42 = y;
+            result.M43 = z;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -792,12 +869,29 @@ namespace Ultraviolet
         /// <returns>The translation <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateTranslation(Vector3 position)
         {
-            return new Matrix(
-                1f, 0f, 0f, position.X,
-                0f, 1f, 0f, position.Y,
-                0f, 0f, 1f, position.Z,
-                0f, 0f, 0f, 1f
-            );
+            Matrix result;
+            
+            result.M11 = 1f;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 1f;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1f;
+            result.M34 = 0f;
+
+            result.M41 = position.X;
+            result.M42 = position.Y;
+            result.M43 = position.Z;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -807,12 +901,25 @@ namespace Ultraviolet
         /// <param name="result">The translation <see cref="Matrix"/> that was created.</param>
         public static void CreateTranslation(ref Vector3 position, out Matrix result)
         {
-            result = new Matrix(
-                1f, 0f, 0f, position.X,
-                0f, 1f, 0f, position.Y,
-                0f, 0f, 1f, position.Z,
-                0f, 0f, 0f, 1f
-            );
+            result.M11 = 1f;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 1f;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1f;
+            result.M34 = 0f;
+
+            result.M41 = position.X;
+            result.M42 = position.Y;
+            result.M43 = position.Z;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -825,12 +932,29 @@ namespace Ultraviolet
             var cos = (float)Math.Cos(radians);
             var sin = (float)Math.Sin(radians);
 
-            return new Matrix(
-                1f,  0f,   0f, 0f,
-                0f, cos, -sin, 0f,
-                0f, sin,  cos, 0f,
-                0f,  0f,   0f, 1f
-            );
+            Matrix result;
+
+            result.M11 = 1f;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = cos;
+            result.M23 = sin;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = -sin;
+            result.M33 = cos;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -842,13 +966,26 @@ namespace Ultraviolet
         {
             var cos = (float)Math.Cos(radians);
             var sin = (float)Math.Sin(radians);
+            
+            result.M11 = 1f;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-            result = new Matrix(
-                1f, 0f, 0f, 0f,
-                0f, cos, -sin, 0f,
-                0f, sin, cos, 0f,
-                0f, 0f, 0f, 1f
-            );
+            result.M21 = 0f;
+            result.M22 = cos;
+            result.M23 = sin;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = -sin;
+            result.M33 = cos;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -861,12 +998,29 @@ namespace Ultraviolet
             var cos = (float)Math.Cos(radians);
             var sin = (float)Math.Sin(radians);
 
-            return new Matrix(
-                 cos, 0f, sin, 0f,
-                  0f, 1f, 0f, 0f,
-                -sin, 0f, cos, 0f,
-                  0f, 0f, 0f, 1f
-            );
+            Matrix result;
+
+            result.M11 = cos;
+            result.M12 = 0f;
+            result.M13 = -sin;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 1f;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = sin;
+            result.M32 = 0f;
+            result.M33 = cos;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -879,12 +1033,25 @@ namespace Ultraviolet
             var cos = (float)Math.Cos(radians);
             var sin = (float)Math.Sin(radians);
 
-            result = new Matrix(
-                 cos, 0f, sin, 0f,
-                  0f, 1f, 0f, 0f,
-                -sin, 0f, cos, 0f,
-                  0f, 0f, 0f, 1f
-            );
+            result.M11 = cos;
+            result.M12 = 0f;
+            result.M13 = -sin;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = 1f;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = sin;
+            result.M32 = 0f;
+            result.M33 = cos;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -896,12 +1063,30 @@ namespace Ultraviolet
         {
             var cos = (float)Math.Cos(radians);
             var sin = (float)Math.Sin(radians);
-            return new Matrix(
-                cos, -sin, 0f, 0f,
-                sin, cos, 0f, 0f,
-                 0f, 0f, 1f, 0f,
-                 0f, 0f, 0f, 1f
-            );
+
+            Matrix result;
+
+            result.M11 = cos;
+            result.M12 = sin;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = -sin;
+            result.M22 = cos;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1f;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -913,12 +1098,26 @@ namespace Ultraviolet
         {
             var cos = (float)Math.Cos(radians);
             var sin = (float)Math.Sin(radians);
-            result = new Matrix(
-                cos, -sin, 0f, 0f,
-                sin, cos, 0f, 0f,
-                 0f, 0f, 1f, 0f,
-                 0f, 0f, 0f, 1f
-            );
+            
+            result.M11 = cos;
+            result.M12 = sin;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = -sin;
+            result.M22 = cos;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = 1f;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -940,22 +1139,29 @@ namespace Ultraviolet
             var yz = axis.Y * axis.Z;
             var zz = axis.Z * axis.Z;
 
-            var M11 = (float)(xx * C + c);
-            var M12 = (float)(xy * C - (axis.Z * s));
-            var M13 = (float)(xz * C + (axis.Y * s));
-            var M21 = (float)(xy * C + (axis.Z * s));
-            var M22 = (float)(yy * C + c);
-            var M23 = (float)(yz * C + (axis.X * s));
-            var M31 = (float)(xz * C - (axis.Y * s));
-            var M32 = (float)(yz * C + (axis.X * s));
-            var M33 = (float)(zz * C + c);
+            Matrix result;
 
-            return new Matrix(
-                M11, M12, M13, 0,
-                M21, M22, M23, 0,
-                M31, M32, M33, 0,
-                  0, 0, 0, 1
-            );
+            result.M11 = (float)(xx * C + c);
+            result.M12 = (float)(xy * C + (axis.Z * s));
+            result.M13 = (float)(xz * C - (axis.Y * s));
+            result.M14 = 0f;
+
+            result.M21 = (float)(xy * C - (axis.Z * s));
+            result.M22 = (float)(yy * C + c);
+            result.M23 = (float)(yz * C + (axis.X * s));
+            result.M24 = 0f;
+
+            result.M31 = (float)(xz * C + (axis.Y * s));
+            result.M32 = (float)(yz * C + (axis.X * s));
+            result.M33 = (float)(zz * C + c);
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -977,22 +1183,25 @@ namespace Ultraviolet
             var yz = axis.Y * axis.Z;
             var zz = axis.Z * axis.Z;
 
-            var M11 = (float)(xx * C + c);
-            var M12 = (float)(xy * C - (axis.Z * s));
-            var M13 = (float)(xz * C + (axis.Y * s));
-            var M21 = (float)(xy * C + (axis.Z * s));
-            var M22 = (float)(yy * C + c);
-            var M23 = (float)(yz * C + (axis.X * s));
-            var M31 = (float)(xz * C - (axis.Y * s));
-            var M32 = (float)(yz * C + (axis.X * s));
-            var M33 = (float)(zz * C + c);
+            result.M11 = (float)(xx * C + c);
+            result.M12 = (float)(xy * C + (axis.Z * s));
+            result.M13 = (float)(xz * C - (axis.Y * s));
+            result.M14 = 0f;
 
-            result = new Matrix(
-                M11, M12, M13, 0,
-                M21, M22, M23, 0,
-                M31, M32, M33, 0,
-                  0, 0, 0, 1
-            );
+            result.M21 = (float)(xy * C - (axis.Z * s));
+            result.M22 = (float)(yy * C + c);
+            result.M23 = (float)(yz * C + (axis.X * s));
+            result.M24 = 0f;
+
+            result.M31 = (float)(xz * C + (axis.Y * s));
+            result.M32 = (float)(yz * C + (axis.X * s));
+            result.M33 = (float)(zz * C + c);
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -1002,12 +1211,29 @@ namespace Ultraviolet
         /// <returns>The scaling <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateScale(Single scale)
         {
-            return new Matrix(
-                scale, 0, 0, 0,
-                0, scale, 0, 0,
-                0, 0, scale, 0,
-                0, 0, 0, 1
-            );
+            Matrix result;
+
+            result.M11 = scale;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = scale;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = scale;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -1017,12 +1243,25 @@ namespace Ultraviolet
         /// <param name="result">The scaling <see cref="Matrix"/> that was created.</param>
         public static void CreateScale(Single scale, out Matrix result)
         {
-            result = new Matrix(
-                scale, 0, 0, 0,
-                0, scale, 0, 0,
-                0, 0, scale, 0,
-                0, 0, 0, 1
-            );
+            result.M11 = scale;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = scale;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = scale;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -1034,12 +1273,29 @@ namespace Ultraviolet
         /// <returns>The scaling <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateScale(Single scaleX, Single scaleY, Single scaleZ)
         {
-            return new Matrix(
-                scaleX, 0, 0, 0,
-                0, scaleY, 0, 0,
-                0, 0, scaleZ, 0,
-                0, 0, 0, 1
-            );
+            Matrix result;
+
+            result.M11 = scaleX;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = scaleY;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = scaleZ;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
@@ -1051,12 +1307,25 @@ namespace Ultraviolet
         /// <param name="result">The scaling <see cref="Matrix"/> that was created.</param>
         public static void CreateScale(Single scaleX, Single scaleY, Single scaleZ, out Matrix result)
         {
-            result = new Matrix(
-                scaleX, 0, 0, 0,
-                0, scaleY, 0, 0,
-                0, 0, scaleZ, 0,
-                0, 0, 0, 1
-            );
+            result.M11 = scaleX;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = scaleY;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = scaleZ;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
         }
 
         /// <summary>
@@ -1066,55 +1335,59 @@ namespace Ultraviolet
         /// <returns>The scaling <see cref="Matrix"/> that was created.</returns>
         public static Matrix CreateScale(Vector3 scale)
         {
-            return new Matrix(
-                scale.X, 0, 0, 0,
-                0, scale.Y, 0, 0,
-                0, 0, scale.Z, 0,
-                0, 0, 0, 1
-            );
+            Matrix result;
+
+            result.M11 = scale.X;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
+
+            result.M21 = 0f;
+            result.M22 = scale.Y;
+            result.M23 = 0f;
+            result.M24 = 0f;
+
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = scale.Z;
+            result.M34 = 0f;
+
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+
+            return result;
         }
 
         /// <summary>
         /// Creates a scaling matrix.
         /// </summary>
-        /// <param name="v">A vector describing the scaling factor along each axis.</param>
+        /// <param name="scale">A vector describing the scaling factor along each axis.</param>
         /// <param name="result">The scaling <see cref="Matrix"/> that was created.</param>
-        public static void CreateScale(ref Vector3 v, out Matrix result)
+        public static void CreateScale(ref Vector3 scale, out Matrix result)
         {
-            result = new Matrix(
-                v.X, 0f, 0f, 0f,
-                 0f, v.Y, 0f, 0f,
-                 0f, 0f, v.Z, 0f,
-                 0f, 0f, 0f, 1f
-            );
-        }
+            result.M11 = scale.X;
+            result.M12 = 0f;
+            result.M13 = 0f;
+            result.M14 = 0f;
 
-        /// <summary>
-        /// Concatenates two matrices. The operation specified by the matrix on the left is applied first; the operation specified by the matrix 
-        /// on the right is applied second. This is in contrast to the <see cref="Multiply(ref Matrix, ref Matrix, out Matrix)"/> method, which applies the 
-        /// operand on the right first, and the operand on the left second.
-        /// </summary>
-        /// <param name="m1">The first matrix to concatenate.</param>
-        /// <param name="m2">The second matrix to concatenate.</param>
-        /// <param name="result">A matrix which is the result of concatenating the specified matrices.</param>
-        public static void Concat(ref Matrix m1, ref Matrix m2, out Matrix result)
-        {
-            Multiply(ref m2, ref m1, out result);
-        }
+            result.M21 = 0f;
+            result.M22 = scale.Y;
+            result.M23 = 0f;
+            result.M24 = 0f;
 
-        /// <summary>
-        /// Concatenates two matrices. The operation specified by the matrix on the left is applied first; the operation specified by the matrix 
-        /// on the right is applied second. This is in contrast to the <see cref="Multiply(ref Matrix, ref Matrix, out Matrix)"/> method, which applies the 
-        /// operand on the right first, and the operand on the left second.
-        /// </summary>
-        /// <param name="m1">The first matrix to concatenate.</param>
-        /// <param name="m2">The second matrix to concatenate.</param>
-        /// <returns>A matrix which is the result of concatenating the specified matrices.</returns>
-        public static Matrix Concat(Matrix m1, Matrix m2)
-        {
-            return m2 * m1;
-        }
+            result.M31 = 0f;
+            result.M32 = 0f;
+            result.M33 = scale.Z;
+            result.M34 = 0f;
 
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+        }
+        
         /// <summary>
         /// Adds a matrix to another matrix.
         /// </summary>
@@ -1123,24 +1396,25 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Add(ref Matrix m1, ref Matrix m2, out Matrix result)
         {
-            result = new Matrix(
-                m1.M11 + m2.M11,
-                m1.M12 + m2.M12,
-                m1.M13 + m2.M13,
-                m1.M14 + m2.M14,
-                m1.M21 + m2.M21,
-                m1.M22 + m2.M22,
-                m1.M23 + m2.M23,
-                m1.M24 + m2.M24,
-                m1.M31 + m2.M31,
-                m1.M32 + m2.M32,
-                m1.M33 + m2.M33,
-                m1.M34 + m2.M34,
-                m1.M41 + m2.M41,
-                m1.M42 + m2.M42,
-                m1.M43 + m2.M43,
-                m1.M44 + m2.M44
-            );
+            result.M11 = m1.M11 + m2.M11;
+            result.M12 = m1.M12 + m2.M12;
+            result.M13 = m1.M13 + m2.M13;
+            result.M14 = m1.M14 + m2.M14;
+
+            result.M21 = m1.M21 + m2.M21;
+            result.M22 = m1.M22 + m2.M22;
+            result.M23 = m1.M23 + m2.M23;
+            result.M24 = m1.M24 + m2.M24;
+
+            result.M31 = m1.M31 + m2.M31;
+            result.M32 = m1.M32 + m2.M32;
+            result.M33 = m1.M33 + m2.M33;
+            result.M34 = m1.M34 + m2.M34;
+
+            result.M41 = m1.M41 + m2.M41;
+            result.M42 = m1.M42 + m2.M42;
+            result.M43 = m1.M43 + m2.M43;
+            result.M44 = m1.M44 + m2.M44;
         }
 
         /// <summary>
@@ -1151,24 +1425,29 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Add(Matrix m1, Matrix m2)
         {
-            return new Matrix(
-                m1.M11 + m2.M11,
-                m1.M12 + m2.M12,
-                m1.M13 + m2.M13,
-                m1.M14 + m2.M14,
-                m1.M21 + m2.M21,
-                m1.M22 + m2.M22,
-                m1.M23 + m2.M23,
-                m1.M24 + m2.M24,
-                m1.M31 + m2.M31,
-                m1.M32 + m2.M32,
-                m1.M33 + m2.M33,
-                m1.M34 + m2.M34,
-                m1.M41 + m2.M41,
-                m1.M42 + m2.M42,
-                m1.M43 + m2.M43,
-                m1.M44 + m2.M44
-            );
+            Matrix result;
+            
+            result.M11 = m1.M11 + m2.M11;
+            result.M12 = m1.M12 + m2.M12;
+            result.M13 = m1.M13 + m2.M13;
+            result.M14 = m1.M14 + m2.M14;
+
+            result.M21 = m1.M21 + m2.M21;
+            result.M22 = m1.M22 + m2.M22;
+            result.M23 = m1.M23 + m2.M23;
+            result.M24 = m1.M24 + m2.M24;
+
+            result.M31 = m1.M31 + m2.M31;
+            result.M32 = m1.M32 + m2.M32;
+            result.M33 = m1.M33 + m2.M33;
+            result.M34 = m1.M34 + m2.M34;
+
+            result.M41 = m1.M41 + m2.M41;
+            result.M42 = m1.M42 + m2.M42;
+            result.M43 = m1.M43 + m2.M43;
+            result.M44 = m1.M44 + m2.M44;
+
+            return result;
         }
 
         /// <summary>
@@ -1179,24 +1458,25 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Subtract(ref Matrix m1, ref Matrix m2, out Matrix result)
         {
-            result = new Matrix(
-                m1.M11 - m2.M11,
-                m1.M12 - m2.M12,
-                m1.M13 - m2.M13,
-                m1.M14 - m2.M14,
-                m1.M21 - m2.M21,
-                m1.M22 - m2.M22,
-                m1.M23 - m2.M23,
-                m1.M24 - m2.M24,
-                m1.M31 - m2.M31,
-                m1.M32 - m2.M32,
-                m1.M33 - m2.M33,
-                m1.M34 - m2.M34,
-                m1.M41 - m2.M41,
-                m1.M42 - m2.M42,
-                m1.M43 - m2.M43,
-                m1.M44 - m2.M44
-            );
+            result.M11 = m1.M11 - m2.M11;
+            result.M12 = m1.M12 - m2.M12;
+            result.M13 = m1.M13 - m2.M13;
+            result.M14 = m1.M14 - m2.M14;
+
+            result.M21 = m1.M21 - m2.M21;
+            result.M22 = m1.M22 - m2.M22;
+            result.M23 = m1.M23 - m2.M23;
+            result.M24 = m1.M24 - m2.M24;
+
+            result.M31 = m1.M31 - m2.M31;
+            result.M32 = m1.M32 - m2.M32;
+            result.M33 = m1.M33 - m2.M33;
+            result.M34 = m1.M34 - m2.M34;
+
+            result.M41 = m1.M41 - m2.M41;
+            result.M42 = m1.M42 - m2.M42;
+            result.M43 = m1.M43 - m2.M43;
+            result.M44 = m1.M44 - m2.M44;
         }
 
         /// <summary>
@@ -1207,24 +1487,29 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Subtract(Matrix m1, Matrix m2)
         {
-            return new Matrix(
-                m1.M11 - m2.M11,
-                m1.M12 - m2.M12,
-                m1.M13 - m2.M13,
-                m1.M14 - m2.M14,
-                m1.M21 - m2.M21,
-                m1.M22 - m2.M22,
-                m1.M23 - m2.M23,
-                m1.M24 - m2.M24,
-                m1.M31 - m2.M31,
-                m1.M32 - m2.M32,
-                m1.M33 - m2.M33,
-                m1.M34 - m2.M34,
-                m1.M41 - m2.M41,
-                m1.M42 - m2.M42,
-                m1.M43 - m2.M43,
-                m1.M44 - m2.M44
-            );
+            Matrix result;
+
+            result.M11 = m1.M11 - m2.M11;
+            result.M12 = m1.M12 - m2.M12;
+            result.M13 = m1.M13 - m2.M13;
+            result.M14 = m1.M14 - m2.M14;
+
+            result.M21 = m1.M21 - m2.M21;
+            result.M22 = m1.M22 - m2.M22;
+            result.M23 = m1.M23 - m2.M23;
+            result.M24 = m1.M24 - m2.M24;
+
+            result.M31 = m1.M31 - m2.M31;
+            result.M32 = m1.M32 - m2.M32;
+            result.M33 = m1.M33 - m2.M33;
+            result.M34 = m1.M34 - m2.M34;
+
+            result.M41 = m1.M41 - m2.M41;
+            result.M42 = m1.M42 - m2.M42;
+            result.M43 = m1.M43 - m2.M43;
+            result.M44 = m1.M44 - m2.M44;
+
+            return result;
         }
 
         /// <summary>
@@ -1235,24 +1520,25 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Multiply(ref Matrix multiplicand, Single multiplier, out Matrix result)
         {
-            result = new Matrix(
-                multiplicand.M11 * multiplier,
-                multiplicand.M12 * multiplier,
-                multiplicand.M13 * multiplier,
-                multiplicand.M14 * multiplier,
-                multiplicand.M21 * multiplier,
-                multiplicand.M22 * multiplier,
-                multiplicand.M23 * multiplier,
-                multiplicand.M24 * multiplier,
-                multiplicand.M31 * multiplier,
-                multiplicand.M32 * multiplier,
-                multiplicand.M33 * multiplier,
-                multiplicand.M34 * multiplier,
-                multiplicand.M41 * multiplier,
-                multiplicand.M42 * multiplier,
-                multiplicand.M43 * multiplier,
-                multiplicand.M44 * multiplier
-            );
+            result.M11 = multiplicand.M11 * multiplier;
+            result.M12 = multiplicand.M12 * multiplier;
+            result.M13 = multiplicand.M13 * multiplier;
+            result.M14 = multiplicand.M14 * multiplier;
+
+            result.M21 = multiplicand.M21 * multiplier;
+            result.M22 = multiplicand.M22 * multiplier;
+            result.M23 = multiplicand.M23 * multiplier;
+            result.M24 = multiplicand.M24 * multiplier;
+
+            result.M31 = multiplicand.M31 * multiplier;
+            result.M32 = multiplicand.M32 * multiplier;
+            result.M33 = multiplicand.M33 * multiplier;
+            result.M34 = multiplicand.M34 * multiplier;
+
+            result.M41 = multiplicand.M41 * multiplier;
+            result.M42 = multiplicand.M42 * multiplier;
+            result.M43 = multiplicand.M43 * multiplier;
+            result.M44 = multiplicand.M44 * multiplier;
         }
 
         /// <summary>
@@ -1263,24 +1549,29 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Multiply(Matrix multiplicand, Single multiplier)
         {
-            return new Matrix(
-                multiplicand.M11 * multiplier,
-                multiplicand.M12 * multiplier,
-                multiplicand.M13 * multiplier,
-                multiplicand.M14 * multiplier,
-                multiplicand.M21 * multiplier,
-                multiplicand.M22 * multiplier,
-                multiplicand.M23 * multiplier,
-                multiplicand.M24 * multiplier,
-                multiplicand.M31 * multiplier,
-                multiplicand.M32 * multiplier,
-                multiplicand.M33 * multiplier,
-                multiplicand.M34 * multiplier,
-                multiplicand.M41 * multiplier,
-                multiplicand.M42 * multiplier,
-                multiplicand.M43 * multiplier,
-                multiplicand.M44 * multiplier
-            );
+            Matrix result;
+            
+            result.M11 = multiplicand.M11 * multiplier;
+            result.M12 = multiplicand.M12 * multiplier;
+            result.M13 = multiplicand.M13 * multiplier;
+            result.M14 = multiplicand.M14 * multiplier;
+
+            result.M21 = multiplicand.M21 * multiplier;
+            result.M22 = multiplicand.M22 * multiplier;
+            result.M23 = multiplicand.M23 * multiplier;
+            result.M24 = multiplicand.M24 * multiplier;
+
+            result.M31 = multiplicand.M31 * multiplier;
+            result.M32 = multiplicand.M32 * multiplier;
+            result.M33 = multiplicand.M33 * multiplier;
+            result.M34 = multiplicand.M34 * multiplier;
+
+            result.M41 = multiplicand.M41 * multiplier;
+            result.M42 = multiplicand.M42 * multiplier;
+            result.M43 = multiplicand.M43 * multiplier;
+            result.M44 = multiplicand.M44 * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -1291,29 +1582,29 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Multiply(ref Matrix multiplicand, ref Matrix multiplier, out Matrix result)
         {
-            float M11 = (multiplicand.M11 * multiplier.M11 + multiplicand.M12 * multiplier.M21 + multiplicand.M13 * multiplier.M31 + multiplicand.M14 * multiplier.M41);
-            float M12 = (multiplicand.M11 * multiplier.M12 + multiplicand.M12 * multiplier.M22 + multiplicand.M13 * multiplier.M32 + multiplicand.M14 * multiplier.M42);
-            float M13 = (multiplicand.M11 * multiplier.M13 + multiplicand.M12 * multiplier.M23 + multiplicand.M13 * multiplier.M33 + multiplicand.M14 * multiplier.M43);
-            float M14 = (multiplicand.M11 * multiplier.M14 + multiplicand.M12 * multiplier.M24 + multiplicand.M13 * multiplier.M34 + multiplicand.M14 * multiplier.M44);
-            float M21 = (multiplicand.M21 * multiplier.M11 + multiplicand.M22 * multiplier.M21 + multiplicand.M23 * multiplier.M31 + multiplicand.M24 * multiplier.M41);
-            float M22 = (multiplicand.M21 * multiplier.M12 + multiplicand.M22 * multiplier.M22 + multiplicand.M23 * multiplier.M32 + multiplicand.M24 * multiplier.M42);
-            float M23 = (multiplicand.M21 * multiplier.M13 + multiplicand.M22 * multiplier.M23 + multiplicand.M23 * multiplier.M33 + multiplicand.M24 * multiplier.M43);
-            float M24 = (multiplicand.M21 * multiplier.M14 + multiplicand.M22 * multiplier.M24 + multiplicand.M23 * multiplier.M34 + multiplicand.M24 * multiplier.M44);
-            float M31 = (multiplicand.M31 * multiplier.M11 + multiplicand.M32 * multiplier.M21 + multiplicand.M33 * multiplier.M31 + multiplicand.M34 * multiplier.M41);
-            float M32 = (multiplicand.M31 * multiplier.M12 + multiplicand.M32 * multiplier.M22 + multiplicand.M33 * multiplier.M32 + multiplicand.M34 * multiplier.M42);
-            float M33 = (multiplicand.M31 * multiplier.M13 + multiplicand.M32 * multiplier.M23 + multiplicand.M33 * multiplier.M33 + multiplicand.M34 * multiplier.M43);
-            float M34 = (multiplicand.M31 * multiplier.M14 + multiplicand.M32 * multiplier.M24 + multiplicand.M33 * multiplier.M34 + multiplicand.M34 * multiplier.M44);
-            float M41 = (multiplicand.M41 * multiplier.M11 + multiplicand.M42 * multiplier.M21 + multiplicand.M43 * multiplier.M31 + multiplicand.M44 * multiplier.M41);
-            float M42 = (multiplicand.M41 * multiplier.M12 + multiplicand.M42 * multiplier.M22 + multiplicand.M43 * multiplier.M32 + multiplicand.M44 * multiplier.M42);
-            float M43 = (multiplicand.M41 * multiplier.M13 + multiplicand.M42 * multiplier.M23 + multiplicand.M43 * multiplier.M33 + multiplicand.M44 * multiplier.M43);
-            float M44 = (multiplicand.M41 * multiplier.M14 + multiplicand.M42 * multiplier.M24 + multiplicand.M43 * multiplier.M34 + multiplicand.M44 * multiplier.M44);
+            Matrix temp;
 
-            result = new Matrix(
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44
-            );
+            temp.M11 = multiplicand.M11 * multiplier.M11 + multiplicand.M12 * multiplier.M21 + multiplicand.M13 * multiplier.M31 + multiplicand.M14 * multiplier.M41;
+            temp.M12 = multiplicand.M11 * multiplier.M12 + multiplicand.M12 * multiplier.M22 + multiplicand.M13 * multiplier.M32 + multiplicand.M14 * multiplier.M42;
+            temp.M13 = multiplicand.M11 * multiplier.M13 + multiplicand.M12 * multiplier.M23 + multiplicand.M13 * multiplier.M33 + multiplicand.M14 * multiplier.M43;
+            temp.M14 = multiplicand.M11 * multiplier.M14 + multiplicand.M12 * multiplier.M24 + multiplicand.M13 * multiplier.M34 + multiplicand.M14 * multiplier.M44;
+
+            temp.M21 = multiplicand.M21 * multiplier.M11 + multiplicand.M22 * multiplier.M21 + multiplicand.M23 * multiplier.M31 + multiplicand.M24 * multiplier.M41;
+            temp.M22 = multiplicand.M21 * multiplier.M12 + multiplicand.M22 * multiplier.M22 + multiplicand.M23 * multiplier.M32 + multiplicand.M24 * multiplier.M42;
+            temp.M23 = multiplicand.M21 * multiplier.M13 + multiplicand.M22 * multiplier.M23 + multiplicand.M23 * multiplier.M33 + multiplicand.M24 * multiplier.M43;
+            temp.M24 = multiplicand.M21 * multiplier.M14 + multiplicand.M22 * multiplier.M24 + multiplicand.M23 * multiplier.M34 + multiplicand.M24 * multiplier.M44;
+
+            temp.M31 = multiplicand.M31 * multiplier.M11 + multiplicand.M32 * multiplier.M21 + multiplicand.M33 * multiplier.M31 + multiplicand.M34 * multiplier.M41;
+            temp.M32 = multiplicand.M31 * multiplier.M12 + multiplicand.M32 * multiplier.M22 + multiplicand.M33 * multiplier.M32 + multiplicand.M34 * multiplier.M42;
+            temp.M33 = multiplicand.M31 * multiplier.M13 + multiplicand.M32 * multiplier.M23 + multiplicand.M33 * multiplier.M33 + multiplicand.M34 * multiplier.M43;
+            temp.M34 = multiplicand.M31 * multiplier.M14 + multiplicand.M32 * multiplier.M24 + multiplicand.M33 * multiplier.M34 + multiplicand.M34 * multiplier.M44;
+
+            temp.M41 = multiplicand.M41 * multiplier.M11 + multiplicand.M42 * multiplier.M21 + multiplicand.M43 * multiplier.M31 + multiplicand.M44 * multiplier.M41;
+            temp.M42 = multiplicand.M41 * multiplier.M12 + multiplicand.M42 * multiplier.M22 + multiplicand.M43 * multiplier.M32 + multiplicand.M44 * multiplier.M42;
+            temp.M43 = multiplicand.M41 * multiplier.M13 + multiplicand.M42 * multiplier.M23 + multiplicand.M43 * multiplier.M33 + multiplicand.M44 * multiplier.M43;
+            temp.M44 = multiplicand.M41 * multiplier.M14 + multiplicand.M42 * multiplier.M24 + multiplicand.M43 * multiplier.M34 + multiplicand.M44 * multiplier.M44;
+
+            result = temp;
         }
 
         /// <summary>
@@ -1324,29 +1615,29 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Multiply(Matrix multiplicand, Matrix multiplier)
         {
-            float M11 = (multiplicand.M11 * multiplier.M11 + multiplicand.M12 * multiplier.M21 + multiplicand.M13 * multiplier.M31 + multiplicand.M14 * multiplier.M41);
-            float M12 = (multiplicand.M11 * multiplier.M12 + multiplicand.M12 * multiplier.M22 + multiplicand.M13 * multiplier.M32 + multiplicand.M14 * multiplier.M42);
-            float M13 = (multiplicand.M11 * multiplier.M13 + multiplicand.M12 * multiplier.M23 + multiplicand.M13 * multiplier.M33 + multiplicand.M14 * multiplier.M43);
-            float M14 = (multiplicand.M11 * multiplier.M14 + multiplicand.M12 * multiplier.M24 + multiplicand.M13 * multiplier.M34 + multiplicand.M14 * multiplier.M44);
-            float M21 = (multiplicand.M21 * multiplier.M11 + multiplicand.M22 * multiplier.M21 + multiplicand.M23 * multiplier.M31 + multiplicand.M24 * multiplier.M41);
-            float M22 = (multiplicand.M21 * multiplier.M12 + multiplicand.M22 * multiplier.M22 + multiplicand.M23 * multiplier.M32 + multiplicand.M24 * multiplier.M42);
-            float M23 = (multiplicand.M21 * multiplier.M13 + multiplicand.M22 * multiplier.M23 + multiplicand.M23 * multiplier.M33 + multiplicand.M24 * multiplier.M43);
-            float M24 = (multiplicand.M21 * multiplier.M14 + multiplicand.M22 * multiplier.M24 + multiplicand.M23 * multiplier.M34 + multiplicand.M24 * multiplier.M44);
-            float M31 = (multiplicand.M31 * multiplier.M11 + multiplicand.M32 * multiplier.M21 + multiplicand.M33 * multiplier.M31 + multiplicand.M34 * multiplier.M41);
-            float M32 = (multiplicand.M31 * multiplier.M12 + multiplicand.M32 * multiplier.M22 + multiplicand.M33 * multiplier.M32 + multiplicand.M34 * multiplier.M42);
-            float M33 = (multiplicand.M31 * multiplier.M13 + multiplicand.M32 * multiplier.M23 + multiplicand.M33 * multiplier.M33 + multiplicand.M34 * multiplier.M43);
-            float M34 = (multiplicand.M31 * multiplier.M14 + multiplicand.M32 * multiplier.M24 + multiplicand.M33 * multiplier.M34 + multiplicand.M34 * multiplier.M44);
-            float M41 = (multiplicand.M41 * multiplier.M11 + multiplicand.M42 * multiplier.M21 + multiplicand.M43 * multiplier.M31 + multiplicand.M44 * multiplier.M41);
-            float M42 = (multiplicand.M41 * multiplier.M12 + multiplicand.M42 * multiplier.M22 + multiplicand.M43 * multiplier.M32 + multiplicand.M44 * multiplier.M42);
-            float M43 = (multiplicand.M41 * multiplier.M13 + multiplicand.M42 * multiplier.M23 + multiplicand.M43 * multiplier.M33 + multiplicand.M44 * multiplier.M43);
-            float M44 = (multiplicand.M41 * multiplier.M14 + multiplicand.M42 * multiplier.M24 + multiplicand.M43 * multiplier.M34 + multiplicand.M44 * multiplier.M44);
+            Matrix result;
 
-            return new Matrix(
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44
-            );
+            result.M11 = multiplicand.M11 * multiplier.M11 + multiplicand.M12 * multiplier.M21 + multiplicand.M13 * multiplier.M31 + multiplicand.M14 * multiplier.M41;
+            result.M12 = multiplicand.M11 * multiplier.M12 + multiplicand.M12 * multiplier.M22 + multiplicand.M13 * multiplier.M32 + multiplicand.M14 * multiplier.M42;
+            result.M13 = multiplicand.M11 * multiplier.M13 + multiplicand.M12 * multiplier.M23 + multiplicand.M13 * multiplier.M33 + multiplicand.M14 * multiplier.M43;
+            result.M14 = multiplicand.M11 * multiplier.M14 + multiplicand.M12 * multiplier.M24 + multiplicand.M13 * multiplier.M34 + multiplicand.M14 * multiplier.M44;
+
+            result.M21 = multiplicand.M21 * multiplier.M11 + multiplicand.M22 * multiplier.M21 + multiplicand.M23 * multiplier.M31 + multiplicand.M24 * multiplier.M41;
+            result.M22 = multiplicand.M21 * multiplier.M12 + multiplicand.M22 * multiplier.M22 + multiplicand.M23 * multiplier.M32 + multiplicand.M24 * multiplier.M42;
+            result.M23 = multiplicand.M21 * multiplier.M13 + multiplicand.M22 * multiplier.M23 + multiplicand.M23 * multiplier.M33 + multiplicand.M24 * multiplier.M43;
+            result.M24 = multiplicand.M21 * multiplier.M14 + multiplicand.M22 * multiplier.M24 + multiplicand.M23 * multiplier.M34 + multiplicand.M24 * multiplier.M44;
+
+            result.M31 = multiplicand.M31 * multiplier.M11 + multiplicand.M32 * multiplier.M21 + multiplicand.M33 * multiplier.M31 + multiplicand.M34 * multiplier.M41;
+            result.M32 = multiplicand.M31 * multiplier.M12 + multiplicand.M32 * multiplier.M22 + multiplicand.M33 * multiplier.M32 + multiplicand.M34 * multiplier.M42;
+            result.M33 = multiplicand.M31 * multiplier.M13 + multiplicand.M32 * multiplier.M23 + multiplicand.M33 * multiplier.M33 + multiplicand.M34 * multiplier.M43;
+            result.M34 = multiplicand.M31 * multiplier.M14 + multiplicand.M32 * multiplier.M24 + multiplicand.M33 * multiplier.M34 + multiplicand.M34 * multiplier.M44;
+
+            result.M41 = multiplicand.M41 * multiplier.M11 + multiplicand.M42 * multiplier.M21 + multiplicand.M43 * multiplier.M31 + multiplicand.M44 * multiplier.M41;
+            result.M42 = multiplicand.M41 * multiplier.M12 + multiplicand.M42 * multiplier.M22 + multiplicand.M43 * multiplier.M32 + multiplicand.M44 * multiplier.M42;
+            result.M43 = multiplicand.M41 * multiplier.M13 + multiplicand.M42 * multiplier.M23 + multiplicand.M43 * multiplier.M33 + multiplicand.M44 * multiplier.M43;
+            result.M44 = multiplicand.M41 * multiplier.M14 + multiplicand.M42 * multiplier.M24 + multiplicand.M43 * multiplier.M34 + multiplicand.M44 * multiplier.M44;
+
+            return result;
         }
 
         /// <summary>
@@ -1357,24 +1648,25 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Divide(ref Matrix dividend, Single divisor, out Matrix result)
         {
-            result = new Matrix(
-                dividend.M11 / divisor,
-                dividend.M12 / divisor,
-                dividend.M13 / divisor,
-                dividend.M14 / divisor,
-                dividend.M21 / divisor,
-                dividend.M22 / divisor,
-                dividend.M23 / divisor,
-                dividend.M24 / divisor,
-                dividend.M31 / divisor,
-                dividend.M32 / divisor,
-                dividend.M33 / divisor,
-                dividend.M34 / divisor,
-                dividend.M41 / divisor,
-                dividend.M42 / divisor,
-                dividend.M43 / divisor,
-                dividend.M44 / divisor
-            );
+            result.M11 = dividend.M11 / divisor;
+            result.M12 = dividend.M12 / divisor;
+            result.M13 = dividend.M13 / divisor;
+            result.M14 = dividend.M14 / divisor;
+
+            result.M21 = dividend.M21 / divisor;
+            result.M22 = dividend.M22 / divisor;
+            result.M23 = dividend.M23 / divisor;
+            result.M24 = dividend.M24 / divisor;
+
+            result.M31 = dividend.M31 / divisor;
+            result.M32 = dividend.M32 / divisor;
+            result.M33 = dividend.M33 / divisor;
+            result.M34 = dividend.M34 / divisor;
+
+            result.M41 = dividend.M41 / divisor;
+            result.M42 = dividend.M42 / divisor;
+            result.M43 = dividend.M43 / divisor;
+            result.M44 = dividend.M44 / divisor;
         }
 
         /// <summary>
@@ -1385,24 +1677,29 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Divide(Matrix dividend, Single divisor)
         {
-            return new Matrix(
-                dividend.M11 / divisor,
-                dividend.M12 / divisor,
-                dividend.M13 / divisor,
-                dividend.M14 / divisor,
-                dividend.M21 / divisor,
-                dividend.M22 / divisor,
-                dividend.M23 / divisor,
-                dividend.M24 / divisor,
-                dividend.M31 / divisor,
-                dividend.M32 / divisor,
-                dividend.M33 / divisor,
-                dividend.M34 / divisor,
-                dividend.M41 / divisor,
-                dividend.M42 / divisor,
-                dividend.M43 / divisor,
-                dividend.M44 / divisor
-            );
+            Matrix result;
+            
+            result.M11 = dividend.M11 / divisor;
+            result.M12 = dividend.M12 / divisor;
+            result.M13 = dividend.M13 / divisor;
+            result.M14 = dividend.M14 / divisor;
+
+            result.M21 = dividend.M21 / divisor;
+            result.M22 = dividend.M22 / divisor;
+            result.M23 = dividend.M23 / divisor;
+            result.M24 = dividend.M24 / divisor;
+
+            result.M31 = dividend.M31 / divisor;
+            result.M32 = dividend.M32 / divisor;
+            result.M33 = dividend.M33 / divisor;
+            result.M34 = dividend.M34 / divisor;
+
+            result.M41 = dividend.M41 / divisor;
+            result.M42 = dividend.M42 / divisor;
+            result.M43 = dividend.M43 / divisor;
+            result.M44 = dividend.M44 / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -1413,24 +1710,25 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Matrix"/>.</param>
         public static void Divide(ref Matrix dividend, ref Matrix divisor, out Matrix result)
         {
-            result = new Matrix(
-                dividend.M11 / divisor.M11,
-                dividend.M12 / divisor.M12,
-                dividend.M13 / divisor.M13,
-                dividend.M14 / divisor.M14,
-                dividend.M21 / divisor.M21,
-                dividend.M22 / divisor.M22,
-                dividend.M23 / divisor.M23,
-                dividend.M24 / divisor.M24,
-                dividend.M31 / divisor.M31,
-                dividend.M32 / divisor.M32,
-                dividend.M33 / divisor.M33,
-                dividend.M34 / divisor.M34,
-                dividend.M41 / divisor.M41,
-                dividend.M42 / divisor.M42,
-                dividend.M43 / divisor.M43,
-                dividend.M44 / divisor.M44
-            );
+            result.M11 = dividend.M11 / divisor.M11;
+            result.M12 = dividend.M12 / divisor.M12;
+            result.M13 = dividend.M13 / divisor.M13;
+            result.M14 = dividend.M14 / divisor.M14;
+
+            result.M21 = dividend.M21 / divisor.M21;
+            result.M22 = dividend.M22 / divisor.M22;
+            result.M23 = dividend.M23 / divisor.M23;
+            result.M24 = dividend.M24 / divisor.M24;
+
+            result.M31 = dividend.M31 / divisor.M31;
+            result.M32 = dividend.M32 / divisor.M32;
+            result.M33 = dividend.M33 / divisor.M33;
+            result.M34 = dividend.M34 / divisor.M34;
+
+            result.M41 = dividend.M41 / divisor.M41;
+            result.M42 = dividend.M42 / divisor.M42;
+            result.M43 = dividend.M43 / divisor.M43;
+            result.M44 = dividend.M44 / divisor.M44;
         }
 
         /// <summary>
@@ -1441,24 +1739,29 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
         public static Matrix Divide(Matrix dividend, Matrix divisor)
         {
-            return new Matrix(
-                dividend.M11 / divisor.M11,
-                dividend.M12 / divisor.M12,
-                dividend.M13 / divisor.M13,
-                dividend.M14 / divisor.M14,
-                dividend.M21 / divisor.M21,
-                dividend.M22 / divisor.M22,
-                dividend.M23 / divisor.M23,
-                dividend.M24 / divisor.M24,
-                dividend.M31 / divisor.M31,
-                dividend.M32 / divisor.M32,
-                dividend.M33 / divisor.M33,
-                dividend.M34 / divisor.M34,
-                dividend.M41 / divisor.M41,
-                dividend.M42 / divisor.M42,
-                dividend.M43 / divisor.M43,
-                dividend.M44 / divisor.M44
-            );
+            Matrix result;
+            
+            result.M11 = dividend.M11 / divisor.M11;
+            result.M12 = dividend.M12 / divisor.M12;
+            result.M13 = dividend.M13 / divisor.M13;
+            result.M14 = dividend.M14 / divisor.M14;
+
+            result.M21 = dividend.M21 / divisor.M21;
+            result.M22 = dividend.M22 / divisor.M22;
+            result.M23 = dividend.M23 / divisor.M23;
+            result.M24 = dividend.M24 / divisor.M24;
+
+            result.M31 = dividend.M31 / divisor.M31;
+            result.M32 = dividend.M32 / divisor.M32;
+            result.M33 = dividend.M33 / divisor.M33;
+            result.M34 = dividend.M34 / divisor.M34;
+
+            result.M41 = dividend.M41 / divisor.M41;
+            result.M42 = dividend.M42 / divisor.M42;
+            result.M43 = dividend.M43 / divisor.M43;
+            result.M44 = dividend.M44 / divisor.M44;
+
+            return result;
         }
 
         /// <summary>
@@ -1468,12 +1771,29 @@ namespace Ultraviolet
         /// <param name="result">The transposed <see cref="Matrix"/>.</param>
         public static void Transpose(ref Matrix matrix, out Matrix result)
         {
-            result = new Matrix(
-                matrix.M11, matrix.M21, matrix.M31, matrix.M41,
-                matrix.M12, matrix.M22, matrix.M32, matrix.M42,
-                matrix.M13, matrix.M23, matrix.M33, matrix.M43,
-                matrix.M14, matrix.M24, matrix.M34, matrix.M44
-            );
+            Matrix temp;
+
+            temp.M11 = matrix.M11;
+            temp.M12 = matrix.M21;
+            temp.M13 = matrix.M31;
+            temp.M14 = matrix.M41;
+
+            temp.M21 = matrix.M12;
+            temp.M22 = matrix.M22;
+            temp.M23 = matrix.M32;
+            temp.M24 = matrix.M42;
+
+            temp.M31 = matrix.M13;
+            temp.M32 = matrix.M23;
+            temp.M33 = matrix.M33;
+            temp.M34 = matrix.M43;
+
+            temp.M41 = matrix.M14;
+            temp.M42 = matrix.M24;
+            temp.M43 = matrix.M34;
+            temp.M44 = matrix.M44;
+
+            result = temp;
         }
 
         /// <summary>
@@ -1483,12 +1803,29 @@ namespace Ultraviolet
         /// <returns>The transposed <see cref="Matrix"/>.</returns>
         public static Matrix Transpose(Matrix matrix)
         {
-            return new Matrix(
-                matrix.M11, matrix.M21, matrix.M31, matrix.M41,
-                matrix.M12, matrix.M22, matrix.M32, matrix.M42,
-                matrix.M13, matrix.M23, matrix.M33, matrix.M43,
-                matrix.M14, matrix.M24, matrix.M34, matrix.M44
-            );
+            Matrix result;
+
+            result.M11 = matrix.M11;
+            result.M12 = matrix.M21;
+            result.M13 = matrix.M31;
+            result.M14 = matrix.M41;
+
+            result.M21 = matrix.M12;
+            result.M22 = matrix.M22;
+            result.M23 = matrix.M32;
+            result.M24 = matrix.M42;
+
+            result.M31 = matrix.M13;
+            result.M32 = matrix.M23;
+            result.M33 = matrix.M33;
+            result.M34 = matrix.M43;
+
+            result.M41 = matrix.M14;
+            result.M42 = matrix.M24;
+            result.M43 = matrix.M34;
+            result.M44 = matrix.M44;
+
+            return result;
         }
 
         /// <summary>
@@ -1500,31 +1837,25 @@ namespace Ultraviolet
         /// <param name="result">The interpolated <see cref="Matrix"/>.</param>
         public static void Lerp(ref Matrix matrix1, ref Matrix matrix2, Single amount, out Matrix result)
         {
-            var M11 = matrix1.M11 + (matrix2.M11 - matrix1.M11) * amount;
-            var M12 = matrix1.M12 + (matrix2.M12 - matrix1.M12) * amount;
-            var M13 = matrix1.M13 + (matrix2.M13 - matrix1.M13) * amount;
-            var M14 = matrix1.M14 + (matrix2.M14 - matrix1.M14) * amount;
+            result.M11 = matrix1.M11 + (matrix2.M11 - matrix1.M11) * amount;
+            result.M12 = matrix1.M12 + (matrix2.M12 - matrix1.M12) * amount;
+            result.M13 = matrix1.M13 + (matrix2.M13 - matrix1.M13) * amount;
+            result.M14 = matrix1.M14 + (matrix2.M14 - matrix1.M14) * amount;
 
-            var M21 = matrix1.M21 + (matrix2.M21 - matrix1.M21) * amount;
-            var M22 = matrix1.M22 + (matrix2.M22 - matrix1.M22) * amount;
-            var M23 = matrix1.M23 + (matrix2.M23 - matrix1.M23) * amount;
-            var M24 = matrix1.M24 + (matrix2.M24 - matrix1.M24) * amount;
+            result.M21 = matrix1.M21 + (matrix2.M21 - matrix1.M21) * amount;
+            result.M22 = matrix1.M22 + (matrix2.M22 - matrix1.M22) * amount;
+            result.M23 = matrix1.M23 + (matrix2.M23 - matrix1.M23) * amount;
+            result.M24 = matrix1.M24 + (matrix2.M24 - matrix1.M24) * amount;
 
-            var M31 = matrix1.M31 + (matrix2.M31 - matrix1.M31) * amount;
-            var M32 = matrix1.M32 + (matrix2.M32 - matrix1.M32) * amount;
-            var M33 = matrix1.M33 + (matrix2.M33 - matrix1.M33) * amount;
-            var M34 = matrix1.M34 + (matrix2.M34 - matrix1.M34) * amount;
+            result.M31 = matrix1.M31 + (matrix2.M31 - matrix1.M31) * amount;
+            result.M32 = matrix1.M32 + (matrix2.M32 - matrix1.M32) * amount;
+            result.M33 = matrix1.M33 + (matrix2.M33 - matrix1.M33) * amount;
+            result.M34 = matrix1.M34 + (matrix2.M34 - matrix1.M34) * amount;
 
-            var M41 = matrix1.M41 + (matrix2.M41 - matrix1.M41) * amount;
-            var M42 = matrix1.M42 + (matrix2.M42 - matrix1.M42) * amount;
-            var M43 = matrix1.M43 + (matrix2.M43 - matrix1.M43) * amount;
-            var M44 = matrix1.M44 + (matrix2.M44 - matrix1.M44) * amount;
-
-            result = new Matrix(
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44);
+            result.M41 = matrix1.M41 + (matrix2.M41 - matrix1.M41) * amount;
+            result.M42 = matrix1.M42 + (matrix2.M42 - matrix1.M42) * amount;
+            result.M43 = matrix1.M43 + (matrix2.M43 - matrix1.M43) * amount;
+            result.M44 = matrix1.M44 + (matrix2.M44 - matrix1.M44) * amount;
         }
 
         /// <summary>
@@ -1536,31 +1867,29 @@ namespace Ultraviolet
         /// <returns>The interpolated <see cref="Matrix"/>.</returns>
         public static Matrix Lerp(Matrix matrix1, Matrix matrix2, Single amount)
         {
-            var M11 = matrix1.M11 + (matrix2.M11 - matrix1.M11) * amount;
-            var M12 = matrix1.M12 + (matrix2.M12 - matrix1.M12) * amount;
-            var M13 = matrix1.M13 + (matrix2.M13 - matrix1.M13) * amount;
-            var M14 = matrix1.M14 + (matrix2.M14 - matrix1.M14) * amount;
+            Matrix result;
+            
+            result.M11 = matrix1.M11 + (matrix2.M11 - matrix1.M11) * amount;
+            result.M12 = matrix1.M12 + (matrix2.M12 - matrix1.M12) * amount;
+            result.M13 = matrix1.M13 + (matrix2.M13 - matrix1.M13) * amount;
+            result.M14 = matrix1.M14 + (matrix2.M14 - matrix1.M14) * amount;
 
-            var M21 = matrix1.M21 + (matrix2.M21 - matrix1.M21) * amount;
-            var M22 = matrix1.M22 + (matrix2.M22 - matrix1.M22) * amount;
-            var M23 = matrix1.M23 + (matrix2.M23 - matrix1.M23) * amount;
-            var M24 = matrix1.M24 + (matrix2.M24 - matrix1.M24) * amount;
+            result.M21 = matrix1.M21 + (matrix2.M21 - matrix1.M21) * amount;
+            result.M22 = matrix1.M22 + (matrix2.M22 - matrix1.M22) * amount;
+            result.M23 = matrix1.M23 + (matrix2.M23 - matrix1.M23) * amount;
+            result.M24 = matrix1.M24 + (matrix2.M24 - matrix1.M24) * amount;
 
-            var M31 = matrix1.M31 + (matrix2.M31 - matrix1.M31) * amount;
-            var M32 = matrix1.M32 + (matrix2.M32 - matrix1.M32) * amount;
-            var M33 = matrix1.M33 + (matrix2.M33 - matrix1.M33) * amount;
-            var M34 = matrix1.M34 + (matrix2.M34 - matrix1.M34) * amount;
+            result.M31 = matrix1.M31 + (matrix2.M31 - matrix1.M31) * amount;
+            result.M32 = matrix1.M32 + (matrix2.M32 - matrix1.M32) * amount;
+            result.M33 = matrix1.M33 + (matrix2.M33 - matrix1.M33) * amount;
+            result.M34 = matrix1.M34 + (matrix2.M34 - matrix1.M34) * amount;
 
-            var M41 = matrix1.M41 + (matrix2.M41 - matrix1.M41) * amount;
-            var M42 = matrix1.M42 + (matrix2.M42 - matrix1.M42) * amount;
-            var M43 = matrix1.M43 + (matrix2.M43 - matrix1.M43) * amount;
-            var M44 = matrix1.M44 + (matrix2.M44 - matrix1.M44) * amount;
+            result.M41 = matrix1.M41 + (matrix2.M41 - matrix1.M41) * amount;
+            result.M42 = matrix1.M42 + (matrix2.M42 - matrix1.M42) * amount;
+            result.M43 = matrix1.M43 + (matrix2.M43 - matrix1.M43) * amount;
+            result.M44 = matrix1.M44 + (matrix2.M44 - matrix1.M44) * amount;
 
-            return new Matrix(
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44);
+            return result;
         }
 
         /// <summary>
@@ -1588,33 +1917,31 @@ namespace Ultraviolet
             if (det == 0)
                 throw new DivideByZeroException();
 
-            var invdet = 1.0 / det;
+            var invdet = 1.0f / det;
 
-            var M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
-            var M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
-            var M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
-            var M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
+            Matrix temp;
 
-            var M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
-            var M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
-            var M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
-            var M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
+            temp.M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
+            temp.M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
+            temp.M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
+            temp.M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
 
-            var M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
-            var M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
-            var M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
-            var M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
+            temp.M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
+            temp.M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
+            temp.M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
+            temp.M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
 
-            var M41  = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
-            var M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
-            var M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
-            var M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
+            temp.M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
+            temp.M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
+            temp.M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
+            temp.M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
 
-            result = new Matrix(
-                (float)M11, (float)M12, (float)M13, (float)M14,
-                (float)M21, (float)M22, (float)M23, (float)M24,
-                (float)M31, (float)M32, (float)M33, (float)M34,
-                (float)M41, (float)M42, (float)M43, (float)M44);
+            temp.M41  = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
+            temp.M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
+            temp.M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
+            temp.M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
+
+            result = temp;
         }
 
         /// <summary>
@@ -1642,33 +1969,31 @@ namespace Ultraviolet
             if (det == 0)
                 throw new DivideByZeroException();
 
-            var invdet = 1.0 / det;
+            var invdet = 1.0f / det;
 
-            var M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
-            var M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
-            var M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
-            var M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
+            Matrix result;
 
-            var M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
-            var M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
-            var M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
-            var M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
+            result.M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
+            result.M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
+            result.M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
+            result.M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
 
-            var M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
-            var M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
-            var M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
-            var M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
+            result.M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
+            result.M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
+            result.M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
+            result.M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
 
-            var M41  = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
-            var M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
-            var M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
-            var M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
+            result.M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
+            result.M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
+            result.M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
+            result.M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
 
-            return new Matrix(
-                (float)M11, (float)M12, (float)M13, (float)M14,
-                (float)M21, (float)M22, (float)M23, (float)M24,
-                (float)M31, (float)M32, (float)M33, (float)M34,
-                (float)M41, (float)M42, (float)M43, (float)M44);
+            result.M41 = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
+            result.M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
+            result.M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
+            result.M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
+
+            return result;
         }
 
         /// <summary>
@@ -1700,33 +2025,27 @@ namespace Ultraviolet
                 return false;
             }
 
-            var invdet = 1.0 / det;
+            var invdet = 1.0f / det;
 
-            var M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
-            var M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
-            var M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
-            var M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
+            result.M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
+            result.M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
+            result.M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
+            result.M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
 
-            var M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
-            var M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
-            var M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
-            var M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
+            result.M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
+            result.M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
+            result.M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
+            result.M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
 
-            var M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
-            var M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
-            var M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
-            var M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
+            result.M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
+            result.M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
+            result.M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
+            result.M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
 
-            var M41  = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
-            var M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
-            var M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
-            var M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
-
-            result = new Matrix(
-                (float)M11, (float)M12, (float)M13, (float)M14,
-                (float)M21, (float)M22, (float)M23, (float)M24,
-                (float)M31, (float)M32, (float)M33, (float)M34,
-                (float)M41, (float)M42, (float)M43, (float)M44);
+            result.M41  = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
+            result.M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
+            result.M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
+            result.M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;            
 
             return true;
         }
@@ -1760,33 +2079,31 @@ namespace Ultraviolet
                 return false;
             }
 
-            var invdet = 1.0 / det;
+            var invdet = 1.0f / det;
 
-            var M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
-            var M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
-            var M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
-            var M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
+            Matrix temp;
 
-            var M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
-            var M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
-            var M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
-            var M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
+            temp.M11 = (matrix.M22 * c5 - matrix.M23 * c4 + matrix.M24 * c3) * invdet;
+            temp.M12 = (-matrix.M12 * c5 + matrix.M13 * c4 - matrix.M14 * c3) * invdet;
+            temp.M13 = (matrix.M42 * s5 - matrix.M43 * s4 + matrix.M44 * s3) * invdet;
+            temp.M14 = (-matrix.M32 * s5 + matrix.M33 * s4 - matrix.M34 * s3) * invdet;
 
-            var M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
-            var M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
-            var M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
-            var M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
+            temp.M21 = (-matrix.M21 * c5 + matrix.M23 * c2 - matrix.M24 * c1) * invdet;
+            temp.M22 = (matrix.M11 * c5 - matrix.M13 * c2 + matrix.M14 * c1) * invdet;
+            temp.M23 = (-matrix.M41 * s5 + matrix.M43 * s2 - matrix.M44 * s1) * invdet;
+            temp.M24 = (matrix.M31 * s5 - matrix.M33 * s2 + matrix.M34 * s1) * invdet;
 
-            var M41  = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
-            var M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
-            var M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
-            var M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
+            temp.M31 = (matrix.M21 * c4 - matrix.M22 * c2 + matrix.M24 * c0) * invdet;
+            temp.M32 = (-matrix.M11 * c4 + matrix.M12 * c2 - matrix.M14 * c0) * invdet;
+            temp.M33 = (matrix.M41 * s4 - matrix.M42 * s2 + matrix.M44 * s0) * invdet;
+            temp.M34 = (-matrix.M31 * s4 + matrix.M32 * s2 - matrix.M34 * s0) * invdet;
 
-            result = new Matrix(
-                (float)M11, (float)M12, (float)M13, (float)M14,
-                (float)M21, (float)M22, (float)M23, (float)M24,
-                (float)M31, (float)M32, (float)M33, (float)M34,
-                (float)M41, (float)M42, (float)M43, (float)M44);
+            temp.M41 = (-matrix.M21 * c3 + matrix.M22 * c1 - matrix.M23 * c0) * invdet;
+            temp.M42 = (matrix.M11 * c3 - matrix.M12 * c1 + matrix.M13 * c0) * invdet;
+            temp.M43 = (-matrix.M41 * s3 + matrix.M42 * s1 - matrix.M43 * s0) * invdet;
+            temp.M44 = (matrix.M31 * s3 - matrix.M32 * s1 + matrix.M33 * s0) * invdet;
+
+            result = temp;
 
             return true;
         }
@@ -1798,12 +2115,25 @@ namespace Ultraviolet
         /// <param name="result">The negated <see cref="Matrix"/>.</param>
         public static void Negate(ref Matrix matrix, out Matrix result)
         {
-            result = new Matrix(
-                -matrix.M11, -matrix.M12, -matrix.M13, -matrix.M14,
-                -matrix.M21, -matrix.M22, -matrix.M23, -matrix.M24,
-                -matrix.M31, -matrix.M32, -matrix.M33, -matrix.M34,
-                -matrix.M41, -matrix.M42, -matrix.M43, -matrix.M44
-            );
+            result.M11 = -matrix.M11;
+            result.M12 = -matrix.M12;
+            result.M13 = -matrix.M13;
+            result.M14 = -matrix.M14;
+
+            result.M21 = -matrix.M21;
+            result.M22 = -matrix.M22;
+            result.M23 = -matrix.M23;
+            result.M24 = -matrix.M24;
+
+            result.M31 = -matrix.M31;
+            result.M32 = -matrix.M32;
+            result.M33 = -matrix.M33;
+            result.M34 = -matrix.M34;
+
+            result.M41 = -matrix.M41;
+            result.M42 = -matrix.M42;
+            result.M43 = -matrix.M43;
+            result.M44 = -matrix.M44;
         }
 
         /// <summary>
@@ -1813,12 +2143,29 @@ namespace Ultraviolet
         /// <returns>The negated <see cref="Matrix"/>.</returns>
         public static Matrix Negate(Matrix matrix)
         {
-            return new Matrix(
-                -matrix.M11, -matrix.M12, -matrix.M13, -matrix.M14,
-                -matrix.M21, -matrix.M22, -matrix.M23, -matrix.M24,
-                -matrix.M31, -matrix.M32, -matrix.M33, -matrix.M34,
-                -matrix.M41, -matrix.M42, -matrix.M43, -matrix.M44
-            );
+            Matrix result;
+
+            result.M11 = -matrix.M11;
+            result.M12 = -matrix.M12;
+            result.M13 = -matrix.M13;
+            result.M14 = -matrix.M14;
+
+            result.M21 = -matrix.M21;
+            result.M22 = -matrix.M22;
+            result.M23 = -matrix.M23;
+            result.M24 = -matrix.M24;
+
+            result.M31 = -matrix.M31;
+            result.M32 = -matrix.M32;
+            result.M33 = -matrix.M33;
+            result.M34 = -matrix.M34;
+
+            result.M41 = -matrix.M41;
+            result.M42 = -matrix.M42;
+            result.M43 = -matrix.M43;
+            result.M44 = -matrix.M44;
+
+            return result;
         }
 
         /// <summary>
@@ -1896,21 +2243,21 @@ namespace Ultraviolet
         {
             return
                 M11 == other.M11 &&
+                M22 == other.M22 &&
+                M33 == other.M33 &&
+                M44 == other.M44 &&
                 M12 == other.M12 &&
                 M13 == other.M13 &&
                 M14 == other.M14 &&
                 M21 == other.M21 &&
-                M22 == other.M22 &&
                 M23 == other.M23 &&
                 M24 == other.M24 &&
                 M31 == other.M31 &&
                 M32 == other.M32 &&
-                M33 == other.M33 &&
                 M34 == other.M34 &&
                 M41 == other.M41 &&
                 M42 == other.M42 &&
-                M43 == other.M43 &&
-                M44 == other.M44;
+                M43 == other.M43;
         }
 
         /// <summary>
@@ -1923,21 +2270,21 @@ namespace Ultraviolet
         {
             return
                 M11 == other.M11 &&
+                M22 == other.M22 &&
+                M33 == other.M33 &&
+                M44 == other.M44 &&
                 M12 == other.M12 &&
                 M13 == other.M13 &&
                 M14 == other.M14 &&
                 M21 == other.M21 &&
-                M22 == other.M22 &&
                 M23 == other.M23 &&
                 M24 == other.M24 &&
                 M31 == other.M31 &&
                 M32 == other.M32 &&
-                M33 == other.M33 &&
                 M34 == other.M34 &&
                 M41 == other.M41 &&
                 M42 == other.M42 &&
-                M43 == other.M43 &&
-                M44 == other.M44;
+                M43 == other.M43;
         }
 
         /// <summary>
@@ -1972,25 +2319,14 @@ namespace Ultraviolet
         [Preserve]
         public Matrix Interpolate(Matrix target, Single t)
         {
-            Matrix result;
-            Matrix.Lerp(ref this, ref target, t, out result);
+            Matrix.Lerp(ref this, ref target, t, out Matrix result);
             return result;
         }
 
         /// <summary>
         /// Gets the identity matrix.
         /// </summary>
-        public static Matrix Identity
-        {
-            get
-            {
-                return new Matrix(
-                    1, 0, 0, 0,
-                    0, 1, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1);
-            }
-        }
+        public static Matrix Identity { get; } = new Matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
         /// <summary>
         /// Gets the matrix's right vector.

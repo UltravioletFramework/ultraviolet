@@ -88,16 +88,20 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 var mtxTransform = Matrix.CreateTranslation(-offset.X, -offset.Y, 0);
                 var mtxTransformToView = GetTransformToViewMatrix(true);
                 var mtxTransformGlobal = dcState.GlobalTransform;
-                Matrix.Concat(ref mtxTransform, ref mtxTransformToView, out mtxTransform);
-                Matrix.Concat(ref mtxTransform, ref mtxTransformGlobal, out mtxTransform);
+                Matrix.Multiply(ref mtxTransform, ref mtxTransformToView, out mtxTransform);
+                Matrix.Multiply(ref mtxTransform, ref mtxTransformGlobal, out mtxTransform);
 
                 if (!dc.IsTransformed && !clonedElement.HasNonIdentityTransform)
                 {
+                    var floorM41 = (Single)Math.Floor(mtxTransform.M41);
+                    var floorM42 = (Single)Math.Floor(mtxTransform.M42);
+                    var floorM43 = (Single)Math.Floor(mtxTransform.M43);
+
                     mtxTransform = new Matrix(
-                        mtxTransform.M11, mtxTransform.M12, mtxTransform.M13, (Single)Math.Floor(mtxTransform.M14),
-                        mtxTransform.M21, mtxTransform.M22, mtxTransform.M23, (Single)Math.Floor(mtxTransform.M24),
-                        mtxTransform.M31, mtxTransform.M32, mtxTransform.M33, (Single)Math.Floor(mtxTransform.M34),
-                        mtxTransform.M41, mtxTransform.M42, mtxTransform.M43, mtxTransform.M44);
+                        mtxTransform.M11, mtxTransform.M12, mtxTransform.M13, mtxTransform.M14,
+                        mtxTransform.M21, mtxTransform.M22, mtxTransform.M23, mtxTransform.M24,
+                        mtxTransform.M31, mtxTransform.M32, mtxTransform.M33, mtxTransform.M34,
+                                floorM41,         floorM42,         floorM43, mtxTransform.M44);
                 }
 
                 dc.IsOutOfBandRenderingSuppressed = true;

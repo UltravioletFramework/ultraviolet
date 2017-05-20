@@ -164,8 +164,8 @@ namespace Ultraviolet.Presentation.Media
                 var mtxTransformCenterInverse = Matrix.CreateTranslation(centerX, centerY, 0f);
 
                 Matrix mtxResult;
-                Matrix.Concat(ref mtxTransformCenter, ref mtxScale, out mtxResult);
-                Matrix.Concat(ref mtxResult, ref mtxTransformCenterInverse, out mtxResult);
+                Matrix.Multiply(ref mtxTransformCenter, ref mtxScale, out mtxResult);
+                Matrix.Multiply(ref mtxResult, ref mtxTransformCenterInverse, out mtxResult);
 
                 this.value = mtxResult;
             }

@@ -86,7 +86,7 @@ namespace Ultraviolet.Presentation
 
             this.localTransform = localTransform;
             this.combinedTransform = Matrix.Identity;
-            Matrix.Concat(ref localTransform, ref globalTransform, out combinedTransform);
+            Matrix.Multiply(ref localTransform, ref globalTransform, out combinedTransform);
 
             SpriteBatch.Begin(sortMode, 
                 blendState ?? BlendState.AlphaBlend,

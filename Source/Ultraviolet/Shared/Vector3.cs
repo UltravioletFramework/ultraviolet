@@ -87,7 +87,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator +(Vector3 vector1, Vector3 vector2)
         {
-            return new Vector3(vector1.X + vector2.X, vector1.Y + vector2.Y, vector1.Z + vector2.Z);
+            Vector3 result;
+
+            result.X = vector1.X + vector2.X;
+            result.Y = vector1.Y + vector2.Y;
+            result.Z = vector1.Z + vector2.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -99,7 +105,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator -(Vector3 vector1, Vector3 vector2)
         {
-            return new Vector3(vector1.X - vector2.X, vector1.Y - vector2.Y, vector1.Z - vector2.Z);
+            Vector3 result;
+
+            result.X = vector1.X - vector2.X;
+            result.Y = vector1.Y - vector2.Y;
+            result.Z = vector1.Z - vector2.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -111,11 +123,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator *(Vector3 vector1, Vector3 vector2)
         {
-            return new Vector3(
-                vector1.X * vector2.X, 
-                vector1.Y * vector2.Y, 
-                vector1.Z * vector2.Z
-            );
+            Vector3 result;
+
+            result.X = vector1.X * vector2.X;
+            result.Y = vector1.Y * vector2.Y;
+            result.Z = vector1.Z * vector2.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -127,11 +141,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator *(Single factor, Vector3 vector)
         {
-            return new Vector3(
-                vector.X * factor, 
-                vector.Y * factor, 
-                vector.Z * factor
-            );
+            Vector3 result;
+
+            result.X = vector.X * factor;
+            result.Y = vector.Y * factor;
+            result.Z = vector.Z * factor;
+
+            return result;
         }
 
         /// <summary>
@@ -143,11 +159,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator *(Vector3 vector, Single factor)
         {
-            return new Vector3(
-                vector.X * factor, 
-                vector.Y * factor, 
-                vector.Z * factor
-            );
+            Vector3 result;
+
+            result.X = vector.X * factor;
+            result.Y = vector.Y * factor;
+            result.Z = vector.Z * factor;
+
+            return result;
         }
 
         /// <summary>
@@ -159,11 +177,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator /(Vector3 vector1, Vector3 vector2)
         {
-            return new Vector3(
-                vector1.X / vector2.X,
-                vector1.Y / vector2.Y,
-                vector1.Z / vector2.Z
-            );
+            Vector3 result;
+
+            result.X = vector1.X / vector2.X;
+            result.Y = vector1.Y / vector2.Y;
+            result.Z = vector1.Z / vector2.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -175,11 +195,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator /(Vector3 vector, Single factor)
         {
-            return new Vector3(
-                vector.X / factor,
-                vector.Y / factor,
-                vector.Z / factor
-            );
+            Vector3 result;
+
+            result.X = vector.X / factor;
+            result.Y = vector.Y / factor;
+            result.Z = vector.Z / factor;
+
+            return result;
         }
 
         /// <summary>
@@ -190,7 +212,13 @@ namespace Ultraviolet
         [Preserve]
         public static Vector3 operator -(Vector3 vector)
         {
-            return new Vector3(-vector.X, -vector.Y, -vector.Z);
+            Vector3 result;
+
+            result.X = -vector.X;
+            result.Y = -vector.Y;
+            result.Z = -vector.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -201,7 +229,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size3(Vector3 vector)
         {
-            return new Size3((Int32)vector.X, (Int32)vector.Y, (Int32)vector.Z);
+            Size3 result;
+
+            result.Width = (Int32)vector.X;
+            result.Height = (Int32)vector.Y;
+            result.Depth = (Int32)vector.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -212,7 +246,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size3F(Vector3 vector)
         {
-            return new Size3F(vector.X, vector.Y, vector.Z);
+            Size3F result;
+
+            result.Width = vector.X;
+            result.Height = vector.Y;
+            result.Depth = vector.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -223,7 +263,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size3D(Vector3 vector)
         {
-            return new Size3D(vector.X, vector.Y, vector.Z);
+            Size3D result;
+
+            result.Width = vector.X;
+            result.Height = vector.Y;
+            result.Depth = vector.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -310,7 +356,14 @@ namespace Ultraviolet
             var cx = vector1.Y * vector2.Z - vector1.Z * vector2.Y;
             var cy = vector1.Z * vector2.X - vector1.X * vector2.Z;
             var cz = vector1.X * vector2.Y - vector1.Y * vector2.X;
-            return new Vector3(cx, cy, cz);
+
+            Vector3 result;
+
+            result.X = cx;
+            result.Y = cy;
+            result.Z = cz;
+
+            return result;
         }
 
         /// <summary>
@@ -324,7 +377,10 @@ namespace Ultraviolet
             var cx = vector1.Y * vector2.Z - vector1.Z * vector2.Y;
             var cy = vector1.Z * vector2.X - vector1.X * vector2.Z;
             var cz = vector1.X * vector2.Y - vector1.Y * vector2.X;
-            result = new Vector3(cx, cy, cz);
+
+            result.X = cx;
+            result.Y = cy;
+            result.Z = cz;
         }
 
         /// <summary>
@@ -357,7 +413,13 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector3"/>.</returns>
         public static Vector3 Add(Vector3 left, Vector3 right)
         {
-            return new Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+            Vector3 result;
+
+            result.X = left.X + right.X;
+            result.Y = left.Y + right.Y;
+            result.Z = left.Z + right.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -368,7 +430,9 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector3"/>.</param>
         public static void Add(ref Vector3 left, ref Vector3 right, out Vector3 result)
         {
-            result = new Vector3(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+            result.X = left.X + right.X;
+            result.Y = left.Y + right.Y;
+            result.Z = left.Z + right.Z;
         }
 
         /// <summary>
@@ -379,7 +443,13 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector3"/>.</returns>
         public static Vector3 Subtract(Vector3 left, Vector3 right)
         {
-            return new Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+            Vector3 result;
+
+            result.X = left.X - right.X;
+            result.Y = left.Y - right.Y;
+            result.Z = left.Z - right.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -390,37 +460,39 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector3"/>.</param>
         public static void Subtract(ref Vector3 left, ref Vector3 right, out Vector3 result)
         {
-            result = new Vector3(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+            result.X = left.X - right.X;
+            result.Y = left.Y - right.Y;
+            result.Z = left.Z - right.Z;
         }
 
         /// <summary>
         /// Multiplies two vectors.
         /// </summary>
-        /// <param name="vector1">The <see cref="Vector3"/> to the left of the multiplication operator.</param>
-        /// <param name="vector2">The <see cref="Vector3"/> to the right of the multiplication operator.</param>
+        /// <param name="left">The <see cref="Vector3"/> to the left of the multiplication operator.</param>
+        /// <param name="right">The <see cref="Vector3"/> to the right of the multiplication operator.</param>
         /// <returns>The resulting <see cref="Vector3"/>.</returns>
-        public static Vector3 Multiply(Vector3 vector1, Vector3 vector2)
+        public static Vector3 Multiply(Vector3 left, Vector3 right)
         {
-            return new Vector3(
-                vector1.X * vector2.X,
-                vector1.Y * vector2.Y,
-                vector1.Z * vector2.Z
-            );
+            Vector3 result;
+
+            result.X = left.X * right.X;
+            result.Y = left.Y * right.Y;
+            result.Z = left.Z * right.Z;
+
+            return result;
         }
 
         /// <summary>
         /// Multiplies two vectors.
         /// </summary>
-        /// <param name="vector1">The <see cref="Vector3"/> to the left of the multiplication operator.</param>
-        /// <param name="vector2">The <see cref="Vector3"/> to the right of the multiplication operator.</param>
+        /// <param name="left">The <see cref="Vector3"/> to the left of the multiplication operator.</param>
+        /// <param name="right">The <see cref="Vector3"/> to the right of the multiplication operator.</param>
         /// <param name="result">The resulting <see cref="Vector3"/>.</param>
-        public static void Multiply(ref Vector3 vector1, ref Vector3 vector2, out Vector3 result)
+        public static void Multiply(ref Vector3 left, ref Vector3 right, out Vector3 result)
         {
-            result = new Vector3(
-                vector1.X * vector2.X,
-                vector1.Y * vector2.Y,
-                vector1.Z * vector2.Z
-            );
+            result.X = left.X * right.X;
+            result.Y = left.Y * right.Y;
+            result.Z = left.Z * right.Z;
         }
 
         /// <summary>
@@ -431,11 +503,13 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector3"/>.</returns>
         public static Vector3 Multiply(Vector3 vector, Single factor)
         {
-            return new Vector3(
-                vector.X * factor,
-                vector.Y * factor,
-                vector.Z * factor
-            );
+            Vector3 result;
+
+            result.X = vector.X * factor;
+            result.Y = vector.Y * factor;
+            result.Z = vector.Z * factor;
+
+            return result;
         }
 
         /// <summary>
@@ -446,41 +520,39 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector3"/>.</param>
         public static void Multiply(ref Vector3 vector, Single factor, out Vector3 result)
         {
-            result = new Vector3(
-                vector.X * factor,
-                vector.Y * factor,
-                vector.Z * factor
-            );
+            result.X = vector.X * factor;
+            result.Y = vector.Y * factor;
+            result.Z = vector.Z * factor;
         }
 
         /// <summary>
         /// Divides two vectors.
         /// </summary>
-        /// <param name="vector1">The <see cref="Vector3"/> to the left of the division operator.</param>
-        /// <param name="vector2">The <see cref="Vector3"/> to the right of the division operator.</param>
+        /// <param name="left">The <see cref="Vector3"/> to the left of the division operator.</param>
+        /// <param name="right">The <see cref="Vector3"/> to the right of the division operator.</param>
         /// <returns>The resulting <see cref="Vector3"/>.</returns>
-        public static Vector3 Divide(Vector3 vector1, Vector3 vector2)
+        public static Vector3 Divide(Vector3 left, Vector3 right)
         {
-            return new Vector3(
-                vector1.X / vector2.X,
-                vector1.Y / vector2.Y,
-                vector1.Z / vector2.Z
-            );
+            Vector3 result;
+
+            result.X = left.X / right.X;
+            result.Y = left.Y / right.Y;
+            result.Z = left.Z / right.Z;
+
+            return result;
         }
 
         /// <summary>
         /// Divides two vectors.
         /// </summary>
-        /// <param name="vector1">The <see cref="Vector3"/> to the left of the division operator.</param>
-        /// <param name="vector2">The <see cref="Vector3"/> to the right of the division operator.</param>
+        /// <param name="left">The <see cref="Vector3"/> to the left of the division operator.</param>
+        /// <param name="right">The <see cref="Vector3"/> to the right of the division operator.</param>
         /// <param name="result">The resulting <see cref="Vector3"/>.</param>
-        public static void Divide(ref Vector3 vector1, ref Vector3 vector2, out Vector3 result)
+        public static void Divide(ref Vector3 left, ref Vector3 right, out Vector3 result)
         {
-            result = new Vector3(
-                vector1.X / vector2.X,
-                vector1.Y / vector2.Y,
-                vector1.Z / vector2.Z
-            );
+            result.X = left.X / right.X;
+            result.Y = left.Y / right.Y;
+            result.Z = left.Z / right.Z;
         }
 
         /// <summary>
@@ -491,11 +563,13 @@ namespace Ultraviolet
         /// <returns>The resulting <see cref="Vector3"/>.</returns>
         public static Vector3 Divide(Vector3 vector, Single factor)
         {
-            return new Vector3(
-                vector.X / factor,
-                vector.Y / factor,
-                vector.Z / factor
-            );
+            Vector3 result;
+
+            result.X = vector.X / factor;
+            result.Y = vector.Y / factor;
+            result.Z = vector.Z / factor;
+
+            return result;
         }
 
         /// <summary>
@@ -506,11 +580,9 @@ namespace Ultraviolet
         /// <param name="result">The resulting <see cref="Vector3"/>.</param>
         public static void Divide(ref Vector3 vector, Single factor, out Vector3 result)
         {
-            result = new Vector3(
-                vector.X / factor,
-                vector.Y / factor,
-                vector.Z / factor
-            );
+            result.X = vector.X / factor;
+            result.Y = vector.Y / factor;
+            result.Z = vector.Z / factor;
         }
 
         /// <summary>
@@ -521,10 +593,13 @@ namespace Ultraviolet
         /// <returns>The transformed <see cref="Vector3"/>.</returns>
         public static Vector3 Transform(Vector3 vector, Matrix matrix)
         {
-            var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y + matrix.M13 * vector.Z) + matrix.M14;
-            var y = (matrix.M21 * vector.X + matrix.M22 * vector.Y + matrix.M23 * vector.Z) + matrix.M24;
-            var z = (matrix.M31 * vector.X + matrix.M32 * vector.Y + matrix.M33 * vector.Z) + matrix.M34;
-            return new Vector3(x, y, z);
+            Vector3 result;
+
+            result.X = (matrix.M11 * vector.X + matrix.M21 * vector.Y + matrix.M31 * vector.Z) + matrix.M41;
+            result.Y = (matrix.M12 * vector.X + matrix.M22 * vector.Y + matrix.M32 * vector.Z) + matrix.M42;
+            result.Z = (matrix.M13 * vector.X + matrix.M23 * vector.Y + matrix.M33 * vector.Z) + matrix.M43;
+
+            return result;
         }
 
         /// <summary>
@@ -535,10 +610,13 @@ namespace Ultraviolet
         /// <param name="result">The transformed <see cref="Vector3"/>.</param>
         public static void Transform(ref Vector3 vector, ref Matrix matrix, out Vector3 result)
         {
-            var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y + matrix.M13 * vector.Z) + matrix.M14;
-            var y = (matrix.M21 * vector.X + matrix.M22 * vector.Y + matrix.M23 * vector.Z) + matrix.M24;
-            var z = (matrix.M31 * vector.X + matrix.M32 * vector.Y + matrix.M33 * vector.Z) + matrix.M34;
-            result = new Vector3(x, y, z);
+            Vector3 temp;
+
+            temp.X = (matrix.M11 * vector.X + matrix.M21 * vector.Y + matrix.M31 * vector.Z) + matrix.M41;
+            temp.Y = (matrix.M12 * vector.X + matrix.M22 * vector.Y + matrix.M32 * vector.Z) + matrix.M42;
+            temp.Z = (matrix.M13 * vector.X + matrix.M23 * vector.Y + matrix.M33 * vector.Z) + matrix.M43;
+
+            result = temp;
         }
 
         /// <summary>
@@ -549,10 +627,13 @@ namespace Ultraviolet
         /// <returns>The transformed <see cref="Vector3"/>.</returns>
         public static Vector3 TransformNormal(Vector3 vector, Matrix matrix)
         {
-            var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y + matrix.M13 * vector.Z);
-            var y = (matrix.M21 * vector.X + matrix.M22 * vector.Y + matrix.M23 * vector.Z);
-            var z = (matrix.M31 * vector.X + matrix.M32 * vector.Y + matrix.M33 * vector.Z);
-            return new Vector3(x, y, z);
+            Vector3 result;
+
+            result.X = (matrix.M11 * vector.X + matrix.M21 * vector.Y + matrix.M31 * vector.Z);
+            result.Y = (matrix.M12 * vector.X + matrix.M22 * vector.Y + matrix.M32 * vector.Z);
+            result.Z = (matrix.M13 * vector.X + matrix.M23 * vector.Y + matrix.M33 * vector.Z);
+
+            return result;
         }
 
         /// <summary>
@@ -563,10 +644,13 @@ namespace Ultraviolet
         /// <param name="result">The transformed <see cref="Vector3"/>.</param>
         public static void TransformNormal(ref Vector3 vector, ref Matrix matrix, out Vector3 result)
         {
-            var x = (matrix.M11 * vector.X + matrix.M12 * vector.Y + matrix.M13 * vector.Z);
-            var y = (matrix.M21 * vector.X + matrix.M22 * vector.Y + matrix.M23 * vector.Z);
-            var z = (matrix.M31 * vector.X + matrix.M32 * vector.Y + matrix.M33 * vector.Z);
-            result = new Vector3(x, y, z);
+            Vector3 temp;
+
+            temp.X = (matrix.M11 * vector.X + matrix.M21 * vector.Y + matrix.M31 * vector.Z);
+            temp.Y = (matrix.M12 * vector.X + matrix.M22 * vector.Y + matrix.M32 * vector.Z);
+            temp.Z = (matrix.M13 * vector.X + matrix.M23 * vector.Y + matrix.M33 * vector.Z);
+
+            result = temp;
         }
 
         /// <summary>
@@ -577,7 +661,14 @@ namespace Ultraviolet
         public static Vector3 Normalize(Vector3 vector)
         {
             var inverseMagnitude = 1f / vector.Length();
-            return new Vector3(vector.X * inverseMagnitude, vector.Y * inverseMagnitude, vector.Z * inverseMagnitude);
+
+            Vector3 result;
+
+            result.X = vector.X * inverseMagnitude;
+            result.Y = vector.Y * inverseMagnitude;
+            result.Z = vector.Z * inverseMagnitude;
+
+            return result;
         }
 
         /// <summary>
@@ -588,7 +679,10 @@ namespace Ultraviolet
         public static void Normalize(ref Vector3 vector, out Vector3 result)
         {
             var inverseMagnitude = 1f / vector.Length();
-            result = new Vector3(vector.X * inverseMagnitude, vector.Y * inverseMagnitude, vector.Z * inverseMagnitude);
+
+            result.X = vector.X * inverseMagnitude;
+            result.Y = vector.Y * inverseMagnitude;
+            result.Z = vector.Z * inverseMagnitude;
         }
 
         /// <summary>
@@ -598,7 +692,13 @@ namespace Ultraviolet
         /// <returns>The negated <see cref="Vector3"/>.</returns>
         public static Vector3 Negate(Vector3 vector)
         {
-            return new Vector3(-vector.X, -vector.Y, -vector.Z);
+            Vector3 result;
+
+            result.X = -vector.X;
+            result.Y = -vector.Y;
+            result.Z = -vector.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -608,7 +708,9 @@ namespace Ultraviolet
         /// <param name="result">The negated <see cref="Vector3"/>.</param>
         public static void Negate(ref Vector3 vector, out Vector3 result)
         {
-            result = new Vector3(-vector.X, -vector.Y, -vector.Z);
+            result.X = -vector.X;
+            result.Y = -vector.Y;
+            result.Z = -vector.Z;
         }
 
         /// <summary>
@@ -620,11 +722,13 @@ namespace Ultraviolet
         /// <returns>The clamped <see cref="Vector3"/>.</returns>
         public static Vector3 Clamp(Vector3 vector, Vector3 min, Vector3 max)
         {
-            return new Vector3(
-                vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X,
-                vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y,
-                vector.Z < min.Z ? min.Z : vector.Z > max.Z ? max.Z : vector.Z
-            );
+            Vector3 result;
+
+            result.X = vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X;
+            result.Y = vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y;
+            result.Z = vector.Z < min.Z ? min.Z : vector.Z > max.Z ? max.Z : vector.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -636,11 +740,9 @@ namespace Ultraviolet
         /// <param name="result">The clamped <see cref="Vector3"/>.</param>
         public static void Clamp(ref Vector3 vector, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
-            result = new Vector3(
-                vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X,
-                vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y,
-                vector.Z < min.Z ? min.Z : vector.Z > max.Z ? max.Z : vector.Z
-            );
+            result.X = vector.X < min.X ? min.X : vector.X > max.X ? max.X : vector.X;
+            result.Y = vector.Y < min.Y ? min.Y : vector.Y > max.Y ? max.Y : vector.Y;
+            result.Z = vector.Z < min.Z ? min.Z : vector.Z > max.Z ? max.Z : vector.Z;
         }
 
         /// <summary>
@@ -651,11 +753,13 @@ namespace Ultraviolet
         /// <returns>A <see cref="Vector3"/> which contains the lowest value of each component of the specified vectors.</returns>
         public static Vector3 Min(Vector3 vector1, Vector3 vector2)
         {
-            return new Vector3(
-                vector1.X < vector2.X ? vector1.X : vector2.X,
-                vector1.Y < vector2.Y ? vector1.Y : vector2.Y,
-                vector1.Z < vector2.Z ? vector1.Z : vector2.Z
-            );
+            Vector3 result;
+
+            result.X = vector1.X < vector2.X ? vector1.X : vector2.X;
+            result.Y = vector1.Y < vector2.Y ? vector1.Y : vector2.Y;
+            result.Z = vector1.Z < vector2.Z ? vector1.Z : vector2.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -666,11 +770,9 @@ namespace Ultraviolet
         /// <param name="result">A <see cref="Vector3"/> which contains the lowest value of each component of the specified vectors.</param>
         public static void Min(ref Vector3 vector1, ref Vector3 vector2, out Vector3 result)
         {
-            result = new Vector3(
-                vector1.X < vector2.X ? vector1.X : vector2.X,
-                vector1.Y < vector2.Y ? vector1.Y : vector2.Y,
-                vector1.Z < vector2.Z ? vector1.Z : vector2.Z
-            );
+            result.X = vector1.X < vector2.X ? vector1.X : vector2.X;
+            result.Y = vector1.Y < vector2.Y ? vector1.Y : vector2.Y;
+            result.Z = vector1.Z < vector2.Z ? vector1.Z : vector2.Z;
         }
 
         /// <summary>
@@ -681,11 +783,13 @@ namespace Ultraviolet
         /// <returns>A <see cref="Vector3"/> which contains the highest value of each component of the specified vectors.</returns>
         public static Vector3 Max(Vector3 vector1, Vector3 vector2)
         {
-            return new Vector3(
-                vector1.X < vector2.X ? vector2.X : vector1.X,
-                vector1.Y < vector2.Y ? vector2.Y : vector1.Y,
-                vector1.Z < vector2.Z ? vector2.Z : vector1.Z
-            );
+            Vector3 result;
+            
+            result.X = vector1.X < vector2.X ? vector2.X : vector1.X;
+            result.Y = vector1.Y < vector2.Y ? vector2.Y : vector1.Y;
+            result.Z = vector1.Z < vector2.Z ? vector2.Z : vector1.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -696,11 +800,9 @@ namespace Ultraviolet
         /// <param name="result">A <see cref="Vector3"/> which contains the highest value of each component of the specified vectors.</param>
         public static void Max(ref Vector3 vector1, ref Vector3 vector2, out Vector3 result)
         {
-            result = new Vector3(
-                vector1.X < vector2.X ? vector2.X : vector1.X,
-                vector1.Y < vector2.Y ? vector2.Y : vector1.Y,
-                vector1.Z < vector2.Z ? vector2.Z : vector1.Z
-            );
+            result.X = vector1.X < vector2.X ? vector2.X : vector1.X;
+            result.Y = vector1.Y < vector2.Y ? vector2.Y : vector1.Y;
+            result.Z = vector1.Z < vector2.Z ? vector2.Z : vector1.Z;
         }
 
         /// <summary>
@@ -713,11 +815,13 @@ namespace Ultraviolet
         {
             var dot = vector.X * normal.X + vector.Y * normal.Y + vector.Z * normal.Z;
 
-            return new Vector3(
-                vector.X - 2f * dot * normal.X,
-                vector.Y - 2f * dot * normal.Y,
-                vector.Z - 2f * dot * normal.Z
-            );
+            Vector3 result;
+
+            result.X = vector.X - 2f * dot * normal.X;
+            result.Y = vector.Y - 2f * dot * normal.Y;
+            result.Z = vector.Z - 2f * dot * normal.Z;
+
+            return result;
         }
 
         /// <summary>
@@ -730,11 +834,9 @@ namespace Ultraviolet
         {
             var dot = vector.X * normal.X + vector.Y * normal.Y + vector.Z * normal.Z;
 
-            result = new Vector3(
-                vector.X - 2f * dot * normal.X,
-                vector.Y - 2f * dot * normal.Y,
-                vector.Z - 2f * dot * normal.Z
-            );
+            result.X = vector.X - 2f * dot * normal.X;
+            result.Y = vector.Y - 2f * dot * normal.Y;
+            result.Z = vector.Z - 2f * dot * normal.Z;
         }
 
         /// <summary>
@@ -746,11 +848,13 @@ namespace Ultraviolet
         /// <returns>The interpolated <see cref="Vector3"/>.</returns>
         public static Vector3 Lerp(Vector3 vector1, Vector3 vector2, Single amount)
         {
-            return new Vector3(
-                vector1.X + (vector2.X - vector1.X) * amount,
-                vector1.Y + (vector2.Y - vector1.Y) * amount,
-                vector1.Z + (vector2.Z - vector1.Z) * amount
-            );
+            Vector3 result;
+
+            result.X = vector1.X + (vector2.X - vector1.X) * amount;
+            result.Y = vector1.Y + (vector2.Y - vector1.Y) * amount;
+            result.Z = vector1.Z + (vector2.Z - vector1.Z) * amount;
+
+            return result;
         }
 
         /// <summary>
@@ -762,11 +866,9 @@ namespace Ultraviolet
         /// <param name="result">The interpolated <see cref="Vector3"/>.</param>
         public static void Lerp(ref Vector3 vector1, ref Vector3 vector2, Single amount, out Vector3 result)
         {
-            result = new Vector3(
-                vector1.X + (vector2.X - vector1.X) * amount,
-                vector1.Y + (vector2.Y - vector1.Y) * amount,
-                vector1.Z + (vector2.Z - vector1.Z) * amount
-            );
+            result.X = vector1.X + (vector2.X - vector1.X) * amount;
+            result.Y = vector1.Y + (vector2.Y - vector1.Y) * amount;
+            result.Z = vector1.Z + (vector2.Z - vector1.Z) * amount;            
         }
 
         /// <summary>
@@ -783,16 +885,18 @@ namespace Ultraviolet
             var t2 = amount * amount;
             var t3 = t2 * amount;
 
-            var polynomial1 = (2.0 * t3 - 3.0 * t2 + 1);    // (2t^3 - 3t^2 + 1)
-            var polynomial2 = (t3 - 2.0 * t2 + amount);     // (t3 - 2t^2 + t)  
-            var polynomial3 = (-2.0 * t3 + 3.0 * t2);       // (-2t^2 + 3t^2)
+            var polynomial1 = (2.0f * t3 - 3.0f * t2 + 1);  // (2t^3 - 3t^2 + 1)
+            var polynomial2 = (t3 - 2.0f * t2 + amount);    // (t3 - 2t^2 + t)  
+            var polynomial3 = (-2.0f * t3 + 3.0f * t2);     // (-2t^2 + 3t^2)
             var polynomial4 = (t3 - t2);                    // (t^3 - t^2)
 
-            return new Vector3(
-                (float)(vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4),
-                (float)(vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4),
-                (float)(vector1.Z * polynomial1 + tangent1.Z * polynomial2 + vector2.Z * polynomial3 + tangent2.Z * polynomial4)
-            );
+            Vector3 result;
+
+            result.X = vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4;
+            result.Y = vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4;
+            result.Z = vector1.Z * polynomial1 + tangent1.Z * polynomial2 + vector2.Z * polynomial3 + tangent2.Z * polynomial4;
+
+            return result;
         }
 
         /// <summary>
@@ -809,16 +913,14 @@ namespace Ultraviolet
             var t2 = amount * amount;
             var t3 = t2 * amount;
 
-            var polynomial1 = (2.0 * t3 - 3.0 * t2 + 1);    // (2t^3 - 3t^2 + 1)
-            var polynomial2 = (t3 - 2.0 * t2 + amount);     // (t3 - 2t^2 + t)  
-            var polynomial3 = (-2.0 * t3 + 3.0 * t2);       // (-2t^2 + 3t^2)
+            var polynomial1 = (2.0f * t3 - 3.0f * t2 + 1);  // (2t^3 - 3t^2 + 1)
+            var polynomial2 = (t3 - 2.0f * t2 + amount);    // (t3 - 2t^2 + t)  
+            var polynomial3 = (-2.0f * t3 + 3.0f * t2);     // (-2t^2 + 3t^2)
             var polynomial4 = (t3 - t2);                    // (t^3 - t^2)
 
-            result = new Vector3(
-                (float)(vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4),
-                (float)(vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4),
-                (float)(vector1.Z * polynomial1 + tangent1.Z * polynomial2 + vector2.Z * polynomial3 + tangent2.Z * polynomial4)
-            );
+            result.X = vector1.X * polynomial1 + tangent1.X * polynomial2 + vector2.X * polynomial3 + tangent2.X * polynomial4;
+            result.Y = vector1.Y * polynomial1 + tangent1.Y * polynomial2 + vector2.Y * polynomial3 + tangent2.Y * polynomial4;
+            result.Z = vector1.Z * polynomial1 + tangent1.Z * polynomial2 + vector2.Z * polynomial3 + tangent2.Z * polynomial4;
         }
 
         /// <summary>
@@ -831,13 +933,15 @@ namespace Ultraviolet
         public static Vector3 SmoothStep(Vector3 vector1, Vector3 vector2, Single amount)
         {
             amount = amount > 1 ? 1 : amount < 0 ? 0 : amount;
-            amount = (float)(amount * amount * (3.0 - 2.0 * amount));
+            amount = amount * amount * (3.0f - 2.0f * amount);
 
-            return new Vector3(
-                vector1.X + (vector2.X - vector1.X) * amount,
-                vector1.Y + (vector2.Y - vector1.Y) * amount,
-                vector1.Z + (vector2.Z - vector1.Z) * amount
-            );
+            Vector3 result;
+
+            result.X = vector1.X + (vector2.X - vector1.X) * amount;
+            result.Y = vector1.Y + (vector2.Y - vector1.Y) * amount;
+            result.Z = vector1.Z + (vector2.Z - vector1.Z) * amount;
+
+            return result;
         }
 
         /// <summary>
@@ -850,13 +954,11 @@ namespace Ultraviolet
         public static void SmoothStep(ref Vector3 vector1, ref Vector3 vector2, Single amount, out Vector3 result)
         {
             amount = amount > 1 ? 1 : amount < 0 ? 0 : amount;
-            amount = (float)(amount * amount * (3.0 - 2.0 * amount));
+            amount = amount * amount * (3.0f - 2.0f * amount);
 
-            result = new Vector3(
-                vector1.X + (vector2.X - vector1.X) * amount,
-                vector1.Y + (vector2.Y - vector1.Y) * amount,
-                vector1.Z + (vector2.Z - vector1.Z) * amount
-            );
+            result.X = vector1.X + (vector2.X - vector1.X) * amount;
+            result.Y = vector1.Y + (vector2.Y - vector1.Y) * amount;
+            result.Z = vector1.Z + (vector2.Z - vector1.Z) * amount;
         }
 
         /// <summary>
@@ -873,11 +975,13 @@ namespace Ultraviolet
             var t2 = amount * amount;
             var t3 = t2 * amount;
 
-            return new Vector3(
-                (float)(0.5 * (2.0 * vector2.X + (-vector1.X + vector3.X) * amount + (2.0 * vector1.X - 5.0 * vector2.X + 4.0 * vector3.X - vector4.X) * t2 + (-vector1.X + 3.0 * vector2.X - 3.0 * vector3.X + vector4.X) * t3)),
-                (float)(0.5 * (2.0 * vector2.Y + (-vector1.Y + vector3.Y) * amount + (2.0 * vector1.Y - 5.0 * vector2.Y + 4.0 * vector3.Y - vector4.Y) * t2 + (-vector1.Y + 3.0 * vector2.Y - 3.0 * vector3.Y + vector4.Y) * t3)),
-                (float)(0.5 * (2.0 * vector2.Z + (-vector1.Z + vector3.Z) * amount + (2.0 * vector1.Z - 5.0 * vector2.Z + 4.0 * vector3.Z - vector4.Z) * t2 + (-vector1.Z + 3.0 * vector2.Z - 3.0 * vector3.Z + vector4.Z) * t3))
-            );
+            Vector3 result;
+
+            result.X = 0.5f * (2.0f * vector2.X + (-vector1.X + vector3.X) * amount + (2.0f * vector1.X - 5.0f * vector2.X + 4.0f * vector3.X - vector4.X) * t2 + (-vector1.X + 3.0f * vector2.X - 3.0f * vector3.X + vector4.X) * t3);
+            result.Y = 0.5f * (2.0f * vector2.Y + (-vector1.Y + vector3.Y) * amount + (2.0f * vector1.Y - 5.0f * vector2.Y + 4.0f * vector3.Y - vector4.Y) * t2 + (-vector1.Y + 3.0f * vector2.Y - 3.0f * vector3.Y + vector4.Y) * t3);
+            result.Z = 0.5f * (2.0f * vector2.Z + (-vector1.Z + vector3.Z) * amount + (2.0f * vector1.Z - 5.0f * vector2.Z + 4.0f * vector3.Z - vector4.Z) * t2 + (-vector1.Z + 3.0f * vector2.Z - 3.0f * vector3.Z + vector4.Z) * t3);
+
+            return result;
         }
 
         /// <summary>
@@ -894,11 +998,9 @@ namespace Ultraviolet
             var t2 = amount * amount;
             var t3 = t2 * amount;
 
-            result = new Vector3(
-                (float)(0.5 * (2.0 * vector2.X + (-vector1.X + vector3.X) * amount + (2.0 * vector1.X - 5.0 * vector2.X + 4.0 * vector3.X - vector4.X) * t2 + (-vector1.X + 3.0 * vector2.X - 3.0 * vector3.X + vector4.X) * t3)),
-                (float)(0.5 * (2.0 * vector2.Y + (-vector1.Y + vector3.Y) * amount + (2.0 * vector1.Y - 5.0 * vector2.Y + 4.0 * vector3.Y - vector4.Y) * t2 + (-vector1.Y + 3.0 * vector2.Y - 3.0 * vector3.Y + vector4.Y) * t3)),
-                (float)(0.5 * (2.0 * vector2.Z + (-vector1.Z + vector3.Z) * amount + (2.0 * vector1.Z - 5.0 * vector2.Z + 4.0 * vector3.Z - vector4.Z) * t2 + (-vector1.Z + 3.0 * vector2.Z - 3.0 * vector3.Z + vector4.Z) * t3))
-            );
+            result.X = 0.5f * (2.0f * vector2.X + (-vector1.X + vector3.X) * amount + (2.0f * vector1.X - 5.0f * vector2.X + 4.0f * vector3.X - vector4.X) * t2 + (-vector1.X + 3.0f * vector2.X - 3.0f * vector3.X + vector4.X) * t3);
+            result.Y = 0.5f * (2.0f * vector2.Y + (-vector1.Y + vector3.Y) * amount + (2.0f * vector1.Y - 5.0f * vector2.Y + 4.0f * vector3.Y - vector4.Y) * t2 + (-vector1.Y + 3.0f * vector2.Y - 3.0f * vector3.Y + vector4.Y) * t3);
+            result.Z = 0.5f * (2.0f * vector2.Z + (-vector1.Z + vector3.Z) * amount + (2.0f * vector1.Z - 5.0f * vector2.Z + 4.0f * vector3.Z - vector4.Z) * t2 + (-vector1.Z + 3.0f * vector2.Z - 3.0f * vector3.Z + vector4.Z) * t3);
         }
 
         /// <summary>
@@ -913,7 +1015,7 @@ namespace Ultraviolet
             var dy = vector2.Y - vector1.Y;
             var dz = vector2.Z - vector1.Z;
 
-            return (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
+            return (Single)Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
         /// <summary>
@@ -928,7 +1030,7 @@ namespace Ultraviolet
             var dy = vector2.Y - vector1.Y;
             var dz = vector2.Z - vector1.Z;
 
-            result = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
+            result = (Single)Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
         /// <summary>
@@ -973,10 +1075,14 @@ namespace Ultraviolet
         public static Vector3 Barycentric(Vector3 v1, Vector3 v2, Vector3 v3, Single b2, Single b3)
         {
             var b1 = (1 - b2 - b3);
-            var px = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
-            var py = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
-            var pz = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
-            return new Vector3(px, py, pz);
+
+            Vector3 result;
+
+            result.X = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
+            result.Y = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
+            result.Z = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
+
+            return result;
         }
 
         /// <summary>
@@ -991,10 +1097,10 @@ namespace Ultraviolet
         public static void Barycentric(ref Vector3 v1, ref Vector3 v2, ref Vector3 v3, Single b2, Single b3, out Vector3 result)
         {
             var b1 = (1 - b2 - b3);
-            var px = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
-            var py = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
-            var pz = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
-            result = new Vector3(px, py, pz);
+
+            result.X = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
+            result.Y = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
+            result.Z = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
         }
 
         /// <summary>
@@ -1062,7 +1168,7 @@ namespace Ultraviolet
         /// <returns>The length of the vector.</returns>
         public Single Length()
         {
-            return (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+            return (Single)Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
         /// <summary>
@@ -1083,10 +1189,13 @@ namespace Ultraviolet
         [Preserve]
         public Vector3 Interpolate(Vector3 target, Single t)
         {
-            var x = Tweening.Lerp(this.X, target.X, t);
-            var y = Tweening.Lerp(this.Y, target.Y, t);
-            var z = Tweening.Lerp(this.Z, target.Z, t);
-            return new Vector3(x, y, z);
+            Vector3 result;
+
+            result.X = Tweening.Lerp(this.X, target.X, t);
+            result.Y = Tweening.Lerp(this.Y, target.Y, t);
+            result.Z = Tweening.Lerp(this.Z, target.Z, t);
+
+            return result;
         }
 
         /// <summary>

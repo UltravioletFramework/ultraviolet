@@ -73,7 +73,13 @@ namespace Ultraviolet
         [Preserve]
         public static CircleF operator +(CircleF circle, Point2 point)
         {
-            return new CircleF(circle.Position + point, circle.Radius);
+            CircleF result;
+
+            result.X = circle.X + point.X;
+            result.Y = circle.Y + point.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -85,7 +91,13 @@ namespace Ultraviolet
         [Preserve]
         public static CircleF operator -(CircleF circle, Point2 point)
         {
-            return new CircleF(circle.Position - point, circle.Radius);
+            CircleF result;
+
+            result.X = circle.X - point.X;
+            result.Y = circle.Y - point.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -97,7 +109,13 @@ namespace Ultraviolet
         [Preserve]
         public static CircleF operator +(CircleF circle, Point2F point)
         {
-            return new CircleF(circle.Position + point, circle.Radius);
+            CircleF result;
+
+            result.X = circle.X + point.X;
+            result.Y = circle.Y + point.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -109,7 +127,13 @@ namespace Ultraviolet
         [Preserve]
         public static CircleF operator -(CircleF circle, Point2F point)
         {
-            return new CircleF(circle.Position - point, circle.Radius);
+            CircleF result;
+
+            result.X = circle.X - point.X;
+            result.Y = circle.Y - point.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -121,7 +145,13 @@ namespace Ultraviolet
         [Preserve]
         public static CircleD operator +(CircleF circle, Point2D point)
         {
-            return new CircleD(circle.Position + point, circle.Radius);
+            CircleD result;
+
+            result.X = circle.X + point.X;
+            result.Y = circle.Y + point.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -133,7 +163,13 @@ namespace Ultraviolet
         [Preserve]
         public static CircleD operator -(CircleF circle, Point2D point)
         {
-            return new CircleD(circle.Position - point, circle.Radius);
+            CircleD result;
+
+            result.X = circle.X - point.X;
+            result.Y = circle.Y - point.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -144,7 +180,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Circle(CircleF circle)
         {
-            return new Circle((Int32)circle.X, (Int32)circle.Y, (Int32)circle.Radius);
+            Circle result;
+
+            result.X = (Int32)circle.X;
+            result.Y = (Int32)circle.Y;
+            result.Radius = (Int32)circle.Radius;
+
+            return result;
         }
         
         /// <summary>
@@ -155,7 +197,13 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator CircleD(CircleF circle)
         {
-            return new CircleD(circle.X, circle.Y, circle.Radius);
+            CircleD result;
+
+            result.X = circle.X;
+            result.Y = circle.Y;
+            result.Radius = circle.Radius;
+
+            return result;
         }
 
         /// <summary>
@@ -297,10 +345,13 @@ namespace Ultraviolet
         [Preserve]
         public CircleF Interpolate(CircleF target, Single t)
         {
-            var x      = Tweening.Lerp(this.X, target.X, t);
-            var y      = Tweening.Lerp(this.Y, target.Y, t);
-            var radius = Tweening.Lerp(this.Radius, target.Radius, t);
-            return new CircleF(x, y, radius);
+            CircleF result;
+
+            result.X = Tweening.Lerp(this.X, target.X, t);
+            result.Y = Tweening.Lerp(this.Y, target.Y, t);
+            result.Radius = Tweening.Lerp(this.Radius, target.Radius, t);
+
+            return result;
         }
 
         /// <summary>

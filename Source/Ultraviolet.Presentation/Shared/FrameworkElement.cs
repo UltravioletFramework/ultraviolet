@@ -610,7 +610,7 @@ namespace Ultraviolet.Presentation
         {
             if (isLayoutTransformed)
             {
-                return layoutTransformUsedDuringLayout * base.GetTransformMatrix();
+                return base.GetTransformMatrix() * layoutTransformUsedDuringLayout;
             }
             return base.GetTransformMatrix(inDevicePixels);
         }
@@ -737,7 +737,7 @@ namespace Ultraviolet.Presentation
                 layoutTransformUsedDuringLayout = LayoutTransform.Value;
 
                 availableSizeSansMargin = CalculateMaximumAvailableSizeBeforeLayoutTransform(
-                    availableWidthSansMargin, availableHeightSansMargin, LayoutTransform.Value);
+                    availableWidthSansMargin, availableHeightSansMargin, layoutTransformUsedDuringLayout);
             }
 
             var tentativeWidth = Math.Max(minWidth, Math.Min(maxWidth, availableSizeSansMargin.Width));
@@ -759,7 +759,7 @@ namespace Ultraviolet.Presentation
 
             if (isLayoutTransformed)
             {
-                var transform = LayoutTransform.Value;
+                var transform = layoutTransformUsedDuringLayout;
                 RectangleD area = new RectangleD(0, 0, measuredWidth, measuredHeight);
                 RectangleD.TransformAxisAligned(ref area, ref transform, out area);
                 measuredSize = new Size2D(area.Width, area.Height);
@@ -1132,16 +1132,16 @@ namespace Ultraviolet.Presentation
                 return Size2D.Zero;
             
             var m11 = transform.M11;
-            var m21 = transform.M21;
             var m12 = transform.M12;
+            var m21 = transform.M21;
             var m22 = transform.M22;
             
             var w = 0.0;
             var h = 0.0;
 
             var xConstraintInterceptW = MathUtil.IsApproximatelyZero(m11) ? Double.NaN : Math.Abs(xmax / m11);
-            var xConstraintInterceptH = MathUtil.IsApproximatelyZero(m12) ? Double.NaN : Math.Abs(xmax / m12);
-            var yConstraintInterceptW = MathUtil.IsApproximatelyZero(m21) ? Double.NaN : Math.Abs(ymax / m21);
+            var xConstraintInterceptH = MathUtil.IsApproximatelyZero(m21) ? Double.NaN : Math.Abs(xmax / m21);
+            var yConstraintInterceptW = MathUtil.IsApproximatelyZero(m12) ? Double.NaN : Math.Abs(ymax / m12);
             var yConstraintInterceptH = MathUtil.IsApproximatelyZero(m22) ? Double.NaN : Math.Abs(ymax / m22);
 
             var xConstraintIsHorz = Double.IsNaN(xConstraintInterceptW);
@@ -1165,7 +1165,7 @@ namespace Ultraviolet.Presentation
 
             if (xConstraintIsVert || yConstraintIsVert)
             {
-                var slope = xConstraintIsVert ? m21 / m22 : m11 / m12;
+                var slope = xConstraintIsVert ? m12 / m22 : m11 / m21;
                 w = xConstraintIsVert ? Math.Min(yConstraintInterceptW * 0.5, xConstraintInterceptW) : Math.Min(xConstraintInterceptW * 0.5, yConstraintInterceptW);
                 h = (xConstraintIsVert ? yConstraintInterceptH : xConstraintInterceptH) - (slope * w);
                 return new Size2D(w, h);
@@ -1173,7 +1173,7 @@ namespace Ultraviolet.Presentation
 
             if (xConstraintIsHorz || yConstraintIsHorz)
             {
-                var slope = xConstraintIsHorz ? m12 / m11 : m22 / m21;
+                var slope = xConstraintIsHorz ? m21 / m11 : m22 / m12;
                 h = xConstraintIsHorz ? Math.Min(yConstraintInterceptH * 0.5, xConstraintInterceptH) : Math.Min(xConstraintInterceptH * 0.5, yConstraintInterceptH);
                 w = (xConstraintIsHorz ? yConstraintInterceptW : xConstraintInterceptW) - (slope * h);
                 return new Size2D(w, h);

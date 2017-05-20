@@ -480,7 +480,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Matrix value)
         {
-            gl.UniformMatrix4fv(location, 1, false, (float*)&value);
+            gl.UniformMatrix4fv(location, 1, true, (float*)&value);
             gl.ThrowIfError();
 
             cache.Set(value);
@@ -494,7 +494,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             fixed (Matrix* pValue = value)
             {
-                gl.UniformMatrix4fv(location, value.Length, false, (float*)pValue);
+                gl.UniformMatrix4fv(location, value.Length, true, (float*)pValue);
                 gl.ThrowIfError();
             }
 

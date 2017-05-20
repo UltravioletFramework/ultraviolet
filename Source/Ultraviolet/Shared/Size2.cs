@@ -59,7 +59,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2 operator +(Size2 s1, Size2 s2)
         {
-            return new Size2(s1.Width + s2.Width, s1.Height + s2.Height);
+            Size2 result;
+
+            result.Width = s1.Width + s2.Width;
+            result.Height = s1.Height + s2.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -71,7 +76,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2 operator -(Size2 s1, Size2 s2)
         {
-            return new Size2(s1.Width - s2.Width, s1.Height - s2.Height);
+            Size2 result;
+
+            result.Width = s1.Width - s2.Width;
+            result.Height = s1.Height - s2.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -83,7 +93,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2 operator *(Size2 size, Int32 multiplier)
         {
-            return new Size2(size.Width * multiplier, size.Height * multiplier);
+            Size2 result;
+
+            result.Width = size.Width * multiplier;
+            result.Height = size.Height * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -95,7 +110,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2F operator *(Size2 size, Single multiplier)
         {
-            return new Size2F(size.Width * multiplier, size.Height * multiplier);
+            Size2F result;
+
+            result.Width = size.Width * multiplier;
+            result.Height = size.Height * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -107,7 +127,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2D operator *(Size2 size, Double multiplier)
         {
-            return new Size2D(size.Width * multiplier, size.Height * multiplier);
+            Size2D result;
+
+            result.Width = size.Width * multiplier;
+            result.Height = size.Height * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -119,7 +144,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2 operator /(Size2 size, Int32 divisor)
         {
-            return new Size2(size.Width / divisor, size.Height / divisor);
+            Size2 result;
+
+            result.Width = size.Width / divisor;
+            result.Height = size.Height / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -131,7 +161,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2F operator /(Size2 size, Single divisor)
         {
-            return new Size2F(size.Width / divisor, size.Height / divisor);
+            Size2F result;
+
+            result.Width = size.Width / divisor;
+            result.Height = size.Height / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -143,7 +178,12 @@ namespace Ultraviolet
         [Preserve]
         public static Size2D operator /(Size2 size, Double divisor)
         {
-            return new Size2D(size.Width / divisor, size.Height / divisor);
+            Size2D result;
+
+            result.Width = size.Width / divisor;
+            result.Height = size.Height / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -154,7 +194,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Vector2(Size2 size)
         {
-            return new Vector2(size.Width, size.Height);
+            Vector2 result;
+
+            result.X = size.Width;
+            result.Y = size.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -165,7 +210,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Point2(Size2 size)
         {
-            return new Point2(size.Width, size.Height);
+            Point2 result;
+
+            result.X = size.Width;
+            result.Y = size.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -176,7 +226,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Point2F(Size2 size)
         {
-            return new Point2F(size.Width, size.Height);
+            Point2F result;
+
+            result.X = size.Width;
+            result.Y = size.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -187,7 +242,12 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Point2D(Size2 size)
         {
-            return new Point2D(size.Width, size.Height);
+            Point2D result;
+
+            result.X = size.Width;
+            result.Y = size.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -198,7 +258,12 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Size2F(Size2 size)
         {
-            return new Size2F(size.Width, size.Height);
+            Size2F result;
+
+            result.Width = size.Width;
+            result.Height = size.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -209,7 +274,12 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator Size2D(Size2 size)
         {
-            return new Size2D(size.Width, size.Height);
+            Size2D result;
+
+            result.Width = size.Width;
+            result.Height = size.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -350,9 +420,12 @@ namespace Ultraviolet
         [Preserve]
         public Size2 Interpolate(Size2 target, Single t)
         {
-            var width  = Tweening.Lerp(this.Width, target.Width, t);
-            var height = Tweening.Lerp(this.Height, target.Height, t);
-            return new Size2(width, height);
+            Size2 result;
+
+            result.Width = Tweening.Lerp(this.Width, target.Width, t);
+            result.Height = Tweening.Lerp(this.Height, target.Height, t);
+
+            return result;
         }
 
         /// <summary>

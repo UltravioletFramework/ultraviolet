@@ -11,6 +11,6 @@ DECLARE_OUTPUT_COLOR;	// vColor
 
 void main()
 {
-    gl_Position = Projection * View * World * uv_Position0;
-    vColor = DiffuseColor;
+    gl_Position = uv_Position0 * World * View * Projection;
+	vColor      = DiffuseColor;
 }

@@ -33,6 +33,7 @@ namespace UvDebug
         /// </summary>
         public Game() : base("Ultraviolet", "UvDebug")
         {
+            Diagnostics.DrawDiagnosticsVisuals = true;
             PlatformSpecificInitialization();
         }
 

@@ -69,15 +69,13 @@ namespace Ultraviolet.Presentation.Media
             if (root == null || root == element)
                 return Matrix.Identity;
 
-            var mtxTransform = Matrix.Identity;
-            var mtxElement = element.GetTransformToAncestorMatrix(root, inDevicePixels);
-            Matrix.Concat(ref mtxElement, ref mtxTransform, out mtxTransform);
+            var mtxTransform = element.GetTransformToAncestorMatrix(root, inDevicePixels);
 
             if (root is PopupRoot)
             {
                 var popup = root.Parent as Popup;
                 var popupMatrix = (popup == null) ? Matrix.Identity : (inDevicePixels ? popup.PopupTransformToViewWithOriginInDevicePixels : popup.PopupTransformToViewWithOrigin);
-                Matrix.Concat(ref mtxTransform, ref popupMatrix, out mtxTransform);
+                Matrix.Multiply(ref mtxTransform, ref popupMatrix, out mtxTransform);
             }
 
             return mtxTransform;
@@ -358,8 +356,8 @@ namespace Ultraviolet.Presentation.Media
                         (Single)bounds.Y, 0f);
 
                     Matrix mtxResult;
-                    Matrix.Concat(ref mtxFinal, ref mtxTransform, out mtxResult);
-                    Matrix.Concat(ref mtxResult, ref mtxTranslateToClientSpace, out mtxFinal);
+                    Matrix.Multiply(ref mtxFinal, ref mtxTransform, out mtxResult);
+                    Matrix.Multiply(ref mtxResult, ref mtxTranslateToClientSpace, out mtxFinal);
                 }
             }
 

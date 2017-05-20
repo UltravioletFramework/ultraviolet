@@ -2586,8 +2586,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             if (spriteBatchEffect != null)
             {
                 var viewport = Ultraviolet.GetGraphics().GetViewport();
-                var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
-                spriteBatchEffect.MatrixTransform = projection * transformMatrix;
+                var projection = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
+                spriteBatchEffect.MatrixTransform = transformMatrix * projection;
             }
             else
             {
@@ -2595,8 +2595,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (matrixTransformParam != null)
                 {
                     var viewport = Ultraviolet.GetGraphics().GetViewport();
-                    var projection = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
-                    matrixTransformParam.SetValue(projection * transformMatrix);
+                    var projection = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
+                    matrixTransformParam.SetValue(transformMatrix * projection);
                 }
             }
 

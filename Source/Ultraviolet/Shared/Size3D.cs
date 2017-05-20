@@ -61,7 +61,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator +(Size3D s1, Size3D s2)
         {
-            return new Size3D(s1.Width + s2.Width, s1.Height + s2.Height, s1.Depth + s2.Depth);
+            Size3D result;
+
+            result.Width = s1.Width + s2.Width;
+            result.Height = s1.Height + s2.Height;
+            result.Depth = s1.Depth + s2.Depth;
+
+            return result;
         }
 
         /// <summary>
@@ -73,7 +79,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator -(Size3D s1, Size3D s2)
         {
-            return new Size3D(s1.Width - s2.Width, s1.Height - s2.Height, s1.Depth + s2.Depth);
+            Size3D result;
+
+            result.Width = s1.Width - s2.Width;
+            result.Height = s1.Height - s2.Height;
+            result.Depth = s1.Depth - s2.Depth;
+
+            return result;
         }
 
         /// <summary>
@@ -85,7 +97,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator *(Size3D size, Int32 multiplier)
         {
-            return new Size3D(size.Width * multiplier, size.Height * multiplier, size.Depth * multiplier);
+            Size3D result;
+
+            result.Width = size.Width * multiplier;
+            result.Height = size.Height * multiplier;
+            result.Depth = size.Depth * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -97,7 +115,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator *(Size3D size, Single multiplier)
         {
-            return new Size3D(size.Width * multiplier, size.Height * multiplier, size.Depth * multiplier);
+            Size3D result;
+
+            result.Width = size.Width * multiplier;
+            result.Height = size.Height * multiplier;
+            result.Depth = size.Depth * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -109,7 +133,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator *(Size3D size, Double multiplier)
         {
-            return new Size3D(size.Width * multiplier, size.Height * multiplier, size.Depth * multiplier);
+            Size3D result;
+
+            result.Width = size.Width * multiplier;
+            result.Height = size.Height * multiplier;
+            result.Depth = size.Depth * multiplier;
+
+            return result;
         }
 
         /// <summary>
@@ -121,7 +151,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator /(Size3D size, Int32 divisor)
         {
-            return new Size3D(size.Width / divisor, size.Height / divisor, size.Depth / divisor);
+            Size3D result;
+
+            result.Width = size.Width / divisor;
+            result.Height = size.Height / divisor;
+            result.Depth = size.Depth / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -133,7 +169,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator /(Size3D size, Single divisor)
         {
-            return new Size3D(size.Width / divisor, size.Height / divisor, size.Depth / divisor);
+            Size3D result;
+
+            result.Width = size.Width / divisor;
+            result.Height = size.Height / divisor;
+            result.Depth = size.Depth / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -145,7 +187,13 @@ namespace Ultraviolet
         [Preserve]
         public static Size3D operator /(Size3D size, Double divisor)
         {
-            return new Size3D(size.Width / divisor, size.Height / divisor, size.Depth / divisor);
+            Size3D result;
+
+            result.Width = size.Width / divisor;
+            result.Height = size.Height / divisor;
+            result.Depth = size.Depth / divisor;
+
+            return result;
         }
 
         /// <summary>
@@ -156,7 +204,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Vector3(Size3D size)
         {
-            return new Vector3((Single)size.Width, (Single)size.Height, (Single)size.Depth);
+            Vector3 result;
+
+            result.X = (Single)size.Width;
+            result.Y = (Single)size.Height;
+            result.Z = (Single)size.Depth;
+
+            return result;
         }
 
         /// <summary>
@@ -167,7 +221,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size3(Size3D size)
         {
-            return new Size3((Int32)size.Width, (Int32)size.Height, (Int32)size.Depth);
+            Size3 result;
+
+            result.Width = (Int32)size.Width;
+            result.Height = (Int32)size.Height;
+            result.Depth = (Int32)size.Depth;
+
+            return result;
         }
 
         /// <summary>
@@ -178,7 +238,13 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Size3F(Size3D size)
         {
-            return new Size3F((Single)size.Width, (Single)size.Height, (Single)size.Depth);
+            Size3F result;
+
+            result.Width = (Single)size.Width;
+            result.Height = (Single)size.Height;
+            result.Depth = (Single)size.Depth;
+
+            return result;
         }
 
         /// <summary>
@@ -322,10 +388,13 @@ namespace Ultraviolet
         [Preserve]
         public Size3D Interpolate(Size3D target, Single t)
         {
-            var width  = Tweening.Lerp(this.Width, target.Width, t);
-            var height = Tweening.Lerp(this.Height, target.Height, t);
-            var depth  = Tweening.Lerp(this.Depth, target.Depth, t);
-            return new Size3D(width, height, depth);
+            Size3D result;
+
+            result.Width = Tweening.Lerp(this.Width, target.Width, t);
+            result.Height = Tweening.Lerp(this.Height, target.Height, t);
+            result.Depth = Tweening.Lerp(this.Depth, target.Depth, t);
+
+            return result;
         }
 
         /// <summary>

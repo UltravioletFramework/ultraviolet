@@ -12,7 +12,7 @@ DECLARE_OUTPUT_TEXCOORD;	// vTextureCoordinate
 
 void main()
 {
-    gl_Position = MatrixTransform * uv_Position0;
-    vColor = uv_Color0;
+    gl_Position        = uv_Position0 * MatrixTransform;
+    vColor             = uv_Color0;
     vTextureCoordinate = vec2(uv_TextureCoordinate0.x / TextureSize.x, 1.0 - (uv_TextureCoordinate0.y / TextureSize.y));
 }

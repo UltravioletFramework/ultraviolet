@@ -63,7 +63,14 @@ namespace Ultraviolet
         [Preserve]
         public static RectangleF operator +(RectangleF rect, Point2 point)
         {
-            return new RectangleF(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+            RectangleF result;
+
+            result.X = rect.X + point.X;
+            result.Y = rect.Y + point.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -75,7 +82,14 @@ namespace Ultraviolet
         [Preserve]
         public static RectangleF operator -(RectangleF rect, Point2 point)
         {
-            return new RectangleF(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
+            RectangleF result;
+
+            result.X = rect.X - point.X;
+            result.Y = rect.Y - point.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -87,7 +101,14 @@ namespace Ultraviolet
         [Preserve]
         public static RectangleF operator +(RectangleF rect, Point2F point)
         {
-            return new RectangleF(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+            RectangleF result;
+
+            result.X = rect.X + point.X;
+            result.Y = rect.Y + point.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -99,7 +120,14 @@ namespace Ultraviolet
         [Preserve]
         public static RectangleF operator -(RectangleF rect, Point2F point)
         {
-            return new RectangleF(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
+            RectangleF result;
+
+            result.X = rect.X - point.X;
+            result.Y = rect.Y - point.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -111,7 +139,14 @@ namespace Ultraviolet
         [Preserve]
         public static RectangleD operator +(RectangleF rect, Point2D point)
         {
-            return new RectangleD(rect.X + point.X, rect.Y + point.Y, rect.Width, rect.Height);
+            RectangleD result;
+
+            result.X = rect.X + point.X;
+            result.Y = rect.Y + point.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -123,7 +158,14 @@ namespace Ultraviolet
         [Preserve]
         public static RectangleD operator -(RectangleF rect, Point2D point)
         {
-            return new RectangleD(rect.X - point.X, rect.Y - point.Y, rect.Width, rect.Height);
+            RectangleD result;
+
+            result.X = rect.X - point.X;
+            result.Y = rect.Y - point.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -158,7 +200,14 @@ namespace Ultraviolet
         [Preserve]
         public static explicit operator Rectangle(RectangleF rect)
         {
-            return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+            Rectangle result;
+
+            result.X = (Int32)rect.X;
+            result.Y = (Int32)rect.Y;
+            result.Width = (Int32)rect.Width;
+            result.Height = (Int32)rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -169,7 +218,14 @@ namespace Ultraviolet
         [Preserve]
         public static implicit operator RectangleD(RectangleF rect)
         {
-            return new RectangleD(rect.X, rect.Y, rect.Width, rect.Height);
+            RectangleD result;
+
+            result.X = rect.X;
+            result.Y = rect.Y;
+            result.Width = rect.Width;
+            result.Height = rect.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -256,7 +312,14 @@ namespace Ultraviolet
         /// <returns>The offset <see cref="RectangleF"/>.</returns>
         public static RectangleF Offset(RectangleF rectangle, Single offsetX, Single offsetY)
         {
-            return new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
+            RectangleF result;
+
+            result.X = rectangle.X + offsetX;
+            result.Y = rectangle.Y + offsetY;
+            result.Width = rectangle.Width;
+            result.Height = rectangle.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -268,7 +331,10 @@ namespace Ultraviolet
         /// <param name="result">The offset <see cref="RectangleF"/>.</param>
         public static void Offset(ref RectangleF rectangle, Single offsetX, Single offsetY, out RectangleF result)
         {
-            result = new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
+            result.X = rectangle.X + offsetX;
+            result.Y = rectangle.Y + offsetY;
+            result.Width = rectangle.Width;
+            result.Height = rectangle.Height;
         }
 
         /// <summary>
@@ -279,7 +345,14 @@ namespace Ultraviolet
         /// <returns>The offset <see cref="RectangleF"/>.</returns>
         public static RectangleF Offset(RectangleF rectangle, Vector2 offset)
         {
-            return new RectangleF(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
+            RectangleF result;
+
+            result.X = rectangle.X + offset.X;
+            result.Y = rectangle.Y + offset.Y;
+            result.Width = rectangle.Width;
+            result.Height = rectangle.Height;
+
+            return result;
         }
 
         /// <summary>
@@ -290,7 +363,10 @@ namespace Ultraviolet
         /// <param name="result">The offset <see cref="RectangleF"/>.</param>
         public static void Offset(ref RectangleF rectangle, ref Vector2 offset, out RectangleF result)
         {
-            result = new RectangleF(rectangle.X + offset.X, rectangle.Y + offset.Y, rectangle.Width, rectangle.Height);
+            result.X = rectangle.X + offset.X;
+            result.Y = rectangle.Y + offset.Y;
+            result.Width = rectangle.Width;
+            result.Height = rectangle.Height;
         }
 
         /// <summary>
@@ -302,12 +378,14 @@ namespace Ultraviolet
         /// <returns>The inflated <see cref="RectangleF"/>.</returns>
         public static RectangleF Inflate(RectangleF rectangle, Single horizontalAmount, Single verticalAmount)
         {
-            return new RectangleF(
-                rectangle.X - horizontalAmount,
-                rectangle.Y - verticalAmount,
-                rectangle.Width + (2f * horizontalAmount),
-                rectangle.Height + (2f * verticalAmount)
-            );
+            RectangleF result;
+
+            result.X = rectangle.X - horizontalAmount;
+            result.Y = rectangle.Y - verticalAmount;
+            result.Width = rectangle.Width + (2 * horizontalAmount);
+            result.Height = rectangle.Height + (2 * verticalAmount);
+
+            return result;
         }
 
         /// <summary>
@@ -319,12 +397,10 @@ namespace Ultraviolet
         /// <param name="result">The inflated <see cref="RectangleF"/>.</param>
         public static void Inflate(ref RectangleF rectangle, Single horizontalAmount, Single verticalAmount, out RectangleF result)
         {
-            result = new RectangleF(
-                rectangle.X - horizontalAmount,
-                rectangle.Y - verticalAmount,
-                rectangle.Width + (2f * horizontalAmount),
-                rectangle.Height + (2f * verticalAmount)
-            );
+            result.X = rectangle.X - horizontalAmount;
+            result.Y = rectangle.Y - verticalAmount;
+            result.Width = rectangle.Width + (2 * horizontalAmount);
+            result.Height = rectangle.Height + (2 * verticalAmount);
         }
 
         /// <summary>
@@ -340,7 +416,14 @@ namespace Ultraviolet
             var maxRight = rectangle1.Right > rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var maxBottom = rectangle1.Bottom > rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            return new RectangleF(minLeft, minTop, maxRight - minLeft, maxBottom - minTop);
+            RectangleF result;
+
+            result.X = minLeft;
+            result.Y = minTop;
+            result.Width = maxRight - minLeft;
+            result.Height = maxBottom - minTop;
+
+            return result;
         }
 
         /// <summary>
@@ -356,7 +439,10 @@ namespace Ultraviolet
             var maxRight = rectangle1.Right > rectangle2.Right ? rectangle1.Right : rectangle2.Right;
             var maxBottom = rectangle1.Bottom > rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
-            result = new RectangleF(minLeft, minTop, maxRight - minLeft, maxBottom - minTop);
+            result.X = minLeft;
+            result.Y = minTop;
+            result.Width = maxRight - minLeft;
+            result.Height = maxBottom - minTop;
         }
 
         /// <summary>
@@ -373,8 +459,17 @@ namespace Ultraviolet
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
             var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
+            if (isEmpty)
+                return RectangleF.Empty;
+            
+            RectangleF result;
 
-            return isEmpty ? RectangleF.Empty : new RectangleF(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
+            result.X = maxLeft;
+            result.Y = maxTop;
+            result.Width = minRight - maxLeft;
+            result.Height = minBottom - maxTop;
+
+            return result;
         }
 
         /// <summary>
@@ -391,8 +486,17 @@ namespace Ultraviolet
             var minBottom = rectangle1.Bottom < rectangle2.Bottom ? rectangle1.Bottom : rectangle2.Bottom;
 
             var isEmpty = (minRight <= maxLeft || minBottom <= maxTop);
-
-            result = isEmpty ? RectangleF.Empty : new RectangleF(maxLeft, maxTop, minRight - maxLeft, minBottom - maxTop);
+            if (isEmpty)
+            {
+                result = RectangleF.Empty;
+            }
+            else
+            {
+                result.X = maxLeft;
+                result.Y = maxTop;
+                result.Width = minRight - maxLeft;
+                result.Height = minBottom - maxTop;
+            }
         }
 
         /// <summary>
@@ -418,7 +522,14 @@ namespace Ultraviolet
             var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
             var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
 
-            return new RectangleF(minX, minY, maxX - minX, maxY - minY);
+            RectangleF result;
+
+            result.X = minX;
+            result.Y = minY;
+            result.Width = maxX - minX;
+            result.Height = maxY - minY;
+
+            return result;
         }
 
         /// <summary>
@@ -444,7 +555,10 @@ namespace Ultraviolet
             var minY = Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(bl.Y, br.Y));
             var maxY = Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(bl.Y, br.Y));
 
-            result = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+            result.X = minX;
+            result.Y = minY;
+            result.Width = maxX - minX;
+            result.Height = maxY - minY;
         }
 
         /// <summary>
@@ -629,11 +743,14 @@ namespace Ultraviolet
         [Preserve]
         public RectangleF Interpolate(RectangleF target, Single t)
         {
-            var x      = Tweening.Lerp(this.X, target.X, t);
-            var y      = Tweening.Lerp(this.Y, target.Y, t);
-            var width  = Tweening.Lerp(this.Width, target.Width, t);
-            var height = Tweening.Lerp(this.Height, target.Height, t);
-            return new RectangleF(x, y, width, height);
+            RectangleF result;
+
+            result.X = Tweening.Lerp(this.X, target.X, t);
+            result.Y = Tweening.Lerp(this.Y, target.Y, t);
+            result.Width = Tweening.Lerp(this.Width, target.Width, t);
+            result.Height = Tweening.Lerp(this.Height, target.Height, t);
+
+            return result;
         }
 
         /// <summary>

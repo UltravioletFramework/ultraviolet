@@ -13,7 +13,7 @@ DECLARE_OUTPUT_TEXCOORD;	// vTextureCoordinate
 
 void main()
 {
-    gl_Position = Projection * View * World * uv_Position0;
-    vColor = DiffuseColor;
+    gl_Position        = uv_Position0 * World * View * Projection;
+	vColor             = DiffuseColor;
     vTextureCoordinate = uv_TextureCoordinate0;
 }

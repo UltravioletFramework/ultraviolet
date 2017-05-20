@@ -182,7 +182,7 @@ namespace Ultraviolet.Tests.Graphics
                     var gfx = uv.GetGraphics();
                     var viewport = gfx.GetViewport();
 
-                    var matrixTransform = Matrix.CreateSpriteBatchProjection(viewport.Width, viewport.Height);
+                    var matrixTransform = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
                     effect.Parameters["MatrixTransform"].SetValue(matrixTransform);
 
                     foreach (var pass in effect.CurrentTechnique.Passes)

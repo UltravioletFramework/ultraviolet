@@ -247,10 +247,10 @@ namespace Ultraviolet.Presentation.Documents
                 if (!IsUnderTransform(adornedElement))
                 {
                     transformMatrix = new Matrix(
-                        transformMatrix.M11, transformMatrix.M12, transformMatrix.M13, (Int32)transformMatrix.M14,
-                        transformMatrix.M21, transformMatrix.M22, transformMatrix.M23, (Int32)transformMatrix.M24,
-                        transformMatrix.M31, transformMatrix.M32, transformMatrix.M33, (Int32)transformMatrix.M34,
-                        transformMatrix.M41, transformMatrix.M42, transformMatrix.M43, transformMatrix.M44);
+                               transformMatrix.M11,        transformMatrix.M12,        transformMatrix.M13, transformMatrix.M14,
+                               transformMatrix.M21,        transformMatrix.M22,        transformMatrix.M23, transformMatrix.M24,
+                               transformMatrix.M31,        transformMatrix.M32,        transformMatrix.M33, transformMatrix.M34,
+                        (Int32)transformMatrix.M41, (Int32)transformMatrix.M42, (Int32)transformMatrix.M43, transformMatrix.M44);
                 }
 
                 var transformObject = adorner.RenderTransform as MatrixTransform ?? new MatrixTransform();

@@ -178,48 +178,7 @@ namespace Ultraviolet.Tests
                  902.2f,  971.6f, 1041.0f, 1110.4f
             );
         }
-
-        [Test]
-        public void Matrix_ConcatsCorrectly()
-        {
-            var matrix1 = new Matrix(
-                 100, 200, 300, 400,
-                 500, 600, 700, 800,
-                 900, 1000, 1100, 1200,
-                1300, 1400, 1500, 1600);
-
-            var matrix2 = new Matrix(
-                 10, 20, 30, 40,
-                 50, 60, 70, 80,
-                 90, 100, 110, 120,
-                130, 140, 150, 160);
-
-            var result = Matrix.Concat(matrix1, matrix2);
-
-            TheResultingValue(result).ShouldBe(matrix2 * matrix1);
-        }
-
-        [Test]
-        public void Matrix_ConcatsCorrectlyWithOutParam()
-        {
-            var matrix1 = new Matrix(
-                 100, 200, 300, 400,
-                 500, 600, 700, 800,
-                 900, 1000, 1100, 1200,
-                1300, 1400, 1500, 1600);
-
-            var matrix2 = new Matrix(
-                 10, 20, 30, 40,
-                 50, 60, 70, 80,
-                 90, 100, 110, 120,
-                130, 140, 150, 160);
-
-            var result = Matrix.Identity;
-            Matrix.Concat(ref matrix1, ref matrix2, out result);
-
-            TheResultingValue(result).ShouldBe(matrix2 * matrix1);
-        }
-
+        
         [Test]
         public void Matrix_AddsCorrectly()
         {
@@ -933,10 +892,10 @@ namespace Ultraviolet.Tests
             var result = Matrix.CreateLookAt(cameraPosition, cameraTarget, cameraUp);
 
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                 0.7071f, 0.0000f, -0.7071f,   0.0000f,
-                -0.4082f, 0.8164f, -0.4082f,   0.0000f,
-                 0.5773f, 0.5773f,  0.5773f, -17.3205f,
-                 0.0000f, 0.0000f,  0.0000f,   1.0000f
+                 0.7071f, -0.4082f,   0.5773f, 0.0000f,
+                 0.0000f,  0.8164f,   0.5773f, 0.0000f,
+                -0.7071f, -0.4082f,   0.5773f, 0.0000f,
+                 0.0000f,  0.0000f, -17.3205f, 1.0000f
             );
         }
 
@@ -951,10 +910,10 @@ namespace Ultraviolet.Tests
             Matrix.CreateLookAt(ref cameraPosition, ref cameraTarget, ref cameraUp, out result);
 
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                 0.7071f, 0.0000f, -0.7071f,   0.0000f,
-                -0.4082f, 0.8164f, -0.4082f,   0.0000f,
-                 0.5773f, 0.5773f,  0.5773f, -17.3205f,
-                 0.0000f, 0.0000f,  0.0000f,   1.0000f
+                 0.7071f, -0.4082f,   0.5773f, 0.0000f,
+                 0.0000f,  0.8164f,   0.5773f, 0.0000f,
+                -0.7071f, -0.4082f,   0.5773f, 0.0000f,
+                 0.0000f,  0.0000f, -17.3205f, 1.0000f
             );
         }
 
@@ -962,13 +921,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreateOrthographicCalculatedCorrectly()
         {
             var result = Matrix.CreateOrthographic(1024f, 768f, 1f, 1000f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.0019f, 0.0000f,  0.0000f,  0.0000f,
-                0.0000f, 0.0026f,  0.0000f,  0.0000f,
-                0.0000f, 0.0000f, -0.0010f, -0.0010f,
-                0.0000f, 0.0000f,  0.0000f,  1.0000f
-            );
+                0.0019f, 0.0000f,  0.0000f, 0.0000f,
+                0.0000f, 0.0026f,  0.0000f, 0.0000f,
+                0.0000f, 0.0000f, -0.0010f, 0.0000f,
+                0.0000f, 0.0000f, -0.0010f, 1.000f);
         }
 
         [Test]
@@ -976,25 +934,24 @@ namespace Ultraviolet.Tests
         {
             var result = Matrix.Identity;
             Matrix.CreateOrthographic(1024f, 768f, 1f, 1000f, out result);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.0019f, 0.0000f,  0.0000f,  0.0000f,
-                0.0000f, 0.0026f,  0.0000f,  0.0000f,
-                0.0000f, 0.0000f, -0.0010f, -0.0010f,
-                0.0000f, 0.0000f,  0.0000f,  1.0000f
-            );
+                0.0019f, 0.0000f,  0.0000f, 0.0000f,
+                0.0000f, 0.0026f,  0.0000f, 0.0000f,
+                0.0000f, 0.0000f, -0.0010f, 0.0000f,
+                0.0000f, 0.0000f, -0.0010f, 1.000f);
         }
 
         [Test]
         public void Matrix_CreateOrthographicOffCenterCalculatedCorrectly()
         {
             var result = Matrix.CreateOrthographicOffCenter(128f, 1024f, 768f, 64f, 1f, 1000f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.0022f,  0.0000f,  0.0000f, -1.2857f,
-                0.0000f, -0.0028f,  0.0000f,  1.1818f,
-                0.0000f,  0.0000f, -0.0010f, -0.0010f,
-                0.0000f,  0.0000f,  0.0000f,  1.0000f
+                 0.0022f,  0.0000f,  0.0000f, 0.0000f,
+                 0.0000f, -0.0028f,  0.0000f, 0.0000f,
+                 0.0000f,  0.0000f, -0.0010f, 0.0000f,
+                -1.2857f,  1.1818f, -0.0010f, 1.0000f
             );
         }
 
@@ -1005,10 +962,10 @@ namespace Ultraviolet.Tests
             Matrix.CreateOrthographicOffCenter(128f, 1024f, 768f, 64f, 1f, 1000f, out result);
 
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.0022f,  0.0000f,  0.0000f, -1.2857f,
-                0.0000f, -0.0028f,  0.0000f,  1.1818f,
-                0.0000f,  0.0000f, -0.0010f, -0.0010f,
-                0.0000f,  0.0000f,  0.0000f,  1.0000f
+                 0.0022f,  0.0000f,  0.0000f, 0.0000f,
+                 0.0000f, -0.0028f,  0.0000f, 0.0000f,
+                 0.0000f,  0.0000f, -0.0010f, 0.0000f,
+                -1.2857f,  1.1818f, -0.0010f, 1.0000f
             );
         }
 
@@ -1016,12 +973,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreatePerspectiveCalculatedCorrectly()
         {
             var result = Matrix.CreatePerspective(1024f, 768f, 1f, 1000f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
                 0.0019f, 0.0000f,  0.0000f,  0.0000f,
                 0.0000f, 0.0026f,  0.0000f,  0.0000f,
-                0.0000f, 0.0000f, -1.0010f, -1.0010f,
-                0.0000f, 0.0000f, -1.0000f,  0.0000f
+                0.0000f, 0.0000f, -1.0010f, -1.0000f,
+                0.0000f, 0.0000f, -1.0010f,  0.0000f
             );
         }
 
@@ -1030,12 +987,12 @@ namespace Ultraviolet.Tests
         {
             var result = Matrix.Identity;
             Matrix.CreatePerspective(1024f, 768f, 1f, 1000f, out result);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
                 0.0019f, 0.0000f,  0.0000f,  0.0000f,
                 0.0000f, 0.0026f,  0.0000f,  0.0000f,
-                0.0000f, 0.0000f, -1.0010f, -1.0010f,
-                0.0000f, 0.0000f, -1.0000f,  0.0000f
+                0.0000f, 0.0000f, -1.0010f, -1.0000f,
+                0.0000f, 0.0000f, -1.0010f,  0.0000f
             );
         }
 
@@ -1043,12 +1000,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreatePerspectiveFieldOfViewCalculatedCorrectly()
         {
             var result = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 2f, 1024f / 768f, 1f, 1000f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
                 0.7500f, 0.0000f,  0.0000f,  0.0000f,
                 0.0000f, 1.0000f,  0.0000f,  0.0000f,
-                0.0000f, 0.0000f, -1.0010f, -1.0010f,
-                0.0000f, 0.0000f, -1.0000f,  0.0000f
+                0.0000f, 0.0000f, -1.0010f, -1.0000f,
+                0.0000f, 0.0000f, -1.0010f,  0.0000f
             );
         }
 
@@ -1061,8 +1018,8 @@ namespace Ultraviolet.Tests
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
                 0.7500f, 0.0000f,  0.0000f,  0.0000f,
                 0.0000f, 1.0000f,  0.0000f,  0.0000f,
-                0.0000f, 0.0000f, -1.0010f, -1.0010f,
-                0.0000f, 0.0000f, -1.0000f,  0.0000f
+                0.0000f, 0.0000f, -1.0010f, -1.0000f,
+                0.0000f, 0.0000f, -1.0010f,  0.0000f
             );
         }
 
@@ -1070,12 +1027,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreatePerspectiveOffCenterCalculatedCorrectly()
         {
             var result = Matrix.CreatePerspectiveOffCenter(128f, 1024f, 768f, 64f, 1f, 1000f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.0022f,  0.0000f,  1.2857f,  0.0000f,
-                0.0000f, -0.0028f, -1.1818f,  0.0000f,
-                0.0000f,  0.0000f, -1.0010f, -1.0010f,
-                0.0000f,  0.0000f, -1.0000f,  0.0000f
+                0.0022f,  0.0000f,  0.0000f,  0.0000f,
+                0.0000f, -0.0028f,  0.0000f,  0.0000f,
+                1.2857f, -1.1818f, -1.0010f, -1.0000f,
+                0.0000f,  0.0000f, -1.0010f,  0.0000f
             );
         }
 
@@ -1084,12 +1041,12 @@ namespace Ultraviolet.Tests
         {
             var result = Matrix.Identity;
             Matrix.CreatePerspectiveOffCenter(128f, 1024f, 768f, 64f, 1f, 1000f, out result);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.0022f,  0.0000f,  1.2857f,  0.0000f,
-                0.0000f, -0.0028f, -1.1818f,  0.0000f,
-                0.0000f,  0.0000f, -1.0010f, -1.0010f,
-                0.0000f,  0.0000f, -1.0000f,  0.0000f
+                0.0022f,  0.0000f,  0.0000f,  0.0000f,
+                0.0000f, -0.0028f,  0.0000f,  0.0000f,
+                1.2857f, -1.1818f, -1.0010f, -1.0000f,
+                0.0000f,  0.0000f, -1.0010f,  0.0000f
             );
         }
 
@@ -1097,12 +1054,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreateRotationXCalculatedCorrectly()
         {
             var result = Matrix.CreateRotationX(0.1234f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                1.0000f, 0.0000f,  0.0000f, 0.0000f,
-                0.0000f, 0.9923f, -0.1230f, 0.0000f,
-                0.0000f, 0.1230f,  0.9923f, 0.0000f,
-                0.0000f, 0.0000f,  0.0000f, 1.0000f
+                1.0000f,  0.0000f, 0.0000f, 0.0000f, 
+                0.0000f,  0.9923f, 0.1230f, 0.0000f,
+                0.0000f, -0.1230f, 0.9923f, 0.0000f,
+                0.0000f,  0.0000f, 0.0000f, 1.0000f
             );
         }
 
@@ -1113,10 +1070,10 @@ namespace Ultraviolet.Tests
             Matrix.CreateRotationX(0.1234f, out result);
 
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                1.0000f, 0.0000f,  0.0000f, 0.0000f,
-                0.0000f, 0.9923f, -0.1230f, 0.0000f,
-                0.0000f, 0.1230f,  0.9923f, 0.0000f,
-                0.0000f, 0.0000f,  0.0000f, 1.0000f
+                1.0000f,  0.0000f, 0.0000f, 0.0000f, 
+                0.0000f,  0.9923f, 0.1230f, 0.0000f,
+                0.0000f, -0.1230f, 0.9923f, 0.0000f,
+                0.0000f,  0.0000f, 0.0000f, 1.0000f
             );
         }
 
@@ -1124,12 +1081,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreateRotationYCalculatedCorrectly()
         {
             var result = Matrix.CreateRotationY(0.1234f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                 0.9923f, 0.0000f, 0.1230f, 0.0000f,
-                 0.0000f, 1.0000f, 0.0000f, 0.0000f,
-                -0.1230f, 0.0000f, 0.9923f, 0.0000f,
-                 0.0000f, 0.0000f, 0.0000f, 1.0000f
+                0.9923f, 0.0000f, -0.1230f, 0.0000f,
+                0.0000f, 1.0000f,  0.0000f, 0.0000f,
+                0.1230f, 0.0000f,  0.9923f, 0.0000f,
+                0.0000f, 0.0000f,  0.0000f, 1.0000f
             );
         }
 
@@ -1138,12 +1095,12 @@ namespace Ultraviolet.Tests
         {
             var result = Matrix.Identity;
             Matrix.CreateRotationY(0.1234f, out result);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                 0.9923f, 0.0000f, 0.1230f, 0.0000f,
-                 0.0000f, 1.0000f, 0.0000f, 0.0000f,
-                -0.1230f, 0.0000f, 0.9923f, 0.0000f,
-                 0.0000f, 0.0000f, 0.0000f, 1.0000f
+                0.9923f, 0.0000f, -0.1230f, 0.0000f,
+                0.0000f, 1.0000f,  0.0000f, 0.0000f,
+                0.1230f, 0.0000f,  0.9923f, 0.0000f,
+                0.0000f, 0.0000f,  0.0000f, 1.0000f
             );
         }
 
@@ -1151,12 +1108,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreateRotationZCalculatedCorrectly()
         {
             var result = Matrix.CreateRotationZ(0.1234f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.9923f, -0.1230f, 0.0000f, 0.0000f,
-                0.1230f,  0.9923f, 0.0000f, 0.0000f,
-                0.0000f,  0.0000f, 1.0000f, 0.0000f,
-                0.0000f,  0.0000f, 0.0000f, 1.0000f
+                 0.9923f, 0.1230f, 0.0000f, 0.0000f,
+                -0.1230f, 0.9923f, 0.0000f, 0.0000f,
+                 0.0000f, 0.0000f, 1.0000f, 0.0000f,
+                 0.0000f, 0.0000f, 0.0000f, 1.0000f
             );
         }
 
@@ -1167,10 +1124,10 @@ namespace Ultraviolet.Tests
             Matrix.CreateRotationZ(0.1234f, out result);
 
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                0.9923f, -0.1230f, 0.0000f, 0.0000f,
-                0.1230f,  0.9923f, 0.0000f, 0.0000f,
-                0.0000f,  0.0000f, 1.0000f, 0.0000f,
-                0.0000f,  0.0000f, 0.0000f, 1.0000f
+                 0.9923f, 0.1230f, 0.0000f, 0.0000f,
+                -0.1230f, 0.9923f, 0.0000f, 0.0000f,
+                 0.0000f, 0.0000f, 1.0000f, 0.0000f,
+                 0.0000f, 0.0000f, 0.0000f, 1.0000f
             );
         }
 
@@ -1205,12 +1162,12 @@ namespace Ultraviolet.Tests
         public void Matrix_CreateTranslationCalculatedCorrectly()
         {
             var result = Matrix.CreateTranslation(111f, 222f, 333f);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                1f, 0f, 0f, 111f,
-                0f, 1f, 0f, 222f,
-                0f, 0f, 1f, 333f,
-                0f, 0f, 0f,    1f
+                  1f,   0f,   0f, 0f,
+                  0f,   1f,   0f, 0f,
+                  0f,   0f,   1f, 0f,
+                111f, 222f, 333f, 1f
             );
         }
 
@@ -1221,10 +1178,10 @@ namespace Ultraviolet.Tests
             Matrix.CreateTranslation(111f, 222f, 333f, out result);
 
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                1f, 0f, 0f, 111f,
-                0f, 1f, 0f, 222f,
-                0f, 0f, 1f, 333f,
-                0f, 0f, 0f,   1f
+                  1f,   0f,   0f, 0f,
+                  0f,   1f,   0f, 0f,
+                  0f,   0f,   1f, 0f,
+                111f, 222f, 333f, 1f
             );
         }
 
@@ -1236,12 +1193,12 @@ namespace Ultraviolet.Tests
             var up       = new Vector3(0, 1, 0);
             
             var result = Matrix.CreateWorld(position, forward, up);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                -1.0000f, 0.0000f,  0.0000f, 11.0000f,
-                 0.0000f, 1.0000f,  0.0000f, 12.0000f,
-                 0.0000f, 0.0000f, -1.0000f, 13.0000f,
-                 0.0000f, 0.0000f,  0.0000f,  1.0000f
+                 -1.0000f,  0.0000f,  0.0000f, 0.0000f,
+                  0.0000f,  1.0000f,  0.0000f, 0.0000f,
+                  0.0000f,  0.0000f, -1.0000f, 0.0000f,
+                 11.0000f, 12.0000f, 13.0000f, 1.0000f
             );
         }
 
@@ -1254,12 +1211,12 @@ namespace Ultraviolet.Tests
             
             var result = Matrix.Identity;
             Matrix.CreateWorld(ref position, ref forward, ref up, out result);
-
+            
             TheResultingValue(result).WithinDelta(0.001f).ShouldBe(
-                -1.0000f, 0.0000f,  0.0000f, 11.0000f,
-                 0.0000f, 1.0000f,  0.0000f, 12.0000f,
-                 0.0000f, 0.0000f, -1.0000f, 13.0000f,
-                 0.0000f, 0.0000f,  0.0000f,  1.0000f
+                 -1.0000f,  0.0000f,  0.0000f, 0.0000f,
+                  0.0000f,  1.0000f,  0.0000f, 0.0000f,
+                  0.0000f,  0.0000f, -1.0000f, 0.0000f,
+                 11.0000f, 12.0000f, 13.0000f, 1.0000f
             );
         }
 

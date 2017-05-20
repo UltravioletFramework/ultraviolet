@@ -160,8 +160,8 @@ namespace Ultraviolet.Presentation.Media
             var tanY = (Single)Math.Tan(Radians.FromDegrees(AngleY));
 
             var mtxSkew = new Matrix(
-                   1, tanX, 0, 0,
-                tanY,    1, 0, 0,
+                   1, tanY, 0, 0,
+                tanX,    1, 0, 0,
                    0,    0, 1, 0,
                    0,    0, 0, 1);
 
@@ -172,8 +172,8 @@ namespace Ultraviolet.Presentation.Media
                 var mtxTransformCenterInverse = Matrix.CreateTranslation(centerX, centerY, 0f);
 
                 Matrix mtxResult;
-                Matrix.Concat(ref mtxTransformCenter, ref mtxSkew, out mtxResult);
-                Matrix.Concat(ref mtxResult, ref mtxTransformCenterInverse, out mtxResult);
+                Matrix.Multiply(ref mtxTransformCenter, ref mtxSkew, out mtxResult);
+                Matrix.Multiply(ref mtxResult, ref mtxTransformCenterInverse, out mtxResult);
 
                 this.value = mtxResult;
             }
