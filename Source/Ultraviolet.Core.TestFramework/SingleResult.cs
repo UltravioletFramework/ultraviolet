@@ -37,11 +37,11 @@ namespace Ultraviolet.Core.TestFramework
         {
             if (delta.HasValue)
             {
-                Assert.AreEqual(expected, value, delta.Value);
+                Assert.That(value, Is.EqualTo(expected).Within(delta));
             }
             else
             {
-                Assert.AreEqual(expected, value);
+                Assert.That(value, Is.EqualTo(expected));
             }
             return this;
         }
