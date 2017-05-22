@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
@@ -9,6 +10,8 @@ namespace Ultraviolet
     /// Represents a four-dimensional vector (x, y, z, w) which is used to efficiently rotate an object about the (x, y, z) vector by the angle theta,
     /// where w = cos(theta/2).
     /// </summary>
+    [Serializable]
+    [DebuggerDisplay(@"\{X:{X} Y:{Y} Z:{Z} W:{W}\}")]
     public struct Quaternion : IEquatable<Quaternion>, IInterpolatable<Quaternion>
     {
         /// <summary>
@@ -18,6 +21,8 @@ namespace Ultraviolet
         /// <param name="y">The y-coordinate of the quaternion's vector component.</param>
         /// <param name="z">The z-coordinate of the quaternion's vector component.</param>
         /// <param name="w">The quaternion's scalar rotation component.</param>
+        [Preserve]
+        [JsonConstructor]
         public Quaternion(Single x, Single y, Single z, Single w)
         {
             this.X = x;
@@ -31,6 +36,7 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The quaternion's vector component.</param>
         /// <param name="scalar">The quaternion's scalar component.</param>
+        [Preserve]
         public Quaternion(Vector3 vector, Single scalar)
         {
             this.X = vector.X;

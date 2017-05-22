@@ -20,50 +20,50 @@ namespace Ultraviolet.Tests
         [Test]
         public void Point2F_OpEquality()
         {
-            var size1 = new Point2F(123.45f, 456.78f);
-            var size2 = new Point2F(123.45f, 456.78f);
-            var size3 = new Point2F(123.45f, 555.55f);
-            var size4 = new Point2F(222.22f, 456.78f);
+            var point1 = new Point2F(123.45f, 456.78f);
+            var point2 = new Point2F(123.45f, 456.78f);
+            var point3 = new Point2F(123.45f, 555.55f);
+            var point4 = new Point2F(222.22f, 456.78f);
 
-            TheResultingValue(size1 == size2).ShouldBe(true);
-            TheResultingValue(size1 == size3).ShouldBe(false);
-            TheResultingValue(size1 == size4).ShouldBe(false);
+            TheResultingValue(point1 == point2).ShouldBe(true);
+            TheResultingValue(point1 == point3).ShouldBe(false);
+            TheResultingValue(point1 == point4).ShouldBe(false);
         }
 
         [Test]
         public void Point2F_OpInequality()
         {
-            var size1 = new Point2F(123.45f, 456.78f);
-            var size2 = new Point2F(123.45f, 456.78f);
-            var size3 = new Point2F(123.45f, 555.55f);
-            var size4 = new Point2F(222.22f, 456.78f);
+            var point1 = new Point2F(123.45f, 456.78f);
+            var point2 = new Point2F(123.45f, 456.78f);
+            var point3 = new Point2F(123.45f, 555.55f);
+            var point4 = new Point2F(222.22f, 456.78f);
 
-            TheResultingValue(size1 != size2).ShouldBe(false);
-            TheResultingValue(size1 != size3).ShouldBe(true);
-            TheResultingValue(size1 != size4).ShouldBe(true);
+            TheResultingValue(point1 != point2).ShouldBe(false);
+            TheResultingValue(point1 != point3).ShouldBe(true);
+            TheResultingValue(point1 != point4).ShouldBe(true);
         }
 
         [Test]
         public void Point2F_EqualsObject()
         {
-            var size1 = new Point2F(123.45f, 456.78f);
-            var size2 = new Point2F(123.45f, 456.78f);
+            var point1 = new Point2F(123.45f, 456.78f);
+            var point2 = new Point2F(123.45f, 456.78f);
 
-            TheResultingValue(size1.Equals((Object)size2)).ShouldBe(true);
-            TheResultingValue(size1.Equals("This is a test")).ShouldBe(false);
+            TheResultingValue(point1.Equals((Object)point2)).ShouldBe(true);
+            TheResultingValue(point1.Equals("This is a test")).ShouldBe(false);
         }
 
         [Test]
         public void Point2F_EqualsPoint2F()
         {
-            var size1 = new Point2F(123.45f, 456.78f);
-            var size2 = new Point2F(123.45f, 456.78f);
-            var size3 = new Point2F(123.45f, 555.55f);
-            var size4 = new Point2F(222.22f, 456.78f);
+            var point1 = new Point2F(123.45f, 456.78f);
+            var point2 = new Point2F(123.45f, 456.78f);
+            var point3 = new Point2F(123.45f, 555.55f);
+            var point4 = new Point2F(222.22f, 456.78f);
 
-            TheResultingValue(size1.Equals(size2)).ShouldBe(true);
-            TheResultingValue(size1.Equals(size3)).ShouldBe(false);
-            TheResultingValue(size1.Equals(size4)).ShouldBe(false);
+            TheResultingValue(point1.Equals(point2)).ShouldBe(true);
+            TheResultingValue(point1.Equals(point3)).ShouldBe(false);
+            TheResultingValue(point1.Equals(point4)).ShouldBe(false);
         }
 
         [Test]
@@ -108,10 +108,10 @@ namespace Ultraviolet.Tests
         [Test]
         public void Point2F_Parse_CanRoundTrip()
         {
-            var size1 = Point2F.Parse("123.4 456.7");
-            var size2 = Point2F.Parse(size1.ToString());
+            var point1 = Point2F.Parse("123.4 456.7");
+            var point2 = Point2F.Parse(point1.ToString());
 
-            TheResultingValue(size1 == size2).ShouldBe(true);
+            TheResultingValue(point1 == point2).ShouldBe(true);
         }
 
         [Test]

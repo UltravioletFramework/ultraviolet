@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
@@ -8,6 +9,8 @@ namespace Ultraviolet
     /// <summary>
     /// Represents a plane in three-dimensional space.
     /// </summary>
+    [Serializable]
+    [DebuggerDisplay(@"\{Normal:{Normal} D:{D}\}")]
     public struct Plane : IEquatable<Plane>, IInterpolatable<Plane>
     {
         /// <summary>
@@ -17,6 +20,7 @@ namespace Ultraviolet
         /// <param name="y">The y-component of the plane's normal vector.</param>
         /// <param name="z">The z-component of the plane's normal vector.</param>
         /// <param name="d">The plane's distance along its normal from the origin.</param>
+        [Preserve]
         public Plane(Single x, Single y, Single z, Single d)
         {
             Normal.X = x;
@@ -30,6 +34,8 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="normal">The plane's normal vector.</param>
         /// <param name="d">The plane's distance along its normal from the origin.</param>
+        [Preserve]
+        [JsonConstructor]
         public Plane(Vector3 normal, Single d)
         {
             Normal = normal;
@@ -41,6 +47,7 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="value">A vector whose first three elements represent the plane's normal vector, and whose last element
         /// represents the plane's distance along its normal from the origin.</param>
+        [Preserve]
         public Plane(Vector4 value)
         {
             Normal.X = value.X;

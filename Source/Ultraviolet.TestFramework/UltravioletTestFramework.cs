@@ -257,5 +257,15 @@ namespace Ultraviolet.TestFramework
         {
             return new QuaternionResult(value);
         }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
+        protected static RayResult TheResultingValue(Ray value)
+        {
+            return new RayResult(value);
+        }
     }
 }

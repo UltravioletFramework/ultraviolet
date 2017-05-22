@@ -145,6 +145,7 @@
     <Compile Include="Graphics\Graphics2D\SpriteTests.cs" />
     <Compile Include="Graphics\Texture2DTests.cs" />
     <Compile Include="Graphics\TextureAtlasTests.cs" />
+    <Compile Include="RayTests.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="Audio\SoundEffectPlayerTests.cs" />
     <Compile Include="Audio\SongPlayerTests.cs" />
