@@ -115,6 +115,57 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void Point2D_TransformsCorrectly_WithMatrix()
+        {
+            var point1 = new Point2D(123, 456);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            var result = Point2D.Transform(point1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1)
+                .ShouldBe(-123.0, -456.0);
+        }
+
+        [Test]
+        public void Point2D_TransformsCorrectly_WithMatrix_WithOutParam()
+        {
+            var point1 = new Point2D(123, 456);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            var result = Point2D.Zero;
+            Point2D.Transform(ref point1, ref transform, out result);
+
+            TheResultingValue(result).WithinDelta(0.1)
+                .ShouldBe(-123.0, -456.0);
+        }
+
+        [Test]
+        public void Point2D_TransformsCorrectly_WithQuaternion()
+        {
+            var point1 = new Point2D(123, 456);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            var result = Point2D.Transform(point1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1)
+                .ShouldBe(-123.0, -456.0);
+        }
+
+        [Test]
+        public void Point2D_TransformsForrectly_WithQuaternion_WithOutParam()
+        {
+            var point1 = new Point2D(123, 456);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            Point2D.Transform(ref point1, ref transform, out Point2D result);
+
+            TheResultingValue(result).WithinDelta(0.1)
+                .ShouldBe(-123.0, -456.0);
+        }
+
+        [Test]
         public void Point2D_SerializesToJson()
         {
             var point = new Point2D(1.2, 2.3);

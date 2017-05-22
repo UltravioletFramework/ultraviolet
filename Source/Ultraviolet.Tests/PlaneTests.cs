@@ -288,5 +288,33 @@ namespace Ultraviolet.Tests
                 .ShouldHaveNormal(-26.3962f, 1.4465f, 34.5f)
                 .ShouldHaveDistance(45.6f);
         }
+
+        [Test]
+        public void Plane_TransformsCorrectly_WithQuaternion()
+        {
+            var plane = Plane.Normalize(new Plane(12.3f, 23.4f, 34.5f, 45.6f));
+            var quaternion = Quaternion.CreateFromAxisAngle(Vector3.Normalize(new Vector3(56.7f, 67.8f, 78.9f)), 89.0f);
+
+            var result = Plane.Transform(plane, quaternion);
+            
+            TheResultingValue(result)
+                .WithinDelta(0.0001f)
+                .ShouldHaveNormal(0.4545f, 0.3825f, 0.8043f)
+                .ShouldHaveDistance(1.0491f);
+        }
+
+        [Test]
+        public void Plane_TransformsCorrectly_WithQuaternion_WithOutParam()
+        {
+            var plane = Plane.Normalize(new Plane(12.3f, 23.4f, 34.5f, 45.6f));
+            var quaternion = Quaternion.CreateFromAxisAngle(Vector3.Normalize(new Vector3(56.7f, 67.8f, 78.9f)), 89.0f);
+
+            Plane.Transform(ref plane, ref quaternion, out Plane result);
+
+            TheResultingValue(result)
+                .WithinDelta(0.0001f)
+                .ShouldHaveNormal(0.4545f, 0.3825f, 0.8043f)
+                .ShouldHaveDistance(1.0491f);
+        }
     }
 }

@@ -422,6 +422,58 @@ namespace Ultraviolet
             }
             return point;
         }
+        
+        /// <summary>
+        /// Transforms a point by a quaternion.
+        /// </summary>
+        /// <param name="point">The <see cref="Point2F"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the point.</param>
+        /// <returns>The transformed <see cref="Point2F"/>.</returns>
+        public static Point2F Transform(Point2F point, Quaternion quaternion)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var yy2 = quaternion.Y * y2;
+            var zz2 = quaternion.Z * z2;
+
+            Point2F result;
+
+            result.X = point.X * (1.0f - yy2 - zz2) + point.Y * (xy2 - wz2);
+            result.Y = point.X * (xy2 + wz2) + point.Y * (1.0f - xx2 - zz2);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a point by a quaternion.
+        /// </summary>
+        /// <param name="point">The <see cref="Point2F"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the point.</param>
+        /// <param name="result">The transformed <see cref="Point2D"/>.</param>
+        public static void Transform(ref Point2F point, ref Quaternion quaternion, out Point2F result)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var yy2 = quaternion.Y * y2;
+            var zz2 = quaternion.Z * z2;
+
+            Point2F temp;
+
+            temp.X = point.X * (1.0f - yy2 - zz2) + point.Y * (xy2 - wz2);
+            temp.Y = point.X * (xy2 + wz2) + point.Y * (1.0f - xx2 - zz2);
+
+            result = temp;
+        }
 
         /// <summary>
         /// Transforms a point by a matrix.

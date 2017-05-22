@@ -114,6 +114,57 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void Point2_TransformsCorrectly_WithMatrix()
+        {
+            var point1 = new Point2(123, 456);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            var result = Point2.Transform(point1, transform);
+
+            TheResultingValue(result)
+                .ShouldBe(-122, -456);
+        }
+
+        [Test]
+        public void Point2_TransformsCorrectly_WithMatrix_WithOutParam()
+        {
+            var point1 = new Point2(123, 456);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            var result = Point2.Zero;
+            Point2.Transform(ref point1, ref transform, out result);
+
+            TheResultingValue(result)
+                .ShouldBe(-122, -456);
+        }
+
+        [Test]
+        public void Point2_TransformsCorrectly_WithQuaternion()
+        {
+            var point1 = new Point2(123, 456);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            var result = Point2.Transform(point1, transform);
+
+            TheResultingValue(result)
+                .ShouldBe(-122, -456);
+        }
+
+        [Test]
+        public void Point2_TransformsForrectly_WithQuaternion_WithOutParam()
+        {
+            var point1 = new Point2(123, 456);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            Point2.Transform(ref point1, ref transform, out Point2 result);
+
+            TheResultingValue(result)
+                .ShouldBe(-122, -456);
+        }
+
+        [Test]
         public void Point2_SerializesToJson()
         {
             var point = new Point2(1, 2);

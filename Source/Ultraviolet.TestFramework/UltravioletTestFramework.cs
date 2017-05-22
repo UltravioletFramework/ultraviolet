@@ -247,5 +247,15 @@ namespace Ultraviolet.TestFramework
         {
             return new PlaneResult(value);
         }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
+        protected static QuaternionResult TheResultingValue(Quaternion value)
+        {
+            return new QuaternionResult(value);
+        }
     }
 }

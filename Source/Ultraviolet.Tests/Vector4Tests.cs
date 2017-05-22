@@ -767,7 +767,55 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
-        public void Vector4_TransformRotateZ()
+        public void Vector4_TransformsVector2Correctly_WithMatrix()
+        {
+            var vector1 = new Vector2(123, 456);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            var result = Vector4.Transform(vector1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 0f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector2Correctly_WithMatrix_WithOutParam()
+        {
+            var vector1 = new Vector2(123, 456);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            Vector4.Transform(ref vector1, ref transform, out Vector4 result);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 0f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector3Correctly_WithMatrix()
+        {
+            var vector1 = new Vector3(123, 456, 789);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            var result = Vector4.Transform(vector1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 789f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector3Correctly_WithMatrix_WithOutParam()
+        {
+            var vector1 = new Vector3(123, 456, 789);
+            var transform = Matrix.CreateRotationZ((float)Math.PI);
+
+            Vector4.Transform(ref vector1, ref transform, out Vector4 result);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 789f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector4Correctly_WithMatrix()
         {
             var vector1 = new Vector4(123, 456, 768, 321);
             var transform = Matrix.CreateRotationZ((float)Math.PI);
@@ -779,7 +827,7 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
-        public void Vector4_TransformRotateZWithOutParam()
+        public void Vector4_TransformsVector4Correctly_WithMatrix_WithOutParam()
         {
             var vector1 = new Vector4(123, 456, 768, 321);
             var transform = Matrix.CreateRotationZ((float)Math.PI);
@@ -789,6 +837,84 @@ namespace Ultraviolet.Tests
 
             TheResultingValue(result).WithinDelta(0.1f)
                 .ShouldBe(-123.0f, -456.0f, 768.0f, 321.0f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector2Correctly_WithQuaternion()
+        {
+            var vector1 = new Vector2(123, 456);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            var result = Vector4.Transform(vector1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 0f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector2Correctly_WithQuaternion_WithOutParam()
+        {
+            var vector1 = new Vector2(123, 456);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            Vector4.Transform(ref vector1, ref transform, out Vector4 result);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 0f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector3Correctly_WithQuaternion()
+        {
+            var vector1 = new Vector3(123, 456, 789);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            var result = Vector4.Transform(vector1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 789f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector3Correctly_WithQuaternion_WithOutParam()
+        {
+            var vector1 = new Vector3(123, 456, 789);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            Vector4.Transform(ref vector1, ref transform, out Vector4 result);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 789f, 1f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector4Correctly_WithQuaternion()
+        {
+            var vector1 = new Vector4(123, 456, 768, 321);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            var result = Vector4.Transform(vector1, transform);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 768f, 321f);
+        }
+
+        [Test]
+        public void Vector4_TransformsVector4Correctly_WithQuaternion_WithOutParam()
+        {
+            var vector1 = new Vector4(123, 456, 768, 321);
+            var matrix = Matrix.CreateRotationZ((float)Math.PI);
+            var transform = Quaternion.CreateFromRotationMatrix(matrix);
+
+            Vector4.Transform(ref vector1, ref transform, out Vector4 result);
+
+            TheResultingValue(result).WithinDelta(0.1f)
+                .ShouldBe(-123.0f, -456.0f, 768f, 321f);
         }
 
         [Test]

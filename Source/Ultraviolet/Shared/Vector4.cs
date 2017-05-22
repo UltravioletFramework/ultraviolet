@@ -537,6 +537,270 @@ namespace Ultraviolet
             result.Z = vector.Z / factor;
             result.W = vector.W / factor;
         }
+        
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <returns>The transformed <see cref="Vector4"/>.</returns>
+        public static Vector4 Transform(Vector2 vector, Quaternion quaternion)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector4 result;
+
+            result.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2);
+            result.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2);
+            result.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2);
+            result.W = 1.0f;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <param name="result">The transformed <see cref="Vector4"/>.</param>
+        public static void Transform(ref Vector2 vector, ref Quaternion quaternion, out Vector4 result)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector4 temp;
+
+            temp.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2);
+            temp.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2);
+            temp.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2);
+            temp.W = 1.0f;
+
+            result = temp;
+        }
+        
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <returns>The transformed <see cref="Vector4"/>.</returns>
+        public static Vector4 Transform(Vector3 vector, Quaternion quaternion)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector4 result;
+
+            result.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2) + vector.Z * (xz2 + wy2);
+            result.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2) + vector.Z * (yz2 - wx2);
+            result.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2) + vector.Z * (1.0f - xx2 - yy2);
+            result.W = 1.0f;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <param name="result">The transformed <see cref="Vector4"/>.</param>
+        public static void Transform(ref Vector3 vector, ref Quaternion quaternion, out Vector4 result)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector4 temp;
+
+            temp.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2) + vector.Z * (xz2 + wy2);
+            temp.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2) + vector.Z * (yz2 - wx2);
+            temp.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2) + vector.Z * (1.0f - xx2 - yy2);
+            temp.W = 1.0f;
+
+            result = temp;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector4"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <returns>The transformed <see cref="Vector4"/>.</returns>
+        public static Vector4 Transform(Vector4 vector, Quaternion quaternion)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector4 result;
+
+            result.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2) + vector.Z * (xz2 + wy2);
+            result.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2) + vector.Z * (yz2 - wx2);
+            result.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2) + vector.Z * (1.0f - xx2 - yy2);
+            result.W = vector.W;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector4"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <param name="result">The transformed <see cref="Vector4"/>.</param>
+        public static void Transform(ref Vector4 vector, ref Quaternion quaternion, out Vector4 result)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector4 temp;
+
+            temp.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2) + vector.Z * (xz2 + wy2);
+            temp.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2) + vector.Z * (yz2 - wx2);
+            temp.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2) + vector.Z * (1.0f - xx2 - yy2);
+            temp.W = vector.W;
+
+            result = temp;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a matrix.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the vector.</param>
+        /// <returns>The transformed <see cref="Vector4"/>.</returns>
+        public static Vector4 Transform(Vector2 vector, Matrix matrix)
+        {
+            Vector4 result;
+
+            result.X = vector.X * matrix.M11 + vector.Y * matrix.M21 + matrix.M41;
+            result.Y = vector.X * matrix.M12 + vector.Y * matrix.M22 + matrix.M42;
+            result.Z = vector.X * matrix.M13 + vector.Y * matrix.M23 + matrix.M43;
+            result.W = vector.X * matrix.M14 + vector.Y * matrix.M24 + matrix.M44;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a matrix.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector2"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the vector.</param>
+        /// <param name="result">The transformed <see cref="Vector4"/>.</param>
+        public static void Transform(ref Vector2 vector, ref Matrix matrix, out Vector4 result)
+        {
+            Vector4 temp;
+
+            temp.X = vector.X * matrix.M11 + vector.Y * matrix.M21 + matrix.M41;
+            temp.Y = vector.X * matrix.M12 + vector.Y * matrix.M22 + matrix.M42;
+            temp.Z = vector.X * matrix.M13 + vector.Y * matrix.M23 + matrix.M43;
+            temp.W = vector.X * matrix.M14 + vector.Y * matrix.M24 + matrix.M44;
+
+            result = temp;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a matrix.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the vector.</param>
+        /// <returns>The transformed <see cref="Vector4"/>.</returns>
+        public static Vector4 Transform(Vector3 vector, Matrix matrix)
+        {
+            Vector4 result;
+
+            result.X = vector.X * matrix.M11 + vector.Y * matrix.M21 + vector.Z * matrix.M31 + matrix.M41;
+            result.Y = vector.X * matrix.M12 + vector.Y * matrix.M22 + vector.Z * matrix.M32 + matrix.M42;
+            result.Z = vector.X * matrix.M13 + vector.Y * matrix.M23 + vector.Z * matrix.M33 + matrix.M43;
+            result.W = vector.X * matrix.M14 + vector.Y * matrix.M24 + vector.Z * matrix.M34 + matrix.M44;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a matrix.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
+        /// <param name="matrix">The matrix by which to transform the vector.</param>
+        /// <param name="result">The transformed <see cref="Vector4"/>.</param>
+        public static void Transform(ref Vector3 vector, ref Matrix matrix, out Vector4 result)
+        {
+            Vector4 temp;
+
+            temp.X = vector.X * matrix.M11 + vector.Y * matrix.M21 + vector.Z * matrix.M31 + matrix.M41;
+            temp.Y = vector.X * matrix.M12 + vector.Y * matrix.M22 + vector.Z * matrix.M32 + matrix.M42;
+            temp.Z = vector.X * matrix.M13 + vector.Y * matrix.M23 + vector.Z * matrix.M33 + matrix.M43;
+            temp.W = vector.X * matrix.M14 + vector.Y * matrix.M24 + vector.Z * matrix.M34 + matrix.M44;
+
+            result = temp;
+        }
 
         /// <summary>
         /// Transforms a vector by a matrix.
@@ -581,7 +845,12 @@ namespace Ultraviolet
         /// <returns>The normalized <see cref="Vector4"/>.</returns>
         public static Vector4 Normalize(Vector4 vector)
         {
-            var inverseMagnitude = 1f / vector.Length();
+            var magnitude = (Single)Math.Sqrt(
+                vector.X * vector.X +
+                vector.Y * vector.Y +
+                vector.Z * vector.Z +
+                vector.W * vector.W);
+            var inverseMagnitude = 1f / magnitude;
 
             Vector4 result;
 
@@ -600,7 +869,12 @@ namespace Ultraviolet
         /// <param name="result">The normalized <see cref="Vector4"/>.</param>
         public static void Normalize(ref Vector4 vector, out Vector4 result)
         {
-            var inverseMagnitude = 1f / vector.Length();
+            var magnitude = (Single)Math.Sqrt(
+                vector.X * vector.X +
+                vector.Y * vector.Y +
+                vector.Z * vector.Z +
+                vector.W * vector.W);
+            var inverseMagnitude = 1f / magnitude;
 
             result.X = vector.X * inverseMagnitude;
             result.Y = vector.Y * inverseMagnitude;

@@ -317,6 +317,96 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Transforms a normalized plane by the specified quaternion.
+        /// </summary>
+        /// <param name="plane">The plane to transform.</param>
+        /// <param name="quaternion">The quaternion with which to transform the plane.</param>
+        /// <returns>The transformed plane.</returns>
+        public static Plane Transform(Plane plane, Quaternion quaternion)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            var m11 = 1.0f - yy2 - zz2;
+            var m21 = xy2 - wz2;
+            var m31 = xz2 + wy2;
+
+            var m12 = xy2 + wz2;
+            var m22 = 1.0f - xx2 - zz2;
+            var m32 = yz2 - wx2;
+
+            var m13 = xz2 - wy2;
+            var m23 = yz2 + wx2;
+            var m33 = 1.0f - xx2 - yy2;
+
+            var x = plane.Normal.X;
+            var y = plane.Normal.Y;
+            var z = plane.Normal.Z;
+
+            return new Plane(
+                x * m11 + y * m21 + z * m31,
+                x * m12 + y * m22 + z * m32,
+                x * m13 + y * m23 + z * m33,
+                plane.D);
+        }
+
+        /// <summary>
+        /// Transforms a normalized plane by the specified quaternion.
+        /// </summary>
+        /// <param name="plane">The plane to transform.</param>
+        /// <param name="quaternion">The quaternion with which to transform the plane.</param>
+        /// <param name="result">The transformed plane.</param>
+        public static void Transform(ref Plane plane, ref Quaternion quaternion, out Plane result)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            var m11 = 1.0f - yy2 - zz2;
+            var m21 = xy2 - wz2;
+            var m31 = xz2 + wy2;
+
+            var m12 = xy2 + wz2;
+            var m22 = 1.0f - xx2 - zz2;
+            var m32 = yz2 - wx2;
+
+            var m13 = xz2 - wy2;
+            var m23 = yz2 + wx2;
+            var m33 = 1.0f - xx2 - yy2;
+
+            var x = plane.Normal.X;
+            var y = plane.Normal.Y;
+            var z = plane.Normal.Z;
+
+            result = new Plane(
+                x * m11 + y * m21 + z * m31,
+                x * m12 + y * m22 + z * m32,
+                x * m13 + y * m23 + z * m33,
+                plane.D);
+        }
+
+        /// <summary>
         /// Gets the object's hash code.
         /// </summary>
         /// <returns>The object's hash code.</returns>

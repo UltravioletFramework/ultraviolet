@@ -586,6 +586,68 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <returns>The transformed <see cref="Vector3"/>.</returns>
+        public static Vector3 Transform(Vector3 vector, Quaternion quaternion)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector3 result;
+
+            result.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2) + vector.Z * (xz2 + wy2);
+            result.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2) + vector.Z * (yz2 - wx2);
+            result.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2) + vector.Z * (1.0f - xx2 - yy2);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms a vector by a quaternion.
+        /// </summary>
+        /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
+        /// <param name="quaternion">The quaternion by which to transform the vector.</param>
+        /// <param name="result">The transformed <see cref="Vector3"/>.</param>
+        public static void Transform(ref Vector3 vector, ref Quaternion quaternion, out Vector3 result)
+        {
+            var x2 = quaternion.X + quaternion.X;
+            var y2 = quaternion.Y + quaternion.Y;
+            var z2 = quaternion.Z + quaternion.Z;
+
+            var wx2 = quaternion.W * x2;
+            var wy2 = quaternion.W * y2;
+            var wz2 = quaternion.W * z2;
+            var xx2 = quaternion.X * x2;
+            var xy2 = quaternion.X * y2;
+            var xz2 = quaternion.X * z2;
+            var yy2 = quaternion.Y * y2;
+            var yz2 = quaternion.Y * z2;
+            var zz2 = quaternion.Z * z2;
+
+            Vector3 temp;
+
+            temp.X = vector.X * (1.0f - yy2 - zz2) + vector.Y * (xy2 - wz2) + vector.Z * (xz2 + wy2);
+            temp.Y = vector.X * (xy2 + wz2) + vector.Y * (1.0f - xx2 - zz2) + vector.Z * (yz2 - wx2);
+            temp.Z = vector.X * (xz2 - wy2) + vector.Y * (yz2 + wx2) + vector.Z * (1.0f - xx2 - yy2);
+
+            result = temp;
+        }
+
+        /// <summary>
         /// Transforms a vector by a matrix.
         /// </summary>
         /// <param name="vector">The <see cref="Vector3"/> to transform.</param>
@@ -660,7 +722,11 @@ namespace Ultraviolet
         /// <returns>The normalized <see cref="Vector3"/>.</returns>
         public static Vector3 Normalize(Vector3 vector)
         {
-            var inverseMagnitude = 1f / vector.Length();
+            var magnitude = (Single)Math.Sqrt(
+                vector.X * vector.X +
+                vector.Y * vector.Y +
+                vector.Z * vector.Z);
+            var inverseMagnitude = 1f / magnitude;
 
             Vector3 result;
 
@@ -678,7 +744,11 @@ namespace Ultraviolet
         /// <param name="result">The normalized <see cref="Vector3"/>.</param>
         public static void Normalize(ref Vector3 vector, out Vector3 result)
         {
-            var inverseMagnitude = 1f / vector.Length();
+            var magnitude = (Single)Math.Sqrt(
+                vector.X * vector.X +
+                vector.Y * vector.Y +
+                vector.Z * vector.Z);
+            var inverseMagnitude = 1f / magnitude;
 
             result.X = vector.X * inverseMagnitude;
             result.Y = vector.Y * inverseMagnitude;
