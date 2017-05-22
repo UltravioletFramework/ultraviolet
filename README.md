@@ -1,4 +1,6 @@
 ### Builds
+
+[![Join the chat at https://gitter.im/ultraviolet-framework/Lobby](https://badges.gitter.im/ultraviolet-framework/Lobby.svg)](https://gitter.im/ultraviolet-framework/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 | Branch       | Integration | Release |
 |--------------|-------------|---------|
 | master       | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-INT)  | ![Build Status](http://dev.twistedlogik.net:8085/plugins/servlet/wittified/build-status/UV-REL) |
