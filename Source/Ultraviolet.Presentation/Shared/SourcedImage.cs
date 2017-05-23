@@ -1,6 +1,5 @@
 ﻿using System;
 using Ultraviolet.Core;
-using Ultraviolet.Core.Data;
 using Ultraviolet.Graphics.Graphics2D;
 
 namespace Ultraviolet.Presentation
@@ -8,7 +7,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
-    public struct SourcedImage : IEquatable<SourcedImage>, IInterpolatable<SourcedImage>
+    public partial struct SourcedImage : IInterpolatable<SourcedImage>
     {
         /// <summary>
         /// Initializes the <see cref="SourcedImage"/> type.
@@ -40,109 +39,14 @@ namespace Ultraviolet.Presentation
         {
             return sourced.Resource;
         }
-
-        /// <summary>
-        /// Returns <see langword="true"/> if the specified sourced assets are equal.
-        /// </summary>
-        /// <param name="id1">The first <see cref="SourcedImage"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedImage"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified sourced assets are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(SourcedImage id1, SourcedImage id2)
-        {
-            return id1.Equals(id2);
-        }
-
-        /// <summary>
-        /// Returns <see langword="true"/> if the specified sourced assets are not equal.
-        /// </summary>
-        /// <param name="id1">The first <see cref="SourcedImage"/> to compare.</param>
-        /// <param name="id2">The second <see cref="SourcedImage"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified sourced assets are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(SourcedImage id1, SourcedImage id2)
-        {
-            return !id1.Equals(id2);
-        }
-
-        /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedImage"/>.
-        /// </summary>
-        /// <param name="str">The string to parse.</param>
-        /// <returns>The <see cref="SourcedImage"/> instance that was created from the specified string.</returns>
-        [Preserve]
-        public static SourcedImage Parse(String str)
-        {
-            return Parse(str, null);
-        }
-
-        /// <summary>
-        /// Parses a string into an instance of <see cref="SourcedImage"/>.
-        /// </summary>
-        /// <param name="str">The string to parse.</param>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <returns>The <see cref="SourcedImage"/> instance that was created from the specified string.</returns>
-        [Preserve]
-        public static SourcedImage Parse(String str, IFormatProvider provider)
-        {
-            var source = AssetSource.Global;
-
-            if (str.EndsWith(" local"))
-            {
-                source = AssetSource.Local;
-                str    = str.Substring(0, str.Length - " local".Length);
-            }
-            else if (str.EndsWith(" global"))
-            {
-                source = AssetSource.Global;
-                str    = str.Substring(0, str.Length - " global".Length);
-            }
-
-            var asset = (TextureImage)ObjectResolver.FromString(str.Trim(), typeof(TextureImage), provider);
-            return new SourcedImage(asset, source);
-        }
-
+        
         /// <inheritdoc/>
         [Preserve]
         public SourcedImage Interpolate(SourcedImage target, Single t)
         {
             return (t >= 1) ? target : this;
         }
-
-        /// <inheritdoc/>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + resource.GetHashCode();
-                hash = hash * 23 + source.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <inheritdoc/>
-        public override String ToString()
-        {
-            return String.Format("{0} {1}", resource, source.ToString().ToLowerInvariant());
-        }
-
-        /// <inheritdoc/>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            return obj is SourcedImage && Equals((SourcedImage)obj);
-        }
-
-        /// <inheritdoc/>
-        [Preserve]
-        public Boolean Equals(SourcedImage other)
-        {
-            return
-                this.resource  == other.resource &&
-                this.source == other.source;
-        }
-
+                
         /// <summary>
         /// Gets the sourced resource.
         /// </summary>

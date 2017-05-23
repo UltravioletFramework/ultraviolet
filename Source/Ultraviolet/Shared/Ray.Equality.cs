@@ -1,42 +1,10 @@
-﻿using System;
+using System;
 using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
-    partial struct Ray
+    partial struct Ray : IEquatable<Ray>
     {
-        /// <summary>
-        /// Compares two rays for equality.
-        /// </summary>
-        /// <param name="ray1">The first <see cref="Ray"/> to compare.</param>
-        /// <param name="ray2">The second <see cref="Ray"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified rays are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Ray ray1, Ray ray2)
-        {
-            return ray1.Equals(ray2);
-        }
-
-        /// <summary>
-        /// Compares two rays for inequality.
-        /// </summary>
-        /// <param name="ray1">The first <see cref="Ray"/> to compare.</param>
-        /// <param name="ray2">The second <see cref="Ray"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified rays are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Ray ray1, Ray ray2)
-        {
-            return !ray1.Equals(ray2);
-        }
-
-        /// <inheritdoc/>
-        [Preserve]
-        public Boolean Equals(Ray other) => Position.Equals(other.Position) && Direction.Equals(other.Direction);
-
-        /// <inheritdoc/>
-        [Preserve]
-        public override Boolean Equals(Object obj) => (obj is Ray r) ? Equals(r) : false;
-
         /// <inheritdoc/>
         public override Int32 GetHashCode()
         {
@@ -47,6 +15,46 @@ namespace Ultraviolet
                 hash = hash * 23 + Direction.GetHashCode();
                 return hash;
             }
+        }
+        
+        /// <summary>
+        /// Compares two objects to determine whether they are equal.
+        /// </summary>
+        /// <param name="v1">The first value to compare.</param>
+        /// <param name="v2">The second value to compare.</param>
+        /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
+        public static Boolean operator ==(Ray v1, Ray v2)
+        {
+            return v1.Equals(v2);
+        }
+        
+        /// <summary>
+        /// Compares two objects to determine whether they are unequal.
+        /// </summary>
+        /// <param name="v1">The first value to compare.</param>
+        /// <param name="v2">The second value to compare.</param>
+        /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
+        public static Boolean operator !=(Ray v1, Ray v2)
+        {
+            return !v1.Equals(v2);
+        }
+        
+        /// <inheritdoc/>
+        [Preserve]
+        public override Boolean Equals(Object other)
+        {
+            return (other is Ray x) ? Equals(x) : false;
+        }
+        
+        /// <inheritdoc/>
+        [Preserve]
+        public Boolean Equals(Ray other)
+        {
+            return
+                this.Position == other.Position &&
+                this.Direction == other.Direction;
         }
     }
 }

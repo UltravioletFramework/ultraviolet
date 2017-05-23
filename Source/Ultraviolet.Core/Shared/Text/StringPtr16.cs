@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Security;
 
 namespace Ultraviolet.Core.Text
 {
     /// <summary>
     /// Represent a pointer to an unmanaged string where each character is 16 bits.
     /// </summary>
-    public struct StringPtr16 : IEquatable<StringPtr16>
+    public partial struct StringPtr16
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringPtr16"/> structure from the specified <see langword="null"/>-terminated string.
@@ -47,73 +46,7 @@ namespace Ultraviolet.Core.Text
         {
             return ptr.ptr;
         }
-
-        /// <summary>
-        /// Determines whether the specified objects are equal.
-        /// </summary>
-        /// <param name="ptr1">The first object to compare.</param>
-        /// <param name="ptr2">The second object to compare.</param>
-        /// <returns><see langword="true"/> if the specified objects are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringPtr16 ptr1, StringPtr16 ptr2)
-        {
-            return ptr1.Equals(ptr2);
-        }
-
-        /// <summary>
-        /// Determines whether the specified objects are unequal.
-        /// </summary>
-        /// <param name="ptr1">The first object to compare.</param>
-        /// <param name="ptr2">The second object to compare.</param>
-        /// <returns><see langword="true"/> if the specified objects are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringPtr16 ptr1, StringPtr16 ptr2)
-        {
-            return !ptr1.Equals(ptr2);
-        }
-
-        /// <summary>
-        /// Gets the instance's hash code.
-        /// </summary>
-        /// <returns>The instance's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 29 + ptr.GetHashCode();
-                hash = hash * 29 + length.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            unsafe { return new String((char*)ptr, 0, length); }
-        }
-
-        /// <summary>
-        /// Determines whether the specified object is equal to this object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this object.</param>
-        /// <returns><see langword="true"/> ifthis object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        public override Boolean Equals(Object obj)
-        {
-            return obj is StringPtr16 && Equals((StringPtr16)obj);
-        }
-
-        /// <summary>
-        /// Determines whether the specified object is equal to this object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this object.</param>
-        /// <returns><see langword="true"/> ifthis object is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        public Boolean Equals(StringPtr16 obj)
-        {
-            return obj.ptr == this.ptr && obj.length == this.length;
-        }
-
+        
         /// <summary>
         /// Converts the string pointer to a pointer to an unspecified type.
         /// </summary>

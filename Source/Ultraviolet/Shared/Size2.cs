@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -11,7 +10,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{Width:{Width} Height:{Height}\}")]
-    public struct Size2 : IEquatable<Size2>, IInterpolatable<Size2>
+    public partial struct Size2 : IInterpolatable<Size2>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Size2"/> structure.
@@ -25,31 +24,7 @@ namespace Ultraviolet
             this.Width = width;
             this.Height = height;
         }
-
-        /// <summary>
-        /// Compares two sizes for equality.
-        /// </summary>
-        /// <param name="s1">The first <see cref="Size2"/> to compare.</param>
-        /// <param name="s2">The second <see cref="Size2"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified sizes are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Size2 s1, Size2 s2)
-        {
-            return s1.Equals(s2);
-        }
-
-        /// <summary>
-        /// Compares two sizes for inequality.
-        /// </summary>
-        /// <param name="s1">The first <see cref="Size2"/> to compare.</param>
-        /// <param name="s2">The second <see cref="Size2"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified sizes are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Size2 s1, Size2 s2)
-        {
-            return !s1.Equals(s2);
-        }
-
+        
         /// <summary>
         /// Adds a <see cref="Size2"/> to another <see cref="Size2"/>.
         /// </summary>
@@ -281,136 +256,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a size into an instance of the <see cref="Size2"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a size to convert.</param>
-        /// <param name="size">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Size2 size)
-        {
-            return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out size);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a size into an instance of the <see cref="Size2"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a size to convert.</param>
-        /// <returns>A instance of the <see cref="Size2"/> structure equivalent to the size contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Size2 Parse(String s)
-        {
-            return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a size into an instance of the <see cref="Size2"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a size to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="size">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Size2 size)
-        {
-            size = default(Size2);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 2)
-                return false;
-
-            Int32 width, height;
-            if (!Int32.TryParse(components[0], style, provider, out width))
-                return false;
-            if (!Int32.TryParse(components[1], style, provider, out height))
-                return false;
-
-            size = new Size2(width, height);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a size into an instance of the <see cref="Size2"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a size to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Size2"/> structure equivalent to the size contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Size2 Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Size2 size;
-            if (!TryParse(s, style, provider, out size))
-                throw new FormatException();
-            return size;
-        }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + Width.GetHashCode();
-                hash = hash * 23 + Height.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1}", Width, Height);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Size2))
-                return false;
-            return Equals((Size2)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Size2 other)
-        {
-            return Width == other.Width && Height == other.Height;
-        }
-
+        
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

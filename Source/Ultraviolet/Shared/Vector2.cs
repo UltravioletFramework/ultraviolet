@@ -11,7 +11,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{X:{X} Y:{Y}\}")]
-    public struct Vector2 : IEquatable<Vector2>, IInterpolatable<Vector2>
+    public partial struct Vector2 : IInterpolatable<Vector2>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector2"/> structure with all of its components set to the specified value.
@@ -36,31 +36,7 @@ namespace Ultraviolet
             this.X = x;
             this.Y = y;
         }
-
-        /// <summary>
-        /// Compares two vectors for equality.
-        /// </summary>
-        /// <param name="vector1">The first <see cref="Vector2"/> to compare.</param>
-        /// <param name="vector2">The second <see cref="Vector2"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified vectors are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Vector2 vector1, Vector2 vector2)
-        {
-            return vector1.Equals(vector2);
-        }
-
-        /// <summary>
-        /// Compares two vectors for inequality.
-        /// </summary>
-        /// <param name="vector1">The first <see cref="Vector2"/> to compare.</param>
-        /// <param name="vector2">The second <see cref="Vector2"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified vectors are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Vector2 vector1, Vector2 vector2)
-        {
-            return !vector1.Equals(vector2);
-        }
-
+        
         /// <summary>
         /// Adds two vectors.
         /// </summary>
@@ -291,78 +267,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="vector">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Vector2 vector)
-        {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out vector);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <returns>A instance of the <see cref="Vector2"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Vector2 Parse(String s)
-        {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="vector">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Vector2 vector)
-        {
-            vector = default(Vector2);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 2)
-                return false;
-
-            Single x, y;
-            if (!Single.TryParse(components[0], style, provider, out x))
-                return false;
-            if (!Single.TryParse(components[1], style, provider, out y))
-                return false;
-
-            vector = new Vector2(x, y);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector2"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Vector2"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Vector2 Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Vector2 vector;
-            if (!TryParse(s, style, provider, out vector))
-                throw new FormatException();
-            return vector;
-        }
-
+        
         /// <summary>
         /// Calculates the dot product of two vectors.
         /// </summary>
@@ -1098,65 +1003,7 @@ namespace Ultraviolet
             result.X = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
             result.Y = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + X.GetHashCode();
-                hash = hash * 23 + Y.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1}", X, Y);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Vector2))
-                return false;
-            return Equals((Vector2)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Vector2 other)
-        {
-            return X == other.X && Y == other.Y;
-        }
-
+        
         /// <summary>
         /// Calculates the length of the vector.
         /// </summary>

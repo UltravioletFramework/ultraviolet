@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -11,7 +10,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{Normal:{Normal} D:{D}\}")]
-    public struct Plane : IEquatable<Plane>, IInterpolatable<Plane>
+    public partial struct Plane : IEquatable<Plane>, IInterpolatable<Plane>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> structure.
@@ -55,93 +54,7 @@ namespace Ultraviolet
             Normal.Z = value.Z;
             D = value.W;
         }
-
-        /// <summary>
-        /// Compares two planes for equality.
-        /// </summary>
-        /// <param name="p1">The first <see cref="Plane"/> to compare.</param>
-        /// <param name="p2">The second <see cref="Plane"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified planes are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(Plane p1, Plane p2) => p1.Equals(p2);
-
-        /// <summary>
-        /// Compares two planes for inequality.
-        /// </summary>
-        /// <param name="p1">The first <see cref="Plane"/> to compare.</param>
-        /// <param name="p2">The second <see cref="Plane"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified planes are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(Plane p1, Plane p2) => !p1.Equals(p2);
-
-        /// <summary>
-        /// Converts the string representation of a plane into an instance of the <see cref="Plane"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a plane to convert.</param>
-        /// <returns>A instance of the <see cref="Plane"/> structure equivalent to the plane contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Plane Parse(String s) =>
-            Parse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo);
-
-        /// <summary>
-        /// Converts the string representation of a plane into an instance of the <see cref="Plane"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a plane to convert.</param>
-        /// <param name="plane">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Plane plane) =>
-            TryParse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo, out plane);
-
-        /// <summary>
-        /// Converts the string representation of a plane into an instance of the <see cref="Plane"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a plane to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Plane"/> structure equivalent to the plane contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Plane Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            if (!TryParse(s, style, provider, out Plane plane))
-                throw new FormatException();
-
-            return plane;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a plane into an instance of the <see cref="Plane"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a plane to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="plane">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Plane plane)
-        {
-            plane = default(Plane);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 4)
-                return false;
-
-            if (!Single.TryParse(components[0], style, provider, out Single x))
-                return false;
-            if (!Single.TryParse(components[1], style, provider, out Single y))
-                return false;
-            if (!Single.TryParse(components[2], style, provider, out Single z))
-                return false;
-            if (!Single.TryParse(components[3], style, provider, out Single d))
-                return false;
-
-            plane = new Plane(x, y, z, d);
-            return true;
-        }
-
+        
         /// <summary>
         /// Calculates the dot product of a <see cref="Plane"/> and a <see cref="Vector4"/>.
         /// </summary>
@@ -412,61 +325,7 @@ namespace Ultraviolet
                 x * m13 + y * m23 + z * m33,
                 plane.D);
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + Normal.GetHashCode();
-                hash = hash * 23 + D.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString() => 
-            ToString(null);
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider) =>
-            String.Format(provider, "{0} {1}", Normal, D);
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Plane))
-                return false;
-            return Equals((Plane)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Plane other)
-        {
-            return Normal.Equals(other.Normal) && D.Equals(other.D);
-        }
-
+                
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

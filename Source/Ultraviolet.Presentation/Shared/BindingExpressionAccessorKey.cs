@@ -5,7 +5,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents a key which identifies a particular binding expression getter or setter.
     /// </summary>
-    internal struct BindingExpressionAccessorKey : IEquatable<BindingExpressionAccessorKey>
+    internal partial struct BindingExpressionAccessorKey
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingExpressionAccessorKey"/> structure.
@@ -19,56 +19,7 @@ namespace Ultraviolet.Presentation
             this.DataSourceType = dataSourceType;
             this.Expression = expression;
         }
-
-        /// <summary>
-        /// Compares two keys for equality.
-        /// </summary>
-        /// <param name="key1">The first <see cref="BindingExpressionAccessorKey"/> to compare.</param>
-        /// <param name="key2">The second <see cref="BindingExpressionAccessorKey"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified keys are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(BindingExpressionAccessorKey key1, BindingExpressionAccessorKey key2) =>
-            key1.Equals(key2);
-
-        /// <summary>
-        /// Compares two keys for inequality.
-        /// </summary>
-        /// <param name="key1">The first <see cref="BindingExpressionAccessorKey"/> to compare.</param>
-        /// <param name="key2">The second <see cref="BindingExpressionAccessorKey"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified keys are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(BindingExpressionAccessorKey key1, BindingExpressionAccessorKey key2) =>
-            !key2.Equals(key2);
-
-        /// <inheritdoc/>
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is BindingExpressionAccessorKey))
-                return false;
-
-            return Equals((BindingExpressionAccessorKey)obj);
-        }
-
-        /// <inheritdoc/>
-        public Boolean Equals(BindingExpressionAccessorKey other)
-        {
-            return
-                BoundType == other.BoundType &&
-                DataSourceType == other.DataSourceType &&
-                Expression == other.Expression;
-        }
-
-        /// <inheritdoc/>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + BoundType.GetHashCode();
-                hash = hash * 23 + DataSourceType.GetHashCode();
-                hash = hash * 23 + Expression.GetHashCode();
-                return hash;
-            }
-        }
-
+        
         /// <summary>
         /// Gets the type of value to which the expression is being bound.
         /// </summary>

@@ -11,7 +11,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{X:{X} Y:{Y} Z:{Z} W:{W}\}")]
-    public struct Vector4 : IEquatable<Vector4>, IInterpolatable<Vector4>
+    public partial struct Vector4 : IInterpolatable<Vector4>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector4"/> structure with all of its components set to the specified value.
@@ -72,30 +72,6 @@ namespace Ultraviolet
             this.Y = vector.Y;
             this.Z = vector.Z;
             this.W = w;
-        }
-
-        /// <summary>
-        /// Compares two vectors for equality.
-        /// </summary>
-        /// <param name="vector1">The first <see cref="Vector4"/> to compare.</param>
-        /// <param name="vector2">The second <see cref="Vector4"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified vectors are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Vector4 vector1, Vector4 vector2)
-        {
-            return vector1.Equals(vector2);
-        }
-
-        /// <summary>
-        /// Compares two vectors for inequality.
-        /// </summary>
-        /// <param name="vector1">The first <see cref="Vector4"/> to compare.</param>
-        /// <param name="vector2">The second <see cref="Vector4"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified vectors are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Vector4 vector1, Vector4 vector2)
-        {
-            return !vector1.Equals(vector2);
         }
 
         /// <summary>
@@ -248,82 +224,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector4"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="vector">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Vector4 vector)
-        {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out vector);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector4"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <returns>A instance of the <see cref="Vector4"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Vector4 Parse(String s)
-        {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector4"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="vector">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Vector4 vector)
-        {
-            vector = default(Vector4);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 4)
-                return false;
-
-            Single x, y, z, w;
-            if (!Single.TryParse(components[0], style, provider, out x))
-                return false;
-            if (!Single.TryParse(components[1], style, provider, out y))
-                return false;
-            if (!Single.TryParse(components[2], style, provider, out z))
-                return false;
-            if (!Single.TryParse(components[3], style, provider, out w))
-                return false;
-
-            vector = new Vector4(x, y, z, w);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Vector4"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a vector to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Vector4"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Vector4 Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Vector4 vector;
-            if (!TryParse(s, style, provider, out vector))
-                throw new FormatException();
-            return vector;
-        }
-
+        
         /// <summary>
         /// Calculates the dot product of two vectors.
         /// </summary>
@@ -1323,67 +1224,7 @@ namespace Ultraviolet
             result.Z = (b1 * v1.Z) + (b2 * v2.Z) + (b3 * v3.Z);
             result.W = (b1 * v1.W) + (b2 * v2.W) + (b3 * v3.W);
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + X.GetHashCode();
-                hash = hash * 23 + Y.GetHashCode();
-                hash = hash * 23 + Z.GetHashCode();
-                hash = hash * 23 + W.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1} {2} {3}", X, Y, Z, W);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Vector4))
-                return false;
-            return Equals((Vector4)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Vector4 other)
-        {
-            return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
-        }
-
+        
         /// <summary>
         /// Calculates the length of the vector.
         /// </summary>

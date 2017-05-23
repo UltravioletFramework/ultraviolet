@@ -7,7 +7,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents a raw dependency property value plus the culture with which it should be parsed. 
     /// </summary>
-    public struct DependencyValue : IEquatable<DependencyValue>
+    public partial struct DependencyValue
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyValue"/> structure.
@@ -20,39 +20,6 @@ namespace Ultraviolet.Presentation
 
             this.Value = value;
             this.Culture = culture;
-        }
-
-        /// <inheritdoc/>
-        public override String ToString() => Value;
-
-        /// <inheritdoc/>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + Value.GetHashCode();
-                hash = hash * 23 + Culture.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <inheritdoc/>
-        public override Boolean Equals(Object obj)
-        {
-            if (obj is DependencyName)
-            {
-                return Equals((DependencyName)obj);
-            }
-            return false;
-        }
-
-        /// <inheritdoc/>
-        public Boolean Equals(DependencyValue other)
-        {
-            return 
-                this.Value == other.Value &&
-                this.Culture == other.Culture;
         }
 
         /// <summary>

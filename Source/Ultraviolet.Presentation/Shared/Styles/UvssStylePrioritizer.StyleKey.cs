@@ -8,7 +8,7 @@ namespace Ultraviolet.Presentation.Styles
 		/// <summary>
 		/// Represents the key which identifies a style + navigation expression.
 		/// </summary>
-		private struct StyleKey : IEquatable<StyleKey>
+		private partial struct StyleKey
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="StyleKey"/> structure.
@@ -22,60 +22,7 @@ namespace Ultraviolet.Presentation.Styles
 				this.name = name;
 				this.navigationExpression = navigationExpression;
 			}
-
-			/// <summary>
-			/// Compares two <see cref="StyleKey"/> values for equality.
-			/// </summary>
-			/// <param name="stk1">The first <see cref="StyleKey"/> to compare.</param>
-			/// <param name="stk2">The second <see cref="StyleKey"/> to compare.</param>
-			/// <returns><see langword="true"/> if the specified keys are equal; otherwise, <see langword="false"/>.</returns>
-			public static Boolean operator ==(StyleKey stk1, StyleKey stk2)
-			{
-				return stk1.Equals(stk2);
-			}
-
-			/// <summary>
-			/// Compares two <see cref="StyleKey"/> values for inequality.
-			/// </summary>
-			/// <param name="stk1">The first <see cref="StyleKey"/> to compare.</param>
-			/// <param name="stk2">The second <see cref="StyleKey"/> to compare.</param>
-			/// <returns><see langword="true"/> if the specified keys are unequal; otherwise, <see langword="false"/>.</returns>
-			public static Boolean operator !=(StyleKey stk1, StyleKey stk2)
-			{
-				return !stk1.Equals(stk2);
-			}
-
-			/// <inheritdoc/>
-			public override Int32 GetHashCode()
-			{
-				unchecked
-				{
-					var hash = 17;
-					hash = hash * 23 + (name == null ? 0 : name.GetHashCode());
-					hash = hash * 23 + (navigationExpression == null ? 0 : navigationExpression.GetHashCode());
-					return hash;
-				}
-			}
-
-			/// <inheritdoc/>
-			public override Boolean Equals(Object obj)
-			{
-				if (!(obj is StyleKey))
-				{
-					return false;
-				}
-				return Equals((StyleKey)obj);
-			}
-
-			/// <inheritdoc/>
-			public Boolean Equals(StyleKey other)
-			{
-				return
-					name == other.name &&
-					navigationExpression.HasValue == other.navigationExpression.HasValue &&
-					navigationExpression.GetValueOrDefault().Equals(other.navigationExpression.GetValueOrDefault());
-			}
-
+            
 			/// <summary>
 			/// Gets the canonical name of the style.
 			/// </summary>

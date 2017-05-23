@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -12,7 +11,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{X:{X} Y:{Y} Z:{Z} W:{W}\}")]
-    public struct Quaternion : IEquatable<Quaternion>, IInterpolatable<Quaternion>
+    public partial struct Quaternion : IInterpolatable<Quaternion>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Quaternion"/> structure.
@@ -44,25 +43,7 @@ namespace Ultraviolet
             this.Z = vector.Z;
             this.W = scalar;
         }
-
-        /// <summary>
-        /// Compares two quaternions for equality.
-        /// </summary>
-        /// <param name="quaternion1">The first <see cref="Quaternion"/> to compare.</param>
-        /// <param name="quaternion2">The second <see cref="Quaternion"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified quaternions are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Quaternion quaternion1, Quaternion quaternion2) => quaternion1.Equals(quaternion2);
-
-        /// <summary>
-        /// Compares two quaternions for inequality.
-        /// </summary>
-        /// <param name="quaternion1">The first <see cref="Quaternion"/> to compare.</param>
-        /// <param name="quaternion2">The second <see cref="Quaternion"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified quaternions are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Quaternion quaternion1, Quaternion quaternion2) => !quaternion1.Equals(quaternion2);
-
+        
         /// <summary>
         /// Adds two quaternions.
         /// </summary>
@@ -233,77 +214,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a quaternion into an instance of the <see cref="Quaternion"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a quaternion to convert.</param>
-        /// <param name="quaternion">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Quaternion quaternion) =>
-            TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out quaternion);
-
-        /// <summary>
-        /// Converts the string representation of a vector into an instance of the <see cref="Quaternion"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a quaternion to convert.</param>
-        /// <returns>A instance of the <see cref="Quaternion"/> structure equivalent to the vector contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Quaternion Parse(String s) =>
-            Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
-
-        /// <summary>
-        /// Converts the string representation of a quaternion into an instance of the <see cref="Vector4"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a quaternion to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="quaternion">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Quaternion quaternion)
-        {
-            quaternion = default(Quaternion);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 4)
-                return false;
-
-            if (!Single.TryParse(components[0], style, provider, out Single x))
-                return false;
-            if (!Single.TryParse(components[1], style, provider, out Single y))
-                return false;
-            if (!Single.TryParse(components[2], style, provider, out Single z))
-                return false;
-            if (!Single.TryParse(components[3], style, provider, out Single w))
-                return false;
-
-            quaternion = new Quaternion(x, y, z, w);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a quaternion into an instance of the <see cref="Quaternion"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a quaternion to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Quaternion"/> structure equivalent to the quaternion contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Quaternion Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            if (!TryParse(s, style, provider, out Quaternion quaternion))
-                throw new FormatException();
-
-            return quaternion;
-        }
-
+                
         /// <summary>
         /// Creates a <see cref="Quaternion"/> from a normalized vector axis and an angle to rotate about the vector.
         /// </summary>
@@ -1178,63 +1089,7 @@ namespace Ultraviolet
             result.Z = -quaternion.Z;
             result.W = quaternion.W;            
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + X.GetHashCode();
-                hash = hash * 23 + Y.GetHashCode();
-                hash = hash * 23 + Z.GetHashCode();
-                hash = hash * 23 + W.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString() => ToString(null);
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider) =>
-            String.Format(provider, "{0} {1} {2} {3}", X, Y, Z, W);
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (obj is Quaternion quaternion)
-                return Equals(quaternion);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Quaternion other)
-        {
-            return X == other.X && Y == other.Y && Z == other.Z && W == other.W;
-        }
-
+                
         /// <summary>
         /// Calculates the length of the quaternion.
         /// </summary>

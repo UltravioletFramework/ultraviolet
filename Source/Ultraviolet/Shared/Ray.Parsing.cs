@@ -6,50 +6,63 @@ namespace Ultraviolet
 {
     partial struct Ray
     {
-        /// <summary>
-        /// Converts the string representation of a ray into an instance of the <see cref="Ray"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a ray to convert.</param>
-        /// <returns>A instance of the <see cref="Ray"/> structure equivalent to the ray contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Ray Parse(String s) =>
-            Parse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo);
-
-        /// <summary>
-        /// Converts the string representation of a ray into an instance of the <see cref="Ray"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a ray to convert.</param>
-        /// <param name="ray">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Ray ray) =>
-            TryParse(s, NumberStyles.Float, NumberFormatInfo.CurrentInfo, out ray);
-
-        /// <summary>
-        /// Converts the string representation of a ray into an instance of the <see cref="Ray"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a ray to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Ray"/> structure equivalent to the ray contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Ray Parse(String s, NumberStyles style, IFormatProvider provider) =>
-            TryParse(s, style, provider, out Ray ray) ? ray : throw new FormatException();
-
-        /// <summary>
-        /// Converts the string representation of a ray into an instance of the <see cref="Ray"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a ray to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="ray">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Ray ray)
+        /// <inheritdoc/>
+        public override String ToString()
         {
-            ray = default(Ray);
+            return ToString(null);
+        }
+
+        /// <summary>
+        /// Converts the object to a human-readable string using the specified culture information.
+        /// </summary>
+        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
+        /// <returns>A human-readable string that represents the object.</returns>
+        public String ToString(IFormatProvider provider)
+        {
+            return String.Format(provider, "{0} {1}", Position, Direction);
+        }
+
+        /// <summary>
+        /// Converts the string representation of a <see cref="Ray"/> to an object instance.
+        /// A return value indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="s">The string to convert.</param>
+        /// <param name="v">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
+        public static Boolean TryParse(String s, out Ray v)
+        {
+            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out v);
+        }
+        
+        /// <summary>
+        /// Converts the string representation of a <see cref="Ray"/> to an object instance.
+        /// </summary>
+        /// <param name="s">The string to convert.</param>
+        /// <returns>The converted value.</returns>
+        [Preserve]
+        public static Ray Parse(String s)
+        {
+            var v = default(Ray);
+            if (!TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out v))
+                throw new FormatException();
+            
+            return v;
+        }
+        
+        /// <summary>
+        /// Converts the string representation of a <see cref="Ray"/> to an object instance.
+        /// A return value indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="s">The string to convert.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
+        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
+        /// <param name="v">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        [Preserve]
+        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Ray v)
+        {
+            v = default(Ray);
 
             if (String.IsNullOrEmpty(s))
                 return false;
@@ -72,22 +85,25 @@ namespace Ultraviolet
             if (!Single.TryParse(components[5], style, provider, out Single dz))
                 return false;
 
-            ray = new Ray(new Vector3(px, py, pz), new Vector3(dx, dy, dz));
+            v = new Ray(new Vector3(px, py, pz), new Vector3(dx, dy, dz));
             return true;
         }
-
+        
         /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
+        /// Converts the string representation of a <see cref="Ray"/> to an object instance.
         /// </summary>
+        /// <param name="s">The string to convert.</param>
+        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
+        /// <returns>The converted value.</returns>
         [Preserve]
-        public String ToString(IFormatProvider provider) =>
-            String.Format(provider, "{0} {1}", Position, Direction);
-
-        /// <inheritdoc/>
-        [Preserve]
-        public override String ToString() =>
-            ToString(null);
+        public static Ray Parse(String s, NumberStyles style, IFormatProvider provider)
+        {
+            var v = default(Ray);
+            if (!TryParse(s, style, provider, out v))
+                throw new FormatException();
+            
+            return v;
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace Ultraviolet.Presentation.Styles
             {
                 var hash = 17;
                 hash = hash * 23 + propertyName.GetHashCode();
-                hash = hash * 23 + ((propertyType == null) ? 0 : propertyType.GetHashCode());
+                hash = hash * 23 + propertyType?.GetHashCode() ?? 0;
                 hash = hash * 23 + propertyIndex.GetHashCode();
                 return hash;
             }

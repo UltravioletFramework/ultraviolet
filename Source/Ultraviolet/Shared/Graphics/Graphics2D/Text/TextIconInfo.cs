@@ -5,7 +5,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents the metadata for an icon used by the text layout engine.
     /// </summary>
-    public struct TextIconInfo : IEquatable<TextIconInfo>
+    public partial struct TextIconInfo
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextIconInfo"/> structure.
@@ -16,45 +16,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         internal TextIconInfo(SpriteAnimation icon, Int32? width, Int32? height)
             : this()
         {
-            Icon   = icon;
-            Width  = width;
+            Icon = icon;
+            Width = width;
             Height = height;
-        }
-
-        /// <inheritdoc/>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + (Icon == null ? 0 : Icon.GetHashCode());
-                hash = hash * 23 + Width.GetHashCode();
-                hash = hash * 23 + Height.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <inheritdoc/>
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is TextIconInfo))
-            {
-                return false;
-            }
-            return Equals((TextIconInfo)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        public Boolean Equals(TextIconInfo other)
-        {
-            return
-                this.Icon == other.Icon &&
-                this.Width == other.Width &&
-                this.Height == other.Height;
         }
 
         /// <summary>

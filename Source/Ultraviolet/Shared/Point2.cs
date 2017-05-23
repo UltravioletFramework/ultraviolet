@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -11,7 +10,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{X:{X} Y:{Y}\}")]
-    public struct Point2 : IEquatable<Point2>, IInterpolatable<Point2>
+    public partial struct Point2 : IInterpolatable<Point2>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2"/> structure.
@@ -93,31 +92,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Compares two points for equality.
-        /// </summary>
-        /// <param name="p1">The first <see cref="Point2"/> to compare.</param>
-        /// <param name="p2">The second <see cref="Point2"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified points are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Point2 p1, Point2 p2)
-        {
-            return p1.Equals(p2);
-        }
-
-        /// <summary>
-        /// Compares two points for inequality.
-        /// </summary>
-        /// <param name="p1">The first <see cref="Point2"/> to compare.</param>
-        /// <param name="p2">The second <see cref="Point2"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified points are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Point2 p1, Point2 p2)
-        {
-            return !p1.Equals(p2);
-        }
-
+        
         /// <summary>
         /// Multiplies a <see cref="Point2"/> by a scalar multiplier.
         /// </summary>
@@ -315,79 +290,6 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a point into an instance of the <see cref="Point2"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a point to convert.</param>
-        /// <param name="point">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Point2 point)
-        {
-            return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out point);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a point into an instance of the <see cref="Point2"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a point to convert.</param>
-        /// <returns>A instance of the <see cref="Point2"/> structure equivalent to the point contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Point2 Parse(String s)
-        {
-            return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a point into an instance of the <see cref="Point2"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a point to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="point">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Point2 point)
-        {
-            point = default(Point2);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 2)
-                return false;
-
-            Int32 x, y;
-            if (!Int32.TryParse(components[0], style, provider, out x))
-                return false;
-            if (!Int32.TryParse(components[1], style, provider, out y))
-                return false;
-
-            point = new Point2(x, y);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a point into an instance of the <see cref="Point2"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a point to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Point2"/> structure equivalent to the point contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Point2 Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Point2 point;
-            if (!TryParse(s, style, provider, out point))
-            {
-                throw new FormatException();
-            }
-            return point;
-        }
         
         /// <summary>
         /// Transforms a point by a quaternion.
@@ -472,65 +374,7 @@ namespace Ultraviolet
 
             result = temp;
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + X.GetHashCode();
-                hash = hash * 23 + Y.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1}", X, Y);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Point2))
-                return false;
-            return Equals((Point2)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Point2 other)
-        {
-            return X == other.X && Y == other.Y;
-        }
-
+        
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

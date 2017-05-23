@@ -12,7 +12,7 @@ namespace Ultraviolet.Core
     /// values; this means that the size of a masked 32-bit integer is 2 bytes in the best case and 5 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
     [JsonConverter(typeof(CoreJsonConverter))]
-    public struct MaskedUInt32
+    public partial struct MaskedUInt32
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaskedUInt32"/> structure.

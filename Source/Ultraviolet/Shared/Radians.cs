@@ -11,7 +11,7 @@ namespace Ultraviolet
     /// </summary>
     [DebuggerDisplay(@"\{Value:{Value}\}")]
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    public struct Radians : IEquatable<Radians>, IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
+    public partial struct Radians : IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Radians"/> structure.
@@ -44,31 +44,7 @@ namespace Ultraviolet
         {
             return new Radians(value);
         }
-
-        /// <summary>
-        /// Compares two instances of the <see cref="Radians"/> structure for equality.
-        /// </summary>
-        /// <param name="r1">The first value to compare.</param>
-        /// <param name="r2">The second value to compare.</param>
-        /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Radians r1, Radians r2)
-        {
-            return r1.Equals(r2);
-        }
-
-        /// <summary>
-        /// Compares two instances of the <see cref="Radians"/> structure for inequality.
-        /// </summary>
-        /// <param name="r1">The first value to compare.</param>
-        /// <param name="r2">The second value to compare.</param>
-        /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Radians r1, Radians r2)
-        {
-            return !(r1 == r2);
-        }
-
+        
         /// <summary>
         /// Adds two values in radians.
         /// </summary>
@@ -175,81 +151,7 @@ namespace Ultraviolet
         {
             return new Radians(-r1.Value);
         }
-
-        /// <summary>
-        /// Converts the string representation of an angle in radians into an instance of the <see cref="Radians"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing an angle to convert.</param>
-        /// <param name="radians">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Radians radians)
-        {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out radians);
-        }
-
-        /// <summary>
-        /// Converts the string representation of angle in radians to an equivalent instance of the <see cref="Radians"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing the angle to convert.</param>
-        /// <returns>An instance of the <see cref="Radians"/> structure that is equivalent to the specified string.</returns>
-        [Preserve]
-        public static Radians Parse(String s)
-        {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of an angle in radians into an instance of the <see cref="Radians"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing an angle to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="radians">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Radians radians)
-        {
-            radians = Radians.Zero;
-
-            // Determine whether the string is being specified in terms of pi or tau.
-            var trimmed = s.Trim().ToLower();
-            var suffixFactor = 1f;
-            var suffix = EvaluateSuffix(trimmed, out suffixFactor);
-            var suffixLength = (suffix == null) ? 0 : suffix.Length;
-
-            // Parse the fractional part of the string.
-            Single numericValue;
-            if (!TryParseFraction(trimmed.Substring(0, trimmed.Length - suffixLength), style, provider, out numericValue))
-            {
-                return false;
-            }
-
-            // Convert the numeric value to radians.
-            radians = new Radians(numericValue * suffixFactor);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of an angle in radians to an equivalent instance of the <see cref="Radians"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing the angle to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>An instance of the <see cref="Radians"/> structure that is equivalent to the specified string.</returns>
-        [Preserve]
-        public static Radians Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Radians value;
-            if (!TryParse(s, style, provider, out value))
-            {
-                throw new FormatException();
-            }
-            return value;
-        }
-
+        
         /// <summary>
         /// Creates a new instance of the <see cref="Radians"/> structure in terms of pi.
         /// </summary>
@@ -290,59 +192,7 @@ namespace Ultraviolet
             var angle = radians.value % (float)(2.0 * Math.PI);
             return angle >= 0 ? new Radians(angle) : new Radians((float)(angle + 2.0 * Math.PI));
         }
-
-        /// <summary>
-        /// Gets the hash code for this instance.
-        /// </summary>
-        /// <returns>The hash code for this instance.</returns>
-        public override Int32 GetHashCode()
-        {
-            return value.GetHashCode();
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance and another instance represent the same value.
-        /// </summary>
-        /// <param name="other">The other instance to evaluate.</param>
-        /// <returns><see langword="true"/> if this instance and the specified instance represent the same value; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object other)
-        {
-            if (!(other is Radians))
-                return false;
-            return Equals((Radians)other);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance and another instance represent the same value.
-        /// </summary>
-        /// <param name="other">The other instance to evaluate.</param>
-        /// <returns><see langword="true"/> if this instance and the specified instance represent the same value; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Radians other)
-        {
-            return value.Equals(other.value);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return value.ToString(provider);
-        }
-
+        
         /// <summary>
         /// Compares this instance to the specified angle and returns an integer that indicates whether the value
         /// of this instance is less than, equal to, or greater than the value of the specified angle.

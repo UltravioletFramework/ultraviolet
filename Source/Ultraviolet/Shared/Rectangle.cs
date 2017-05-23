@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -11,7 +10,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [DebuggerDisplay(@"\{X:{X} Y:{Y} Width:{Width} Height:{Height}\}")]
-    public struct Rectangle : IEquatable<Rectangle>, IInterpolatable<Rectangle>
+    public partial struct Rectangle : IInterpolatable<Rectangle>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> class.
@@ -155,31 +154,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Compares two rectangles for equality.
-        /// </summary>
-        /// <param name="r1">The first <see cref="Rectangle"/> to compare.</param>
-        /// <param name="r2">The second <see cref="Rectangle"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified rectangles are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Rectangle r1, Rectangle r2)
-        {
-            return r1.Equals(r2);
-        }
-
-        /// <summary>
-        /// Compares two rectangles for inequality.
-        /// </summary>
-        /// <param name="r1">The first <see cref="Rectangle"/> to compare.</param>
-        /// <param name="r2">The second <see cref="Rectangle"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified rectangles are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Rectangle r1, Rectangle r2)
-        {
-            return !r1.Equals(r2);
-        }
-
+        
         /// <summary>
         /// Implicitly converts a <see cref="Rectangle"/> structure to a <see cref="RectangleF"/> structure.
         /// </summary>
@@ -215,84 +190,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the <see cref="Rectangle"/>  structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <param name="rect">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Rectangle rect)
-        {
-            return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out rect);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the <see cref="Rectangle"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <returns>A instance of the <see cref="Rectangle"/> structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Rectangle Parse(String s)
-        {
-            return Parse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the <see cref="Rectangle"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="rect">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Rectangle rect)
-        {
-            rect = default(Rectangle);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 4)
-                return false;
-
-            Int32 x, y, width, height;
-            if (!Int32.TryParse(components[0], style, provider, out x))
-                return false;
-            if (!Int32.TryParse(components[1], style, provider, out y))
-                return false;
-            if (!Int32.TryParse(components[2], style, provider, out width))
-                return false;
-            if (!Int32.TryParse(components[3], style, provider, out height))
-                return false;
-
-            rect = new Rectangle(x, y, width, height);
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a rectangle into an instance of the <see cref="Rectangle"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a rectangle to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the <see cref="Rectangle"/> structure equivalent to the rectangle contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Rectangle Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Rectangle rect;
-            if (!TryParse(s, style, provider, out rect))
-            {
-                throw new FormatException();
-            }
-            return rect;
-        }
-
+        
         /// <summary>
         /// Offsets the specified rectangle by the specified amount.
         /// </summary>
@@ -488,67 +386,7 @@ namespace Ultraviolet
                 result.Height = minBottom - maxTop;
             }
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + X.GetHashCode();
-                hash = hash * 23 + Y.GetHashCode();
-                hash = hash * 23 + Width.GetHashCode();
-                hash = hash * 23 + Height.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1} {2} {3}", X, Y, Width, Height);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Rectangle))
-                return false;
-            return Equals((Rectangle)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Rectangle other)
-        {
-            return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;
-        }
-
+        
         /// <summary>
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>

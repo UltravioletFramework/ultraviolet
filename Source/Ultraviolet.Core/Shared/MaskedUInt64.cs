@@ -12,7 +12,7 @@ namespace Ultraviolet.Core
     /// values; this means that the size of a masked 64-bit integer is 2 bytes in the best case and 9 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
     [JsonConverter(typeof(CoreJsonConverter))]
-    public struct MaskedUInt64
+    public partial struct MaskedUInt64
     {
         /// <summary>
         /// Initializes a new instance of the MaskedUInt64 structure.

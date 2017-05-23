@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -13,7 +11,7 @@ namespace Ultraviolet
     [Serializable]
     [DebuggerDisplay(@"\{ \{M11:{M11} M12:{M12} M13:{M13} M14:{M14}\} \{M21:{M21} M22:{M22} M23:{M23} M24:{M24}\} \{M31:{M31} M32:{M32} M33:{M33} M34:{M34}\} \{M41:{M41} M42:{M42} M43:{M43} M44:{M44}\} \}")]
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    public struct Matrix : IEquatable<Matrix>, IInterpolatable<Matrix>
+    public partial struct Matrix : IInterpolatable<Matrix>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Matrix"/> structure.
@@ -61,31 +59,7 @@ namespace Ultraviolet
             this.M43 = M43;
             this.M44 = M44;
         }
-
-        /// <summary>
-        /// Compares two matrices for equality.
-        /// </summary>
-        /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
-        /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified matrices are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(Matrix m1, Matrix m2)
-        {
-            return m1.Equals(m2);
-        }
-
-        /// <summary>
-        /// Compares two matrices for inequality.
-        /// </summary>
-        /// <param name="m1">The first <see cref="Matrix"/> to compare.</param>
-        /// <param name="m2">The second <see cref="Matrix"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified matrices are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(Matrix m1, Matrix m2)
-        {
-            return !m1.Equals(m2);
-        }
-
+        
         /// <summary>
         /// Multiplies a <see cref="Matrix"/> by a scaling factor.
         /// </summary>
@@ -196,84 +170,7 @@ namespace Ultraviolet
             Negate(ref matrix, out result);
             return result;
         }
-
-        /// <summary>
-        /// Converts the string representation of a matrix into an instance of the <see cref="Matrix"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
-        /// <param name="matrix">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, out Matrix matrix)
-        {
-            return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out matrix);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a matrix into an instance of the <see cref="Matrix"/> structure.
-        /// </summary>
-        /// <param name="s">A string containing a matrix to convert.</param>
-        /// <returns>A instance of the <see cref="Matrix"/> structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Matrix Parse(String s)
-        {
-            return Parse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a matrix into an instance of the <see cref="Matrix"/> structure.
-        /// A return value indicates whether the conversion succeeded.
-        /// </summary>
-        /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <param name="matrix">A variable to populate with the converted value.</param>
-        /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Matrix matrix)
-        {
-            matrix = default(Matrix);
-
-            if (String.IsNullOrEmpty(s))
-                return false;
-
-            var components = s.Split((Char[])null, StringSplitOptions.RemoveEmptyEntries);
-            if (components.Length != 16)
-                return false;
-
-            var values = new Single[16];
-            for (int i = 0; i < values.Length; i++)
-            {
-                if (!Single.TryParse(components[i], style, provider, out values[i]))
-                    return false;
-            }
-
-            matrix = new Matrix(
-                values[0], values[1], values[2], values[3],
-                values[4], values[5], values[6], values[7],
-                values[8], values[9], values[10], values[11],
-                values[12], values[13], values[14], values[15]
-            );
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a <see cref="Matrix"/> into an instance of the Matrix structure.
-        /// </summary>
-        /// <param name="s">A string containing a <see cref="Matrix"/> to convert.</param>
-        /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A instance of the Matrix structure equivalent to the matrix contained in <paramref name="s"/>.</returns>
-        [Preserve]
-        public static Matrix Parse(String s, NumberStyles style, IFormatProvider provider)
-        {
-            Matrix matrix;
-            if (!TryParse(s, style, provider, out matrix))
-                throw new FormatException();
-            return matrix;
-        }
-
+        
         /// <summary>
         /// Creates a world matrix with the specified parameters.
         /// </summary>
@@ -2167,126 +2064,7 @@ namespace Ultraviolet
 
             return result;
         }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + M11.GetHashCode();
-                hash = hash * 23 + M12.GetHashCode();
-                hash = hash * 23 + M13.GetHashCode();
-                hash = hash * 23 + M14.GetHashCode();
-                hash = hash * 23 + M21.GetHashCode();
-                hash = hash * 23 + M22.GetHashCode();
-                hash = hash * 23 + M23.GetHashCode();
-                hash = hash * 23 + M24.GetHashCode();
-                hash = hash * 23 + M31.GetHashCode();
-                hash = hash * 23 + M32.GetHashCode();
-                hash = hash * 23 + M33.GetHashCode();
-                hash = hash * 23 + M34.GetHashCode();
-                hash = hash * 23 + M41.GetHashCode();
-                hash = hash * 23 + M42.GetHashCode();
-                hash = hash * 23 + M43.GetHashCode();
-                hash = hash * 23 + M44.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12} {13} {14} {15}",
-                M11, M12, M13, M14,
-                M21, M22, M23, M24,
-                M31, M32, M33, M34,
-                M41, M42, M43, M44);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is Matrix))
-                return false;
-            return Equals((Matrix)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(Matrix other)
-        {
-            return
-                M11 == other.M11 &&
-                M22 == other.M22 &&
-                M33 == other.M33 &&
-                M44 == other.M44 &&
-                M12 == other.M12 &&
-                M13 == other.M13 &&
-                M14 == other.M14 &&
-                M21 == other.M21 &&
-                M23 == other.M23 &&
-                M24 == other.M24 &&
-                M31 == other.M31 &&
-                M32 == other.M32 &&
-                M34 == other.M34 &&
-                M41 == other.M41 &&
-                M42 == other.M42 &&
-                M43 == other.M43;
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="other">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean EqualsRef(ref Matrix other)
-        {
-            return
-                M11 == other.M11 &&
-                M22 == other.M22 &&
-                M33 == other.M33 &&
-                M44 == other.M44 &&
-                M12 == other.M12 &&
-                M13 == other.M13 &&
-                M14 == other.M14 &&
-                M21 == other.M21 &&
-                M23 == other.M23 &&
-                M24 == other.M24 &&
-                M31 == other.M31 &&
-                M32 == other.M32 &&
-                M34 == other.M34 &&
-                M41 == other.M41 &&
-                M42 == other.M42 &&
-                M43 == other.M43;
-        }
-
+        
         /// <summary>
         /// Calculates the matrix's determinant.
         /// </summary>
@@ -2362,7 +2140,7 @@ namespace Ultraviolet
         /// Gets the matrix's translation vector.
         /// </summary>
         public Vector3 Translation { get { return new Vector3(M14, M24, M34); } }
-        
+
         /// <summary>
         /// Gets the value at row 1, column 1 of the matrix.
         /// </summary>

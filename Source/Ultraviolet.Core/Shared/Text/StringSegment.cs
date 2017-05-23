@@ -6,7 +6,7 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// Represents a segment of a string.
     /// </summary>
-    public struct StringSegment : IEquatable<StringSegment>, IEquatable<String>, IEquatable<StringBuilder>
+    public partial struct StringSegment
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
@@ -110,72 +110,6 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <summary>
-        /// Compares two string segments for equality.
-        /// </summary>
-        /// <param name="s1">The first <see cref="StringSegment"/>.</param>
-        /// <param name="s2">The second <see cref="StringSegment"/>.</param>
-        /// <returns><see langword="true"/> if the two string segments are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringSegment s1, StringSegment s2)
-        {
-            return s1.Equals(s2);
-        }
-
-        /// <summary>
-        /// Compares two string segments for inequality.
-        /// </summary>
-        /// <param name="s1">The first <see cref="StringSegment"/>.</param>
-        /// <param name="s2">The second <see cref="StringSegment"/>.</param>
-        /// <returns><see langword="true"/> if the two string segments are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringSegment s1, StringSegment s2)
-        {
-            return !s1.Equals(s2);
-        }
-
-        /// <summary>
-        /// Compares a string segment and a string for equality.
-        /// </summary>
-        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="SourceString"/> to compare.</param>
-        /// <returns><see langword="true"/> if the string segment is equal to the string; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringSegment s1, String s2)
-        {
-            return s1.Equals(s2);
-        }
-
-        /// <summary>
-        /// Compares a string segment and a string for inequality.
-        /// </summary>
-        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="SourceString"/> to compare.</param>
-        /// <returns><see langword="true"/> if the string segment is not equal to the string; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringSegment s1, String s2)
-        {
-            return !s1.Equals(s2);
-        }
-
-        /// <summary>
-        /// Compares a string segment and a string builder for equality.
-        /// </summary>
-        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="SourceStringBuilder"/> to compare.</param>
-        /// <returns><see langword="true"/> if the string segment is equal to the string builder; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringSegment s1, StringBuilder s2)
-        {
-            return s1.Equals(s2);
-        }
-
-        /// <summary>
-        /// Compares a string segment and a string builder for inequality.
-        /// </summary>
-        /// <param name="s1">The <see cref="StringSegment"/> to compare.</param>
-        /// <param name="s2">The <see cref="SourceStringBuilder"/> to compare.</param>
-        /// <returns><see langword="true"/> if the string segment is not equal to the string builder; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringSegment s1, StringBuilder s2)
-        {
-            return !s1.Equals(s2);
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the specified string segments are contiguous.
         /// </summary>
         /// <param name="s1">The first <see cref="StringSegment"/>.</param>
@@ -236,134 +170,7 @@ namespace Ultraviolet.Core.Text
 
             return Empty;
         }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            if (sourceBuilder != null)
-            {
-                return sourceBuilder.ToString(Start, Length);
-            }
-            if (sourceString != null)
-            {
-                return sourceString.Substring(Start, Length);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            if ((sourceString == null && sourceBuilder == null) || length == 0) 
-                return 0;
-
-            unchecked
-            {
-                var hash = 17;
-                for (int i = 0; i < length; i++)
-                {
-                    hash = hash * 31 + this[i].GetHashCode();
-                }
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this string segment is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this segment.</param>
-        /// <returns><see langword="true"/> ifthis string segment is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        public override Boolean Equals(Object obj)
-        {
-            if (obj is StringSegment) return Equals((StringSegment)obj);
-            if (obj is String) return Equals((String)obj);
-            if (obj is StringBuilder) return Equals((StringBuilder)obj);
-            return false;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the content of this string segment equals
-        /// the content of the specified string segment.
-        /// </summary>
-        /// <param name="other">The <see cref="StringSegment"/> to compare to this segment.</param>
-        /// <returns><see langword="true"/> if the content of this segment equals the content of the 
-        /// specified string segment; otherwise, <see langword="false"/>.</returns>
-        public Boolean Equals(StringSegment other)
-        {
-            if (IsEmpty)
-                return other.IsEmpty;
-            if (other.IsEmpty)
-                return IsEmpty;
-
-            if (other.length != length)
-                return false;
-
-            for (int i = 0; i < length; i++)
-            {
-                if (this[i] != other[i])
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the content of this string segment equals
-        /// the content of the specified string.
-        /// </summary>
-        /// <param name="other">The <see cref="SourceString"/> to compare to this segment.</param>
-        /// <returns><see langword="true"/> if the content of this segment equals the content of the 
-        /// specified string; otherwise, <see langword="false"/>.</returns>
-        public Boolean Equals(String other)
-        {
-            if (IsEmpty && other == String.Empty)
-                return true;
-
-            if (other == null || other.Length != length)
-                return false;
-
-            for (int i = 0; i < length; i++)
-            {
-                if (this[i] != other[i])
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the content of this string segment equals
-        /// the content of the specified string builder.
-        /// </summary>
-        /// <param name="other">The <see cref="SourceStringBuilder"/> to compare to this segment.</param>
-        /// <returns><see langword="true"/> if the content of this segment equals the content of the 
-        /// specified string builder; otherwise, <see langword="false"/>.</returns>
-        public Boolean Equals(StringBuilder other)
-        {
-            if (IsEmpty && other.Length == 0)
-                return true;
-
-            if (other == null || other.Length != length)
-                return false;
-
-            for (int i = 0; i < length; i++)
-            {
-                if (this[i] != other[i])
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
+        
         /// <summary>
         /// Creates a string segment which is a substring of this string segment.
         /// </summary>
