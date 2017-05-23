@@ -316,5 +316,25 @@ namespace Ultraviolet.Tests
                 .ShouldHaveNormal(0.4545f, 0.3825f, 0.8043f)
                 .ShouldHaveDistance(1.0491f);
         }
+
+        [Test]
+        public void Plane_CalculatesIntersectsBoundingFrustumCorrectly()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var plane1 = new Plane(frustum.Near.Normal, frustum.Near.D - 1000f);
+            var plane2 = new Plane(frustum.Near.Normal, frustum.Near.D + 1000f);
+            var plane3 = new Plane(frustum.Near.Normal, frustum.Near.D + 500f);
+
+            var result1 = plane1.Intersects(frustum);
+            var result2 = plane2.Intersects(frustum);
+            var result3 = plane3.Intersects(frustum);
+
+            TheResultingValue(result1).ShouldBe(PlaneIntersectionType.Back);
+            TheResultingValue(result2).ShouldBe(PlaneIntersectionType.Front);
+            TheResultingValue(result3).ShouldBe(PlaneIntersectionType.Intersecting);
+        }
     }
 }

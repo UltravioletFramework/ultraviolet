@@ -325,7 +325,19 @@ namespace Ultraviolet
                 x * m13 + y * m23 + z * m33,
                 plane.D);
         }
-                
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified frustum.
+        /// </summary>
+        /// <param name="frustum">A <see cref="BoundingFrustum"/> which represents the frustum to evaluate.</param>
+        /// <returns>A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated frustum.</returns>
+        public PlaneIntersectionType Intersects(BoundingFrustum frustum)
+        {
+            Contract.Require(frustum, nameof(frustum));
+
+            return frustum.Intersects(this);
+        }
+
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

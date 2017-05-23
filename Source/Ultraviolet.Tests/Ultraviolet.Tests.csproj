@@ -276,6 +276,7 @@
     <Compile Include="UI\Presentation\VersionedStringSourceTests.cs" />
     <Compile Include="UI\Presentation\VersionedStringBuilderTests.cs" />
     <Compile Include="QuaternionTests.cs" />
+    <Compile Include="BoundingFrustumTests.cs" />
     <Compile Include="Vector4Tests.cs" />
     <Compile Include="Vector3Tests.cs" />
     <Compile Include="Vector2Tests.cs" />
