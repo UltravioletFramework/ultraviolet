@@ -73,6 +73,7 @@
     <Compile Include="IUltravioletTestApplication.cs" />
     <Compile Include="Point2DResult.cs" />
     <Compile Include="Point2FResult.cs" />
+    <Compile Include="BoundingSphereResult.cs" />
     <Compile Include="RayResult.cs" />
     <Compile Include="RectangleDResult.cs" />
     <Compile Include="Size2DResult.cs" />

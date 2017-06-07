@@ -339,6 +339,39 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified frustum.
+        /// </summary>
+        /// <param name="frustum">A <see cref="BoundingFrustum"/> which represents the frustum to evaluate.</param>
+        /// <param name="result">A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated frustum.</param>
+        public void Intersects(BoundingFrustum frustum, out PlaneIntersectionType result)
+        {
+            Contract.Require(frustum, nameof(frustum));
+
+            result = frustum.Intersects(this);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified sphere.
+        /// </summary>
+        /// <param name="sphere">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <returns>A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated sphere.</returns>
+        public PlaneIntersectionType Intersects(BoundingSphere sphere)
+        {
+            sphere.Intersects(ref this, out PlaneIntersectionType result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified sphere.
+        /// </summary>
+        /// <param name="sphere">A <see cref="BoundingFrustum"/> which represents the sphere to evaluate.</param>
+        /// <param name="result">A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated sphere.</param>
+        public void Intersects(ref BoundingSphere sphere, out PlaneIntersectionType result)
+        {
+            sphere.Intersects(ref this, out result);
+        }
+
+        /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>
         /// <param name="target">The target value.</param>

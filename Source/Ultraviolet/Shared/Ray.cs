@@ -81,6 +81,72 @@ namespace Ultraviolet
             }
         }
 
+        /// <summary>
+        /// Determines whether this <see cref="Ray"/> intersects a specified <see cref="BoundingFrustum"/>.
+        /// </summary>
+        /// <param name="frustum">The <see cref="BoundingFrustum"/> to evaluate.</param>
+        /// <returns>The distance along the ray at which it intersects the frustum, or <see langword="null"/> if there is no intersection.</returns>
+        public Single? Intersects(BoundingFrustum frustum)
+        {
+            Contract.Require(frustum, nameof(frustum));
+
+            frustum.Intersects(ref this, out Single? result);
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether this <see cref="Ray"/> intersects a specified <see cref="BoundingFrustum"/>.
+        /// </summary>
+        /// <param name="frustum">The <see cref="BoundingFrustum"/> to evaluate.</param>
+        /// <param name="result">The distance along the ray at which it intersects the frustum, or <see langword="null"/> if there is no intersection.</param>
+        public void Intersects(BoundingFrustum frustum, out Single? result)
+        {
+            Contract.Require(frustum, nameof(frustum));
+
+            frustum.Intersects(ref this, out result);
+        }
+
+        /// <summary>
+        /// Determines whether this <see cref="Ray"/> intersects a specified <see cref="BoundingSphere"/>.
+        /// </summary>
+        /// <param name="sphere">The <see cref="BoundingSphere"/> to evaluate.</param>
+        /// <returns>The distance along the ray at which it intersects the sphere, or <see langword="null"/> if there is no intersection.</returns>
+        public Single? Intersects(BoundingSphere sphere)
+        {
+            Intersects(ref sphere, out Single? result);
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether this <see cref="Ray"/> intersects a specified <see cref="BoundingSphere"/>.
+        /// </summary>
+        /// <param name="sphere">The <see cref="BoundingSphere"/> to evaluate.</param>
+        /// <param name="result">The distance along the ray at which it intersects the sphere, or <see langword="null"/> if there is no intersection.</param>
+        public void Intersects(ref BoundingSphere sphere, out Single? result)
+        {
+            var radiusSquared = sphere.Radius * sphere.Radius;
+
+            var offset = sphere.Center - Position;
+            var offsetLengthSquared = offset.LengthSquared();
+            if (offsetLengthSquared < radiusSquared)
+            {
+                result = 0.0f;
+                return;
+            }
+
+            Vector3.Dot(ref Direction, ref offset, out Single distanceToCenter);
+            if (distanceToCenter < 0)
+            {
+                result = null;
+                return;
+            }
+
+            var distanceToCenterSquared = distanceToCenter * distanceToCenter;
+            var distanceToSphere = radiusSquared + distanceToCenterSquared - offsetLengthSquared;
+
+            result = (distanceToSphere < 0) ? null : distanceToCenter - (Single?)Math.Sqrt(distanceToSphere);
+        }
+
         /// <inheritdoc/>
         [Preserve]
         public Ray Interpolate(Ray target, Single t)

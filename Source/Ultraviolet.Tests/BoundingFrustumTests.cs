@@ -112,6 +112,30 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void BoundingFrustum_CalculatesContainsBoundingFrustumCorrectly_WithOutParam()
+        {
+            var view1 = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj1 = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum1 = new BoundingFrustum(view1 * proj1);
+
+            var view2 = Matrix.CreateLookAt(new Vector3(0, 0, 5), new Vector3(0, 0, 10), Vector3.Up);
+            var proj2 = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum2 = new BoundingFrustum(view2 * proj2);
+
+            var view3 = Matrix.CreateLookAt(new Vector3(0, 0, 5), new Vector3(2, 0, 0), Vector3.Up);
+            var proj3 = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum3 = new BoundingFrustum(view3 * proj3);
+
+            frustum1.Contains(frustum2, out ContainmentType r1);
+            frustum1.Contains(frustum3, out ContainmentType r2);
+            frustum1.Contains(frustum1, out ContainmentType r3);
+
+            TheResultingValue(r1).ShouldBe(ContainmentType.Disjoint);
+            TheResultingValue(r2).ShouldBe(ContainmentType.Intersects);
+            TheResultingValue(r3).ShouldBe(ContainmentType.Contains);
+        }
+
+        [Test]
         public void BoundingFrustum_CalculatesIntersectsRayCorrectly()
         {
             var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
@@ -203,6 +227,30 @@ namespace Ultraviolet.Tests
             var r1 = frustum1.Intersects(frustum2);
             var r2 = frustum1.Intersects(frustum3);
             var r3 = frustum1.Intersects(frustum1);
+
+            TheResultingValue(r1).ShouldBe(false);
+            TheResultingValue(r2).ShouldBe(true);
+            TheResultingValue(r3).ShouldBe(true);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesIntersectsBoundingFrustumCorrectly_WithOutParam()
+        {
+            var view1 = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj1 = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum1 = new BoundingFrustum(view1 * proj1);
+
+            var view2 = Matrix.CreateLookAt(new Vector3(0, 0, 5), new Vector3(0, 0, 10), Vector3.Up);
+            var proj2 = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum2 = new BoundingFrustum(view2 * proj2);
+
+            var view3 = Matrix.CreateLookAt(new Vector3(0, 0, 5), new Vector3(2, 0, 0), Vector3.Up);
+            var proj3 = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum3 = new BoundingFrustum(view3 * proj3);
+
+            frustum1.Intersects(frustum2, out Boolean r1);
+            frustum1.Intersects(frustum3, out Boolean r2);
+            frustum1.Intersects(frustum1, out Boolean r3);
 
             TheResultingValue(r1).ShouldBe(false);
             TheResultingValue(r2).ShouldBe(true);

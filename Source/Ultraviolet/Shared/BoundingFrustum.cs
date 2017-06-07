@@ -65,16 +65,30 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="BoundingFrustum"/> contains the specified frustum.
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> contains the specified frustum.
         /// </summary>
         /// <param name="frustum">A <see cref="BoundingFrustum"/> which represents the frustum to evaluate.</param>
         /// <returns>A <see cref="ContainmentType"/> value representing the relationship between this frustum and the evaluated frustum.</returns>
         public ContainmentType Contains(BoundingFrustum frustum)
         {
+            Contains(frustum, out ContainmentType result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> contains the specified frustum.
+        /// </summary>
+        /// <param name="frustum">A <see cref="BoundingFrustum"/> which represents the frustum to evaluate.</param>
+        /// <param name="result">A <see cref="ContainmentType"/> value representing the relationship between this frustum and the evaluated frustum.</param>
+        public void Contains(BoundingFrustum frustum, out ContainmentType result)
+        {
             Contract.Require(frustum, nameof(frustum));
 
             if (frustum == this)
-                return ContainmentType.Contains;
+            {
+                result = ContainmentType.Contains;
+                return;
+            }
 
             var intersection = false;
 
@@ -83,13 +97,55 @@ namespace Ultraviolet
                 frustum.Intersects(ref planes[i], out PlaneIntersectionType intersectionType);
 
                 if (intersectionType == PlaneIntersectionType.Front)
-                    return ContainmentType.Disjoint;
+                {
+                    result = ContainmentType.Disjoint;
+                    return;
+                }
 
                 if (intersectionType == PlaneIntersectionType.Intersecting)
                     intersection = true;
             }
 
-            return intersection ? ContainmentType.Intersects : ContainmentType.Contains;
+            result = intersection ? ContainmentType.Intersects : ContainmentType.Contains;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> contains the specified sphere.
+        /// </summary>
+        /// <param name="sphere">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <returns>A <see cref="ContainmentType"/> value representing the relationship between this frustum and the evaluated sphere.</returns>
+        public ContainmentType Contains(BoundingSphere sphere)
+        {
+            Contains(ref sphere, out ContainmentType result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> contains the specified sphere.
+        /// </summary>
+        /// <param name="sphere">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <param name="result">A <see cref="ContainmentType"/> value representing the relationship between this frustum and the evaluated sphere.</param>
+        public void Contains(ref BoundingSphere sphere, out ContainmentType result)
+        {
+            var intersection = false;
+
+            for (int i = 0; i < PlaneCount; i++)
+            {
+                sphere.Intersects(ref planes[i], out PlaneIntersectionType planeIntersectionType);
+
+                switch (planeIntersectionType)
+                {
+                    case PlaneIntersectionType.Front:
+                        result = ContainmentType.Disjoint;
+                        return;
+
+                    case PlaneIntersectionType.Intersecting:
+                        intersection = true;
+                        break;
+                }
+            }
+
+            result = intersection ? ContainmentType.Intersects : ContainmentType.Contains;
         }
 
         /// <summary>
@@ -283,6 +339,38 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> intersects the specified frustum.
+        /// </summary>
+        /// <param name="frustum">A <see cref="BoundingFrustum"/> which represents the frustum to evaluate.</param>
+        /// <param name="result"><see langword="true"/> if this frustum intersects the evaluated frustum; otherwise, <see langword="false"/>.</param>
+        public void Intersects(BoundingFrustum frustum, out Boolean result)
+        {
+            result = Contains(frustum) != ContainmentType.Disjoint;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> intersects the specified sphere.
+        /// </summary>
+        /// <param name="sphere">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <returns><see langword="true"/> if this frustum intersects the evaluated sphere; otherwise, <see langword="false"/>.</returns>
+        public Boolean Intersects(BoundingSphere sphere)
+        {
+            Contains(ref sphere, out ContainmentType containment);
+            return (containment != ContainmentType.Disjoint);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> intersects the specified sphere.
+        /// </summary>
+        /// <param name="sphere">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <param name="result"><see langword="true"/> if this frustum intersects the evaluated sphere; otherwise, <see langword="false"/>.</param>
+        public void Intersects(ref BoundingSphere sphere, out Boolean result)
+        {
+            Contains(ref sphere, out ContainmentType containment);
+            result = (containment != ContainmentType.Disjoint);
+        }
+
+        /// <summary>
         /// The number of corners in a <see cref="BoundingFrustum"/>.
         /// </summary>
         public const Int32 CornerCount = 8;
@@ -390,6 +478,16 @@ namespace Ultraviolet
                 CalculatePlaneIntersection(ref this.planes[5], ref intersectionLeftFar, out this.corners[7]);
             }
         }
+
+        /// <summary>
+        /// Gets the frustum's internal array of corners.
+        /// </summary>
+        internal Vector3[] CornersInternal => corners;
+
+        /// <summary>
+        /// Gets the frustum's internal array of planes.
+        /// </summary>
+        internal Plane[] PlanesInternal => planes;
 
         /// <summary>
         /// Normalizes the specified frustum plane.

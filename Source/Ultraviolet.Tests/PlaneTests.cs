@@ -336,5 +336,57 @@ namespace Ultraviolet.Tests
             TheResultingValue(result2).ShouldBe(PlaneIntersectionType.Front);
             TheResultingValue(result3).ShouldBe(PlaneIntersectionType.Intersecting);
         }
+
+        [Test]
+        public void Plane_CalculatesIntersectsBoundingFrustumCorrectly_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var plane1 = new Plane(frustum.Near.Normal, frustum.Near.D - 1000f);
+            var plane2 = new Plane(frustum.Near.Normal, frustum.Near.D + 1000f);
+            var plane3 = new Plane(frustum.Near.Normal, frustum.Near.D + 500f);
+
+            plane1.Intersects(frustum, out PlaneIntersectionType result1);
+            plane2.Intersects(frustum, out PlaneIntersectionType result2);
+            plane3.Intersects(frustum, out PlaneIntersectionType result3);
+
+            TheResultingValue(result1).ShouldBe(PlaneIntersectionType.Back);
+            TheResultingValue(result2).ShouldBe(PlaneIntersectionType.Front);
+            TheResultingValue(result3).ShouldBe(PlaneIntersectionType.Intersecting);
+        }
+        
+        [Test]
+        public void Plane_CalculatesIntersectsBoundingSphereCorrectly()
+        {
+            var sphere = new BoundingSphere(Vector3.Zero, 10f);
+            var plane1 = new Plane(new Vector3(1f, 0f, 0f), 0f);
+            var plane2 = new Plane(new Vector3(1f, 0f, 0f), 100f);
+
+            var result1 = plane1.Intersects(sphere);
+            var result2 = plane2.Intersects(sphere);
+
+            TheResultingValue(result1)
+                .ShouldBe(PlaneIntersectionType.Intersecting);
+            TheResultingValue(result2)
+                .ShouldBe(PlaneIntersectionType.Front);
+        }
+
+        [Test]
+        public void Plane_CalculatesIntersectsBoundingSphereCorrectly_WithOutParam()
+        {
+            var sphere = new BoundingSphere(Vector3.Zero, 10f);
+            var plane1 = new Plane(new Vector3(1f, 0f, 0f), 0f);
+            var plane2 = new Plane(new Vector3(1f, 0f, 0f), 100f);
+
+            plane1.Intersects(ref sphere, out PlaneIntersectionType result1);
+            plane2.Intersects(ref sphere, out PlaneIntersectionType result2);
+
+            TheResultingValue(result1)
+                .ShouldBe(PlaneIntersectionType.Intersecting);
+            TheResultingValue(result2)
+                .ShouldBe(PlaneIntersectionType.Front);
+        }
     }
 }

@@ -128,6 +128,110 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void Ray_CalculatesBoundingFrustumIntersectionCorrectly_WhenIntersectionExists()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+            var ray = new Ray(new Vector3(100f, 0, 0), new Vector3(-1f, 0, 0));
+
+            var result = ray.Intersects(frustum);
+
+            TheResultingValue(result.Value).WithinDelta(0.0001f)
+                .ShouldBe(97.23858f);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingFrustumIntersectionCorrectly_WhenIntersectionExists_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+            var ray = new Ray(new Vector3(100f, 0, 0), new Vector3(-1f, 0, 0));
+
+            ray.Intersects(frustum, out Single? result);
+
+            TheResultingValue(result.Value).WithinDelta(0.0001f)
+                .ShouldBe(97.23858f);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingFrustumIntersectionCorrectly_WhenNoIntersectionExists()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+            var ray = new Ray(new Vector3(100f, 0, 0), new Vector3(1f, 0, 0));
+
+            var result = ray.Intersects(frustum);
+
+            TheResultingValue(result.HasValue)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingFrustumIntersectionCorrectly_WhenNoIntersectionExists_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+            var ray = new Ray(new Vector3(100f, 0, 0), new Vector3(1f, 0, 0));
+
+            ray.Intersects(frustum, out Single? result);
+
+            TheResultingValue(result.HasValue)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingSphereIntersectionCorrectly_WhenIntersectionExists()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, -1f));
+            var sphere = new BoundingSphere(Vector3.Zero, 10f);
+
+            var result = ray.Intersects(sphere);
+
+            TheResultingValue(result.Value)
+                .ShouldBe(90f);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingSphereIntersectionCorrectly_WhenIntersectionExists_WithOutParam()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, -1f));
+            var sphere = new BoundingSphere(Vector3.Zero, 10f);
+
+            ray.Intersects(ref sphere, out Single? result);
+
+            TheResultingValue(result.Value)
+                .ShouldBe(90f);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingSphereIntersectionCorrectly_WhenNoIntersectionExists()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, 100f));
+            var sphere = new BoundingSphere(Vector3.Zero, 10f);
+
+            var result = ray.Intersects(sphere);
+
+            TheResultingValue(result.HasValue)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingSphereIntersectionCorrectly_WhenNoIntersectionExists_WithOutParam()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, 100f));
+            var sphere = new BoundingSphere(Vector3.Zero, 10f);
+
+            ray.Intersects(ref sphere, out Single? result);
+
+            TheResultingValue(result.HasValue)
+                .ShouldBe(false);
+        }
+
+        [Test]
         public void Ray_TryParse_SucceedsForValidStrings()
         {
             if (!Ray.TryParse("1.2 2.3 3.4 4.5 5.6 6.7", out Ray result))
