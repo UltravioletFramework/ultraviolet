@@ -293,9 +293,9 @@ namespace Ultraviolet.Tests
             var sphere1 = new BoundingSphere(new Vector3(10f, 10f, 10f), 5f);
             var result1 = sphere0.Intersects(sphere1);
             var sphere2 = new BoundingSphere(new Vector3(0, 0, 0), 8f);
-            var result2 = sphere1.Intersects(sphere2);
+            var result2 = sphere0.Intersects(sphere2);
             var sphere3 = new BoundingSphere(new Vector3(0, 0, 0), 1f);
-            var result3 = sphere2.Intersects(sphere3);
+            var result3 = sphere0.Intersects(sphere3);
 
             TheResultingValue(result1)
                 .ShouldBe(true);
@@ -313,9 +313,9 @@ namespace Ultraviolet.Tests
             var sphere1 = new BoundingSphere(new Vector3(10f, 10f, 10f), 5f);
             sphere0.Intersects(ref sphere1, out var result1);
             var sphere2 = new BoundingSphere(new Vector3(0, 0, 0), 8f);
-            sphere2.Intersects(ref sphere2, out var result2);
+            sphere0.Intersects(ref sphere2, out var result2);
             var sphere3 = new BoundingSphere(new Vector3(0, 0, 0), 1f);
-            sphere3.Intersects(ref sphere3, out var result3);
+            sphere0.Intersects(ref sphere3, out var result3);
 
             TheResultingValue(result1)
                 .ShouldBe(true);
