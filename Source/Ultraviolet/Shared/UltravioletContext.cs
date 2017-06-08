@@ -1227,7 +1227,7 @@ namespace Ultraviolet
                         break;
 
                     case UltravioletPlatform.iOS:
-                        /* On iOS, shim is built into core assembly to avoid linker issues */
+                        shim = Assembly.Load("Ultraviolet.Shims.iOS.dll");
                         break;
 
                     default:

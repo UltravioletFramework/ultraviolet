@@ -1,4 +1,4 @@
-﻿#if !ANDROID
+﻿#if !ANDROID && !IOS
 using System;
 using System.IO;
 using System.Linq;

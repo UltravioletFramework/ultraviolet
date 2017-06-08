@@ -35,7 +35,7 @@ namespace Ultraviolet.Core
                                 var os = Marshal.PtrToStringAnsi(buf);
                                 if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    if (Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(x => String.Equals("Xamarin.iOS", x.Name, StringComparison.OrdinalIgnoreCase)).Any())
+                                    if (Type.GetType("UIKit.UIApplicationDelegate, Xamarin.iOS") != null)
                                     {
                                         CurrentPlatform = UltravioletPlatform.iOS;
                                     }
@@ -46,7 +46,7 @@ namespace Ultraviolet.Core
                                 }
                                 else
                                 {
-                                    if (Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(x => String.Equals("Xamarin.Android", x.Name, StringComparison.OrdinalIgnoreCase)).Any())
+                                    if (Type.GetType("Android.App.Activity, Mono.Android") != null)
                                     {
                                         CurrentPlatform = UltravioletPlatform.Android;
                                     }

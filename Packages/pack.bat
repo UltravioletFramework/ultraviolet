@@ -35,6 +35,9 @@ nuget pack Ultraviolet.OpenGL.nuspec -Symbols
 powershell -Command "(gc Ultraviolet.Shims.macOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Shims.macOS.nuspec"
 nuget pack Ultraviolet.Shims.macOS.nuspec
 
+powershell -Command "(gc Ultraviolet.Shims.iOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Shims.iOS.nuspec"
+nuget pack Ultraviolet.Shims.iOS.nuspec
+
 powershell -Command "(gc Ultraviolet.SDL2.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.SDL2.Native.nuspec"
 nuget pack Ultraviolet.SDL2.Native.nuspec
 

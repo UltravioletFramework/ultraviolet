@@ -47,7 +47,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchSdkVersion>9.3</MtouchSdkVersion>
+    <MtouchSdkVersion></MtouchSdkVersion>
     <MtouchLink>None</MtouchLink>
     <MtouchProfiling>False</MtouchProfiling>
     <MtouchFastDev>False</MtouchFastDev>
@@ -218,6 +218,10 @@
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\iOS\Ultraviolet.OpenGL.iOS.csproj">
       <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
       <Name>Ultraviolet.OpenGL.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj">
+      <Project>{F7D661D7-101B-417F-BBF7-8170CC04AB55}</Project>
+      <Name>Ultraviolet.Shims.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

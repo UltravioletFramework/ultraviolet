@@ -1,6 +1,5 @@
 ﻿using Foundation;
 using Ultraviolet.SDL2.UIKit;
-using UIKit;
 
 namespace Ultraviolet
 {
@@ -10,6 +9,6 @@ namespace Ultraviolet
     [Register(nameof(UltravioletAppDelegate))]
     internal sealed class UltravioletAppDelegate : SDLUIKitDelegate
     {
-
+        
     }
 }

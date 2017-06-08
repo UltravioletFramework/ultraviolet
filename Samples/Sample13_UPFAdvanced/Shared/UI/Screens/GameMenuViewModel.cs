@@ -1,6 +1,5 @@
 ﻿using System;
 using Ultraviolet.Core;
-using Ultraviolet;
 using Ultraviolet.Input;
 using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Controls;
@@ -8,10 +7,11 @@ using Ultraviolet.Presentation.Input;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens
 {
-    /// <summary>
-    /// Represents the view model for <see cref="GameMenuScreen"/>.
-    /// </summary>
-    public sealed class GameMenuViewModel
+	/// <summary>
+	/// Represents the view model for <see cref="GameMenuScreen"/>.
+	/// </summary>
+	[Preserve(AllMembers = true)]
+	public sealed class GameMenuViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GameMenuViewModel"/> class.

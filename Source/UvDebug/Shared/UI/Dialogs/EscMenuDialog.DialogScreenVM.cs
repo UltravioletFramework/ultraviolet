@@ -9,6 +9,7 @@ namespace UvDebug.UI.Dialogs
         /// <summary>
         /// Represents the view model for <see cref="DialogScreen"/>.
         /// </summary>
+        [Preserve(AllMembers = true)]
         public class DialogScreenVM
         {
             /// <summary>

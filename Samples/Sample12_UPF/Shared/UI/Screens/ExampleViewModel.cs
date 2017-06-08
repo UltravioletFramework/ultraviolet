@@ -1,10 +1,12 @@
 ﻿using System;
 using Ultraviolet;
+using Ultraviolet.Core;
 using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Controls;
 
 namespace UltravioletSample.Sample12_UPF.UI.Screens
 {
+    [Preserve(AllMembers = true)]
     public class ExampleViewModel
     {
         public ExampleViewModel(UltravioletContext uv)

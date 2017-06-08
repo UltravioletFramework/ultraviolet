@@ -1,4 +1,5 @@
 ﻿using Ultraviolet;
+using Ultraviolet.Core;
 using Ultraviolet.Input;
 
 namespace UltravioletSample.Sample7_PlayingMusic.Input
@@ -10,7 +11,8 @@ namespace UltravioletSample.Sample7_PlayingMusic.Input
 
         public class Actions : InputActionCollection
         {
-            public Actions(UltravioletContext uv)
+			[Preserve]
+			public Actions(UltravioletContext uv)
                 : base(uv)
             { }
 

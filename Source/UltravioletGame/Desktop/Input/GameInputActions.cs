@@ -1,4 +1,5 @@
 ﻿using Ultraviolet;
+using Ultraviolet.Core;
 using Ultraviolet.Input;
 
 namespace SAFE_PROJECT_NAME.Input
@@ -12,6 +13,7 @@ namespace SAFE_PROJECT_NAME.Input
         /// Initializes a new instance of the GameInputActions class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        [Preserve]
         public GameInputActions(UltravioletContext uv)
             : base(uv)
         {

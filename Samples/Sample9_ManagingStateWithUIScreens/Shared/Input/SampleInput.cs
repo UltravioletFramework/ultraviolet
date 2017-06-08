@@ -1,4 +1,5 @@
 ﻿using Ultraviolet;
+using Ultraviolet.Core;
 using Ultraviolet.Input;
 
 namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.Input
@@ -10,7 +11,8 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.Input
 
         public class Actions : InputActionCollection
         {
-            public Actions(UltravioletContext uv)
+			[Preserve]
+			public Actions(UltravioletContext uv)
                 : base(uv)
             { }
 

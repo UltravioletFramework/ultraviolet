@@ -1,5 +1,6 @@
 ﻿using Ultraviolet;
 using Ultraviolet.Input;
+using Ultraviolet.Core;
 
 namespace UltravioletSample.Sample6_RenderingText.Input
 {
@@ -10,7 +11,8 @@ namespace UltravioletSample.Sample6_RenderingText.Input
 
         public class Actions : InputActionCollection
         {
-            public Actions(UltravioletContext uv)
+			[Preserve]
+			public Actions(UltravioletContext uv)
                 : base(uv)
             { }
 

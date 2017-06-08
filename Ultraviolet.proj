@@ -334,6 +334,9 @@
     <CreateItem Include="Source/Ultraviolet/iOS/bin/$(Configuration)/Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_iOS"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Shims.iOS/bin/$(Configuration)/Ultraviolet.Shims.iOS.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_iOS"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/iOS/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_iOS"/>
     </CreateItem>
@@ -362,6 +365,7 @@
     <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_iOS)" DestinationFiles="@(Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_Shims_iOS)" DestinationFiles="@(Ultraviolet_Shims_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_iOS_Bindings)" DestinationFiles="@(Ultraviolet_iOS_Bindings->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_iOS)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_BASS_iOS)" DestinationFiles="@(Ultraviolet_BASS_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>

@@ -1,4 +1,5 @@
 ﻿using Ultraviolet;
+using Ultraviolet.Core;
 using Ultraviolet.Input;
 
 namespace UltravioletSample.Sample12_UPF.Input
@@ -10,6 +11,7 @@ namespace UltravioletSample.Sample12_UPF.Input
 
         public class Actions : InputActionCollection
         {
+            [Preserve]
             public Actions(UltravioletContext uv)
                 : base(uv)
             { }

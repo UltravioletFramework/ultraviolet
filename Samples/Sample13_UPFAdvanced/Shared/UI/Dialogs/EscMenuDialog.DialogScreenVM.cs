@@ -6,10 +6,11 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
 {
     partial class EscMenuDialog
     {
-        /// <summary>
-        /// Represents the view model for <see cref="DialogScreen"/>.
-        /// </summary>
-        public class DialogScreenVM
+		/// <summary>
+		/// Represents the view model for <see cref="DialogScreen"/>.
+		/// </summary>
+		[Preserve(AllMembers = true)]
+		public class DialogScreenVM
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="DialogScreenVM"/> class.

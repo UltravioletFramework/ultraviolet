@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ultraviolet.Core;
 using Ultraviolet;
+using Ultraviolet.Core;
 using Ultraviolet.Input;
 using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Controls;
@@ -10,10 +10,11 @@ using UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens
 {
-    /// <summary>
-    /// Represents the view model for <see cref="GamePlayScreen"/>.
-    /// </summary>
-    public sealed class GamePlayViewModel
+	/// <summary>
+	/// Represents the view model for <see cref="GamePlayScreen"/>.
+	/// </summary>
+	[Preserve(AllMembers = true)]
+	public sealed class GamePlayViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GamePlayViewModel"/> class.

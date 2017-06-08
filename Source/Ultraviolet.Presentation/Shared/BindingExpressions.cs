@@ -54,8 +54,10 @@ namespace Ultraviolet.Presentation
         {
             miReferenceEquals = typeof(Object).GetMethod("ReferenceEquals", new[] { typeof(Object), typeof(Object) });
             miObjectEquals = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
-            miNullableEquals = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
-
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
+            {
+                miNullableEquals = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
+            }
             RegisterPrecompiledComparisonDelegates();
         }
 

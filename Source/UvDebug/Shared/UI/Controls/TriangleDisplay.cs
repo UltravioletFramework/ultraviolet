@@ -11,6 +11,7 @@ namespace UvDebug.Content.UI.Controls
     /// <summary>
     /// Represents a UI element that displays a 3D triangle.
     /// </summary>
+    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class TriangleDisplay : FrameworkElement
     {
