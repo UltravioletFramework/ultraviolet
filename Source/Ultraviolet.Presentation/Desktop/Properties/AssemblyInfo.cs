@@ -2,18 +2,11 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Ultraviolet.Core;
 
 [assembly: CLSCompliant(true)]
+[assembly: LinkerSafe]
 
-#if ANDROID
-[assembly: Android.LinkerSafe]
-#endif
-
-#if IOS
-[assembly: Foundation.LinkerSafe]
-#endif
-
-#if DESKTOP
 #if SIGNED
 [assembly: InternalsVisibleTo("Ultraviolet.Presentation.Compiler, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001005dd0e010413925" +
@@ -23,7 +16,6 @@ using System.Runtime.InteropServices;
     "59a204da")]
 #else
 [assembly: InternalsVisibleTo("Ultraviolet.Presentation.Compiler")]
-#endif
 #endif
 
 // General Information about an assembly is controlled through the following 
