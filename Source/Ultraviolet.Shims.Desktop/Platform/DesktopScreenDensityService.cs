@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet.Shims.Desktop.Platform

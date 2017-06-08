@@ -385,8 +385,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletNamedCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletNative.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletProfilerSection.cs" />

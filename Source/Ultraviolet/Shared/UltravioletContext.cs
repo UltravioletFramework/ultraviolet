@@ -70,8 +70,7 @@ namespace Ultraviolet
             Contract.Require(configuration, nameof(configuration));
 
             AcquireContext();
-            DetectPlatform();
-
+            
             this.isRunningInServiceMode = configuration.EnableServiceMode;
             this.supportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
 
@@ -731,7 +730,7 @@ namespace Ultraviolet
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return this.platform;
+                return UltravioletPlatformInfo.CurrentPlatform;
             }
         }
 
@@ -1312,58 +1311,7 @@ namespace Ultraviolet
                 tasksUpdating.Clear();
             }
         }
-
-        /// <summary>
-        /// Detects the platform on which the context is running.
-        /// </summary>
-        private void DetectPlatform()
-        {
-#if ANDROID
-            this.platform = UltravioletPlatform.Android;
-#elif IOS
-            this.platform = UltravioletPlatform.iOS;
-#else
-            switch (Environment.OSVersion.Platform)
-            {
-                case PlatformID.Win32NT:
-                    this.platform = UltravioletPlatform.Windows;
-                    break;
-
-                case PlatformID.Unix:
-                    {
-                        var buf = IntPtr.Zero;
-                        try
-                        {
-                            buf = Marshal.AllocHGlobal(8192);
-                            if (UltravioletNative.uname(buf) == 0)
-                            {
-                                var os = Marshal.PtrToStringAnsi(buf);
-                                if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    this.platform = UltravioletPlatform.macOS;
-                                }
-                                else
-                                {
-                                    this.platform = UltravioletPlatform.Linux;
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            if (buf != IntPtr.Zero)
-                            {
-                                Marshal.FreeHGlobal(buf);
-                            }
-                        }
-                    }
-                    break;
-
-                default:
-                    throw new NotSupportedException();
-            }
-#endif
-        }
-
+        
         /// <summary>
         /// Changes the current thread's synchronization context.
         /// </summary>
@@ -1389,7 +1337,6 @@ namespace Ultraviolet
         private Boolean isInitialized;
         private Boolean disposed;
         private Boolean disposing;
-        private UltravioletPlatform platform;
 
         // The context's list of pending tasks.
         private readonly TaskScheduler taskScheduler;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Ultraviolet
+namespace Ultraviolet.Core
 {
     /// <summary>
     /// Contains native methods used by the Ultraviolet Framework.
