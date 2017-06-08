@@ -2,7 +2,7 @@ using System;
 
 namespace Ultraviolet.Core.Data
 {
-    partial struct ResolvedDataObjectReference : IEquatable<ResolvedDataObjectReference>
+    partial struct ResolvedDataObjectReference
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

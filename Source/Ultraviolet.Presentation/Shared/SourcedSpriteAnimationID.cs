@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 using Ultraviolet.Graphics.Graphics2D;
@@ -9,7 +10,7 @@ namespace Ultraviolet.Presentation
     /// Represents an animation identifier which is flagged as being either globally- or locally-sourced.
     /// </summary>
     [JsonConverter(typeof(ObjectResolverJsonConverter))]
-    public partial struct SourcedSpriteAnimationID
+    public partial struct SourcedSpriteAnimationID : IEquatable<SourcedSpriteAnimationID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SourcedSpriteAnimationID"/> class.
@@ -22,7 +23,10 @@ namespace Ultraviolet.Presentation
             this.spriteAnimationID = spriteAnimationID;
             this.spriteSource = spriteSource;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{SpriteAnimationID} {SpriteSource.ToString().ToLowerInvariant()}";
+
         /// <summary>
         /// Gets the sprite animation's identifier.
         /// </summary>

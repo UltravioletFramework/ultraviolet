@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
-    partial struct SpriteAnimationName : IEquatable<SpriteAnimationName>
+    partial struct SpriteAnimationName
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
 {
-    partial struct SourcedSpriteAnimationID : IEquatable<SourcedSpriteAnimationID>
+    partial struct SourcedSpriteAnimationID
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation.Animations
 {
-    partial struct StoryboardTargetAnimationKey : IEquatable<StoryboardTargetAnimationKey>
+    partial struct StoryboardTargetAnimationKey
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

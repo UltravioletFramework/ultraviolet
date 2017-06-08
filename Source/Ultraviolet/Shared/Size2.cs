@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,8 +8,7 @@ namespace Ultraviolet
     /// Represents a two-dimensional size with integer components.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{Width:{Width} Height:{Height}\}")]
-    public partial struct Size2 : IInterpolatable<Size2>
+    public partial struct Size2 : IEquatable<Size2>, IInterpolatable<Size2>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Size2"/> structure.
@@ -256,7 +254,10 @@ namespace Ultraviolet
 
             return result;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Width:{Width} Height:{Height}}}";
+
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

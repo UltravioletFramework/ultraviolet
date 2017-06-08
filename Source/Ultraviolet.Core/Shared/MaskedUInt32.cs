@@ -12,7 +12,7 @@ namespace Ultraviolet.Core
     /// values; this means that the size of a masked 32-bit integer is 2 bytes in the best case and 5 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
     [JsonConverter(typeof(CoreJsonConverter))]
-    public partial struct MaskedUInt32
+    public partial struct MaskedUInt32 : IEquatable<MaskedUInt32>, IEquatable<UInt32>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaskedUInt32"/> structure.
@@ -22,15 +22,6 @@ namespace Ultraviolet.Core
         public MaskedUInt32(UInt32 value)
         {
             Value = value;
-        }
-
-        /// <summary>
-        /// Retrieves a human-readable string that represents the object.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return Value.ToString();
         }
 
         /// <summary>
@@ -54,6 +45,9 @@ namespace Ultraviolet.Core
         {
             return new MaskedUInt32(value);
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => Value.ToString();
 
         /// <summary>
         /// Creates a copy of this integer with the specified byte set to the specified value.

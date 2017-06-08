@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,8 +8,7 @@ namespace Ultraviolet
     /// Represents a circle with single-precision floating point radius and position.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y} Radius:{Radius}\}")]
-    public partial struct CircleF : IInterpolatable<CircleF>
+    public partial struct CircleF : IEquatable<CircleF>, IInterpolatable<CircleF>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CircleF"/> structure.
@@ -180,7 +178,10 @@ namespace Ultraviolet
 
             return result;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Position:{Position} Radius:{Radius}}}";
+
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

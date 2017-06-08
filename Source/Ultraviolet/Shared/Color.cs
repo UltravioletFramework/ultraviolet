@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -12,9 +11,8 @@ namespace Ultraviolet
     /// Represents an RGBA color.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{A:{A} R:{R} G:{G} B:{B}\}")]
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    public partial struct Color : IInterpolatable<Color>
+    public partial struct Color : IEquatable<Color>, IInterpolatable<Color>
     {
         /// <summary>
         /// Initializes the <see cref="Color"/> type.
@@ -229,7 +227,10 @@ namespace Ultraviolet
 
             return new Color((uint)((r) | (g << 8) | (b << 16) | (a << 24)));
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"#{A:x2}{R:x2}{G:x2}{B:x3}";
+
         /// <summary>
         /// Converts the <see cref="Color"/> to a 32-bit integer in ARGB format.
         /// </summary>

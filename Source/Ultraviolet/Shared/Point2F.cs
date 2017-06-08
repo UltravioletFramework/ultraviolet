@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,8 +8,7 @@ namespace Ultraviolet
     /// Represents a point in two-dimensional space with single-precision floating point components.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y}\}")]
-    public partial struct Point2F : IInterpolatable<Point2F>
+    public partial struct Point2F : IEquatable<Point2F>, IInterpolatable<Point2F>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Point2F"/> structure.
@@ -408,7 +406,10 @@ namespace Ultraviolet
 
             result = temp;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{X:{X} Y:{Y}}}";
+
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

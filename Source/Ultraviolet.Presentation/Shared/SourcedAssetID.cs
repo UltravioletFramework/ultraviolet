@@ -10,7 +10,7 @@ namespace Ultraviolet.Presentation
     /// Represents an asset identifier which is flagged as being either globally- or locally-sourced.
     /// </summary>
     [JsonConverter(typeof(ObjectResolverJsonConverter))]
-    public partial struct SourcedAssetID
+    public partial struct SourcedAssetID : IEquatable<SourcedAssetID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SourcedAssetID"/> class.
@@ -23,7 +23,10 @@ namespace Ultraviolet.Presentation
             this.assetID = assetID;
             this.assetSource = assetSource;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{AssetID} {AssetSource.ToString().ToLowerInvariant()}";
+
         /// <summary>
         /// Gets the asset's identifier.
         /// </summary>

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
-    partial struct Radians : IEquatable<Radians>
+    partial struct Radians
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

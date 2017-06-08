@@ -18,7 +18,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SongTagCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffectPlayer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.cs" />
@@ -28,13 +27,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleD.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleD.Parsing.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainmentType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage9.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaneIntersectionType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color.Predefined.cs" />
@@ -45,10 +46,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationName.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteAnimationName.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontKerningPair.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\SpriteFontKerningPair.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextIconInfo.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Viewport.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Viewport.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Matrix.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Matrix.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plane.Equality.cs" />

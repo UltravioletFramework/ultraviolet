@@ -8,7 +8,7 @@ namespace Ultraviolet.Presentation.Styles
         /// Represents a rule set that has been categorized based on its selector
         /// for faster querying.
         /// </summary>
-        private partial struct CategorizedRuleSet
+        private partial struct CategorizedRuleSet : IEquatable<CategorizedRuleSet>
         {
             /// <summary>
             /// Initializes a new instance of thhe <see cref="CategorizedRuleSet"/> structure.

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
 {
-    partial struct SourcedCursor : IEquatable<SourcedCursor>
+    partial struct SourcedCursor
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

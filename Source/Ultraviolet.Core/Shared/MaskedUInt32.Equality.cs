@@ -1,9 +1,8 @@
 using System;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Core
 {
-    partial struct MaskedUInt32 : IEquatable<MaskedUInt32>, IEquatable<UInt32>
+    partial struct MaskedUInt32
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

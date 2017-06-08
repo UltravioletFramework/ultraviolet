@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,8 +8,7 @@ namespace Ultraviolet
     /// Represents a rectangle with integer components.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y} Width:{Width} Height:{Height}\}")]
-    public partial struct Rectangle : IInterpolatable<Rectangle>
+    public partial struct Rectangle : IEquatable<Rectangle>, IInterpolatable<Rectangle>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Rectangle"/> class.
@@ -386,7 +384,10 @@ namespace Ultraviolet
                 result.Height = minBottom - maxTop;
             }
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{X:{X} Y:{Y}: Width:{Width} Height{Height}}}";
+
         /// <summary>
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>

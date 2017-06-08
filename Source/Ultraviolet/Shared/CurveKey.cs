@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Ultraviolet.Core;
 
 namespace Ultraviolet
@@ -8,8 +7,7 @@ namespace Ultraviolet
     /// Represents a key point in a curve.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{Position:{Position} Value:{Value} TangentIn:{TangentIn} TangentOut:{TangentOut} Continuity:{Continuity}\}")]
-    public sealed class CurveKey : IEquatable<CurveKey>, IComparable<CurveKey>
+    public sealed partial class CurveKey : IEquatable<CurveKey>, IComparable<CurveKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Curve"/> class.
@@ -28,106 +26,7 @@ namespace Ultraviolet
             this.tangentOut = tangentOut;
             this.continuity = continuity;
         }
-
-        /// <summary>
-        /// Compares two curve keys for equality.
-        /// </summary>
-        /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
-        /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified curve keys are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator ==(CurveKey key1, CurveKey key2)
-        {
-            if (key1 == null || key2 == null)
-            {
-                return key1 == key2;
-            }
-            return key1.Equals(key2);
-        }
-
-        /// <summary>
-        /// Compares two curve keys for inequality.
-        /// </summary>
-        /// <param name="key1">The first <see cref="CurveKey"/> to compare.</param>
-        /// <param name="key2">The second <see cref="CurveKey"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified curve keys are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public static Boolean operator !=(CurveKey key1, CurveKey key2)
-        {
-            if (key1 == null || key2 == null)
-            {
-                return key1 != key2;
-            }
-            return !key1.Equals(key2);
-        }
-
-        /// <summary>
-        /// Gets the object's hash code.
-        /// </summary>
-        /// <returns>The object's hash code.</returns>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + position.GetHashCode();
-                hash = hash * 23 + value.GetHashCode();
-                hash = hash * 23 + tangentIn.GetHashCode();
-                hash = hash * 23 + tangentOut.GetHashCode();
-                hash = hash * 23 + continuity.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0}, {1}, {2}, {3}, {4}", position, value, tangentIn, tangentOut, Continuity);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public override Boolean Equals(Object obj)
-        {
-            return obj is CurveKey && Equals((CurveKey)obj);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to the specified object.
-        /// </summary>
-        /// <param name="obj">The object to compare to this instance.</param>
-        /// <returns><see langword="true"/> if this instance is equal to the specified object; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
-        public Boolean Equals(CurveKey obj)
-        {
-            if (obj == null) 
-                return false;
-
-            return
-                this.position   == obj.position &&
-                this.value      == obj.value &&
-                this.tangentIn  == obj.tangentIn &&
-                this.tangentOut == obj.tangentOut &&
-                this.continuity == obj.continuity;
-        }
-
+        
         /// <summary>
         /// Compares this instance to the specified <see cref="CurveKey"/> and returns an integer that indicates whether the position
         /// of this instance is less than, equal to, or greater than the value of the specified key.

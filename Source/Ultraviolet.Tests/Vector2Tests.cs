@@ -354,16 +354,7 @@ namespace Ultraviolet.Tests
 
             TheResultingValue(succeeded).ShouldBe(false);
         }
-
-        [Test]
-        public void Vector2_ParseCanRoundTrip()
-        {
-            var vector1 = Vector2.Parse("123.4 456.7");
-            var vector2 = Vector2.Parse(vector1.ToString());
-
-            TheResultingValue(vector1 == vector2).ShouldBe(true);
-        }
-
+        
         [Test]
         public void Vector2_LerpCalculatesCorrectly()
         {

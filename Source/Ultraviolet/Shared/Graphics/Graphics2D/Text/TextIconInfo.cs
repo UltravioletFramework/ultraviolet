@@ -5,7 +5,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents the metadata for an icon used by the text layout engine.
     /// </summary>
-    public partial struct TextIconInfo
+    public partial struct TextIconInfo : IEquatable<TextIconInfo>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TextIconInfo"/> structure.

@@ -5,7 +5,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents a key which identifies a particular binding expression getter or setter.
     /// </summary>
-    internal partial struct BindingExpressionAccessorKey
+    internal partial struct BindingExpressionAccessorKey : IEquatable<BindingExpressionAccessorKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingExpressionAccessorKey"/> structure.

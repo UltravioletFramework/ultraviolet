@@ -36,10 +36,7 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <inheritdoc/>
-        public override String ToString()
-        {
-            return Input?.Substring(Start, Length);
-        }
+        public override String ToString() => Input?.Substring(Start, Length);
 
         /// <summary>
         /// Returns a new instance of the <see cref="StringFormatterCommandArguments"/> structure which

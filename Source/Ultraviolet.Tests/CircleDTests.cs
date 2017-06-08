@@ -112,15 +112,6 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
-        public void CircleD_Parse_CanRoundTrip()
-        {
-            var circle1 = CircleD.Parse("123.4 456.7 100");
-            var circle2 = CircleD.Parse(circle1.ToString());
-
-            TheResultingValue(circle1 == circle2).ShouldBe(true);
-        }
-
-        [Test]
         public void CircleD_SerializesToJson()
         {
             var circle = new CircleD(1.2, 2.3, 3.4);

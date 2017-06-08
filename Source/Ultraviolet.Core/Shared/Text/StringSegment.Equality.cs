@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Ultraviolet.Core.Text
 {
-    partial struct StringSegment : IEquatable<StringSegment>, IEquatable<String>, IEquatable<StringBuilder>
+    partial struct StringSegment
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

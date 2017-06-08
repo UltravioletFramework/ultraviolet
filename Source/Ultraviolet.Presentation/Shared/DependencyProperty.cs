@@ -20,7 +20,6 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents a dependency property.
     /// </summary>
-    [DebuggerDisplay(@"\{Name: {Name} Owner: {OwnerType}\}")]
     public partial class DependencyProperty
     {
         /// <summary>

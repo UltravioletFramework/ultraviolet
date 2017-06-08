@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
 {
-    partial struct VisualStateTransitionKey : IEquatable<VisualStateTransitionKey>
+    partial struct VisualStateTransitionKey
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

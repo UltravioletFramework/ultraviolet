@@ -7,7 +7,7 @@ namespace Ultraviolet.Presentation.Animations
     /// <summary>
     /// Represents the key used to identify a particular animation within a storyboard target's collection of animations.
     /// </summary>
-    public partial struct StoryboardTargetAnimationKey
+    public partial struct StoryboardTargetAnimationKey : IEquatable<StoryboardTargetAnimationKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoryboardTargetAnimationKey"/> structure.
@@ -19,7 +19,11 @@ namespace Ultraviolet.Presentation.Animations
             this.propertyName = propertyName;
             this.navigationExpression = navigationExpression;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => navigationExpression.HasValue ?
+            $"{propertyName.QualifiedName} | {navigationExpression}" : propertyName.QualifiedName;
+
         /// <summary>
         /// Gets the name of the animated property.
         /// </summary>

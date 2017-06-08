@@ -7,7 +7,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents the length of a row or column in a grid.
     /// </summary>
-    public partial struct GridLength
+    public partial struct GridLength : IEquatable<GridLength>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GridLength"/> structure.
@@ -31,7 +31,23 @@ namespace Ultraviolet.Presentation
             this.value        = value;
             this.gridUnitType = gridUnitType;
         }
-               
+
+        /// <inheritdoc/>
+        public override String ToString()
+        {
+            switch (gridUnitType)
+            {
+                case GridUnitType.Auto:
+                    return "Auto";
+                case GridUnitType.Pixel:
+                    return String.Format("{0}", Value);
+                case GridUnitType.Star:
+                    return String.Format("{0}*", Value);
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
         /// <summary>
         /// Gets an instance of the <see cref="GridLength"/> structure that holds a value whose
         /// size is determined by the size properties of the content object.

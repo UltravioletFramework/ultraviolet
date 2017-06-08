@@ -118,16 +118,7 @@ namespace Ultraviolet.Tests
             Assert.That(() => RectangleF.Parse("foo"),
                 Throws.TypeOf<FormatException>());
         }
-
-        [Test]
-        public void RectangleF_Parse_CanRoundTrip()
-        {
-            var rect1 = RectangleF.Parse("123.4 456.7 789.1 234.5");
-            var rect2 = RectangleF.Parse(rect1.ToString());
-
-            TheResultingValue(rect1 == rect2).ShouldBe(true);
-        }
-
+        
         [Test]
         public void RectangleF_SerializesToJson()
         {

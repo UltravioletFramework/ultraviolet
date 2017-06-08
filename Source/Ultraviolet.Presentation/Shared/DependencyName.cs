@@ -6,7 +6,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents a fully-qualified dependency property or routed event name.
     /// </summary>
-    public partial struct DependencyName
+    public partial struct DependencyName : IEquatable<DependencyName>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyName"/> structure.
@@ -30,7 +30,10 @@ namespace Ultraviolet.Presentation
                 this.Name = qualifiedName;
             }
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => QualifiedName;
+
         /// <summary>
         /// Gets the dependency property or routed event's fully-qualified name.
         /// </summary>

@@ -6,7 +6,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a pair of glyphs and their associated kerning information.
     /// </summary>
-    public partial struct SpriteFontKerningPair
+    public partial struct SpriteFontKerningPair : IEquatable<SpriteFontKerningPair>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteFontKerningPair"/> structure.
@@ -18,7 +18,10 @@ namespace Ultraviolet.Graphics.Graphics2D
             this.firstCharacter = firstCharacter;
             this.secondCharacter = secondCharacter;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{firstCharacter}{secondCharacter}";
+
         /// <summary>
         /// Gets the first character in the pair.
         /// </summary>

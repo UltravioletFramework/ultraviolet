@@ -11,7 +11,7 @@ namespace Ultraviolet.Core.Data
     /// the globally-unique identifier of the referenced object.</remarks>
     [TypeConverter(typeof(ObjectResolverTypeConverter<ResolvedDataObjectReference>))]
     [JsonConverter(typeof(CoreJsonConverter))]
-    public partial struct ResolvedDataObjectReference : IComparable<ResolvedDataObjectReference>
+    public partial struct ResolvedDataObjectReference : IEquatable<ResolvedDataObjectReference>, IComparable<ResolvedDataObjectReference>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ResolvedDataObjectReference"/> structure.
@@ -64,6 +64,10 @@ namespace Ultraviolet.Core.Data
             return new ResolvedDataObjectReference(id);
         }
         
+        /// <inheritdoc/>
+        public override String ToString() => 
+            !IsValid ? "@INVALID" : Source ?? String.Format("Object #{0}", Value.ToString());
+
         /// <summary>
         /// Gets the name of the registry that contains the resolved object.
         /// </summary>

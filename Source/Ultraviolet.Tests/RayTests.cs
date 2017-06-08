@@ -266,15 +266,6 @@ namespace Ultraviolet.Tests
             Assert.That(() => Ray.Parse("foo"),
                 Throws.TypeOf<FormatException>());
         }
-
-        [Test]
-        public void Ray_Parse_CanRoundTrip()
-        {
-            var size1 = Ray.Parse("1.2 2.3 3.4 4.5 5.6 6.7");
-            var size2 = Ray.Parse(size1.ToString());
-
-            TheResultingValue(size1 == size2).ShouldBe(true);
-        }
         
         [Test]
         public void Ray_SerializesToJson()

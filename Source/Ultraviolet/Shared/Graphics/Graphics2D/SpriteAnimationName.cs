@@ -6,7 +6,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents the name or index of a sprite animation.
     /// </summary>
-    public partial struct SpriteAnimationName
+    public partial struct SpriteAnimationName : IEquatable<SpriteAnimationName>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAnimationName"/> structure.
@@ -55,7 +55,10 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             return name.animationName;
         }
-                
+
+        /// <inheritdoc/>
+        public override String ToString() => animationName ?? animationIndex.ToString();
+
         /// <summary>
         /// Gets a value indicating whether this structure represents an animation index.
         /// </summary>

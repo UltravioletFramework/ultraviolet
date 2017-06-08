@@ -50,32 +50,8 @@ namespace Ultraviolet.Core.Text
             return defaultVariant.Value;
         }
 
-        /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>An enumerator for the collection.</returns>
-        public Dictionary<String, LocalizedStringVariant>.Enumerator GetEnumerator()
-        {
-            return variants.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>An enumerator for the collection.</returns>
-        IEnumerator<KeyValuePair<String, LocalizedStringVariant>> IEnumerable<KeyValuePair<String, LocalizedStringVariant>>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>An enumerator for the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        /// <inheritdoc/>
+        public override String ToString() => this;
 
         /// <summary>
         /// Gets a value indicating whether the string has the specified property.
@@ -155,15 +131,6 @@ namespace Ultraviolet.Core.Text
             var group = Localization.GetPluralityGroup(Culture, count);
             return GetVariant(group) ?? variants.DefaultVariant;
         }
-
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return this;
-        }    
 
         /// <summary>
         /// Gets the string's associated culture.

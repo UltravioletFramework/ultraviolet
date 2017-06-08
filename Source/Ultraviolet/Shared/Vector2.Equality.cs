@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
-    partial struct Vector2 : IEquatable<Vector2>
+    partial struct Vector2
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

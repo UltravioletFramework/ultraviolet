@@ -47,14 +47,8 @@ namespace Ultraviolet.Core.Text
             return variant.Value;
         }
 
-        /// <summary>
-        /// Converts the object to a human-readable string.
-        /// </summary>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public override String ToString()
-        {
-            return value;
-        }
+        /// <inheritdoc/>
+        public override String ToString() => value;
 
         /// <summary>
         /// Gets a value indicating whether the string variant has the specified property.

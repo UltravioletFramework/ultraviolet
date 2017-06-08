@@ -9,7 +9,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// Represents a value which identifies a particular sprite animation.
     /// </summary>
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    public partial struct SpriteAnimationID
+    public partial struct SpriteAnimationID : IEquatable<SpriteAnimationID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteAnimationID"/> structure from the specified animation name.
@@ -104,6 +104,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             get { return new SpriteAnimationID(); }
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => String.Format("{0}:{1}",
+            spriteAssetID, String.IsNullOrEmpty(animationName) ? animationIndex.ToString() : animationName);
 
         /// <summary>
         /// Gets a value indicating whether this is a valid sprite animation identifier.

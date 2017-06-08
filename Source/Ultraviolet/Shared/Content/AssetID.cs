@@ -8,7 +8,7 @@ namespace Ultraviolet.Content
     /// Represents a value which identifies an asset within one of the application's content manifests.
     /// </summary>
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    public partial struct AssetID
+    public partial struct AssetID : IEquatable<AssetID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetID"/> structure.
@@ -140,6 +140,9 @@ namespace Ultraviolet.Content
         {
             get { return new AssetID(); }
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => IsValid ? $"#{manifestName}:{manifestGroup}:{assetName}" : "#INVALID";
 
         /// <summary>
         /// Gets a value indicating whether this is a valid asset identifier.

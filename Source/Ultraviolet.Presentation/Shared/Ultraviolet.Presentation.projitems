@@ -36,7 +36,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationKey.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetAnimationKey.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Animations\StoryboardTargetCollection.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ArrangeOptions.cs" />
@@ -44,8 +43,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\NavigationExpression.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateTransitionKey.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSource.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSource.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Thickness.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Thickness.Parsing.cs" />
@@ -59,9 +58,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SourcedAssetID.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GridLength.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GridLength.Parsing.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyValue.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyValue.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DependencyName.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyName.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledBindingExpressionKey.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionAccessorKey.cs" />

@@ -6,7 +6,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
-    public partial struct SourcedCursor : IInterpolatable<SourcedCursor>
+    public partial struct SourcedCursor : IEquatable<SourcedCursor>, IInterpolatable<SourcedCursor>
     {
         /// <summary>
         /// Initializes the <see cref="SourcedCursor"/> type.
@@ -38,7 +38,10 @@ namespace Ultraviolet.Presentation
         {
             return sourced.Resource;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
+
         /// <inheritdoc/>
         [Preserve]
         public SourcedCursor Interpolate(SourcedCursor target, Single t)

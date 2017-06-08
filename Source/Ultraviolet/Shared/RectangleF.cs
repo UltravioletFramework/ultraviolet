@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,8 +8,7 @@ namespace Ultraviolet
     /// Represents a rectangle with single-precision floating point components.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y} Width:{Width} Height:{Height}\}")]
-    public partial struct RectangleF : IInterpolatable<RectangleF>
+    public partial struct RectangleF : IEquatable<RectangleF>, IInterpolatable<RectangleF>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RectangleF"/> class.
@@ -460,7 +458,10 @@ namespace Ultraviolet
             result.Width = maxX - minX;
             result.Height = maxY - minY;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{X:{X} Y:{Y}: Width:{Width} Height{Height}}}";
+
         /// <summary>
         /// Gets a value indicating whether this rectangle intersects the specified rectangle.
         /// </summary>

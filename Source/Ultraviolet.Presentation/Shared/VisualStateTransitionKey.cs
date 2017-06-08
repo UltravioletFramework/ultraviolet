@@ -1,9 +1,11 @@
-﻿namespace Ultraviolet.Presentation
+﻿using System;
+
+namespace Ultraviolet.Presentation
 {
     /// <summary>
     /// Represents a key which identifies a particular visual state transition.
     /// </summary>
-    internal partial struct VisualStateTransitionKey
+    internal partial struct VisualStateTransitionKey : IEquatable<VisualStateTransitionKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualStateTransitionKey"/> structure.

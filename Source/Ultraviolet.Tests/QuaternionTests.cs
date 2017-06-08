@@ -117,15 +117,6 @@ namespace Ultraviolet.Tests
 
             TheResultingValue(succeeded).ShouldBe(false);
         }
-
-        [Test]
-        public void Quaternion_ParseCanRoundTrip()
-        {
-            var quaternion1 = Quaternion.Parse("123.4 456.7 789.1 123.4");
-            var quaternion2 = Quaternion.Parse(quaternion1.ToString());
-
-            TheResultingValue(quaternion1 == quaternion2).ShouldBe(true);
-        }
         
         [Test]
         public void Quaternion_CreateFromAxisAngleCalculatedCorrectly()

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
 {
-    partial struct Viewport : IEquatable<Viewport>
+    partial struct Viewport
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

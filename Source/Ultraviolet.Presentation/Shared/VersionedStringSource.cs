@@ -8,7 +8,7 @@ namespace Ultraviolet.Presentation
     /// Represents a source of string data with an attached version value which is used to track changes to mutable sources.
     /// </summary>
     [TypeConverter(typeof(VersionedStringSourceTypeConverter))]
-    public partial struct VersionedStringSource
+    public partial struct VersionedStringSource : IEquatable<VersionedStringSource>
     {
         /// <summary>
         /// Initializes the <see cref="VersionedStringSource"/> type.
@@ -85,7 +85,59 @@ namespace Ultraviolet.Presentation
         {
             return new VersionedStringSource(str);
         }
-                
+
+        /// <inheritdoc/>
+        public override String ToString() => ToString(null);
+
+        /// <summary>
+        /// Converts the object to a human-readable string using the specified culture information.
+        /// </summary>
+        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
+        /// <returns>A human-readable string that represents the object.</returns>
+        public String ToString(IFormatProvider provider)
+        {
+            if (sourceString != null)
+                return sourceString;
+
+            if (sourceStringBuilder != null)
+            {
+                if (sourceStringBuilder.Version != version)
+                    throw new InvalidOperationException(PresentationStrings.VersionedStringSourceIsStale);
+
+                return sourceStringBuilder.ToString();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a substring of the string buffer to a <see cref="String"/> instance.
+        /// </summary>
+        /// <param name="startIndex">The index of the first character in the substring to convert.</param>
+        /// <param name="length">The number of characters in the substring to convert.</param>
+        /// <returns>The string that was created.</returns>
+        public String ToString(Int32 startIndex, Int32 length)
+        {
+            if (sourceString != null)
+                return sourceString.Substring(startIndex, length);
+
+            if (sourceStringBuilder != null)
+            {
+                if (sourceStringBuilder.Version != version)
+                    throw new InvalidOperationException(PresentationStrings.VersionedStringSourceIsStale);
+
+                return sourceStringBuilder.ToString();
+            }
+
+            if (startIndex != 0)
+                throw new ArgumentOutOfRangeException("startIndex");
+
+            if (length > 0)
+                throw new ArgumentOutOfRangeException("length");
+
+            return String.Empty;
+        }
+
         /// <summary>
         /// Creates an invalid <see cref="VersionedStringSource"/> instance.
         /// </summary>

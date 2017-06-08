@@ -7,7 +7,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents a raw dependency property value plus the culture with which it should be parsed. 
     /// </summary>
-    public partial struct DependencyValue
+    public partial struct DependencyValue : IEquatable<DependencyValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyValue"/> structure.
@@ -21,6 +21,9 @@ namespace Ultraviolet.Presentation
             this.Value = value;
             this.Culture = culture;
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => Value;
 
         /// <summary>
         /// Gets a value indicating whether this is an empty value.

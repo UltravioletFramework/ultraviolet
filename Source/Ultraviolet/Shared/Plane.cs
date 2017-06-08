@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,7 +8,6 @@ namespace Ultraviolet
     /// Represents a plane in three-dimensional space.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{Normal:{Normal} D:{D}\}")]
     public partial struct Plane : IEquatable<Plane>, IInterpolatable<Plane>
     {
         /// <summary>
@@ -325,6 +323,9 @@ namespace Ultraviolet
                 x * m13 + y * m23 + z * m33,
                 plane.D);
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Normal:{Normal} D:{D}}}";
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified frustum.

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -10,8 +8,7 @@ namespace Ultraviolet
     /// Represents a two-dimensional vector.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y}\}")]
-    public partial struct Vector2 : IInterpolatable<Vector2>
+    public partial struct Vector2 : IEquatable<Vector2>, IInterpolatable<Vector2>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Vector2"/> structure with all of its components set to the specified value.
@@ -1003,7 +1000,10 @@ namespace Ultraviolet
             result.X = (b1 * v1.X) + (b2 * v2.X) + (b3 * v3.X);
             result.Y = (b1 * v1.Y) + (b2 * v2.Y) + (b3 * v3.Y);
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{X:{X} Y:{Y}}}";
+
         /// <summary>
         /// Calculates the length of the vector.
         /// </summary>

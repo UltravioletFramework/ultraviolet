@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
 {
-    partial struct CompiledBindingExpressionKey : IEquatable<CompiledBindingExpressionKey>
+    partial struct CompiledBindingExpressionKey
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

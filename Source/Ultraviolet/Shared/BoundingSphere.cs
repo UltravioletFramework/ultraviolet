@@ -7,7 +7,7 @@ namespace Ultraviolet
     /// <summary>
     /// Represents a bounding sphere.
     /// </summary>
-    public partial struct BoundingSphere
+    public partial struct BoundingSphere : IEquatable<BoundingSphere>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundingSphere"/> structure.
@@ -21,6 +21,9 @@ namespace Ultraviolet
             this.Center = center;
             this.Radius = radius;
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Center:{Center} Radius:{Radius}}}";
 
         /// <summary>
         /// Creates a new <see cref="BoundingSphere"/> by merging two existing bounding spheres.

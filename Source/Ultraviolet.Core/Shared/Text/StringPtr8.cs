@@ -5,7 +5,7 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// Represent a pointer to an unmanaged string where each character is 8 bits.
     /// </summary>
-    public partial struct StringPtr8
+    public partial struct StringPtr8 : IEquatable<StringPtr8>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringPtr8"/> structure from the specified <see langword="null"/>-terminated string.
@@ -46,16 +46,23 @@ namespace Ultraviolet.Core.Text
         {
             return ptr.ptr;
         }
-        
+
+        /// <inheritdoc/>
+        public unsafe override String ToString() => new String((sbyte*)ptr, 0, length);
+
         /// <summary>
         /// Converts the string pointer to a pointer to an unspecified type.
         /// </summary>
         /// <returns>A pointer to the string data.</returns>
         [CLSCompliant(false)]
-        public unsafe void* ToPointer()
-        {
-            return ptr.ToPointer();
-        }
+        public unsafe void* ToPointer() => ptr.ToPointer();
+
+        /// <summary>
+        /// Converts the string pointer to a pointer to an sequence of signed bytes.
+        /// </summary>
+        /// <returns>A pointer to the string data.</returns>
+        [CLSCompliant(false)]
+        public unsafe sbyte* ToTypedPointer() => (sbyte*)ptr.ToPointer();
 
         /// <summary>
         /// Gets a <see langword="null"/> string pointer.

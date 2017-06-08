@@ -6,22 +6,6 @@ namespace Ultraviolet.Presentation
 {
     partial struct Thickness
     {
-        /// <inheritdoc/>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return String.Format(provider, "{0} {1} {2} {3}", top, left, right, bottom);
-        }
-
         /// <summary>
         /// Converts the string representation of a <see cref="Thickness"/> to an object instance.
         /// A return value indicates whether the conversion succeeded.

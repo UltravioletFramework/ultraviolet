@@ -8,7 +8,7 @@ namespace Ultraviolet.Presentation.Styles
 		/// <summary>
 		/// Represents the key which identifies a style + navigation expression.
 		/// </summary>
-		private partial struct StyleKey
+		private partial struct StyleKey : IEquatable<StyleKey>
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="StyleKey"/> structure.

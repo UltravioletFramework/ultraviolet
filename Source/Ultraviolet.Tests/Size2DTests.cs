@@ -104,16 +104,7 @@ namespace Ultraviolet.Tests
             Assert.That(() => Size2D.Parse("foo"),
                 Throws.TypeOf<FormatException>());
         }
-
-        [Test]
-        public void Size2D_Parse_CanRoundTrip()
-        {
-            var size1 = Size2D.Parse("123.4 456.7");
-            var size2 = Size2D.Parse(size1.ToString());
-
-            TheResultingValue(size1 == size2).ShouldBe(true);
-        }
-
+        
         [Test]
         public void Size2D_Area_IsCalculatedCorrectly()
         {

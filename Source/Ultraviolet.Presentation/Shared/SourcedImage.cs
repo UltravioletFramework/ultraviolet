@@ -7,7 +7,7 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
-    public partial struct SourcedImage : IInterpolatable<SourcedImage>
+    public partial struct SourcedImage : IEquatable<SourcedImage>, IInterpolatable<SourcedImage>
     {
         /// <summary>
         /// Initializes the <see cref="SourcedImage"/> type.
@@ -39,7 +39,10 @@ namespace Ultraviolet.Presentation
         {
             return sourced.Resource;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
+
         /// <inheritdoc/>
         [Preserve]
         public SourcedImage Interpolate(SourcedImage target, Single t)

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
 {
-    partial struct GridLength : IEquatable<GridLength>
+    partial struct GridLength
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

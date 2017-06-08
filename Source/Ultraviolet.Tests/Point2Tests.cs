@@ -103,16 +103,7 @@ namespace Ultraviolet.Tests
             Assert.That(() => Point2.Parse("foo"),
                 Throws.TypeOf<FormatException>());
         }
-
-        [Test]
-        public void Point2_Parse_CanRoundTrip()
-        {
-            var point1 = Point2.Parse("123 456");
-            var point2 = Point2.Parse(point1.ToString());
-
-            TheResultingValue(point1 == point2).ShouldBe(true);
-        }
-
+        
         [Test]
         public void Point2_TransformsCorrectly_WithMatrix()
         {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
@@ -9,8 +7,7 @@ namespace Ultraviolet.Presentation
     /// Represents the thickness of a frame around a rectangle.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{Left:{Left} Top:{Top} Right:{Right} Bottom:{Bottom}\}")]
-    public partial struct Thickness : IInterpolatable<Thickness>
+    public partial struct Thickness : IEquatable<Thickness>, IInterpolatable<Thickness>
     {
         /// <summary>
         /// Initializes the <see cref="Thickness"/> type.
@@ -160,7 +157,10 @@ namespace Ultraviolet.Presentation
 
             return new RectangleD(rectangle.X + thickness.Left, rectangle.Y + thickness.Top, width, height);
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Left:{Left} Right:{Right} Top:{Top} Bottom:{Bottom}}}";
+
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>

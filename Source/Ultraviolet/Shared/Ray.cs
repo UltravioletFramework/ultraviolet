@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -9,7 +8,6 @@ namespace Ultraviolet
     /// Represents a line proceeding from a point in space.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{Position:{Position} Direction:{Direction}\}")]
     public partial struct Ray : IEquatable<Ray>, IInterpolatable<Ray>
     {
         /// <summary>
@@ -146,6 +144,9 @@ namespace Ultraviolet
 
             result = (distanceToSphere < 0) ? null : distanceToCenter - (Single?)Math.Sqrt(distanceToSphere);
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Position:{Position} Direction:{Direction}}}";
 
         /// <inheritdoc/>
         [Preserve]

@@ -6,7 +6,7 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// Represents a segment of a string.
     /// </summary>
-    public partial struct StringSegment
+    public partial struct StringSegment : IEquatable<StringSegment>, IEquatable<String>, IEquatable<StringBuilder>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
@@ -170,7 +170,11 @@ namespace Ultraviolet.Core.Text
 
             return Empty;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => 
+            sourceBuilder?.ToString(Start, Length) ?? sourceString?.Substring(Start, Length);
+
         /// <summary>
         /// Creates a string segment which is a substring of this string segment.
         /// </summary>

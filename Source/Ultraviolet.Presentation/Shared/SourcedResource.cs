@@ -9,7 +9,8 @@ namespace Ultraviolet.Presentation
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
     /// <typeparam name="T">The type of asset which this object represents.</typeparam>
-    public partial struct SourcedResource<T> :IInterpolatable<SourcedResource<T>> where T : class
+    public partial struct SourcedResource<T> : IEquatable<SourcedResource<T>>, IInterpolatable<SourcedResource<T>> 
+        where T : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SourcedResource{T}"/> structure.
@@ -43,6 +44,9 @@ namespace Ultraviolet.Presentation
         {
             resource.Load(contentManager, asset);
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
 
         /// <inheritdoc/>
         [Preserve]

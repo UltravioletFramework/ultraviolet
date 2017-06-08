@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
-    partial struct Color : IEquatable<Color>
+    partial struct Color
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

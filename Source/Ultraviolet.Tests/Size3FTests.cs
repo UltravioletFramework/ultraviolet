@@ -111,15 +111,6 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
-        public void Size3F_Parse_CanRoundTrip()
-        {
-            var size1 = Size3F.Parse("123.4 456.7 789.1");
-            var size2 = Size3F.Parse(size1.ToString());
-
-            TheResultingValue(size1 == size2).ShouldBe(true);
-        }
-
-        [Test]
         public void Size3F_Volume_IsCalculatedCorrectly()
         {
             var volume1width  = 123.45f;

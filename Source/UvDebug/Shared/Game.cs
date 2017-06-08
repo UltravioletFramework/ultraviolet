@@ -33,6 +33,8 @@ namespace UvDebug
         /// </summary>
         public Game() : base("Ultraviolet", "UvDebug")
         {
+            Matrix m = Matrix.Identity;
+
             Diagnostics.DrawDiagnosticsVisuals = true;
             PlatformSpecificInitialization();
         }

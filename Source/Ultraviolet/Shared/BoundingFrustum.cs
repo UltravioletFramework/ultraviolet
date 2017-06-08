@@ -17,6 +17,10 @@ namespace Ultraviolet
             this.Matrix = value;
         }
 
+        /// <inheritdoc/>
+        public override String ToString() => 
+            $"{{Near:{Near} Far:{Far} Left:{Left} Right:{Right} Top:{Top} Bottom:{Bottom}}}";
+
         /// <summary>
         /// Populates the specified array with the set of points that describe the frustum's corners.
         /// </summary>

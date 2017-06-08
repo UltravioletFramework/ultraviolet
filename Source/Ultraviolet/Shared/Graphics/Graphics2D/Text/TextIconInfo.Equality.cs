@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D.Text
 {
-    partial struct TextIconInfo : IEquatable<TextIconInfo>
+    partial struct TextIconInfo
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

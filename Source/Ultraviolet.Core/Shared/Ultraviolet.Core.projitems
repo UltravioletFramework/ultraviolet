@@ -57,7 +57,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\ObjectResolverTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\ResolvedDataObjectReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\ResolvedDataObjectReference.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\ResolvedDataObjectReference.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FunctorComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\BinaryReaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\BinaryWriterExtensions.cs" />
@@ -104,6 +103,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\ILocalizationPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedString.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedString.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizedStringMatchEvaluatorData.cs" />
@@ -127,14 +127,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterCommandInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr16.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr16.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr16.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr8.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr8.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Text\StringPtr8.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegment.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegment.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentConversion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Tokenizer.cs" />

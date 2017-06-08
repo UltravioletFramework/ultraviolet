@@ -128,16 +128,7 @@ namespace Ultraviolet.Tests
             Assert.That(() => Plane.Parse("foo"),
                 Throws.TypeOf<FormatException>());
         }
-
-        [Test]
-        public void Plane_Parse_CanRoundTrip()
-        {
-            var plane1 = Plane.Parse("123.4 456.7 100 345.6");
-            var plane2 = Plane.Parse(plane1.ToString());
-
-            TheResultingValue(plane1 == plane2).ShouldBe(true);
-        }
-
+        
         [Test]
         public void Plane_SerializesToJson()
         {

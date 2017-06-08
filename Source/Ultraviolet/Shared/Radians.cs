@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
@@ -9,9 +8,8 @@ namespace Ultraviolet
     /// <summary>
     /// Represents an angle in radians.
     /// </summary>
-    [DebuggerDisplay(@"\{Value:{Value}\}")]
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    public partial struct Radians : IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
+    public partial struct Radians : IEquatable<Radians>, IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Radians"/> structure.
@@ -192,7 +190,10 @@ namespace Ultraviolet
             var angle = radians.value % (float)(2.0 * Math.PI);
             return angle >= 0 ? new Radians(angle) : new Radians((float)(angle + 2.0 * Math.PI));
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => Value.ToString();
+
         /// <summary>
         /// Compares this instance to the specified angle and returns an integer that indicates whether the value
         /// of this instance is less than, equal to, or greater than the value of the specified angle.

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
-    partial class BoundingFrustum : IEquatable<BoundingFrustum>
+    partial class BoundingFrustum
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

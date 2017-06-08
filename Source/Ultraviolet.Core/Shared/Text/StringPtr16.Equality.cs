@@ -1,9 +1,8 @@
 using System;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Core.Text
 {
-    partial struct StringPtr16 : IEquatable<StringPtr16>
+    partial struct StringPtr16
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

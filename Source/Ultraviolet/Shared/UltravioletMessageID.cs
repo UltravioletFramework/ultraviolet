@@ -33,7 +33,10 @@ namespace Ultraviolet
             var id = Interlocked.Increment(ref counter);
             return new UltravioletMessageID(name, id);
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => name ?? "INVALID";
+
         /// <summary>
         /// Gets the message identifier's underlying value.
         /// </summary>

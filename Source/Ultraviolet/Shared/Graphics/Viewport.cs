@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
 {
@@ -8,8 +6,7 @@ namespace Ultraviolet.Graphics
     /// Represents a region of the screen in which rendering takes place.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y} Width:{Width} Height:{Height}\}")]
-    public partial struct Viewport
+    public partial struct Viewport : IEquatable<Viewport>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Viewport"/> structure.
@@ -25,6 +22,9 @@ namespace Ultraviolet.Graphics
             this.Width = width;
             this.Height = height;
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{X:{X} Y:{Y} Width:{Width} Height:{Height}}}";
                 
         /// <summary>
         /// The x-coordinate of the upper-left corner of the viewport on the render target surface.

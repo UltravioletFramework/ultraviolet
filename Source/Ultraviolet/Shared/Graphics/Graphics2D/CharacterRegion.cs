@@ -9,7 +9,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a run of characters which is included in a font face.
     /// </summary>
-    [DebuggerDisplay(@"\{Start:{Start} End:{End}\}")]
     public struct CharacterRegion
     {
         /// <summary>
@@ -65,6 +64,9 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             return regions.OrderBy(x => x.Start).ToList();
         }
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Start:{Start} End:{End}}}";
 
         /// <summary>
         /// Gets a value indicating whether the region contains the specified character.

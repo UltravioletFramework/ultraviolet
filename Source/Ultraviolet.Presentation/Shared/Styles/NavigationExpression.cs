@@ -9,7 +9,7 @@ namespace Ultraviolet.Presentation.Styles
     /// allowing styles and animations to be applied to dependency objects which are themselves properties of
     /// other dependency objects.
     /// </summary>
-    public struct NavigationExpression : IEquatable<NavigationExpression>
+    public partial struct NavigationExpression : IEquatable<NavigationExpression>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationExpression"/> structure.
@@ -23,29 +23,7 @@ namespace Ultraviolet.Presentation.Styles
             this.propertyType = propertyType;
             this.propertyIndex = propertyIndex;
         }
-
-        /// <summary>
-        /// Compares two <see cref="NavigationExpression"/> values for equality.
-        /// </summary>
-        /// <param name="exp1">The first <see cref="NavigationExpression"/> to compare.</param>
-        /// <param name="exp2">The second <see cref="NavigationExpression"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified expressions are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(NavigationExpression exp1, NavigationExpression exp2)
-        {
-            return exp1.Equals(exp2);
-        }
-
-        /// <summary>
-        /// Compares two <see cref="NavigationExpression"/> values for inequality.
-        /// </summary>
-        /// <param name="exp1">The first <see cref="NavigationExpression"/> to compare.</param>
-        /// <param name="exp2">The second <see cref="NavigationExpression"/> to compare.</param>
-        /// <returns><see langword="true"/> if the specified expressions are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(NavigationExpression exp1, NavigationExpression exp2)
-        {
-            return !exp1.Equals(exp2);
-        }
-
+        
         /// <summary>
         /// Creates a new instance of the <see cref="NavigationExpression"/> from the
         /// specified <see cref="UvssNavigationExpression"/> object.
@@ -76,59 +54,16 @@ namespace Ultraviolet.Presentation.Styles
         }
 
         /// <inheritdoc/>
-        public override Int32 GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = hash * 23 + propertyName.GetHashCode();
-                hash = hash * 23 + propertyType?.GetHashCode() ?? 0;
-                hash = hash * 23 + propertyIndex.GetHashCode();
-                return hash;
-            }
-        }
-
-        /// <inheritdoc/>>
         public override String ToString()
-        {
-            return ToString(null);
-        }
-
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
         {
             var fmt = propertyType == null ? 
                 (propertyIndex.HasValue ? "{0}[{1}]" : "{0}") : 
                 (propertyIndex.HasValue ? "{0}[{1}] as {2}" : "{0} as {2}");
 
-            return String.Format(provider, fmt,
+            return String.Format(fmt,
                 propertyName.QualifiedName,
                 propertyIndex.GetValueOrDefault(),
                 propertyType == null ? String.Empty : propertyType.Name);
-        }
-
-        /// <inheritdoc/>
-        public override Boolean Equals(Object obj)
-        {
-            if (!(obj is NavigationExpression))
-            {
-                return false;
-            }
-            return Equals((NavigationExpression)obj);
-        }
-
-        /// <inheritdoc/>
-        public Boolean Equals(NavigationExpression other)
-        {
-            return
-                propertyName.Equals(other.propertyName) &&
-                propertyType == other.propertyType &&
-                propertyIndex.HasValue == other.propertyIndex.HasValue &&
-                propertyIndex.GetValueOrDefault() == other.propertyIndex.GetValueOrDefault();
         }
 
         /// <summary>

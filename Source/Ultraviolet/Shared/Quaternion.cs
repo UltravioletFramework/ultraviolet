@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -10,8 +9,7 @@ namespace Ultraviolet
     /// where w = cos(theta/2).
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{X:{X} Y:{Y} Z:{Z} W:{W}\}")]
-    public partial struct Quaternion : IInterpolatable<Quaternion>
+    public partial struct Quaternion : IEquatable<Quaternion>, IInterpolatable<Quaternion>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Quaternion"/> structure.
@@ -1089,7 +1087,10 @@ namespace Ultraviolet
             result.Z = -quaternion.Z;
             result.W = quaternion.W;            
         }
-                
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{X:{X} Y:{Y} Z:{Z} W:{W}}}";
+
         /// <summary>
         /// Calculates the length of the quaternion.
         /// </summary>

@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
-    partial struct SpriteFontKerningPair : IEquatable<SpriteFontKerningPair>
+    partial struct SpriteFontKerningPair
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

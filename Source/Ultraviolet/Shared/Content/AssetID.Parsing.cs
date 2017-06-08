@@ -5,23 +5,7 @@ using Ultraviolet.Core;
 namespace Ultraviolet.Content
 {
     partial struct AssetID
-    {
-        /// <inheritdoc/>
-        public override String ToString()
-        {
-            return ToString(null);
-        }
-        
-        /// <summary>
-        /// Converts the object to a human-readable string using the specified culture information.
-        /// </summary>
-        /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
-        /// <returns>A human-readable string that represents the object.</returns>
-        public String ToString(IFormatProvider provider)
-        {
-            return IsValid ? String.Format("#{0}:{1}:{2}", manifestName, manifestGroup, assetName) : "#INVALID";
-        }
-        
+    {        
         /// <summary>
         /// Converts the string representation of an asset identifier to an instance of the <see cref="AssetID"/> structure.
         /// </summary>

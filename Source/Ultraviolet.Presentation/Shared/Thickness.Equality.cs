@@ -3,7 +3,7 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation
 {
-    partial struct Thickness : IEquatable<Thickness>
+    partial struct Thickness
     {
         /// <inheritdoc/>
         public override Int32 GetHashCode()

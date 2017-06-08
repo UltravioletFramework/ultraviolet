@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -10,8 +8,7 @@ namespace Ultraviolet
     /// Represents a three-dimensional size with single-precision floating point components.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay(@"\{Width:{Width} Height:{Height} Depth:{Depth}\}")]
-    public partial struct Size3F : IEquatable<Size3F>
+    public partial struct Size3F : IEquatable<Size3F>, IInterpolatable<Size3F>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Size3F"/> structure.
@@ -222,7 +219,10 @@ namespace Ultraviolet
 
             return result;
         }
-        
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Width:{Width} Height:{Height} Depth:{Depth}}}";
+
         /// <summary>
         /// Interpolates between this value and the specified value.
         /// </summary>
