@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-
-#if !CODE_GEN_ENABLED
 using Ultraviolet.Core;
-#endif
 
 namespace Ultraviolet.Presentation
 {
@@ -25,48 +22,51 @@ namespace Ultraviolet.Presentation
             this.boundType = expressionType;
             this.delegateType = typeof(DataBindingSetter<>).MakeGenericType(expressionType);
 
-#if CODE_GEN_ENABLED
-            CreateReturnTarget();
-
-            var path = BindingExpressions.GetBindingMemberPathPart(expression);
-            var current = AddDataSourceReference();
-            var value = AddValueParameter();
-
-            if (current.Type.IsValueType)
-                return;
-
-            if (!AddValueAssignment(current, value, path))
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
             {
-                return;
+                CreateReturnTarget();
+
+                var path = BindingExpressions.GetBindingMemberPathPart(expression);
+                var current = AddDataSourceReference();
+                var value = AddValueParameter();
+
+                if (current.Type.IsValueType)
+                    return;
+
+                if (!AddValueAssignment(current, value, path))
+                {
+                    return;
+                }
+
+                AddReturn();
+                AddReturnLabel();
+
+                var lambdaBody = Expression.Block(variables, expressions);
+                var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
+
+                lambdaExpression = lambda;
             }
+            else
+            {
+                var expParamDataSource = Expression.Parameter(typeof(Object), "dataSource");
+                var expParamValue = Expression.Parameter(boundType, "value");
 
-            AddReturn();
-            AddReturnLabel();
+                var implMethod = typeof(DataBindingSetterBuilder).GetMethod(nameof(ReflectionBasedImplementation),
+                    BindingFlags.NonPublic | BindingFlags.Static);
 
-            var lambdaBody = Expression.Block(variables, expressions);
-            var lambda = Expression.Lambda(delegateType, lambdaBody, parameters);
+                var path = BindingExpressions.GetBindingMemberPathPart(expression);
+                var property = dataSourceType.GetProperty(path);
 
-            lambdaExpression = lambda;
-#else
-            var expParamDataSource = Expression.Parameter(typeof(Object), "dataSource");
-            var expParamValue = Expression.Parameter(boundType, "value");
+                if (!property.CanWrite)
+                    return;
 
-            var implMethod = typeof(DataBindingSetterBuilder).GetMethod(nameof(ReflectionBasedImplementation),
-                BindingFlags.NonPublic | BindingFlags.Static);
+                var expImplMethodCall = Expression.Call(implMethod,
+                    Expression.Constant(property),
+                    Expression.Convert(expParamDataSource, typeof(Object)),
+                    Expression.Convert(expParamValue, typeof(Object)));
 
-            var path = BindingExpressions.GetBindingMemberPathPart(expression);
-            var property = dataSourceType.GetProperty(path);
-
-            if (!property.CanWrite)
-                return;
-
-            var expImplMethodCall = Expression.Call(implMethod,
-                Expression.Constant(property),
-                Expression.Convert(expParamDataSource, typeof(Object)),
-                Expression.Convert(expParamValue, typeof(Object)));
-
-            lambdaExpression = Expression.Lambda(delegateType, expImplMethodCall, expParamDataSource, expParamValue);
-#endif
+                lambdaExpression = Expression.Lambda(delegateType, expImplMethodCall, expParamDataSource, expParamValue);
+            }
         }
 
         /// <summary>
@@ -75,10 +75,9 @@ namespace Ultraviolet.Presentation
         /// <returns>The <see cref="DataBindingSetter{T}"/> that was compiled.</returns>
         public Delegate Compile()
         {
-            return (lambdaExpression == null) ? null : lambdaExpression.Compile();
+            return lambdaExpression?.Compile();
         }
 
-#if !CODE_GEN_ENABLED
         /// <summary>
         /// Represents a reflection-based implementation of a binding expression setter which is
         /// used on platforms that don't support runtime code generation.
@@ -92,7 +91,6 @@ namespace Ultraviolet.Presentation
             var convertedValue = Convert.ChangeType(value, property.PropertyType);
             property.SetValue(dataSource, convertedValue, null);
         }
-#else
 
         /// <summary>
         /// Adds a reference to the data source. If accessing the data source would
@@ -149,7 +147,6 @@ namespace Ultraviolet.Presentation
             expressions.Add(Expression.Assign(memberExpression, Expression.Convert(value, memberExpression.Type)));
             return true;
         }
-#endif
 
         // State values.
         private readonly Type boundType;

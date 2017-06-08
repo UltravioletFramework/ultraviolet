@@ -54,9 +54,7 @@ namespace Ultraviolet.Presentation
         {
             miReferenceEquals = typeof(Object).GetMethod("ReferenceEquals", new[] { typeof(Object), typeof(Object) });
             miObjectEquals = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
-#if CODE_GEN_ENABLED
             miNullableEquals = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
-#endif
 
             RegisterPrecompiledComparisonDelegates();
         }
@@ -646,13 +644,14 @@ namespace Ultraviolet.Presentation
             if (type.IsClass)
                 return GetReferenceComparisonFunction(type);
 
-#if CODE_GEN_ENABLED
-            if (type.GetInterfaces().Where(x => x == typeof(IEquatable<>).MakeGenericType(type)).Any())
-                return GetIEquatableComparisonFunction(type);
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
+            {
+                if (type.GetInterfaces().Where(x => x == typeof(IEquatable<>).MakeGenericType(type)).Any())
+                    return GetIEquatableComparisonFunction(type);
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return GetNullableComparisonFunction(type);
-#endif
+                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    return GetNullableComparisonFunction(type);
+            }
 
             if (type.IsEnum)
                 return GetEnumComparisonFunction(type);
@@ -675,7 +674,6 @@ namespace Ultraviolet.Presentation
             return Expression.Lambda(delegateType, delegateBody, param1, param2).Compile();
         }
 
-#if CODE_GEN_ENABLED
         /// <summary>
         /// Gets a comparison function for value types which implement <see cref="IEquatable{T}"/>.
         /// </summary>
@@ -708,7 +706,6 @@ namespace Ultraviolet.Presentation
             var delegateType = typeof(DataBindingComparer<>).MakeGenericType(type);
             return Expression.Lambda(delegateType, Expression.Call(nullableEqualsMethod, arg1, arg2), arg1, arg2).Compile();
         }
-#endif
 
         /// <summary>
         /// Gets a comparison function for enumeration types.
@@ -825,9 +822,7 @@ namespace Ultraviolet.Presentation
         // Reflection information for commonly-used methods.
         private static readonly MethodInfo miReferenceEquals;
         private static readonly MethodInfo miObjectEquals;
-#if CODE_GEN_ENABLED
         private static readonly MethodInfo miNullableEquals;
-#endif
 
         // Comparison functions for various types.
         private static readonly Dictionary<Type, Delegate> comparerRegistry = new Dictionary<Type, Delegate>();

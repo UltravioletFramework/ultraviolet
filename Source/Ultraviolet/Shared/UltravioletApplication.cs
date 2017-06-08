@@ -91,11 +91,14 @@ namespace Ultraviolet
         {
             Contract.EnsureNotDisposed(this, disposed);
 
-#if IOS
-            System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
-#else
-            running = false;
-#endif
+            if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.iOS)
+            {
+                System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
+            }
+            else
+            {
+                running = false;
+            }
         }
 
         /// <summary>
@@ -431,11 +434,14 @@ namespace Ultraviolet
             }
             else if (type == UltravioletMessages.Quit)
             {
-#if IOS
-                System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
-#else
-                running = false;
-#endif
+                if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.iOS)
+                {
+                    System.Diagnostics.Debug.WriteLine(UltravioletStrings.CannotQuitOniOS);
+                }
+                else
+                {
+                    running = false;
+                }
             }
         }
 

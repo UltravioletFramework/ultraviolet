@@ -20,7 +20,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         static RoutedEventInvocation()
         {
-#if CODE_GEN_ENABLED
             miShouldEventBeRaisedForElement = typeof(RoutedEventInvocation).GetMethod(
                 nameof(ShouldEventBeRaisedForElement), BindingFlags.NonPublic | BindingFlags.Static);
             miShouldContinueBubbling = typeof(RoutedEventInvocation).GetMethod(
@@ -33,7 +32,6 @@ namespace Ultraviolet.Presentation
                 nameof(GetEventHandler), BindingFlags.NonPublic | BindingFlags.Static);
             miRaiseRaisedNotification = typeof(RoutedEvent).GetMethod(
                 nameof(RoutedEvent.RaiseRaisedNotification), BindingFlags.NonPublic | BindingFlags.Instance);
-#endif
         }
 
         /// <summary>
@@ -99,64 +97,67 @@ namespace Ultraviolet.Presentation
              * }
              */
 
-#if CODE_GEN_ENABLED
-            var evtInvoke = evt.DelegateType.GetMethod("Invoke");
-            var evtParams = evtInvoke.GetParameters().ToArray();
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
+            {
+                var evtInvoke = evt.DelegateType.GetMethod("Invoke");
+                var evtParams = evtInvoke.GetParameters().ToArray();
 
-            var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
-            var expParamElement = expParams.First();
-            var expParamData = expParams.Last();
+                var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
+                var expParamElement = expParams.First();
+                var expParamData = expParams.Last();
 
-            var expParts = new List<Expression>();
-            var expVars = new List<ParameterExpression>();
+                var expParts = new List<Expression>();
+                var expVars = new List<ParameterExpression>();
 
-            var varIndex = Expression.Variable(typeof(Int32), "index");
-            expVars.Add(varIndex);
+                var varIndex = Expression.Variable(typeof(Int32), "index");
+                expVars.Add(varIndex);
 
-            var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
-            expVars.Add(varHandler);
+                var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
+                expVars.Add(varHandler);
 
-            var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
-            expVars.Add(varCurrent);
+                var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
+                expVars.Add(varCurrent);
 
-            var innerEventHandlerParams = new List<ParameterExpression>();
-            innerEventHandlerParams.Add(varCurrent);
-            innerEventHandlerParams.AddRange(expParams.Skip(1));
+                var innerEventHandlerParams = new List<ParameterExpression>();
+                innerEventHandlerParams.Add(varCurrent);
+                innerEventHandlerParams.AddRange(expParams.Skip(1));
 
-            var expWhileBubbleBreakOuter = Expression.Label();
-            var expWhileBubbleBreakInner = Expression.Label();
+                var expWhileBubbleBreakOuter = Expression.Label();
+                var expWhileBubbleBreakInner = Expression.Label();
 
-            var expWhileBubble = Expression.Loop(
-                Expression.IfThenElse(
-                    Expression.Call(miShouldContinueBubbling, expParamElement, varCurrent),
-                    Expression.Block(
-                        Expression.Assign(varIndex, Expression.Constant(0)),
-                        Expression.Loop(
-                            Expression.IfThenElse(
-                                Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
-                                Expression.IfThen(
-                                    Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
-                                    Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
+                var expWhileBubble = Expression.Loop(
+                    Expression.IfThenElse(
+                        Expression.Call(miShouldContinueBubbling, expParamElement, varCurrent),
+                        Expression.Block(
+                            Expression.Assign(varIndex, Expression.Constant(0)),
+                            Expression.Loop(
+                                Expression.IfThenElse(
+                                    Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
+                                    Expression.IfThen(
+                                        Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
+                                        Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
+                                    ),
+                                    Expression.Break(expWhileBubbleBreakInner)
                                 ),
-                                Expression.Break(expWhileBubbleBreakInner)
+                                expWhileBubbleBreakInner
                             ),
-                            expWhileBubbleBreakInner
+                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent, expParamData)
                         ),
-                        Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent, expParamData)
+                        Expression.Break(expWhileBubbleBreakOuter)
                     ),
-                    Expression.Break(expWhileBubbleBreakOuter)
-                ),
-                expWhileBubbleBreakOuter
-            );
-            expParts.Add(expWhileBubble);
+                    expWhileBubbleBreakOuter
+                );
+                expParts.Add(expWhileBubble);
 
-            expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
-                Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
+                expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
+                    Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
 
-            return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
-#else
-            return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForBubbleStrategy));
-#endif
+                return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
+            }
+            else
+            {
+                return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForBubbleStrategy));
+            }
         }
 
         /// <summary>
@@ -190,47 +191,50 @@ namespace Ultraviolet.Presentation
              * }
              */
 
-#if CODE_GEN_ENABLED
-            var evtInvoke = evt.DelegateType.GetMethod("Invoke");
-            var evtParams = evtInvoke.GetParameters().ToArray();
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
+            {
+                var evtInvoke = evt.DelegateType.GetMethod("Invoke");
+                var evtParams = evtInvoke.GetParameters().ToArray();
 
-            var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
-            var expParamElement = expParams.First();
-            var expParamData = expParams.Last();
+                var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
+                var expParamElement = expParams.First();
+                var expParamData = expParams.Last();
 
-            var expParts = new List<Expression>();
-            var expVars = new List<ParameterExpression>();
+                var expParts = new List<Expression>();
+                var expVars = new List<ParameterExpression>();
 
-            var varIndex = Expression.Variable(typeof(Int32), "index");
-            expVars.Add(varIndex);
+                var varIndex = Expression.Variable(typeof(Int32), "index");
+                expVars.Add(varIndex);
 
-            var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
-            expVars.Add(varHandler);
+                var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handlers");
+                expVars.Add(varHandler);
 
-            var expInvokeBreak = Expression.Label();
-            var expInvoke = Expression.Loop(
-                Expression.IfThenElse(
-                    Expression.Call(miGetEventHandler, expParamElement, Expression.Constant(evt), varIndex, varHandler),
-                    Expression.IfThen(
-                        Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
-                        Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), expParams)
+                var expInvokeBreak = Expression.Label();
+                var expInvoke = Expression.Loop(
+                    Expression.IfThenElse(
+                        Expression.Call(miGetEventHandler, expParamElement, Expression.Constant(evt), varIndex, varHandler),
+                        Expression.IfThen(
+                            Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
+                            Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), expParams)
+                        ),
+                        Expression.Break(expInvokeBreak)
                     ),
-                    Expression.Break(expInvokeBreak)
-                ),
-                expInvokeBreak
-            );
-            expParts.Add(expInvoke);
+                    expInvokeBreak
+                );
+                expParts.Add(expInvoke);
 
-            var expRaiseRaised = Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement, expParamData);
-            expParts.Add(expRaiseRaised);
+                var expRaiseRaised = Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, expParamElement, expParamData);
+                expParts.Add(expRaiseRaised);
 
-            expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
-                Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
+                expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
+                    Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
 
-            return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
-#else
-            return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForDirectStrategy));
-#endif
+                return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
+            }
+            else
+            {
+                return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForDirectStrategy));
+            }
         }
 
         /// <summary>
@@ -272,72 +276,74 @@ namespace Ultraviolet.Presentation
              * }
              */
 
-#if CODE_GEN_ENABLED
-            var evtInvoke = evt.DelegateType.GetMethod("Invoke");
-            var evtParams = evtInvoke.GetParameters().ToArray();
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
+            {
+                var evtInvoke = evt.DelegateType.GetMethod("Invoke");
+                var evtParams = evtInvoke.GetParameters().ToArray();
 
-            var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
-            var expParamElement = expParams.First();
-            var expParamData = expParams.Last();
+                var expParams = evtParams.Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToList();
+                var expParamElement = expParams.First();
+                var expParamData = expParams.Last();
 
-            var expParts = new List<Expression>();
-            var expVars = new List<ParameterExpression>();
+                var expParts = new List<Expression>();
+                var expVars = new List<ParameterExpression>();
 
-            var varIndex = Expression.Variable(typeof(Int32), "index");
-            expVars.Add(varIndex);
+                var varIndex = Expression.Variable(typeof(Int32), "index");
+                expVars.Add(varIndex);
 
-            var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handler");
-            expVars.Add(varHandler);
+                var varHandler = Expression.Variable(typeof(RoutedEventHandlerMetadata), "handler");
+                expVars.Add(varHandler);
 
-            var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
-            expVars.Add(varCurrent);
+                var varCurrent = Expression.Variable(typeof(DependencyObject), "current");
+                expVars.Add(varCurrent);
 
-            var varStack = Expression.Variable(typeof(Stack<DependencyObject>), "stack");
-            expVars.Add(varStack);
+                var varStack = Expression.Variable(typeof(Stack<DependencyObject>), "stack");
+                expVars.Add(varStack);
 
-            var innerEventHandlerParams = new List<ParameterExpression>();
-            innerEventHandlerParams.Add(varCurrent);
-            innerEventHandlerParams.AddRange(expParams.Skip(1));
+                var innerEventHandlerParams = new List<ParameterExpression>();
+                innerEventHandlerParams.Add(varCurrent);
+                innerEventHandlerParams.AddRange(expParams.Skip(1));
 
-            var expWhileTunnelBreakOuter = Expression.Label();
-            var expWhileTunnelBreakInner = Expression.Label();
+                var expWhileTunnelBreakOuter = Expression.Label();
+                var expWhileTunnelBreakInner = Expression.Label();
 
-            var expWhileTunnel = Expression.Loop(
-                Expression.IfThenElse(
-                    Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent, varStack),
-                    Expression.Block(
-                        Expression.Assign(varIndex, Expression.Constant(0)),
-                        Expression.Loop(
-                            Expression.IfThenElse(
-                                Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
-                                Expression.IfThen(
-                                    Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
-                                    Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
+                var expWhileTunnel = Expression.Loop(
+                    Expression.IfThenElse(
+                        Expression.Call(miShouldContinueTunnelling, expParamElement, varCurrent, varStack),
+                        Expression.Block(
+                            Expression.Assign(varIndex, Expression.Constant(0)),
+                            Expression.Loop(
+                                Expression.IfThenElse(
+                                    Expression.Call(miGetEventHandler, varCurrent, Expression.Constant(evt), varIndex, varHandler),
+                                    Expression.IfThen(
+                                        Expression.Call(miShouldEventBeRaisedForElement, expParamData, Expression.Property(varHandler, "HandledEventsToo")),
+                                        Expression.Invoke(Expression.Convert(Expression.Property(varHandler, "Handler"), evt.DelegateType), innerEventHandlerParams)
+                                    ),
+                                    Expression.Break(expWhileTunnelBreakInner)
                                 ),
-                                Expression.Break(expWhileTunnelBreakInner)
+                                expWhileTunnelBreakInner
                             ),
-                            expWhileTunnelBreakInner
+                            Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent, expParamData)
                         ),
-                        Expression.Call(Expression.Constant(evt), miRaiseRaisedNotification, varCurrent, expParamData)
+                        Expression.Break(expWhileTunnelBreakOuter)
                     ),
-                    Expression.Break(expWhileTunnelBreakOuter)
-                ),
-                expWhileTunnelBreakOuter
-            );
-            expParts.Add(expWhileTunnel);
+                    expWhileTunnelBreakOuter
+                );
+                expParts.Add(expWhileTunnel);
 
-            expParts.Add(Expression.Call(miReleaseTunnellingStack, varStack));
+                expParts.Add(Expression.Call(miReleaseTunnellingStack, varStack));
 
-            expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
-                Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
+                expParts.Add(Expression.IfThen(Expression.IsTrue(Expression.Property(expParamData, nameof(RoutedEventData.AutoRelease))),
+                    Expression.Call(expParamData, nameof(RoutedEventData.Release), null)));
 
-            return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
-#else
-            return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForTunnelStrategy));
-#endif
+                return Expression.Lambda(evt.DelegateType, Expression.Block(expVars, expParts), expParams).Compile();
+            }
+            else
+            {
+                return CreateDelegateForReflectionBasedImplementation(evt, nameof(ReflectionBasedImplementationForTunnelStrategy));
+            }
         }
 
-#if !CODE_GEN_ENABLED
         /// <summary>
         /// Creates a delegate which wraps a reflection-based routing implementation.
         /// </summary>
@@ -446,7 +452,6 @@ namespace Ultraviolet.Presentation
             if (data.AutoRelease)
                 data.Release();
         }
-#endif
 
         /// <summary>
         /// Gets a value indicating whether the specified type represents a valid routed event delegate.
@@ -615,7 +620,6 @@ namespace Ultraviolet.Presentation
             }
         }
 
-#if CODE_GEN_ENABLED
         // Cached method info for methods used by invocation delegates.
         private static readonly MethodInfo miShouldEventBeRaisedForElement;
         private static readonly MethodInfo miShouldContinueBubbling;
@@ -623,7 +627,6 @@ namespace Ultraviolet.Presentation
         private static readonly MethodInfo miReleaseTunnellingStack;
         private static readonly MethodInfo miGetEventHandler;
         private static readonly MethodInfo miRaiseRaisedNotification;
-#endif
 
         // The stack used to track the tunnelling path for tunnelled events.
         private static readonly IPool<Stack<DependencyObject>> tunnellingStackPool =

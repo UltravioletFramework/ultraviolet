@@ -1,8 +1,5 @@
 ﻿using System;
-
-#if CODE_GEN_ENABLED
 using System.Linq.Expressions;
-#endif
 
 namespace Ultraviolet.Core.Collections
 {
@@ -75,11 +72,14 @@ namespace Ultraviolet.Core.Collections
             if (ctor == null)
                 throw new InvalidOperationException(CoreStrings.MissingDefaultCtor.Format(typeof(T).FullName));
 
-#if CODE_GEN_ENABLED
-            return Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
-#else
-            return () => (T)ctor.Invoke(null);
-#endif
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
+            {
+                return Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
+            }
+            else
+            {
+                return () => (T)ctor.Invoke(null);
+            }
         }
 
         /// <summary>

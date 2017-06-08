@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Ultraviolet.Core;
-
-#if CODE_GEN_ENABLED
 using System.Linq.Expressions;
-#endif
 
 namespace Ultraviolet
 {
@@ -41,40 +38,43 @@ namespace Ultraviolet
         {
             var interpolator = default(Interpolator<T>);
 
-#if CODE_GEN_ENABLED
-            var interpolateMethod = typeof(T).GetMethod("Interpolate",
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
-            if (interpolateMethod != null)
+            if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
             {
-                var paramValueStart = Expression.Parameter(typeof(T), "valueStart");
-                var paramValueEnd = Expression.Parameter(typeof(T), "valueEnd");
-                var paramFn = Expression.Parameter(typeof(EasingFunction), "fn");
-                var paramT = Expression.Parameter(typeof(Single), "t");
+                var interpolateMethod = typeof(T).GetMethod("Interpolate",
+                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
+                if (interpolateMethod != null)
+                {
+                    var paramValueStart = Expression.Parameter(typeof(T), "valueStart");
+                    var paramValueEnd = Expression.Parameter(typeof(T), "valueEnd");
+                    var paramFn = Expression.Parameter(typeof(EasingFunction), "fn");
+                    var paramT = Expression.Parameter(typeof(Single), "t");
 
-                var expInvokeFn = Expression.Invoke(Expression.Coalesce(paramFn, Expression.Constant(Easings.EaseInLinear)), paramT);
-                var expLambdaBody = Expression.Call(paramValueStart, interpolateMethod, paramValueEnd, expInvokeFn);
+                    var expInvokeFn = Expression.Invoke(Expression.Coalesce(paramFn, Expression.Constant(Easings.EaseInLinear)), paramT);
+                    var expLambdaBody = Expression.Call(paramValueStart, interpolateMethod, paramValueEnd, expInvokeFn);
 
-                interpolator = Expression.Lambda<Interpolator<T>>(expLambdaBody, paramValueStart, paramValueEnd, paramFn, paramT).Compile();
-            }
-#else
-            if (typeof(IInterpolatable<T>).IsAssignableFrom(typeof(T)))
-            {
-                // Invoke through interface
-                interpolator = (valueStart, valueEnd, fn, t) =>
-                    ((IInterpolatable<T>)valueStart).Interpolate(valueEnd, (fn ?? Easings.EaseInLinear)(t));
+                    interpolator = Expression.Lambda<Interpolator<T>>(expLambdaBody, paramValueStart, paramValueEnd, paramFn, paramT).Compile();
+                }
             }
             else
             {
-                // Invoke through pattern
-                var interpolateMethod = typeof(T).GetMethod("Interpolate",
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
-                if (interpolateMethod != null)
+                if (typeof(IInterpolatable<T>).IsAssignableFrom(typeof(T)))
                 {
+                    // Invoke through interface
                     interpolator = (valueStart, valueEnd, fn, t) =>
-                        (T)interpolateMethod.Invoke(valueStart, new Object[] { valueEnd, fn, t });
+                        ((IInterpolatable<T>)valueStart).Interpolate(valueEnd, (fn ?? Easings.EaseInLinear)(t));
+                }
+                else
+                {
+                    // Invoke through pattern
+                    var interpolateMethod = typeof(T).GetMethod("Interpolate",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(T), typeof(Single) }, null);
+                    if (interpolateMethod != null)
+                    {
+                        interpolator = (valueStart, valueEnd, fn, t) =>
+                            (T)interpolateMethod.Invoke(valueStart, new Object[] { valueEnd, fn, t });
+                    }
                 }
             }
-#endif
 
             Register(interpolator);
         }
