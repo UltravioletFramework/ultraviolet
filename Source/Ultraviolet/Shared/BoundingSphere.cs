@@ -231,28 +231,7 @@ namespace Ultraviolet
 
             var center = default(Vector3);
             var radius = default(Single);
-
-            if ((double)diameterX > (double)diameterY)
-            {
-                if ((double)diameterX > (double)diameterZ)
-                {
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.WriteLine();
-                }
-            }
-            else if ((double)diameterY > (double)diameterZ)
-            {
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine();
-            }
-
-
+            
             if (diameterX > diameterY && diameterX > diameterZ)
             {
                 Vector3.Lerp(ref minX, ref minY, 0.5f, out center);
