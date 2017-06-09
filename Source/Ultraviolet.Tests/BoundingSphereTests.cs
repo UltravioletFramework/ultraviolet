@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Ultraviolet.TestFramework;
+using Newtonsoft.Json;
 
 namespace Ultraviolet.Tests
 {
@@ -421,6 +422,55 @@ namespace Ultraviolet.Tests
             TheResultingValue(result)
                 .ShouldHaveCenter(1f, 2f, 3f)
                 .ShouldHaveRadius(20f);
+        }
+        
+        [Test]
+        public void BoundingSphere_SerializesToJson()
+        {
+            var sphere = new BoundingSphere(new Vector3(1.2f, 2.3f, 3.4f), 4.5f);
+            var json = JsonConvert.SerializeObject(sphere);
+
+            TheResultingString(json).ShouldBe(@"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}");
+        }
+
+        [Test]
+        public void BoundingSphere_SerializesToJson_WhenNullable()
+        {
+            var sphere = new BoundingSphere(new Vector3(1.2f, 2.3f, 3.4f), 4.5f);
+            var json = JsonConvert.SerializeObject((BoundingSphere?)sphere);
+
+            TheResultingString(json).ShouldBe(@"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}");
+        }
+
+        [Test]
+        public void BoundingSphere_DeserializesFromJson()
+        {
+            const String json = @"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}";
+
+            var sphere = JsonConvert.DeserializeObject<BoundingSphere>(json);
+
+            TheResultingValue(sphere)
+                .ShouldHaveCenter(1.2f, 2.3f, 3.4f)
+                .ShouldHaveRadius(4.5f);
+        }
+
+        [Test]
+        public void BoundingSphere_DeserializesFromJson_WhenNullable()
+        {
+            const String json1 = @"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}";
+
+            var sphere1 = JsonConvert.DeserializeObject<BoundingSphere?>(json1);
+
+            TheResultingValue(sphere1.Value)
+                .ShouldHaveCenter(1.2f, 2.3f, 3.4f)
+                .ShouldHaveRadius(4.5f);
+
+            const String json2 = @"null";
+
+            var sphere2 = JsonConvert.DeserializeObject<BoundingSphere?>(json2);
+
+            TheResultingValue(sphere2.HasValue)
+                .ShouldBe(false);
         }
     }
 }

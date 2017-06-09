@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Ultraviolet.Core;
 
 namespace Ultraviolet
@@ -7,6 +8,8 @@ namespace Ultraviolet
     /// <summary>
     /// Represents a bounding sphere.
     /// </summary>
+    [Serializable]
+    [Preserve(AllMembers = true)]
     public partial struct BoundingSphere : IEquatable<BoundingSphere>
     {
         /// <summary>
@@ -556,11 +559,13 @@ namespace Ultraviolet
         /// <summary>
         /// The sphere's center position.
         /// </summary>
+        [JsonProperty(PropertyName = "center", Required = Required.Always)]
         public Vector3 Center;
 
         /// <summary>
         /// The sphere's radius.
         /// </summary>
+        [JsonProperty(PropertyName = "radius", Required = Required.Always)]
         public Single Radius;        
     }
 }

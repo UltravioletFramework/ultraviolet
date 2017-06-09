@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Ultraviolet.TestFramework;
 
@@ -255,6 +256,46 @@ namespace Ultraviolet.Tests
             TheResultingValue(r1).ShouldBe(false);
             TheResultingValue(r2).ShouldBe(true);
             TheResultingValue(r3).ShouldBe(true);
+        }
+
+        [Test]
+        public void BoundingFrustum_SerializesToJson()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var json = JsonConvert.SerializeObject(frustum);
+
+            TheResultingString(json).ShouldBe(@"{""matrix"":[1.81066,0.0,0.0,0.0,0.0,2.41421342,0.0,0.0,0.0,0.0,-1.001001,-1.0,0.0,0.0,4.004004,5.0]}");
+        }
+
+        [Test]
+        public void BoundingFrustum_DeserializesFromJson()
+        {
+            const String json = @"{""matrix"":[1.81066,0.0,0.0,0.0,0.0,2.41421342,0.0,0.0,0.0,0.0,-1.001001,-1.0,0.0,0.0,4.004004,5.0]}";
+
+            var frustum1 = JsonConvert.DeserializeObject<BoundingFrustum>(json);
+
+            TheResultingValue(frustum1.Near).WithinDelta(0.0001f)
+                .ShouldHaveNormal(0f, 0f, 1f).ShouldHaveDistance(-4f);
+            TheResultingValue(frustum1.Far).WithinDelta(0.0001f)
+                .ShouldHaveNormal(0f, 0f, -1f).ShouldHaveDistance(-995.0006f);
+            TheResultingValue(frustum1.Left).WithinDelta(0.0001f)
+                .ShouldHaveNormal(-0.8753f, 0f, 0.4834f).ShouldHaveDistance(-2.4172f);
+            TheResultingValue(frustum1.Right).WithinDelta(0.0001f)
+                .ShouldHaveNormal(0.8753f, 0f, 0.4834f).ShouldHaveDistance(-2.4172f);
+            TheResultingValue(frustum1.Top).WithinDelta(0.0001f)
+                .ShouldHaveNormal(0f, 0.9238f, 0.3826f).ShouldHaveDistance(-1.9134f);
+            TheResultingValue(frustum1.Bottom).WithinDelta(0.0001f)
+                .ShouldHaveNormal(0f, -0.9238f, 0.3826f).ShouldHaveDistance(-1.9134f);
+
+            const String json2 = @"null";
+
+            var frustum2 = JsonConvert.DeserializeObject<BoundingFrustum>(json2);
+
+            TheResultingObject(frustum2)
+                .ShouldBeNull();
         }
     }
 }

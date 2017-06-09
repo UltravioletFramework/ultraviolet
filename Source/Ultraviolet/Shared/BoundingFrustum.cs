@@ -1,17 +1,21 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Ultraviolet.Core;
 
 namespace Ultraviolet
 {
     /// <summary>
     /// Represents a frustum and provides methods for determining whether other bounding volumes intersect with it.
-    /// </summary>
+    /// </summary>    
+    [Serializable]
+    [Preserve(AllMembers = true)]
     public partial class BoundingFrustum : IEquatable<BoundingFrustum>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundingFrustum"/> class.
         /// </summary>
         /// <param name="value">The view/projection matrix which defines the frustum.</param>
+        [JsonConstructor]
         public BoundingFrustum(Matrix value)
         {
             this.Matrix = value;
@@ -387,36 +391,43 @@ namespace Ultraviolet
         /// <summary>
         /// The frustum's near plane.
         /// </summary>
+        [JsonIgnore]
         public Plane Near => planes[0];
 
         /// <summary>
         /// The frustum's far plane.
         /// </summary>
+        [JsonIgnore]
         public Plane Far => planes[1];
 
         /// <summary>
         /// The frustum's left plane.
         /// </summary>
+        [JsonIgnore]
         public Plane Left => planes[2];
 
         /// <summary>
         /// The frustum's right plane.
         /// </summary>
+        [JsonIgnore]
         public Plane Right => planes[3];
 
         /// <summary>
         /// The frustum's top plane.
         /// </summary>
+        [JsonIgnore]
         public Plane Top => planes[4];
 
         /// <summary>
         /// The frustum's bottom plane.
         /// </summary>
+        [JsonIgnore]
         public Plane Bottom => planes[5];
 
         /// <summary>
         /// The matrix which describes the frustum.
         /// </summary>
+        [JsonProperty(PropertyName = "matrix", Required = Required.Always)]
         public Matrix Matrix
         {
             get { return matrix; }
