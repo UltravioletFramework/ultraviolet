@@ -257,6 +257,48 @@ namespace Ultraviolet.Tests
             TheResultingValue(r2).ShouldBe(true);
             TheResultingValue(r3).ShouldBe(true);
         }
+        
+        [Test]
+        public void BoundingFrustum_TryParse_SucceedsForValidStrings()
+        {
+            var str = "11 12 13 14 21 22 23 24 31 32 33 34 41 42 43 44";
+            if (!BoundingFrustum.TryParse(str, out var result))
+                throw new InvalidOperationException("Unable to parse string to BoundingFrustum.");
+
+            var matrix = new Matrix(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44);
+            var expected = new BoundingFrustum(matrix);
+
+            TheResultingValue(result == expected)
+                .ShouldBe(true);
+        }
+
+        [Test]
+        public void BoundingFrustum_TryParse_FailsForInvalidStrings()
+        {
+            var succeeded = BoundingFrustum.TryParse("foo", out var result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
+        }
+
+        [Test]
+        public void BoundingFrustum_Parse_SucceedsForValidStrings()
+        {
+            var str = "11 12 13 14 21 22 23 24 31 32 33 34 41 42 43 44";
+            var result = BoundingFrustum.Parse(str);
+
+            var matrix = new Matrix(11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44);
+            var expected = new BoundingFrustum(matrix);
+
+            TheResultingValue(result == expected)
+                .ShouldBe(true);
+        }
+
+        [Test]
+        public void BoundingFrustum_Parse_FailsForInvalidStrings()
+        {
+            Assert.That(() => BoundingFrustum.Parse("foo"),
+                Throws.TypeOf<FormatException>());
+        }
 
         [Test]
         public void BoundingFrustum_SerializesToJson()

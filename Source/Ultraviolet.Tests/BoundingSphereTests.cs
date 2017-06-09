@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using Ultraviolet.TestFramework;
-using Newtonsoft.Json;
 
 namespace Ultraviolet.Tests
 {
@@ -424,6 +424,44 @@ namespace Ultraviolet.Tests
                 .ShouldHaveRadius(20f);
         }
         
+        [Test]
+        public void BoundingSphere_TryParse_SucceedsForValidStrings()
+        {
+            var str = "12.3 45.6 78.9 10.11";
+            if (!BoundingSphere.TryParse(str, out var result))
+                throw new InvalidOperationException("Unable to parse string to BoundingSphere.");
+
+            TheResultingValue(result)
+                .ShouldHaveCenter(12.3f, 45.6f, 78.9f)
+                .ShouldHaveRadius(10.11f);
+        }
+
+        [Test]
+        public void BoundingSphere_TryParse_FailsForInvalidStrings()
+        {
+            var succeeded = BoundingSphere.TryParse("foo", out var result);
+
+            TheResultingValue(succeeded).ShouldBe(false);
+        }
+
+        [Test]
+        public void BoundingSphere_Parse_SucceedsForValidStrings()
+        {
+            var str = "12.3 45.6 78.9 10.11";
+            var result = BoundingSphere.Parse(str);
+
+            TheResultingValue(result)
+                .ShouldHaveCenter(12.3f, 45.6f, 78.9f)
+                .ShouldHaveRadius(10.11f);
+        }
+
+        [Test]
+        public void BoundingSphere_Parse_FailsForInvalidStrings()
+        {
+            Assert.That(() => BoundingSphere.Parse("foo"),
+                Throws.TypeOf<FormatException>());
+        }
+
         [Test]
         public void BoundingSphere_SerializesToJson()
         {

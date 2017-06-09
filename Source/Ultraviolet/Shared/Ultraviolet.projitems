@@ -19,6 +19,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffectPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.cs" />
