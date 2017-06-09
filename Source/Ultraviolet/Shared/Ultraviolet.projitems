@@ -372,7 +372,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIViewProviderInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UltravioletUI.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletApplication.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletConfiguration.cs" />

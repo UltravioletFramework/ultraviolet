@@ -80,23 +80,43 @@
     <None Include="..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
+    <None Include="..\Version.tt">
+      <Link>macOS\Properties\Version.tt</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Xamarin.Mac" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="macOSFactoryInitializer.cs" />
-    <Compile Include="Graphics\macOSSurfaceSource.cs" />
-    <Compile Include="Graphics\macOSSurfaceSaver.cs" />
-    <Compile Include="Platform\macOSIconLoader.cs" />
-    <Compile Include="Platform\macOSScreenDensityService.cs" />
+    <Compile Include="macOS\Graphics\macOSSurfaceSaver.cs" />
+    <Compile Include="macOS\Graphics\macOSSurfaceSource.cs" />
+    <Compile Include="macOS\Input\macOSSoftwareKeyboardService.cs" />
+    <Compile Include="macOS\Platform\macOSIconLoader.cs" />
+    <Compile Include="macOS\Platform\macOSScreenDensityService.cs" />
+    <Compile Include="macOS\Platform\macOSScreenOrientationService.cs" />
+    <Compile Include="macOS\Properties\AssemblyInfo.cs" />
     <Compile Include="..\Version.cs">
-      <Link>Properties\Version.cs</Link>
+      <Link>macOS\Properties\Version.cs</Link>
     </Compile>
-    <Compile Include="Platform\macOSScreenOrientationService.cs" />
-    <Compile Include="Input\macOSSoftwareKeyboardService.cs" />
+    <Compile Include="macOS\macOSFactoryInitializer.cs" />
+    <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplication.cs">
+      <Link>UltravioletApplication.cs</Link>
+    </Compile>
+    <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplication.Desktop.cs">
+      <Link>UltravioletApplication.Desktop.cs</Link>
+    </Compile>
+    <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplicationAudioSettings.cs">
+      <Link>UltravioletApplicationAudioSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplicationSettings.cs">
+      <Link>UltravioletApplicationSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplicationWindowSettings.cs">
+      <Link>UltravioletApplicationWindowSettings.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
@@ -111,11 +131,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="..\Version.tt">
-      <Link>Properties\Version.tt</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Input\" />
+    <Folder Include="macOS\" />
+    <Folder Include="macOS\Graphics\" />
+    <Folder Include="macOS\Input\" />
+    <Folder Include="macOS\Platform\" />
+    <Folder Include="macOS\Properties\" />
   </ItemGroup>
 </Project>

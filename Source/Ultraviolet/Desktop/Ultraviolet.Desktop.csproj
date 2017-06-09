@@ -163,10 +163,6 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UltravioletApplication.cs" />
-    <Compile Include="UltravioletApplicationAudioSettings.cs" />
-    <Compile Include="UltravioletApplicationSettings.cs" />
-    <Compile Include="UltravioletApplicationWindowSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Ultraviolet.Public.snk">
