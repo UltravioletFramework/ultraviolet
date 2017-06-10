@@ -122,9 +122,9 @@ namespace Ultraviolet.Tests
             var result = BoundingSphere.CreateFromFrustum(frustum);
 
             TheResultingValue(result.Center).WithinDelta(0.0001f)
-                .ShouldBe(-0.0853f, 0.06398f, -840.6782f);
+                .ShouldBe(-0.0853f, 0.06398f, -840.6783f);
             TheResultingValue(result.Radius).WithinDelta(0.0001f)
-                .ShouldBe(844.6785f);
+                .ShouldBe(844.6787f);
         }
 
         [Test]
@@ -137,9 +137,9 @@ namespace Ultraviolet.Tests
             BoundingSphere.CreateFromFrustum(frustum, out BoundingSphere result);
 
             TheResultingValue(result.Center).WithinDelta(0.0001f)
-                .ShouldBe(-0.0853f, 0.06398f, -840.6782f);
+                .ShouldBe(-0.0853f, 0.06398f, -840.6783f);
             TheResultingValue(result.Radius).WithinDelta(0.0001f)
-                .ShouldBe(844.6785f);
+                .ShouldBe(844.6787f);
         }
 
         [Test]

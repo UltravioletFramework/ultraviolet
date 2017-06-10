@@ -52,8 +52,8 @@ namespace Ultraviolet.Tests.Graphics
 
             var result = viewport.Project(source, proj, view, world);
 
-            TheResultingValue(result).WithinDelta(0.0001f)
-                .ShouldBe(30534.6464f, -261341.9f, 0.7485f);
+            TheResultingValue(result).WithinDelta(0.01f)
+                .ShouldBe(30534.64f, -261341.9f, 0.7485f);
         }
 
         [Test]
@@ -68,8 +68,8 @@ namespace Ultraviolet.Tests.Graphics
 
             viewport.Project(ref source, ref proj, ref view, ref world, out var result);
 
-            TheResultingValue(result).WithinDelta(0.0001f)
-                .ShouldBe(30534.6464f, -261341.9f, 0.7485f);
+            TheResultingValue(result).WithinDelta(0.01f)
+                .ShouldBe(30534.64f, -261341.9f, 0.7485f);
         }
     }
 }
