@@ -379,5 +379,46 @@ namespace Ultraviolet.Tests
             TheResultingValue(result2)
                 .ShouldBe(PlaneIntersectionType.Front);
         }
+
+        [Test]
+        public void Plane_CalculatesIntersectsBoundingBoxCorrectly()
+        {
+            var box = new BoundingBox(new Vector3(-10f), new Vector3(10f));
+            var plane1 = new Plane(new Vector3(1f, 0f, 0f), 0f);
+            var plane2 = new Plane(new Vector3(1f, 0f, 0f), 100f);
+            var plane3 = new Plane(new Vector3(1f, 0f, 0f), -100f);
+
+            var result1 = plane1.Intersects(box);
+            var result2 = plane2.Intersects(box);
+            var result3 = plane3.Intersects(box);
+
+            TheResultingValue(result1)
+                .ShouldBe(PlaneIntersectionType.Intersecting);
+            TheResultingValue(result2)
+                .ShouldBe(PlaneIntersectionType.Front);
+            TheResultingValue(result3)
+                .ShouldBe(PlaneIntersectionType.Back);
+        }
+
+        [Test]
+        public void Plane_CalculatesIntersectsBoundingBoxCorrectly_WithOutParam()
+        {
+            var box = new BoundingBox(new Vector3(-10f), new Vector3(10f));
+            var plane1 = new Plane(new Vector3(1f, 0f, 0f), 0f);
+            var plane2 = new Plane(new Vector3(1f, 0f, 0f), 100f);
+            var plane3 = new Plane(new Vector3(1f, 0f, 0f), -100f);
+
+            plane1.Intersects(ref box, out var result1);
+            plane2.Intersects(ref box, out var result2);
+            plane3.Intersects(ref box, out var result3);
+
+            TheResultingValue(result1)
+                .ShouldBe(PlaneIntersectionType.Intersecting);
+            TheResultingValue(result2)
+                .ShouldBe(PlaneIntersectionType.Front);
+            TheResultingValue(result3)
+                .ShouldBe(PlaneIntersectionType.Back);
+        }
+
     }
 }

@@ -277,5 +277,15 @@ namespace Ultraviolet.TestFramework
         {
             return new BoundingSphereResult(value);
         }
+
+        /// <summary>
+        /// Wraps the specified unit test result for evaluation.
+        /// </summary>
+        /// <param name="value">The value to wrap.</param>
+        /// <returns>The wrapped value.</returns>
+        protected static BoundingBoxResult TheResultingValue(BoundingBox value)
+        {
+            return new BoundingBoxResult(value);
+        }
     }
 }

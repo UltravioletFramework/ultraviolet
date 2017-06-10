@@ -19,6 +19,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\SoundEffectPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingBox.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingBox.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.Equality.cs" />
@@ -473,6 +475,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\BoundingFrustum.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\BoundingBox.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentManifest.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Content\ContentMetadata.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CursorCollection.json" />
@@ -480,6 +484,7 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Sprite.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\Graphics2D\Text\TextTableLayout.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Graphics\TextureAtlas.json" />
+    <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\BoundingSphere.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Ray.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Plane.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Quaternion.json" />

@@ -251,6 +251,46 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void BoundingSphere_CalculatesContainsBoundingBoxCorrectly()
+        {
+            var sphere = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+
+            var box1 = new BoundingBox(new Vector3(5f, 5f, 5f), new Vector3(15f, 15f, 15f));
+            var result1 = sphere.Contains(box1);
+            var box2 = new BoundingBox(new Vector3(-8f, -8f, -8f), new Vector3(8f, 8f, 8f));
+            var result2 = sphere.Contains(box2);
+            var box3 = new BoundingBox(new Vector3(-1f, -1f, -1f), new Vector3(1f, 1f, 1f));
+            var result3 = sphere.Contains(box3);
+
+            TheResultingValue(result1)
+                .ShouldBe(ContainmentType.Contains);
+            TheResultingValue(result2)
+                .ShouldBe(ContainmentType.Intersects);
+            TheResultingValue(result3)
+                .ShouldBe(ContainmentType.Disjoint);
+        }
+
+        [Test]
+        public void BoundingSphere_CalculatesContainsBoundingBoxCorrectly_WithOutParam()
+        {
+            var sphere = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+
+            var box1 = new BoundingBox(new Vector3(5f, 5f, 5f), new Vector3(15f, 15f, 15f));
+            sphere.Contains(ref box1, out var result1);
+            var box2 = new BoundingBox(new Vector3(-8f, -8f, -8f), new Vector3(8f, 8f, 8f));
+            sphere.Contains(ref box2, out var result2);
+            var box3 = new BoundingBox(new Vector3(-1f, -1f, -1f), new Vector3(1f, 1f, 1f));
+            sphere.Contains(ref box3, out var result3);
+
+            TheResultingValue(result1)
+                .ShouldBe(ContainmentType.Contains);
+            TheResultingValue(result2)
+                .ShouldBe(ContainmentType.Intersects);
+            TheResultingValue(result3)
+                .ShouldBe(ContainmentType.Disjoint);
+        }
+
+        [Test]
         public void BoundingSphere_CalculatesIntersectsBoundingFrustumCorrectly()
         {
             var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
@@ -317,6 +357,46 @@ namespace Ultraviolet.Tests
             sphere0.Intersects(ref sphere2, out var result2);
             var sphere3 = new BoundingSphere(new Vector3(0, 0, 0), 1f);
             sphere0.Intersects(ref sphere3, out var result3);
+
+            TheResultingValue(result1)
+                .ShouldBe(true);
+            TheResultingValue(result2)
+                .ShouldBe(true);
+            TheResultingValue(result3)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void BoundingSphere_CalculatesIntersectsBoundingBoxCorrectly()
+        {
+            var sphere = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+
+            var box1 = new BoundingBox(new Vector3(5f, 5f, 5f), new Vector3(15f, 15f, 15f));
+            var result1 = sphere.Intersects(box1);
+            var box2 = new BoundingBox(new Vector3(-8f, -8f, -8f), new Vector3(8f, 8f, 8f));
+            var result2 = sphere.Intersects(box2);
+            var box3 = new BoundingBox(new Vector3(-1f, -1f, -1f), new Vector3(1f, 1f, 1f));
+            var result3 = sphere.Intersects(box3);
+
+            TheResultingValue(result1)
+                .ShouldBe(true);
+            TheResultingValue(result2)
+                .ShouldBe(true);
+            TheResultingValue(result3)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void BoundingSphere_CalculatesIntersectsBoundingBoxCorrectly_WithOutParam()
+        {
+            var sphere = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+
+            var box1 = new BoundingBox(new Vector3(5f, 5f, 5f), new Vector3(15f, 15f, 15f));
+            sphere.Intersects(ref box1, out var result1);
+            var box2 = new BoundingBox(new Vector3(-8f, -8f, -8f), new Vector3(8f, 8f, 8f));
+            sphere.Intersects(ref box2, out var result2);
+            var box3 = new BoundingBox(new Vector3(-1f, -1f, -1f), new Vector3(1f, 1f, 1f));
+            sphere.Intersects(ref box3, out var result3);
 
             TheResultingValue(result1)
                 .ShouldBe(true);

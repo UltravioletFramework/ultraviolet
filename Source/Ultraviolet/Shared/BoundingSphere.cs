@@ -25,9 +25,6 @@ namespace Ultraviolet
             this.Radius = radius;
         }
 
-        /// <inheritdoc/>
-        public override String ToString() => $"{{Center:{Center} Radius:{Radius}}}";
-
         /// <summary>
         /// Creates a new <see cref="BoundingSphere"/> by merging two existing bounding spheres.
         /// </summary>
@@ -290,6 +287,9 @@ namespace Ultraviolet
             CreateFromPoints(frustum.CornersInternal, out result);
         }
 
+        /// <inheritdoc/>
+        public override String ToString() => $"{{Center:{Center} Radius:{Radius}}}";
+
         /// <summary>
         /// Gets a value indicating whether this <see cref="BoundingSphere"/> contains the specified point.
         /// </summary>
@@ -387,6 +387,68 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingSphere"/> contains the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <returns>A <see cref="ContainmentType"/> value representing the relationship between this sphere and the evaluated box.</returns>
+        public ContainmentType Contains(BoundingBox box)
+        {
+            Contains(ref box, out ContainmentType result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingSphere"/> contains the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
+        /// <param name="result">A <see cref="ContainmentType"/> value representing the relationship between this sphere and the evaluated box.</param>
+        public void Contains(ref BoundingBox box, out ContainmentType result)
+        {
+            var inside = true;
+
+            for (int i = 0; i < BoundingBox.CornerCount; i++)
+            {
+                var corner = box.GetCorner(i);
+                if (Contains(corner) == ContainmentType.Disjoint)
+                {
+                    inside = false;
+                    break;
+                }
+            }
+
+            if (inside)
+            {
+                result = ContainmentType.Contains;
+                return;
+            }
+
+            var distance = 0.0;
+
+            if (Center.X < box.Min.X)
+                distance += (Center.X - box.Min.X) * (Center.X - box.Min.X);
+            else if (Center.X > box.Max.X)
+                distance += (Center.X - box.Max.X) * (Center.X - box.Max.X);
+            
+            if (Center.Y < box.Min.Y)
+                distance += (Center.Y - box.Min.Y) * (Center.Y - box.Min.Y);
+            else if (Center.Y > box.Max.Y)
+                distance += (Center.Y - box.Max.Y) * (Center.Y - box.Max.Y);
+            
+            if (Center.Z < box.Min.Z)
+                distance += (Center.Z - box.Min.Z) * (Center.Z - box.Min.Z);
+            else if (Center.Z > box.Max.Z)
+                distance += (Center.Z - box.Max.Z) * (Center.Z - box.Max.Z);
+
+            if (distance <= Radius * Radius)
+            {
+                result = ContainmentType.Intersects;
+                return;
+            }
+
+            result = ContainmentType.Disjoint;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this <see cref="BoundingSphere"/> intersects the specified frustum.
         /// </summary>
         /// <param name="frustum">A <see cref="BoundingFrustum"/> which represents the frustum to evaluate.</param>
@@ -435,6 +497,26 @@ namespace Ultraviolet
             var combinedRadiiSquared = combinedRadii * combinedRadii;
 
             result = distanceSquared <= combinedRadiiSquared;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingSphere"/> intersects the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <returns><see langword="true"/> if this sphere intersects the evaluated box; otherwise, <see langword="false"/>.</returns>
+        public Boolean Intersects(BoundingBox box)
+        {
+            return box.Intersects(this);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingSphere"/> intersects the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <param name="result"><see langword="true"/> if this sphere intersects the evaluated box; otherwise, <see langword="false"/>.</param>
+        public void Intersects(ref BoundingBox box, out Boolean result)
+        {
+            box.Intersects(ref this, out result);
         }
 
         /// <summary>

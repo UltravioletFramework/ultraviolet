@@ -365,11 +365,32 @@ namespace Ultraviolet
         /// <summary>
         /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified sphere.
         /// </summary>
-        /// <param name="sphere">A <see cref="BoundingFrustum"/> which represents the sphere to evaluate.</param>
+        /// <param name="sphere">A <see cref="BoundingSphere"/> which represents the sphere to evaluate.</param>
         /// <param name="result">A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated sphere.</param>
         public void Intersects(ref BoundingSphere sphere, out PlaneIntersectionType result)
         {
             sphere.Intersects(ref this, out result);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingSphere"/> which represents the box to evaluate.</param>
+        /// <returns>A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated box.</returns>
+        public PlaneIntersectionType Intersects(BoundingBox box)
+        {
+            box.Intersects(ref this, out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Plane"/> intersects the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <param name="result">A <see cref="PlaneIntersectionType"/> value which describes the relationship between this plane and the evaluated box.</param>
+        public void Intersects(ref BoundingBox box, out PlaneIntersectionType result)
+        {
+            box.Intersects(ref this, out result);
         }
 
         /// <summary>

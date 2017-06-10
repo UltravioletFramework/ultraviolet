@@ -232,6 +232,54 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void Ray_CalculatesBoundingBoxIntersectionCorrectly_WhenIntersectionExists()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, -1f));
+            var box = new BoundingBox(new Vector3(-10f), new Vector3(10f));
+
+            var result = ray.Intersects(box);
+
+            TheResultingValue(result.Value)
+                .ShouldBe(90f);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingBoxIntersectionCorrectly_WhenIntersectionExists_WithOutParam()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, -1f));
+            var box = new BoundingBox(new Vector3(-10f), new Vector3(10f));
+
+            ray.Intersects(ref box, out Single? result);
+
+            TheResultingValue(result.Value)
+                .ShouldBe(90f);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingBoxIntersectionCorrectly_WhenNoIntersectionExists()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, 100f));
+            var box = new BoundingBox(new Vector3(-10f), new Vector3(10f));
+
+            var result = ray.Intersects(box);
+
+            TheResultingValue(result.HasValue)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void Ray_CalculatesBoundingBoxIntersectionCorrectly_WhenNoIntersectionExists_WithOutParam()
+        {
+            var ray = new Ray(new Vector3(0, 0, 100f), new Vector3(0, 0, 100f));
+            var box = new BoundingBox(new Vector3(-10f), new Vector3(10f));
+
+            ray.Intersects(ref box, out Single? result);
+
+            TheResultingValue(result.HasValue)
+                .ShouldBe(false);
+        }
+
+        [Test]
         public void Ray_TryParse_SucceedsForValidStrings()
         {
             if (!Ray.TryParse("1.2 2.3 3.4 4.5 5.6 6.7", out Ray result))

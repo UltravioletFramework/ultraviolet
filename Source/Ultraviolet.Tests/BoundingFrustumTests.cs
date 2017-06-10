@@ -137,6 +137,78 @@ namespace Ultraviolet.Tests
         }
 
         [Test]
+        public void BoundingFrustum_CalculatesContainsBoundingSphereCorrectly()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+            var result1 = frustum.Contains(sphere1);
+            var sphere2 = new BoundingSphere(new Vector3(0, 0, 0), 10f);
+            var result2 = frustum.Contains(sphere2);
+
+            TheResultingValue(result1)
+                .ShouldBe(ContainmentType.Disjoint);
+            TheResultingValue(result2)
+                .ShouldBe(ContainmentType.Intersects);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesContainsBoundingSphereCorrectly_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+            frustum.Contains(ref sphere1, out var result1);
+            var sphere2 = new BoundingSphere(new Vector3(0, 0, 0), 10f);
+            frustum.Contains(ref sphere2, out var result2);
+
+            TheResultingValue(result1)
+                .ShouldBe(ContainmentType.Disjoint);
+            TheResultingValue(result2)
+                .ShouldBe(ContainmentType.Intersects);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesContainsBoundingBoxCorrectly()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(20f, 20f, 20f));
+            var result1 = frustum.Contains(sphere1);
+            var sphere2 = new BoundingBox(new Vector3(-100f, -100f, -100f), new Vector3(-90f, -90f, -90f));
+            var result2 = frustum.Contains(sphere2);
+
+            TheResultingValue(result1)
+                .ShouldBe(ContainmentType.Intersects);
+            TheResultingValue(result2)
+                .ShouldBe(ContainmentType.Disjoint);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesContainsBoundingBoxCorrectly_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(20f, 20f, 20f));
+            frustum.Contains(ref sphere1, out var result1);
+            var sphere2 = new BoundingBox(new Vector3(-100f, -100f, -100f), new Vector3(-90f, -90f, -90f));
+            frustum.Contains(ref sphere2, out var result2);
+
+            TheResultingValue(result1)
+                .ShouldBe(ContainmentType.Intersects);
+            TheResultingValue(result2)
+                .ShouldBe(ContainmentType.Disjoint);
+        }
+
+        [Test]
         public void BoundingFrustum_CalculatesIntersectsRayCorrectly()
         {
             var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
@@ -257,7 +329,79 @@ namespace Ultraviolet.Tests
             TheResultingValue(r2).ShouldBe(true);
             TheResultingValue(r3).ShouldBe(true);
         }
-        
+
+        [Test]
+        public void BoundingFrustum_CalculatesIntersectsBoundingSphereCorrectly()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+            var result1 = frustum.Intersects(sphere1);
+            var sphere2 = new BoundingSphere(new Vector3(0, 0, 0), 10f);
+            var result2 = frustum.Intersects(sphere2);
+
+            TheResultingValue(result1)
+                .ShouldBe(false);
+            TheResultingValue(result2)
+                .ShouldBe(true);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesIntersectsBoundingSphereCorrectly_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingSphere(new Vector3(10f, 10f, 10f), 10f);
+            frustum.Intersects(ref sphere1, out var result1);
+            var sphere2 = new BoundingSphere(new Vector3(0, 0, 0), 10f);
+            frustum.Intersects(ref sphere2, out var result2);
+
+            TheResultingValue(result1)
+                .ShouldBe(false);
+            TheResultingValue(result2)
+                .ShouldBe(true);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesIntersectsBoundingBoxCorrectly()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(20f, 20f, 20f));
+            var result1 = frustum.Intersects(sphere1);
+            var sphere2 = new BoundingBox(new Vector3(-100f, -100f, -100f), new Vector3(-90f, -90f, -90f));
+            var result2 = frustum.Intersects(sphere2);
+
+            TheResultingValue(result1)
+                .ShouldBe(true);
+            TheResultingValue(result2)
+                .ShouldBe(false);
+        }
+
+        [Test]
+        public void BoundingFrustum_CalculatesIntersectsBoundingBoxCorrectly_WithOutParam()
+        {
+            var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
+            var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
+            var frustum = new BoundingFrustum(view * proj);
+
+            var sphere1 = new BoundingBox(new Vector3(0f, 0f, 0f), new Vector3(20f, 20f, 20f));
+            frustum.Intersects(ref sphere1, out var result1);
+            var sphere2 = new BoundingBox(new Vector3(-100f, -100f, -100f), new Vector3(-90f, -90f, -90f));
+            frustum.Intersects(ref sphere2, out var result2);
+
+            TheResultingValue(result1)
+                .ShouldBe(true);
+            TheResultingValue(result2)
+                .ShouldBe(false);
+        }
+
         [Test]
         public void BoundingFrustum_TryParse_SucceedsForValidStrings()
         {

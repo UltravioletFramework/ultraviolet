@@ -26,6 +26,29 @@ namespace Ultraviolet
             $"{{Near:{Near} Far:{Far} Left:{Left} Right:{Right} Top:{Top} Bottom:{Bottom}}}";
 
         /// <summary>
+        /// Gets the corner with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the corner to retrieve.</param>
+        /// <returns>The corner with the specified index.</returns>
+        public Vector3 GetCorner(Int32 index)
+        {
+            GetCorner(index, out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the corner with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the corner to retrieve.</param>
+        /// <param name="result">The corner with the specified index.</param>
+        public void GetCorner(Int32 index, out Vector3 result)
+        {
+            Contract.EnsureRange(index >= 0 && index < CornerCount, nameof(index));
+
+            result = corners[index];
+        }
+
+        /// <summary>
         /// Populates the specified array with the set of points that describe the frustum's corners.
         /// </summary>
         /// <param name="array">The array to populate.</param>
@@ -154,6 +177,45 @@ namespace Ultraviolet
             }
 
             result = intersection ? ContainmentType.Intersects : ContainmentType.Contains;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> contains the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <returns>A <see cref="ContainmentType"/> value representing the relationship between this frustum and the evaluated box.</returns>
+        public ContainmentType Contains(BoundingBox box)
+        {
+            Contains(ref box, out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> contains the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <param name="result">A <see cref="ContainmentType"/> value representing the relationship between this frustum and the evaluated box.</param>
+        public void Contains(ref BoundingBox box, out ContainmentType result)
+        {
+            var intersects = false;
+
+            for (int i = 0; i < PlaneCount; i++)
+            {
+                box.Intersects(ref this.planes[i], out var planeIntersectionType);
+
+                switch (planeIntersectionType)
+                {
+                    case PlaneIntersectionType.Front:
+                        result = ContainmentType.Disjoint;
+                        return;
+
+                    case PlaneIntersectionType.Intersecting:
+                        intersects = true;
+                        break;
+                }
+            }
+
+            result = intersects ? ContainmentType.Intersects : ContainmentType.Contains;
         }
 
         /// <summary>
@@ -375,6 +437,28 @@ namespace Ultraviolet
         public void Intersects(ref BoundingSphere sphere, out Boolean result)
         {
             Contains(ref sphere, out ContainmentType containment);
+            result = (containment != ContainmentType.Disjoint);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> intersects the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <returns><see langword="true"/> if this frustum intersects the evaluated box; otherwise, <see langword="false"/>.</returns>
+        public Boolean Intersects(BoundingBox box)
+        {
+            Intersects(ref box, out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="BoundingFrustum"/> intersects the specified bounding box.
+        /// </summary>
+        /// <param name="box">A <see cref="BoundingBox"/> which represents the box to evaluate.</param>
+        /// <param name="result"><see langword="true"/> if this frustum intersects the evaluated box; otherwise, <see langword="false"/>.</param>
+        public void Intersects(ref BoundingBox box, out Boolean result)
+        {
+            Contains(ref box, out var containment);
             result = (containment != ContainmentType.Disjoint);
         }
 

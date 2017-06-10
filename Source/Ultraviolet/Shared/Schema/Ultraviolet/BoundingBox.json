@@ -1,0 +1,10 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.BoundingBox Schema",
+  "type": "object",
+  "properties": {
+    "min": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Vector3.json" },
+    "max": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Vector3.json" }
+  },
+  "required": [ "min", "max" ]
+}

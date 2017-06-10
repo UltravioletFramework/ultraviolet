@@ -145,6 +145,117 @@ namespace Ultraviolet
             result = (distanceToSphere < 0) ? null : distanceToCenter - (Single?)Math.Sqrt(distanceToSphere);
         }
 
+        /// <summary>
+        /// Determines whether this <see cref="Ray"/> intersects a specified <see cref="BoundingBox"/>.
+        /// </summary>
+        /// <param name="box">The <see cref="BoundingBox"/> to evaluate.</param>
+        /// <returns>The distance along the ray at which it intersects the sphere, or <see langword="null"/> if there is no intersection.</returns>
+        public Single? Intersects(BoundingBox box)
+        {
+            Intersects(ref box, out Single? result);
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether this <see cref="Ray"/> intersects a specified <see cref="BoundingBox"/>.
+        /// </summary>
+        /// <param name="box">The <see cref="BoundingBox"/> to evaluate.</param>
+        /// <param name="result">The distance along the ray at which it intersects the bounding box, or <see langword="null"/> if there is no intersection.</param>
+        public void Intersects(ref BoundingBox box, out Single? result)
+        {
+            var min = default(Single?);
+            var max = default(Single?);
+
+            if (MathUtil.IsApproximatelyZero(Direction.X))
+            {
+                if (Position.X < box.Min.X || Position.X > box.Max.X)
+                {
+                    result = null;
+                    return;
+                }
+            }
+            else
+            {
+                min = (box.Min.X - Position.X) / Direction.X;
+                max = (box.Max.X - Position.X) / Direction.X;
+
+                if (min > max)
+                {
+                    var temp = min;
+                    min = max;
+                    max = temp;
+                }
+            }
+
+            if (MathUtil.IsApproximatelyZero(Direction.Y))
+            {
+                if (Position.Y < box.Min.Y || Position.Y > box.Max.Y)
+                {
+                    result = null;
+                    return;
+                }
+            }
+            else
+            {
+                var minY = (box.Min.Y - Position.Y) / Direction.Y;
+                var maxY = (box.Max.Y - Position.Y) / Direction.Y;
+
+                if (minY > maxY)
+                {
+                    var temp = minY;
+                    minY = maxY;
+                    maxY = minY;
+                }
+
+                if (min == null || minY > min)
+                    min = minY;
+
+                if (max == null || maxY > max)
+                    max = maxY;
+            }
+
+            if (MathUtil.IsApproximatelyZero(Direction.Z))
+            {
+                if (Position.Z < box.Min.Z || Position.Z > box.Max.Z)
+                {
+                    result = null;
+                    return;
+                }
+            }
+            else
+            {
+                var minZ = (box.Min.Z - Position.Z) / Direction.Z;
+                var maxZ = (box.Max.Z - Position.Z) / Direction.Z;
+
+                if (minZ > maxZ)
+                {
+                    var temp = minZ;
+                    minZ = maxZ;
+                    maxZ = minZ;
+                }
+
+                if (min == null || minZ > min)
+                    min = minZ;
+
+                if (max == null || maxZ > max)
+                    max = maxZ;
+            }
+
+            if (min != null && min < 0 && max > 0)
+            {
+                result = 0;
+                return;
+            }
+
+            if (min < 0)
+            {
+                result = null;
+                return;
+            }
+
+            result = min;
+        }
+
         /// <inheritdoc/>
         public override String ToString() => $"{{Position:{Position} Direction:{Direction}}}";
 

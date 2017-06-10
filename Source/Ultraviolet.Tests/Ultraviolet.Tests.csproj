@@ -138,6 +138,7 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Audio\SongTests.cs" />
+    <Compile Include="BoundingBoxTests.cs" />
     <Compile Include="BoundingSphereTests.cs" />
     <Compile Include="PlaneTests.cs" />
     <Compile Include="CursorCollectionTests.cs" />

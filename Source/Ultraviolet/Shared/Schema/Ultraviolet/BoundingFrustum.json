@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.BoundingFrustum Schema",
+  "type": "object",
+  "properties": {
+    "matrix": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Matrix.json" }
+  },
+  "required": [ "matrix" ]
+}
