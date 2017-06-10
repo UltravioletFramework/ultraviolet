@@ -140,6 +140,7 @@
     <Compile Include="Audio\SongTests.cs" />
     <Compile Include="BoundingBoxTests.cs" />
     <Compile Include="BoundingSphereTests.cs" />
+    <Compile Include="Graphics\ViewportTests.cs" />
     <Compile Include="PlaneTests.cs" />
     <Compile Include="CursorCollectionTests.cs" />
     <Compile Include="Content\AssetIDTests.cs" />
