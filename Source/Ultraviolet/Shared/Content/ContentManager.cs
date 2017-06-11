@@ -578,12 +578,13 @@ namespace Ultraviolet.Content
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="asset">The path to the asset to load.</param>
         /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="fromsln">A value indicating whether the file should be loaded from the Visual Studio solution directory.</param>
         /// <returns>The asset that was loaded from the specified file.</returns>
-        public TOutput Load<TOutput>(String asset, Boolean cache = true)
+        public TOutput Load<TOutput>(String asset, Boolean cache = true, Boolean fromsln = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return LoadImpl<TOutput>(asset, cache, false);
+            return LoadImpl<TOutput>(asset, cache, fromsln);
         }
 
         /// <summary>
@@ -594,12 +595,13 @@ namespace Ultraviolet.Content
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="asset">The path to the asset to load.</param>
         /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="fromsln">A value indicating whether the file should be loaded from the Visual Studio solution directory.</param>
         /// <returns>The asset that was loaded from the specified file.</returns>
-        public TOutput Load<TOutput>(AssetID asset, Boolean cache = true)
+        public TOutput Load<TOutput>(AssetID asset, Boolean cache = true, Boolean fromsln = false)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return LoadImpl<TOutput>(AssetID.GetAssetPath(asset), cache, false);
+            return LoadImpl<TOutput>(AssetID.GetAssetPath(asset), cache, fromsln);
         }
 
         /// <summary>
@@ -977,7 +979,7 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
-        /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
+        /// Implements the <see cref="Load"/> method.
         /// </summary>
         internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln)
         {
@@ -985,7 +987,7 @@ namespace Ultraviolet.Content
         }
         
         /// <summary>
-        /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
+        /// Implements the <see cref="Load"/> method.
         /// </summary>
         internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, TOutput lastKnownGood)
         {
