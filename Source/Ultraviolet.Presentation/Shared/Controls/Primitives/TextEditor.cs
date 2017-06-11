@@ -1732,6 +1732,16 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         }
 
         /// <inheritdoc/>
+        protected override void UpdateOverride(UltravioletTime time)
+        {
+            if (textLayoutStream != null && textLayoutStream.Settings.Font != TextFont)
+            {
+                InvalidateMeasure();
+            }
+            base.UpdateOverride(time);
+        }
+
+        /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
             DrawSelection(time, dc);
