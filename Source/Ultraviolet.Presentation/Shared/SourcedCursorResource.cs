@@ -41,8 +41,10 @@ namespace Ultraviolet.Presentation
             if (!cursorCollectionID.IsValid || String.IsNullOrEmpty(cursorName))
                 return;
 
-            cursorCollection = content.Load<CursorCollection>(CursorCollectionID);
-            cursor = cursorCollection[cursorName];
+            var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
+            cursorCollection = watch ? content.GetSharedWatchedAsset<CursorCollection>(CursorCollectionID) :
+                (WatchableAssetReference<CursorCollection>)content.Load<CursorCollection>(CursorCollectionID);
+            cursor = cursorCollection.Value[cursorName];
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace Ultraviolet.Presentation
                 if (!cursorCollectionID.Equals(value))
                 {
                     cursorCollectionID = value;
-                    cursorCollection = null;
+                    cursorCollection = WatchableAssetReference<CursorCollection>.Null;
                     cursor = null;
                 }
             }
@@ -73,34 +75,22 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the cursor collection resource.
         /// </summary>
-        public CursorCollection CursorCollection
-        {
-            get { return cursorCollection; }
-        }
+        public CursorCollection CursorCollection => cursorCollection;
 
         /// <summary>
         /// Gets the cursor resource.
         /// </summary>
-        public Cursor Cursor
-        {
-            get { return cursor; }
-        }
+        public Cursor Cursor => CursorCollection[CursorName];
 
         /// <summary>
         /// Gets a value indicating whether this object represents a valid image.
         /// </summary>
-        public Boolean IsValid
-        {
-            get { return cursorCollectionID.IsValid; }
-        }
+        public Boolean IsValid => cursorCollectionID.IsValid;
 
         /// <summary>
         /// Gets a value indicating whether the image's texture resource has been loaded.
         /// </summary>
-        public Boolean IsLoaded
-        {
-            get { return cursor != null; }
-        }
+        public Boolean IsLoaded => cursor != null;
 
         /// <summary>
         /// Resolves a string into an instance of the <see cref="SourcedCursorResource"/> class.
@@ -124,7 +114,7 @@ namespace Ultraviolet.Presentation
         // Property values.
         private AssetID cursorCollectionID;
         private String cursorName;
-        private CursorCollection cursorCollection;
+        private WatchableAssetReference<CursorCollection> cursorCollection;
         private Cursor cursor;
     }
 }
