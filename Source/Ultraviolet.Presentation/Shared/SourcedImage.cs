@@ -12,10 +12,7 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Initializes the <see cref="SourcedImage"/> type.
         /// </summary>
-        static SourcedImage()
-        {
-            Tweening.Interpolators.RegisterDefault<SourcedImage>();
-        }
+        static SourcedImage() => Tweening.Interpolators.RegisterDefault<SourcedImage>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SourcedImage"/> structure.
@@ -25,8 +22,8 @@ namespace Ultraviolet.Presentation
         [Preserve]
         public SourcedImage(TextureImage resource, AssetSource source)
         {
-            this.resource  = resource;
-            this.source = source;
+            this.Resource = resource;
+            this.Source = source;
         }
 
         /// <summary>
@@ -35,55 +32,33 @@ namespace Ultraviolet.Presentation
         /// <param name="sourced">The <see cref="SourcedImage"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
         [Preserve]
-        public static implicit operator TextureImage(SourcedImage sourced)
-        {
-            return sourced.Resource;
-        }
+        public static implicit operator TextureImage(SourcedImage sourced) => sourced.Resource;
 
         /// <inheritdoc/>
         public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
 
         /// <inheritdoc/>
         [Preserve]
-        public SourcedImage Interpolate(SourcedImage target, Single t)
-        {
-            return (t >= 1) ? target : this;
-        }
-                
+        public SourcedImage Interpolate(SourcedImage target, Single t) => (t >= 1) ? target : this;
+
         /// <summary>
         /// Gets the sourced resource.
         /// </summary>
-        public TextureImage Resource
-        {
-            get { return resource; }
-        }
+        public TextureImage Resource { get; }
 
         /// <summary>
         /// Gets a value indicating whether this object represents a valid resource.
         /// </summary>
-        public Boolean IsValid
-        {
-            get { return resource != null && resource.IsValid; }
-        }
+        public Boolean IsValid => Resource != null && Resource.IsValid;
 
         /// <summary>
         /// Gets a value indicating whether the resource has been loaded.
         /// </summary>
-        public Boolean IsLoaded
-        {
-            get { return resource != null && resource.IsLoaded; }
-        }
+        public Boolean IsLoaded => Resource != null && Resource.IsLoaded;
 
         /// <summary>
         /// Gets a <see cref="AssetSource"/> value indicating how to load the asset.
         /// </summary>
-        public AssetSource Source
-        {
-            get { return source; }
-        }
-
-        // Property values.
-        private readonly TextureImage resource;
-        private readonly AssetSource source;
+        public AssetSource Source { get; }
     }
 }
