@@ -44,7 +44,6 @@ namespace Ultraviolet.Presentation
             var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
             cursorCollection = watch ? content.GetSharedWatchedAsset<CursorCollection>(CursorCollectionID) :
                 (WatchableAssetReference<CursorCollection>)content.Load<CursorCollection>(CursorCollectionID);
-            cursor = cursorCollection.Value[cursorName];
         }
 
         /// <summary>
@@ -59,7 +58,6 @@ namespace Ultraviolet.Presentation
                 {
                     cursorCollectionID = value;
                     cursorCollection = WatchableAssetReference<CursorCollection>.Null;
-                    cursor = null;
                 }
             }
         }
@@ -80,7 +78,7 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the cursor resource.
         /// </summary>
-        public Cursor Cursor => CursorCollection[CursorName];
+        public Cursor Cursor => CursorCollection?[CursorName];
 
         /// <summary>
         /// Gets a value indicating whether this object represents a valid image.
@@ -90,7 +88,7 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets a value indicating whether the image's texture resource has been loaded.
         /// </summary>
-        public Boolean IsLoaded => cursor != null;
+        public Boolean IsLoaded => Cursor != null;
 
         /// <summary>
         /// Resolves a string into an instance of the <see cref="SourcedCursorResource"/> class.
@@ -115,6 +113,5 @@ namespace Ultraviolet.Presentation
         private AssetID cursorCollectionID;
         private String cursorName;
         private WatchableAssetReference<CursorCollection> cursorCollection;
-        private Cursor cursor;
     }
 }
