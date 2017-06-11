@@ -110,6 +110,11 @@ namespace Ultraviolet.Graphics.Graphics2D
             spriteAssetID, String.IsNullOrEmpty(animationName) ? animationIndex.ToString() : animationName);
 
         /// <summary>
+        /// Gets the asset identifier of the sprite that contains the animation.
+        /// </summary>
+        public AssetID SpriteAssetID => spriteAssetID;
+
+        /// <summary>
         /// Gets a value indicating whether this is a valid sprite animation identifier.
         /// </summary>
         public Boolean IsValid
