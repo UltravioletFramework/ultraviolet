@@ -269,6 +269,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                 LayerDepth = layerDepth
             };
 
+            var texture = this.Texture;
+
             var srcLeft = this.Left;
             var srcRight = this.Right;
             var dstLeft = srcLeft;
@@ -301,7 +303,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             else
             {
                 var centerOrigin = origin - centerPosition;
-                spriteBatch.Draw(this.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
             }
 
             // Edges
@@ -328,9 +330,9 @@ namespace Ultraviolet.Graphics.Graphics2D
             else
             {
                 var leftOrigin = origin - leftPosition;
-                spriteBatch.Draw(this.Texture, leftRegion, leftSource, color, rotation, leftOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, leftRegion, leftSource, color, rotation, leftOrigin, effects, layerDepth, data);
                 var rightOrigin = origin - rightPosition;
-                spriteBatch.Draw(this.Texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
             }
         }
 

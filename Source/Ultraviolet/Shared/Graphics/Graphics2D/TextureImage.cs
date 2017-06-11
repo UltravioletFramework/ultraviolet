@@ -23,27 +23,26 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="TextureImage"/> class.
         /// </summary>
         [Preserve]
-        internal TextureImage()
-        {
-
-        }
+        internal TextureImage() { }
 
         /// <summary>
         /// Loads the image's texture resource from the specified content manager.
         /// </summary>
         /// <param name="content">The content manager with which to load the image's texture resource.</param>
-        public void Load(ContentManager content)
+        /// <param name="watch">A value indicating whether the <see cref="TextureImage"/> should watch the file
+        /// system for changes to its underlying resources.</param>
+        public void Load(ContentManager content, Boolean watch = false)
         {
             Contract.Require(content, nameof(content));
 
             if (!TextureID.IsValid)
                 return;
 
-            var asset = content.Load<Texture2D>(TextureID);
-            texture = asset;
+            texture = watch ? content.GetSharedWatchedAsset<Texture2D>(TextureID) : 
+                (WatchableAssetReference<Texture2D>)content.Load<Texture2D>(TextureID);            
 
-            if (TextureRegion.IsEmpty && asset != null)
-                TextureRegion = new Rectangle(0, 0, asset.Width, asset.Height);
+            if (TextureRegion.IsEmpty && !texture.IsNullReference)
+                TextureRegion = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
         }
 
         /// <summary>
@@ -70,7 +69,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (!textureID.Equals(value))
                 {
                     textureID = value;
-                    texture = null;
+                    texture = WatchableAssetReference<Texture2D>.Null;
                 }
             }
         }
@@ -99,7 +98,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets a value indicating whether the image's texture resource has been loaded.
         /// </summary>
-        public Boolean IsLoaded => texture != null;
+        public Boolean IsLoaded => !texture.IsNullReference;
 
         /// <summary>
         /// Draws the image using the specified sprite batch.
@@ -166,7 +165,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         // Property values.
-        private Texture2D texture;
+        private WatchableAssetReference<Texture2D> texture;
         private AssetID textureID;
     }
 }

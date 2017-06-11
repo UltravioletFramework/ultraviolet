@@ -203,6 +203,8 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             effects |= SpriteEffects.OriginRelativeToDestination;
 
+            var texture = this.Texture;
+
             var srcLeft = this.Left;
             var srcTop = this.Top;
             var srcRight = this.Right;
@@ -246,7 +248,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             else
             {
                 var centerOrigin = origin - centerPosition;
-                spriteBatch.Draw(this.Texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, centerRegion, centerSource, color, rotation, centerOrigin, effects, layerDepth, data);
             }
 
             // Edges
@@ -291,13 +293,13 @@ namespace Ultraviolet.Graphics.Graphics2D
             else
             {
                 var leftOrigin = origin - leftPosition;
-                spriteBatch.Draw(this.Texture, leftRegion, leftSource, color, rotation, leftOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, leftRegion, leftSource, color, rotation, leftOrigin, effects, layerDepth, data);
                 var rightOrigin = origin - rightPosition;
-                spriteBatch.Draw(this.Texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, rightRegion, rightSource, color, rotation, rightOrigin, effects, layerDepth, data);
                 var topOrigin = origin - topPosition;
-                spriteBatch.Draw(this.Texture, topRegion, topSource, color, rotation, topOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, topRegion, topSource, color, rotation, topOrigin, effects, layerDepth, data);
                 var bottomOrigin = origin - bottomPosition;
-                spriteBatch.Draw(this.Texture, bottomRegion, bottomSource, color, rotation, bottomOrigin, effects, layerDepth, data);
+                spriteBatch.Draw(texture, bottomRegion, bottomSource, color, rotation, bottomOrigin, effects, layerDepth, data);
             }
 
             // Corners
@@ -305,25 +307,25 @@ namespace Ultraviolet.Graphics.Graphics2D
             var cornerTLPosition = new Vector2(0, 0);
             var cornerTLOrigin = origin - cornerTLPosition;
             var cornerTLSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Top, srcLeft, srcTop);
-            spriteBatch.Draw(this.Texture, cornerTLRegion, cornerTLSource, color, rotation, cornerTLOrigin, effects, layerDepth, data);
+            spriteBatch.Draw(texture, cornerTLRegion, cornerTLSource, color, rotation, cornerTLOrigin, effects, layerDepth, data);
 
             var cornerTRRegion = new RectangleF(position.X, position.Y, dstRight, dstTop);
             var cornerTRPosition = new Vector2(width - dstRight, 0);
             var cornerTROrigin = origin - cornerTRPosition;
             var cornerTRSource = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Top, srcRight, srcTop);
-            spriteBatch.Draw(this.Texture, cornerTRRegion, cornerTRSource, color, rotation, cornerTROrigin, effects, layerDepth, data);
+            spriteBatch.Draw(texture, cornerTRRegion, cornerTRSource, color, rotation, cornerTROrigin, effects, layerDepth, data);
 
             var cornerBLRegion = new RectangleF(position.X, position.Y, dstLeft, dstBottom);
             var cornerBLPosition = new Vector2(0, height - dstBottom);
             var cornerBLOrigin = origin - cornerBLPosition;
             var cornerBLSource = new Rectangle(this.TextureRegion.Left, this.TextureRegion.Bottom - srcBottom, srcLeft, srcBottom);
-            spriteBatch.Draw(this.Texture, cornerBLRegion, cornerBLSource, color, rotation, cornerBLOrigin, effects, layerDepth, data);
+            spriteBatch.Draw(texture, cornerBLRegion, cornerBLSource, color, rotation, cornerBLOrigin, effects, layerDepth, data);
 
             var cornerBRRegion = new RectangleF(position.X, position.Y, dstRight, dstBottom);
             var cornerBRPosition = new Vector2(width - dstRight, height - dstBottom);
             var cornerBROrigin = origin - cornerBRPosition;
             var cornerBRSource = new Rectangle(this.TextureRegion.Right - srcRight, this.TextureRegion.Bottom - srcBottom, srcLeft, srcBottom);
-            spriteBatch.Draw(this.Texture, cornerBRRegion, cornerBRSource, color, rotation, cornerBROrigin, effects, layerDepth, data);
+            spriteBatch.Draw(texture, cornerBRRegion, cornerBRSource, color, rotation, cornerBROrigin, effects, layerDepth, data);
         }
 
         /// <summary>

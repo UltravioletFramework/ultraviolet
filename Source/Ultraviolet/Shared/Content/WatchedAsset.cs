@@ -23,22 +23,19 @@ namespace Ultraviolet.Content
             this.ValidatingValue = instance;
             this.Value = instance;
 
-            if (validating != null || validationComplete != null)
-            {
-                this.watcher = new DelegateAssetWatcher<T>(
-                    (p, a) =>
-                    {
-                        this.ValidatingValue = a;
-                        return validating?.Invoke(p, a) ?? true;
-                    },
-                    (p, a, v) =>
-                    {
-                        this.ValidatingValue = default(T);
-                        this.Value = a;
-                        validationComplete?.Invoke(p, a, v);
-                    });
-                this.Owner.AddWatcher(assetPath, watcher);
-            }
+            this.watcher = new DelegateAssetWatcher<T>(
+                (p, a) =>
+                {
+                    this.ValidatingValue = a;
+                    return validating?.Invoke(p, a) ?? true;
+                },
+                (p, a, v) =>
+                {
+                    this.ValidatingValue = default(T);
+                    this.Value = a;
+                    validationComplete?.Invoke(p, a, v);
+                });
+            this.Owner.AddWatcher(assetPath, watcher);
         }
 
         /// <summary>

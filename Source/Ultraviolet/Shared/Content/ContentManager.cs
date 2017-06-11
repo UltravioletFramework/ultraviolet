@@ -533,6 +533,44 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
+        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
+        /// loaded, it will be loaded and added to the content manager's internal cache.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The path to the asset to load.</param>
+        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
+        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(String asset)
+        {
+            Contract.RequireNotEmpty(asset, nameof(asset));
+
+            CreateFileSystemWatchers();
+
+            lock (cacheSyncObject)
+            {
+                if (sharedWatchedAssets.TryGetValue(asset, out var watcher))
+                    return (WatchedAsset<TOutput>)watcher;
+
+                watcher = new WatchedAsset<TOutput>(this, asset);
+                sharedWatchedAssets[asset] = watcher;
+                return (WatchedAsset<TOutput>)watcher;
+            }
+        }
+
+        /// <summary>
+        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
+        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
+        /// loaded, it will be loaded and added to the content manager's internal cache.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
+        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(AssetID asset)
+        {
+            return GetSharedWatchedAsset<TOutput>(AssetID.GetAssetPath(asset));
+        }
+
+        /// <summary>
         /// Loads the specified asset file.
         /// </summary>
         /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
@@ -1007,26 +1045,27 @@ namespace Ultraviolet.Content
             {
                 Ultraviolet.Messages.Unsubscribe(this);
 
-                foreach (var instance in assetCache)
+                lock (cacheSyncObject)
                 {
-                    var disposable = ((instance.Value is ContentCacheData) ?
-                        ((ContentCacheData)instance.Value).Asset : instance.Value) as IDisposable;
-                    if (disposable != null)
+                    foreach (var instance in assetCache)
                     {
-                        disposable.Dispose();
+                        var disposable = ((instance.Value is ContentCacheData ccd) ? ccd.Asset : instance.Value) as IDisposable;
+                        disposable?.Dispose();
                     }
-                }
 
+                    assetCache.Clear();
+                    assetFlags.Clear();
+
+                    foreach (var kvp in sharedWatchedAssets)
+                        ((IDisposable)kvp.Value).Dispose();
+
+                    sharedWatchedAssets.Clear();
+
+                }
                 if (rootFileSystemWatcher != null)
                     rootFileSystemWatcher.Dispose();
 
                 OverrideDirectories.Dispose();
-            }
-
-            lock (cacheSyncObject)
-            {
-                assetCache.Clear();
-                assetFlags.Clear();
             }
 
             base.Dispose(disposing);
@@ -1845,6 +1884,7 @@ namespace Ultraviolet.Content
         private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly Dictionary<String, HashSet<String>> assetDependencies = new Dictionary<String, HashSet<String>>();
+        private readonly Dictionary<String, Object> sharedWatchedAssets = new Dictionary<String, Object>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
 
