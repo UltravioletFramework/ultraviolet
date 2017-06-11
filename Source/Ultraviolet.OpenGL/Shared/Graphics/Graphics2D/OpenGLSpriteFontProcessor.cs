@@ -58,7 +58,10 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             var textures = (new[] { input.Faces?.Regular?.Texture, input.Faces?.Bold?.Texture, input.Faces?.Italic?.Texture, input.Faces?.BoldItalic?.Texture })
                 .Where(x => x != null).Distinct()
                 .Select(x => ResolveDependencyAssetPath(metadata, x))
-                .ToDictionary(x => x, x => manager.Import<PlatformNativeSurface>(x));
+                .ToDictionary(x => x, x => manager.Import<PlatformNativeSurface>(x, metadata.IsLoadedFromSolution));
+
+            foreach (var kvp in textures)
+                metadata.AddAssetDependency(kvp.Key);
 
             try
             {

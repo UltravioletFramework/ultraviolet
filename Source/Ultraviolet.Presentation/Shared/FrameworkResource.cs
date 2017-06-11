@@ -18,7 +18,9 @@ namespace Ultraviolet.Presentation
         {
             Contract.Require(content, nameof(content));
 
-            value = content.Load<TResource>(asset);
+            var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
+            value = watch ? content.GetSharedWatchedAsset<TResource>(asset) :
+                (WatchableAssetReference<TResource>)content.Load<TResource>(asset);
         }
         
         /// <summary>
@@ -26,20 +28,14 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="resource">The object to convert.</param>
         /// <returns>The converted object.</returns>
-        public static implicit operator TResource(FrameworkResource<TResource> resource)
-        {
-            return (resource == null) ? null : resource.Value;
-        }
+        public static implicit operator TResource(FrameworkResource<TResource> resource) => resource?.Value;
 
         /// <summary>
         /// Gets the resource value that this object represents.
         /// </summary>
-        public TResource Value
-        {
-            get { return value; }
-        }
+        public TResource Value => value;
 
         // Property values.
-        private TResource value;
+        private WatchableAssetReference<TResource> value;
     }
 }
