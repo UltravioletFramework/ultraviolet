@@ -13,28 +13,29 @@ namespace Ultraviolet.Content
         /// <param name="owner">The content manager that owns the resource.</param>
         /// <param name="assetPath">The asset path of the asset which is represented by this wrapper.</param>
         /// <param name="validating">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidating(String, T)"/> method.</param>
-        /// <param name="reloading">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnReloaded(String, T, Boolean)"/> method.</param>
-        public WatchedAsset(ContentManager owner, String assetPath, AssetWatcherValidatingHandler<T> validating = null, AssetWatcherReloadingHandler<T> reloading = null)
+        /// <param name="validationComplete">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
+        public WatchedAsset(ContentManager owner, String assetPath, AssetWatcherValidatingHandler<T> validating = null, AssetWatcherValidationCompleteHandler<T> validationComplete = null)
         {
             var instance = owner.Load<T>(assetPath);
 
             this.Owner = owner;
             this.AssetPath = assetPath;
-            this.CurrentValue = instance;
-            this.LastKnownGoodValue = instance;
+            this.ValidatingValue = instance;
+            this.Value = instance;
 
-            if (validating != null || reloading != null)
+            if (validating != null || validationComplete != null)
             {
                 this.watcher = new DelegateAssetWatcher<T>(
                     (p, a) =>
                     {
-                        this.CurrentValue = a;
+                        this.ValidatingValue = a;
                         return validating?.Invoke(p, a) ?? true;
                     },
                     (p, a, v) =>
                     {
-                        this.LastKnownGoodValue = a;
-                        reloading?.Invoke(p, a, v);
+                        this.ValidatingValue = default(T);
+                        this.Value = a;
+                        validationComplete?.Invoke(p, a, v);
                     });
                 this.Owner.AddWatcher(assetPath, watcher);
             }
@@ -49,15 +50,15 @@ namespace Ultraviolet.Content
         {
             this.Owner = owner;
             this.AssetPath = null;
-            this.CurrentValue = asset;
-            this.LastKnownGoodValue = asset;
+            this.ValidatingValue = asset;
+            this.Value = asset;
         }
 
         /// <summary>
         /// Implicitly converts a <see cref="WatchedAsset{T}"/> to its underlying value.
         /// </summary>
         /// <param name="wrapper">The asset which is represented by the specified wrapper.</param>
-        public static implicit operator T(WatchedAsset<T> wrapper) => wrapper.LastKnownGoodValue;
+        public static implicit operator T(WatchedAsset<T> wrapper) => wrapper.Value;
 
         /// <summary>
         /// Releases resources associated with the wrapper.
@@ -70,8 +71,8 @@ namespace Ultraviolet.Content
                 this.watcher = null;
             }
 
-            this.CurrentValue = default(T);
-            this.LastKnownGoodValue = default(T);
+            this.ValidatingValue = default(T);
+            this.Value = default(T);
         }
         
         /// <summary>
@@ -80,14 +81,14 @@ namespace Ultraviolet.Content
         public ContentManager Owner { get; }
 
         /// <summary>
-        /// Retrieves the current version of the asset which is represented by this wrapper.
+        /// Retrieves the version of the wrapped asset which is in the process of being validated.
         /// </summary>
-        public T CurrentValue { get; private set; }
+        public T ValidatingValue { get; private set; }
 
         /// <summary>
-        /// Retrieves the last known-good version of the asset which is represented by this wrapper.
+        /// Retrieves the last known-good version of the wrapped asset.
         /// </summary>
-        public T LastKnownGoodValue { get; private set; }
+        public T Value { get; private set; }
 
         /// <summary>
         /// Gets the asset path of the asset which is represented by this wrapper.
@@ -104,11 +105,19 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets a value indicating whether this wrapper is in the process of validating its underlying asset.
+        /// </summary>
+        public Boolean IsValidating
+        {
+            get { return ValidatingValue != null; }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this wrapper contains a valid asset.
         /// </summary>
-        public Boolean IsValid
+        public Boolean HasValue
         {
-            get { return CurrentValue != null; }
+            get { return Value != null; }
         }
         
         // State values.

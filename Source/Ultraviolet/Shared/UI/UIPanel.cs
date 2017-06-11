@@ -67,19 +67,19 @@ namespace Ultraviolet.UI
         /// Forces the panel to immediately finish loading its view, if it has
         /// a view and the view hasn't already been loaded.
         /// </summary>
-        /// <param name="view">The view to load, or <see langword="null"/> to load the view from the current panel definition.</param>
-        public void FinishLoadingView(UIView view = null)
+        /// <param name="viewToLoad">The view to load, or <see langword="null"/> to load the view from the current panel definition.</param>
+        public void FinishLoadingView(UIView viewToLoad = null)
         {
             if (IsViewLoaded)
                 return;
 
             this.view = null;
 
-            if (definition?.IsValid ?? false)
+            if (viewToLoad != null || (definition?.HasValue ?? false))
             {
                 this.isViewLoaded = true;
 
-                var newView = view ?? UIView.Create(this, definition.CurrentValue, vmfactory);
+                var newView = viewToLoad ?? UIView.Create(this, definition.Value, vmfactory);
                 if (newView != null && window != null)
                 {
                     var area = new Rectangle(X, Y, Width, Height);

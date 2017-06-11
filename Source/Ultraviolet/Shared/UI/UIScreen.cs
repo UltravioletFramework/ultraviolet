@@ -35,9 +35,9 @@ namespace Ultraviolet.UI
             : base(uv, rootDirectory, globalContent)
         {
             var definitionWrapper = LoadPanelDefinition(definitionAsset);
-            if (definitionWrapper?.IsValid ?? false)
+            if (definitionWrapper?.HasValue ?? false)
             {
-                var definition = definitionWrapper.CurrentValue;
+                var definition = definitionWrapper.Value;
                 DefaultOpenTransitionDuration = definition.DefaultOpenTransitionDuration;
                 DefaultCloseTransitionDuration = definition.DefaultCloseTransitionDuration;
 

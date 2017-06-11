@@ -216,13 +216,10 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 
             if (!ShouldRunInServiceMode())
             {
-                var reloadGlobalStyleSheet = new AssetWatcherValidatingHandler<UvssDocument>((p, a) =>
-                    Ultraviolet.GetUI().GetPresentationFoundation().TrySetGlobalStyleSheet(globalStyleSheet.ToUvssDocument()));
-
-                globalStyleSheet = new CompositeUvssDocument(Ultraviolet, reloadGlobalStyleSheet);
+                globalStyleSheet = CompositeUvssDocument.CreateForGlobalStyleSheet(Ultraviolet);
                 globalStyleSheet.Append(content, "UI/DefaultUIStyles");
                 globalStyleSheet.Append(content, "UI/GameStyles");
-                reloadGlobalStyleSheet(null, null);
+                upf.SetGlobalStyleSheet(globalStyleSheet.ToUvssDocument());
 
                 CompileBindingExpressions();
                 upf.LoadCompiledExpressions();                

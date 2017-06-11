@@ -943,13 +943,13 @@ namespace Ultraviolet.Content
         /// </summary>
         internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln)
         {
-            return LoadImpl<TOutput>(asset, cache, fromsln, null, default(TOutput), out var validated);
+            return LoadImpl<TOutput>(asset, cache, fromsln, null, default(TOutput));
         }
         
         /// <summary>
         /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
         /// </summary>
-        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, TOutput lastKnownGood, out Boolean validated)
+        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, TOutput lastKnownGood)
         {
             var cachedInstance = default(Object);
             var cacheMiss = false;
@@ -959,12 +959,11 @@ namespace Ultraviolet.Content
 
             if (cacheMiss)
             {
-                LoadInternal(asset, typeof(TOutput), cache, fromsln, watchers, lastKnownGood, out var result, out validated);
+                LoadInternal(asset, typeof(TOutput), cache, fromsln, watchers, lastKnownGood, out var result);
                 return (result is ContentCacheData ccd) ? (TOutput)ccd.Asset : (TOutput)result;
             }
             else
             {
-                validated = true;
                 return (cachedInstance is ContentCacheData ccd) ? (TOutput)ccd.Asset : (TOutput)cachedInstance;
             }
         }
@@ -1124,15 +1123,14 @@ namespace Ultraviolet.Content
         /// </summary>
         private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, out Object result)
         {
-            return LoadInternal(asset, type, cache, fromsln, null, null, out result, out var validated);
+            return LoadInternal(asset, type, cache, fromsln, null, null, out result);
         }
         
         /// <summary>
         /// Loads the specified content file.
         /// </summary>
-        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood, out Object result, out Boolean validated)
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood, out Object result)
         {
-            validated = true;
             result = null;
 
             var normalizedAsset = NormalizeAssetPath(asset);
@@ -1165,19 +1163,35 @@ namespace Ultraviolet.Content
 
             if (watchers != null)
             {
+                var validated = true;
+
                 for (var i = 0; i < watchers.Count; i++)
                 {
                     if (!watchers[i].OnValidating(asset, instance))
                     {
+                        if (instance is IDisposable disposable)
+                            disposable.Dispose();
+
                         validated = false;
                         instance = lastKnownGood;
 
                         if (cache)
                             UpdateCache(asset, metadata, ref instance);
 
+                        for (int j = 0; j <= i; j++)
+                            watchers[i].OnValidationComplete(asset, instance, false);
+                        
+                        validated = false;
+
                         break;
                     }
-                }                
+                }
+
+                if (validated)
+                {
+                    for (int i = 0; i < watchers.Count; i++)
+                        watchers[i].OnValidationComplete(asset, instance, true);
+                }
             }
 
             result = instance;

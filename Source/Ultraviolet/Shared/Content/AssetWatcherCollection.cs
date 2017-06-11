@@ -31,16 +31,9 @@ namespace Ultraviolet.Content
         {
             Owner.Ultraviolet.QueueWorkItem(() =>
             {
-                var validated = false;
-                var assetLKG = Owner.LoadImpl(AssetPath, true, true, this, default(T), out validated);
-                var assetNew = default(T);
-
+                var assetLKG = Owner.LoadImpl(AssetPath, true, true, this, default(T));
                 Owner.PurgeCache(AssetPath, false);
-
-                assetNew = Owner.LoadImpl(AssetPath, true, true, this, assetLKG, out validated);
-
-                for (int i = 0; i < Count; i++)
-                    this[i].OnReloaded(AssetPath, assetNew, validated);
+                Owner.LoadImpl(AssetPath, true, true, this, assetLKG);
             });
         }
 

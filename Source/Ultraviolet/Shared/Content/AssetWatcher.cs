@@ -11,7 +11,7 @@ namespace Ultraviolet.Content
         bool IAssetWatcher.OnValidating(String path, Object asset) => OnValidating(path, (T)asset);
 
         /// <inheritdoc/>
-        void IAssetWatcher.OnReloaded(String path, Object asset, Boolean validated) => OnReloaded(path, (T)asset, validated);
+        void IAssetWatcher.OnValidationComplete(String path, Object asset, Boolean validated) => OnValidationComplete(path, (T)asset, validated);
 
         /// <inheritdoc/>
         Type IAssetWatcher.Type => typeof(T);
@@ -25,11 +25,11 @@ namespace Ultraviolet.Content
         public abstract bool OnValidating(String path, T asset);
 
         /// <summary>
-        /// Called when the watched asset is reloaded.
+        /// Called when the watched asset is finished validating an asset.
         /// </summary>
         /// <param name="path">The asset path of the asset which was reloaded.</param>
         /// <param name="asset">The asset which was reloaded.</param>
         /// <param name="validated">A value indicating whether the asset that was loading validated successfully.</param>
-        public abstract void OnReloaded(String path, T asset, Boolean validated);
+        public abstract void OnValidationComplete(String path, T asset, Boolean validated);
     }
 }
