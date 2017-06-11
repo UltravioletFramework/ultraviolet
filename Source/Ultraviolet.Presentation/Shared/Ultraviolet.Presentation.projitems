@@ -41,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ArrangeOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\NavigationExpression.Equality.cs" />
