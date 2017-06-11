@@ -578,7 +578,9 @@ namespace Ultraviolet.Content
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="asset">The path to the asset to load.</param>
         /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
-        /// <param name="fromsln">A value indicating whether the file should be loaded from the Visual Studio solution directory.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
         /// <returns>The asset that was loaded from the specified file.</returns>
         public TOutput Load<TOutput>(String asset, Boolean cache = true, Boolean fromsln = false)
         {
@@ -595,7 +597,9 @@ namespace Ultraviolet.Content
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="asset">The path to the asset to load.</param>
         /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
-        /// <param name="fromsln">A value indicating whether the file should be loaded from the Visual Studio solution directory.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
         /// <returns>The asset that was loaded from the specified file.</returns>
         public TOutput Load<TOutput>(AssetID asset, Boolean cache = true, Boolean fromsln = false)
         {
@@ -636,11 +640,13 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
         /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
-        public TOutput Import<TOutput>(String asset)
+        public TOutput Import<TOutput>(String asset, Boolean fromsln = false)
         {
-            Type outputType;
-            return Import<TOutput>(asset, out outputType);
+            return Import<TOutput>(asset, fromsln, out var outputType);
         }
 
         /// <summary>
@@ -652,10 +658,25 @@ namespace Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(String asset, out Type outputType)
         {
+            return Import<TOutput>(asset, false, out outputType);
+        }
+
+        /// <summary>
+        /// Imports the specified asset, but does not process it.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <param name="outputType">The output type of the content importer which was used.</param>
+        /// <returns>The imported asset in its intermediate form.</returns>
+        public TOutput Import<TOutput>(String asset, Boolean fromsln, out Type outputType)
+        {
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var metadata = GetAssetMetadata(asset, false, true, false);
+            var metadata = GetAssetMetadata(asset, false, true, fromsln);
             var importer = FindContentImporter(metadata.AssetFilePath, out outputType);
 
             using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
@@ -669,11 +690,13 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
         /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
         /// <returns>The imported asset in its intermediate form.</returns>
-        public TOutput Import<TOutput>(AssetID asset)
+        public TOutput Import<TOutput>(AssetID asset, Boolean fromsln = false)
         {
-            Type outputType;
-            return Import<TOutput>(asset, out outputType);
+            return Import<TOutput>(asset, fromsln, out var outputType);
         }
 
         /// <summary>
@@ -687,7 +710,24 @@ namespace Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return Import<TOutput>(AssetID.GetAssetPath(asset), out outputType);
+            return Import<TOutput>(AssetID.GetAssetPath(asset), false, out outputType);
+        }
+
+        /// <summary>
+        /// Imports the specified asset, but does not process it.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <param name="outputType">The output type of the content importer which was used.</param>
+        /// <returns>The imported asset in its intermediate form.</returns>
+        public TOutput Import<TOutput>(AssetID asset, Boolean fromsln, out Type outputType)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+
+            return Import<TOutput>(AssetID.GetAssetPath(asset), fromsln, out outputType);
         }
 
         /// <summary>
@@ -1665,7 +1705,7 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset for which to find metadata.</param>
         /// <param name="includePreprocessedFiles">A value indicating whether to include preprocessed files in the search.</param>
         /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
-        /// <param name="fromsln">A value indicating whether to attempt to load the asset from the solution directory.</param>
+        /// <param name="fromsln">A value indicating whether to attempt to load the asset from the Visual Studio solution directory.</param>
         /// <returns>The metadata for the specified asset.</returns>
         private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata, Boolean fromsln)
         {
@@ -1724,7 +1764,7 @@ namespace Ultraviolet.Content
         /// <param name="rootdir">The root directory from which the file is being loaded.</param>
         /// <param name="overridden">A value indicating whether the asset was loaded from an override directory.</param>
         /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
-        /// <param name="fromsln">A value indicating whether the file is being loaded from the solution, rather than the binaries folder.</param>
+        /// <param name="fromsln">A value indicating whether to attempt to load the asset from the Visual Studio solution directory.</param>
         /// <returns>The asset metadata for the specified asset file.</returns>
         private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln)
         {
