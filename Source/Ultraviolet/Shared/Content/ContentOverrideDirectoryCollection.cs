@@ -8,13 +8,28 @@ namespace Ultraviolet.Content
     /// <summary>
     /// Represents a collection of content override directories.
     /// </summary>
-    public sealed class ContentOverrideDirectoryCollection : UltravioletCollection<String>
+    public sealed class ContentOverrideDirectoryCollection : UltravioletCollection<String>, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentOverrideDirectoryCollection"/> class.
         /// </summary>
-        internal ContentOverrideDirectoryCollection()
-        { }
+        /// <param name="owner">The <see cref="ContentManager"/> which owns the collection.</param>
+        internal ContentOverrideDirectoryCollection(ContentManager owner)
+        {
+            this.owner = owner;
+        }
+
+        /// <summary>
+        /// Releases resources associated with the collection.
+        /// </summary>
+        [Preserve]
+        public void Dispose()
+        {
+            foreach (var watcher in watchers)
+                watcher.Value.Dispose();
+
+            watchers.Clear();
+        }
 
         /// <summary>
         /// Clears the collection.
@@ -152,9 +167,10 @@ namespace Ultraviolet.Content
         private void CreateFileSystemWatcherForDirectory(String directory)
         {
             var watcher = new FileSystemWatcher(directory);
-            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
+            watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime;
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
+            watcher.Changed += owner.OnFileSystemChanged;
 
             watchers.Add(directory, watcher);
         }
@@ -166,6 +182,7 @@ namespace Ultraviolet.Content
         private Boolean IsWatchingFileSystem => watchers != null;
 
         // State values.
+        private readonly ContentManager owner;
         private Dictionary<String, FileSystemWatcher> watchers;
     }
 }

@@ -92,7 +92,7 @@ namespace Ultraviolet.Presentation
 
             return view;
         }
-        
+
         /// <summary>
         /// Gets the namespace that contains data source wrappers for views.
         /// </summary>

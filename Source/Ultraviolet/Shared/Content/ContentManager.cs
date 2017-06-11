@@ -39,7 +39,7 @@ namespace Ultraviolet.Content
             this.rootDirectory = rootDirectory;
             this.fullRootDirectory = Path.GetFullPath(rootDirectory);
             this.fileSystemService = FileSystemService.Create();
-            this.overrideDirectories = new ContentOverrideDirectoryCollection();
+            this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
 
             uv.Messages.Subscribe(this, UltravioletMessages.LowMemory);
         }
@@ -130,8 +130,7 @@ namespace Ultraviolet.Content
 
             lock (cacheSyncObject)
             {
-                AssetFlags flags;
-                if (!GetAssetFlags(asset, out flags))
+                if (!GetAssetFlags(asset, out var flags))
                     return;
 
                 var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
@@ -139,6 +138,8 @@ namespace Ultraviolet.Content
                     return;
 
                 assetCache.Remove(asset);
+                assetFlags.Remove(asset);
+                ClearAssetDependencies(asset);
             }
         }
 
@@ -181,6 +182,8 @@ namespace Ultraviolet.Content
                         continue;
 
                     assetCache.Remove(asset);
+                    assetFlags.Remove(asset);
+                    ClearAssetDependencies(asset);
                 }
             }
         }
@@ -267,120 +270,106 @@ namespace Ultraviolet.Content
                 }
             }
         }
-
-        /// <summary>
-        /// Loads the specified asset file.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="onReloading">The delegate to invoke when the watched asset is reloaded.</param>
-        /// <returns>The asset that was loaded from the specified file.</returns>
-        public WatchedAsset<TOutput> LoadWatched<TOutput>(String asset, WatchedAssetReloadingHandler onReloading)
-        {
-            return LoadWatched<TOutput>(asset, true, onReloading);
-        }
         
         /// <summary>
-        /// Loads the specified asset file.
+        /// Adds a watcher for the specified asset.
         /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
-        /// <param name="onReloading">The delegate to invoke when the watched asset is reloaded.</param>
-        /// <returns>The asset that was loaded from the specified file.</returns>
-        public WatchedAsset<TOutput> LoadWatched<TOutput>(String asset, Boolean cache, WatchedAssetReloadingHandler onReloading)
+        /// <param name="asset">The asset path of the asset for which to add a watcher.</param>
+        /// <param name="watcher">The watcher to add for the specified asset.</param>
+        public void AddWatcher<TOutput>(String asset, AssetWatcher<TOutput> watcher)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(onReloading, nameof(onReloading));
-
-            if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
-                throw new NotSupportedException();
-
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(watcher, nameof(watcher));
+            
             CreateFileSystemWatchers();
-
-            var obj = default(Object);
-            var rootdir = FindSolutionDirectory() ?? FullRootDirectory;
-            var watcher = rootFileSystemWatcher; 
 
             lock (cacheSyncObject)
             {
-                var cacheMiss = !assetCache.TryGetValue(asset, out obj);
-                if (cacheMiss)
-                    LoadInternal(asset, typeof(TOutput), cache, false, out obj);
-            }
+                if (watchers == null)
+                    watchers = new Dictionary<String, IAssetWatcherCollection>();
 
-            var cacheData = obj as ContentCacheData;
-            if (cacheData != null)
+                var assetPath = asset;
+                var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, true));
+
+                if (!watchers.TryGetValue(assetFilePath, out var list))
+                {
+                    list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
+                    watchers[assetFilePath] = list;
+                }
+
+                list.Add(watcher);
+            }
+        }
+
+        /// <summary>
+        /// Adds a watcher for the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to add a watcher.</param>
+        /// <param name="watcher">The watcher to add for the specified asset.</param>
+        public void AddWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(watcher, nameof(watcher));
+
+            AddWatcher(AssetID.GetAssetPath(asset), watcher);
+        }
+
+        /// <summary>
+        /// Removes a watcher from the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the asset for which to remove a watcher.</param>
+        /// <param name="watcher">The watcher to remove from the specified asset.</param>
+        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
+        public Boolean RemoveWatcher<TOutput>(String asset, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(watcher, nameof(watcher));
+
+            lock (cacheSyncObject)
             {
-                obj = cacheData.Asset;
-                rootdir = cacheData.Origin;
-                watcher = OverrideDirectories.GetFileSystemWatcherForDirectory(rootdir);
+                if (watchers == null)
+                    return false;
+
+                var assetFilePath = ResolveAssetFilePath(asset, true);
+
+                if (!watchers.TryGetValue(asset, out var list))
+                    return false;
+
+                return list.Remove(watcher);
             }
-
-            var extension = (String)null;
-            var path = GetAssetPathFromDirectory(rootdir, asset, ref extension);
-            if (!Path.IsPathRooted(path))
-                path = ResolveAssetFilePath(path);
-            
-            return new WatchedAsset<TOutput>(this, asset, path, watcher, onReloading);
         }
 
         /// <summary>
-        /// Loads the specified asset file.
+        /// Removes a watcher from the specified asset.
         /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
-        /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
-        /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="onReloaded">The delegate to invoke when the watched asset is reloaded.</param>
-        /// <returns>The asset that was loaded from the specified file.</returns>
-        public WatchedAsset<TOutput> LoadWatched<TOutput>(AssetID asset, WatchedAssetReloadingHandler onReloaded)
+        /// <param name="asset">The asset identifier of the asset for which to remove a watcher.</param>
+        /// <param name="watcher">The watcher to remove from the specified asset.</param>
+        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
+        public Boolean RemoveWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
         {
-            return LoadWatched<TOutput>(asset, true, onReloaded);
+            Contract.Require(watcher, nameof(watcher));
+
+            return RemoveWatcher(AssetID.GetAssetPath(asset), watcher);
         }
-
-        /// <summary>
-        /// Loads the specified asset file.
-        /// </summary>
-        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
-        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
-        /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
-        /// <param name="asset">The path to the asset to load.</param>
-        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
-        /// <param name="onReloaded">The delegate to invoke when the watched asset is reloaded.</param>
-        /// <returns>The asset that was loaded from the specified file.</returns>
-        public WatchedAsset<TOutput> LoadWatched<TOutput>(AssetID asset, Boolean cache, WatchedAssetReloadingHandler onReloaded)
-        {
-            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
-
-            return LoadWatched<TOutput>(AssetID.GetAssetPath(asset), cache, onReloaded);
-        }
-
+        
         /// <summary>
         /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
         /// changes to the specified dependency will also cause the main asset to be reloaded.
         /// </summary>
         /// <param name="asset">The asset path of the asset for which to add a dependency.</param>
         /// <param name="dependency">The asset path of the dependency to add to the specified asset.</param>
-        public void AddWatchedDependency(String asset, String dependency)
+        public void AddAssetDependency(String asset, String dependency)
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
+            
+            dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
             {
-                if (watchedDependencies == null)
-                    watchedDependencies = new Dictionary<String, HashSet<String>>();
-
-                var dependencies = default(HashSet<String>);
-                if (!watchedDependencies.TryGetValue(asset, out dependencies))
-                    watchedDependencies[asset] = dependencies = new HashSet<String>();
-
-                var dependencyMetadata = GetAssetMetadata(NormalizeAssetPath(dependency), true, false, true);
-                if (dependencyMetadata == null)
-                    throw new FileNotFoundException(dependency);
-
-                dependencies.Add(dependencyMetadata.AssetFilePath);
+                if (!assetDependencies.TryGetValue(dependency, out var dependents))
+                    assetDependencies[dependency] = dependents = new HashSet<String>();
+                
+                dependents.Add(asset);
             }
         }
 
@@ -390,28 +379,29 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset identifier of the asset for which to add a dependency.</param>
         /// <param name="dependency">The asset identifier of the dependency to add to the specified asset.</param>
-        public void AddWatchedDependency(AssetID asset, AssetID dependency)
+        public void AddAssetDependency(AssetID asset, AssetID dependency)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
 
-            AddWatchedDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
+            AddAssetDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
         }
 
         /// <summary>
         /// Clears all of the registered dependencies for the specified asset.
         /// </summary>
         /// <param name="asset">The asset path of the asset for which to clear dependencies.</param>
-        public void ClearWatchedDependencies(String asset)
+        public void ClearAssetDependencies(String asset)
         {
             Contract.Require(asset, nameof(asset));
-
+            
             lock (cacheSyncObject)
             {
-                if (watchedDependencies == null)
+                if (assetDependencies == null)
                     return;
-
-                watchedDependencies.Remove(asset);
+                
+                foreach (var dependents in assetDependencies)
+                    dependents.Value.Remove(asset);
             }
         }
 
@@ -419,11 +409,11 @@ namespace Ultraviolet.Content
         /// Clears all of the registered dependencies for the specified asset.
         /// </summary>
         /// <param name="asset">The asset identifier of the asset for which to clear dependencies.</param>
-        public void ClearWatchedDependencies(AssetID asset)
+        public void ClearAssetDependencies(AssetID asset)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            ClearWatchedDependencies(AssetID.GetAssetPath(asset));
+            ClearAssetDependencies(AssetID.GetAssetPath(asset));
         }
 
         /// <summary>
@@ -432,25 +422,20 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset path of the asset from which to remove a dependency.</param>
         /// <param name="dependency">The asset path of the dependency to remove from the specified asset.</param>
         /// <returns></returns>
-        public Boolean RemoveWatchedDependency(String asset, String dependency)
+        public Boolean RemoveAssetDependency(String asset, String dependency)
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
+            
+            dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
             {
-                if (watchedDependencies == null)
+                if (assetDependencies == null)
                     return false;
 
-                var dependencies = default(HashSet<String>);
-                if (watchedDependencies.TryGetValue(asset, out dependencies))
-                {
-                    var dependencyMetadata = GetAssetMetadata(NormalizeAssetPath(dependency), true, false, true);
-                    if (dependencyMetadata == null)
-                        return false;
-
-                    return dependencies.Remove(dependencyMetadata.AssetFilePath);
-                }
+                if (assetDependencies.TryGetValue(dependency, out var dependents))
+                    return dependents.Remove(asset);
             }
 
             return false;
@@ -461,12 +446,12 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset identifier of the asset for which to remove a dependency.</param>
         /// <param name="dependency">The asset identifier of the dependency to remove from the specified asset.</param>
-        public Boolean RemoveWatchedDependency(AssetID asset, AssetID dependency)
+        public Boolean RemoveAssetDependency(AssetID asset, AssetID dependency)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
 
-            return RemoveWatchedDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
+            return RemoveAssetDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
         }
 
         /// <summary>
@@ -475,25 +460,20 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset path of the main asset to evaluate.</param>
         /// <param name="dependency">The asset path of the dependency asset to evaluate.</param>
         /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsWatchedDependency(String asset, String dependency)
+        public Boolean IsAssetDependency(String asset, String dependency)
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
+            
+            dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
             {
-                if (watchedDependencies == null)
+                if (assetDependencies == null)
                     return false;
-
-                var dependencies = default(HashSet<String>);
-                if (watchedDependencies.TryGetValue(asset, out dependencies))
-                {
-                    var dependencyMetadata = GetAssetMetadata(NormalizeAssetPath(dependency), true, false, true);
-                    if (dependencyMetadata == null)
-                        return false;
-
-                    return dependencies.Contains(dependencyMetadata.AssetFilePath);
-                }
+                
+                if (assetDependencies.TryGetValue(dependency, out var dependents))
+                    return dependents.Contains(asset);
             }
 
             return false;
@@ -505,12 +485,12 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
         /// <param name="dependency">The asset identifier of the dependency asset to evaluate.</param>
         /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsWatchedDependency(AssetID asset, AssetID dependency)
+        public Boolean IsAssetDependency(AssetID asset, AssetID dependency)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
 
-            return IsWatchedDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
+            return IsAssetDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
         }
 
         /// <summary>
@@ -519,18 +499,22 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset path of the main asset to evaluate.</param>
         /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
         /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsWatchedDependencyPath(String asset, String dependency)
+        public Boolean IsAssetDependencyPath(String asset, String dependency)
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
+            
+            dependency = Path.GetFullPath(dependency);
 
             lock (cacheSyncObject)
             {
-                if (watchedDependencies == null)
+                if (assetDependencies == null)
                     return false;
 
-                var dependencies = default(HashSet<String>);
-                return watchedDependencies.TryGetValue(asset, out dependencies) && dependencies.Contains(dependency);
+                if (!assetDependencies.TryGetValue(dependency, out var dependents))
+                    return false;
+                
+                return dependents.Contains(asset);
             }
         }
 
@@ -540,12 +524,12 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset identifier of the main asset to evaluate.</param>
         /// <param name="dependency">The file path of the dependency asset to evaluate.</param>
         /// <returns><see langword="true"/> if <paramref name="dependency"/> is a dependency of <paramref name="asset"/>; otherwise, <see langword="false"/>.</returns>
-        public Boolean IsWatchedDependencyPath(AssetID asset, String dependency)
+        public Boolean IsAssetDependencyPath(AssetID asset, String dependency)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
 
-            return IsWatchedDependencyPath(AssetID.GetAssetPath(asset), dependency);
+            return IsAssetDependencyPath(AssetID.GetAssetPath(asset), dependency);
         }
 
         /// <summary>
@@ -959,13 +943,13 @@ namespace Ultraviolet.Content
         /// </summary>
         internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln)
         {
-            return LoadImpl<TOutput>(asset, cache, fromsln, null, default(TOutput));
+            return LoadImpl<TOutput>(asset, cache, fromsln, null, default(TOutput), out var validated);
         }
-
+        
         /// <summary>
         /// Implements the <see cref="Load{TOutput}(String, Boolean)"/> method.
         /// </summary>
-        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, WatchedAssetReloadingHandler onReloading, TOutput lastKnownGood)
+        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, TOutput lastKnownGood, out Boolean validated)
         {
             var cachedInstance = default(Object);
             var cacheMiss = false;
@@ -975,24 +959,40 @@ namespace Ultraviolet.Content
 
             if (cacheMiss)
             {
-                Object result;
-                LoadInternal(asset, typeof(TOutput), cache, fromsln, onReloading, lastKnownGood, out result);
-                return (result is ContentCacheData) ?
-                    (TOutput)((ContentCacheData)result).Asset : (TOutput)result;
+                LoadInternal(asset, typeof(TOutput), cache, fromsln, watchers, lastKnownGood, out var result, out validated);
+                return (result is ContentCacheData ccd) ? (TOutput)ccd.Asset : (TOutput)result;
             }
-
-            return (cachedInstance is ContentCacheData) ?
-                (TOutput)((ContentCacheData)cachedInstance).Asset : (TOutput)cachedInstance;
+            else
+            {
+                validated = true;
+                return (cachedInstance is ContentCacheData ccd) ? (TOutput)ccd.Asset : (TOutput)cachedInstance;
+            }
+        }
+        
+        /// <summary>
+        /// Called when a change in the file system is detected.
+        /// </summary>
+        internal void OnFileSystemChanged(Object sender, FileSystemEventArgs e)
+        {
+            OnFileReloaded(e.FullPath);
         }
 
         /// <summary>
-        /// Reloads an asset which is being watched for changes.
+        /// Called when a change in a file is detected.
         /// </summary>
-        internal TOutput LoadWatched<TOutput>(WatchedAsset<TOutput> asset, TOutput lastKnownGood = default(TOutput))
+        internal void OnFileReloaded(String fullPath)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
+            if (watchers != null && watchers.TryGetValue(fullPath, out var list))
+                list.OnChanged(fullPath);
 
-            return LoadImpl(asset.AssetPath, true, true, asset.OnReloading, lastKnownGood);
+            if (assetDependencies != null && assetDependencies.TryGetValue(fullPath, out var dependents))
+            {
+                foreach (var dependent in dependents)
+                {
+                    var dependentFullPath = Path.GetFullPath(ResolveAssetFilePath(dependent, true));
+                    OnFileReloaded(dependentFullPath);
+                }
+            }
         }
 
         /// <summary>
@@ -1017,6 +1017,11 @@ namespace Ultraviolet.Content
                         disposable.Dispose();
                     }
                 }
+
+                if (rootFileSystemWatcher != null)
+                    rootFileSystemWatcher.Dispose();
+
+                OverrideDirectories.Dispose();
             }
 
             lock (cacheSyncObject)
@@ -1037,11 +1042,15 @@ namespace Ultraviolet.Content
             if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                 return;
 
-            var rootdir = FindSolutionDirectory() ?? RootDirectory;
-            rootFileSystemWatcher = new FileSystemWatcher(rootdir);
-            rootFileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
-            rootFileSystemWatcher.IncludeSubdirectories = true;
-            rootFileSystemWatcher.EnableRaisingEvents = true;
+            if (rootFileSystemWatcher == null)
+            {
+                var rootdir = FindSolutionDirectory() ?? RootDirectory;
+                rootFileSystemWatcher = new FileSystemWatcher(rootdir);
+                rootFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime;
+                rootFileSystemWatcher.IncludeSubdirectories = true;
+                rootFileSystemWatcher.EnableRaisingEvents = true;
+                rootFileSystemWatcher.Changed += OnFileSystemChanged;
+            }
 
             OverrideDirectories.CreateFileSystemWatchers();
         }
@@ -1115,14 +1124,15 @@ namespace Ultraviolet.Content
         /// </summary>
         private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, out Object result)
         {
-            return LoadInternal(asset, type, cache, fromsln, null, null, out result);
+            return LoadInternal(asset, type, cache, fromsln, null, null, out result, out var validated);
         }
-
+        
         /// <summary>
         /// Loads the specified content file.
         /// </summary>
-        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, WatchedAssetReloadingHandler onReloading, Object lastKnownGood, out Object result)
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood, out Object result, out Boolean validated)
         {
+            validated = true;
             result = null;
 
             var normalizedAsset = NormalizeAssetPath(asset);
@@ -1141,7 +1151,7 @@ namespace Ultraviolet.Content
             }
             catch (Exception e)
             {
-                if (onReloading == null || lastKnownGood == null)
+                if (watchers == null || watchers.Count == 0 || lastKnownGood == null)
                     throw;
 
                 Debug.WriteLine(UltravioletStrings.ExceptionDuringContentReloading);
@@ -1153,12 +1163,21 @@ namespace Ultraviolet.Content
             if (cache)
                 UpdateCache(asset, metadata, ref instance);
 
-            if (onReloading != null && !onReloading())
+            if (watchers != null)
             {
-                instance = lastKnownGood;
+                for (var i = 0; i < watchers.Count; i++)
+                {
+                    if (!watchers[i].OnValidating(asset, instance))
+                    {
+                        validated = false;
+                        instance = lastKnownGood;
 
-                if (cache)
-                    UpdateCache(asset, metadata, ref instance);
+                        if (cache)
+                            UpdateCache(asset, metadata, ref instance);
+
+                        break;
+                    }
+                }                
             }
 
             result = instance;
@@ -1439,6 +1458,9 @@ namespace Ultraviolet.Content
                 return null;
 
             var asm = Assembly.GetEntryAssembly();
+            if (asm == null)
+                return null;
+
             var asmDebuggableAttr = (DebuggableAttribute)asm.GetCustomAttributes(typeof(DebuggableAttribute), false).FirstOrDefault();
             if (asmDebuggableAttr == null || !asmDebuggableAttr.IsJITOptimizerDisabled)
                 return null;
@@ -1794,12 +1816,13 @@ namespace Ultraviolet.Content
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
         private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
+        private readonly Dictionary<String, HashSet<String>> assetDependencies = new Dictionary<String, HashSet<String>>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
 
         // File watching.
         private FileSystemWatcher rootFileSystemWatcher;
-        private Dictionary<String, HashSet<String>> watchedDependencies;
+        private Dictionary<String, IAssetWatcherCollection> watchers;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";

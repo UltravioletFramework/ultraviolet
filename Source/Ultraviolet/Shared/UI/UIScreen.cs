@@ -37,7 +37,7 @@ namespace Ultraviolet.UI
             var definitionWrapper = LoadPanelDefinition(definitionAsset);
             if (definitionWrapper?.IsValid ?? false)
             {
-                var definition = definitionWrapper.Value;
+                var definition = definitionWrapper.CurrentValue;
                 DefaultOpenTransitionDuration = definition.DefaultOpenTransitionDuration;
                 DefaultCloseTransitionDuration = definition.DefaultCloseTransitionDuration;
 
@@ -250,8 +250,8 @@ namespace Ultraviolet.UI
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (View != null)
-                View.Dispose();
+            SafeDispose.Dispose(View);
+            SafeDispose.Dispose(pendingView);
 
             base.Dispose(disposing);
         }
@@ -261,7 +261,7 @@ namespace Ultraviolet.UI
         /// </summary>
         /// <param name="asset">The name of the asset that contains the panel definition.</param>
         /// <returns>The panel definition that was loaded from the specified asset.</returns>
-        protected virtual UIPanelDefinitionWrapper LoadPanelDefinition(String asset)
+        protected virtual WatchedAsset<UIPanelDefinition> LoadPanelDefinition(String asset)
         {
             if (String.IsNullOrEmpty(asset))
                 return null;
@@ -269,59 +269,81 @@ namespace Ultraviolet.UI
             var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
             if (watch)
             {
-                var definition = LocalContent.LoadWatched<UIPanelDefinition>(asset, () =>
-                {
-                    if (State == UIPanelState.Open)
-                    {
-                        var currentViewModel = View?.ViewModel;
-                        var currentView = View;
-                        if (currentView != null)
-                        {
-                            currentView.OnClosing();
-                            currentView.OnClosed();
-                            UnloadView();
-                        }
-
-                        FinishLoadingView();
-
-                        var updatedView = View;
-                        if (updatedView != null)
-                        {
-                            try
-                            {
-                                if (currentViewModel != null)
-                                    updatedView.SetViewModel(currentViewModel);
-
-                                updatedView.OnOpening();
-                                updatedView.OnOpened();
-                            }
-                            catch (Exception e)
-                            {
-                                UnloadView();
-
-                                Debug.WriteLine(UltravioletStrings.ExceptionDuringViewReloading);
-                                Debug.WriteLine(e);
-
-                                return false;                                
-                            }
-                        }
-                    }
-                    return true;
-                });
-
-                foreach (var styleSheetAsset in definition.Value.StyleSheetAssets)
-                    LocalContent.AddWatchedDependency(asset, styleSheetAsset);
-
-                return new UIPanelDefinitionWrapper(definition);
+                var definition = new WatchedAsset<UIPanelDefinition>(LocalContent, asset, OnValidatingUIPanelDefinition, OnReloadingUIPanelDefinition);
+                return definition;
             }
             else
             {
                 var definition = LocalContent.Load<UIPanelDefinition>(asset);
-                return new UIPanelDefinitionWrapper(definition);
+                return new WatchedAsset<UIPanelDefinition>(LocalContent, asset);
+            }
+        }
+
+        /// <summary>
+        /// Validates panel definitions that are being reloaded.
+        /// </summary>
+        private bool OnValidatingUIPanelDefinition(String path, UIPanelDefinition asset)
+        {
+            try
+            {
+                pendingView = CreateViewFromFromUIPanelDefinition(asset);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                pendingView = null;
+
+                Debug.WriteLine(UltravioletStrings.ExceptionDuringViewReloading);
+                Debug.WriteLine(e);
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Reloads panel definitions.
+        /// </summary>
+        private void OnReloadingUIPanelDefinition(String path, UIPanelDefinition asset, Boolean validated)
+        {
+            if (validated)
+            {
+                if (State == UIPanelState.Open)
+                {
+                    var currentViewModel = View?.ViewModel;
+                    var currentView = View;
+                    if (currentView != null)
+                    {
+                        currentView.OnClosing();
+                        currentView.OnClosed();
+                        UnloadView();
+                    }
+
+                    FinishLoadingView(pendingView);
+                    pendingView = null;
+
+                    var updatedView = View;
+                    if (updatedView != null)
+                    {
+                        if (currentViewModel != null)
+                            updatedView.SetViewModel(currentViewModel);
+
+                        updatedView.OnOpening();
+                        updatedView.OnOpened();
+                    }
+                }
+            }
+            else
+            {
+                pendingView?.Dispose();
+                pendingView = null;
             }
         }
 
         // Property values.
         private Boolean isOpaque;
+
+        // State values.
+        private UIView pendingView;
     }
 }
