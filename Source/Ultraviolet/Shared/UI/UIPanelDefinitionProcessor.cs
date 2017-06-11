@@ -62,7 +62,7 @@ namespace Ultraviolet.UI
             }
 
             foreach (var styleSheetAsset in styleSheetAssets)
-                manager.AddAssetDependency(metadata.AssetPath, styleSheetAsset);
+                metadata.AddAssetDependency(styleSheetAsset);
 
             return new UIPanelDefinition()
             {

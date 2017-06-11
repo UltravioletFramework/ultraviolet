@@ -1140,7 +1140,8 @@ namespace Ultraviolet.Content
             var importer = default(IContentImporter);
             var processor = default(IContentProcessor);
             var instance = default(Object);
-
+            var changed = true;
+            
             try
             {
                 instance = preprocessed ?
@@ -1156,41 +1157,54 @@ namespace Ultraviolet.Content
                 Debug.WriteLine(e);
 
                 instance = lastKnownGood;
+                changed = false;
             }
 
-            if (cache)
-                UpdateCache(asset, metadata, ref instance);
-
-            if (watchers != null)
+            if (changed)
             {
-                var validated = true;
+                if (cache)
+                    UpdateCache(asset, metadata, ref instance);
 
-                for (var i = 0; i < watchers.Count; i++)
+                if (watchers != null)
                 {
-                    if (!watchers[i].OnValidating(asset, instance))
+                    var validated = true;
+
+                    for (var i = 0; i < watchers.Count; i++)
                     {
-                        if (instance is IDisposable disposable)
-                            disposable.Dispose();
+                        if (!watchers[i].OnValidating(asset, instance))
+                        {
+                            if (instance is IDisposable disposable)
+                                disposable.Dispose();
 
-                        validated = false;
-                        instance = lastKnownGood;
+                            validated = false;
+                            instance = lastKnownGood;
 
-                        if (cache)
-                            UpdateCache(asset, metadata, ref instance);
+                            if (cache)
+                                UpdateCache(asset, metadata, ref instance);
 
-                        for (int j = 0; j <= i; j++)
-                            watchers[i].OnValidationComplete(asset, instance, false);
-                        
-                        validated = false;
+                            for (int j = 0; j <= i; j++)
+                                watchers[i].OnValidationComplete(asset, instance, false);
 
-                        break;
+                            validated = false;
+                            changed = false;
+
+                            break;
+                        }
+                    }
+
+                    if (validated)
+                    {
+                        for (int i = 0; i < watchers.Count; i++)
+                            watchers[i].OnValidationComplete(asset, instance, true);
                     }
                 }
 
-                if (validated)
+                if (changed)
                 {
-                    for (int i = 0; i < watchers.Count; i++)
-                        watchers[i].OnValidationComplete(asset, instance, true);
+                    ClearAssetDependencies(asset);
+
+                    foreach (var dependency in metadata.AssetDependencies)
+                        AddAssetDependency(asset, dependency);
                 }
             }
 
