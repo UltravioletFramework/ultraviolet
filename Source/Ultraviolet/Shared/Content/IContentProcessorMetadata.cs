@@ -8,6 +8,12 @@ namespace Ultraviolet.Content
     public interface IContentProcessorMetadata
     {
         /// <summary>
+        /// Adds the specified asset as a dependency of the asset being loaded.
+        /// </summary>
+        /// <param name="dependency">The asset path of the dependency.</param>
+        void AddAssetDependency(String dependency);
+
+        /// <summary>
         /// Creates an instance of the specified metadata type based on the metadata in this object.
         /// </summary>
         /// <typeparam name="T">The metadata type to create.</typeparam>

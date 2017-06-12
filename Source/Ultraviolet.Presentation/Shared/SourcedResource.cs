@@ -9,7 +9,7 @@ namespace Ultraviolet.Presentation
     /// Represents an asset which can be loaded from either the global or local content source.
     /// </summary>
     /// <typeparam name="T">The type of asset which this object represents.</typeparam>
-    public partial struct SourcedResource<T> : IEquatable<SourcedResource<T>>, IInterpolatable<SourcedResource<T>> 
+    public partial struct SourcedResource<T> : IEquatable<SourcedResource<T>>, IInterpolatable<SourcedResource<T>>, IResourceWrapper
         where T : class
     {
         /// <summary>
@@ -54,7 +54,10 @@ namespace Ultraviolet.Presentation
         {
             return (t >= 1) ? target : this;
         }
-        
+
+        /// <inheritdoc/>
+        Object IResourceWrapper.Resource => Resource?.Value;
+
         /// <summary>
         /// Gets the sourced resource.
         /// </summary>

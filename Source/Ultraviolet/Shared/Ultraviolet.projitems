@@ -35,6 +35,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainmentType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetWatcherCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcherCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\DelegateAssetWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />
@@ -139,7 +146,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistry.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Content\WatchedAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\XmlUtil.cs" />
@@ -437,7 +443,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinition.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinitionWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\WatchedAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDefinitionProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelDirective.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIPanelState.cs" />

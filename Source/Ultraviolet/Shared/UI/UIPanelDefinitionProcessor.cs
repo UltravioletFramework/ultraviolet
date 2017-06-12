@@ -61,6 +61,9 @@ namespace Ultraviolet.UI
                 directives.Add(new UIPanelDirective(directiveType, xmlDirective.Value));
             }
 
+            foreach (var styleSheetAsset in styleSheetAssets)
+                metadata.AddAssetDependency(styleSheetAsset);
+
             return new UIPanelDefinition()
             {
                 AssetFilePath = metadata.AssetFilePath,

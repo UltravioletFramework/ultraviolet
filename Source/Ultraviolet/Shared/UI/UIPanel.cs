@@ -67,44 +67,27 @@ namespace Ultraviolet.UI
         /// Forces the panel to immediately finish loading its view, if it has
         /// a view and the view hasn't already been loaded.
         /// </summary>
-        public void FinishLoadingView()
+        /// <param name="viewToLoad">The view to load, or <see langword="null"/> to load the view from the current panel definition.</param>
+        public void FinishLoadingView(UIView viewToLoad = null)
         {
             if (IsViewLoaded)
                 return;
 
             this.view = null;
 
-            if (definition?.IsValid ?? false)
+            if (viewToLoad != null || (definition?.HasValue ?? false))
             {
                 this.isViewLoaded = true;
 
-                var view = default(UIView);
-                var viewIsCurrent = false;
-
-                try
-                {
-                    view = UIView.Create(this, definition.CurrentValue, vmfactory);
-                    viewIsCurrent = true;
-                }
-                catch (Exception e)
-                {
-                    view = UIView.Create(this, definition.KnownGoodValue, vmfactory);
-
-                    Debug.WriteLine(UltravioletStrings.ExceptionDuringViewReloading);
-                    Debug.WriteLine(e);
-                }
-
-                if (view != null && window != null)
+                var newView = viewToLoad ?? UIView.Create(this, definition.Value, vmfactory);
+                if (newView != null && window != null)
                 {
                     var area = new Rectangle(X, Y, Width, Height);
-                    view.SetViewPosition(window, area);
+                    newView.SetViewPosition(window, area);
                 }
 
-                this.view = view;
+                this.view = newView;
                 HandleViewLoaded();
-
-                if (viewIsCurrent)
-                    definition.MarkAsKnownGood();
             }
         }
 
@@ -460,6 +443,7 @@ namespace Ultraviolet.UI
             if (disposing)
             {
                 SafeDispose.Dispose(this.view);
+                SafeDispose.Dispose(this.definition);
                 SafeDispose.Dispose(this.localContent);
             }
             base.Dispose(disposing);
@@ -550,10 +534,20 @@ namespace Ultraviolet.UI
         }
 
         /// <summary>
+        /// Creates a <see cref="UIView"/> for this panel from the specified panel definition.
+        /// </summary>
+        /// <param name="uiPanelDefinition">The <see cref="UIPanelDefinition"/> from which to create the view.</param>
+        /// <returns>The <see cref="UIView"/> that was created from the specified panel definition.</returns>
+        protected UIView CreateViewFromFromUIPanelDefinition(UIPanelDefinition uiPanelDefinition)
+        {
+            return UIView.Create(this, uiPanelDefinition, vmfactory);
+        }
+
+        /// <summary>
         /// Prepares the panel to load the view from the specified panel definition.
         /// </summary>
         /// <param name="definition">The panel definition from which to load the view.</param>
-        protected void PrepareView(UIPanelDefinitionWrapper definition)
+        protected void PrepareView(WatchedAsset<UIPanelDefinition> definition)
         {
             Contract.Require(definition, nameof(definition));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -561,6 +555,7 @@ namespace Ultraviolet.UI
             if (IsViewLoaded)
                 throw new InvalidOperationException(UltravioletStrings.ViewAlreadyLoaded);
 
+            this.definition?.Dispose();
             this.definition = definition;
         }
 
@@ -886,7 +881,7 @@ namespace Ultraviolet.UI
         private IUltravioletWindow window;
 
         // View lazy loading parameters.
-        private UIPanelDefinitionWrapper definition;
+        private WatchedAsset<UIPanelDefinition> definition;
         private Boolean isViewLoaded;
 
         // Task completion sources which are triggered when the panel is opened or closed.

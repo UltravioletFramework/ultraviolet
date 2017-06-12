@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Ultraviolet.Core;
 using Ultraviolet.Presentation.Animations;
@@ -31,6 +32,8 @@ namespace Ultraviolet.Presentation
                 this.metadata = property.GetMetadataForOwner(owner.GetType());                
                 this.flags = DependencyPropertyValueFlags.None;
 
+                if (typeof(T).GetInterfaces().Any(x => x == typeof(IResourceWrapper)))
+                    flags |= DependencyPropertyValueFlags.IsResourceWrapper;
                 if (typeof(T).IsClass)
                     flags |= DependencyPropertyValueFlags.IsReferenceType;
                 if (typeof(T).IsValueType)
@@ -458,6 +461,12 @@ namespace Ultraviolet.Presentation
             }
 
             /// <inheritdoc/>
+            public Boolean IsResourceWrapper
+            {
+                get { return (flags & DependencyPropertyValueFlags.IsResourceWrapper) != 0; }
+            }
+
+            /// <inheritdoc/>
             public Boolean IsReferenceType
             {
                 get { return (flags & DependencyPropertyValueFlags.IsReferenceType) != 0; }
@@ -778,9 +787,27 @@ namespace Ultraviolet.Presentation
                     var definitelyChanged = potentiallyChanged;
                     if (definitelyChanged)
                     {
+                        if (IsResourceWrapper)
+                            wrappedResource = ((IResourceWrapper)newValue).Resource;
+
                         HandleChanged(oldValue, newValue);
                     }
                 }
+                else
+                {
+                    if (IsResourceWrapper)
+                    {
+                        var oldResource = wrappedResource;
+                        var newResource = ((IResourceWrapper)original).Resource;
+
+                        if (!ReferenceEquals(oldResource, newResource))
+                        {
+                            wrappedResource = newResource;
+                            HandleChanged(value, value);
+                        }
+                    }
+                }
+
                 previousValue = value;
             }
 
@@ -830,7 +857,7 @@ namespace Ultraviolet.Presentation
             /// <param name="oldValue">The property's value before the change which prompted this update.</param>
             private void UpdateRequiresDigest(T oldValue)
             {
-                var requiresDigestNew = IsDataBound || IsAnimated || 
+                var requiresDigestNew = IsResourceWrapper || IsDataBound || IsAnimated || 
                     (metadata.IsInherited && !HasLocalValue && !HasStyledValue);
 
                 if (GetValueSource() == ValueSource.BoundValue)
@@ -1109,6 +1136,7 @@ namespace Ultraviolet.Presentation
             private T previousValue;
             private T coercedValue;
             private T triggeredValue;
+            private Object wrappedResource;
             private SetTriggerAction triggeredValueSource;
 
             // State values.

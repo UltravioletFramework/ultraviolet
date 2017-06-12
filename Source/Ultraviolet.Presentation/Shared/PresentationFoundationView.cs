@@ -92,7 +92,7 @@ namespace Ultraviolet.Presentation
 
             return view;
         }
-        
+
         /// <summary>
         /// Gets the namespace that contains data source wrappers for views.
         /// </summary>
@@ -664,14 +664,16 @@ namespace Ultraviolet.Presentation
                 case AssetSource.Global:
                     if (GlobalContent != null)
                     {
-                        image.Resource.Load(GlobalContent);
+                        var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
+                        image.Resource.Load(GlobalContent, watch);
                     }
                     break;
 
                 case AssetSource.Local:
                     if (LocalContent != null)
                     {
-                        image.Resource.Load(LocalContent);
+                        var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
+                        image.Resource.Load(LocalContent, watch);
                     }
                     break;
 

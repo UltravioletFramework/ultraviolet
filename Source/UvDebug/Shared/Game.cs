@@ -34,8 +34,6 @@ namespace UvDebug
         /// </summary>
         public Game() : base("Ultraviolet", "UvDebug")
         {
-            Matrix m = Matrix.Identity;
-
             Diagnostics.DrawDiagnosticsVisuals = true;
             PlatformSpecificInitialization();
         }
@@ -113,7 +111,7 @@ namespace UvDebug
                 LoadPresentation();
                 
                 GC.Collect(2);
-
+                
                 var screenService = new UIScreenService(content);
                 var screen = screenService.Get<GameMenuScreen>();
 
@@ -196,13 +194,10 @@ namespace UvDebug
 
             if (!ShouldRunInServiceMode())
             {
-                var reloadGlobalStyleSheet = new WatchedAssetReloadingHandler(() => 
-                    Ultraviolet.GetUI().GetPresentationFoundation().TrySetGlobalStyleSheet(globalStyleSheet.ToUvssDocument()));
-
-                globalStyleSheet = new CompositeUvssDocument(Ultraviolet, reloadGlobalStyleSheet);
+                globalStyleSheet = CompositeUvssDocument.CreateForGlobalStyleSheet(Ultraviolet);
                 globalStyleSheet.Append(content, "UI/DefaultUIStyles");
                 globalStyleSheet.Append(content, "UI/GameStyles");
-                reloadGlobalStyleSheet();
+                upf.SetGlobalStyleSheet(globalStyleSheet.ToUvssDocument());
 
                 CompileBindingExpressions();
                 upf.LoadCompiledExpressions();

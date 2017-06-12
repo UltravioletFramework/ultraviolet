@@ -25,14 +25,15 @@ namespace Ultraviolet.Presentation
         }
         
         /// <inheritdoc/>
-        protected override UIPanelDefinitionWrapper LoadPanelDefinition(String asset)
+        protected override WatchedAsset<UIPanelDefinition> LoadPanelDefinition(String asset)
         {
             if (String.IsNullOrEmpty(asset))
                 return null;
             
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(asset))
             {
-                return new UIPanelDefinitionWrapper(LocalContent.LoadFromStream<UIPanelDefinition>(stream, "xml"));
+                var instance = LocalContent.LoadFromStream<UIPanelDefinition>(stream, "xml");
+                return new WatchedAsset<UIPanelDefinition>(LocalContent, instance);
             }
         }
     }

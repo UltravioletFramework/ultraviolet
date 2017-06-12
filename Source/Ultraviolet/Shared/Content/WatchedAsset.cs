@@ -1,103 +1,123 @@
 ﻿using System;
-using System.IO;
 
 namespace Ultraviolet.Content
 {
     /// <summary>
-    /// Represents the method that is called when a watched asset is being reloaded.
+    /// Represents a wrapper around a content asset which watches for and responds to changes.
     /// </summary>
-    /// <returns><see langword="true"/> if the asset was reloaded successfully; otherwise, <see langword="false"/>.</returns>
-    public delegate Boolean WatchedAssetReloadingHandler();
-
-    /// <summary>
-    /// Represents a loaded content asset which is being watched for changes.
-    /// </summary>
-    /// <typeparam name="TContent">The type of content asset which is being watched.</typeparam>
-    public struct WatchedAsset<TContent> : IDisposable
+    public sealed class WatchedAsset<T> : IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WatchedAsset{TContent}"/> structure.
+        /// Initializes a new instance of the <see cref="WatchedAsset{T}"/> class.
         /// </summary>
-        /// <param name="owner">The <see cref="ContentManager"/> that owns the watched asset.</param>
-        /// <param name="assetPath">The asset path that represents the asset.</param>
-        /// <param name="assetFilePath">The resolved file path to the file that represents the asset.</param>
-        /// <param name="watcher">The <see cref="FileSystemWatcher"/> which is responsible for watching the asset.</param>
-        /// <param name="onReloading">The action to perform when the asset is changed.</param>
-        public WatchedAsset(ContentManager owner, String assetPath, String assetFilePath, FileSystemWatcher watcher, WatchedAssetReloadingHandler onReloading)
+        /// <param name="owner">The content manager that owns the resource.</param>
+        /// <param name="assetPath">The asset path of the asset which is represented by this wrapper.</param>
+        /// <param name="validating">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidating(String, T)"/> method.</param>
+        /// <param name="validationComplete">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
+        public WatchedAsset(ContentManager owner, String assetPath, AssetWatcherValidatingHandler<T> validating = null, AssetWatcherValidationCompleteHandler<T> validationComplete = null)
         {
+            var instance = owner.Load<T>(assetPath);
+
             this.Owner = owner;
             this.AssetPath = assetPath;
-            this.AssetFilePath = Path.GetFullPath(assetFilePath);
-            this.OnReloading = onReloading;
+            this.ValidatingValue = instance;
+            this.Value = instance;
 
-            this.watcher = watcher;
-            this.watcher.Changed += Watcher_Changed;
+            this.watcher = new DelegateAssetWatcher<T>(
+                (p, a) =>
+                {
+                    this.ValidatingValue = a;
+                    return validating?.Invoke(p, a) ?? true;
+                },
+                (p, a, v) =>
+                {
+                    this.ValidatingValue = default(T);
+                    this.Value = a;
+                    validationComplete?.Invoke(p, a, v);
+                });
+            this.Owner.AddWatcher(assetPath, watcher);
         }
 
         /// <summary>
-        /// Implicitly converts an instance of <see cref="WatchedAsset{TContent}"/> to its watched content type.
+        /// Initializes a new instance of the <see cref="WatchedAsset{T}"/> class.
         /// </summary>
-        /// <param name="asset">The asset to convert.</param>
-        public static implicit operator TContent(WatchedAsset<TContent> asset)
+        /// <param name="owner">The content manager that owns the resource.</param>
+        /// <param name="asset">The asset which is represented by this wrapper.</param>
+        public WatchedAsset(ContentManager owner, T asset)
         {
-            return asset.Owner.Load<TContent>(asset.AssetPath);
+            this.Owner = owner;
+            this.AssetPath = null;
+            this.ValidatingValue = asset;
+            this.Value = asset;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Implicitly converts a <see cref="WatchedAsset{T}"/> to its underlying value.
+        /// </summary>
+        /// <param name="wrapper">The asset which is represented by the specified wrapper.</param>
+        public static implicit operator T(WatchedAsset<T> wrapper) => wrapper.Value;
+
+        /// <summary>
+        /// Releases resources associated with the wrapper.
+        /// </summary>
         public void Dispose()
         {
-            this.watcher.Changed -= Watcher_Changed;
-        }
+            if (this.watcher != null)
+            {
+                this.Owner.RemoveWatcher(AssetPath, watcher);
+                this.watcher = null;
+            }
 
+            this.ValidatingValue = default(T);
+            this.Value = default(T);
+        }
+        
         /// <summary>
-        /// Gets the <see cref="ContentManager"/> which owns this asset.
+        /// Gets the <see cref="ContentManager"/> that owns the resource.
         /// </summary>
         public ContentManager Owner { get; }
 
         /// <summary>
-        /// Gets the asset path that represents the asset.
+        /// Retrieves the version of the wrapped asset which is in the process of being validated.
+        /// </summary>
+        public T ValidatingValue { get; private set; }
+
+        /// <summary>
+        /// Retrieves the last known-good version of the wrapped asset.
+        /// </summary>
+        public T Value { get; private set; }
+
+        /// <summary>
+        /// Gets the asset path of the asset which is represented by this wrapper.
         /// </summary>
         public String AssetPath { get; }
 
         /// <summary>
-        /// Gets the resolved file path to the file that represents the asset.
+        /// Gets a value indicating whether the asset which is contained by this wrapper
+        /// is actually being watched for changes.
         /// </summary>
-        public String AssetFilePath { get; }
-
-        /// <summary>
-        /// Gets the delegate which is invoked when the watched asset is reloaded.
-        /// </summary>
-        public WatchedAssetReloadingHandler OnReloading { get; }
-                
-        /// <summary>
-        /// Gets the asset which is being watched by this instance.
-        /// </summary>
-        public TContent Value => Owner.Load<TContent>(AssetPath);
-
-        /// <summary>
-        /// Occurs when the watched asset changes.
-        /// </summary>
-        private void Watcher_Changed(Object sender, FileSystemEventArgs e)
+        public Boolean IsWatched
         {
-            if ((e.FullPath == AssetFilePath || Owner.IsWatchedDependencyPath(AssetPath, e.FullPath)) && OnReloading != null)
-            {
-                var asset = this;
-                var lastKnownGoodVersion = Owner.LoadWatched(asset);
-
-                Owner.Ultraviolet.QueueWorkItem(state =>
-                {
-                    if (state != null)
-                    {
-                        var dependency = (String)state;
-                        asset.Owner.PurgeCache(dependency, false);
-                    }
-                    asset.Owner.PurgeCache(asset.AssetPath, false);
-                    asset.Owner.LoadWatched(asset, lastKnownGoodVersion);
-                }, e.FullPath);
-            }
+            get { return watcher != null; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this wrapper is in the process of validating its underlying asset.
+        /// </summary>
+        public Boolean IsValidating
+        {
+            get { return ValidatingValue != null; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this wrapper contains a valid asset.
+        /// </summary>
+        public Boolean HasValue
+        {
+            get { return Value != null; }
+        }
+        
         // State values.
-        private readonly FileSystemWatcher watcher;
+        private DelegateAssetWatcher<T> watcher;
     }
 }

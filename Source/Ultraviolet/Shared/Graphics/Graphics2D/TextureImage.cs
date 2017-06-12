@@ -23,27 +23,26 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="TextureImage"/> class.
         /// </summary>
         [Preserve]
-        internal TextureImage()
-        {
-
-        }
+        internal TextureImage() { }
 
         /// <summary>
         /// Loads the image's texture resource from the specified content manager.
         /// </summary>
         /// <param name="content">The content manager with which to load the image's texture resource.</param>
-        public void Load(ContentManager content)
+        /// <param name="watch">A value indicating whether the <see cref="TextureImage"/> should watch the file
+        /// system for changes to its underlying resources.</param>
+        public void Load(ContentManager content, Boolean watch = false)
         {
             Contract.Require(content, nameof(content));
 
             if (!TextureID.IsValid)
                 return;
 
-            texture = content.Load<Texture2D>(TextureID);
-            if (textureRegion.IsEmpty && texture != null)
-            {
-                textureRegion = new Rectangle(0, 0, texture.Width, texture.Height);
-            }
+            texture = watch ? content.GetSharedWatchedAsset<Texture2D>(TextureID) : 
+                (WatchableAssetReference<Texture2D>)content.Load<Texture2D>(TextureID);            
+
+            if (TextureRegion.IsEmpty && !texture.IsNullReference)
+                TextureRegion = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
         }
 
         /// <summary>
@@ -70,53 +69,36 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (!textureID.Equals(value))
                 {
                     textureID = value;
-                    texture   = null;
+                    texture = WatchableAssetReference<Texture2D>.Null;
                 }
             }
         }
 
         /// <summary>
-        /// Gets the image's minimum recommended size. Texture images may be drawn at sizes smaller than that specified
-        /// by this property, but doing so will degrade their graphical quality.
+        /// Gets or sets the region of the image's texture which contains the image.
         /// </summary>
-        public Size2 MinimumRecommendedSize
-        {
-            get { return minimumRecommendedSize; }
-            protected set { minimumRecommendedSize = value; }
-        }
+        public Rectangle TextureRegion { get; set; }
 
         /// <summary>
         /// Gets the size of the image's texture region.
         /// </summary>
-        public Size2 TextureRegionSize
-        {
-            get { return new Size2(TextureRegion.Width, TextureRegion.Height); }
-        }
+        public Size2 TextureRegionSize => TextureRegion.Size;
 
         /// <summary>
-        /// Gets or sets the region of the image's texture which contains the image.
+        /// Gets the image's minimum recommended size. Texture images may be drawn at sizes smaller than that specified
+        /// by this property, but doing so will degrade their graphical quality.
         /// </summary>
-        public Rectangle TextureRegion
-        {
-            get { return textureRegion; }
-            set { textureRegion = value; }
-        }
+        public Size2 MinimumRecommendedSize { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether this object represents a valid image.
         /// </summary>
-        public Boolean IsValid
-        {
-            get { return textureID.IsValid; }
-        }
+        public Boolean IsValid => textureID.IsValid;
 
         /// <summary>
         /// Gets a value indicating whether the image's texture resource has been loaded.
         /// </summary>
-        public Boolean IsLoaded
-        {
-            get { return texture != null; }
-        }
+        public Boolean IsLoaded => !texture.IsNullReference;
 
         /// <summary>
         /// Draws the image using the specified sprite batch.
@@ -183,9 +165,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         // Property values.
-        private Texture2D texture;
+        private WatchableAssetReference<Texture2D> texture;
         private AssetID textureID;
-        private Size2 minimumRecommendedSize;
-        private Rectangle textureRegion;
     }
 }

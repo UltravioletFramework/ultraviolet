@@ -91,7 +91,7 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets the asset's path relative to its group's root directory.
         /// </summary>
-        /// <remarks>This is the same path that is passed to <see cref="ContentManager.Load{T}(String, Boolean)"/>.</remarks>
+        /// <remarks>This is the same path that is passed to <see cref="ContentManager.Load"/>.</remarks>
         public String RelativePath
         {
             get;
@@ -101,7 +101,7 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets the asset's path including its group's root directory.
         /// </summary>
-        /// <remarks>This is the same path that is passed to <see cref="ContentManager.Load{T}(String, Boolean)"/>.</remarks>
+        /// <remarks>This is the same path that is passed to <see cref="ContentManager.Load"/>.</remarks>
         public String AbsolutePath
         {
             get;

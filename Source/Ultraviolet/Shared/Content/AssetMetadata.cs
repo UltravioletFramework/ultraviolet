@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
 namespace Ultraviolet.Content
@@ -38,6 +40,17 @@ namespace Ultraviolet.Content
             this.IsStream = isStream;
             this.IsJson = isJson;
             this.IsLoadedFromSolution = isLoadedFromSln;
+        }
+
+        /// <summary>
+        /// Adds the specified asset as a dependency of the asset being loaded.
+        /// </summary>
+        /// <param name="dependency">The asset path of the dependency.</param>
+        public void AddAssetDependency(String dependency)
+        {
+            Contract.RequireNotEmpty(dependency, nameof(dependency));
+
+            AssetDependencies.Add(dependency);
         }
 
         /// <summary>
@@ -197,13 +210,18 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets the list of dependencies which have been registered for the loaded asset.
+        /// </summary>
+        public ISet<String> AssetDependencies { get; } = new HashSet<String>();
+
+        /// <summary>
         /// Represents an empty asset metadata object for assets loaded from streams.
         /// </summary>
-        public static readonly AssetMetadata StreamMetadata = new AssetMetadata(null, null, null, null, null, false, true, false, false);
+        public static AssetMetadata StreamMetadata => new AssetMetadata(null, null, null, null, null, false, true, false, false);
 
         /// <summary>
         /// Represents an empty asset metadata object for assets loaded in-memory.
         /// </summary>
-        public static readonly AssetMetadata InMemoryMetadata = new AssetMetadata(null, null, null, null, null, false, false, false, false);
+        public static AssetMetadata InMemoryMetadata => new AssetMetadata(null, null, null, null, null, false, false, false, false);
     }
 }

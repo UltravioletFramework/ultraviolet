@@ -12,7 +12,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Loads the specified sprite animation.
         /// </summary>
-        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling <see cref="ContentManager.Load{T}(String, Boolean)"/> multiple
+        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling <see cref="ContentManager.Load"/> multiple
         /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
         /// <param name="contentManager">The <see cref="ContentManager"/> with which to load the animation's associated sprite asset.</param>
         /// <param name="id">The identifier that represents the sprite animation to load.</param>

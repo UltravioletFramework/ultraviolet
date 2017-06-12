@@ -22,7 +22,7 @@ namespace Ultraviolet.UI
     /// <param name="vmfactory">A view model factory which is used to create the view's initial view model, or <see langword="null"/> to skip view model creation.</param>
     /// <returns>The instance of <see cref="UIView"/> that was created.</returns>
     public delegate UIView UIViewFactory(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory);
-
+    
     /// <summary>
     /// Represents a 
     /// </summary>
@@ -64,7 +64,7 @@ namespace Ultraviolet.UI
 
             return null;
         }
-
+        
         /// <summary>
         /// Draws the view.
         /// </summary>

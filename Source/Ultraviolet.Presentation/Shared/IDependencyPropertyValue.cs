@@ -162,6 +162,14 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether the dependency property's underlying value implements the <see cref="IResourceWrapper"/> interface.
+        /// </summary>
+        Boolean IsResourceWrapper
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the dependency property's underlying value is a reference type.
         /// </summary>
         Boolean IsReferenceType

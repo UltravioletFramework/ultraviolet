@@ -13,7 +13,9 @@ namespace Ultraviolet.SDL2
         {
             var collection = new CursorCollection(manager.Ultraviolet);
             var texture = ResolveDependencyAssetPath(metadata, input.Texture);
-            using (var textureSurface = manager.Load<Surface2D>(texture, false))
+            metadata.AddAssetDependency(texture);
+
+            using (var textureSurface = manager.Load<Surface2D>(texture, false, metadata.IsLoadedFromSolution))
             {
                 if (input.Cursors != null)
                 {
@@ -27,6 +29,7 @@ namespace Ultraviolet.SDL2
                     }
                 }
             }
+
             return collection;
         }
     }

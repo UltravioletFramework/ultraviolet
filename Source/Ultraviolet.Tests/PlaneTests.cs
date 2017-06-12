@@ -186,8 +186,16 @@ namespace Ultraviolet.Tests
 
             var result = Plane.Dot(plane, vector);
 
-            TheResultingValue(result)
-                .WithinDelta(0.0001f).ShouldBe(9064.3808f);
+            if (Environment.Is64BitProcess)
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(9064.3808f);
+            }
+            else
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(9064.3798f);
+            }
         }
 
         [Test]
@@ -198,8 +206,16 @@ namespace Ultraviolet.Tests
 
             Plane.Dot(ref plane, ref vector, out Single result);
 
-            TheResultingValue(result)
-                .WithinDelta(0.0001f).ShouldBe(9064.3808f);
+            if (Environment.Is64BitProcess)
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(9064.3808f);
+            }
+            else
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(9064.3798f);
+            }
         }
 
         [Test]
@@ -210,8 +226,16 @@ namespace Ultraviolet.Tests
 
             var result = Plane.DotCoordinate(plane, vector);
 
-            TheResultingValue(result)
-                .WithinDelta(0.0001f).ShouldBe(5051.5805f);
+            if (Environment.Is64BitProcess)
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(5051.5805f);
+            }
+            else
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(5051.5800f);
+            }
         }
 
         [Test]
@@ -222,8 +246,16 @@ namespace Ultraviolet.Tests
 
             Plane.DotCoordinate(ref plane, ref vector, out Single result);
 
-            TheResultingValue(result)
-                .WithinDelta(0.0001f).ShouldBe(5051.5805f);
+            if (Environment.Is64BitProcess)
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(5051.5805f);
+            }
+            else
+            {
+                TheResultingValue(result)
+                    .WithinDelta(0.0001f).ShouldBe(5051.5800f);
+            }
         }
 
         [Test]
