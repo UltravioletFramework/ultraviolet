@@ -79,7 +79,7 @@ namespace Ultraviolet.Content
             }
             else
             {
-                outputType  =null;
+                outputType = null;
             }
             return entry.Importer;
         }

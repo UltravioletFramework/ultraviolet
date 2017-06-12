@@ -9,12 +9,6 @@ namespace Ultraviolet.Content
     internal interface IAssetWatcherCollection
     {
         /// <summary>
-        /// Called when the file which is being watched by this collection changes.
-        /// </summary>
-        /// <param name="fullPath">The full path to the file that was changed.</param>
-        void OnChanged(String fullPath);
-
-        /// <summary>
         /// Adds an asset watcher to the collection.
         /// </summary>
         /// <param name="watcher">The asset watcher to add to the collection.</param>

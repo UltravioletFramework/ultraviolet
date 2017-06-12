@@ -284,16 +284,16 @@ namespace Ultraviolet.Content
 
             lock (cacheSyncObject)
             {
-                if (watchers == null)
-                    watchers = new Dictionary<String, IAssetWatcherCollection>();
+                if (assetWatchers == null)
+                    assetWatchers = new Dictionary<String, IAssetWatcherCollection>();
 
                 var assetPath = asset;
                 var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, true));
 
-                if (!watchers.TryGetValue(assetFilePath, out var list))
+                if (!assetWatchers.TryGetValue(assetFilePath, out var list))
                 {
                     list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
-                    watchers[assetFilePath] = list;
+                    assetWatchers[assetFilePath] = list;
                 }
 
                 list.Add(watcher);
@@ -327,12 +327,12 @@ namespace Ultraviolet.Content
 
             lock (cacheSyncObject)
             {
-                if (watchers == null)
+                if (assetWatchers == null)
                     return false;
 
                 var assetFilePath = ResolveAssetFilePath(asset, true);
 
-                if (!watchers.TryGetValue(asset, out var list))
+                if (!assetWatchers.TryGetValue(asset, out var list))
                     return false;
 
                 return list.Remove(watcher);
@@ -368,14 +368,23 @@ namespace Ultraviolet.Content
             if (GloballySuppressDependencyTracking || suppressDependencyTracking)
                 return;
 
-            dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
+            var dependencyAssetPath = dependency;
+            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependencyAssetPath, true));
 
             lock (cacheSyncObject)
             {
-                if (!assetDependencies.TryGetValue(dependency, out var dependents))
-                    assetDependencies[dependency] = dependents = new HashSet<String>();
+                if (assetDependencies == null)
+                    assetDependencies = new Dictionary<String, IAssetDependencyCollection>();
+
+                assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents);
+
+                if (dependents == null)
+                {
+                    dependents = new AssetDependencyCollection(this, dependencyAssetPath, dependencyAssetFilePath);
+                    assetDependencies[dependencyAssetFilePath] = dependents;
+                }
                 
-                dependents.Add(asset);
+                dependents.DependentAssets.Add(asset);
             }
         }
 
@@ -409,7 +418,7 @@ namespace Ultraviolet.Content
                     return;
                 
                 foreach (var dependents in assetDependencies)
-                    dependents.Value.Remove(asset);
+                    dependents.Value.DependentAssets.Remove(asset);
             }
         }
 
@@ -433,10 +442,7 @@ namespace Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
 
             lock (cacheSyncObject)
-            {
-                if (assetDependencies != null)
-                    assetDependencies.Clear();
-            }
+                assetDependencies?.Clear();
         }
 
         /// <summary>
@@ -459,7 +465,7 @@ namespace Ultraviolet.Content
                     return false;
 
                 if (assetDependencies.TryGetValue(dependency, out var dependents))
-                    return dependents.Remove(asset);
+                    return dependents.DependentAssets.Remove(asset);
             }
 
             return false;
@@ -499,7 +505,7 @@ namespace Ultraviolet.Content
                     return false;
                 
                 if (assetDependencies.TryGetValue(dependency, out var dependents))
-                    return dependents.Contains(asset);
+                    return dependents.DependentAssets.Contains(asset);
             }
 
             return false;
@@ -539,11 +545,11 @@ namespace Ultraviolet.Content
                 if (assetDependencies == null)
                     return false;
 
-                if (!assetDependencies.TryGetValue(dependency, out var dependents))
-                    return false;
-                
-                return dependents.Contains(asset);
+                if (assetDependencies.TryGetValue(dependency, out var dependents))
+                    return dependents.DependentAssets.Contains(asset);
             }
+
+            return false;
         }
 
         /// <summary>
@@ -616,7 +622,7 @@ namespace Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return LoadImpl<TOutput>(asset, cache, fromsln);
+            return (TOutput)LoadImpl(asset, typeof(TOutput), cache, fromsln);
         }
 
         /// <summary>
@@ -635,7 +641,7 @@ namespace Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
 
-            return LoadImpl<TOutput>(AssetID.GetAssetPath(asset), cache, fromsln);
+            return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), cache, fromsln);
         }
 
         /// <summary>
@@ -1083,30 +1089,30 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Implements the <see cref="Load"/> method.
         /// </summary>
-        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln)
+        internal Object LoadImpl(String asset, Type type, Boolean cache, Boolean fromsln)
         {
-            return LoadImpl<TOutput>(asset, cache, fromsln, null, default(TOutput));
+            return LoadImpl(asset, type, cache, fromsln, null, null);
         }
         
         /// <summary>
         /// Implements the <see cref="Load"/> method.
         /// </summary>
-        internal TOutput LoadImpl<TOutput>(String asset, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, TOutput lastKnownGood)
+        internal Object LoadImpl(String asset, Type type, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood)
         {
-            var cachedInstance = default(Object);
+            var cachedInstanceEntry = default(AssetCacheEntry);
             var cacheMiss = false;
 
             lock (cacheSyncObject)
-                cacheMiss = !assetCache.TryGetValue(asset, out cachedInstance);
+                cacheMiss = !assetCache.TryGetValue(asset, out cachedInstanceEntry);
 
             if (cacheMiss)
             {
-                LoadInternal(asset, typeof(TOutput), cache, fromsln, watchers, lastKnownGood, out var result);
-                return (result is ContentCacheData ccd) ? (TOutput)ccd.Asset : (TOutput)result;
+                LoadInternal(asset, type, cache, fromsln, watchers, lastKnownGood, out var result);
+                return result;
             }
             else
             {
-                return (cachedInstance is ContentCacheData ccd) ? (TOutput)ccd.Asset : (TOutput)cachedInstance;
+                return cachedInstanceEntry.Asset;
             }
         }
         
@@ -1123,12 +1129,28 @@ namespace Ultraviolet.Content
         /// </summary>
         internal void OnFileReloaded(String fullPath)
         {
-            if (watchers != null && watchers.TryGetValue(fullPath, out var list))
-                list.OnChanged(fullPath);
+            var assetWatchersForFile = default(IAssetWatcherCollection);
+            var assetDependenciesForFile = default(IAssetDependencyCollection);
 
-            if (assetDependencies != null && assetDependencies.TryGetValue(fullPath, out var dependents))
+            assetWatchers?.TryGetValue(fullPath, out assetWatchersForFile);
+            assetDependencies?.TryGetValue(fullPath, out assetDependenciesForFile);
+
+            // Reload the file if it already exists in our cache
+            var assetPath = assetWatchersForFile?.AssetPath ?? assetDependenciesForFile?.AssetPath;
+            if (assetPath != null && assetCache.TryGetValue(assetPath, out var assetEntry))
             {
-                foreach (var dependent in dependents)
+                Ultraviolet.QueueWorkItem(() =>
+                {
+                    var assetLKG = LoadImpl(assetPath, assetEntry.AssetType, true, true, assetWatchersForFile, null);
+                    PurgeCache(assetPath, false);
+                    LoadImpl(assetPath, assetEntry.AssetType, true, true, assetWatchersForFile, assetLKG);
+                });
+            }
+
+            // Inform the file's dependent assets that it changed
+            if (assetDependenciesForFile != null)
+            {
+                foreach (var dependent in assetDependenciesForFile.DependentAssets)
                 {
                     var dependentFullPath = Path.GetFullPath(ResolveAssetFilePath(dependent, true));
                     OnFileReloaded(dependentFullPath);
@@ -1153,7 +1175,7 @@ namespace Ultraviolet.Content
                 {
                     foreach (var instance in assetCache)
                     {
-                        var disposable = ((instance.Value is ContentCacheData ccd) ? ccd.Asset : instance.Value) as IDisposable;
+                        var disposable = instance.Value.Asset as IDisposable;
                         disposable?.Dispose();
                     }
 
@@ -1306,7 +1328,7 @@ namespace Ultraviolet.Content
             if (changed)
             {
                 if (cache)
-                    UpdateCache(asset, metadata, ref instance);
+                    UpdateCache(asset, metadata, ref instance, type);
 
                 if (watchers != null)
                 {
@@ -1323,7 +1345,7 @@ namespace Ultraviolet.Content
                             instance = lastKnownGood;
 
                             if (cache)
-                                UpdateCache(asset, metadata, ref instance);
+                                UpdateCache(asset, metadata, ref instance, type);
 
                             for (int j = 0; j <= i; j++)
                                 watchers[i].OnValidationComplete(asset, instance, false);
@@ -1399,8 +1421,7 @@ namespace Ultraviolet.Content
         /// <returns>The asset that was loaded.</returns>
         private Object LoadInternalRaw(Type type, String asset, AssetMetadata metadata, out IContentImporter importer, out IContentProcessor processor)
         {
-            var importerOutputType = default(Type);
-            importer = FindContentImporter(metadata.AssetFilePath, out importerOutputType);
+            importer = FindContentImporter(metadata.AssetFilePath, out var importerOutputType);
 
             var intermediate = default(Object);
             try
@@ -1418,11 +1439,8 @@ namespace Ultraviolet.Content
             }
             finally
             {
-                var disposable = intermediate as IDisposable;
-                if (disposable != null)
-                {
+                if (intermediate is IDisposable disposable)
                     disposable.Dispose();
-                }
             }
         }
 
@@ -1989,15 +2007,12 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Updates the content manager's internal cache with the specified object instance.
         /// </summary>
-        private void UpdateCache(String asset, AssetMetadata metadata, ref Object instance)
+        private void UpdateCache(String asset, AssetMetadata metadata, ref Object instance, Type type)
         {
             lock (cacheSyncObject)
             {
-                if (metadata.IsOverridden)
-                {
-                    instance = new ContentCacheData(instance, metadata.OverrideDirectory);
-                }
-                assetCache[asset] = instance;
+                var entry = new AssetCacheEntry(instance, type, metadata.IsOverridden ? metadata.OverrideDirectory : null);
+                assetCache[asset] = entry;
 
                 if (!assetFlags.ContainsKey(asset))
                     assetFlags[asset] = AssetFlags.None;
@@ -2010,9 +2025,8 @@ namespace Ultraviolet.Content
 
         // State values.
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
-        private readonly Dictionary<String, Object> assetCache = new Dictionary<String, Object>();
+        private readonly Dictionary<String, AssetCacheEntry> assetCache = new Dictionary<String, AssetCacheEntry>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
-        private readonly Dictionary<String, HashSet<String>> assetDependencies = new Dictionary<String, HashSet<String>>();
         private readonly Dictionary<String, Object> sharedWatchedAssets = new Dictionary<String, Object>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
@@ -2020,7 +2034,8 @@ namespace Ultraviolet.Content
 
         // File watching.
         private FileSystemWatcher rootFileSystemWatcher;
-        private Dictionary<String, IAssetWatcherCollection> watchers;
+        private Dictionary<String, IAssetWatcherCollection> assetWatchers;
+        private Dictionary<String, IAssetDependencyCollection> assetDependencies;
         private String solutionDirectory;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.

@@ -35,7 +35,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainmentType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetDependencyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetDependencyList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetWatcherCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcherCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\DelegateAssetWatcher.cs" />
@@ -113,7 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentArchiveStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentBinaryReaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentBinaryWriterExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentCacheData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetCacheEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporterAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\ContentImporterRegistry.cs" />

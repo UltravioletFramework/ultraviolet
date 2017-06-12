@@ -25,18 +25,7 @@ namespace Ultraviolet.Content
             this.AssetPath = assetPath;
             this.AssetFilePath = assetFilePath;
         }
-
-        /// <inheritdoc/>
-        public void OnChanged(String fullPath)
-        {
-            Owner.Ultraviolet.QueueWorkItem(() =>
-            {
-                var assetLKG = Owner.LoadImpl(AssetPath, true, true, this, default(T));
-                Owner.PurgeCache(AssetPath, false);
-                Owner.LoadImpl(AssetPath, true, true, this, assetLKG);
-            });
-        }
-
+        
         /// <inheritdoc/>
         void IAssetWatcherCollection.Add(IAssetWatcher watcher) => Add((AssetWatcher<T>)watcher);
 
