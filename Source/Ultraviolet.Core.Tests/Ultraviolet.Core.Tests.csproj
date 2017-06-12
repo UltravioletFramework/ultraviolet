@@ -187,6 +187,7 @@
     <Compile Include="Splinq\DictionaryExtensionsTest.cs" />
     <Compile Include="Splinq\ListExtensionsTest.cs" />
     <Compile Include="Text\LocalizationTest.cs" />
+    <Compile Include="Text\LocalizationTest.FrenchLanguagePlugin.cs" />
     <Compile Include="Text\StringPtr16Test.cs" />
     <Compile Include="Text\StringSegmentTest.cs" />
     <Compile Include="Text\StringPtr8Test.cs" />

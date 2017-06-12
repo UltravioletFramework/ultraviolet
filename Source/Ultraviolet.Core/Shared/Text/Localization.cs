@@ -70,61 +70,109 @@ namespace Ultraviolet.Core.Text
         {
             Contract.Require(plugin, nameof(plugin));
 
-            var cultures = plugin.Cultures ?? new String[0];
-
-            var pluralityEvaluators = plugin.GetPluralityEvaluators();
-            if (pluralityEvaluators != null)
+            var culture = plugin.Culture;
+            if (culture != null)
             {
-                foreach (var evaluator in pluralityEvaluators)
+                var pluralityEvaluators = plugin.GetPluralityEvaluators();
+                if (pluralityEvaluators != null)
                 {
-                    foreach (var culture in cultures)
-                        RegisterPluralityEvaluator(culture, evaluator);
+                    foreach (var evaluator in pluralityEvaluators)
+                        RegisterPluralityEvaluatorForCulture(culture, evaluator);
+                }
+
+                var matchEvaluators = plugin.GetMatchEvaluators();
+                if (matchEvaluators != null)
+                {
+                    foreach (var evaluator in matchEvaluators)
+                        RegisterMatchEvaluatorForCulture(culture, evaluator.Name, evaluator.Evaluator);
                 }
             }
-
-            var matchEvaluators = plugin.GetMatchEvaluators();
-            if (matchEvaluators != null)
+            else
             {
-                foreach (var evaluator in matchEvaluators)
+                var language = plugin.Language;
+                if (language != null)
                 {
-                    foreach (var culture in cultures)
-                        RegisterMatchEvaluator(culture, evaluator.Name, evaluator.Evaluator);
+                    var pluralityEvaluators = plugin.GetPluralityEvaluators();
+                    if (pluralityEvaluators != null)
+                    {
+                        foreach (var evaluator in pluralityEvaluators)
+                            RegisterPluralityEvaluatorForLanguage(language, evaluator);
+                    }
+
+                    var matchEvaluators = plugin.GetMatchEvaluators();
+                    if (matchEvaluators != null)
+                    {
+                        foreach (var evaluator in matchEvaluators)
+                            RegisterMatchEvaluatorForLanguage(language, evaluator.Name, evaluator.Evaluator);
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// <para>Registers a plurality evaluator function for the specified culture.</para>
-        /// <para>Plurality evaluators are used to determine which string variant to use for a given quantity of items.</para>
+        /// Registers a plurality evaluator function for the specified culture. Plurality evaluators are used to determine 
+        /// which string variant to use for a given quantity of items.
         /// </summary>
         /// <param name="culture">The culture for which to register a plurality evaluator.</param>
         /// <param name="evaluator">The evaluator to register.</param>
-        public static void RegisterPluralityEvaluator(String culture, LocalizationPluralityEvaluator evaluator)
+        public static void RegisterPluralityEvaluatorForCulture(String culture, LocalizationPluralityEvaluator evaluator)
         {
             Contract.RequireNotEmpty(culture, nameof(culture));
             Contract.Require(evaluator, nameof(evaluator));
 
-            registeredPluralityEvaluators[culture] = evaluator;
+            registeredPluralityEvaluatorsByCulture[culture] = evaluator;
         }
 
         /// <summary>
-        /// <para>Registers a match evaluator function for the specified culture.</para>
-        /// <para>Match evaluators are used to determine how to make a localized string match another string variant.</para>
+        /// Registers a match evaluator function for the specified culture. Match evaluators are used to determine 
+        /// how to make a localized string match another string variant.
         /// </summary>
         /// <param name="culture">The culture for which to register a match evaluator.</param>
         /// <param name="name">The evaluator's unique name.</param>
         /// <param name="evaluator">The evaluator to register.</param>
-        public static void RegisterMatchEvaluator(String culture, String name, LocalizationMatchEvaluator evaluator)
+        public static void RegisterMatchEvaluatorForCulture(String culture, String name, LocalizationMatchEvaluator evaluator)
         {
             Contract.RequireNotEmpty(culture, nameof(culture));
             Contract.RequireNotEmpty(name, nameof(name));
             Contract.Require(evaluator, nameof(evaluator));
 
-            if (!registeredMatchEvaluators.ContainsKey(culture))
-            {
-                registeredMatchEvaluators[culture] = new Dictionary<String, LocalizationMatchEvaluator>();
-            }
-            registeredMatchEvaluators[culture][name] = evaluator;
+            if (!registeredMatchEvaluatorByCulture.ContainsKey(culture))
+                registeredMatchEvaluatorByCulture[culture] = new Dictionary<String, LocalizationMatchEvaluator>();
+
+            registeredMatchEvaluatorByCulture[culture][name] = evaluator;
+        }
+
+        /// <summary>
+        /// Registers a plurality evaluator function for the specified language. Plurality evaluators are used to determine 
+        /// which string variant to use for a given quantity of items.
+        /// </summary>
+        /// <param name="language">The language for which to register a plurality evaluator.</param>
+        /// <param name="evaluator">The evaluator to register.</param>
+        public static void RegisterPluralityEvaluatorForLanguage(String language, LocalizationPluralityEvaluator evaluator)
+        {
+            Contract.RequireNotEmpty(language, nameof(language));
+            Contract.Require(evaluator, nameof(evaluator));
+
+            registeredPluralityEvaluatorsByLanguage[language] = evaluator;
+        }
+
+        /// <summary>
+        /// Registers a match evaluator function for the specified language. Match evaluators are used to determine 
+        /// how to make a localized string match another string variant.
+        /// </summary>
+        /// <param name="language">The language for which to register a match evaluator.</param>
+        /// <param name="name">The evaluator's unique name.</param>
+        /// <param name="evaluator">The evaluator to register.</param>
+        public static void RegisterMatchEvaluatorForLanguage(String language, String name, LocalizationMatchEvaluator evaluator)
+        {
+            Contract.RequireNotEmpty(language, nameof(language));
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(evaluator, nameof(evaluator));
+
+            if (!registeredMatchEvaluatorsByLanguage.ContainsKey(language))
+                registeredMatchEvaluatorsByLanguage[language] = new Dictionary<String, LocalizationMatchEvaluator>();
+
+            registeredMatchEvaluatorsByLanguage[language][name] = evaluator;
         }
 
         /// <summary>
@@ -132,7 +180,8 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         public static void ResetPluralityEvaluators()
         {
-            registeredPluralityEvaluators.Clear();
+            registeredPluralityEvaluatorsByCulture.Clear();
+            registeredPluralityEvaluatorsByLanguage.Clear();
             RegisterStandardPluralityEvaluators();
         }
 
@@ -141,7 +190,8 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         public static void ResetMatchEvaluators()
         {
-            registeredMatchEvaluators.Clear();
+            registeredMatchEvaluatorByCulture.Clear();
+            registeredMatchEvaluatorsByLanguage.Clear();
             RegisterStandardMatchEvaluators();
         }
 
@@ -154,13 +204,31 @@ namespace Ultraviolet.Core.Text
         /// <returns>The plurality group associated with the specified culture and quantity.</returns>
         public static String GetPluralityGroup(String culture, LocalizedString source, Int32 quantity)
         {
+            return GetPluralityGroup(culture, null, source, quantity);
+        }
+
+        /// <summary>
+        /// Gets the plurality group associated with the specified culture and quantity.
+        /// </summary>
+        /// <param name="culture">The culture for which to evaluate a plurality group.</param>
+        /// <param name="language">The language for which to evaluate a plurality group, if no culture match is found.</param>
+        /// <param name="source">The localized string which is being pluralized.</param>
+        /// <param name="quantity">The quantity for which to evaluate a plurality group.</param>
+        /// <returns>The plurality group associated with the specified culture and quantity.</returns>
+        public static String GetPluralityGroup(String culture, String language, LocalizedString source, Int32 quantity)
+        {
             Contract.Require(source, nameof(source));
             Contract.RequireNotEmpty(culture, nameof(culture));
             
-            if (registeredPluralityEvaluators.TryGetValue(culture, out var evaluator))
-            {
+            if (registeredPluralityEvaluatorsByCulture.TryGetValue(culture, out var evaluator))
                 return evaluator(source, quantity);
+
+            if (language != null)
+            {
+                if (registeredPluralityEvaluatorsByLanguage.TryGetValue(language, out evaluator))
+                    return evaluator(source, quantity);
             }
+
             return (quantity == 1) ? "singular" : "plural";
         }
 
@@ -172,7 +240,7 @@ namespace Ultraviolet.Core.Text
         /// <returns>The plurality group associated with the current culture and the specified quantity.</returns>
         public static String GetPluralityGroup(LocalizedString source, Int32 count)
         {
-            return GetPluralityGroup(CurrentCulture, source, count);
+            return GetPluralityGroup(CurrentCulture, CurrentLanguage, source, count);
         }
 
         /// <summary>
@@ -187,7 +255,7 @@ namespace Ultraviolet.Core.Text
             Contract.Require(target, nameof(target));
             Contract.RequireNotEmpty(rule, nameof(rule));
 
-            return MatchVariantInternal(CurrentCulture, source, target, rule);
+            return MatchVariantInternal(CurrentCulture, CurrentLanguage, source, target, rule);
         }
 
         /// <summary>
@@ -204,7 +272,26 @@ namespace Ultraviolet.Core.Text
             Contract.Require(target, nameof(target));
             Contract.RequireNotEmpty(rule, nameof(rule));
 
-            return MatchVariantInternal(culture, source, target, rule);
+            return MatchVariantInternal(culture, null, source, target, rule);
+        }
+
+        /// <summary>
+        /// Matches a source string to a target variant according to the specified culture and rule.
+        /// </summary>
+        /// <param name="culture">The culture for which to perform the match.</param>
+        /// <param name="language">The language for which to perform the match, if no culture match is found.</param>
+        /// <param name="source">The source string.</param>
+        /// <param name="target">The target string.</param>
+        /// <param name="rule">The rule which defines how to perform the match.</param>
+        /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
+        public static String MatchVariant(String culture, String language, LocalizedString source, LocalizedStringVariant target, String rule)
+        {
+            Contract.RequireNotEmpty(culture, nameof(culture));
+            Contract.RequireNotEmpty(language, nameof(language));
+            Contract.Require(target, nameof(target));
+            Contract.RequireNotEmpty(rule, nameof(rule));
+
+            return MatchVariantInternal(culture, language, source, target, rule);
         }
 
         /// <summary>
@@ -218,7 +305,7 @@ namespace Ultraviolet.Core.Text
         {
             Contract.Require(target, nameof(target));
 
-            return MatchVariantInternal(CurrentCulture, source, target, rule);
+            return MatchVariantInternal(CurrentCulture, CurrentLanguage, source, target, rule);
         }
 
         /// <summary>
@@ -231,10 +318,24 @@ namespace Ultraviolet.Core.Text
         /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
         public static String MatchVariant(String culture, LocalizedString source, LocalizedStringVariant target, StringSegment rule)
         {
+            return MatchVariantInternal(culture, null, source, target, rule);
+        }
+
+        /// <summary>
+        /// Matches a source string to a target variant according to the specified culture and rule.
+        /// </summary>
+        /// <param name="culture">The culture for which to perform the match.</param>
+        /// <param name="language">The language for which to perform the match, if no culture match is found.</param>
+        /// <param name="source">The source string.</param>
+        /// <param name="target">The target string.</param>
+        /// <param name="rule">The rule which defines how to perform the match.</param>
+        /// <returns>The variant of <paramref name="source"/> which is the best match for <paramref name="target"/> according to the specified rule.</returns>
+        public static String MatchVariant(String culture, String language, LocalizedString source, LocalizedStringVariant target, StringSegment rule)
+        {
             Contract.RequireNotEmpty(culture, nameof(culture));
             Contract.Require(target, nameof(target));
 
-            return MatchVariantInternal(culture, source, target, rule);
+            return MatchVariantInternal(culture, language, source, target, rule);
         }
 
         /// <summary>
@@ -276,6 +377,14 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <summary>
+        /// Gets the language code associated with the current culture.
+        /// </summary>
+        public static String CurrentLanguage
+        {
+            get { return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName; }
+        }
+
+        /// <summary>
         /// Gets the display name of the current culture.
         /// </summary>
         public static String CurrentCultureDisplayName
@@ -296,149 +405,98 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         private static void RegisterStandardPluralityEvaluators()
         {
-            RegisterStandardPluralityEvaluators_en("en-US");
-            RegisterStandardPluralityEvaluators_en("en-GB");
-            RegisterStandardPluralityEvaluators_en("en-AU");
-            RegisterStandardPluralityEvaluators_fr("fr-FR");
-            RegisterStandardPluralityEvaluators_fr("fr-CA");
-        }
-
-        /// <summary>
-        /// Registers the standard plural group evaluators for the English language.
-        /// </summary>
-        /// <param name="culture">The culture for which to register the evaluators.</param>
-        private static void RegisterStandardPluralityEvaluators_en(String culture)
-        {
-            RegisterPluralityEvaluator(culture, (source, qty) =>
+            RegisterPluralityEvaluatorForLanguage("en", (source, qty) =>
             {
                 return qty == 1 ? "singular" : "plural";
             });
         }
-
-        /// <summary>
-        /// Registers the standard plurality evaluators for the French language.
-        /// </summary>
-        /// <param name="culture">The culture for which to register the evaluators.</param>
-        private static void RegisterStandardPluralityEvaluators_fr(String culture)
-        {
-            RegisterPluralityEvaluator(culture, (source, qty) =>
-            {
-                return qty == 1 ? "singular" : "plural";
-            });
-        }
-
+        
         /// <summary>
         /// Registers the localization system's standard match evaluators.
         /// </summary>
         private static void RegisterStandardMatchEvaluators()
         {
-            RegisterStandardMatchEvaluators_en("en-US");
-            RegisterStandardMatchEvaluators_en("en-GB");
-            RegisterStandardMatchEvaluators_en("en-AU");
-            RegisterStandardMatchEvaluators_fr("fr-FR");
-            RegisterStandardMatchEvaluators_fr("fr-CA");
-        }
-
-        /// <summary>
-        /// Registers the standard match evaluators for the English language.
-        /// </summary>
-        /// <param name="culture">The culture for which to register the evaluators.</param>
-        private static void RegisterStandardMatchEvaluators_en(String culture)
-        {
-            RegisterMatchEvaluator(culture, "Indef_Art", (str, target) =>
+            RegisterMatchEvaluatorForLanguage("en", "Indef_Art", (str, target) =>
             {
                 if (target.HasProperty("vowel")) return "An";
                 return "A";
             });
-            RegisterMatchEvaluator(culture, "indef_art", (str, target) =>
+            RegisterMatchEvaluatorForLanguage("en", "indef_art", (str, target) =>
             {
                 if (target.HasProperty("vowel")) return "an";
                 return "a";
             });
         }
-
-        /// <summary>
-        /// Registers the standard match evaluators for the French language.
-        /// </summary>
-        /// <param name="culture">The culture for which to register the evaluators.</param>
-        private static void RegisterStandardMatchEvaluators_fr(String culture)
-        {
-            RegisterMatchEvaluator(culture, "Def_Art", (str, target) =>
-            {
-                if (target.HasProperty("plural")) return "Les ";
-                if (target.HasProperty("vowel")) return "L'";
-                if (target.HasProperty("masculine")) return "Le ";
-                if (target.HasProperty("feminine")) return "La ";
-                return String.Empty;
-            });
-            RegisterMatchEvaluator(culture, "def_art", (str, target) =>
-            {
-                if (target.HasProperty("plural")) return "les ";
-                if (target.HasProperty("vowel")) return "l'";
-                if (target.HasProperty("masculine")) return "le ";
-                if (target.HasProperty("feminine")) return "la ";
-                return String.Empty;
-            });
-            RegisterMatchEvaluator(culture, "adj", (str, target) =>
-            {
-                if (target.HasProperty("plural"))
-                {
-                    return target.HasProperty("feminine") ?
-                        str.GetVariant("plur_feminine") :
-                        str.GetVariant("plur_masculine");
-                }
-                else
-                {
-                    return target.HasProperty("feminine") ?
-                        str.GetVariant("sing_feminine") :
-                        str.GetVariant("sing_masculine");
-                }
-            });
-        }
-
+        
         /// <summary>
         /// Matches a source string to a target variant according to the specified culture and rule.
         /// </summary>
-        private static String MatchVariantInternal(String culture, LocalizedString source, LocalizedStringVariant target, String rule)
+        private static String MatchVariantInternal(String culture, String language, LocalizedString source, LocalizedStringVariant target, String rule)
         {
-            Dictionary<String, LocalizationMatchEvaluator> registry;
-            if (!registeredMatchEvaluators.TryGetValue(culture, out registry))
-                return null;
-
-            LocalizationMatchEvaluator evaluator;
-            if (!registry.TryGetValue(rule, out evaluator))
-                return null;
-
-            return (evaluator == null) ? null : evaluator(source, target);
-        }
-
-        /// <summary>
-        /// Matches a source string to a target variant according to the specified culture and rule.
-        /// </summary>
-        private static String MatchVariantInternal(String culture, LocalizedString source, LocalizedStringVariant target, StringSegment rule)
-        {
-            Dictionary<String, LocalizationMatchEvaluator> registry;
-            if (!registeredMatchEvaluators.TryGetValue(culture, out registry))
-                return null;
-
-            foreach (var kvp in registry)
+            if (registeredMatchEvaluatorByCulture.TryGetValue(culture, out var registry))
             {
-                if (rule.Equals(kvp.Key))
+                if (registry.TryGetValue(rule, out var evaluator))
+                    return evaluator(source, target);
+            }
+
+            if (language != null)
+            {
+                if (registeredMatchEvaluatorsByLanguage.TryGetValue(language, out registry))
                 {
-                    return (kvp.Value == null) ? null : kvp.Value(source, target);
+                    if (registry.TryGetValue(rule, out var evaluator))
+                        return evaluator(source, target);
                 }
             }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Matches a source string to a target variant according to the specified culture and rule.
+        /// </summary>
+        private static String MatchVariantInternal(String culture, String language, LocalizedString source, LocalizedStringVariant target, StringSegment rule)
+        {
+            if (registeredMatchEvaluatorByCulture.TryGetValue(culture, out var registry))
+            {
+                foreach (var kvp in registry)
+                {
+                    if (rule.Equals(kvp.Key))
+                    {
+                        return (kvp.Value == null) ? null : kvp.Value(source, target);
+                    }
+                }
+            }
+
+            if (language != null)
+            {
+                if (registeredMatchEvaluatorsByLanguage.TryGetValue(language, out registry))
+                {
+                    foreach (var kvp in registry)
+                    {
+                        if (rule.Equals(kvp.Key))
+                        {
+                            return (kvp.Value == null) ? null : kvp.Value(source, target);
+                        }
+                    }
+
+                }
+            }
+
             return null;
         }
 
         // Plurality and match evaluators.
-        private static readonly Dictionary<String, LocalizationPluralityEvaluator> registeredPluralityEvaluators =
+        private static readonly Dictionary<String, LocalizationPluralityEvaluator> registeredPluralityEvaluatorsByCulture =
             new Dictionary<String, LocalizationPluralityEvaluator>();
-        private static readonly Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>> registeredMatchEvaluators =
+        private static readonly Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>> registeredMatchEvaluatorByCulture =
+            new Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>>();
+
+        private static readonly Dictionary<String, LocalizationPluralityEvaluator> registeredPluralityEvaluatorsByLanguage =
+            new Dictionary<String, LocalizationPluralityEvaluator>();
+        private static readonly Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>> registeredMatchEvaluatorsByLanguage =
             new Dictionary<String, Dictionary<String, LocalizationMatchEvaluator>>();
 
         // The default localization database for the application.
-        private static readonly LocalizationDatabase strings = 
-            new LocalizationDatabase();
+        private static readonly LocalizationDatabase strings = new LocalizationDatabase();
     }
 }

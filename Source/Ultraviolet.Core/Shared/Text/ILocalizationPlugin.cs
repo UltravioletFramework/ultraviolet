@@ -26,9 +26,19 @@ namespace Ultraviolet.Core.Text
         IEnumerable<LocalizationMatchEvaluatorData> GetMatchEvaluators();
 
         /// <summary>
-        /// Gets the collection of cultures provided by this plugin.
+        /// Gets the two-letter language code of the language provided by this plugin. Only one of <see cref="Culture"/> and <see cref="Language"/>
+        /// should have a non-null value; if both are non-null, then <see cref="Culture"/> takes precedence.
         /// </summary>
-        IEnumerable<String> Cultures
+        String Language
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the culture code of the culture provided by this plugin. Only one of <see cref="Culture"/> and <see cref="Language"/>
+        /// should have a non-null value; if both are non-null, then <see cref="Culture"/> takes precedence.
+        /// </summary>
+        String Culture
         {
             get;
         }

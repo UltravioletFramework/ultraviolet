@@ -14,8 +14,8 @@
       <Variant Group='plural'>swords</Variant>
     </en-US>
     <fr-FR>
-      <Variant Group='singular' Properties='vowel, feminine'>epée</Variant>
-      <Variant Group='plural' Properties='vowel, feminine'>epées</Variant>
+      <Variant Group='singulier' Properties='voyelle, féminin'>epée</Variant>
+      <Variant Group='pluriel' Properties='voyelle, féminin'>epées</Variant>
     </fr-FR>
   </String>
   <String Key='GLOWING'>
@@ -23,10 +23,10 @@
       <Variant>glowing</Variant>
     </en-US>
     <fr-FR>
-      <Variant Group='sing_masculine'>rougeoyant</Variant>
-      <Variant Group='plur_masculine'>rougeoyants</Variant>
-      <Variant Group='sing_feminine'>rougeoyante</Variant>
-      <Variant Group='plur_feminine'>rougeoyantes</Variant>
+      <Variant Group='sing_masculin'>rougeoyant</Variant>
+      <Variant Group='plur_masculin'>rougeoyants</Variant>
+      <Variant Group='sing_féminin'>rougeoyante</Variant>
+      <Variant Group='plur_féminin'>rougeoyantes</Variant>
     </fr-FR>
   </String>
 </LocalizedStrings>

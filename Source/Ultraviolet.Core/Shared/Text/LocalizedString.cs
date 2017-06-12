@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,7 @@ namespace Ultraviolet.Core.Text
         private LocalizedString(String culture, String key, Boolean html, Boolean nopseudo)
         {
             this.Culture = culture;
+            this.Language = GetLanguageFromCulture(culture);
             this.Key = key;
             this.ContainsHtmlEncodedCharacters = html;
             this.PseudolocalizationDisabled = nopseudo;
@@ -127,7 +129,7 @@ namespace Ultraviolet.Core.Text
         /// <returns>The plural variant of this string that corresponds to the specified count.</returns>
         public LocalizedStringVariant GetPluralVariant(Int32 count)
         {
-            var group = Localization.GetPluralityGroup(Culture, this, count);
+            var group = Localization.GetPluralityGroup(Culture, Language, this, count);
             return GetVariant(group) ?? variants.DefaultVariant;
         }
 
@@ -135,6 +137,15 @@ namespace Ultraviolet.Core.Text
         /// Gets the string's associated culture.
         /// </summary>
         public String Culture
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the string's associated language.
+        /// </summary>
+        public String Language
         {
             get;
             private set;
@@ -329,6 +340,22 @@ namespace Ultraviolet.Core.Text
                 }
             }
             return pseudoString;
+        }
+
+        /// <summary>
+        /// Gets the two-letter language code associated with the specified culture.
+        /// </summary>
+        private static String GetLanguageFromCulture(String culture)
+        {
+            if (String.IsNullOrEmpty(culture))
+                return "en";
+
+            var language = CultureInfo.GetCultureInfo(culture)?.TwoLetterISOLanguageName;
+            if (language != null)
+                return language;
+
+            var components = culture.Split('-');
+            return components.Length > 0 ? components[0] : "en";
         }
 
         /// <summary>

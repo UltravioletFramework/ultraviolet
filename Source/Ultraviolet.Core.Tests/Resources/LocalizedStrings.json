@@ -25,13 +25,13 @@
         },
         "fr-FR": [
           {
-            "group": "singular",
-            "properties": "vowel, feminine",
+            "group": "singulier",
+            "properties": "voyelle, féminin",
             "text": "epée"
           },
           {
-            "group": "plural",
-            "properties": "vowel, feminine",
+            "group": "pluriel",
+            "properties": "voyelle, féminin",
             "text": "epées"
           }
         ]
@@ -43,19 +43,19 @@
         "en-US": "glowing",
         "fr-FR": [
           {
-            "group": "sing_masculine",
+            "group": "sing_masculin",
             "text": "rougeoyant"
           },
           {
-            "group": "plur_masculine",
+            "group": "plur_masculin",
             "text": "rougeoyants"
           },
           {
-            "group": "sing_feminine",
+            "group": "sing_féminin",
             "text": "rougeoyante"
           },
           {
-            "group": "plur_feminine",
+            "group": "plur_féminin",
             "text": "rougeoyantes"
           }
         ]

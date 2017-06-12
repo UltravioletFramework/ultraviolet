@@ -8,8 +8,21 @@ using Ultraviolet.Core.Text;
 namespace Ultraviolet.Core.Tests.Text
 {
     [TestFixture]
-    public class LocalizationTest : CoreTestFramework
+    public partial class LocalizationTest : CoreTestFramework
     {
+        [SetUp]
+        public void SetUp()
+        {
+            Localization.LoadPlugin(new FrenchLocalizationPlugin());
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Localization.ResetMatchEvaluators();
+            Localization.ResetPluralityEvaluators();
+        }
+
         [Test]
         public void Localization_CorrectlyTranslatesEnglish_FromXml()
         {
@@ -38,28 +51,28 @@ namespace Ultraviolet.Core.Tests.Text
                 var frFR_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
                 TheResultingString(frFR_sword_sing)
                     .ShouldBe("epée")
-                    .ShouldHaveProperty("singular")
-                    .ShouldHaveProperty("feminine")
-                    .ShouldHaveProperty("vowel")
-                    .ShouldNotHaveProperty("masculine");
+                    .ShouldHaveProperty("singulier")
+                    .ShouldHaveProperty("féminin")
+                    .ShouldHaveProperty("voyelle")
+                    .ShouldNotHaveProperty("masculin");
 
                 var frFR_sword_plur = Localization.Get("SWORD").GetPluralVariant(5);
                 TheResultingString(frFR_sword_plur)
                     .ShouldBe("epées");
 
-                var frFR_glowing_sing_masc = Localization.Get("GLOWING").GetVariant("sing_masculine");
+                var frFR_glowing_sing_masc = Localization.Get("GLOWING").GetVariant("sing_masculin");
                 TheResultingString(frFR_glowing_sing_masc)
                     .ShouldBe("rougeoyant");
 
-                var frFR_glowing_plur_masc = Localization.Get("GLOWING").GetVariant("plur_masculine");
+                var frFR_glowing_plur_masc = Localization.Get("GLOWING").GetVariant("plur_masculin");
                 TheResultingString(frFR_glowing_plur_masc)
                     .ShouldBe("rougeoyants");
 
-                var frFR_glowing_sing_feminine = Localization.Get("GLOWING").GetVariant("sing_feminine");
+                var frFR_glowing_sing_feminine = Localization.Get("GLOWING").GetVariant("sing_féminin");
                 TheResultingString(frFR_glowing_sing_feminine)
                     .ShouldBe("rougeoyante");
 
-                var frFR_glowing_plur_feminine = Localization.Get("GLOWING").GetVariant("plur_feminine");
+                var frFR_glowing_plur_feminine = Localization.Get("GLOWING").GetVariant("plur_féminin");
                 TheResultingString(frFR_glowing_plur_feminine)
                     .ShouldBe("rougeoyantes");
             });
@@ -89,11 +102,11 @@ namespace Ultraviolet.Core.Tests.Text
             {
                 var frFR_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
                 TheResultingString(frFR_sword_sing)
-                    .ShouldHaveProperty("singular")
-                    .ShouldHaveProperty("feminine")
-                    .ShouldHaveProperty("vowel")
-                    .ShouldNotHaveProperty("plural")
-                    .ShouldNotHaveProperty("masculine");
+                    .ShouldHaveProperty("singulier")
+                    .ShouldHaveProperty("féminin")
+                    .ShouldHaveProperty("voyelle")
+                    .ShouldNotHaveProperty("pluriel")
+                    .ShouldNotHaveProperty("masculin");
             });
         }
 
@@ -125,28 +138,28 @@ namespace Ultraviolet.Core.Tests.Text
                 var frFR_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
                 TheResultingString(frFR_sword_sing)
                     .ShouldBe("epée")
-                    .ShouldHaveProperty("singular")
-                    .ShouldHaveProperty("feminine")
-                    .ShouldHaveProperty("vowel")
-                    .ShouldNotHaveProperty("masculine");
+                    .ShouldHaveProperty("singulier")
+                    .ShouldHaveProperty("féminin")
+                    .ShouldHaveProperty("voyelle")
+                    .ShouldNotHaveProperty("masculin");
 
                 var frFR_sword_plur = Localization.Get("SWORD").GetPluralVariant(5);
                 TheResultingString(frFR_sword_plur)
                     .ShouldBe("epées");
 
-                var frFR_glowing_sing_masc = Localization.Get("GLOWING").GetVariant("sing_masculine");
+                var frFR_glowing_sing_masc = Localization.Get("GLOWING").GetVariant("sing_masculin");
                 TheResultingString(frFR_glowing_sing_masc)
                     .ShouldBe("rougeoyant");
 
-                var frFR_glowing_plur_masc = Localization.Get("GLOWING").GetVariant("plur_masculine");
+                var frFR_glowing_plur_masc = Localization.Get("GLOWING").GetVariant("plur_masculin");
                 TheResultingString(frFR_glowing_plur_masc)
                     .ShouldBe("rougeoyants");
 
-                var frFR_glowing_sing_feminine = Localization.Get("GLOWING").GetVariant("sing_feminine");
+                var frFR_glowing_sing_feminine = Localization.Get("GLOWING").GetVariant("sing_féminin");
                 TheResultingString(frFR_glowing_sing_feminine)
                     .ShouldBe("rougeoyante");
 
-                var frFR_glowing_plur_feminine = Localization.Get("GLOWING").GetVariant("plur_feminine");
+                var frFR_glowing_plur_feminine = Localization.Get("GLOWING").GetVariant("plur_féminin");
                 TheResultingString(frFR_glowing_plur_feminine)
                     .ShouldBe("rougeoyantes");
             });
@@ -176,11 +189,11 @@ namespace Ultraviolet.Core.Tests.Text
             {
                 var frFR_sword_sing = Localization.Get("SWORD").GetPluralVariant(1);
                 TheResultingString(frFR_sword_sing)
-                    .ShouldHaveProperty("singular")
-                    .ShouldHaveProperty("feminine")
-                    .ShouldHaveProperty("vowel")
-                    .ShouldNotHaveProperty("plural")
-                    .ShouldNotHaveProperty("masculine");
+                    .ShouldHaveProperty("singulier")
+                    .ShouldHaveProperty("féminin")
+                    .ShouldHaveProperty("voyelle")
+                    .ShouldNotHaveProperty("pluriel")
+                    .ShouldNotHaveProperty("masculin");
             });
         }
 
