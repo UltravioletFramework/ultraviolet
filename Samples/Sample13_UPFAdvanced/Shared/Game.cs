@@ -59,6 +59,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         {
             var configuration = new OpenGLUltravioletConfiguration();
             configuration.EnableServiceMode = ShouldRunInServiceMode();
+            configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             PopulateConfiguration(configuration);
 
             PresentationFoundation.Configure(configuration);
@@ -80,6 +81,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         /// </summary>
         protected override void OnLoadingContent()
         {
+            ContentManager.GloballySuppressDependencyTracking = !ShouldDynamicallyReloadContent();
             this.content = ContentManager.Create("Content");
 
             if (Ultraviolet.IsRunningInServiceMode)
@@ -161,6 +163,18 @@ namespace UltravioletSample.Sample13_UPFAdvanced
             return true;
 #else
             return compileExpressions || System.Diagnostics.Debugger.IsAttached;
+#endif
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the game should enable dynamic reloading of content assets.
+        /// </summary>
+        private Boolean ShouldDynamicallyReloadContent()
+        {
+#if DEBUG
+            return true;
+#else
+            return false;
 #endif
         }
 

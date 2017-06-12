@@ -280,7 +280,8 @@ namespace Ultraviolet.Content
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(watcher, nameof(watcher));
-            
+            Contract.EnsureNotDisposed(this, Disposed);
+
             CreateFileSystemWatchers();
 
             lock (cacheSyncObject)
@@ -309,6 +310,7 @@ namespace Ultraviolet.Content
         public void AddWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
         {
             Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             AddWatcher(AssetID.GetAssetPath(asset), watcher);
         }
@@ -323,6 +325,7 @@ namespace Ultraviolet.Content
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             lock (cacheSyncObject)
             {
@@ -347,6 +350,7 @@ namespace Ultraviolet.Content
         public Boolean RemoveWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
         {
             Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return RemoveWatcher(AssetID.GetAssetPath(asset), watcher);
         }
@@ -361,7 +365,11 @@ namespace Ultraviolet.Content
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
-            
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (GloballySuppressDependencyTracking || suppressDependencyTracking)
+                return;
+
             dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
@@ -383,6 +391,7 @@ namespace Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             AddAssetDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
         }
@@ -394,7 +403,8 @@ namespace Ultraviolet.Content
         public void ClearAssetDependencies(String asset)
         {
             Contract.Require(asset, nameof(asset));
-            
+            Contract.EnsureNotDisposed(this, Disposed);
+
             lock (cacheSyncObject)
             {
                 if (assetDependencies == null)
@@ -412,8 +422,23 @@ namespace Ultraviolet.Content
         public void ClearAssetDependencies(AssetID asset)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             ClearAssetDependencies(AssetID.GetAssetPath(asset));
+        }
+
+        /// <summary>
+        /// Clears all of the registered dependencies for this content manager.
+        /// </summary>
+        public void ClearAssetDependencies()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            lock (cacheSyncObject)
+            {
+                if (assetDependencies != null)
+                    assetDependencies.Clear();
+            }
         }
 
         /// <summary>
@@ -426,7 +451,8 @@ namespace Ultraviolet.Content
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
-            
+            Contract.EnsureNotDisposed(this, Disposed);
+
             dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
@@ -450,6 +476,7 @@ namespace Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return RemoveAssetDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
         }
@@ -464,7 +491,8 @@ namespace Ultraviolet.Content
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
-            
+            Contract.EnsureNotDisposed(this, Disposed);
+
             dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
@@ -489,6 +517,7 @@ namespace Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Ensure<ArgumentException>(dependency.IsValid, nameof(dependency));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return IsAssetDependency(AssetID.GetAssetPath(asset), AssetID.GetAssetPath(dependency));
         }
@@ -503,7 +532,8 @@ namespace Ultraviolet.Content
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
-            
+            Contract.EnsureNotDisposed(this, Disposed);
+
             dependency = Path.GetFullPath(dependency);
 
             lock (cacheSyncObject)
@@ -528,6 +558,7 @@ namespace Ultraviolet.Content
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.Require(dependency, nameof(dependency));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return IsAssetDependencyPath(AssetID.GetAssetPath(asset), dependency);
         }
@@ -543,6 +574,7 @@ namespace Ultraviolet.Content
         public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(String asset)
         {
             Contract.RequireNotEmpty(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             CreateFileSystemWatchers();
 
@@ -958,6 +990,66 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether dependency tracking is globally suppressed, reducing memory usage.
+        /// As a side effect, modifying a dependency of an asset will no longer cause the parent asset to be reloaded
+        /// in an application which makes use of watched assets.
+        /// </summary>
+        /// <remarks>Setting this property to <see langword="true"/> will not purge any existing dependency tracking caches,
+        /// so if you turn this on, be sure to do it before loading any content assets.</remarks>
+        public static Boolean GloballySuppressDependencyTracking { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether dependency tracking is suppressed for this content manager, reducing memory usage.
+        /// As a side effect, modifying a dependency of an asset will no longer cause the parent asset to be reloaded
+        /// in an application which makes use of watched assets.
+        /// </summary>
+        /// <remarks>Setting this property to <see langword="true"/> will not purge any existing dependency tracking caches,
+        /// so if you turn this on, be sure to do it before loading any content assets.</remarks>
+        public Boolean SuppressDependencyTracking
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return suppressDependencyTracking;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                suppressDependencyTracking = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the content manager should batch file deletions.
+        /// </summary>
+        /// <remarks>When this property is set to <see langword="true"/>, <see cref="ContentManager"/> will not delete files
+        /// immediately. Instead, it will buffer deletions until the batch is ended. This is useful when, for example,
+        /// preprocessing a large number of files which depend on the same raw resources; batching deletes ensures that
+        /// those raw resources remain on disk until all of the assets are preprocessed.</remarks>
+        public Boolean BatchDeletedFiles
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return batchDeletedFiles;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.EnsureNot(batchDeletedFilesGuarantee, UltravioletStrings.ContentManagerRequiresBatch);
+
+                if (batchDeletedFiles)
+                {
+                    FlushDeletedFiles();
+                }
+                batchDeletedFiles = value;
+            }
+        }
+
+        /// <summary>
         /// Gets the content manager's root directory.
         /// </summary>
         public String RootDirectory
@@ -987,34 +1079,6 @@ namespace Ultraviolet.Content
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 return overrideDirectories;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the content manager should batch file deletions.
-        /// </summary>
-        /// <remarks>When this property is set to <see langword="true"/>, <see cref="ContentManager"/> will not delete files
-        /// immediately. Instead, it will buffer deletions until the batch is ended. This is useful when, for example,
-        /// preprocessing a large number of files which depend on the same raw resources; batching deletes ensures that
-        /// those raw resources remain on disk until all of the assets are preprocessed.</remarks>
-        public Boolean BatchDeletedFiles
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return batchDeletedFiles;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.EnsureNot(batchDeletedFilesGuarantee, UltravioletStrings.ContentManagerRequiresBatch);
-
-                if (batchDeletedFiles)
-                {
-                    FlushDeletedFiles();
-                }
-                batchDeletedFiles = value;
             }
         }
 
@@ -1929,6 +1993,7 @@ namespace Ultraviolet.Content
         private readonly Dictionary<String, Object> sharedWatchedAssets = new Dictionary<String, Object>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
+        private Boolean suppressDependencyTracking;
 
         // File watching.
         private FileSystemWatcher rootFileSystemWatcher;
