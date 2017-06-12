@@ -585,4 +585,9 @@
       <Variant>Exception thrown while attempting to reload a view:</Variant>
     </en-US>
   </String>
+  <String Key="SPRITE_FONT_MISSING_GLYPHS">
+    <en-US>
+      <Variant>This SpriteFont requires {0} glyphs, but only {1} glyphs were found in the font texture.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

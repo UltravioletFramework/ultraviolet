@@ -18,6 +18,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         public SpriteFontGlyphIndex(IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char substitutionCharacter)
         {
             this.glyphs = glyphs.ToArray();
+
+            var expectedGlyphs = regions.Sum(x => x.Count);
+            if (expectedGlyphs > this.glyphs.Length)
+                throw new ArgumentException(UltravioletStrings.SpriteFontMissingGlyphs.Format(expectedGlyphs, this.glyphs.Length));
+
             this.substitutionCharacter = substitutionCharacter;
             this.lineSpacing = glyphs.Max(x => x.Height);
 

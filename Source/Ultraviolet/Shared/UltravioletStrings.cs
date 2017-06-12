@@ -143,6 +143,7 @@ namespace Ultraviolet
         public static readonly StringResource TouchDeviceNotBoundToWindow          = new StringResource(StringDatabase, "TOUCH_DEVICE_NOT_BOUND_TO_WINDOW");
         public static readonly StringResource ExceptionDuringContentReloading      = new StringResource(StringDatabase, "EXCEPTION_DURING_CONTENT_RELOADING");
         public static readonly StringResource ExceptionDuringViewReloading         = new StringResource(StringDatabase, "EXCEPTION_DURING_VIEW_RELOADING");
+        public static readonly StringResource SpriteFontMissingGlyphs              = new StringResource(StringDatabase, "SPRITE_FONT_MISSING_GLYPHS");
 #pragma warning restore 1591
     }
 }
