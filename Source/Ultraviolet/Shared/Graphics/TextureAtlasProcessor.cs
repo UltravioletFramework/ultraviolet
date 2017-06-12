@@ -31,7 +31,7 @@ namespace Ultraviolet.Graphics
                 throw new InvalidOperationException(UltravioletStrings.TextureAtlasContainsNoImages);
 
             // Write out the texture as a PNG file.
-            using (var outputSurface = CreateOutputSurface(input, atlasImages, manager, outputWidth, outputHeight, outputPlacement))
+            using (var outputSurface = CreateOutputSurface(input, atlasImages, manager, metadata, outputWidth, outputHeight, outputPlacement))
             {
                 using (var surfaceStream = new MemoryStream())
                 {
@@ -95,7 +95,7 @@ namespace Ultraviolet.Graphics
             if (outputPlacement == null)
                 throw new InvalidOperationException(UltravioletStrings.FailedToPackTextureAtlas);
 
-            return CreateTextureAtlas(input, atlasImages, manager, outputWidth, outputHeight, outputPlacement);
+            return CreateTextureAtlas(input, atlasImages, manager, metadata, outputWidth, outputHeight, outputPlacement);
         }
 
         /// <inheritdoc/>
@@ -104,9 +104,9 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the size of the specified image.
         /// </summary>
-        private static Size2 GetImageSize(ContentManager content, String path)
+        private static Size2 GetImageSize(ContentManager content, IContentProcessorMetadata metadata, String path)
         {
-            using (var image = content.Load<Surface2D>(path, false))
+            using (var image = content.Load<Surface2D>(path, false, metadata.IsLoadedFromSolution))
                 return new Size2(image.Width, image.Height);
         }
 
@@ -159,7 +159,7 @@ namespace Ultraviolet.Graphics
 
                             metadata.AddAssetDependency(file);
 
-                            var size = GetImageSize(content, file);
+                            var size = GetImageSize(content, metadata, file);
                             result[name] = new TextureAtlasImage(name, file, size);
                         }
                     }
@@ -173,7 +173,7 @@ namespace Ultraviolet.Graphics
 
                         metadata.AddAssetDependency(path);
 
-                        var size = GetImageSize(content, path);
+                        var size = GetImageSize(content, metadata, path);
                         result[name] = new TextureAtlasImage(name, path, size);
                     }
                 }
@@ -385,14 +385,14 @@ namespace Ultraviolet.Graphics
         /// Creates the output surface for a texture atlas.
         /// </summary>
         private static Surface2D CreateOutputSurface(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
-            ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
+            ContentManager content, IContentProcessorMetadata metadata, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
             var output = Surface2D.Create(width, height);
             
             foreach (var image in atlasImages)
             {
                 var imageArea = images[image.Name];
-                using (var imageSurface = content.Load<Surface2D>(image.Path, false))
+                using (var imageSurface = content.Load<Surface2D>(image.Path, false, metadata.IsLoadedFromSolution))
                 {
                     var areaWithoutPadding = new Rectangle(
                         imageArea.X, 
@@ -410,9 +410,9 @@ namespace Ultraviolet.Graphics
         /// Creates the output texture for a texture atlas.
         /// </summary>
         private static Texture2D CreateOutputTexture(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
-            ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
+            ContentManager content, IContentProcessorMetadata metadata, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
-            using (var output = CreateOutputSurface(atlasDesc, atlasImages, content, width, height, images))
+            using (var output = CreateOutputSurface(atlasDesc, atlasImages, content, metadata, width, height, images))
             {
                 return output.CreateTexture(true, content.Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
             }
@@ -422,10 +422,10 @@ namespace Ultraviolet.Graphics
         /// Creates a texture atlas from the specified collection of images.
         /// </summary>
         private static TextureAtlas CreateTextureAtlas(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
-            ContentManager content, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
+            ContentManager content, IContentProcessorMetadata metadata, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
             var padding = atlasDesc.Metadata.Padding;
-            var texture = CreateOutputTexture(atlasDesc, atlasImages, content, width, height, images);
+            var texture = CreateOutputTexture(atlasDesc, atlasImages, content, metadata, width, height, images);
             var atlas = new TextureAtlas(texture, images.ToDictionary(x => x.Key, 
                 x => new Rectangle(x.Value.X, x.Value.Y, x.Value.Width - padding, x.Value.Height - padding)));
             return atlas;
