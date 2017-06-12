@@ -157,6 +157,8 @@ namespace Ultraviolet.Graphics
                             if (result.ContainsKey(name))
                                 throw new InvalidOperationException(UltravioletStrings.TextureAtlasAlreadyContainsCell.Format(name));
 
+                            metadata.AddAssetDependency(file);
+
                             var size = GetImageSize(content, file);
                             result[name] = new TextureAtlasImage(name, file, size);
                         }
@@ -165,9 +167,11 @@ namespace Ultraviolet.Graphics
                     {
                         name = name ?? path;
                         path = ResolveDependencyAssetPath(metadata, Path.Combine(atlasDesc.Metadata.RootDirectory, path));
-
+                        
                         if (result.ContainsKey(name))
                             throw new InvalidOperationException(UltravioletStrings.TextureAtlasAlreadyContainsCell.Format(name));
+
+                        metadata.AddAssetDependency(path);
 
                         var size = GetImageSize(content, path);
                         result[name] = new TextureAtlasImage(name, path, size);

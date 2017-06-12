@@ -182,6 +182,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                     {
                         foreach (var groupDesc in groupBatch.Items ?? Enumerable.Empty<SpriteFrameGroupDescription>())
                         {
+                            metadata.AddAssetDependency(groupDesc.Texture);
+
                             var groupTexture = manager.Load<Texture2D>(groupDesc.Texture);
 
                             var groupFrameCount = groupDesc.FrameCount ?? 0;
@@ -235,6 +237,8 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                             if (!String.IsNullOrWhiteSpace(frameDesc.Atlas))
                             {
+                                metadata.AddAssetDependency(frameDesc.Atlas);
+
                                 var atlas = manager.Load<TextureAtlas>(frameDesc.Atlas);
                                 if (!atlas.ContainsCell(frameDesc.AtlasCell))
                                     throw new InvalidDataException(UltravioletStrings.SpriteContainsInvalidAtlasCell.Format(frameDesc.AtlasCell));
@@ -251,6 +255,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                             }
                             else
                             {
+                                metadata.AddAssetDependency(frameDesc.Texture);
+
                                 var texture = manager.Load<Texture2D>(frameDesc.Texture);
 
                                 frame.Texture = frameDesc.Texture;

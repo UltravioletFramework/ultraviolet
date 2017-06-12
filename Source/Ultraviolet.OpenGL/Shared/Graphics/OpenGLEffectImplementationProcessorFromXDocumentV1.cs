@@ -94,6 +94,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     vertPath = ResolveDependencyAssetPath(metadata, vertPath);
+                    metadata.AddAssetDependency(vertPath);
 
                     var fragPathGL = reader.ReadString();
                     var fragPathES = reader.ReadString();
@@ -103,6 +104,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     fragPath = ResolveDependencyAssetPath(metadata, fragPath);
+                    metadata.AddAssetDependency(fragPath);
 
                     var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
                     var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
@@ -143,12 +145,14 @@ namespace Ultraviolet.OpenGL.Graphics
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     vertPath = ResolveDependencyAssetPath(metadata, vertPath);
+                    metadata.AddAssetDependency(vertPath);
 
                     var fragPath = GetShader(passElement, "FragmentShader");
                     if (String.IsNullOrEmpty(fragPath))
                         throw new ContentLoadException(OpenGLStrings.EffectMustHaveVertexAndFragmentShader);
 
                     fragPath = ResolveDependencyAssetPath(metadata, fragPath);
+                    metadata.AddAssetDependency(fragPath);
 
                     var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
                     var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
