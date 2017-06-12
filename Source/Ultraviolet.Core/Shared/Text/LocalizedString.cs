@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -128,7 +127,7 @@ namespace Ultraviolet.Core.Text
         /// <returns>The plural variant of this string that corresponds to the specified count.</returns>
         public LocalizedStringVariant GetPluralVariant(Int32 count)
         {
-            var group = Localization.GetPluralityGroup(Culture, count);
+            var group = Localization.GetPluralityGroup(Culture, this, count);
             return GetVariant(group) ?? variants.DefaultVariant;
         }
 

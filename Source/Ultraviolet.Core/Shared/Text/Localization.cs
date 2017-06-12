@@ -10,9 +10,10 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// Represents a method which is used to determine the plurality group associated with a specified quantity.
     /// </summary>
+    /// <param name="source">The localized string which is being pluralized.</param>
     /// <param name="quantity">The quantity for which to determine a plurality group.</param>
     /// <returns>The name of the plurality group associated with the specified quantity.</returns>
-    public delegate String LocalizationPluralityEvaluator(Int32 quantity);
+    public delegate String LocalizationPluralityEvaluator(LocalizedString source, Int32 quantity);
 
     /// <summary>
     /// Represents a method which is used to determine which of the specified source string's variants
@@ -36,7 +37,7 @@ namespace Ultraviolet.Core.Text
             RegisterStandardPluralityEvaluators();
             RegisterStandardMatchEvaluators();
         }
-
+        
         /// <summary>
         /// Loads any localization plugins defined in the specified assembly.
         /// </summary>
@@ -148,16 +149,17 @@ namespace Ultraviolet.Core.Text
         /// Gets the plurality group associated with the specified culture and quantity.
         /// </summary>
         /// <param name="culture">The culture for which to evaluate a plurality group.</param>
+        /// <param name="source">The localized string which is being pluralized.</param>
         /// <param name="quantity">The quantity for which to evaluate a plurality group.</param>
         /// <returns>The plurality group associated with the specified culture and quantity.</returns>
-        public static String GetPluralityGroup(String culture, Int32 quantity)
+        public static String GetPluralityGroup(String culture, LocalizedString source, Int32 quantity)
         {
+            Contract.Require(source, nameof(source));
             Contract.RequireNotEmpty(culture, nameof(culture));
-
-            LocalizationPluralityEvaluator evaluator;
-            if (registeredPluralityEvaluators.TryGetValue(culture, out evaluator))
+            
+            if (registeredPluralityEvaluators.TryGetValue(culture, out var evaluator))
             {
-                return evaluator(quantity);
+                return evaluator(source, quantity);
             }
             return (quantity == 1) ? "singular" : "plural";
         }
@@ -165,11 +167,12 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Gets the plurality group associated with the current culture and the specified quantity.
         /// </summary>
+        /// <param name="source">The localized string which is being pluralized.</param>
         /// <param name="count">The quantity for which to evaluate a plurality group.</param>
         /// <returns>The plurality group associated with the current culture and the specified quantity.</returns>
-        public static String GetPluralityGroup(Int32 count)
+        public static String GetPluralityGroup(LocalizedString source, Int32 count)
         {
-            return GetPluralityGroup(CurrentCulture, count);
+            return GetPluralityGroup(CurrentCulture, source, count);
         }
 
         /// <summary>
@@ -306,7 +309,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="culture">The culture for which to register the evaluators.</param>
         private static void RegisterStandardPluralityEvaluators_en(String culture)
         {
-            RegisterPluralityEvaluator(culture, (qty) =>
+            RegisterPluralityEvaluator(culture, (source, qty) =>
             {
                 return qty == 1 ? "singular" : "plural";
             });
@@ -318,7 +321,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="culture">The culture for which to register the evaluators.</param>
         private static void RegisterStandardPluralityEvaluators_fr(String culture)
         {
-            RegisterPluralityEvaluator(culture, (qty) =>
+            RegisterPluralityEvaluator(culture, (source, qty) =>
             {
                 return qty == 1 ? "singular" : "plural";
             });

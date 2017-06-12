@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Ultraviolet;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
@@ -105,6 +106,7 @@ namespace UvDebug
             }
             else
             {
+                LoadLocalizationPlugins();
                 LoadLocalizationDatabases();
                 LoadInputBindings();
                 LoadContentManifests();
@@ -119,6 +121,24 @@ namespace UvDebug
             }
             
             base.OnLoadingContent();
+        }
+
+        /// <summary>
+        /// Loads the application's localization plugins.
+        /// </summary>
+        protected void LoadLocalizationPlugins()
+        {
+            var fss = FileSystemService.Create();
+            var plugins = content.GetAssetFilePathsInDirectory(Path.Combine("Localization", "Plugins"), "*.dll");
+            foreach (var plugin in plugins)
+            {
+                try
+                {
+                    var asm = Assembly.Load(plugin);
+                    Localization.LoadPlugins(asm);
+                }
+                catch (Exception e) when (e is BadImageFormatException || e is FileLoadException) { }
+            }
         }
 
         /// <summary>
