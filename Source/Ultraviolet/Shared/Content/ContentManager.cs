@@ -1627,20 +1627,35 @@ namespace Ultraviolet.Content
         /// <returns>The solution directory, if it was found; otherwise, <see langword="null"/>.</returns>
         private String FindSolutionDirectory()
         {
+            if (solutionDirectory != null)
+                return solutionDirectory == String.Empty ? null : solutionDirectory;
+
             if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
             var asm = Assembly.GetEntryAssembly();
             if (asm == null)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
             var asmDebuggableAttr = (DebuggableAttribute)asm.GetCustomAttributes(typeof(DebuggableAttribute), false).FirstOrDefault();
             if (asmDebuggableAttr == null || !asmDebuggableAttr.IsJITOptimizerDisabled)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
             var asmDir = new DirectoryInfo(Path.GetDirectoryName(asm.Location));
             if (asmDir == null || !asmDir.Exists)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
             // NOTE: I have absolutely no idea whether these directory names are
             // localized in non-English versions of Visual Studio, so I won't
@@ -1650,19 +1665,29 @@ namespace Ultraviolet.Content
             // Break out of "Debug"/"Release"/etc.
             asmDir = asmDir.Parent;
             if (asmDir == null || !asmDir.Exists)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
             // Break out of "bin"   
             asmDir = asmDir.Parent;
             if (asmDir == null || !asmDir.Exists)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
             // Is there a directory here with the same structure as our content root?
             var projectContentRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, RootDirectory));
             if (projectContentRoot == null || !projectContentRoot.Exists)
+            {
+                solutionDirectory = String.Empty;
                 return null;
+            }
 
-            return projectContentRoot.FullName;
+            solutionDirectory = projectContentRoot.FullName;
+            return solutionDirectory;
         }
 
         /// <summary>
@@ -1998,6 +2023,7 @@ namespace Ultraviolet.Content
         // File watching.
         private FileSystemWatcher rootFileSystemWatcher;
         private Dictionary<String, IAssetWatcherCollection> watchers;
+        private String solutionDirectory;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
         private const String PreprocessedFileExtension = ".uvc";
