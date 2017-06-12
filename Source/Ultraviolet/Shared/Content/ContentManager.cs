@@ -136,9 +136,8 @@ namespace Ultraviolet.Content
                 var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
                 if (preserve && lowMemory)
                     return;
-
+                
                 assetCache.Remove(asset);
-                assetFlags.Remove(asset);
                 ClearAssetDependencies(asset);
             }
         }
@@ -182,7 +181,6 @@ namespace Ultraviolet.Content
                         continue;
 
                     assetCache.Remove(asset);
-                    assetFlags.Remove(asset);
                     ClearAssetDependencies(asset);
                 }
             }
