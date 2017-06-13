@@ -105,68 +105,107 @@ namespace Ultraviolet.SDL2.Graphics
             byte srcR, srcG, srcB, srcA;
             byte dstR, dstG, dstB, dstA;
 
-            // TODO: Handle the 'flip' parameter
-
-            var rowsToProcess = (ptr->h % 2 == 0) ? ptr->h / 2 : 1 + ptr->h / 2;
-            for (var y = 0; y < rowsToProcess; y++)
+            if (flip)
             {
-                var y1 = (y);
-                var y2 = (ptr->h - 1) - y;
-
-                var pSrc = (UInt32*)((Byte*)ptr->pixels + (y1 * pitch));
-                var pDst = (UInt32*)((Byte*)ptr->pixels + (y2 * pitch));
-
-                for (var x = 0; x < ptr->w; x++)
+                var rowsToProcess = (ptr->h % 2 == 0) ? ptr->h / 2 : 1 + ptr->h / 2;
+                for (var y = 0; y < rowsToProcess; y++)
                 {
-                    srcValue = *pSrc;
-                    dstValue = *pDst;
+                    var y1 = (y);
+                    var y2 = (ptr->h - 1) - y;
 
-                    if (srcValue == magenta)
-                    {
-                        *pDst = transparent;
-                    }
-                    else
-                    {
-                        srcA = (byte)(srcValue >> 24);
-                        srcB = (byte)(srcValue >> 16);
-                        srcG = (byte)(srcValue >> 8);
-                        srcR = (byte)(srcValue);
+                    var pSrc = (UInt32*)((Byte*)ptr->pixels + (y1 * pitch));
+                    var pDst = (UInt32*)((Byte*)ptr->pixels + (y2 * pitch));
 
-                        if (premultiply)
+                    for (var x = 0; x < ptr->w; x++)
+                    {
+                        srcValue = *pSrc;
+                        dstValue = *pDst;
+
+                        if (srcValue == magenta)
                         {
-                            var factor = srcA / 255f;
-                            srcR = (byte)(srcR * factor);
-                            srcG = (byte)(srcG * factor);
-                            srcB = (byte)(srcB * factor);
+                            *pDst = transparent;
+                        }
+                        else
+                        {
+                            srcA = (byte)(srcValue >> 24);
+                            srcB = (byte)(srcValue >> 16);
+                            srcG = (byte)(srcValue >> 8);
+                            srcR = (byte)(srcValue);
+
+                            if (premultiply)
+                            {
+                                var factor = srcA / 255f;
+                                srcR = (byte)(srcR * factor);
+                                srcG = (byte)(srcG * factor);
+                                srcB = (byte)(srcB * factor);
+                            }
+
+                            *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
                         }
 
-                        *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
-                    }
-
-                    if (dstValue == magenta)
-                    {
-                        *pSrc = transparent;
-                    }
-                    else
-                    {
-                        dstA = (byte)(dstValue >> 24);
-                        dstB = (byte)(dstValue >> 16);
-                        dstG = (byte)(dstValue >> 8);
-                        dstR = (byte)(dstValue);
-
-                        if (premultiply)
+                        if (dstValue == magenta)
                         {
-                            var factor = dstA / 255f;
-                            dstR = (byte)(dstR * factor);
-                            dstG = (byte)(dstG * factor);
-                            dstB = (byte)(dstB * factor);
+                            *pSrc = transparent;
+                        }
+                        else
+                        {
+                            dstA = (byte)(dstValue >> 24);
+                            dstB = (byte)(dstValue >> 16);
+                            dstG = (byte)(dstValue >> 8);
+                            dstR = (byte)(dstValue);
+
+                            if (premultiply)
+                            {
+                                var factor = dstA / 255f;
+                                dstR = (byte)(dstR * factor);
+                                dstG = (byte)(dstG * factor);
+                                dstB = (byte)(dstB * factor);
+                            }
+
+                            *pSrc = (uint)((dstR) | (dstG << 8) | (dstB << 16) | (dstA << 24));
                         }
 
-                        *pSrc = (uint)((dstR) | (dstG << 8) | (dstB << 16) | (dstA << 24));
+                        pDst++;
+                        pSrc++;
                     }
-                    
-                    pDst++;
-                    pSrc++;
+                }
+            }
+            else
+            {
+                for (var y = 0; y < ptr->h; y++)
+                {
+                    var pSrc = (UInt32*)((Byte*)ptr->pixels + (y * pitch));
+                    var pDst = pSrc;
+
+                    for (var x = 0; x < ptr->w; x++)
+                    {
+                        srcValue = *pSrc;
+
+                        if (srcValue == magenta)
+                        {
+                            *pDst = transparent;
+                        }
+                        else
+                        {
+                            srcA = (byte)(srcValue >> 24);
+                            srcB = (byte)(srcValue >> 16);
+                            srcG = (byte)(srcValue >> 8);
+                            srcR = (byte)(srcValue);
+
+                            if (premultiply)
+                            {
+                                var factor = srcA / 255f;
+                                srcR = (byte)(srcR * factor);
+                                srcG = (byte)(srcG * factor);
+                                srcB = (byte)(srcB * factor);
+                            }
+
+                            *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
+                        }
+
+                        pSrc++;
+                        pDst++;
+                    }
                 }
             }
 
