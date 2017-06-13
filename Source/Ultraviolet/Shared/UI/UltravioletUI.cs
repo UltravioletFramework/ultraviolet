@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
@@ -19,7 +20,7 @@ namespace Ultraviolet.UI
         {
             screenStacks = new UIScreenStackCollection(uv);
 
-            if (uv.Platform != UltravioletPlatform.Android && uv.Platform != UltravioletPlatform.iOS)
+            if (ContentManager.IsWatchedContentSupported)
                 WatchingViewFilesForChanges = configuration.WatchViewFilesForChanges;
         }
 

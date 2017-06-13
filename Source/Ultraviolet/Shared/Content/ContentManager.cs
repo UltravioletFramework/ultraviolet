@@ -249,55 +249,42 @@ namespace Ultraviolet.Content
             lock (cacheSyncObject)
                 return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
         }
-
-        /// <summary>
-        /// Loads all of the assets in the specified <see cref="ContentManifest"/> into the content manager's asset cache.
-        /// </summary>
-        /// <param name="manifest">The <see cref="ContentManifest"/> to load.</param>
-        public void Load(ContentManifest manifest)
-        {
-            Contract.Require(manifest, nameof(manifest));
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            Object result;
-            foreach (var group in manifest)
-            {
-                foreach (var asset in group)
-                {
-                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, out result);
-                }
-            }
-        }
         
         /// <summary>
         /// Adds a watcher for the specified asset.
         /// </summary>
         /// <param name="asset">The asset path of the asset for which to add a watcher.</param>
         /// <param name="watcher">The watcher to add for the specified asset.</param>
-        public void AddWatcher<TOutput>(String asset, AssetWatcher<TOutput> watcher)
+        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
+        public Boolean AddWatcher<TOutput>(String asset, AssetWatcher<TOutput> watcher)
         {
             Contract.Require(asset, nameof(asset));
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            CreateFileSystemWatchers();
-
             lock (cacheSyncObject)
             {
-                if (assetWatchers == null)
-                    assetWatchers = new Dictionary<String, IAssetWatcherCollection>();
-
-                var assetPath = asset;
-                var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, true));
-
-                if (!assetWatchers.TryGetValue(assetFilePath, out var list))
+                if (CreateFileSystemWatchers())
                 {
-                    list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
-                    assetWatchers[assetFilePath] = list;
-                }
+                    if (assetWatchers == null)
+                        assetWatchers = new Dictionary<String, IAssetWatcherCollection>();
 
-                list.Add(watcher);
+                    var assetPath = asset;
+                    var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, true));
+
+                    if (!assetWatchers.TryGetValue(assetFilePath, out var list))
+                    {
+                        list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
+                        assetWatchers[assetFilePath] = list;
+                    }
+
+                    list.Add(watcher);
+                    
+                    return true;
+                }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -305,12 +292,13 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="asset">The asset identifier of the asset for which to add a watcher.</param>
         /// <param name="watcher">The watcher to add for the specified asset.</param>
-        public void AddWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
+        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
+        public Boolean AddWatcher<TOutput>(AssetID asset, AssetWatcher<TOutput> watcher)
         {
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            AddWatcher(AssetID.GetAssetPath(asset), watcher);
+            return AddWatcher(AssetID.GetAssetPath(asset), watcher);
         }
 
         /// <summary>
@@ -332,10 +320,10 @@ namespace Ultraviolet.Content
 
                 var assetFilePath = ResolveAssetFilePath(asset, true);
 
-                if (!assetWatchers.TryGetValue(asset, out var list))
-                    return false;
+                if (assetWatchers.TryGetValue(asset, out var list))
+                    return list.Remove(watcher);
 
-                return list.Remove(watcher);
+                return false;
             }
         }
 
@@ -365,7 +353,7 @@ namespace Ultraviolet.Content
             Contract.Require(dependency, nameof(dependency));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (GloballySuppressDependencyTracking || suppressDependencyTracking)
+            if (IsDependencyTrackingSuppressed)
                 return;
 
             var dependencyAssetPath = dependency;
@@ -457,14 +445,14 @@ namespace Ultraviolet.Content
             Contract.Require(dependency, nameof(dependency));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
+            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
             {
                 if (assetDependencies == null)
                     return false;
 
-                if (assetDependencies.TryGetValue(dependency, out var dependents))
+                if (assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents))
                     return dependents.DependentAssets.Remove(asset);
             }
 
@@ -497,14 +485,14 @@ namespace Ultraviolet.Content
             Contract.Require(dependency, nameof(dependency));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            dependency = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
+            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
             {
                 if (assetDependencies == null)
                     return false;
                 
-                if (assetDependencies.TryGetValue(dependency, out var dependents))
+                if (assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents))
                     return dependents.DependentAssets.Contains(asset);
             }
 
@@ -538,14 +526,14 @@ namespace Ultraviolet.Content
             Contract.Require(dependency, nameof(dependency));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            dependency = Path.GetFullPath(dependency);
+            var dependencyAssetFilePath = Path.GetFullPath(ResolveAssetFilePath(dependency, true));
 
             lock (cacheSyncObject)
             {
                 if (assetDependencies == null)
                     return false;
 
-                if (assetDependencies.TryGetValue(dependency, out var dependents))
+                if (assetDependencies.TryGetValue(dependencyAssetFilePath, out var dependents))
                     return dependents.DependentAssets.Contains(asset);
             }
 
@@ -580,17 +568,23 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            CreateFileSystemWatchers();
-
             lock (cacheSyncObject)
             {
-                if (sharedWatchedAssets.TryGetValue(asset, out var watcher))
-                    return (WatchedAsset<TOutput>)watcher;
+                if (CreateFileSystemWatchers())
+                {
+                    if (sharedWatchedAssets == null)
+                        sharedWatchedAssets = new Dictionary<String, Object>();
 
-                watcher = new WatchedAsset<TOutput>(this, asset);
-                sharedWatchedAssets[asset] = watcher;
-                return (WatchedAsset<TOutput>)watcher;
-            }
+                    if (sharedWatchedAssets.TryGetValue(asset, out var watcher))
+                        return (WatchedAsset<TOutput>)watcher;
+
+                    watcher = new WatchedAsset<TOutput>(this, asset);
+                    sharedWatchedAssets[asset] = watcher;
+                    return (WatchedAsset<TOutput>)watcher;
+                }
+            }        
+
+            return null;
         }
 
         /// <summary>
@@ -604,6 +598,24 @@ namespace Ultraviolet.Content
         public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(AssetID asset)
         {
             return GetSharedWatchedAsset<TOutput>(AssetID.GetAssetPath(asset));
+        }
+
+        /// <summary>
+        /// Loads all of the assets in the specified <see cref="ContentManifest"/> into the content manager's asset cache.
+        /// </summary>
+        /// <param name="manifest">The <see cref="ContentManifest"/> to load.</param>
+        public void Load(ContentManifest manifest)
+        {
+            Contract.Require(manifest, nameof(manifest));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            foreach (var group in manifest)
+            {
+                foreach (var asset in group)
+                {
+                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, out var result);
+                }
+            }
         }
 
         /// <summary>
@@ -994,6 +1006,18 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Gets a value indicating whether watched content is supported on the current platform.
+        /// </summary>
+        public static Boolean IsWatchedContentSupported
+        {
+            get
+            {
+                var platform = UltravioletPlatformInfo.CurrentPlatform;
+                return (platform != UltravioletPlatform.Android && platform != UltravioletPlatform.iOS);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether dependency tracking is globally suppressed, reducing memory usage.
         /// As a side effect, modifying a dependency of an asset will no longer cause the parent asset to be reloaded
         /// in an application which makes use of watched assets.
@@ -1182,41 +1206,22 @@ namespace Ultraviolet.Content
                     assetCache.Clear();
                     assetFlags.Clear();
 
-                    foreach (var kvp in sharedWatchedAssets)
-                        ((IDisposable)kvp.Value).Dispose();
+                    if (sharedWatchedAssets != null)
+                    {
+                        foreach (var kvp in sharedWatchedAssets)
+                            ((IDisposable)kvp.Value).Dispose();
 
-                    sharedWatchedAssets.Clear();
+                        sharedWatchedAssets.Clear();
+                    }
 
+                    if (rootFileSystemWatcher != null)
+                        rootFileSystemWatcher.Dispose();
+
+                    OverrideDirectories.Dispose();
                 }
-                if (rootFileSystemWatcher != null)
-                    rootFileSystemWatcher.Dispose();
-
-                OverrideDirectories.Dispose();
             }
 
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Creates a set of file system watchers to monitor the content manager's
-        /// file system for changes.
-        /// </summary>
-        private void CreateFileSystemWatchers()
-        {
-            if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
-                return;
-
-            if (rootFileSystemWatcher == null)
-            {
-                var rootdir = FindSolutionDirectory() ?? RootDirectory;
-                rootFileSystemWatcher = new FileSystemWatcher(rootdir);
-                rootFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime;
-                rootFileSystemWatcher.IncludeSubdirectories = true;
-                rootFileSystemWatcher.EnableRaisingEvents = true;
-                rootFileSystemWatcher.Changed += OnFileSystemChanged;
-            }
-
-            OverrideDirectories.CreateFileSystemWatchers();
         }
 
         /// <summary>
@@ -1281,6 +1286,33 @@ namespace Ultraviolet.Content
                 throw new InvalidOperationException(UltravioletStrings.NoValidProcessor.Format(asset));
 
             return processor;
+        }
+
+        /// <summary>
+        /// Creates a set of file system watchers to monitor the content manager's
+        /// file system for changes.
+        /// </summary>
+        private Boolean CreateFileSystemWatchers()
+        {
+            if (!IsWatchedContentSupported)
+                return false;
+
+            lock (cacheSyncObject)
+            {
+                if (rootFileSystemWatcher == null)
+                {
+                    var rootdir = FindSolutionDirectory() ?? RootDirectory;
+                    rootFileSystemWatcher = new FileSystemWatcher(rootdir);
+                    rootFileSystemWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.CreationTime;
+                    rootFileSystemWatcher.IncludeSubdirectories = true;
+                    rootFileSystemWatcher.EnableRaisingEvents = true;
+                    rootFileSystemWatcher.Changed += OnFileSystemChanged;
+                }
+
+                OverrideDirectories.CreateFileSystemWatchers();
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -2019,6 +2051,18 @@ namespace Ultraviolet.Content
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether dependency tracking is suppressed for this content manager.
+        /// </summary>
+        private Boolean IsDependencyTrackingSuppressed
+        {
+            get
+            {
+                return (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS) ||
+                    GloballySuppressDependencyTracking || suppressDependencyTracking;
+            }
+        }
+
         // Property values.
         private readonly String rootDirectory;
         private readonly String fullRootDirectory;
@@ -2027,7 +2071,6 @@ namespace Ultraviolet.Content
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
         private readonly Dictionary<String, AssetCacheEntry> assetCache = new Dictionary<String, AssetCacheEntry>();
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
-        private readonly Dictionary<String, Object> sharedWatchedAssets = new Dictionary<String, Object>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
         private Boolean suppressDependencyTracking;
@@ -2036,6 +2079,7 @@ namespace Ultraviolet.Content
         private FileSystemWatcher rootFileSystemWatcher;
         private Dictionary<String, IAssetWatcherCollection> assetWatchers;
         private Dictionary<String, IAssetDependencyCollection> assetDependencies;
+        private Dictionary<String, Object> sharedWatchedAssets;
         private String solutionDirectory;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
