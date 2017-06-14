@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Content
 {
@@ -15,11 +16,31 @@ namespace Ultraviolet.Content
         /// <param name="validating">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidating(String, T)"/> method.</param>
         /// <param name="validationComplete">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
         public WatchedAsset(ContentManager owner, String assetPath, AssetWatcherValidatingHandler<T> validating = null, AssetWatcherValidationCompleteHandler<T> validationComplete = null)
+            : this(owner, assetPath, null, validating, validationComplete)
         {
-            var instance = owner.Load<T>(assetPath);
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WatchedAsset{T}"/> class.
+        /// </summary>
+        /// <param name="owner">The content manager that owns the resource.</param>
+        /// <param name="assetPath">The asset path of the asset which is represented by this wrapper.</param>
+        /// <param name="assetDensity">The density bucket for which to load the asset, or <see langword="null"/> to use the density of the primary display.</param>
+        /// <param name="validating">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidating(String, T)"/> method.</param>
+        /// <param name="validationComplete">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
+        public WatchedAsset(ContentManager owner, String assetPath, ScreenDensityBucket? assetDensity, 
+            AssetWatcherValidatingHandler<T> validating = null, AssetWatcherValidationCompleteHandler<T> validationComplete = null)
+        {
+            var instance = default(T);
+            if (assetDensity == null)
+                instance = owner.Load<T>(assetPath);
+            else
+                instance = owner.Load<T>(assetPath, assetDensity.Value);
 
             this.Owner = owner;
             this.AssetPath = assetPath;
+            this.AssetDensity = assetDensity;
             this.ValidatingValue = instance;
             this.Value = instance;
 
@@ -35,7 +56,11 @@ namespace Ultraviolet.Content
                     this.Value = a;
                     validationComplete?.Invoke(p, a, v);
                 });
-            this.Owner.AddWatcher(assetPath, watcher);
+
+            if (assetDensity == null)
+                this.Owner.AddWatcher(assetPath, watcher);
+            else
+                this.Owner.AddWatcher(assetPath, assetDensity.Value, watcher);
         }
 
         /// <summary>
@@ -47,6 +72,7 @@ namespace Ultraviolet.Content
         {
             this.Owner = owner;
             this.AssetPath = null;
+            this.AssetDensity = null;
             this.ValidatingValue = asset;
             this.Value = asset;
         }
@@ -64,7 +90,11 @@ namespace Ultraviolet.Content
         {
             if (this.watcher != null)
             {
-                this.Owner.RemoveWatcher(AssetPath, watcher);
+                if (this.AssetDensity == null)
+                    this.Owner.RemoveWatcher(AssetPath, watcher);
+                else
+                    this.Owner.RemoveWatcher(AssetPath, AssetDensity.Value, watcher);
+
                 this.watcher = null;
             }
 
@@ -91,6 +121,12 @@ namespace Ultraviolet.Content
         /// Gets the asset path of the asset which is represented by this wrapper.
         /// </summary>
         public String AssetPath { get; }
+
+        /// <summary>
+        /// Gets the screen density of the asset which is represented by this wrapper,
+        /// or <see langword="null"/> to use the primary display's density.
+        /// </summary>
+        public ScreenDensityBucket? AssetDensity { get; }
 
         /// <summary>
         /// Gets a value indicating whether the asset which is contained by this wrapper
