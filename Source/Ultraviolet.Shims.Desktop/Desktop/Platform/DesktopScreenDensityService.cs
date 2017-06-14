@@ -16,13 +16,12 @@ namespace Ultraviolet.Shims.Desktop.Platform
         public DesktopScreenDensityService(UltravioletContext uv, IUltravioletDisplay display)
             : base(display)
         {
-            if (InitWindows8_1(uv, display))
-                return;
+            Contract.Require(uv, nameof(uv));
 
-            if (InitMacOS(uv, display))
-                return;
+            this.uv = uv;
+            this.display = display;
 
-            InitFallback(uv, display);
+            Refresh();
         }
 
         /// <summary>
@@ -97,6 +96,20 @@ namespace Ultraviolet.Shims.Desktop.Platform
         }
 
         /// <inheritdoc/>
+        public override Boolean Refresh()
+        {
+            var oldDensityX = densityX;
+            var oldDensityY = densityY;
+            var oldDensityScale = densityScale;
+            var oldDensityBucket = densityBucket;
+
+            if (!InitWindows8_1(uv, display) && !InitMacOS(uv, display))
+                InitFallback(uv, display);
+
+            return oldDensityX != densityX || oldDensityY != densityY || oldDensityScale != densityScale || oldDensityBucket != densityBucket;
+        }
+
+        /// <inheritdoc/>
         public override Single DeviceScale
         {
             get { return 1f; }
@@ -127,6 +140,8 @@ namespace Ultraviolet.Shims.Desktop.Platform
         }
 
         // State values.
+        private readonly UltravioletContext uv;
+        private readonly IUltravioletDisplay display;
         private Single densityX;
         private Single densityY;
         private Single densityScale;

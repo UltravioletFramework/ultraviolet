@@ -20,6 +20,26 @@ namespace Ultraviolet.Shims.Android.Platform
 
         }
 
+        /// <inheritdoc/>
+        public override Boolean Refresh()
+        {
+            if (Activity == null)
+                return false;
+
+            var oldDensityScale = DensityScale;
+            var oldDensityX = DensityX;
+            var oldDensityY = DensityY;
+            var oldDensityBucket = DensityBucket;
+
+            Activity.WindowManager.DefaultDisplay.GetMetrics(metrics);
+
+            return
+                oldDensityScale != DensityScale ||
+                oldDensityX != DensityX ||
+                oldDensityY != DensityY ||
+                oldDensityBucket != DensityBucket;            
+        }
+
         /// <summary>
         /// Gets the current Android activity.
         /// </summary>
@@ -30,7 +50,7 @@ namespace Ultraviolet.Shims.Android.Platform
             internal set
             {
                 activity = value;
-                metrics  = null;
+                metrics = null;
 
                 if (value != null)
                 {

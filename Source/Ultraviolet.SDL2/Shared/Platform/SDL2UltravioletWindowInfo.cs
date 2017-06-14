@@ -33,6 +33,16 @@ namespace Ultraviolet.SDL2.Platform
         }
         
         /// <summary>
+        /// Updates the state of the application's displays.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+            foreach (var window in windows)
+                ((SDL2UltravioletWindow)window).Update(time);
+        }
+
+        /// <summary>
         /// Designates the specified window as the primary window.
         /// </summary>
         /// <param name="window">The window to designate as the primary window, or null to clear the primary window.</param>

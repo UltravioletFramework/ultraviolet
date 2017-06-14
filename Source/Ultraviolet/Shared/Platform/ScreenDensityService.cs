@@ -67,6 +67,12 @@ namespace Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Directs the service to refresh any cached values.
+        /// </summary>
+        /// <returns><see langword="true"/> if the display's density information changed; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean Refresh();
+
+        /// <summary>
         /// Gets the number of physical pixels per logical pixel on devices with high density display modes
         /// like Retina or Retina HD.
         /// </summary>

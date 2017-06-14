@@ -49,6 +49,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage9.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\DisplayDensityChangedMessageData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\WindowDensityChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaneIntersectionType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenStack.IEnumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.Equality.cs" />

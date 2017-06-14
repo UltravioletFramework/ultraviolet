@@ -60,5 +60,15 @@ namespace Ultraviolet
         /// An event indicating that the text input region has been changed.
         /// </summary>
         public static readonly UltravioletMessageID TextInputRegionChanged = UltravioletMessageID.Acquire(nameof(TextInputRegionChanged));
+
+        /// <summary>
+        /// An event indicating that the density settings for a particular display were changed.
+        /// </summary>
+        public static readonly UltravioletMessageID DisplayDensityChanged = UltravioletMessageID.Acquire(nameof(DisplayDensityChanged));
+
+        /// <summary>
+        /// An event indicating that a window was moved to a display with a different density.
+        /// </summary>
+        public static readonly UltravioletMessageID WindowDensityChanged = UltravioletMessageID.Acquire(nameof(WindowDensityChanged));
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ultraviolet.Core;
+using Ultraviolet.Messages;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
 
@@ -14,9 +16,14 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletDisplay class.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="displayIndex">The SDL2 display index that this object represents.</param>
-        public SDL2UltravioletDisplay(Int32 displayIndex)
+        public SDL2UltravioletDisplay(UltravioletContext uv, Int32 displayIndex)
         {
+            Contract.Require(uv, nameof(uv));
+
+            this.uv = uv;
+
             this.displayIndex = displayIndex;
             this.displayModes = Enumerable.Range(0, SDL.GetNumDisplayModes(displayIndex))
                 .Select(modeIndex => CreateDisplayModeFromSDL(displayIndex, modeIndex))
@@ -312,6 +319,15 @@ namespace Ultraviolet.SDL2.Platform
             return new Vector2(x, y);
         }
 
+        /// <summary>
+        /// Updates the display's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+
+        }
+
         /// <inheritdoc/>
         public Int32 Index
         {
@@ -403,6 +419,25 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <summary>
+        /// Instructs the display to re-query its density information.
+        /// </summary>
+        internal void RefreshDensityInformation()
+        {
+            var oldDensityBucket = screenDensityService.DensityBucket;
+            var oldDensityScale = screenDensityService.DensityScale;
+            var oldDensityX = screenDensityService.DensityX;
+            var oldDensityY = screenDensityService.DensityY;
+            var oldDeviceScale = screenDensityService.DeviceScale;
+
+            if (screenDensityService.Refresh())
+            {
+                var messageData = uv.Messages.CreateMessageData<DisplayDensityChangedMessageData>();
+                messageData.Display = this;
+                uv.Messages.Publish(UltravioletMessages.DisplayDensityChanged, messageData);
+            }
+        }
+
+        /// <summary>
         /// Creates an Ultraviolet DisplayMode object from the specified SDL2 display mode.
         /// </summary>
         private DisplayMode CreateDisplayModeFromSDL(SDL_DisplayMode mode)
@@ -426,6 +461,7 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         // SDL2 display info.
+        private readonly UltravioletContext uv;
         private readonly Int32 displayIndex;
         private readonly String name;
         private readonly List<DisplayMode> displayModes;

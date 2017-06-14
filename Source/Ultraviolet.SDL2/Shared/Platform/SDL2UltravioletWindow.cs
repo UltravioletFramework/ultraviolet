@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Graphics;
+using Ultraviolet.Messages;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Native;
@@ -41,6 +42,7 @@ namespace Ultraviolet.SDL2.Platform
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
             this.opengl = (flags & SDL_WindowFlags.OPENGL) == SDL_WindowFlags.OPENGL;
+            this.scale = Display?.DensityScale ?? 1f;
 
             ChangeCompositor(DefaultCompositor.Create(this));
         }
@@ -311,6 +313,20 @@ namespace Ultraviolet.SDL2.Platform
             var y = display.Bounds.Center.Y - (ClientSize.Height / 2);
 
             Position = new Point2(x, y);
+        }
+
+        /// <summary>
+        /// Updates the window's state.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+            // On Windows we check for WM_DPICHANGED, so we don't need to handle DPI changes here.
+            if (Ultraviolet.Platform != UltravioletPlatform.Windows)
+            {
+                if (Display.DensityScale != scale)
+                    HandleDpiChanged();
+            }
         }
 
         /// <summary>
@@ -799,15 +815,24 @@ namespace Ultraviolet.SDL2.Platform
         /// <param name="sysinfo">The current system information.</param>
         private void FixPlatformSpecificIssues_Windows(ref SDL_SysWMinfo sysinfo)
         {
+            var windowHWnd = sysinfo.info.win.window;
+
             // NOTE: This fix prevents Windows from playing the "ding" sound when
             // a key binding involving the Alt modifier is pressed.
             wndProc = new Win32Native.WndProcDelegate((hWnd, msg, wParam, lParam) =>
             {
                 const Int32 WM_SYSCOMMAND = 0x0112;
+                const Int32 WM_DPICHANGED = 0x02E0;
                 const Int32 SC_KEYMENU = 0xF100;
                 if (msg == WM_SYSCOMMAND && (wParam.ToInt64() & 0xfff0) == SC_KEYMENU)
                 {
                     return IntPtr.Zero;
+                }
+                if (msg == WM_DPICHANGED && hWnd == windowHWnd)
+                {
+                    // NOTE: This one isn't actually a "fix," it just lets us detect if the user
+                    // decides to change a display's DPI on Windows.
+                    HandleDpiChanged();
                 }
                 return Win32Native.CallWindowProc(wndProcPrev, hWnd, msg, wParam, lParam);
             });
@@ -936,6 +961,29 @@ namespace Ultraviolet.SDL2.Platform
         /// </summary>
         private void OnRestored() =>
             Restored?.Invoke(this);
+
+        /// <summary>
+        /// Called when the window's DPI changes.
+        /// </summary>
+        private void HandleDpiChanged()
+        {
+            // Inform our display that it needs to re-query DPI information.
+            ((SDL2UltravioletDisplay)Display)?.RefreshDensityInformation();
+
+            // On Windows, resize the window to match the new scale.
+            if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.SupportsHighDensityDisplayModes)
+            {
+                var factor = Display.DensityScale / scale;
+                var wcs = WindowedClientSize;
+                WindowedClientSize = new Size2((Int32)(wcs.Width * factor), (Int32)(wcs.Height * factor));
+            }
+            scale = Display.DensityScale;
+
+            // Inform the rest of the system that this window's DPI has changed.
+            var messageData = Ultraviolet.Messages.CreateMessageData<WindowDensityChangedMessageData>();
+            messageData.Window = this;
+            Ultraviolet.Messages.Publish(UltravioletMessages.WindowDensityChanged, messageData);
+        }
 
         /// <summary>
         /// Updates the window's windowed position, if it is currently in the correct mode and state.
@@ -1078,6 +1126,7 @@ namespace Ultraviolet.SDL2.Platform
         private Boolean focused;
         private Boolean minimized;
         private Boolean opengl;
+        private Single scale;
 
         // HACK: Cached style from before entering fullscreen windowed mode.
         private IntPtr win32CachedStyle;

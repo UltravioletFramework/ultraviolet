@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Ultraviolet.Core;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
 
@@ -15,11 +16,24 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Initializes a new instance of the OpenGLUltravioletDisplayInfo class.
         /// </summary>
-        public SDL2UltravioletDisplayInfo()
+        /// <param name="uv">The Ultraviolet context.</param>
+        public SDL2UltravioletDisplayInfo(UltravioletContext uv)
         {
+            Contract.Require(uv, nameof(uv));
+
             this.displays = Enumerable.Range(0, SDL.GetNumVideoDisplays())
-                .Select(x => new SDL2UltravioletDisplay(x))
+                .Select(x => new SDL2UltravioletDisplay(uv, x))
                 .ToList<IUltravioletDisplay>();
+        }
+
+        /// <summary>
+        /// Updates the state of the application's displays.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
+        public void Update(UltravioletTime time)
+        {
+            foreach (var display in displays)
+                ((SDL2UltravioletDisplay)display).Update(time);
         }
 
         /// <inheritdoc/>

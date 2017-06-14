@@ -24,13 +24,16 @@ namespace Ultraviolet.SDL2
             this.clipboard = ClipboardService.Create();
             this.messageBoxService = MessageBoxService.Create();
             this.windows = new SDL2UltravioletWindowInfoOpenGL(uv, uvconfig, sdlconfig);
-            this.displays = new SDL2UltravioletDisplayInfo();
+            this.displays = new SDL2UltravioletDisplayInfo(uv);
         }
 
         /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            this.displays.Update(time);
+            this.windows.Update(time);
 
             OnUpdating(time);
         }
