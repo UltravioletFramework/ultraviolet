@@ -19,6 +19,8 @@ namespace Ultraviolet.UI
         {
             Contract.Require(uv, nameof(uv));
 
+            this.uv = uv;
+
             var windows = uv.GetPlatform().Windows;
 
             foreach (var window in windows)
@@ -26,7 +28,7 @@ namespace Ultraviolet.UI
                 CreateScreenStack(window);
             }
 
-            windows.WindowCreated   += WindowInfo_WindowCreated;
+            windows.WindowCreated += WindowInfo_WindowCreated;
             windows.WindowDestroyed += WindowInfo_WindowDestroyed;
 
             this.spriteBatch = SpriteBatch.Create();
@@ -94,9 +96,11 @@ namespace Ultraviolet.UI
         /// <param name="window">The window being created.</param>
         private void CreateScreenStack(IUltravioletWindow window)
         {
-            var stack = new UIScreenStack(window);
+            var stack = new UIScreenStack(uv, window);
+
             AddInternal(stack);
             screenStacks.Add(window, stack);
+
             window.DrawingUI += Window_DrawingUI;
         }
 
@@ -106,8 +110,11 @@ namespace Ultraviolet.UI
         /// <param name="window">The window being destroyed.</param>
         private void DestroyScreenStack(IUltravioletWindow window)
         {
-            window.DrawingUI -= Window_DrawingUI;
             var stack = screenStacks[window];
+            stack.Dispose();
+
+            window.DrawingUI -= Window_DrawingUI;
+
             screenStacks.Remove(window);
             RemoveInternal(stack);
         }
@@ -120,12 +127,17 @@ namespace Ultraviolet.UI
         {
             if (disposing && !disposed)
             {
+                foreach (var kvp in screenStacks)
+                    kvp.Value.Dispose();
+
                 SafeDispose.Dispose(spriteBatch);
             }
+
             disposed = true;
         }
 
         // The sprite batch with which screens are drawn.
+        private readonly UltravioletContext uv;
         private readonly SpriteBatch spriteBatch;
         private Boolean disposed;
 

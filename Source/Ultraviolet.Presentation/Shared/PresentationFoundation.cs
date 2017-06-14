@@ -11,6 +11,7 @@ using Ultraviolet.Presentation.Animations;
 using Ultraviolet.Presentation.Controls;
 using Ultraviolet.Presentation.Input;
 using Ultraviolet.Presentation.Styles;
+using Ultraviolet.Presentation.Media;
 
 namespace Ultraviolet.Presentation
 {
@@ -704,6 +705,58 @@ namespace Ultraviolet.Presentation
             StyleQueue.Remove(element);
             MeasureQueue.Remove(element);
             ArrangeQueue.Remove(element);
+        }
+
+        /// <summary>
+        /// Removes all elements associated with the specified view from the Foundation's processing queues.
+        /// </summary>
+        /// <param name="view">The view to remove from the queues.</param>
+        internal void RemoveFromQueues(PresentationFoundationView view)
+        {
+            Contract.Require(view, nameof(view));
+
+            StyleQueue.Remove(view);
+            MeasureQueue.Remove(view);
+            ArrangeQueue.Remove(view);
+        }
+
+        /// <summary>
+        /// Enqueues any elements within the specified view that have invalid measure, arrange, or styles, but
+        /// were previously removed from the queues as a result of being orphaned by a destroyed window.
+        /// </summary>
+        /// <param name="view">The view to restore.</param>
+        internal void RestoreToQueues(PresentationFoundationView view)
+        {
+            Contract.Require(view, nameof(view));
+
+            RestoreToQueues(view.LayoutRoot);
+        }
+
+        /// <summary>
+        /// Enqueues any elements within the specified tree that have invalid measure, arrange, or styles, but
+        /// were previously removed from the queues as a result of being orphaned by a destroyed window.
+        /// </summary>
+        /// <param name="root">The root of the tree to restore.</param>
+        internal void RestoreToQueues(DependencyObject root)
+        {
+            Contract.Require(root, nameof(root));
+
+            if (root is UIElement uiElement)
+            {
+                if (!uiElement.IsMeasureValid)
+                    MeasureQueue.Enqueue(uiElement);
+
+                if (!uiElement.IsArrangeValid)
+                    ArrangeQueue.Enqueue(uiElement);
+
+                if (!uiElement.IsStyleValid)
+                    StyleQueue.Enqueue(uiElement);
+            }
+
+            VisualTreeHelper.ForEachChild(root, this, (child, state) =>
+            {
+                ((PresentationFoundation)state).RestoreToQueues(child);
+            });
         }
 
         /// <summary>

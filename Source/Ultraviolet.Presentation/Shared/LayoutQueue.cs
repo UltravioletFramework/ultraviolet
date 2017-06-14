@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Presentation.Media;
 
@@ -20,7 +21,7 @@ namespace Ultraviolet.Presentation
             Contract.Require(invalidate, nameof(invalidate));
 
             this.invalidate = invalidate;
-            this.bubble     = bubble;
+            this.bubble = bubble;
         }
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace Ultraviolet.Presentation
             Contract.Require(element, nameof(element));
 
             var current = element;
-            var parent  = element;
+            var parent = element;
 
             while (current != null)
             {
@@ -73,6 +74,19 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Removes all elements associated with the specified view from the queue.
+        /// </summary>
+        /// <param name="view">The view to remove from the queue.</param>
+        public void Remove(PresentationFoundationView view)
+        {
+            Contract.Require(view, nameof(view));
+
+            var keys = queue.Keys.Where(x => x.Element?.View == view).ToList();
+            foreach (var key in keys)
+                queue.Remove(key);
+        }
+
+        /// <summary>
         /// Removes an element from the end of the queue.
         /// </summary>
         /// <returns>The element that was removed from the queue.</returns>
@@ -107,7 +121,7 @@ namespace Ultraviolet.Presentation
         private readonly Boolean bubble;
 
         // The sorted list which represents our queue's storage.
-        private readonly SortedList<Entry, UIElement> queue = 
+        private readonly SortedList<Entry, UIElement> queue =
             new SortedList<Entry, UIElement>(32, new EntryComparer());
     }
 }

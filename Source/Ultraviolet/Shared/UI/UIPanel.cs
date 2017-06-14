@@ -331,6 +331,7 @@ namespace Ultraviolet.UI
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 this.window = value;
+                UpdateViewPosition(force: true);
             }
         }
 
@@ -562,11 +563,12 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Updates the position of the panel's view.
         /// </summary>
-        protected void UpdateViewPosition()
+        /// <param name="force">A value indicating whether to force the update, even if the panel is closed.</param>
+        protected void UpdateViewPosition(Boolean force = false)
         {
             FinishLoadingView();
 
-            if (view != null && State != UIPanelState.Closed)
+            if (view != null && (force || State != UIPanelState.Closed))
             {
                 var area = new Rectangle(X, Y, Width, Height);
                 view.SetViewPosition(Window, area);
@@ -625,7 +627,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                return !(window?.Disposed ?? true) && window == Ultraviolet.GetPlatform().Windows.GetPrimary();
+                return window == Ultraviolet.GetPlatform().Windows.GetPrimary();
             }
         }
 
@@ -636,7 +638,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                return !(window?.Disposed ?? true) && window == Ultraviolet.GetPlatform().Windows.GetCurrent();
+                return window == Ultraviolet.GetPlatform().Windows.GetCurrent();
             }
         }
 
@@ -676,10 +678,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                if (window?.Disposed ?? true)
-                    return Size2.Zero;
-
-                return window.Compositor.Size;
+                return window?.Compositor.Size ?? Size2.Zero;
             }
         }
 
@@ -690,10 +689,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                if (window?.Disposed ?? true)
-                    return 0;
-
-                return window.Compositor.Width;
+                return window?.Compositor.Width ?? 0;
             }
         }
 
@@ -704,10 +700,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                if (window?.Disposed ?? true)
-                    return 0;
-
-                return window.Compositor.Height;
+                return window?.Compositor.Height ?? 0;
             }
         }
 
@@ -718,10 +711,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                if (window?.Disposed ?? true)
-                    return null;
-
-                return Ultraviolet.GetUI().GetScreens(window);
+                return window == null ? null : Ultraviolet.GetUI().GetScreens(window);
             }
         }
 

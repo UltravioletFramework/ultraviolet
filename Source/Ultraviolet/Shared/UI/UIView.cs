@@ -113,13 +113,17 @@ namespace Ultraviolet.UI
         /// <param name="area">The area on the window in which to position the view.</param>
         public virtual void SetViewPosition(IUltravioletWindow window, Rectangle area)
         {
-            Contract.Require(window, nameof(window));
+            var oldWindow = this.window;
 
+            var viewWindowChanged = (this.window != window);
             var viewPositionChanged = (this.area.X != area.X || this.area.Y != area.Y);
             var viewSizeChanged = (this.area.Width != area.Width || this.area.Height != area.Height);
 
             this.window = window;
             this.area = area;
+
+            if (viewWindowChanged)
+                OnViewWindowChanged(oldWindow, window);
 
             if (viewPositionChanged)
                 OnViewPositionChanged();
@@ -437,6 +441,16 @@ namespace Ultraviolet.UI
         /// Called when the view's content managers are changed.
         /// </summary>
         protected virtual void OnContentManagersChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Called when the view is moved to a new window.
+        /// </summary>
+        /// <param name="oldWindow">The window that previously contained the view.</param>
+        /// <param name="newWindow">The window that currently contains the view.</param>
+        protected virtual void OnViewWindowChanged(IUltravioletWindow oldWindow, IUltravioletWindow newWindow)
         {
 
         }

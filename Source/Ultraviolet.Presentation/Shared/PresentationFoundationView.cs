@@ -1058,7 +1058,8 @@ namespace Ultraviolet.Presentation
         /// <inheritdoc/>
         protected override void OnClosed()
         {
-            RaiseViewLifecycleEvent(layoutRoot, View.ClosedEvent);
+            if (viewIsOpen)
+                RaiseViewLifecycleEvent(layoutRoot, View.ClosedEvent);
 
             Cleanup();
             layoutRoot.Cleanup();
@@ -1071,6 +1072,8 @@ namespace Ultraviolet.Presentation
         {
             if (disposing && !Ultraviolet.Disposed)
             {
+                OnClosed();
+
                 UnhookGlobalStyleSheetChanged();
                 UnhookKeyboardEvents();
                 UnhookMouseEvents();
@@ -1085,6 +1088,8 @@ namespace Ultraviolet.Presentation
 
                 defaultButtons.Clear();
                 cancelButtons.Clear();
+
+                PresentationFoundation.Instance.RemoveFromQueues(this);
             }
             base.Dispose(disposing);
         }
@@ -1096,6 +1101,23 @@ namespace Ultraviolet.Presentation
             layoutRoot.ReloadContent(true);
 
             base.OnContentManagersChanged();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnViewWindowChanged(IUltravioletWindow oldWindow, IUltravioletWindow newWindow)
+        {
+            if (newWindow == null)
+            {
+                PresentationFoundation.Instance.RemoveFromQueues(this);
+            }
+            else
+            {
+                if (oldWindow == null)
+                {
+                    PresentationFoundation.Instance.RestoreToQueues(this);
+                }
+            }
+            base.OnViewWindowChanged(oldWindow, newWindow);
         }
 
         /// <inheritdoc/>

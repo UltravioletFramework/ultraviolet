@@ -13,7 +13,7 @@ namespace Ultraviolet.UI
     /// <summary>
     /// Represents a window's stack of active screens.
     /// </summary>
-    public sealed partial class UIScreenStack : IEnumerable<UIScreen>
+    public sealed partial class UIScreenStack : UltravioletResource, IEnumerable<UIScreen>
     {
         /// <summary>
         /// Represents a screen that is waiting for another screen to close before being opened.
@@ -34,8 +34,10 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="UIScreenStack"/> class.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="window">The window that owns the screen stack.</param>
-        internal UIScreenStack(IUltravioletWindow window)
+        internal UIScreenStack(UltravioletContext uv, IUltravioletWindow window)
+            : base(uv)
         {
             this.window = window;
         }
@@ -129,6 +131,9 @@ namespace Ultraviolet.UI
             if (screens.Contains(screen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
 
+            if (screen.Window != null)
+                throw new ArgumentException(UltravioletStrings.ScreenOpenInAnotherStack);
+
             screens.AddLast(screen);
             screen.Window = window;
             screen.Close(TimeSpan.Zero);
@@ -148,6 +153,9 @@ namespace Ultraviolet.UI
 
             if (screens.Contains(screen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
+
+            if (screen.Window != null)
+                throw new ArgumentException(UltravioletStrings.ScreenOpenInAnotherStack);
 
             screens.AddLast(screen);
             screen.Window = window;
@@ -170,6 +178,9 @@ namespace Ultraviolet.UI
 
             if (screens.Contains(screenToOpen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
+
+            if (screenToOpen.Window != null)
+                throw new ArgumentException(UltravioletStrings.ScreenOpenInAnotherStack);
 
             var node = screens.Find(screenAbove);
             if (node == null)
@@ -198,6 +209,9 @@ namespace Ultraviolet.UI
             if (screens.Contains(screenToOpen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
 
+            if (screenToOpen.Window != null)
+                throw new ArgumentException(UltravioletStrings.ScreenOpenInAnotherStack);
+
             var node = screens.Find(screenAbove);
             if (node == null)
                 throw new ArgumentException(UltravioletStrings.ScreenNotInStack);
@@ -223,6 +237,9 @@ namespace Ultraviolet.UI
 
             if (screens.Contains(screenToOpen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
+
+            if (screenToOpen.Window != null)
+                throw new ArgumentException(UltravioletStrings.ScreenOpenInAnotherStack);
 
             var node = screens.Find(screenBelow);
             if (node == null)
@@ -250,6 +267,9 @@ namespace Ultraviolet.UI
 
             if (screens.Contains(screenToOpen))
                 throw new ArgumentException(UltravioletStrings.ScreenAlreadyInStack);
+
+            if (screenToOpen.Window != null)
+                throw new ArgumentException(UltravioletStrings.ScreenOpenInAnotherStack);
 
             var node = screens.Find(screenBelow);
             if (node == null)
@@ -461,33 +481,6 @@ namespace Ultraviolet.UI
         }
 
         /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>An enumerator for the collection.</returns>
-        IEnumerator<UIScreen> IEnumerable<UIScreen>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>An enumerator for the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>An enumerator for the collection.</returns>
-        public LinkedList<UIScreen>.Enumerator GetEnumerator()
-        {
-            return screens.GetEnumerator();
-        }
-
-        /// <summary>
         /// Gets the window that owns the screen stack.
         /// </summary>
         public IUltravioletWindow Window
@@ -501,6 +494,21 @@ namespace Ultraviolet.UI
         public Int32 Count
         {
             get { return screens.Count; }
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                foreach (var screen in screens)
+                {
+                    screen.Close(TimeSpan.Zero);
+                    screen.Window = null;
+                }
+                screens.Clear();
+            }
+            base.Dispose(disposing);
         }
 
         /// <summary>

@@ -410,6 +410,11 @@
       <Variant>Asset paths cannot use directory traversal operators to escape the content root directory.</Variant>
     </en-US>
   </String>
+  <String Key="SCREEN_OPEN_IN_ANOTHER_STACK">
+    <en-US>
+      <Variant>The specified screen is already open in another stack.</Variant>
+    </en-US>
+  </String>
   <String Key="SCREEN_ALREADY_IN_STACK">
     <en-US>
       <Variant>The specified screen is already on the stack.</Variant>

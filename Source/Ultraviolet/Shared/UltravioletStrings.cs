@@ -108,6 +108,7 @@ namespace Ultraviolet
         public static readonly StringResource InvalidCurveData                     = new StringResource(StringDatabase, "INVALID_CURVE_DATA");
         public static readonly StringResource AssetPathMustBeRelative              = new StringResource(StringDatabase, "ASSET_PATH_MUST_BE_RELATIVE");
         public static readonly StringResource AssetPathCannotTraverseDirectories   = new StringResource(StringDatabase, "ASSET_PATH_CANNOT_TRAVERSE_DIRECTORIES");
+        public static readonly StringResource ScreenOpenInAnotherStack             = new StringResource(StringDatabase, "SCREEN_OPEN_IN_ANOTHER_STACK");
         public static readonly StringResource ScreenAlreadyInStack                 = new StringResource(StringDatabase, "SCREEN_ALREADY_IN_STACK");
         public static readonly StringResource ScreenNotInStack                     = new StringResource(StringDatabase, "SCREEN_NOT_IN_STACK");
         public static readonly StringResource InvalidWindow                        = new StringResource(StringDatabase, "INVALID_WINDOW");
