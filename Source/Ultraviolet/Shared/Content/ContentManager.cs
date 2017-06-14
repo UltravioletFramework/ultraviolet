@@ -136,7 +136,7 @@ namespace Ultraviolet.Content
                 var preserve = (flags & AssetFlags.PreserveThroughLowMemory) == AssetFlags.PreserveThroughLowMemory;
                 if (preserve && lowMemory)
                     return;
-                
+
                 assetCache.Remove(asset);
                 ClearAssetDependencies(asset);
             }
@@ -249,7 +249,7 @@ namespace Ultraviolet.Content
             lock (cacheSyncObject)
                 return assetFlags.TryGetValue(AssetID.GetAssetPath(asset), out flags);
         }
-        
+
         /// <summary>
         /// Adds a watcher for the specified asset.
         /// </summary>
@@ -262,29 +262,10 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lock (cacheSyncObject)
-            {
-                if (CreateFileSystemWatchers())
-                {
-                    if (assetWatchers == null)
-                        assetWatchers = new Dictionary<String, IAssetWatcherCollection>();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-                    var assetPath = asset;
-                    var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, true));
-
-                    if (!assetWatchers.TryGetValue(assetFilePath, out var list))
-                    {
-                        list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
-                        assetWatchers[assetFilePath] = list;
-                    }
-
-                    list.Add(watcher);
-                    
-                    return true;
-                }
-            }
-
-            return false;
+            return AddWatcherInternal(asset, primaryDisplayDensityBucket, watcher);
         }
 
         /// <summary>
@@ -298,7 +279,41 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return AddWatcher(AssetID.GetAssetPath(asset), watcher);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return AddWatcherInternal(AssetID.GetAssetPath(asset), primaryDisplayDensityBucket, watcher);
+        }
+
+        /// <summary>
+        /// Adds a watcher for the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the asset for which to add a watcher.</param>
+        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
+        /// <param name="watcher">The watcher to add for the specified asset.</param>
+        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
+        public Boolean AddWatcher<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return AddWatcherInternal(asset, density, watcher);
+        }
+
+        /// <summary>
+        /// Adds a watcher for the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to add a watcher.</param>
+        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
+        /// <param name="watcher">The watcher to add for the specified asset.</param>
+        /// <returns><see langword="true"/> if the watcher was added; otherwise, <see langword="false"/>.</returns>
+        public Boolean AddWatcher<TOutput>(AssetID asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return AddWatcherInternal(AssetID.GetAssetPath(asset), density, watcher);
         }
 
         /// <summary>
@@ -313,18 +328,10 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lock (cacheSyncObject)
-            {
-                if (assetWatchers == null)
-                    return false;
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-                var assetFilePath = ResolveAssetFilePath(asset, true);
-
-                if (assetWatchers.TryGetValue(asset, out var list))
-                    return list.Remove(watcher);
-
-                return false;
-            }
+            return RemoveWatcherInternal(asset, primaryDisplayDensityBucket, watcher);
         }
 
         /// <summary>
@@ -338,9 +345,43 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return RemoveWatcher(AssetID.GetAssetPath(asset), watcher);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return RemoveWatcherInternal(AssetID.GetAssetPath(asset), primaryDisplayDensityBucket, watcher);
         }
-        
+
+        /// <summary>
+        /// Removes a watcher from the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset path of the asset for which to remove a watcher.</param>
+        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
+        /// <param name="watcher">The watcher to remove from the specified asset.</param>
+        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
+        public Boolean RemoveWatcher<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            return RemoveWatcherInternal(asset, density, watcher);
+        }
+
+        /// <summary>
+        /// Removes a watcher from the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier of the asset for which to remove a watcher.</param>
+        /// <param name="density">The density bucket corresponding to the version of the asset to watch.</param>
+        /// <param name="watcher">The watcher to remove from the specified asset.</param>
+        /// <returns><see langword="true"/> if the specified watcher was removed; otherwise, <see langword="false"/>.</returns>
+        public Boolean RemoveWatcher<TOutput>(AssetID asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            return RemoveWatcherInternal(AssetID.GetAssetPath(asset), density, watcher);
+        }
+
         /// <summary>
         /// Adds the specified dependency to an asset. If the asset is being watched for changes, then any
         /// changes to the specified dependency will also cause the main asset to be reloaded.
@@ -608,12 +649,15 @@ namespace Ultraviolet.Content
         {
             Contract.Require(manifest, nameof(manifest));
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDpi = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
             foreach (var group in manifest)
             {
                 foreach (var asset in group)
                 {
-                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, out var result);
+                    LoadInternal(asset.AbsolutePath, asset.Type, true, false, primaryDisplayDpi, out var result);
                 }
             }
         }
@@ -634,7 +678,10 @@ namespace Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (TOutput)LoadImpl(asset, typeof(TOutput), cache, fromsln);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (TOutput)LoadImpl(asset, typeof(TOutput), primaryDisplayDensity, cache, fromsln);
         }
 
         /// <summary>
@@ -652,8 +699,53 @@ namespace Ultraviolet.Content
         public TOutput Load<TOutput>(AssetID asset, Boolean cache = true, Boolean fromsln = false)
         {
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), cache, fromsln);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), primaryDisplayDensity, cache, fromsln);
+        }
+
+        /// <summary>
+        /// Loads the specified asset file.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
+        /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
+        /// <param name="asset">The path to the asset to load.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <returns>The asset that was loaded from the specified file.</returns>
+        public TOutput Load<TOutput>(String asset, ScreenDensityBucket density, Boolean cache = true, Boolean fromsln = false)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            return (TOutput)LoadImpl(asset, typeof(TOutput), density, cache, fromsln);
+        }
+
+        /// <summary>
+        /// Loads the specified asset file.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <remarks>Content managers maintain a cache of references to all loaded assets, so calling Load() multiple
+        /// times on a content manager with the same parameter will return the same object rather than reloading the source file.</remarks>
+        /// <param name="asset">The path to the asset to load.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="cache">A value indicating whether to add the asset to the manager's cache.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <returns>The asset that was loaded from the specified file.</returns>
+        public TOutput Load<TOutput>(AssetID asset, ScreenDensityBucket density, Boolean cache = true, Boolean fromsln = false)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), density, cache, fromsln);
         }
 
         /// <summary>
@@ -680,7 +772,13 @@ namespace Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(params String[] paths)
         {
-            return Import<TOutput>(Path.Combine(paths));
+            Contract.Require(paths, nameof(paths));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (TOutput)ImportInternal(Path.Combine(paths), primaryDisplayDensity, false, out var outputType);
         }
 
         /// <summary>
@@ -694,7 +792,13 @@ namespace Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(String asset, Boolean fromsln = false)
         {
-            return Import<TOutput>(asset, fromsln, out var outputType);
+            Contract.Require(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, out var outputType);
         }
 
         /// <summary>
@@ -706,7 +810,13 @@ namespace Ultraviolet.Content
         /// <returns>The imported asset in its intermediate form.</returns>
         public TOutput Import<TOutput>(String asset, out Type outputType)
         {
-            return Import<TOutput>(asset, false, out outputType);
+            Contract.Require(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (TOutput)ImportInternal(asset, primaryDisplayDensity, false, out outputType);
         }
 
         /// <summary>
@@ -724,13 +834,63 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var metadata = GetAssetMetadata(asset, false, true, fromsln);
-            var importer = FindContentImporter(metadata.AssetFilePath, out outputType);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-            using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
-            {
-                return (TOutput)importer.Import(metadata, stream);
-            }
+            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, out outputType);
+        }
+
+        /// <summary>
+        /// Imports the specified asset, but does not process it.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <returns>The imported asset in its intermediate form.</returns>
+        public TOutput Import<TOutput>(String asset, ScreenDensityBucket density, Boolean fromsln = false)
+        {
+            Contract.RequireNotEmpty(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return (TOutput)ImportInternal(asset, density, false, out var outputType);
+        }
+
+        /// <summary>
+        /// Imports the specified asset, but does not process it.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="outputType">The output type of the content importer which was used.</param>
+        /// <returns>The imported asset in its intermediate form.</returns>
+        public TOutput Import<TOutput>(String asset, ScreenDensityBucket density, out Type outputType)
+        {
+            Contract.RequireNotEmpty(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return (TOutput)ImportInternal(asset, density, false, out outputType);
+        }
+
+        /// <summary>
+        /// Imports the specified asset, but does not process it.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="asset">The path to the asset to import.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <param name="outputType">The output type of the content importer which was used.</param>
+        /// <returns>The imported asset in its intermediate form.</returns>
+        public TOutput Import<TOutput>(String asset, ScreenDensityBucket density, Boolean fromsln, out Type outputType)
+        {
+            Contract.RequireNotEmpty(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return (TOutput)ImportInternal(asset, density, fromsln, out outputType);
         }
 
         /// <summary>
@@ -950,6 +1110,50 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Resolves the full path to the file that represents the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset path for which to resolve a file path.</param>
+        /// <param name="density">The density bucket corresponding to the file to retrieve.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <returns>The full path to the file that represents the specified asset.</returns>
+        public String ResolveAssetFilePath(String asset, ScreenDensityBucket density, Boolean fromsln = false)
+        {
+            Contract.RequireNotEmpty(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var metadata = GetAssetMetadata(NormalizeAssetPath(asset), density, true, false, fromsln);
+            if (metadata == null)
+                throw new FileNotFoundException(asset);
+
+            return fileSystemService.GetFullPath(metadata.AssetFilePath);
+        }
+
+        /// <summary>
+        /// Resolves the full path to the file that represents the specified asset.
+        /// </summary>
+        /// <param name="asset">The asset identifier for which to resolve a file path.</param>
+        /// <param name="density">The density bucket corresponding to the file to retrieve.</param>
+        /// <param name="fromsln">A value indicating whether asset resolution should search the Visual Studio solution
+        /// directory, rather than the directory containing the application binaries. This is useful primarily for reloading
+        /// assets while the application is being debugged, and should mostly be avoided unless you know what you're doing.</param>
+        /// <returns>The full path to the file that represents the specified asset.</returns>
+        public String ResolveAssetFilePath(AssetID asset, ScreenDensityBucket density, Boolean fromsln = false)
+        {
+            Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var assetPath = AssetID.GetAssetPath(asset);
+
+            var metadata = GetAssetMetadata(NormalizeAssetPath(assetPath), density, true, false, fromsln);
+            if (metadata == null)
+                throw new FileNotFoundException(assetPath);
+
+            return fileSystemService.GetFullPath(metadata.AssetFilePath);
+        }
+
+        /// <summary>
         /// Gets a list of assets in the specified asset directory.
         /// </summary>
         /// <param name="path">The directory to evaluate.</param>
@@ -1113,30 +1317,34 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Implements the <see cref="Load"/> method.
         /// </summary>
-        internal Object LoadImpl(String asset, Type type, Boolean cache, Boolean fromsln)
+        internal Object LoadImpl(String asset, Type type, ScreenDensityBucket density, Boolean cache, Boolean fromsln)
         {
-            return LoadImpl(asset, type, cache, fromsln, null, null);
+            return LoadImpl(asset, type, density, cache, fromsln, null, null);
         }
         
         /// <summary>
         /// Implements the <see cref="Load"/> method.
         /// </summary>
-        internal Object LoadImpl(String asset, Type type, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood)
+        internal Object LoadImpl(String asset, Type type, ScreenDensityBucket density, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood)
         {
             var cachedInstanceEntry = default(AssetCacheEntry);
             var cacheMiss = false;
 
             lock (cacheSyncObject)
                 cacheMiss = !assetCache.TryGetValue(asset, out cachedInstanceEntry);
-
+            
             if (cacheMiss)
             {
-                LoadInternal(asset, type, cache, fromsln, watchers, lastKnownGood, out var result);
+                LoadInternal(asset, type, cache, fromsln, density, watchers, lastKnownGood, out var result);
                 return result;
             }
             else
             {
-                return cachedInstanceEntry.Asset;
+                if (cachedInstanceEntry.GetVersion(density, out var instance))
+                    return instance;
+                
+                LoadInternal(asset, type, cache, fromsln, density, watchers, lastKnownGood, out var result);
+                return result;
             }
         }
         
@@ -1158,16 +1366,14 @@ namespace Ultraviolet.Content
 
             assetWatchers?.TryGetValue(fullPath, out assetWatchersForFile);
             assetDependencies?.TryGetValue(fullPath, out assetDependenciesForFile);
-
+            
             // Reload the file if it already exists in our cache
             var assetPath = assetWatchersForFile?.AssetPath ?? assetDependenciesForFile?.AssetPath;
             if (assetPath != null && assetCache.TryGetValue(assetPath, out var assetEntry))
             {
                 Ultraviolet.QueueWorkItem(() =>
                 {
-                    var assetLKG = LoadImpl(assetPath, assetEntry.AssetType, true, true, assetWatchersForFile, null);
-                    PurgeCache(assetPath, false);
-                    LoadImpl(assetPath, assetEntry.AssetType, true, true, assetWatchersForFile, assetLKG);
+                    assetEntry.Reload(this, assetPath, assetWatchersForFile);
                 });
             }
 
@@ -1198,10 +1404,7 @@ namespace Ultraviolet.Content
                 lock (cacheSyncObject)
                 {
                     foreach (var instance in assetCache)
-                    {
-                        var disposable = instance.Value.Asset as IDisposable;
-                        disposable?.Dispose();
-                    }
+                        instance.Value.Dispose();
 
                     assetCache.Clear();
                     assetFlags.Clear();
@@ -1227,11 +1430,7 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Lists the assets which can serve as substitutions for the specified asset.
         /// </summary>
-        /// <param name="rootdir">The root directory from which content is being loaded.</param>
-        /// <param name="path">The file path of the asset for which to list substitutions.</param>
-        /// <param name="maxDensityBucket">The maximum density bucket to consider.</param>
-        /// <returns>A collection containing the specified asset's possible substitution assets.</returns>
-        private IEnumerable<String> ListPossibleSubstitutions(String rootdir, String path, ScreenDensityBucket maxDensityBucket)
+        private IEnumerable<String> ListPossibleSubstitutions(String rootdir, String path, ScreenDensityBucket minDensityBucket, ScreenDensityBucket maxDensityBucket)
         {
             var directory = Path.GetDirectoryName(path) ?? String.Empty;
             var filename = Path.GetFileNameWithoutExtension(path);
@@ -1239,7 +1438,7 @@ namespace Ultraviolet.Content
 
             var substitutions =
                 from bucket in ScreenDensityBuckets.OrderByDescending(x => x)
-                where bucket <= maxDensityBucket
+                where bucket >= minDensityBucket && bucket <= maxDensityBucket
                 let bucketname = ScreenDensityService.GetDensityBucketName(bucket)
                 let bucketfile = String.Format("{0}-{1}{2}", filename, bucketname, extension)
                 let bucketpath = Path.Combine(directory, bucketfile)
@@ -1316,23 +1515,76 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Adds a watcher for the specified asset.
+        /// </summary>
+        private Boolean AddWatcherInternal<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
+        {
+            lock (cacheSyncObject)
+            {
+                if (CreateFileSystemWatchers())
+                {
+                    if (assetWatchers == null)
+                        assetWatchers = new Dictionary<String, IAssetWatcherCollection>();
+
+                    var assetPath = asset;
+                    var assetFilePath = Path.GetFullPath(ResolveAssetFilePath(assetPath, density, true));
+
+                    if (!assetWatchers.TryGetValue(assetFilePath, out var list))
+                    {
+                        list = new AssetWatcherCollection<TOutput>(this, assetPath, assetFilePath);
+                        assetWatchers[assetFilePath] = list;
+                    }
+
+                    list.Add(watcher);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes a watcher from the specified asset.
+        /// </summary>
+        private Boolean RemoveWatcherInternal<TOutput>(String asset, ScreenDensityBucket density, AssetWatcher<TOutput> watcher)
+        {
+            Contract.Require(asset, nameof(asset));
+            Contract.Require(watcher, nameof(watcher));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            lock (cacheSyncObject)
+            {
+                if (assetWatchers == null)
+                    return false;
+
+                var assetFilePath = ResolveAssetFilePath(asset, density, true);
+
+                if (assetWatchers.TryGetValue(asset, out var list))
+                    return list.Remove(watcher);
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Loads the specified content file.
         /// </summary>
-        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, out Object result)
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, ScreenDensityBucket density, out Object result)
         {
-            return LoadInternal(asset, type, cache, fromsln, null, null, out result);
+            return LoadInternal(asset, type, cache, fromsln, density, null, null, out result);
         }
         
         /// <summary>
         /// Loads the specified content file.
         /// </summary>
-        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, IAssetWatcherCollection watchers, Object lastKnownGood, out Object result)
+        private Boolean LoadInternal(String asset, Type type, Boolean cache, Boolean fromsln, ScreenDensityBucket density, IAssetWatcherCollection watchers, Object lastKnownGood, out Object result)
         {
             result = null;
 
             var normalizedAsset = NormalizeAssetPath(asset);
 
-            var metadata = GetAssetMetadata(normalizedAsset, true, true, fromsln);
+            var metadata = GetAssetMetadata(normalizedAsset, density, true, true, fromsln);
             var preprocessed = IsPreprocessedFile(metadata.AssetFilePath);
             var importer = default(IContentImporter);
             var processor = default(IContentProcessor);
@@ -1360,7 +1612,7 @@ namespace Ultraviolet.Content
             if (changed)
             {
                 if (cache)
-                    UpdateCache(asset, metadata, ref instance, type);
+                    UpdateCache(asset, metadata, ref instance, type, density);
 
                 if (watchers != null)
                 {
@@ -1377,7 +1629,7 @@ namespace Ultraviolet.Content
                             instance = lastKnownGood;
 
                             if (cache)
-                                UpdateCache(asset, metadata, ref instance, type);
+                                UpdateCache(asset, metadata, ref instance, type, density);
 
                             for (int j = 0; j <= i; j++)
                                 watchers[i].OnValidationComplete(asset, instance, false);
@@ -1407,6 +1659,20 @@ namespace Ultraviolet.Content
 
             result = instance;
             return true;
+        }
+
+        /// <summary>
+        /// Imports the specified asset, but does not process it.
+        /// </summary>
+        private Object ImportInternal(String asset, ScreenDensityBucket density, Boolean fromsln, out Type outputType)
+        {
+            var metadata = GetAssetMetadata(asset, density, false, true, fromsln);
+            var importer = FindContentImporter(metadata.AssetFilePath, out outputType);
+
+            using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
+            {
+                return importer.Import(metadata, stream);
+            }
         }
 
         /// <summary>
@@ -1599,7 +1865,7 @@ namespace Ultraviolet.Content
             if (IsPreprocessedFile(assetPath))
                 return true;
 
-            var substitutions = ListPossibleSubstitutions(assetDirectory, assetPath, ScreenDensityBucket.ExtraExtraExtraHigh);
+            var substitutions = ListPossibleSubstitutions(assetDirectory, assetPath, ScreenDensityBucket.Desktop, ScreenDensityBucket.ExtraExtraExtraHigh);
             foreach (var substitution in substitutions)
             {
                 if (!PreprocessInternal(substitution, type, delete, false, out result))
@@ -1787,13 +2053,19 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets the path to the specified asset.
         /// </summary>
-        /// <param name="asset">The asset name.</param>
-        /// <param name="extension">The extension for which to search, or <see langword="null"/> to search for any extension.</param>
-        /// <param name="directory">The directory in which the asset was found.</param>
-        /// <param name="overridden">A value indicating whether the asset was loaded from an override directory.</param>
-        /// <param name="flags">A collection of <see cref="AssetResolutionFlags"/> values indicating how to resolve the asset path.</param>
-        /// <returns>The path of the specified asset.</returns>
         private String GetAssetPath(String asset, String extension, out String directory, out Boolean overridden, AssetResolutionFlags flags = AssetResolutionFlags.Default)
+        {
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return GetAssetPath(asset, extension, primaryDisplayDensity, out directory, out overridden, flags);
+        }
+
+        /// <summary>
+        /// Gets the path to the specified asset.
+        /// </summary>
+        private String GetAssetPath(String asset, String extension, ScreenDensityBucket density, 
+            out String directory, out Boolean overridden, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
             var specifiedExtension = Path.GetExtension(asset);
             if (extension == null && !String.IsNullOrWhiteSpace(specifiedExtension))
@@ -1819,32 +2091,34 @@ namespace Ultraviolet.Content
             var performSubstitution = (flags & AssetResolutionFlags.PerformSubstitution) == AssetResolutionFlags.PerformSubstitution;
             if (performSubstitution && path != null && !Path.HasExtension(asset))
             {
-                var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
-                if (primaryDisplay != null)
-                {
-                    var substitution = ListPossibleSubstitutions(directory, path, primaryDisplay.DensityBucket)
-                        .Take(1).SingleOrDefault();
+                var substitution = ListPossibleSubstitutions(directory, path, ScreenDensityBucket.Desktop, density)
+                    .Take(1).SingleOrDefault();
 
-                    if (substitution != null)
-                    {
-                        flags &= ~AssetResolutionFlags.PerformSubstitution;
-                        path = GetAssetPathFromDirectory(directory, substitution, ref extension, flags);
-                    }
+                if (substitution != null)
+                {
+                    flags &= ~AssetResolutionFlags.PerformSubstitution;
+                    path = GetAssetPathFromDirectory(directory, substitution, ref extension, flags);
                 }
             }
 
             return path;
         }
+        
+        /// <summary>
+        /// Gets the metadata for the specified asset.
+        /// </summary>
+        private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata, Boolean fromsln)
+        {
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return GetAssetMetadata(asset, primaryDisplayDensity, includePreprocessedFiles, includeDetailedMetadata, fromsln);
+        }
 
         /// <summary>
         /// Gets the metadata for the specified asset.
         /// </summary>
-        /// <param name="asset">The asset for which to find metadata.</param>
-        /// <param name="includePreprocessedFiles">A value indicating whether to include preprocessed files in the search.</param>
-        /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
-        /// <param name="fromsln">A value indicating whether to attempt to load the asset from the Visual Studio solution directory.</param>
-        /// <returns>The metadata for the specified asset.</returns>
-        private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata, Boolean fromsln)
+        private AssetMetadata GetAssetMetadata(String asset, ScreenDensityBucket density, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata, Boolean fromsln)
         {
             // If we're given a full filename with extension, return that.
             var assetDirectory = String.Empty;
@@ -1852,7 +2126,7 @@ namespace Ultraviolet.Content
             var assetExtension = Path.GetExtension(asset);
             if (!String.IsNullOrEmpty(assetExtension))
             {
-                var assetPath = GetAssetPath(asset, assetExtension, out assetDirectory, out assetOverridden, AssetResolutionFlags.Default |
+                var assetPath = GetAssetPath(asset, assetExtension, density, out assetDirectory, out assetOverridden, AssetResolutionFlags.Default |
                     (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
                 if (assetPath != null)
                 {
@@ -1865,7 +2139,7 @@ namespace Ultraviolet.Content
             // Find the highest-ranking preprocessed file, if one exists.
             if (includePreprocessedFiles)
             {
-                var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, out assetDirectory, out assetOverridden, AssetResolutionFlags.Default |
+                var assetPathPreprocessed = GetAssetPath(asset, PreprocessedFileExtension, density, out assetDirectory, out assetOverridden, AssetResolutionFlags.Default |
                     (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
                 if (assetPathPreprocessed != null)
                 {
@@ -1874,7 +2148,7 @@ namespace Ultraviolet.Content
             }
 
             // Find the highest-ranking metadata file, if one exists.
-            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, out assetDirectory, out assetOverridden, AssetResolutionFlags.PerformSubstitution |
+            var assetPathMetadata = GetAssetPath(asset, MetadataFileExtensionXml, density, out assetDirectory, out assetOverridden, AssetResolutionFlags.PerformSubstitution |
                 (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
             if (assetPathMetadata != null)
             {
@@ -1882,7 +2156,7 @@ namespace Ultraviolet.Content
             }
 
             // Find the highest-ranking raw file.
-            var assetPathRaw = GetAssetPath(asset, null, out assetDirectory, out assetOverridden, AssetResolutionFlags.PerformSubstitution | 
+            var assetPathRaw = GetAssetPath(asset, null, density, out assetDirectory, out assetOverridden, AssetResolutionFlags.PerformSubstitution | 
                 (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
             if (assetPathRaw != null)
             {
@@ -2039,15 +2313,25 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Updates the content manager's internal cache with the specified object instance.
         /// </summary>
-        private void UpdateCache(String asset, AssetMetadata metadata, ref Object instance, Type type)
+        private void UpdateCache(String asset, AssetMetadata metadata, ref Object instance, Type type, ScreenDensityBucket densityBucket)
         {
             lock (cacheSyncObject)
             {
-                var entry = new AssetCacheEntry(instance, type, metadata.IsOverridden ? metadata.OverrideDirectory : null);
-                assetCache[asset] = entry;
+                var assetDensityBucket = densityBucket;
+                var assetOrigin = metadata.IsOverridden ? metadata.OverrideDirectory : null;
 
-                if (!assetFlags.ContainsKey(asset))
-                    assetFlags[asset] = AssetFlags.None;
+                if (!assetCache.TryGetValue(asset, out var assetCacheEntry))
+                {
+                    assetCacheEntry = new AssetCacheEntry(assetDensityBucket, assetOrigin, instance, type);
+                    assetCache[asset] = assetCacheEntry;
+
+                    if (!assetFlags.ContainsKey(asset))
+                        assetFlags[asset] = AssetFlags.None;
+                }
+                else
+                {
+                    assetCacheEntry.SetVersion(assetDensityBucket, assetOrigin, instance);
+                }
             }
         }
 

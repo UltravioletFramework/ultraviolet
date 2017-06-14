@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainmentType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetCacheVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetDependencyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetDependencyList.cs" />
