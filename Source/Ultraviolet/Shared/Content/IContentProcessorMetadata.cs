@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Content
 {
@@ -19,7 +20,7 @@ namespace Ultraviolet.Content
         /// <typeparam name="T">The metadata type to create.</typeparam>
         /// <returns>A new instance of the specified metadata type.</returns>
         T As<T>() where T : new();
-
+        
         /// <summary>
         /// Gets the asset path of the asset being loaded.
         /// </summary>
@@ -55,5 +56,10 @@ namespace Ultraviolet.Content
         /// rather than the binaries folder of the application.
         /// </summary>
         Boolean IsLoadedFromSolution { get; }
+        
+        /// <summary>
+        /// Gets the screen density bucket for which the asset is being loaded.
+        /// </summary>
+        ScreenDensityBucket AssetDensity { get; }
     }
 }

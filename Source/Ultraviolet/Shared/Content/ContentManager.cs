@@ -262,7 +262,7 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return AddWatcherInternal(asset, primaryDisplayDensityBucket, watcher);
@@ -279,7 +279,7 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return AddWatcherInternal(AssetID.GetAssetPath(asset), primaryDisplayDensityBucket, watcher);
@@ -328,7 +328,7 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return RemoveWatcherInternal(asset, primaryDisplayDensityBucket, watcher);
@@ -345,7 +345,7 @@ namespace Ultraviolet.Content
             Contract.Require(watcher, nameof(watcher));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensityBucket = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return RemoveWatcherInternal(AssetID.GetAssetPath(asset), primaryDisplayDensityBucket, watcher);
@@ -650,7 +650,7 @@ namespace Ultraviolet.Content
             Contract.Require(manifest, nameof(manifest));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDpi = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             foreach (var group in manifest)
@@ -678,7 +678,7 @@ namespace Ultraviolet.Content
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return (TOutput)LoadImpl(asset, typeof(TOutput), primaryDisplayDensity, cache, fromsln);
@@ -701,7 +701,7 @@ namespace Ultraviolet.Content
             Contract.Ensure<ArgumentException>(asset.IsValid, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return (TOutput)LoadImpl(AssetID.GetAssetPath(asset), typeof(TOutput), primaryDisplayDensity, cache, fromsln);
@@ -761,7 +761,27 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(extension, nameof(extension));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (TOutput)LoadInternalFromStream(typeof(TOutput), stream, extension);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay.DensityBucket;
+
+            return (TOutput)LoadInternalFromStream(typeof(TOutput), stream, extension, primaryDisplayDensity);
+        }
+
+        /// <summary>
+        /// Loads the specified asset stream.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="stream">The <see cref="Stream"/> that contains the asset to load.</param>
+        /// <param name="extension">The file extension to use to search for a content importer.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <returns>The asset that was loaded from the specified stream.</returns>
+        public TOutput LoadFromStream<TOutput>(Stream stream, String extension, ScreenDensityBucket density)
+        {
+            Contract.Require(stream, nameof(stream));
+            Contract.RequireNotEmpty(extension, nameof(extension));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return (TOutput)LoadInternalFromStream(typeof(TOutput), stream, extension, density);
         }
 
         /// <summary>
@@ -775,7 +795,7 @@ namespace Ultraviolet.Content
             Contract.Require(paths, nameof(paths));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return (TOutput)ImportInternal(Path.Combine(paths), primaryDisplayDensity, false, out var outputType);
@@ -795,7 +815,7 @@ namespace Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, out var outputType);
@@ -813,7 +833,7 @@ namespace Ultraviolet.Content
             Contract.Require(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return (TOutput)ImportInternal(asset, primaryDisplayDensity, false, out outputType);
@@ -834,7 +854,7 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, out outputType);
@@ -950,11 +970,34 @@ namespace Ultraviolet.Content
             Contract.Require(stream, nameof(stream));
             Contract.EnsureNotDisposed(this, Disposed);
 
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay.DensityBucket;
+
             var path = String.Format("__STREAM.{0}", extension);
             var importerOutputType = default(Type);
             var importer = FindContentImporter(path, out importerOutputType);
 
-            return (TOutput)importer.Import(AssetMetadata.StreamMetadata, stream);
+            return (TOutput)importer.Import(AssetMetadata.CreateStreamMetadata(primaryDisplayDensity), stream);
+        }
+
+        /// <summary>
+        /// Imports the specified asset from the specified stream, but does not process it.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the intermediate object produced by the content importer.</typeparam>
+        /// <param name="stream">The <see cref="Stream"/> that contains the asset data.</param>
+        /// <param name="extension">The file extension to use to search for a content importer.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <returns>The imported asset in its intermediate form.</returns>
+        public TOutput ImportFromStream<TOutput>(Stream stream, String extension, ScreenDensityBucket density)
+        {
+            Contract.Require(stream, nameof(stream));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            var path = String.Format("__STREAM.{0}", extension);
+            var importerOutputType = default(Type);
+            var importer = FindContentImporter(path, out importerOutputType);
+
+            return (TOutput)importer.Import(AssetMetadata.CreateStreamMetadata(density), stream);
         }
 
         /// <summary>
@@ -969,8 +1012,12 @@ namespace Ultraviolet.Content
             Contract.Require(intermediate, nameof(intermediate));
             Contract.EnsureNotDisposed(this, Disposed);
 
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay.DensityBucket;
+
             var processor = FindContentProcessor("unknown", intermediate.GetType(), typeof(TOutput));
-            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false, false, false);
+            var assetmeta = (metadata == null) ? AssetMetadata.CreateInMemoryMetadata(primaryDisplayDensity) : 
+                new AssetMetadata(null, null, null, null, metadata, false, false, false, false, primaryDisplayDensity);
             var result = processor.Process(this, assetmeta, intermediate);
 
             return (TOutput)result;
@@ -989,8 +1036,55 @@ namespace Ultraviolet.Content
             Contract.Require(intermediate, nameof(intermediate));
             Contract.EnsureNotDisposed(this, Disposed);
 
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay.DensityBucket;
+
             var processor = FindContentProcessor("unknown", typeof(TInput), typeof(TOutput));
-            var assetmeta = (metadata == null) ? AssetMetadata.InMemoryMetadata : new AssetMetadata(null, null, null, null, metadata, false, false, false, false);
+            var assetmeta = (metadata == null) ? AssetMetadata.CreateInMemoryMetadata(primaryDisplayDensity) : 
+                new AssetMetadata(null, null, null, null, metadata, false, false, false, false, primaryDisplayDensity);
+            var result = processor.Process(this, assetmeta, intermediate);
+
+            return (TOutput)result;
+        }
+
+        /// <summary>
+        /// Processes an intermediate object into an asset object.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of the asset object produced by the content processor.</typeparam>
+        /// <param name="intermediate">The intermediate object to process.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="metadata">The processor metadata, if any.</param>
+        /// <returns>The processed asset.</returns>
+        public TOutput Process<TOutput>(Object intermediate, ScreenDensityBucket density, XElement metadata = null)
+        {
+            Contract.Require(intermediate, nameof(intermediate));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            var processor = FindContentProcessor("unknown", intermediate.GetType(), typeof(TOutput));
+            var assetmeta = (metadata == null) ? AssetMetadata.CreateInMemoryMetadata(density) :
+                new AssetMetadata(null, null, null, null, metadata, false, false, false, false, density);
+            var result = processor.Process(this, assetmeta, intermediate);
+
+            return (TOutput)result;
+        }
+
+        /// <summary>
+        /// Processes an intermediate object into an asset object.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the intermediate object being processed.</typeparam>
+        /// <typeparam name="TOutput">The type of the asset object produced by the content processor.</typeparam>
+        /// <param name="intermediate">The intermediate object to process.</param>
+        /// <param name="density">The density bucket for which to load the asset.</param>
+        /// <param name="metadata">The processor metadata, if any.</param>
+        /// <returns>The processed asset.</returns>
+        public TOutput Process<TInput, TOutput>(TInput intermediate, ScreenDensityBucket density, XElement metadata = null) where TInput : class
+        {
+            Contract.Require(intermediate, nameof(intermediate));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            var processor = FindContentProcessor("unknown", typeof(TInput), typeof(TOutput));
+            var assetmeta = (metadata == null) ? AssetMetadata.CreateInMemoryMetadata(density) :
+                new AssetMetadata(null, null, null, null, metadata, false, false, false, false, density);
             var result = processor.Process(this, assetmeta, intermediate);
 
             return (TOutput)result;
@@ -1594,8 +1688,8 @@ namespace Ultraviolet.Content
             try
             {
                 instance = preprocessed ?
-                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, out importer, out processor) :
-                    LoadInternalRaw(type, normalizedAsset, metadata, out importer, out processor);
+                    LoadInternalPreprocessed(type, normalizedAsset, metadata.AssetFilePath, metadata.OverrideDirectory, density, out importer, out processor) :
+                    LoadInternalRaw(type, normalizedAsset, metadata, density, out importer, out processor);
             }
             catch (Exception e)
             {
@@ -1678,17 +1772,13 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Loads a raw asset from a stream.
         /// </summary>
-        /// <param name="type">The type of asset to load.</param>
-        /// <param name="stream">The <see cref="Stream"/> that contains the asset to load.</param>
-        /// <param name="extension">The file extension to use to search for a content importer.</param>
-        /// <returns>The asset that was loaded.</returns>
-        private Object LoadInternalFromStream(Type type, Stream stream, String extension)
+        private Object LoadInternalFromStream(Type type, Stream stream, String extension, ScreenDensityBucket density)
         {
             var filename = String.Format("__STREAM.{0}", extension);
             var importerOutputType = default(Type);
             var importer = FindContentImporter(filename, out importerOutputType);
 
-            var intermediate = importer.Import(AssetMetadata.StreamMetadata, stream);
+            var intermediate = importer.Import(AssetMetadata.CreateStreamMetadata(density, null, null), stream);
             try
             {
                 if (intermediate == null)
@@ -1696,7 +1786,7 @@ namespace Ultraviolet.Content
 
                 var processor = FindContentProcessor(filename, importerOutputType, type);
 
-                return processor.Process(this, AssetMetadata.StreamMetadata, intermediate);
+                return processor.Process(this, AssetMetadata.CreateStreamMetadata(density, null, null), intermediate);
             }
             finally
             {
@@ -1711,13 +1801,7 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Loads a raw asset.
         /// </summary>
-        /// <param name="type">The type of asset to load.</param>
-        /// <param name="asset">The name of the asset being loaded.</param>
-        /// <param name="metadata">The asset metadata.</param>
-        /// <param name="importer">The content importer for this asset.</param>
-        /// <param name="processor">The content processor for this asset.</param>
-        /// <returns>The asset that was loaded.</returns>
-        private Object LoadInternalRaw(Type type, String asset, AssetMetadata metadata, out IContentImporter importer, out IContentProcessor processor)
+        private Object LoadInternalRaw(Type type, String asset, AssetMetadata metadata, ScreenDensityBucket density, out IContentImporter importer, out IContentProcessor processor)
         {
             importer = FindContentImporter(metadata.AssetFilePath, out var importerOutputType);
 
@@ -1745,14 +1829,7 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Loads a preprocessed asset.
         /// </summary>
-        /// <param name="type">The type of asset to load.</param>
-        /// <param name="asset">The name of the asset being loaded.</param>
-        /// <param name="path">The path to the asset file.</param>
-        /// <param name="overridedir">The override directory from which to load the asset.</param>
-        /// <param name="importer">The content importer for the asset.</param>
-        /// <param name="processor">The content processor for the asset.</param>
-        /// <returns>The asset that was loaded.</returns>
-        private Object LoadInternalPreprocessed(Type type, String asset, String path, String overridedir, out IContentImporter importer, out IContentProcessor processor)
+        private Object LoadInternalPreprocessed(Type type, String asset, String path, String overridedir, ScreenDensityBucket density, out IContentImporter importer, out IContentProcessor processor)
         {
             importer = null;
             using (var stream = fileSystemService.OpenRead(path))
@@ -1787,7 +1864,7 @@ namespace Ultraviolet.Content
 
                     processor = (IContentProcessor)Activator.CreateInstance(uvcProcessorType);
 
-                    var metadata = new AssetMetadata(overridedir, asset, fileSystemService.GetFullPath(path), null, null, true, false, false, false);
+                    var metadata = new AssetMetadata(overridedir, asset, fileSystemService.GetFullPath(path), null, null, true, false, false, false, density);
                     return processor.ImportPreprocessed(this, metadata, reader);
                 }
             }
@@ -2055,7 +2132,7 @@ namespace Ultraviolet.Content
         /// </summary>
         private String GetAssetPath(String asset, String extension, out String directory, out Boolean overridden, AssetResolutionFlags flags = AssetResolutionFlags.Default)
         {
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return GetAssetPath(asset, extension, primaryDisplayDensity, out directory, out overridden, flags);
@@ -2109,7 +2186,7 @@ namespace Ultraviolet.Content
         /// </summary>
         private AssetMetadata GetAssetMetadata(String asset, Boolean includePreprocessedFiles, Boolean includeDetailedMetadata, Boolean fromsln)
         {
-            var primaryDisplay = Ultraviolet.GetPlatform().Displays.FirstOrDefault();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
             return GetAssetMetadata(asset, primaryDisplayDensity, includePreprocessedFiles, includeDetailedMetadata, fromsln);
@@ -2131,7 +2208,7 @@ namespace Ultraviolet.Content
                 if (assetPath != null)
                 {
                     if (includePreprocessedFiles || !IsPreprocessedFile(asset))
-                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
+                        return CreateMetadataFromFile(asset, assetPath, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln, density);
                 }
                 throw new FileNotFoundException(UltravioletStrings.FileNotFound.Format(asset));
             }
@@ -2143,7 +2220,7 @@ namespace Ultraviolet.Content
                     (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
                 if (assetPathPreprocessed != null)
                 {
-                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
+                    return CreateMetadataFromFile(asset, assetPathPreprocessed, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln, density);
                 }
             }
 
@@ -2152,7 +2229,7 @@ namespace Ultraviolet.Content
                 (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
             if (assetPathMetadata != null)
             {
-                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
+                return CreateMetadataFromFile(asset, assetPathMetadata, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln, density);
             }
 
             // Find the highest-ranking raw file.
@@ -2160,7 +2237,7 @@ namespace Ultraviolet.Content
                 (fromsln ? AssetResolutionFlags.LoadFromSolutionDirectory : AssetResolutionFlags.None));
             if (assetPathRaw != null)
             {
-                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln);
+                return CreateMetadataFromFile(asset, assetPathRaw, assetDirectory, assetOverridden, includeDetailedMetadata, fromsln, density);
             }
 
             // If we still have no matches, we can't find the file.
@@ -2170,14 +2247,7 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Creates an asset metadata object from the specified asset file.
         /// </summary>
-        /// <param name="asset">The normalized asset path.</param>
-        /// <param name="filename">The filename of the file from which to create asset metadata.</param>
-        /// <param name="rootdir">The root directory from which the file is being loaded.</param>
-        /// <param name="overridden">A value indicating whether the asset was loaded from an override directory.</param>
-        /// <param name="includeDetailedMetadata">A value indicating whether to include detailed metadata loaded from .uvmeta files.</param>
-        /// <param name="fromsln">A value indicating whether to attempt to load the asset from the Visual Studio solution directory.</param>
-        /// <returns>The asset metadata for the specified asset file.</returns>
-        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln)
+        private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln, ScreenDensityBucket density)
         {
             String extension;
             if (IsMetadataFile(filename, out extension) && includeDetailedMetadata)
@@ -2226,9 +2296,9 @@ namespace Ultraviolet.Content
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
 
                 return new AssetMetadata(wrappedAssetOverridden ? wrappedAssetDirectory : null,
-                    asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson, fromsln);
+                    asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson, fromsln, density);
             }
-            return new AssetMetadata(overridden ? rootdir : null, asset, filename, null, null, true, false, false, fromsln);
+            return new AssetMetadata(overridden ? rootdir : null, asset, filename, null, null, true, false, false, fromsln, density);
         }
 
         /// <summary>
