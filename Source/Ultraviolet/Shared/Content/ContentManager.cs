@@ -609,23 +609,10 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            lock (cacheSyncObject)
-            {
-                if (CreateFileSystemWatchers())
-                {
-                    if (sharedWatchedAssets == null)
-                        sharedWatchedAssets = new Dictionary<String, Object>();
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay.DensityBucket;
 
-                    if (sharedWatchedAssets.TryGetValue(asset, out var watcher))
-                        return (WatchedAsset<TOutput>)watcher;
-
-                    watcher = new WatchedAsset<TOutput>(this, asset);
-                    sharedWatchedAssets[asset] = watcher;
-                    return (WatchedAsset<TOutput>)watcher;
-                }
-            }        
-
-            return null;
+            return GetSharedWatchedAssetInternal<TOutput>(asset, primaryDisplayDensity);
         }
 
         /// <summary>
@@ -638,7 +625,45 @@ namespace Ultraviolet.Content
         /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
         public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(AssetID asset)
         {
-            return GetSharedWatchedAsset<TOutput>(AssetID.GetAssetPath(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay.DensityBucket;
+
+            return GetSharedWatchedAssetInternal<TOutput>(AssetID.GetAssetPath(asset), primaryDisplayDensity);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
+        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
+        /// loaded, it will be loaded and added to the content manager's internal cache.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The path to the asset to load.</param>
+        /// <param name="density">The screen density for which to retrieve an asset watcher.</param>
+        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
+        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(String asset, ScreenDensityBucket density)
+        {
+            Contract.RequireNotEmpty(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return GetSharedWatchedAssetInternal<TOutput>(asset, density);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset. The <see cref="WatchedAsset{T}"/> which is returned
+        /// is owned by the content manager and shared between all callers of this method. If the watched asset has not already been
+        /// loaded, it will be loaded and added to the content manager's internal cache.
+        /// </summary>
+        /// <typeparam name="TOutput">The type of object being loaded.</typeparam>
+        /// <param name="asset">The identifier of the asset to load.</param>
+        /// <param name="density">The screen density for which to retrieve an asset watcher.</param>
+        /// <returns>The <see cref="WatchedAsset{T}"/> instance which this content manager uses to watch the specified asset.</returns>
+        public WatchedAsset<TOutput> GetSharedWatchedAsset<TOutput>(AssetID asset, ScreenDensityBucket density)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return GetSharedWatchedAssetInternal<TOutput>(AssetID.GetAssetPath(asset), density);
         }
 
         /// <summary>
@@ -1580,6 +1605,37 @@ namespace Ultraviolet.Content
 
             return processor;
         }
+        
+        /// <summary>
+        /// Gets a <see cref="WatchedAsset{T}"/> which watches the specified asset.
+        /// </summary>
+        private WatchedAsset<TOutput> GetSharedWatchedAssetInternal<TOutput>(String asset, ScreenDensityBucket density)
+        {
+            lock (cacheSyncObject)
+            {
+                if (CreateFileSystemWatchers())
+                {
+                    if (sharedWatchedAssets == null)
+                        sharedWatchedAssets = new Dictionary<String, Dictionary<Byte, Object>>();
+
+                    if (!sharedWatchedAssets.TryGetValue(asset, out var watchersForAsset))
+                    {
+                        watchersForAsset = new Dictionary<Byte, Object>();
+                        sharedWatchedAssets[asset] = watchersForAsset;
+                    }
+
+                    if (!watchersForAsset.TryGetValue((Byte)density, out var watcherForDensity))
+                    {
+                        watcherForDensity = new WatchedAsset<TOutput>(this, asset, density);
+                        watchersForAsset[(Byte)density] = watcherForDensity;
+                    }
+
+                    return (WatchedAsset<TOutput>)watcherForDensity;
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Creates a set of file system watchers to monitor the content manager's
@@ -2433,7 +2489,7 @@ namespace Ultraviolet.Content
         private FileSystemWatcher rootFileSystemWatcher;
         private Dictionary<String, IAssetWatcherCollection> assetWatchers;
         private Dictionary<String, IAssetDependencyCollection> assetDependencies;
-        private Dictionary<String, Object> sharedWatchedAssets;
+        private Dictionary<String, Dictionary<Byte, Object>> sharedWatchedAssets;
         private String solutionDirectory;
 
         // The file extensions associated with preprocessed binary data and asset metadata files.
