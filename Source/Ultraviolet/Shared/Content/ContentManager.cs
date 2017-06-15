@@ -1530,9 +1530,11 @@ namespace Ultraviolet.Content
 
                     if (sharedWatchedAssets != null)
                     {
-                        foreach (var kvp in sharedWatchedAssets)
-                            ((IDisposable)kvp.Value).Dispose();
-
+                        foreach (var x in sharedWatchedAssets)
+                        {
+                            foreach (var y in x.Value)
+                                ((IDisposable)y.Value).Dispose();
+                        }
                         sharedWatchedAssets.Clear();
                     }
 
