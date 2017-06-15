@@ -98,7 +98,7 @@
     <Compile Include="iOS\Platform\iOSIconLoader.cs" />
     <Compile Include="iOS\Platform\iOSScreenDensityService.cs" />
     <Compile Include="iOS\Platform\iOSScreenRotationService.cs" />
-    <Compile Include="..\Ultraviolet\Shared\UltravioletApplication.cs">
+    <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplication.cs">
       <Link>UltravioletApplication.cs</Link>
     </Compile>
   </ItemGroup>  

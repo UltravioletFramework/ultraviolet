@@ -126,6 +126,12 @@ namespace Ultraviolet.Shims.iOS.Platform
         }
 
         /// <inheritdoc/>
+        public override bool Refresh()
+        {
+            return false;
+        }
+
+        /// <inheritdoc/>
         public override Single DeviceScale => deviceScale;
 
         /// <inheritdoc/>

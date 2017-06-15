@@ -17,6 +17,20 @@ namespace Ultraviolet.Shims.macOS.Platform
         public macOSScreenDensityService(IUltravioletDisplay display)
             : base(display)
         {
+            this.display = display;
+
+            Refresh();
+        }
+
+        /// <inheritdoc/>
+        public override Boolean Refresh()
+        {
+            var oldDeviceScale = deviceScale;
+            var oldDensityX = densityX;
+            var oldDensityY = densityY;
+            var oldDensityScale = densityScale;
+            var oldDensityBucket = densityBucket;
+
             var screen = NSScreen.Screens[display.Index];
             deviceScale = (Single)screen.BackingScaleFactor;
 
@@ -33,6 +47,13 @@ namespace Ultraviolet.Shims.macOS.Platform
 
             densityScale = densityX / 96f;
             densityBucket = GuessBucketFromDensityScale(densityScale);
+
+            return
+                oldDeviceScale != deviceScale ||
+                oldDensityX != densityX ||
+                oldDensityY != densityY ||
+                oldDensityScale != densityScale ||
+                oldDensityBucket != densityBucket;
         }
 
         /// <inheritdoc/>
@@ -51,11 +72,12 @@ namespace Ultraviolet.Shims.macOS.Platform
         public override ScreenDensityBucket DensityBucket => densityBucket;
 
         // Property values.
-        private readonly Single deviceScale;
-        private readonly Single densityScale;
-        private readonly Single densityX;
-        private readonly Single densityY;
-        private readonly ScreenDensityBucket densityBucket;
+        private readonly IUltravioletDisplay display;
+        private Single deviceScale;
+        private Single densityScale;
+        private Single densityX;
+        private Single densityY;
+        private ScreenDensityBucket densityBucket;
 	}
 }
 
