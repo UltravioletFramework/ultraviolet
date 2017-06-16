@@ -44,6 +44,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\CompositeUvssDocumentChild.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\GlobalStyleSheet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\LocalStyleSheet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\NavigationExpression.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VisualStateTransitionKey.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VersionedStringSource.Equality.cs" />

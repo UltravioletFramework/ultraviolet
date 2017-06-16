@@ -80,6 +80,7 @@ namespace UltravioletSample.Sample12_UPF
             if (disposing)
             {
                 SafeDispose.DisposeRef(ref screenService);
+                SafeDispose.DisposeRef(ref globalStyleSheet);
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
@@ -89,14 +90,19 @@ namespace UltravioletSample.Sample12_UPF
         {
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
 
-            var globalStylesheet = content.Load<UvssDocument>("UI/DefaultUIStyles");
+            var globalStylesheet = GlobalStyleSheet.Create();
+            globalStylesheet.Append(content, "UI/DefaultUIStyles");
             upf.SetGlobalStyleSheet(globalStylesheet);
 
             upf.CompileExpressionsIfSupported("Content");
             upf.LoadCompiledExpressions();
         }
-        
+
+        // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.
         private ContentManager content;
+
+        // State values.
+        private GlobalStyleSheet globalStyleSheet;
         private UIScreenService screenService;
     }
 }

@@ -131,6 +131,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
             if (disposing)
             {
                 SafeDispose.DisposeRef(ref screenService);
+                SafeDispose.DisposeRef(ref globalStyleSheet);
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
@@ -231,7 +232,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 
             if (!ShouldRunInServiceMode())
             {
-                globalStyleSheet = CompositeUvssDocument.CreateForGlobalStyleSheet(Ultraviolet);
+                globalStyleSheet = GlobalStyleSheet.Create();
                 globalStyleSheet.Append(content, "UI/DefaultUIStyles");
                 globalStyleSheet.Append(content, "UI/GameStyles");
                 upf.SetGlobalStyleSheet(globalStyleSheet.ToUvssDocument());
@@ -245,7 +246,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         private ContentManager content;
 
         // State values.
-        private CompositeUvssDocument globalStyleSheet;
+        private GlobalStyleSheet globalStyleSheet;
         private UIScreenService screenService;
         private Boolean resolveContent;
         private Boolean compileContent;

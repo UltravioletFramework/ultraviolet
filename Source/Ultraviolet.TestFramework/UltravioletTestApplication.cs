@@ -69,6 +69,16 @@ namespace Ultraviolet.TestFramework
         }
 
         /// <inheritdoc/>
+        public IUltravioletTestApplication WithDispose(Action disposer)
+        {
+            if (this.disposer != null)
+                throw new InvalidOperationException("Disposal has already been configured.");
+
+            this.disposer = disposer;
+            return this;
+        }
+
+        /// <inheritdoc/>
         public IUltravioletTestApplication SkipFrames(Int32 frameCount)
         {
             Contract.EnsureRange(frameCount >= 0, nameof(frameCount));
@@ -206,7 +216,7 @@ namespace Ultraviolet.TestFramework
                 PresentationFoundation.Configure(configuration);
             
             return new OpenGLUltravioletContext(this, configuration);
-        }
+        }        
 
         /// <inheritdoc/>
         protected override void OnInitialized()
@@ -308,6 +318,18 @@ namespace Ultraviolet.TestFramework
             base.OnDrawing(time);
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                disposer?.Invoke();
+                content?.Dispose();
+                content = null;
+            }
+            base.Dispose(disposing);
+        }
+
         /// <summary>
         /// Occurs at the start of a frame.
         /// </summary>
@@ -373,6 +395,7 @@ namespace Ultraviolet.TestFramework
         private Action<UltravioletContext> initializer;
         private Action<ContentManager> loader;
         private Action<UltravioletContext> renderer;
+        private Action disposer;
         private Bitmap bmp;
         private Int32 frameCount;
         private Int32 framesToSkip;

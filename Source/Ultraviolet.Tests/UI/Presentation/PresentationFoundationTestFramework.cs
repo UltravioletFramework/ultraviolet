@@ -58,6 +58,9 @@ namespace Ultraviolet.Tests.UI.Presentation
         /// </summary>
         protected IUltravioletTestApplication GivenAPresentationFoundationTestFor<T>(Func<ContentManager, T> ctor) where T : UIScreen
         {
+            var globalStyleSheet = default(GlobalStyleSheet);
+            var screen = default(UIScreen);
+
             return GivenAnUltravioletApplication()
                 .WithPresentationFoundationConfigured()
                 .WithInitialization(uv =>
@@ -70,11 +73,18 @@ namespace Ultraviolet.Tests.UI.Presentation
                 {
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Global.manifest"));
 
-                    var globalStyleSheet = content.Load<UvssDocument>(@"UI\DefaultUIStyles");
+                    globalStyleSheet = GlobalStyleSheet.Create();
+                    globalStyleSheet.Append(content, "UI/DefaultUIStyles");
+
                     content.Ultraviolet.GetUI().GetPresentationFoundation().SetGlobalStyleSheet(globalStyleSheet);
 
-                    var screen = ctor(content);
+                    screen = ctor(content);
                     content.Ultraviolet.GetUI().GetScreens().Open(screen);
+                })
+                .WithDispose(() =>
+                {
+                    screen?.Dispose();
+                    globalStyleSheet?.Dispose();
                 });
         }
     }

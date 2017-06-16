@@ -2,62 +2,54 @@
 using System.Collections.Generic;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents a Ultraviolet Style Sheet (UVSS) document which is composed of multiple smaller documents.
     /// </summary>
-    public class CompositeUvssDocument : UltravioletResource
+    public abstract class CompositeUvssDocument : UltravioletResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeUvssDocument"/> class.
         /// </summary>
         /// <param name="uv">The ultraviolet context.</param>
-        private CompositeUvssDocument(UltravioletContext uv)
-            : base(uv)
-        {
-            this.validating = Global_Validating;
-            this.validationComplete = Global_ValidationComplete;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeUvssDocument"/> class.
-        /// </summary>
-        /// <param name="uv">The ultraviolet context.</param>
         /// <param name="validating">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidating(String, T)"/> method.</param>
-        /// <param name="reloading">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
-        public CompositeUvssDocument(UltravioletContext uv, AssetWatcherValidatingHandler<UvssDocument> validating = null, AssetWatcherValidationCompleteHandler<UvssDocument> reloading = null)
+        /// <param name="validationComplete">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
+        protected CompositeUvssDocument(UltravioletContext uv, 
+            AssetWatcherValidatingHandler<UvssDocument> validating = null, AssetWatcherValidationCompleteHandler<UvssDocument> validationComplete = null)
             : base(uv)
         {
             this.validating = validating;
-            this.validationComplete = reloading;
+            this.validationComplete = validationComplete;
         }
         
         /// <summary>
-        /// Creates a new <see cref="CompositeUvssDocument"/> which will serve as the application's global style sheet.
+        /// Converts the composite document to a <see cref="UvssDocument"/> instance appropriate
+        /// for the primary display's screen density.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <returns>The <see cref="CompositeUvssDocument"/> which was created.</returns>
-        public static CompositeUvssDocument CreateForGlobalStyleSheet(UltravioletContext uv)
+        /// <returns>The <see cref="UvssDocument"/> which was created.</returns>
+        public UvssDocument ToUvssDocument()
         {
-            Contract.Require(uv, nameof(uv));
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            return new CompositeUvssDocument(uv);
+            var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return ToUvssDocumentInternal(primaryDisplayDensity);
         }
 
         /// <summary>
-        /// Converts the composite document to a <see cref="UvssDocument"/> instance.
+        /// Converts the composite document to a <see cref="UvssDocument"/> instance appropriate
+        /// for the specified creen density.
         /// </summary>
-        /// <returns></returns>
-        public UvssDocument ToUvssDocument()
+        /// <returns>The <see cref="UvssDocument"/> which was created.</returns>
+        public UvssDocument ToUvssDocument(ScreenDensityBucket density)
         {
-            var document = new UvssDocument(Ultraviolet);
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            foreach (var child in children)
-                document.Append(child.ValidatingValue ?? child.Value);
-
-            return document;
+            return ToUvssDocumentInternal(density);
         }
 
         /// <summary>
@@ -65,6 +57,8 @@ namespace Ultraviolet.Presentation.Styles
         /// </summary>
         public void Clear()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             foreach (var child in children)
                 child.Dispose();
 
@@ -80,21 +74,10 @@ namespace Ultraviolet.Presentation.Styles
         {
             Contract.Require(content, nameof(content));
             Contract.Require(asset, nameof(asset));
+            Contract.EnsureNotDisposed(this, Disposed);
 
-            var watched = default(WatchedAsset<UvssDocument>);
-            var watching = Ultraviolet.GetUI().WatchingViewFilesForChanges;
-            if (watching)
-            {
-                watched = new WatchedAsset<UvssDocument>(content, asset,
-                    (p, a) => validating?.Invoke(p, a) ?? true,
-                    (p, a, v) => validationComplete?.Invoke(p, a, v));
-            }
-            else
-            {
-                watched = new WatchedAsset<UvssDocument>(content, asset);
-            }
-
-            children.Add(watched);
+            var child = new CompositeUvssDocumentChild(content, asset, validating, validationComplete);
+            children.Add(child);
         }
 
         /// <inheritdoc/>
@@ -111,30 +94,23 @@ namespace Ultraviolet.Presentation.Styles
 
             base.Dispose(disposing);
         }
-
+        
         /// <summary>
-        /// Handles the validation phase when reloading the global style sheet.
+        /// Converts the composite document to a <see cref="UvssDocument"/> instance appropriate
+        /// for the specified creen density.
         /// </summary>
-        private bool Global_Validating(String path, UvssDocument asset)
+        private UvssDocument ToUvssDocumentInternal(ScreenDensityBucket density)
         {
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            return upf.TrySetGlobalStyleSheet(ToUvssDocument());
-        }
+            var document = new UvssDocument(Ultraviolet);
 
-        /// <summary>
-        /// Handles the reloading phase when reloading the global style sheet.
-        /// </summary>
-        private void Global_ValidationComplete(String path, UvssDocument asset, Boolean validated)
-        {
-            if (validated)
-                return;
+            foreach (var child in children)
+                document.Append(child.Get(density));
 
-            var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            upf.TrySetGlobalStyleSheet(ToUvssDocument());
+            return document;
         }
 
         // State values.
-        private readonly List<WatchedAsset<UvssDocument>> children = new List<WatchedAsset<UvssDocument>>();
+        private readonly List<CompositeUvssDocumentChild> children = new List<CompositeUvssDocumentChild>();
         private readonly AssetWatcherValidatingHandler<UvssDocument> validating;
         private readonly AssetWatcherValidationCompleteHandler<UvssDocument> validationComplete;
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
@@ -9,10 +8,10 @@ using Ultraviolet.Presentation.Input;
 
 namespace UltravioletSample.Sample13_UPFAdvanced.Content.UI.Controls
 {
-	/// <summary>
-	/// Represents a UI element that displays a 3D triangle.
-	/// </summary>
-	[Preserve(AllMembers = true)]
+    /// <summary>
+    /// Represents a UI element that displays a 3D triangle.
+    /// </summary>
+    [Preserve(AllMembers = true)]
 	[UvmlKnownType]
     public sealed class TriangleDisplay : FrameworkElement
     {

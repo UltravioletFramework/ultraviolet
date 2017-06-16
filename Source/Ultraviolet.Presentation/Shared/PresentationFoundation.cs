@@ -7,11 +7,12 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
+using Ultraviolet.Platform;
 using Ultraviolet.Presentation.Animations;
 using Ultraviolet.Presentation.Controls;
 using Ultraviolet.Presentation.Input;
-using Ultraviolet.Presentation.Styles;
 using Ultraviolet.Presentation.Media;
+using Ultraviolet.Presentation.Styles;
 
 namespace Ultraviolet.Presentation
 {
@@ -512,14 +513,39 @@ namespace Ultraviolet.Presentation
         /// <returns><see langword="true"/> if the style sheet was set successfully; otherwise, <see langword="false"/>.</returns>
         public Boolean TrySetGlobalStyleSheet(UvssDocument styleSheet)
         {
-            var previous = GlobalStyleSheet;
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var previous = globalStyleSheet;
             try
             {
-                SetGlobalStyleSheet(styleSheet);
+                SetGlobalStyleSheetInternal(styleSheet);
             }
             catch
             {
-                SetGlobalStyleSheet(previous);
+                SetGlobalStyleSheetInternal(previous);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to set the global style sheet used by all Presentation Foundation views. If any exceptions are thrown
+        /// during this process, the previous style sheet will be automatically restored.
+        /// </summary>
+        /// <param name="styleSheet">The global style sheet to set.</param>
+        /// <returns><see langword="true"/> if the style sheet was set successfully; otherwise, <see langword="false"/>.</returns>
+        public Boolean TrySetGlobalStyleSheet(GlobalStyleSheet styleSheet)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            var previous = globalStyleSheet;
+            try
+            {
+                SetGlobalStyleSheetInternal(styleSheet);
+            }
+            catch
+            {
+                SetGlobalStyleSheetInternal(previous);
                 return false;
             }
             return true;
@@ -533,9 +559,56 @@ namespace Ultraviolet.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            this.globalStyleSheet = styleSheet;
-            OnGlobalStyleSheetChanged();
-        }        
+            SetGlobalStyleSheetInternal(styleSheet);
+        }
+
+        /// <summary>
+        /// Sets the global style sheet used by all Presentation Foundation views.
+        /// </summary>
+        /// <param name="styleSheet">The global style sheet to set.</param>
+        public void SetGlobalStyleSheet(GlobalStyleSheet styleSheet)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SetGlobalStyleSheetInternal(styleSheet);
+        }
+
+        /// <summary>
+        /// Resolves the current global style sheet to a <see cref="UvssDocument"/> instance which
+        /// is appropriate for the screen density of the primary display.
+        /// </summary>
+        /// <returns>The <see cref="UvssDocument"/> instance that was created.</returns>
+        public UvssDocument ResolveGlobalStyleSheet()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (globalStyleSheet == null)
+                return null;
+
+            if (globalStyleSheet is UvssDocument doc)
+                return doc;
+
+            return ((GlobalStyleSheet)globalStyleSheet).ToUvssDocument();
+        }
+
+        /// <summary>
+        /// Resolves the current global style sheet to a <see cref="UvssDocument"/> instance which
+        /// is appropriate for the specified screen density.
+        /// </summary>
+        /// <param name="density">The screen density for which to resolve the style sheet.</param>
+        /// <returns>The <see cref="UvssDocument"/> instance that was created.</returns>
+        public UvssDocument ResolveGlobalStyleSheet(ScreenDensityBucket density)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            if (globalStyleSheet == null)
+                return null;
+
+            if (globalStyleSheet is UvssDocument doc)
+                return doc;
+
+            return ((GlobalStyleSheet)globalStyleSheet).ToUvssDocument(density);
+        }
 
         /// <summary>
         /// Initializes the specified collection of the Presentation Foundation's internal object pools.
@@ -601,15 +674,7 @@ namespace Ultraviolet.Presentation
                 return componentTemplateManager; 
             }
         }
-
-        /// <summary>
-        /// Gets the current global style sheet.
-        /// </summary>
-        public UvssDocument GlobalStyleSheet
-        {
-            get { return globalStyleSheet; }
-        }
-
+        
         /// <summary>
         /// Occurs when the Presentation Foundation's global style sheet is changed.
         /// </summary>
@@ -1269,6 +1334,15 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Sets the global style sheet used by all Presentation Foundation views.
+        /// </summary>
+        private void SetGlobalStyleSheetInternal(Object styleSheet)
+        {
+            this.globalStyleSheet = styleSheet;
+            OnGlobalStyleSheetChanged();
+        }
+
+        /// <summary>
         /// Gets a value indicating whether any elements are awaiting layout.
         /// </summary>
         private Boolean ElementNeedsLayout
@@ -1350,7 +1424,7 @@ namespace Ultraviolet.Presentation
             new List<RenderSizeChangedEntry>();
 
         // The global style sheet.
-        private UvssDocument globalStyleSheet;
+        private Object globalStyleSheet;
 
         // The compiler used to compile the game's binding expressions.
         private const String CompiledExpressionsAssemblyName = "Ultraviolet.Presentation.CompiledExpressions.dll";

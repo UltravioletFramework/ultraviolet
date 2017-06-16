@@ -38,6 +38,13 @@ namespace Ultraviolet.TestFramework
         IUltravioletTestApplication WithContent(Action<ContentManager> loader);
 
         /// <summary>
+        /// Specifies the application's disposal code.
+        /// </summary>
+        /// <param name="disposer">An action which will dispose the unit test's resources.</param>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication WithDispose(Action disposer);
+
+        /// <summary>
         /// Registers an action to be performed on the specified frame.
         /// </summary>
         /// <param name="frame">The index of the frame in which to perform the action.</param>

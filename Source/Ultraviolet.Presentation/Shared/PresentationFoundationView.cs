@@ -1237,15 +1237,14 @@ namespace Ultraviolet.Presentation
                 this.combinedStyleSheet.Clear();
 
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            if (upf.GlobalStyleSheet != null)
-            {
-                this.combinedStyleSheet.Append(upf.GlobalStyleSheet);
-            }
+
+            var gssDensity = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+            var gssStyleSheet = upf.ResolveGlobalStyleSheet(gssDensity);
+            if (gssStyleSheet != null)
+                this.combinedStyleSheet.Append(gssStyleSheet);
 
             if (this.localStyleSheet != null)
-            {
                 this.combinedStyleSheet.Append(this.localStyleSheet);
-            }
         }
 
         /// <summary>
