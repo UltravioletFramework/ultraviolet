@@ -791,6 +791,16 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <summary>
+        /// Retrieves the low word of a message parameter.
+        /// </summary>
+        private static Int32 LOWORD(Int32 word) => (word & 0xffff);
+
+        /// <summary>
+        /// Retrieves the high word of a message parameter.
+        /// </summary>
+        private static Int32 HIWORD(Int32 word) => (word >> 16) & 0xffff;
+
+        /// <summary>
         /// Fixes issues specific to the current platform.
         /// </summary>
         private void FixPlatformSpecificIssues()
@@ -834,7 +844,9 @@ namespace Ultraviolet.SDL2.Platform
                     {
                         // NOTE: This one isn't actually a "fix," it just lets us detect if the user
                         // decides to change a display's DPI on Windows.
-                        HandleDpiChanged();
+                        var dpi = LOWORD(wParam.ToInt32());
+                        var scale = dpi / 96f;
+                        HandleDpiChanged(scale);
                     }
                 }
                 return Win32Native.CallWindowProc(wndProcPrev, hWnd, msg, wParam, lParam);
@@ -968,7 +980,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <summary>
         /// Called when the window's DPI changes.
         /// </summary>
-        private void HandleDpiChanged()
+        private void HandleDpiChanged(Single? reportedScale = null)
         {
             // Inform our display that it needs to re-query DPI information.
             ((SDL2UltravioletDisplay)Display)?.RefreshDensityInformation();
@@ -976,7 +988,7 @@ namespace Ultraviolet.SDL2.Platform
             // On Windows, resize the window to match the new scale.
             if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.SupportsHighDensityDisplayModes)
             {
-                var factor = Display.DensityScale / scale;
+                var factor = (reportedScale ?? Display.DensityScale) / scale;
 
                 SDL.GetWindowPosition(ptr, out var windowX, out var windowY);
                 SDL.GetWindowSize(ptr, out var windowW, out var windowH);
@@ -988,7 +1000,7 @@ namespace Ultraviolet.SDL2.Platform
                 WindowedPosition = bounds.Location;
                 WindowedClientSize = size;
             }
-            scale = Display.DensityScale;
+            scale = (reportedScale ?? Display.DensityScale);
 
             // Inform the rest of the system that this window's DPI has changed.
             var messageData = Ultraviolet.Messages.CreateMessageData<WindowDensityChangedMessageData>();
