@@ -821,18 +821,21 @@ namespace Ultraviolet.SDL2.Platform
             // a key binding involving the Alt modifier is pressed.
             wndProc = new Win32Native.WndProcDelegate((hWnd, msg, wParam, lParam) =>
             {
-                const Int32 WM_SYSCOMMAND = 0x0112;
-                const Int32 WM_DPICHANGED = 0x02E0;
-                const Int32 SC_KEYMENU = 0xF100;
-                if (msg == WM_SYSCOMMAND && (wParam.ToInt64() & 0xfff0) == SC_KEYMENU)
+                if (hWnd == windowHWnd)
                 {
-                    return IntPtr.Zero;
-                }
-                if (msg == WM_DPICHANGED && hWnd == windowHWnd)
-                {
-                    // NOTE: This one isn't actually a "fix," it just lets us detect if the user
-                    // decides to change a display's DPI on Windows.
-                    HandleDpiChanged();
+                    const Int32 WM_SYSCOMMAND = 0x0112;
+                    const Int32 WM_DPICHANGED = 0x02E0;
+                    const Int32 SC_KEYMENU = 0xF100;
+                    if (msg == WM_SYSCOMMAND && (wParam.ToInt64() & 0xfff0) == SC_KEYMENU)
+                    {
+                        return IntPtr.Zero;
+                    }
+                    if (msg == WM_DPICHANGED)
+                    {
+                        // NOTE: This one isn't actually a "fix," it just lets us detect if the user
+                        // decides to change a display's DPI on Windows.
+                        HandleDpiChanged();
+                    }
                 }
                 return Win32Native.CallWindowProc(wndProcPrev, hWnd, msg, wParam, lParam);
             });
@@ -974,8 +977,16 @@ namespace Ultraviolet.SDL2.Platform
             if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.SupportsHighDensityDisplayModes)
             {
                 var factor = Display.DensityScale / scale;
-                var wcs = WindowedClientSize;
-                WindowedClientSize = new Size2((Int32)(wcs.Width * factor), (Int32)(wcs.Height * factor));
+
+                SDL.GetWindowPosition(ptr, out var windowX, out var windowY);
+                SDL.GetWindowSize(ptr, out var windowW, out var windowH);
+                
+                var size = new Size2((Int32)(windowW * factor), (Int32)(windowH * factor));
+                var bounds = new Rectangle(windowX, windowY, windowW, windowH);
+                Rectangle.Inflate(ref bounds, (Int32)Math.Ceiling((size.Width - windowW) / 2.0), 0, out bounds);
+
+                WindowedPosition = bounds.Location;
+                WindowedClientSize = size;
             }
             scale = Display.DensityScale;
 
