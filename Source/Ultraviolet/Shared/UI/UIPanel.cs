@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
@@ -441,12 +440,10 @@ namespace Ultraviolet.UI
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (disposing)
-            {
-                SafeDispose.Dispose(this.view);
-                SafeDispose.Dispose(this.definition);
-                SafeDispose.Dispose(this.localContent);
-            }
+            SafeDispose.Dispose(this.view);
+            SafeDispose.Dispose(this.definition);
+            SafeDispose.Dispose(this.localContent);
+
             base.Dispose(disposing);
         }
 
@@ -542,6 +539,34 @@ namespace Ultraviolet.UI
         protected UIView CreateViewFromFromUIPanelDefinition(UIPanelDefinition uiPanelDefinition)
         {
             return UIView.Create(this, uiPanelDefinition, vmfactory);
+        }
+
+        /// <summary>
+        /// Recreates the panel's view using the specified definition.
+        /// </summary>
+        protected void RecreateView(WatchedAsset<UIPanelDefinition> definition)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            var vm = view?.ViewModel;
+            UnloadView();
+
+            if (definition != null)
+            {
+                PrepareView(definition);
+
+                var newView = UIView.Create(this, definition, vmfactory);
+                FinishLoadingView(newView);
+
+                if (State == UIPanelState.Opening || State == UIPanelState.Open)
+                    view.OnOpening();
+
+                if (State == UIPanelState.Open)
+                    view.OnOpened();
+
+                if (vm != null)
+                    view.SetViewModel(vm);
+            }
         }
 
         /// <summary>

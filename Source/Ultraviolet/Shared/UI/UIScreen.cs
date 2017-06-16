@@ -43,6 +43,8 @@ namespace Ultraviolet.UI
 
                 PrepareView(definitionWrapper);
             }
+
+            this.definitionAsset = definitionAsset;
         }
 
         /// <inheritdoc/>
@@ -51,6 +53,19 @@ namespace Ultraviolet.UI
             Contract.EnsureNotDisposed(this, Disposed);
 
             FinishLoadingView();
+
+            if (View != null)
+            {
+                var newDensityScale = Window?.Display?.DensityScale ?? 0f;
+                if (newDensityScale != scale)
+                {
+                    if (scale > 0)
+                    {
+                        RecreateView(LoadPanelDefinition(definitionAsset));
+                    }
+                    scale = newDensityScale;
+                }
+            }
 
             if (View != null && State != UIPanelState.Closed)
             {
@@ -200,6 +215,19 @@ namespace Ultraviolet.UI
             }
         }
 
+        /// <summary>
+        /// Gets the scale at which the screen is currently being rendered.
+        /// </summary>
+        public Single Scale
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return scale;
+            }
+        }
+
         /// <inheritdoc/>
         internal override void HandleOpening()
         {
@@ -260,8 +288,7 @@ namespace Ultraviolet.UI
                     Ultraviolet.GetUI().GetScreens(Window).Close(this, TimeSpan.Zero);
                 }
             }
-
-            SafeDispose.Dispose(View);
+            
             SafeDispose.Dispose(pendingView);
 
             base.Dispose(disposing);
@@ -276,16 +303,19 @@ namespace Ultraviolet.UI
         {
             if (String.IsNullOrEmpty(asset))
                 return null;
-            
+
+            var display = Window?.Display;
+            var density = (display == null) ? Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DensityBucket : display.DensityBucket;
+
             var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
             if (watch)
             {
-                var definition = new WatchedAsset<UIPanelDefinition>(LocalContent, asset, OnValidatingUIPanelDefinition, OnReloadingUIPanelDefinition);
+                var definition = new WatchedAsset<UIPanelDefinition>(LocalContent, asset, density, OnValidatingUIPanelDefinition, OnReloadingUIPanelDefinition);
                 return definition;
             }
             else
             {
-                var definition = LocalContent.Load<UIPanelDefinition>(asset);
+                var definition = LocalContent.Load<UIPanelDefinition>(asset, density);
                 return new WatchedAsset<UIPanelDefinition>(LocalContent, asset);
             }
         }
@@ -330,6 +360,9 @@ namespace Ultraviolet.UI
                         UnloadView();
                     }
 
+                    DefaultOpenTransitionDuration = asset.DefaultOpenTransitionDuration;
+                    DefaultCloseTransitionDuration = asset.DefaultCloseTransitionDuration;
+
                     FinishLoadingView(pendingView);
                     pendingView = null;
 
@@ -353,8 +386,10 @@ namespace Ultraviolet.UI
 
         // Property values.
         private Boolean isOpaque;
+        private Single scale;
 
         // State values.
         private UIView pendingView;
+        private String definitionAsset;
     }
 }

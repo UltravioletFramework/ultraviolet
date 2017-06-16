@@ -414,7 +414,7 @@ namespace Ultraviolet.UI
         /// </summary>
         public IUltravioletDisplay Display
         {
-            get { return Ultraviolet.GetPlatform().Displays.PrimaryDisplay; }
+            get { return window?.Display; }
         }
 
         /// <summary>
