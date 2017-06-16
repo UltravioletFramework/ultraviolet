@@ -111,12 +111,12 @@ namespace UvDebug
                 LoadInputBindings();
                 LoadContentManifests();
                 LoadPresentation();
-                
+
+                this.screenService = new UIScreenService(content);
+
                 GC.Collect(2);
                 
-                var screenService = new UIScreenService(content);
                 var screen = screenService.Get<GameMenuScreen>();
-
                 Ultraviolet.GetUI().GetScreens().Open(screen);
             }
             
@@ -199,7 +199,7 @@ namespace UvDebug
                 globalStyleSheet = CompositeUvssDocument.CreateForGlobalStyleSheet(Ultraviolet);
                 globalStyleSheet.Append(content, "UI/DefaultUIStyles");
                 globalStyleSheet.Append(content, "UI/GameStyles");
-                upf.SetGlobalStyleSheet(globalStyleSheet.ToUvssDocument());
+                upf.SetGlobalStyleSheet(globalStyleSheet);
 
                 CompileBindingExpressions();
                 upf.LoadCompiledExpressions();
@@ -238,6 +238,7 @@ namespace UvDebug
         {
             if (disposing)
             {
+                SafeDispose.DisposeRef(ref screenService);
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
@@ -338,6 +339,7 @@ namespace UvDebug
 
         // State values.
         private CompositeUvssDocument globalStyleSheet;
+        private UIScreenService screenService;
         private Boolean resolveContent;
         private Boolean compileContent;
         private Boolean compileExpressions;

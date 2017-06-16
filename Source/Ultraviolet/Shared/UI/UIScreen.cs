@@ -221,9 +221,9 @@ namespace Ultraviolet.UI
         }
 
         /// <inheritdoc/>
-        protected override void OnClosing()
+        internal override void HandleClosing()
         {
-            base.OnClosing();
+            base.HandleClosing();
 
             if (View != null)
                 View.OnClosing();
@@ -250,6 +250,17 @@ namespace Ultraviolet.UI
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
+            if (Disposed)
+                return;
+
+            if (disposing)
+            {
+                if (Window != null && !Window.Disposed)
+                {
+                    Ultraviolet.GetUI().GetScreens(Window).Close(this, TimeSpan.Zero);
+                }
+            }
+
             SafeDispose.Dispose(View);
             SafeDispose.Dispose(pendingView);
 

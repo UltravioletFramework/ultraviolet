@@ -25,10 +25,13 @@ namespace Ultraviolet.Content
         [Preserve]
         public void Dispose()
         {
-            foreach (var watcher in watchers)
-                watcher.Value.Dispose();
+            if (watchers != null)
+            {
+                foreach (var watcher in watchers)
+                    watcher.Value.Dispose();
 
-            watchers.Clear();
+                watchers.Clear();
+            }
         }
 
         /// <summary>

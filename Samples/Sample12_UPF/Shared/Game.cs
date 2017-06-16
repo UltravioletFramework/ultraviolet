@@ -46,15 +46,16 @@ namespace UltravioletSample.Sample12_UPF
         protected override void OnLoadingContent()
         {
             this.content = ContentManager.Create("Content");
+
             LoadContentManifests(this.content);
             LoadLocalizationDatabases(this.content);
             LoadPresentation();
 
+            this.screenService = new UIScreenService(content);
+
             GC.Collect(2);
 
-            var screenService = new UIScreenService(content);
             var screen = screenService.Get<ExampleScreen>();
-
             Ultraviolet.GetUI().GetScreens().Open(screen);
 
             base.OnLoadingContent();
@@ -78,6 +79,7 @@ namespace UltravioletSample.Sample12_UPF
         {
             if (disposing)
             {
+                SafeDispose.DisposeRef(ref screenService);
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
@@ -95,5 +97,6 @@ namespace UltravioletSample.Sample12_UPF
         }
         
         private ContentManager content;
+        private UIScreenService screenService;
     }
 }

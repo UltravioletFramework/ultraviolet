@@ -96,12 +96,12 @@ namespace UltravioletSample.Sample13_UPFAdvanced
                 LoadLocalizationDatabases(content);
                 LoadContentManifests(content);
                 LoadPresentation();
-                
+
+                this.screenService = new UIScreenService(content);
+
                 GC.Collect(2);
 
-                var screenService = new UIScreenService(content);
                 var screen = screenService.Get<GameMenuScreen>();
-
                 Ultraviolet.GetUI().GetScreens().Open(screen);
             }
 
@@ -130,6 +130,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         {
             if (disposing)
             {
+                SafeDispose.DisposeRef(ref screenService);
                 SafeDispose.DisposeRef(ref content);
             }
             base.Dispose(disposing);
@@ -245,6 +246,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
 
         // State values.
         private CompositeUvssDocument globalStyleSheet;
+        private UIScreenService screenService;
         private Boolean resolveContent;
         private Boolean compileContent;
         private Boolean compileExpressions;

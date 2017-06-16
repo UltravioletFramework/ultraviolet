@@ -82,6 +82,8 @@ namespace Ultraviolet.UI
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
+            RemoveClosedScreensFromStack();
+
             for (var current = screens.First; current != null; current = current.Next)
                 current.Value.Update(time);
 
@@ -503,8 +505,11 @@ namespace Ultraviolet.UI
             {
                 foreach (var screen in screens)
                 {
-                    screen.Close(TimeSpan.Zero);
-                    screen.Window = null;
+                    if (!screen.Disposed)
+                    {
+                        screen.Close(TimeSpan.Zero);
+                        screen.Window = null;
+                    }
                 }
                 screens.Clear();
             }
@@ -575,10 +580,17 @@ namespace Ultraviolet.UI
                 next = current.Next;
 
                 var screen = current.Value;
-                if (screen.State == UIPanelState.Closed)
+                if (screen.Disposed)
                 {
-                    screen.Window = null;
                     screens.Remove(current);
+                }
+                else
+                {
+                    if (screen.State == UIPanelState.Closed)
+                    {
+                        screen.Window = null;
+                        screens.Remove(current);
+                    }
                 }
             }
         }
