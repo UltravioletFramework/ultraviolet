@@ -41,7 +41,7 @@ namespace Ultraviolet.Content
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
 
-            uv.Messages.Subscribe(this, UltravioletMessages.LowMemory);
+            uv.Messages.Subscribe(this, UltravioletMessages.LowMemory, UltravioletMessages.DisplayDensityChanged);
         }
 
         /// <summary>
@@ -113,6 +113,13 @@ namespace Ultraviolet.Content
             if (type == UltravioletMessages.LowMemory)
             {
                 PurgeCache(true);
+                return;
+            }
+
+            if (type == UltravioletMessages.DisplayDensityChanged)
+            {
+                PurgeUnusedScreenDensities();
+                return;
             }
         }
 
@@ -2461,6 +2468,24 @@ namespace Ultraviolet.Content
                     assetCacheEntry.SetVersion(assetDensityBucket, assetOrigin, instance);
                 }
             }
+        }
+
+        /// <summary>
+        /// Purges any asset versions for screen densities which are not in use.
+        /// </summary>
+        private void PurgeUnusedScreenDensities()
+        {
+            var usedScreenDensities = Ultraviolet.GetPlatform().Displays.Select(x => x.DensityBucket).Distinct().ToArray();
+            var purgedCacheEntries = new List<String>();
+
+            foreach (var kvp in assetCache)
+            {
+                if (kvp.Value.PurgeUnusedVersions(usedScreenDensities))
+                    purgedCacheEntries.Add(kvp.Key);
+            }
+
+            foreach (var purgedCacheEntry in purgedCacheEntries)
+                PurgeCache(purgedCacheEntry, false);
         }
 
         /// <summary>

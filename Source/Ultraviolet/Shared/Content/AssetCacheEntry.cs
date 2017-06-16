@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet.Content
@@ -64,6 +66,33 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Purges any versions of this asset which correspond to screen densities that are not in use.
+        /// </summary>
+        /// <param name="usedScreenDensities">A list of screen densities which are currently in use.</param>
+        /// <returns><see langword="true"/> if the entire cache entry should be purged; otherwise, <see langword="false"/>.</returns>
+        public Boolean PurgeUnusedVersions(ScreenDensityBucket[] usedScreenDensities)
+        {
+            Contract.Require(usedScreenDensities, nameof(usedScreenDensities));
+
+            if (obj is AssetCacheVersion acv)
+            {
+                return !usedScreenDensities.Contains(acv.AssetDensityBucket);
+            }
+            else
+            {
+                var dictionary = (Dictionary<Byte, AssetCacheVersion>)obj;
+                var removedKeys = dictionary.Keys.Where(x => !usedScreenDensities.Contains((ScreenDensityBucket)x)).ToArray();
+                if (removedKeys.Length == dictionary.Count)
+                    return true;
+
+                foreach (var removedKey in removedKeys)
+                    dictionary.Remove(removedKey);
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this asset has a version for the specified <see cref="ScreenDensityBucket"/> value.
         /// </summary>
         /// <param name="assetDensityBucket">The <see cref="ScreenDensityBucket"/> value to evaluate.</param>
@@ -100,6 +129,10 @@ namespace Ultraviolet.Content
                 dictionary = new Dictionary<Byte, AssetCacheVersion>();
                 dictionary[(Byte)acv.AssetDensityBucket] = acv;
                 obj = dictionary;
+            }
+            else
+            {
+                dictionary = (Dictionary<Byte, AssetCacheVersion>)obj;
             }
 
             if (dictionary.ContainsKey((Byte)assetDensityBucket))

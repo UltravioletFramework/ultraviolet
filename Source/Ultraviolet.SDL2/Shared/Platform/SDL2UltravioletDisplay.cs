@@ -434,6 +434,8 @@ namespace Ultraviolet.SDL2.Platform
                 var messageData = uv.Messages.CreateMessageData<DisplayDensityChangedMessageData>();
                 messageData.Display = this;
                 uv.Messages.Publish(UltravioletMessages.DisplayDensityChanged, messageData);
+
+                GC.Collect(2, GCCollectionMode.Forced);
             }
         }
 
