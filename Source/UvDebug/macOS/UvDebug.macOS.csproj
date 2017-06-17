@@ -152,6 +152,12 @@
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
       <Link>x64\osx\libbass.dylib</Link>
     </BundleResource>
+    <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\Logo-mdpi.png">
+      <Link>Content\Textures\Logo-mdpi.png</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>    
     <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
