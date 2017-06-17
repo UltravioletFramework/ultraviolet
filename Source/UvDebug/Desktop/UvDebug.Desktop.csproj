@@ -57,6 +57,9 @@
   <PropertyGroup>
     <ApplicationIcon>uv.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,6 +94,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
+    <None Include="app.manifest" />
     <None Include="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -122,6 +126,9 @@
     </None>
     <None Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
       <Link>x64\osx\libSDL2.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
@@ -289,6 +296,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Textures\Logo-mdpi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />

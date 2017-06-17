@@ -61,6 +61,7 @@ namespace UvDebug
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration();
+            configuration.SupportsHighDensityDisplayModes = true;
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             PopulateConfiguration(configuration);

@@ -58,6 +58,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration();
+            configuration.SupportsHighDensityDisplayModes = true;
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             PopulateConfiguration(configuration);
@@ -235,7 +236,7 @@ namespace UltravioletSample.Sample13_UPFAdvanced
                 globalStyleSheet = GlobalStyleSheet.Create();
                 globalStyleSheet.Append(content, "UI/DefaultUIStyles");
                 globalStyleSheet.Append(content, "UI/GameStyles");
-                upf.SetGlobalStyleSheet(globalStyleSheet.ToUvssDocument());
+                upf.SetGlobalStyleSheet(globalStyleSheet);
 
                 CompileBindingExpressions();
                 upf.LoadCompiledExpressions();                
