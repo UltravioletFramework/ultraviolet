@@ -316,7 +316,7 @@ namespace Ultraviolet.UI
             else
             {
                 var definition = LocalContent.Load<UIPanelDefinition>(asset, density);
-                return new WatchedAsset<UIPanelDefinition>(LocalContent, asset);
+                return new WatchedAsset<UIPanelDefinition>(LocalContent, definition);
             }
         }
 

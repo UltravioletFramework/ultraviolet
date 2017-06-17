@@ -679,7 +679,6 @@ namespace Ultraviolet.Presentation
                 case AssetSource.Local:
                     if (LocalContent != null)
                     {
-                        var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
                         image.Load(LocalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
