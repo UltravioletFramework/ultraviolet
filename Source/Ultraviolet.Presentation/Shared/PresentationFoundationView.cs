@@ -608,6 +608,8 @@ namespace Ultraviolet.Presentation
         /// <param name="styleSheet">The view's style sheet.</param>
         public void SetStyleSheet(UvssDocument styleSheet)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             HookOnGlobalStyleSheetChanged();
 
             this.localStyleSheet = styleSheet;
@@ -630,10 +632,12 @@ namespace Ultraviolet.Presentation
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
         public void LoadGlobalResource<TResource>(FrameworkResource<TResource> resource, AssetID asset) where TResource : class
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (resource == null || GlobalContent == null)
                 return;
 
-            resource.Load(GlobalContent, asset);
+            resource.Load(GlobalContent, asset, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
         }
 
         /// <summary>
@@ -644,10 +648,12 @@ namespace Ultraviolet.Presentation
         /// <param name="asset">The asset identifier that specifies which resource to load.</param>
         public void LoadLocalResource<TResource>(FrameworkResource<TResource> resource, AssetID asset) where TResource : class
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (resource == null || LocalContent == null)
                 return;
 
-            resource.Load(LocalContent, asset);
+            resource.Load(LocalContent, asset, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
         }
 
         /// <summary>
@@ -656,6 +662,8 @@ namespace Ultraviolet.Presentation
         /// <param name="image">The identifier of the image to load.</param>
         public void LoadImage(SourcedImage image)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (image.Resource == null)
                 return;
 
@@ -664,8 +672,7 @@ namespace Ultraviolet.Presentation
                 case AssetSource.Global:
                     if (GlobalContent != null)
                     {
-                        var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
-                        image.Resource.Load(GlobalContent, watch);
+                        image.Load(GlobalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
 
@@ -673,7 +680,7 @@ namespace Ultraviolet.Presentation
                     if (LocalContent != null)
                     {
                         var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
-                        image.Resource.Load(LocalContent, watch);
+                        image.Load(LocalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
 
@@ -688,6 +695,8 @@ namespace Ultraviolet.Presentation
         /// <param name="cursor">The identifier of the cursor to load.</param>
         public void LoadCursor(SourcedCursor cursor)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (cursor.Resource == null)
                 return;
 
@@ -696,14 +705,14 @@ namespace Ultraviolet.Presentation
                 case AssetSource.Global:
                     if (GlobalContent != null)
                     {
-                        cursor.Resource.Load(GlobalContent);
+                        cursor.Load(GlobalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
 
                 case AssetSource.Local:
                     if (LocalContent != null)
                     {
-                        cursor.Resource.Load(LocalContent);
+                        cursor.Load(LocalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
 
@@ -719,6 +728,8 @@ namespace Ultraviolet.Presentation
         /// <param name="resource">The identifier of the resource to load.</param>
         public void LoadResource<TResource>(SourcedResource<TResource> resource) where TResource : class
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (resource.Resource == null)
                 return;
 
@@ -727,14 +738,14 @@ namespace Ultraviolet.Presentation
                 case AssetSource.Global:
                     if (GlobalContent != null)
                     {
-                        resource.Load(GlobalContent);
+                        resource.Load(GlobalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
 
                 case AssetSource.Local:
                     if (LocalContent != null)
                     {
-                        resource.Load(LocalContent);
+                        resource.Load(LocalContent, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
                     }
                     break;
 
@@ -763,6 +774,8 @@ namespace Ultraviolet.Presentation
         /// <returns>The resource that was loaded, or <see langword="null"/> if the resource could not be loaded.</returns>
         public TResource LoadResource<TResource>(AssetID id, AssetSource source) where TResource : class
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (!id.IsValid)
                 return null;
 
@@ -772,7 +785,7 @@ namespace Ultraviolet.Presentation
             if (content == null)
                 return null;
 
-            return content.Load<TResource>(id);
+            return content.Load<TResource>(id, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
         }
 
         /// <summary>
@@ -782,6 +795,8 @@ namespace Ultraviolet.Presentation
         /// <returns>The resource that was loaded, or <see langword="null"/> if the resource could not be loaded.</returns>
         public SpriteAnimation LoadResource(SourcedSpriteAnimationID id)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (!id.SpriteAnimationID.IsValid)
                 return null;
 
@@ -791,15 +806,16 @@ namespace Ultraviolet.Presentation
             if (content == null)
                 return null;
 
-            return content.Load(id.SpriteAnimationID);
+            return content.Load(id.SpriteAnimationID, Display?.DensityBucket ?? ScreenDensityBucket.Desktop);
         }
 
         /// <inheritdoc/>
         public override TViewModel GetViewModel<TViewModel>()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             var vm = ViewModel;
-            var vmWrapper = vm as IDataSourceWrapper;
-            if (vmWrapper != null)
+            if (vm is IDataSourceWrapper vmWrapper)
             {
                 return vmWrapper.WrappedDataSource as TViewModel;
             }
@@ -1116,6 +1132,8 @@ namespace Ultraviolet.Presentation
                 {
                     PresentationFoundation.Instance.RestoreToQueues(this);
                 }
+
+                SetStyleSheet(localStyleSheet);
             }
             base.OnViewWindowChanged(oldWindow, newWindow);
         }

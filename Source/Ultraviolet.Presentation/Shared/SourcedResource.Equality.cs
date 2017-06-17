@@ -11,8 +11,9 @@ namespace Ultraviolet.Presentation
             unchecked
             {
                 var hash = 17;
-                hash = hash * 23 + resource?.GetHashCode() ?? 0;
-                hash = hash * 23 + source.GetHashCode();
+                hash = hash * 23 + Resource?.GetHashCode() ?? 0;
+                hash = hash * 23 + Asset.GetHashCode();
+                hash = hash * 23 + Source.GetHashCode();
                 return hash;
             }
         }
@@ -53,8 +54,9 @@ namespace Ultraviolet.Presentation
         public Boolean Equals(SourcedResource<T> other)
         {
             return
-                this.resource == other.resource &&
-                this.source == other.source;
+                this.Resource == other.Resource &&
+                this.Asset == other.Asset &&
+                this.Source == other.Source;
         }
     }
 }

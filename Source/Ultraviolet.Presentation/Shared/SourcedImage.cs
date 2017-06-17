@@ -1,6 +1,8 @@
 ﻿using System;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation
 {
@@ -36,6 +38,17 @@ namespace Ultraviolet.Presentation
 
         /// <inheritdoc/>
         public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
+
+        /// <summary>
+        /// Loads the resource using the specified content manager.
+        /// </summary>
+        /// <param name="contentManager">The <see cref="ContentManager"/> with which to load the resource.</param>
+        /// <param name="density">The screen density for which to load the resource.</param>
+        public void Load(ContentManager contentManager, ScreenDensityBucket density)
+        {
+            var watch = contentManager.Ultraviolet.GetUI().WatchingViewFilesForChanges;
+            Resource.Load(contentManager, density, watch);
+        }
 
         /// <inheritdoc/>
         [Preserve]

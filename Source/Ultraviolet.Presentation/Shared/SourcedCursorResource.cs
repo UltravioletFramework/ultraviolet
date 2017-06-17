@@ -2,6 +2,7 @@
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation
 {
@@ -34,7 +35,8 @@ namespace Ultraviolet.Presentation
         /// Loads the image's texture resource from the specified content manager.
         /// </summary>
         /// <param name="content">The content manager with which to load the image's texture resource.</param>
-        public void Load(ContentManager content)
+        /// <param name="density">The screen density for which to load the resource.</param>
+        public void Load(ContentManager content, ScreenDensityBucket density)
         {
             Contract.Require(content, nameof(content));
 
@@ -42,8 +44,8 @@ namespace Ultraviolet.Presentation
                 return;
 
             var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
-            cursorCollection = watch ? content.GetSharedWatchedAsset<CursorCollection>(CursorCollectionID) :
-                (WatchableAssetReference<CursorCollection>)content.Load<CursorCollection>(CursorCollectionID);
+            cursorCollection = watch ? content.GetSharedWatchedAsset<CursorCollection>(CursorCollectionID, density) :
+                (WatchableAssetReference<CursorCollection>)content.Load<CursorCollection>(CursorCollectionID, density);
         }
 
         /// <summary>

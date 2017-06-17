@@ -1,4 +1,5 @@
 ﻿using Ultraviolet.Content;
+using Ultraviolet.Platform;
 using GraphicsEffect = Ultraviolet.Graphics.Effect;
 
 namespace Ultraviolet.Presentation.Media.Effects
@@ -38,11 +39,11 @@ namespace Ultraviolet.Presentation.Media.Effects
             var shader = Shader;
             if (shader.Source == AssetSource.Global)
             {
-                shader.Load(global);
+                shader.Load(global, ScreenDensityBucket.Desktop);
             }
             else
             {
-                shader.Load(local);
+                shader.Load(local, ScreenDensityBucket.Desktop);
             }
 
             base.ReloadResources(global, local);

@@ -1,4 +1,5 @@
 ﻿using Ultraviolet.Audio;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation.Styles
 {
@@ -29,7 +30,8 @@ namespace Ultraviolet.Presentation.Styles
             if (contentManager == null)
                 return;
 
-            var sfx = contentManager.Load<SoundEffect>(sfxAssetID.AssetID);
+            var density = (dobj as UIElement)?.View?.Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+            var sfx = contentManager.Load<SoundEffect>(sfxAssetID.AssetID, density);
             sfx.Play();
 
             base.Activate(uv, dobj);

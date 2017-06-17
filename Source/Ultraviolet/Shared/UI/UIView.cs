@@ -143,7 +143,9 @@ namespace Ultraviolet.UI
             if (!asset.IsValid)
                 return default(TOutput);
 
-            return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset);
+            var density = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (globalContent == null) ? default(TOutput) : globalContent.Load<TOutput>(asset, density);
         }
 
         /// <summary>
@@ -157,7 +159,9 @@ namespace Ultraviolet.UI
             if (!asset.IsValid)
                 return default(TOutput);
 
-            return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset);
+            var density = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return (localContent == null) ? default(TOutput) : localContent.Load<TOutput>(asset, density);
         }
 
         /// <summary>
@@ -170,7 +174,9 @@ namespace Ultraviolet.UI
             if (!animation.IsValid || globalContent == null)
                 return null;
 
-            return globalContent.Load(animation);
+            var density = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return globalContent.Load(animation, density);
         }
 
         /// <summary>
@@ -183,7 +189,9 @@ namespace Ultraviolet.UI
             if (!animation.IsValid || localContent == null)
                 return null;
 
-            return localContent.Load(animation);
+            var density = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            return localContent.Load(animation, density);
         }
 
         /// <summary>
@@ -196,7 +204,9 @@ namespace Ultraviolet.UI
             if (image == null || globalContent == null)
                 return;
 
-            image.Load(globalContent);
+            var density = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            image.Load(globalContent, density);
         }
 
         /// <summary>
@@ -209,7 +219,9 @@ namespace Ultraviolet.UI
             if (image == null || localContent == null)
                 return;
 
-            image.Load(localContent);
+            var density = Display?.DensityBucket ?? ScreenDensityBucket.Desktop;
+
+            image.Load(localContent, density);
         }
 
         /// <summary>

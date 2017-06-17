@@ -3,6 +3,7 @@ using System.Globalization;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
@@ -40,6 +41,27 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             texture = watch ? content.GetSharedWatchedAsset<Texture2D>(TextureID) : 
                 (WatchableAssetReference<Texture2D>)content.Load<Texture2D>(TextureID);            
+
+            if (TextureRegion.IsEmpty && !texture.IsNullReference)
+                TextureRegion = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
+        }
+
+        /// <summary>
+        /// Loads the image's texture resource from the specified content manager.
+        /// </summary>
+        /// <param name="content">The content manager with which to load the image's texture resource.</param>
+        /// <param name="density"></param>
+        /// <param name="watch">A value indicating whether the <see cref="TextureImage"/> should watch the file
+        /// system for changes to its underlying resources.</param>
+        public void Load(ContentManager content, ScreenDensityBucket density, Boolean watch = false)
+        {
+            Contract.Require(content, nameof(content));
+
+            if (!TextureID.IsValid)
+                return;
+
+            texture = watch ? content.GetSharedWatchedAsset<Texture2D>(TextureID, density) :
+                (WatchableAssetReference<Texture2D>)content.Load<Texture2D>(TextureID, density);
 
             if (TextureRegion.IsEmpty && !texture.IsNullReference)
                 TextureRegion = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);

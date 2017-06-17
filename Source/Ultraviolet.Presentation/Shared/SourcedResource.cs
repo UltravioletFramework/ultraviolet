@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
-using Ultraviolet.Core.Data;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation
 {
@@ -20,9 +20,9 @@ namespace Ultraviolet.Presentation
         [Preserve]
         public SourcedResource(AssetID asset, AssetSource source)
         {
-            this.resource = new FrameworkResource<T>();
-            this.asset = asset;
-            this.source = source;
+            this.Resource = new FrameworkResource<T>();
+            this.Asset = asset;
+            this.Source = source;
         }
 
         /// <summary>
@@ -31,22 +31,20 @@ namespace Ultraviolet.Presentation
         /// <param name="sourced">The <see cref="SourcedResource{T}"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
         [Preserve]
-        public static implicit operator T(SourcedResource<T> sourced)
-        {
-            return sourced.Resource;
-        }
-        
+        public static implicit operator T(SourcedResource<T> sourced) => sourced.Resource;
+
+        /// <inheritdoc/>
+        public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
+
         /// <summary>
         /// Loads the resource using the specified content manager.
         /// </summary>
         /// <param name="contentManager">The <see cref="ContentManager"/> with which to load the resource.</param>
-        public void Load(ContentManager contentManager)
+        /// <param name="density">The screen density for which to load the resource.</param>
+        public void Load(ContentManager contentManager, ScreenDensityBucket density)
         {
-            resource.Load(contentManager, asset);
+            Resource.Load(contentManager, Asset, density);
         }
-
-        /// <inheritdoc/>
-        public override String ToString() => $"{Resource} {Source.ToString().ToLowerInvariant()}";
 
         /// <inheritdoc/>
         [Preserve]
@@ -61,38 +59,26 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the sourced resource.
         /// </summary>
-        public FrameworkResource<T> Resource
-        {
-            get { return resource; }
-        }
+        public FrameworkResource<T> Resource { get; }
 
         /// <summary>
         /// Gets a value indicating whether this object represents a valid resource.
         /// </summary>
-        public Boolean IsValid
-        {
-            get { return resource != null && asset.IsValid; }
-        }
+        public Boolean IsValid => Resource != null && Asset.IsValid;
 
         /// <summary>
         /// Gets a value indicating whether the resource has been loaded.
         /// </summary>
-        public Boolean IsLoaded
-        {
-            get { return resource != null && resource.Value != null; }
-        }
+        public Boolean IsLoaded => Resource != null && Resource.Value != null;
+        
+        /// <summary>
+        /// Gets the <see cref="AssetID"/> that identifies this resource.
+        /// </summary>
+        public AssetID Asset { get; }
 
         /// <summary>
         /// Gets a <see cref="AssetSource"/> value indicating how to load the asset.
         /// </summary>
-        public AssetSource Source
-        {
-            get { return source; }
-        }
-
-        // Property values.
-        private readonly FrameworkResource<T> resource;
-        private readonly AssetID asset;
-        private readonly AssetSource source;
+        public AssetSource Source { get; }
     }
 }

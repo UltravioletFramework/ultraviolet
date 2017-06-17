@@ -1,5 +1,6 @@
 ﻿using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation
 {
@@ -14,13 +15,14 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="content">The <see cref="ContentManager"/> with which to load the resource.</param>
         /// <param name="asset">The asset identifier that identifies the resource to load.</param>
-        public void Load(ContentManager content, AssetID asset)
+        /// <param name="density">The screen density for which to load the resource.</param>
+        public void Load(ContentManager content, AssetID asset, ScreenDensityBucket density)
         {
             Contract.Require(content, nameof(content));
 
             var watch = content.Ultraviolet.GetUI().WatchingViewFilesForChanges;
-            value = watch ? content.GetSharedWatchedAsset<TResource>(asset) :
-                (WatchableAssetReference<TResource>)content.Load<TResource>(asset);
+            value = watch ? content.GetSharedWatchedAsset<TResource>(asset, density) :
+                (WatchableAssetReference<TResource>)content.Load<TResource>(asset, density);
         }
         
         /// <summary>
