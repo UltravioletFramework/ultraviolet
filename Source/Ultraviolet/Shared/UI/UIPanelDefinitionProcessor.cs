@@ -34,7 +34,7 @@ namespace Ultraviolet.UI
             var styleSheetRoot = Path.GetDirectoryName(metadata.AssetPath);
             var styleSheetElements = input.Root.Elements("StyleSheet");
             var styleSheetAssets = styleSheetElements.Select(x => Path.Combine(styleSheetRoot, x.Value));
-            var styleSheetPaths = styleSheetAssets.Select(x => manager.ResolveAssetFilePath(x, metadata.IsLoadedFromSolution));
+            var styleSheetPaths = styleSheetAssets.Select(x => manager.ResolveAssetFilePath(x, metadata.AssetDensity, metadata.IsLoadedFromSolution));
             var styleSheetSources = new List<String>();
 
             foreach (var styleSheetPath in styleSheetPaths)

@@ -15,7 +15,7 @@ namespace Ultraviolet.SDL2
             var texture = ResolveDependencyAssetPath(metadata, input.Texture);
             metadata.AddAssetDependency(texture);
 
-            using (var textureSurface = manager.Load<Surface2D>(texture, false, metadata.IsLoadedFromSolution))
+            using (var textureSurface = manager.Load<Surface2D>(texture, metadata.AssetDensity, false, metadata.IsLoadedFromSolution))
             {
                 if (input.Cursors != null)
                 {

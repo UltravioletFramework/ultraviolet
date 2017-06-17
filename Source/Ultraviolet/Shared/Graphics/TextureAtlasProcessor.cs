@@ -63,7 +63,7 @@ namespace Ultraviolet.Graphics
             var textureBytes = reader.ReadBytes(textureSizeInBytes);
             using (var textureStream = new MemoryStream(textureBytes))
             {
-                texture = manager.LoadFromStream<Texture2D>(textureStream, "png");
+                texture = manager.LoadFromStream<Texture2D>(textureStream, "png", metadata.AssetDensity);
             }
 
             // Read the atlas' cells.
@@ -106,7 +106,7 @@ namespace Ultraviolet.Graphics
         /// </summary>
         private static Size2 GetImageSize(ContentManager content, IContentProcessorMetadata metadata, String path)
         {
-            using (var image = content.Load<Surface2D>(path, false, metadata.IsLoadedFromSolution))
+            using (var image = content.Load<Surface2D>(path, metadata.AssetDensity, false, metadata.IsLoadedFromSolution))
                 return new Size2(image.Width, image.Height);
         }
 
@@ -392,7 +392,7 @@ namespace Ultraviolet.Graphics
             foreach (var image in atlasImages)
             {
                 var imageArea = images[image.Name];
-                using (var imageSurface = content.Load<Surface2D>(image.Path, false, metadata.IsLoadedFromSolution))
+                using (var imageSurface = content.Load<Surface2D>(image.Path, metadata.AssetDensity, false, metadata.IsLoadedFromSolution))
                 {
                     var areaWithoutPadding = new Rectangle(
                         imageArea.X, 

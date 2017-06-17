@@ -58,7 +58,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             var textures = (new[] { input.Faces?.Regular?.Texture, input.Faces?.Bold?.Texture, input.Faces?.Italic?.Texture, input.Faces?.BoldItalic?.Texture })
                 .Where(x => x != null).Distinct()
                 .Select(x => ResolveDependencyAssetPath(metadata, x))
-                .ToDictionary(x => x, x => manager.Import<PlatformNativeSurface>(x, metadata.IsLoadedFromSolution));
+                .ToDictionary(x => x, x => manager.Import<PlatformNativeSurface>(x, metadata.AssetDensity, metadata.IsLoadedFromSolution));
 
             foreach (var kvp in textures)
                 metadata.AddAssetDependency(kvp.Key);
@@ -116,7 +116,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 throw new ContentLoadException(OpenGLStrings.InvalidSpriteFontTexture);
 
             var glyphs = default(IEnumerable<Rectangle>);
-            using (var surface = manager.Import<PlatformNativeSurface>(textureName))
+            using (var surface = manager.Import<PlatformNativeSurface>(textureName, metadata.AssetDensity))
                 glyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(surface, textureRegion);
 
             var substitution = description.Glyphs?.Substitution ?? '?';            
@@ -158,7 +158,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             }
 
             var texturePath = reader.ReadString();
-            var texture = manager.Load<Texture2D>(texturePath);
+            var texture = manager.Load<Texture2D>(texturePath, metadata.AssetDensity);
             var textureRegionSpecified = reader.ReadBoolean();
             if (textureRegionSpecified)
             {
@@ -222,7 +222,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             var faceSurface = textures[textureName];
             var faceGlyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(faceSurface, textureRegion);
 
-            var faceTexture = manager.Load<Texture2D>(textureName);
+            var faceTexture = manager.Load<Texture2D>(textureName, metadata.AssetDensity);
             var face = new SpriteFontFace(manager.Ultraviolet, 
                 faceTexture, characterRegions, faceGlyphs, description.Glyphs?.Substitution ?? '?');
 

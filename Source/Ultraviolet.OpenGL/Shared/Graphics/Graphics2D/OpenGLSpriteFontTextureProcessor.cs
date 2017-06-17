@@ -47,7 +47,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 
             Texture2D texture;
             using (var stream = new MemoryStream(imgData))
-                texture = manager.LoadFromStream<Texture2D>(stream, imgDataExtension);            
+                texture = manager.LoadFromStream<Texture2D>(stream, imgDataExtension, metadata.AssetDensity);
 
             var glyphCount = reader.ReadInt32();
             var glyphSubst = reader.ReadChar();

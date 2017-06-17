@@ -80,7 +80,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 includePath = ContentManager.NormalizeAssetPath(Path.Combine(Path.GetDirectoryName(metadata.AssetPath), includePath));
                 metadata.AddAssetDependency(includePath);
 
-                var includeSrc = manager.Load<ShaderSource>(includePath, false, metadata.IsLoadedFromSolution);
+                var includeSrc = manager.Load<ShaderSource>(includePath, metadata.AssetDensity, false, metadata.IsLoadedFromSolution);
                 output.AppendLine(includeSrc);
 
                 return true;
