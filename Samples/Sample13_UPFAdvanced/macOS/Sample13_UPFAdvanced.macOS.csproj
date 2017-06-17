@@ -201,6 +201,12 @@
     <BundleResource Include="..\Desktop\Content\Textures\Logo.png">
       <Link>Content\Textures\Logo.png</Link>
     </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\Logo-mdpi.png">
+      <Link>Content\Textures\Logo-mdpi.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
