@@ -21,10 +21,13 @@ namespace Ultraviolet
         {
             Contract.Require(settings, nameof(settings));
 
+            var pos = settings.WindowedPosition;
+
             return new XElement("Window",
                 new XElement("WindowState", settings.WindowState),
                 new XElement("WindowMode", settings.WindowMode),
-                new XElement("WindowedPosition", settings.WindowedPosition),
+                new XElement("WindowScale", settings.WindowScale),
+                new XElement("WindowedPosition", $"{pos.X} {pos.Y} {pos.Width} {pos.Height}"),
                 new XElement("GrabsMouseWhenWindowed", settings.GrabsMouseWhenWindowed),
                 new XElement("GrabsMouseWhenFullscreenWindowed", settings.GrabsMouseWhenFullscreenWindowed),
                 new XElement("GrabsMouseWhenFullscreen", settings.GrabsMouseWhenFullscreen),
@@ -56,6 +59,7 @@ namespace Ultraviolet
 
                 settings.WindowState = xml.ElementValue<WindowState>("WindowState");
                 settings.WindowMode = xml.ElementValue<WindowMode>("WindowMode");
+                settings.WindowScale = (Single?)xml.Element("WindowScale") ?? 1f;
                 settings.WindowedPosition = xml.ElementValue<Rectangle>("WindowedPosition");
                 settings.GrabsMouseWhenWindowed = xml.ElementValue<Boolean>("GrabsMouseWhenWindowed");
                 settings.GrabsMouseWhenFullscreenWindowed = xml.ElementValue<Boolean>("GrabsMouseWhenFullscreenWindowed");
@@ -107,6 +111,7 @@ namespace Ultraviolet
 
             settings.WindowState = primary.GetWindowState();
             settings.WindowMode = primary.GetWindowMode();
+            settings.WindowScale = primary.WindowScale;
             settings.WindowedPosition = new Rectangle(primary.WindowedPosition, primary.WindowedClientSize);
             settings.FullscreenDisplayMode = primary.GetFullscreenDisplayMode();
             settings.GrabsMouseWhenWindowed = primary.GrabsMouseWhenWindowed;
@@ -129,8 +134,7 @@ namespace Ultraviolet
 
             primary.SetWindowState(WindowState);
             primary.SetWindowMode(WindowMode);
-            primary.WindowedClientSize = WindowedPosition.Size;
-            primary.WindowedPosition = WindowedPosition.Location;
+            primary.SetWindowBounds(WindowedPosition, WindowScale);
             primary.GrabsMouseWhenWindowed = GrabsMouseWhenWindowed;
             primary.GrabsMouseWhenFullscreenWindowed = GrabsMouseWhenFullscreenWindowed;
             primary.GrabsMouseWhenFullscreen = GrabsMouseWhenFullscreen;
@@ -191,6 +195,15 @@ namespace Ultraviolet
         /// Gets the primary window's window mode.
         /// </summary>
         public WindowMode WindowMode
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the scaling factor which is applied to the window.
+        /// </summary>
+        public Single WindowScale
         {
             get;
             private set;

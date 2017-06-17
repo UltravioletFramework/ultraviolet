@@ -47,6 +47,13 @@ namespace Ultraviolet.Platform
         DisplayMode GetFullscreenDisplayMode();
 
         /// <summary>
+        /// Sets the window's bounds.
+        /// </summary>
+        /// <param name="bounds">The window's bounding rectangle.</param>
+        /// <param name="scale">The window's scaling factor.</param>
+        void SetWindowBounds(Rectangle bounds, Single scale = 1f);
+
+        /// <summary>
         /// Sets the window's window mode.
         /// </summary>
         /// <param name="mode">The <see cref="WindowMode"/> value that represents the window mode to set.</param>
@@ -98,6 +105,14 @@ namespace Ultraviolet.Platform
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the scaling factor which is applied to the window.
+        /// </summary>
+        Single WindowScale
+        {
+            get;
         }
 
         /// <summary>

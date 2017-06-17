@@ -42,7 +42,7 @@ namespace Ultraviolet.SDL2.Platform
             this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
             this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
             this.opengl = (flags & SDL_WindowFlags.OPENGL) == SDL_WindowFlags.OPENGL;
-            this.scale = Display?.DensityScale ?? 1f;
+            this.windowScale = Display?.DensityScale ?? 1f;
 
             ChangeCompositor(DefaultCompositor.Create(this));
         }
@@ -143,6 +143,18 @@ namespace Ultraviolet.SDL2.Platform
             Contract.EnsureNotDisposed(this, Disposed);
 
             return displayMode;
+        }
+
+        /// <inheritdoc/>
+        public void SetWindowBounds(Rectangle bounds, Single scale = 1f)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(scale >= 1f, nameof(scale));
+
+            this.WindowedPosition = bounds.Location;
+            this.WindowedClientSize = bounds.Size;
+
+            this.windowScale = scale;
         }
 
         /// <inheritdoc/>
@@ -321,12 +333,8 @@ namespace Ultraviolet.SDL2.Platform
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
-            // On Windows we check for WM_DPICHANGED, so we don't need to handle DPI changes here.
-            if (Ultraviolet.Platform != UltravioletPlatform.Windows)
-            {
-                if (Display.DensityScale != scale)
-                    HandleDpiChanged();
-            }
+            if (Display.DensityScale != windowScale)
+                HandleDpiChanged();
         }
 
         /// <summary>
@@ -364,6 +372,17 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 SDL.SetWindowTitle(ptr, value ?? String.Empty);
+            }
+        }
+
+        /// <inheritdoc/>
+        public Single WindowScale
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return windowScale;
             }
         }
 
@@ -988,7 +1007,7 @@ namespace Ultraviolet.SDL2.Platform
             // On Windows, resize the window to match the new scale.
             if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.SupportsHighDensityDisplayModes)
             {
-                var factor = (reportedScale ?? Display.DensityScale) / scale;
+                var factor = (reportedScale ?? Display.DensityScale) / windowScale;
 
                 SDL.GetWindowPosition(ptr, out var windowX, out var windowY);
                 SDL.GetWindowSize(ptr, out var windowW, out var windowH);
@@ -1000,7 +1019,7 @@ namespace Ultraviolet.SDL2.Platform
                 WindowedPosition = bounds.Location;
                 WindowedClientSize = size;
             }
-            scale = (reportedScale ?? Display.DensityScale);
+            windowScale = (reportedScale ?? Display.DensityScale);
 
             // Inform the rest of the system that this window's DPI has changed.
             var messageData = Ultraviolet.Messages.CreateMessageData<WindowDensityChangedMessageData>();
@@ -1132,6 +1151,7 @@ namespace Ultraviolet.SDL2.Platform
 
         // Property values.
         private readonly UInt32 id;
+        private Single windowScale;
         private Point2? windowedPosition;
         private Size2? windowedClientSize;
         private Boolean synchronizeWithVerticalRetrace = true;
@@ -1149,7 +1169,6 @@ namespace Ultraviolet.SDL2.Platform
         private Boolean focused;
         private Boolean minimized;
         private Boolean opengl;
-        private Single scale;
 
         // HACK: Cached style from before entering fullscreen windowed mode.
         private IntPtr win32CachedStyle;
