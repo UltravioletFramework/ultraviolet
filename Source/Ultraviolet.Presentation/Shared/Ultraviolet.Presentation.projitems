@@ -42,6 +42,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapperUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Compilation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Diagnostics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Layout.cs" />

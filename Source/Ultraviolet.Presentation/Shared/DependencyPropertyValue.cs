@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Ultraviolet.Core;
 using Ultraviolet.Presentation.Animations;
 using Ultraviolet.Presentation.Styles;
@@ -656,6 +657,27 @@ namespace Ultraviolet.Presentation
             }
 
             /// <summary>
+            /// Gets a function which retrieves the wrapped resource represented by an instance of the <see cref="IResourceWrapper"/> interface.
+            /// </summary>
+            private static Func<T, Object> GetResourceRetriever()
+            {
+                if (!cachedIResourceWrapperGetters.TryGetValue(typeof(T).TypeHandle.Value.ToInt64(), out var cachedIResourceWrapperGetter))
+                {
+                    var miGetResourceFromResourceWrapper = typeof(IResourceWrapperUtil).GetMethod(
+                        nameof(IResourceWrapperUtil.GetResourceFromResourceWrapper), BindingFlags.Public | BindingFlags.Static);
+
+                    var getterMethod = miGetResourceFromResourceWrapper.MakeGenericMethod(typeof(T));
+                    var getterParameter = Expression.Parameter(typeof(T), "wrapper");
+                    var getterLambda = Expression.Lambda<Func<T, Object>>(Expression.Call(null, getterMethod, getterParameter), getterParameter).Compile();
+
+                    cachedIResourceWrapperGetter = getterLambda;
+                    cachedIResourceWrapperGetters[typeof(T).TypeHandle.Value.ToInt64()] = getterLambda;
+                }
+
+                return (Func<T, Object>)cachedIResourceWrapperGetter;
+            }
+
+            /// <summary>
             /// Gets the value's animation state.
             /// </summary>
             private DependencyPropertyValueAnimationState<T> GetAnimationState(Boolean instantiate = true)
@@ -788,7 +810,7 @@ namespace Ultraviolet.Presentation
                     if (definitelyChanged)
                     {
                         if (IsResourceWrapper)
-                            wrappedResource = ((IResourceWrapper)newValue).Resource;
+                            wrappedResource = GetResourceRetriever()(newValue);
 
                         HandleChanged(oldValue, newValue);
                     }
@@ -798,7 +820,7 @@ namespace Ultraviolet.Presentation
                     if (IsResourceWrapper)
                     {
                         var oldResource = wrappedResource;
-                        var newResource = ((IResourceWrapper)original).Resource;
+                        var newResource = GetResourceRetriever()(original);
 
                         if (!ReferenceEquals(oldResource, newResource))
                         {
@@ -1147,6 +1169,10 @@ namespace Ultraviolet.Presentation
             // Cached constructor delegates for bound values.
             private static readonly Dictionary<Type, Delegate> cachedBoundValueCtors =
                 new Dictionary<Type, Delegate>();
+
+            // Cached getters for IResourceWrapper types.
+            private static readonly Dictionary<Int64, Object> cachedIResourceWrapperGetters =
+                new Dictionary<Int64, Object>();
         }
     }
 }
