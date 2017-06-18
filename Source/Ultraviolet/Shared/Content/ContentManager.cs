@@ -37,7 +37,7 @@ namespace Ultraviolet.Content
             : base(uv)
         {
             this.rootDirectory = rootDirectory;
-            this.fullRootDirectory = Path.GetFullPath(rootDirectory);
+            this.fullRootDirectory = (rootDirectory == null) ? Directory.GetCurrentDirectory() : Path.GetFullPath(rootDirectory);
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
 

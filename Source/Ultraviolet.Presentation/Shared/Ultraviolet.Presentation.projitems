@@ -42,6 +42,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Compilation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Diagnostics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Layout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Types.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\CompositeUvssDocumentChild.cs" />
@@ -284,7 +288,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\RoutedCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ExecutedRoutedEventData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\Touch.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)InternalPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRoutedEventRaisedNotificationSubscriber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletDisplayExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletUIExtensions.cs" />
