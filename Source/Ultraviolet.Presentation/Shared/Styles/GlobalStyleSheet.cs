@@ -13,7 +13,9 @@ namespace Ultraviolet.Presentation.Styles
         /// <param name="uv">The Ultraviolet context.</param>
         private GlobalStyleSheet(UltravioletContext uv)
             : base(uv)
-        { }
+        {
+
+        }
 
         /// <summary>
         /// Creates a new <see cref="GlobalStyleSheet"/> instance.
@@ -25,19 +27,15 @@ namespace Ultraviolet.Presentation.Styles
             return new GlobalStyleSheet(uv);
         }
 
-        /// <summary>
-        /// Handles the validation phase when reloading the global style sheet.
-        /// </summary>
-        private bool Global_Validating(String path, UvssDocument asset)
+        /// <inheritdoc/>
+        protected override bool OnValidating(String path, UvssDocument asset)
         {
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
-            return upf.TrySetGlobalStyleSheet(this);
+            return upf.TrySetGlobalStyleSheet(this);            
         }
 
-        /// <summary>
-        /// Handles the reloading phase when reloading the global style sheet.
-        /// </summary>
-        private void Global_ValidationComplete(String path, UvssDocument asset, Boolean validated)
+        /// <inheritdoc/>
+        protected override void OnValidationComplete(String path, UvssDocument asset, Boolean validated)
         {
             if (validated)
                 return;

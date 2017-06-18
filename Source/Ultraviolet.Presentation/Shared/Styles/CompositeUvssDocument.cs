@@ -15,14 +15,11 @@ namespace Ultraviolet.Presentation.Styles
         /// Initializes a new instance of the <see cref="CompositeUvssDocument"/> class.
         /// </summary>
         /// <param name="uv">The ultraviolet context.</param>
-        /// <param name="validating">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidating(String, T)"/> method.</param>
-        /// <param name="validationComplete">A delegate which implements the <see cref="DelegateAssetWatcher{T}.OnValidationComplete(String, T, Boolean)"/> method.</param>
-        protected CompositeUvssDocument(UltravioletContext uv, 
-            AssetWatcherValidatingHandler<UvssDocument> validating = null, AssetWatcherValidationCompleteHandler<UvssDocument> validationComplete = null)
+        internal CompositeUvssDocument(UltravioletContext uv)
             : base(uv)
         {
-            this.validating = validating;
-            this.validationComplete = validationComplete;
+            this.validating = OnValidating;
+            this.validationComplete = OnValidationComplete;
         }
         
         /// <summary>
@@ -94,7 +91,23 @@ namespace Ultraviolet.Presentation.Styles
 
             base.Dispose(disposing);
         }
-        
+
+        /// <summary>
+        /// Called when one of the document's children is validating.
+        /// </summary>
+        /// <param name="path">The asset path of the asset which is being reloaded.</param>
+        /// <param name="asset">The asset which is being reloaded.</param>
+        /// <returns><see langword="true"/> if the specified asset is valid; otherwise, <see langword="false"/>.</returns>
+        protected abstract bool OnValidating(String path, UvssDocument asset);
+
+        /// <summary>
+        /// Called when one of the document's children finishes validating.
+        /// </summary>
+        /// <param name="path">The asset path of the asset which was reloaded.</param>
+        /// <param name="asset">The asset which was reloaded.</param>
+        /// <param name="validated">A value indicating whether the asset that was loading validated successfully.</param>
+        protected abstract void OnValidationComplete(String path, UvssDocument asset, Boolean validated);
+
         /// <summary>
         /// Converts the composite document to a <see cref="UvssDocument"/> instance appropriate
         /// for the specified creen density.

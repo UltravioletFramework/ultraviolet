@@ -70,7 +70,7 @@ namespace Ultraviolet.Presentation.Styles
                 assetVersions[(Byte)density] = document;
             }
 
-            return document;
+            return document.ValidatingValue ?? document.Value;
         }
 
         /// <summary>
