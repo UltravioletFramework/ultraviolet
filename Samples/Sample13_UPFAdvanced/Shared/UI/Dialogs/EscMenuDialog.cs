@@ -1,4 +1,5 @@
-﻿using Ultraviolet.Core;
+﻿using System;
+using Ultraviolet.Core;
 using Ultraviolet.UI;
 using Ultraviolet.Presentation;
 using UltravioletSample.Sample13_UPFAdvanced.UI.Screens;
@@ -30,6 +31,16 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
 
                 return screen;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                SafeDispose.Dispose(screen);
+            }
+            base.Dispose(disposing);
         }
 
         // Property values.
