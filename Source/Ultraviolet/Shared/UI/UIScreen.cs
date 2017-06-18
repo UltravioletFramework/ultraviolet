@@ -304,8 +304,9 @@ namespace Ultraviolet.UI
             if (String.IsNullOrEmpty(asset))
                 return null;
 
-            var display = Window?.Display;
-            var density = (display == null) ? Ultraviolet.GetPlatform().Displays.PrimaryDisplay.DensityBucket : display.DensityBucket;
+            var display = Window?.Display ?? Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
+            var density = display.DensityBucket;
+            scale = display.DensityScale;
 
             var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
             if (watch)
