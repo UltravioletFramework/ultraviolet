@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -2268,31 +2268,42 @@ namespace Ultraviolet.Content
                 return null;
             }
 
-            // NOTE: I have absolutely no idea whether these directory names are
-            // localized in non-English versions of Visual Studio, so I won't
-            // bother checking them... let's just assume we're in the right place
-            // unless we have a specific reason to think otherwise.
-
-            // Break out of "Debug"/"Release"/etc.
-            asmDir = asmDir.Parent;
-            if (asmDir == null || !asmDir.Exists)
+            // Break out of the bin directory. There's a different number of steps depending on our platform.
+            var depth = (Ultraviolet.Platform == UltravioletPlatform.macOS) ? 5 : 2;
+            for (int i = 0; i < depth; i++)
             {
-                solutionDirectory = String.Empty;
-                return null;
-            }
-
-            // Break out of "bin"   
-            asmDir = asmDir.Parent;
-            if (asmDir == null || !asmDir.Exists)
-            {
-                solutionDirectory = String.Empty;
-                return null;
+                asmDir = asmDir.Parent;
+                if (asmDir == null || !asmDir.Exists)
+                {
+                    solutionDirectory = String.Empty;
+                    return null;
+                }
             }
 
             // Is there a directory here with the same structure as our content root?
             var projectContentRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, RootDirectory));
             if (projectContentRoot == null || !projectContentRoot.Exists)
             {
+                // If we're on a Mac, check for a Desktop version of the project by
+                // going up another level and looking for a "Desktop" directory.
+                // If your app doesn't follow the Ultraviolet convention here, then
+                // unfortunately you're out of luck.
+                asmDir = asmDir.Parent;
+                if (asmDir != null && asmDir.Exists)
+                {
+                    var desktopRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, "Desktop"));
+                    if (desktopRoot != null && desktopRoot.Exists)
+                    {
+                        // Check again for the content root...
+                        projectContentRoot = new DirectoryInfo(Path.Combine(desktopRoot.FullName, RootDirectory));
+                        if (projectContentRoot != null && projectContentRoot.Exists)
+                        {
+                            solutionDirectory = projectContentRoot.FullName;
+                            return solutionDirectory;
+                        }
+                    }                
+                }
+
                 solutionDirectory = String.Empty;
                 return null;
             }
