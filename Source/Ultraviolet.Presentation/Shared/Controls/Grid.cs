@@ -13,6 +13,34 @@ namespace Ultraviolet.Presentation.Controls
     public partial class Grid : Panel
     {
         /// <summary>
+        /// Initializes the <see cref="Grid"/> type.
+        /// </summary>
+        static Grid()
+        {
+            cmpByPreferredDesiredDimension = new FunctorComparer<DefinitionBase>((def1, def2) =>
+            {
+                return def1.PreferredDesiredDimension.CompareTo(def2.PreferredDesiredDimension);
+            });
+
+            cmpByMaxDimension = new FunctorComparer<DefinitionBase>((def1, def2) =>
+            {
+                return def1.MaxDimension.CompareTo(def2.MaxDimension);
+            });
+
+            cmpByMeasuredContentDimension = new FunctorComparer<DefinitionBase>((def1, def2) =>
+            {
+                return def1.MeasuredContentDimension.CompareTo(def2.MeasuredContentDimension);
+            });
+
+            cmpByMinArrangedSize = new FunctorComparer<DefinitionBase>((def1, def2) =>
+            {
+                var def1Min = Math.Max(def1.MinDimension, def1.MeasuredContentDimension);
+                var def2Min = Math.Max(def2.MinDimension, def2.MeasuredContentDimension);
+                return def2Min.CompareTo(def1Min);
+            });
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Grid"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
@@ -1078,10 +1106,7 @@ namespace Ultraviolet.Presentation.Controls
         {
             var buffer = EnumerateDefinitionsInSpan(definitions, index, span, auto: false);
 
-            buffer.Sort((def1, def2) =>
-            {
-                return def1.PreferredDesiredDimension.CompareTo(def2.PreferredDesiredDimension);
-            });
+            buffer.Sort(cmpByPreferredDesiredDimension);
 
             return buffer;
         }
@@ -1098,10 +1123,7 @@ namespace Ultraviolet.Presentation.Controls
         {
             var buffer = EnumerateDefinitionsInSpan(definitions, index, span, auto: false);
 
-            buffer.Sort((def1, def2) =>
-            {
-                return def1.MaxDimension.CompareTo(def2.MaxDimension);
-            });
+            buffer.Sort(cmpByMaxDimension);
 
             return buffer;
         }
@@ -1118,10 +1140,7 @@ namespace Ultraviolet.Presentation.Controls
         {
             var buffer = EnumerateDefinitionsInSpan(definitions, index, span, nonauto: false);
 
-            buffer.Sort((def1, def2) =>
-            {
-                return def1.MeasuredContentDimension.CompareTo(def2.MeasuredContentDimension);
-            });
+            buffer.Sort(cmpByMeasuredContentDimension);
 
             return buffer;
         }
@@ -1135,12 +1154,7 @@ namespace Ultraviolet.Presentation.Controls
             for (int i = 0; i < definitions.Count; i++)
                 spanEnumerationBuffer.Add(definitions[i]);
 
-            spanEnumerationBuffer.Sort((def1, def2) =>
-            {
-                var def1Min = Math.Max(def1.MinDimension, def1.MeasuredContentDimension);
-                var def2Min = Math.Max(def2.MinDimension, def2.MeasuredContentDimension);
-                return def2Min.CompareTo(def1Min);
-            });
+            spanEnumerationBuffer.Sort(cmpByMinArrangedSize);
 
             return spanEnumerationBuffer;
         }
@@ -1148,7 +1162,11 @@ namespace Ultraviolet.Presentation.Controls
         // A buffer used to sort spanned definitions during measurement.
         [ThreadStatic]
         private readonly List<DefinitionBase> spanEnumerationBuffer = new List<DefinitionBase>(8);
-        
+        private static readonly FunctorComparer<DefinitionBase> cmpByPreferredDesiredDimension;
+        private static readonly FunctorComparer<DefinitionBase> cmpByMaxDimension;
+        private static readonly FunctorComparer<DefinitionBase> cmpByMeasuredContentDimension;
+        private static readonly FunctorComparer<DefinitionBase> cmpByMinArrangedSize;
+
         // Property values.
         private readonly RowDefinitionCollection rowDefinitions;
         private readonly ColumnDefinitionCollection columnDefinitions;
