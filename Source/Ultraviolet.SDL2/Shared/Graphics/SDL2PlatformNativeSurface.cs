@@ -19,6 +19,9 @@ namespace Ultraviolet.SDL2.Graphics
         {
             if ((this.ptr = SDL.CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
                 throw new SDL2Exception();
+            
+            if (SDL.SetSurfaceBlendMode(this.ptr, SDL_BlendMode.NONE) < 0)
+                throw new SDL2Exception();
         }
 
         /// <summary>
@@ -32,6 +35,9 @@ namespace Ultraviolet.SDL2.Graphics
 
             var dst = SDL.CreateRGBSurface(0, src->w, src->h, 32, rmask, gmask, bmask, amask);
             if (dst == null)
+                throw new SDL2Exception();
+
+            if (SDL.SetSurfaceBlendMode(dst, SDL_BlendMode.NONE) < 0)
                 throw new SDL2Exception();
 
             if (SDL.BlitSurface(src, null, dst, null) < 0)
@@ -52,6 +58,9 @@ namespace Ultraviolet.SDL2.Graphics
             var height = source.Height;
 
             if ((this.ptr = SDL.CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
+                throw new SDL2Exception();
+            
+            if (SDL.SetSurfaceBlendMode(this.ptr, SDL_BlendMode.NONE) < 0)
                 throw new SDL2Exception();
 
             var pDstData = (byte*)ptr->pixels;

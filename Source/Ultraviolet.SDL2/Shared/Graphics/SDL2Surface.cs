@@ -171,9 +171,6 @@ namespace Ultraviolet.SDL2.Graphics
 
             using (var copysurf = new SDL2PlatformNativeSurface(Width, Height))
             {
-                if (SDL.SetSurfaceBlendMode(nativesurf.NativePtr, SDL_BlendMode.NONE) < 0)
-                    throw new SDL2Exception();
-
                 if (SDL.BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
                     throw new SDL2Exception();
 
