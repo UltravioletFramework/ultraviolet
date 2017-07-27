@@ -204,9 +204,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
 
             using (var copysurf = new SDL_Surface(Width, Height))
             {
-                if (SDL.SetSurfaceBlendMode(nativesurf.Native, SDL_BlendMode.NONE) < 0)
-                    throw new SDL2Exception();
-
                 if (SDL.BlitSurface(nativesurf.Native, null, copysurf.Native, null) < 0)
                     throw new SDL2Exception();
 
@@ -329,9 +326,6 @@ namespace TwistedLogik.Ultraviolet.OpenGL.Graphics
         {
             var sdlSrcRect = new SDL_Rect() { x = srcRect.X, y = srcRect.Y, w = srcRect.Width, h = srcRect.Height };
             var sdlDstRect = new SDL_Rect() { x = dstRect.X, y = dstRect.Y, w = dstRect.Width, h = dstRect.Height };
-
-            if (SDL.SetSurfaceBlendMode(src.nativesurf.Native, SDL_BlendMode.NONE) < 0)
-                throw new SDL2Exception();
 
             if (srcRect.Width != dstRect.Width || srcRect.Height != dstRect.Height)
             {
