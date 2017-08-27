@@ -48,6 +48,7 @@ namespace Ultraviolet.Graphics
                 atlasMetadata.MaximumWidth = (Int32?)metadataElement.Element("MaximumWidth") ?? atlasMetadata.MaximumWidth;
                 atlasMetadata.MaximumHeight = (Int32?)metadataElement.Element("MaximumHeight") ?? atlasMetadata.MaximumHeight;
                 atlasMetadata.Padding = (Int32?)metadataElement.Element("Padding") ?? atlasMetadata.Padding;
+                atlasMetadata.FlattenCellName = (Boolean?)metadataElement.Element("FlattenCellName") ?? atlasMetadata.FlattenCellName;
             }
 
             var imageRootElement = input.Root.Element("Images");

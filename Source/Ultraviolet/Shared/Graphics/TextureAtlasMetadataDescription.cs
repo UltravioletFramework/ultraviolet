@@ -58,5 +58,11 @@ namespace Ultraviolet.Graphics
         /// </summary>
         [JsonProperty(PropertyName = "padding", Required = Required.DisallowNull)]
         public Int32 Padding { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the atlas' texture must be square.
+        /// </summary>
+        [JsonProperty(PropertyName = "flattenCellName", Required = Required.DisallowNull)]
+        public Boolean FlattenCellName { get; set; }
     }
 }
