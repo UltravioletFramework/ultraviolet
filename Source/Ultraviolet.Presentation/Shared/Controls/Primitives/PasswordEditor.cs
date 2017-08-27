@@ -127,6 +127,14 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         }
         
         /// <inheritdoc/>
+        protected override void OnViewModelChanged()
+        {
+            securePassword = new SecureString();
+            
+            base.OnViewModelChanged();
+        }
+
+        /// <inheritdoc/>
         protected override void CleanupOverride()
         {
             SafeDispose.DisposeRef(ref securePassword);
