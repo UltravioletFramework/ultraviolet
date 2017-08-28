@@ -116,16 +116,16 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             get { return (securePassword == null) ? null : securePassword.Copy(); }
         }
-
+        
         /// <inheritdoc/>
-        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
+        protected override void PrepareOverride()
         {
-            if (newView != null)
+            if (securePassword == null)
                 securePassword = new SecureString();
 
-            base.OnViewChanged(oldView, newView);
+            base.PrepareOverride();
         }
-        
+
         /// <inheritdoc/>
         protected override void CleanupOverride()
         {

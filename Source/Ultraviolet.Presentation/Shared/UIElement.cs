@@ -328,6 +328,16 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Prepares the element for use after a call to the <see cref="Cleanup()"/> method
+        /// has been made. This allows the element to re-initialize any objects which were
+        /// disposed or reset.
+        /// </summary>
+        public void Prepare()
+        {
+            PrepareCore();            
+        }
+
+        /// <summary>
         /// Performs cleanup operations and releases any internal framework resources.
         /// The object remains usable after this method is called, but certain aspects
         /// of its state, such as animations, may be reset.
@@ -2163,6 +2173,18 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// When overridden in a derived class, prepares the element for use after a call to 
+        /// the <see cref="Cleanup()"/> method has been made.
+        /// </summary>
+        protected virtual void PrepareCore()
+        {
+            VisualTreeHelper.ForEachChild<UIElement>(this, null, (child, state) =>
+            {
+                child.Prepare();
+            });
+        }
+
+        /// <summary>
         /// When overridden in a derived class, performs cleanup operations and releases any 
         /// internal framework resources for this element and any child elements.
         /// </summary>
@@ -3246,6 +3268,9 @@ namespace Ultraviolet.Presentation
         /// </summary>
         private void HandleViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
+            if (oldView == null && newView != null)
+                Prepare();
+
             OnViewChanged(oldView, newView);
             OnViewModelChanged();
 

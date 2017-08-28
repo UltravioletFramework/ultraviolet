@@ -1034,6 +1034,7 @@ namespace Ultraviolet.Presentation
         {
             viewIsOpen = true;
 
+            layoutRoot.Prepare();
             layoutRoot.InvalidateStyle(true);
             layoutRoot.Style(combinedStyleSheet);
             UpdateLayout();

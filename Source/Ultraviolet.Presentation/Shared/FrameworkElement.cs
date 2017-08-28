@@ -672,7 +672,15 @@ namespace Ultraviolet.Presentation
         {
             base.ClearTriggeredValuesCore(recursive);
         }
-        
+
+        /// <inheritdoc/>
+        protected sealed override void PrepareCore()
+        {
+            PrepareOverride();
+
+            base.PrepareCore();
+        }
+
         /// <inheritdoc/>
         protected sealed override void CleanupCore()
         {
@@ -1010,6 +1018,15 @@ namespace Ultraviolet.Presentation
                 child.Position(Size2D.Zero);
                 child.PositionChildren();
             });
+        }
+        
+        /// <summary>
+        /// When overridden in a derived class, prepares the element for use after a call to 
+        /// the <see cref="UIElement.Cleanup()"/> method has been made.
+        /// </summary>
+        protected virtual void PrepareOverride()
+        {
+
         }
 
         /// <summary>

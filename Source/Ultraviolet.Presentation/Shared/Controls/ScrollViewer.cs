@@ -889,21 +889,20 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override void PrepareOverride()
+        {
+            LayoutUpdated -= OnLayoutUpdated;
+            LayoutUpdated += OnLayoutUpdated;
+
+            base.PrepareOverride();
+        }
+
+        /// <inheritdoc/>
         protected override void CleanupOverride()
         {
             LayoutUpdated -= OnLayoutUpdated;
 
             base.CleanupOverride();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
-        {
-            if (oldView != null)
-                LayoutUpdated -= OnLayoutUpdated;
-
-            if (newView != null)
-                LayoutUpdated += OnLayoutUpdated;
         }
 
         /// <inheritdoc/>

@@ -1696,12 +1696,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <inheritdoc/>
         protected override void OnViewChanged(PresentationFoundationView oldView, PresentationFoundationView newView)
         {
-            if (oldView != null)
-                LayoutUpdated -= OnLayoutUpdated;
-
-            if (newView != null)
-                LayoutUpdated += OnLayoutUpdated;
-
             UpdateTextParserStream();
 
             base.OnViewChanged(oldView, newView);
@@ -1778,7 +1772,16 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             base.ReloadContentOverride(recursive);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void PrepareOverride()
+        {
+            LayoutUpdated -= OnLayoutUpdated;
+            LayoutUpdated += OnLayoutUpdated;
+
+            base.PrepareOverride();
+        }
+
         /// <inheritdoc/>
         protected override void CleanupOverride()
         {
