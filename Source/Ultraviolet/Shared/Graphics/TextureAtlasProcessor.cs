@@ -46,16 +46,7 @@ namespace Ultraviolet.Graphics
             writer.Write(outputPlacement.Count);
             foreach (var cell in outputPlacement)
             {
-                if (input.Metadata.FlattenCellName)
-                {
-                    var key = cell.Key;
-                    key = key.Substring(key.LastIndexOf('\\') + 1);
-                    writer.Write(key);
-                }
-                else
-                {
-                    writer.Write(cell.Key);
-                }
+                writer.Write(cell.Key);
                 writer.Write(cell.Value.X);
                 writer.Write(cell.Value.Y);
                 writer.Write(cell.Value.Width - input.Metadata.Padding);
@@ -163,6 +154,9 @@ namespace Ultraviolet.Graphics
 
                             name = String.IsNullOrEmpty(nameRoot) ? nameFile : nameRoot + "\\" + nameFile;
 
+                            if (atlasDesc.Metadata.FlattenCellName)
+                                name = FlattenCellName(name);
+
                             if (result.ContainsKey(name))
                                 throw new InvalidOperationException(UltravioletStrings.TextureAtlasAlreadyContainsCell.Format(name));
 
@@ -176,7 +170,10 @@ namespace Ultraviolet.Graphics
                     {
                         name = name ?? path;
                         path = ResolveDependencyAssetPath(metadata, Path.Combine(atlasDesc.Metadata.RootDirectory, path));
-                        
+
+                        if (atlasDesc.Metadata.FlattenCellName)
+                            name = FlattenCellName(name);
+
                         if (result.ContainsKey(name))
                             throw new InvalidOperationException(UltravioletStrings.TextureAtlasAlreadyContainsCell.Format(name));
 
@@ -438,6 +435,19 @@ namespace Ultraviolet.Graphics
             var atlas = new TextureAtlas(texture, images.ToDictionary(x => x.Key, 
                 x => new Rectangle(x.Value.X, x.Value.Y, x.Value.Width - padding, x.Value.Height - padding)));
             return atlas;
+        }
+
+        /// <summary>
+        /// Flattens an image name by ignoring directory information.
+        /// </summary>
+        private static String FlattenCellName(String name)
+        {
+            var ixSeparator = Math.Max(name.LastIndexOf('/'), name.LastIndexOf('\\'));
+            if (ixSeparator >= 0)
+            {
+                return name.Substring(ixSeparator + 1);
+            }
+            return name;
         }
     }
 }
