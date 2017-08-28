@@ -46,7 +46,16 @@ namespace Ultraviolet.Graphics
             writer.Write(outputPlacement.Count);
             foreach (var cell in outputPlacement)
             {
-                writer.Write(cell.Key);
+                if (input.Metadata.FlattenCellName)
+                {
+                    var key = cell.Key;
+                    key = key.Substring(key.LastIndexOf('\\') + 1);
+                    writer.Write(key);
+                }
+                else
+                {
+                    writer.Write(cell.Key);
+                }
                 writer.Write(cell.Value.X);
                 writer.Write(cell.Value.Y);
                 writer.Write(cell.Value.Width - input.Metadata.Padding);
