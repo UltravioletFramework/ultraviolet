@@ -461,6 +461,10 @@ namespace Ultraviolet.BASS.Audio
                 if (sampleDataPosition >= sampleDataLength)
                     sampleDataPosition = 0;
 
+                var sfx = (BASSSoundEffect)this.playing;
+                if (sfx == null || sfx.Disposed)
+                    return BASSNative.BASS_STREAMPROC_END;
+
                 var byteCount = Math.Min(length, (uint)sampleDataLength - streampos);
                 unsafe
                 {
