@@ -175,7 +175,11 @@ namespace Ultraviolet.SDL2.Platform
             else
                 sdlflags |= SDL_WindowFlags.SHOWN;
 
-            var sdlptr = SDL.CreateWindow(caption ?? String.Empty, x, y, width, height, sdlflags);
+            var sdlptr = SDL.CreateWindow(caption ?? String.Empty,
+                x == -1 ? (int) SDL.SDL_WINDOWPOS_CENTERED_MASK : x,
+                y == -1 ? (int) SDL.SDL_WINDOWPOS_CENTERED_MASK : y,
+                width, height, sdlflags);
+            
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
