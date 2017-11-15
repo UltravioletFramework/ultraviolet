@@ -792,6 +792,10 @@ namespace Ultraviolet.OpenGL
         {
             switch (type)
             {
+                case PrimitiveType.Quad:
+                    vertices = count * 4;
+                    return gl.GL_QUADS;
+                
                 case PrimitiveType.TriangleList:
                     vertices = count * 3;
                     return gl.GL_TRIANGLES;
