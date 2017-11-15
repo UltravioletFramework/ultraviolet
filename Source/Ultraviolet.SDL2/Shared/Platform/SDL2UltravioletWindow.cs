@@ -158,6 +158,18 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
+        public void SetWindowSizeCentered(Size2 size, Single scale = 1f)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(scale >= 1f, nameof(scale));
+
+            this.WindowedPosition = new Point2((int) SDL.SDL_WINDOWPOS_CENTERED_MASK, (int) SDL.SDL_WINDOWPOS_CENTERED_MASK);
+            this.WindowedClientSize = size;
+
+            this.windowScale = scale;
+        }
+
+        /// <inheritdoc/>
         public void SetWindowMode(WindowMode mode)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -425,6 +437,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 windowedPosition = value;
+                
 
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {

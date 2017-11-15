@@ -164,12 +164,12 @@ namespace Ultraviolet
         /// <summary>
         /// The default x-position of a new window.
         /// </summary>
-        public const Int32 DefaultWindowPositionX = 100;
+        public const Int32 DefaultWindowPositionX = -1;
 
         /// <summary>
         /// The default y-position of a new window.
         /// </summary>
-        public const Int32 DefaultWindowPositionY = 100;
+        public const Int32 DefaultWindowPositionY = -1;
 
         /// <summary>
         /// The default client width of a new window.

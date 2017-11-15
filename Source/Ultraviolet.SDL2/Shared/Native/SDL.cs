@@ -402,5 +402,9 @@ namespace Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowOpacity")]
         public static extern Int32 GetWindowOpacity(IntPtr window, Single* opacity);
+
+
+        public const uint SDL_WINDOWPOS_CENTERED_MASK  = 0x2FFF0000u;
+        public const uint SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000u;
     }
 }
