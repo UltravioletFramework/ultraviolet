@@ -52,13 +52,22 @@ namespace Ultraviolet.Platform
         /// <param name="bounds">The window's bounding rectangle.</param>
         /// <param name="scale">The window's scaling factor.</param>
         void SetWindowBounds(Rectangle bounds, Single scale = 1f);
-        
+
         /// <summary>
-        /// Center the window and set its size.
+        /// Sets the client size to which the window will be restored upon entering non-maximized windowed mode,
+        /// preserving its current position on the screen.
         /// </summary>
-        /// <param name="size">The window's size.</param>
+        /// <param name="size">The window's client size.</param>
         /// <param name="scale">The window's scaling factor.</param>
-        void SetWindowSizeCentered(Size2 size, Single scale = 1f);
+        void SetWindowedClientSize(Size2 size, Single scale = 1f);
+
+        /// <summary>
+        /// Sets the client size to which the window will be restored upon entering non-maximized windowed mode,
+        /// and centers the window on the screen.
+        /// </summary>
+        /// <param name="size">The window's client size.</param>
+        /// <param name="scale">The window's scaling factor.</param>
+        void SetWindowedClientSizeCentered(Size2 size, Single scale = 1f);
 
         /// <summary>
         /// Sets the window's window mode.

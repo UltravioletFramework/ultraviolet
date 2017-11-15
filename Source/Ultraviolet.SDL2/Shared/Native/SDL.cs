@@ -27,13 +27,13 @@ namespace Ultraviolet.SDL2.Native
             LibraryLoader.Load("SDL2");
         }
 
+        public const UInt32 SDL_WINDOWPOS_CENTERED_MASK = 0x2FFF0000u;
+        public const UInt32 SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000u;
+
+        public static String GetError() => Marshal.PtrToStringAnsi(GetError_Impl());
+
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetError")]
         private static extern IntPtr GetError_Impl();
-
-        public static String GetError()
-        {
-            return Marshal.PtrToStringAnsi(GetError_Impl());
-        }
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ClearError")]
         public static extern void ClearError();
@@ -402,9 +402,5 @@ namespace Ultraviolet.SDL2.Native
 
         [DllImport(LibraryPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetWindowOpacity")]
         public static extern Int32 GetWindowOpacity(IntPtr window, Single* opacity);
-
-
-        public const uint SDL_WINDOWPOS_CENTERED_MASK  = 0x2FFF0000u;
-        public const uint SDL_WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000u;
     }
 }

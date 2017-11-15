@@ -158,12 +158,23 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public void SetWindowSizeCentered(Size2 size, Single scale = 1f)
+        public void SetWindowedClientSize(Size2 size, Single scale = 1f)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(scale >= 1f, nameof(scale));
 
-            this.WindowedPosition = new Point2((int) SDL.SDL_WINDOWPOS_CENTERED_MASK, (int) SDL.SDL_WINDOWPOS_CENTERED_MASK);
+            this.WindowedClientSize = size;
+
+            this.windowScale = scale;
+        }
+
+        /// <inheritdoc/>
+        public void SetWindowedClientSizeCentered(Size2 size, Single scale = 1f)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(scale >= 1f, nameof(scale));
+
+            this.WindowedPosition = new Point2((Int32)SDL.SDL_WINDOWPOS_CENTERED_MASK, (Int32)SDL.SDL_WINDOWPOS_CENTERED_MASK);
             this.WindowedClientSize = size;
 
             this.windowScale = scale;
