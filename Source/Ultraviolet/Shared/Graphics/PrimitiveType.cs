@@ -27,5 +27,10 @@ namespace Ultraviolet.Graphics
         /// and one vertex from the previous line segment.
         /// </summary>
         LineStrip,
+        
+        /// <summary>
+        /// The vertex data is ordered as a sequence of quad segments, with each quad segment described by four new vertex
+        /// </summary>
+        Quad
     }
 }
