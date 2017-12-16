@@ -358,12 +358,12 @@ namespace Ultraviolet.OpenGL.Graphics
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
 
-            this.width          = width;
-            this.height         = height;
+            this.width = width;
+            this.height = height;
             this.internalformat = internalformat;
-            this.format         = format;
-            this.type           = type;
-            this.immutable      = immutable;
+            this.format = format;
+            this.type = type;
+            this.immutable = immutable;
 
             this.texture = uv.QueueWorkItemAndWait(() =>
             {

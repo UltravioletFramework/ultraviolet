@@ -70,6 +70,13 @@ namespace Ultraviolet.OpenGL.Bindings
         private static readonly glTextureSubImage2DDelegate glTextureSubImage2D = null;
 
         [MonoNativeFunctionWrapper]
+        private delegate void glTextureSubImage3DDelegate(uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, IntPtr pixels);
+        [Require(MinVersion = "4.5")]
+        [Require(Extension = "GL_ARB_direct_state_access")]
+        /* NOTE: Different signature in GL_EXT_direct_state_access */
+        private static readonly glTextureSubImage3DDelegate glTextureSubImage3D = null;
+
+        [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage1DDelegate(uint texture, int levels, uint internalformat, int width);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]

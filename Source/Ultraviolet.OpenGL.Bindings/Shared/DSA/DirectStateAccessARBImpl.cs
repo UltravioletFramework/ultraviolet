@@ -55,9 +55,20 @@ namespace Ultraviolet.OpenGL.Bindings
                 throw new NotSupportedException(BindingsStrings.FunctionNotProvidedByDriver.Format("glTextureImage2D"));
             }
 
+            public override void TextureImage3D(uint texture, uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, void* pixels)
+            {
+                // NOTE: Should be using glTextureStorage3D() instead
+                throw new NotSupportedException(BindingsStrings.FunctionNotProvidedByDriver.Format("glTextureImage3D"));
+            }
+
             public override void TextureSubImage2D(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, void* pixels)
             {
                 glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, (IntPtr)pixels);
+            }
+
+            public override void TextureSubImage3D(uint texture, uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, void* pixels)
+            {
+                glTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (IntPtr)pixels);
             }
 
             public override void TextureStorage1D(uint texture, uint target, int levels, uint internalformat, int width)

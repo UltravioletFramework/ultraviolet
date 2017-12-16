@@ -54,9 +54,19 @@ namespace Ultraviolet.OpenGL.Bindings
                 glTextureImage2DEXT(texture, target, level, internalformat, width, height, border, format, type, (IntPtr)pixels);
             }
 
+            public override void TextureImage3D(uint texture, uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, void* pixels)
+            {
+                glTextureImage3DEXT(texture, target, level, internalformat, width, height, depth, border, format, type, (IntPtr)pixels);
+            }
+
             public override void TextureSubImage2D(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, void* pixels)
             {
                 glTextureSubImage2DEXT(texture, target, level, xoffset, yoffset, width, height, format, type, (IntPtr)pixels);
+            }
+
+            public override void TextureSubImage3D(uint texture, uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, void* pixels)
+            {
+                glTextureSubImage3DEXT(texture, target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, (IntPtr)pixels);
             }
 
             public override void TextureStorage1D(uint texture, uint target, int levels, uint internalformat, int width)

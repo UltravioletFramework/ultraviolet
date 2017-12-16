@@ -25,6 +25,7 @@ namespace Ultraviolet.OpenGL.Graphics
             None,
             ActiveTexture,
             BindTexture2D,
+            BindTexture3D,
             BindVertexArrayObject,
             BindArrayBuffer,
             BindElementArrayBuffer,
@@ -32,6 +33,7 @@ namespace Ultraviolet.OpenGL.Graphics
             BindRenderbuffer,
             UseProgram,
             CreateTexture2D,
+            CreateTexture3D,
             CreateArrayBuffer,
             CreateElementArrayBuffer,
             CreateFramebuffer,
@@ -68,6 +70,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 glCachedInteger.Reset();
 
             glTextureBinding2DByTextureUnit.Clear();
+            glTextureBinding3DByTextureUnit.Clear();
 
             GL_FRAMEBUFFER_BINDING.Update(gl.DefaultFramebuffer);
             GL_RENDERBUFFER_BINDING.Update(gl.DefaultRenderbuffer);
@@ -142,11 +145,12 @@ namespace Ultraviolet.OpenGL.Graphics
             gl.ActiveTexture(texture);
             gl.ThrowIfError();
 
-            var tb2d = 0u;
-            glTextureBinding2DByTextureUnit.TryGetValue(texture, out tb2d);
+            glTextureBinding2DByTextureUnit.TryGetValue(texture, out var tb2d);
+            glTextureBinding3DByTextureUnit.TryGetValue(texture, out var tb3d);
 
             GL_ACTIVE_TEXTURE.Update(texture);
             GL_TEXTURE_BINDING_2D.Update(tb2d);
+            GL_TEXTURE_BINDING_3D.Update(tb3d);
 
             VerifyCache();
         }
@@ -187,6 +191,47 @@ namespace Ultraviolet.OpenGL.Graphics
 
             GL_TEXTURE_BINDING_2D.Update(texture);
             glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
+            glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = 0;
+
+            VerifyCache();
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which binds a 3D texture to the context.
+        /// </summary>
+        /// <param name="texture">The texture to bind to the context.</param>
+        /// <param name="force">A value indicating whether to force-bind the texture, even if DSA is available.</param>
+        public static OpenGLState ScopedBindTexture3D(UInt32 texture, Boolean force = false)
+        {
+            if (GL_TEXTURE_BINDING_3D == texture)
+                return null;
+
+            var state = pool.Retrieve();
+
+            state.stateType = OpenGLStateType.BindTexture3D;
+            state.disposed = false;
+            state.forced = force;
+            state.newGL_TEXTURE_BINDING_3D = texture;
+
+            state.Apply();
+
+            return state;
+        }
+
+        /// <summary>
+        /// Immediately binds a 3D texture to the OpenGL context and updates the state cache.
+        /// </summary>
+        /// <param name="texture">The texture to bind to the context.</param>
+        public static void BindTexture3D(UInt32 texture)
+        {
+            if (GL_TEXTURE_BINDING_2D == texture)
+                return;
+
+            gl.BindTexture(gl.GL_TEXTURE_3D, texture);
+            gl.ThrowIfError();
+
+            GL_TEXTURE_BINDING_3D.Update(texture);
+            glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
 
             VerifyCache();
         }
@@ -481,6 +526,22 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Creates an instance of <see cref="OpenGLState"/> which creates a 3D texture.
+        /// </summary>
+        /// <param name="texture">The identifier of the texture that was created.</param>
+        public static OpenGLState ScopedCreateTexture3D(out UInt32 texture)
+        {
+            var state = pool.Retrieve();
+
+            state.stateType = OpenGLStateType.CreateTexture3D;
+            state.disposed = false;
+
+            state.Apply_CreateTexture3D(out texture);
+
+            return state;
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="OpenGLState"/> which creates a framebuffer.
         /// </summary>
         /// <param name="framebuffer">The identifier of the framebuffer that was created.</param>
@@ -528,6 +589,21 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Indicates that the specified texture has been deleted and updates the OpenGL state accordingly.
+        /// </summary>
+        /// <param name="texture">The texture to delete.</param>
+        public static void DeleteTexture3D(UInt32 texture)
+        {
+            if (GL_TEXTURE_BINDING_3D == texture)
+            {
+                GL_TEXTURE_BINDING_3D.Update(0);
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = 0;
+
+                VerifyCache();
+            }
+        }
+
+        /// <summary>
         /// Indicates that the specified vertex array object has been deleted and updates the OpenGL state accordingly.
         /// </summary>
         /// <param name="vertexArrayObject">The vertex array object to delete.</param>
@@ -559,6 +635,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.BindTexture2D:
                     Apply_BindTexture2D();
+                    break;
+
+                case OpenGLStateType.BindTexture3D:
+                    Apply_BindTexture3D();
                     break;
 
                 case OpenGLStateType.BindVertexArrayObject:
@@ -597,11 +677,12 @@ namespace Ultraviolet.OpenGL.Graphics
             gl.ActiveTexture(newGL_ACTIVE_TEXTURE);
             gl.ThrowIfError();
 
-            var tb2d = 0u;
-            glTextureBinding2DByTextureUnit.TryGetValue(newGL_ACTIVE_TEXTURE, out tb2d);
+            glTextureBinding2DByTextureUnit.TryGetValue(newGL_ACTIVE_TEXTURE, out var tb2d);
+            glTextureBinding3DByTextureUnit.TryGetValue(newGL_ACTIVE_TEXTURE, out var tb3d);
 
             oldGL_ACTIVE_TEXTURE = OpenGLState.GL_ACTIVE_TEXTURE.Update(newGL_ACTIVE_TEXTURE);
             oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(tb2d);
+            oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(tb3d);
         }
 
         private void Apply_BindTexture2D()
@@ -612,8 +693,25 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
 
                 oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(newGL_TEXTURE_BINDING_2D);
+                oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(0u);
 
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_2D;
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
+            }
+        }
+
+        private void Apply_BindTexture3D()
+        {
+            if (forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindTexture(gl.GL_TEXTURE_3D, newGL_TEXTURE_BINDING_3D);
+                gl.ThrowIfError();
+
+                oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(0u);
+                oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(newGL_TEXTURE_BINDING_3D);
+
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_3D;
             }
         }
 
@@ -748,8 +846,38 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
 
                     newGL_TEXTURE_BINDING_2D = texture;
+                    newGL_TEXTURE_BINDING_3D = 0u;
                     oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(texture);
+                    oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(0u);
                     glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
+                    glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
+                }
+            }
+        }
+
+        private void Apply_CreateTexture3D(out UInt32 texture)
+        {
+            if (SupportsDirectStateAccessCreateFunctions)
+            {
+                texture = gl.CreateTexture(gl.GL_TEXTURE_3D);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                texture = gl.GenTexture();
+                gl.ThrowIfError();
+
+                if (!gl.IsDirectStateAccessAvailable)
+                {
+                    gl.BindTexture(gl.GL_TEXTURE_3D, texture);
+                    gl.ThrowIfError();
+
+                    newGL_TEXTURE_BINDING_2D = 0u;
+                    newGL_TEXTURE_BINDING_3D = texture;
+                    oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(0u);
+                    oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(texture);
+                    glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
+                    glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
                 }
             }
         }
@@ -819,6 +947,10 @@ namespace Ultraviolet.OpenGL.Graphics
                     Dispose_BindTexture2D();
                     break;
 
+                case OpenGLStateType.BindTexture3D:
+                    Dispose_BindTexture3D();
+                    break;
+
                 case OpenGLStateType.BindVertexArrayObject:
                     Dispose_BindVertexArrayObject();
                     break;
@@ -845,6 +977,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 case OpenGLStateType.CreateTexture2D:
                     Dispose_CreateTexture2D();
+                    break;
+
+                case OpenGLStateType.CreateTexture3D:
+                    Dispose_CreateTexture3D();
                     break;
 
                 case OpenGLStateType.CreateArrayBuffer:
@@ -877,12 +1013,13 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.ActiveTexture(oldGL_ACTIVE_TEXTURE);
             gl.ThrowIfError();
-
-            var tb2d = 0u;
-            glTextureBinding2DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out tb2d);
+            
+            glTextureBinding2DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out var tb2d);
+            glTextureBinding3DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out var tb3d);
 
             OpenGLState.GL_ACTIVE_TEXTURE.Update(oldGL_ACTIVE_TEXTURE);
             GL_TEXTURE_BINDING_2D.Update(tb2d);
+            GL_TEXTURE_BINDING_3D.Update(tb3d);
         }
 
         private void Dispose_BindTexture2D()
@@ -893,7 +1030,23 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
+            }
+        }
+
+        private void Dispose_BindTexture3D()
+        {
+            if (forced || !gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
+                gl.ThrowIfError();
+
+                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_3D);
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
         }
 
@@ -993,7 +1146,23 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
+            }
+        }
+
+        private void Dispose_CreateTexture3D()
+        {
+            if (!gl.IsDirectStateAccessAvailable)
+            {
+                gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
+                gl.ThrowIfError();
+
+                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
+                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
+                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
         }
 
@@ -1263,6 +1432,11 @@ namespace Ultraviolet.OpenGL.Graphics
         public static OpenGLStateInteger GL_TEXTURE_BINDING_2D { get { return glTextureBinding2D; } }
 
         /// <summary>
+        /// Gets the cached value of GL_TEXTURE_BINDING_3D.
+        /// </summary>
+        public static OpenGLStateInteger GL_TEXTURE_BINDING_3D { get { return glTextureBinding3D; } }
+
+        /// <summary>
         /// Gets the cached value of GL_VERTEX_ARRAY_BINDING.
         /// </summary>
         public static OpenGLStateInteger GL_VERTEX_ARRAY_BINDING { get { return glVertexArrayBinding; } }
@@ -1310,6 +1484,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private UInt32 newGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
         private UInt32 newGL_TEXTURE_BINDING_2D;
+        private UInt32 newGL_TEXTURE_BINDING_3D;
         private UInt32 newGL_VERTEX_ARRAY_BINDING;
         private UInt32 newGL_ARRAY_BUFFER_BINDING;
         private UInt32 newGL_ELEMENT_ARRAY_BUFFER_BINDING;
@@ -1320,6 +1495,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private UInt32 oldGL_ACTIVE_TEXTURE = gl.GL_TEXTURE0;
         private UInt32 oldGL_TEXTURE_BINDING_2D;
+        private UInt32 oldGL_TEXTURE_BINDING_3D;
         private UInt32 oldGL_VERTEX_ARRAY_BINDING;
         private UInt32 oldGL_ARRAY_BUFFER_BINDING;
         private UInt32 oldGL_ELEMENT_ARRAY_BUFFER_BINDING;
@@ -1332,6 +1508,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private static readonly OpenGLStateInteger[] glCachedIntegers;
         private static readonly OpenGLStateInteger glActiveTexture = new OpenGLStateInteger("GL_ACTIVE_TEXTURE", gl.GL_ACTIVE_TEXTURE, (int)gl.GL_TEXTURE0);
         private static readonly OpenGLStateInteger glTextureBinding2D = new OpenGLStateInteger("GL_TEXTURE_BINDING_2D", gl.GL_TEXTURE_BINDING_2D);
+        private static readonly OpenGLStateInteger glTextureBinding3D = new OpenGLStateInteger("GL_TEXTURE_BINDING_3D", gl.GL_TEXTURE_BINDING_3D);
         private static readonly OpenGLStateInteger glVertexArrayBinding = new OpenGLStateInteger("GL_VERTEX_ARRAY_BINDING", gl.GL_VERTEX_ARRAY_BINDING);
         private static readonly OpenGLStateInteger glArrayBufferBinding = new OpenGLStateInteger("GL_ARRAY_BUFFER_BINDING", gl.GL_ARRAY_BUFFER_BINDING);
         private static readonly OpenGLStateInteger glElementArrayBufferBinding = new OpenGLStateInteger("GL_ELEMENT_ARRAY_BUFFER_BINDING", gl.GL_ELEMENT_ARRAY_BUFFER_BINDING);
@@ -1366,6 +1543,8 @@ namespace Ultraviolet.OpenGL.Graphics
         private static CachedCapability cachedScissorTestEnabled;
 
         private static readonly Dictionary<UInt32, UInt32> glTextureBinding2DByTextureUnit =
+            new Dictionary<UInt32, UInt32>();
+        private static readonly Dictionary<UInt32, UInt32> glTextureBinding3DByTextureUnit =
             new Dictionary<UInt32, UInt32>();
 
         // The pool of state objects.

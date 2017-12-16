@@ -82,6 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessorMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderImporter.cs" />

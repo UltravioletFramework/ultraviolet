@@ -29,7 +29,11 @@ namespace Ultraviolet.OpenGL.Bindings
 
             public abstract void TextureImage2D(uint texture, uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, void* pixels);
 
+            public abstract void TextureImage3D(uint texture, uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, void* pixels);
+
             public abstract void TextureSubImage2D(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, void* pixels);
+
+            public abstract void TextureSubImage3D(uint texture, uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, void* pixels);
 
             public abstract void TextureStorage1D(uint texture, uint target, int levels, uint internalformat, int width);
 
