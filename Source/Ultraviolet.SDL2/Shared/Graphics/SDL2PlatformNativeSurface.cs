@@ -102,7 +102,7 @@ namespace Ultraviolet.SDL2.Graphics
         public override void PrepareForTextureExport(Boolean premultiply, Boolean flip)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(readyForTextureExport, SDL2Strings.SurfaceAlreadyPreparedForExport);
+            Contract.EnsureNot(isReadyForTextureExport, SDL2Strings.SurfaceAlreadyPreparedForExport);
 
             var pitch = Pitch;
             var magenta = Color.Magenta.PackedValue;
@@ -218,7 +218,7 @@ namespace Ultraviolet.SDL2.Graphics
                 }
             }
 
-            readyForTextureExport = true;
+            isReadyForTextureExport = true;
         }
 
         /// <inheritdoc/>
@@ -297,13 +297,13 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean ReadyForTextureExport
+        public override Boolean IsReadyForTextureExport
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return readyForTextureExport;
+                return isReadyForTextureExport;
             }
         }
 
@@ -379,6 +379,6 @@ namespace Ultraviolet.SDL2.Graphics
 
         // State values.
         private SDL_Surface* ptr;
-        private Boolean readyForTextureExport;
+        private Boolean isReadyForTextureExport;
     }
 }

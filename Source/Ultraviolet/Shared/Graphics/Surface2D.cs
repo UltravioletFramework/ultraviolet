@@ -34,7 +34,7 @@ namespace Ultraviolet.Graphics
     /// </summary>
     /// <remarks>A <see cref="Surface2D"/> operates similarly to a <see cref="Texture2D"/>, except that it is held in CPU memory rather
     /// than GPU memory. This makes it useful for manipulating image data prior to turning it into a texture.</remarks>
-    public abstract class Surface2D : UltravioletResource
+    public abstract class Surface2D : Surface
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Surface2D"/> class.
@@ -211,5 +211,10 @@ namespace Ultraviolet.Graphics
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this surface is ready to be exported as a texture.
+        /// </summary>
+        public abstract Boolean IsReadyForTextureExport { get; }
     }
 }

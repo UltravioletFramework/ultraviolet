@@ -240,7 +240,18 @@ namespace Ultraviolet.SDL2.Graphics
                 return nativesurf.BytesPerPixel;
             }
         }
-        
+
+        /// <inheritdoc/>
+        public override Boolean IsReadyForTextureExport
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return nativesurf.IsReadyForTextureExport;
+            }
+        }
+
         /// <summary>
         /// Gets a pointer to the native SDL surface that is encapsulated by this object.
         /// </summary>

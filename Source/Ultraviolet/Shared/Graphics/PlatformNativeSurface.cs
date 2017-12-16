@@ -85,7 +85,7 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets a value indicating whether the surface has been prepared to be exported as a texture.
         /// </summary>
-        public abstract Boolean ReadyForTextureExport { get; }
+        public abstract Boolean IsReadyForTextureExport { get; }
 
         /// <summary>
         /// Gets the number of bytes per pixel on this surface.

@@ -595,4 +595,9 @@
       <Variant>This SpriteFont requires {0} glyphs, but only {1} glyphs were found in the font texture.</Variant>
     </en-US>
   </String>
+  <String Key="INCOMPATIBLE_SURFACE_LAYER">
+    <en-US>
+      <Variant>The specified layer cannot be added to this surface because its width, height, or bit depth is not compatible.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
