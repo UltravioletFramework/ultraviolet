@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2PlatformNativeSurface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2PlatformNativeSurfaceImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2Surface2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2Surface3DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2Surface2DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SDL2Surface3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\GamePadDeviceInfo.cs" />

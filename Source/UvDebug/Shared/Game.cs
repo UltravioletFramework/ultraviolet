@@ -115,6 +115,8 @@ namespace UvDebug
 
                 this.screenService = new UIScreenService(content);
 
+                var surface = content.Load<Ultraviolet.Graphics.Surface3D>("Textures/test_0");
+
                 GC.Collect(2);
                 
                 var screen = screenService.Get<GameMenuScreen>();
