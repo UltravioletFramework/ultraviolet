@@ -41,7 +41,18 @@ namespace Ultraviolet.OpenGL.Graphics
                 throw new InvalidOperationException(OpenGLStrings.ShaderUniformHasNoSource);
 
             if (cache.ContainsSameData(source))
-                return;
+            {
+                switch (source.DataType)
+                {
+                    case OpenGLEffectParameterDataType.Texture2D:
+                        if (uv.GetGraphics().GetTexture(sampler) == source.GetTexture2D())
+                            return;
+                        break;
+
+                    default:
+                        return;
+                }
+            }            
 
             switch (source.DataType)
             {
