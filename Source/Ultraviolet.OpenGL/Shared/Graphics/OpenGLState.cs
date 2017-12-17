@@ -224,7 +224,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="texture">The texture to bind to the context.</param>
         public static void BindTexture3D(UInt32 texture)
         {
-            if (GL_TEXTURE_BINDING_2D == texture)
+            if (GL_TEXTURE_BINDING_3D == texture)
                 return;
 
             gl.BindTexture(gl.GL_TEXTURE_3D, texture);
@@ -693,10 +693,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
 
                 oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(newGL_TEXTURE_BINDING_2D);
-                oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(0u);
-
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_2D;
-                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
             }
         }
 
@@ -706,11 +703,8 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 gl.BindTexture(gl.GL_TEXTURE_3D, newGL_TEXTURE_BINDING_3D);
                 gl.ThrowIfError();
-
-                oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(0u);
+                
                 oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(newGL_TEXTURE_BINDING_3D);
-
-                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_3D;
             }
         }
@@ -846,11 +840,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
 
                     newGL_TEXTURE_BINDING_2D = texture;
-                    newGL_TEXTURE_BINDING_3D = 0u;
                     oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(texture);
-                    oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(0u);
                     glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
-                    glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
                 }
             }
         }
@@ -872,11 +863,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.BindTexture(gl.GL_TEXTURE_3D, texture);
                     gl.ThrowIfError();
 
-                    newGL_TEXTURE_BINDING_2D = 0u;
                     newGL_TEXTURE_BINDING_3D = texture;
-                    oldGL_TEXTURE_BINDING_2D = GL_TEXTURE_BINDING_2D.Update(0u);
                     oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(texture);
-                    glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = 0u;
                     glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = texture;
                 }
             }
@@ -1030,9 +1018,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
-                GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
-                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
         }
 
@@ -1042,10 +1028,8 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
                 gl.ThrowIfError();
-
-                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_3D);
-                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
         }
@@ -1146,9 +1130,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
 
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
-                GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
-                glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
         }
 
@@ -1158,10 +1140,8 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
                 gl.ThrowIfError();
-
-                GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_2D);
+                
                 GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
-                glTextureBinding2DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_2D;
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
         }

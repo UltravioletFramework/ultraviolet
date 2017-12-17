@@ -49,6 +49,11 @@ namespace Ultraviolet.OpenGL.Graphics
                             return;
                         break;
 
+                    case OpenGLEffectParameterDataType.Texture3D:
+                        if (uv.GetGraphics().GetTexture(sampler) == source.GetTexture3D())
+                            return;
+                        break;
+
                     default:
                         return;
                 }
@@ -133,6 +138,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 case OpenGLEffectParameterDataType.Texture2D:
                     SetValue(source.GetTexture2D());
+                    break;
+
+                case OpenGLEffectParameterDataType.Texture3D:
+                    SetValue(source.GetTexture3D());
                     break;
 
                 default:
@@ -517,6 +526,20 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="value">The value to set.</param>
         public void SetValue(Texture2D value)
+        {
+            gl.Uniform1i(location, sampler);
+            gl.ThrowIfError();
+
+            uv.GetGraphics().SetTexture(sampler, value);
+
+            cache.Set(value);
+        }
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void SetValue(Texture3D value)
         {
             gl.Uniform1i(location, sampler);
             gl.ThrowIfError();

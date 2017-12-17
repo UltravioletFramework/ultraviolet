@@ -104,7 +104,13 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public void UnbindTexture(Texture2D texture)
+        public void UnbindTexture(Texture texture)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public void UnbindTextures(Object state, Func<Texture, Object, Boolean> predicate)
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }
@@ -116,23 +122,29 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
+        public void UnbindTextures(Object state, Func<Texture3D, Object, Boolean> predicate)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
         public void UnbindAllTextures()
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }
 
         /// <inheritdoc/>
-        public void SetTexture(Int32 sampler, Texture2D texture)
+        public void SetTexture(Int32 sampler, Texture texture)
         {
             Contract.EnsureNotDisposed(this, Disposed);
         }
 
         /// <inheritdoc/>
-        public Texture2D GetTexture(Int32 sampler)
+        public Texture GetTexture(Int32 sampler)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return default(Texture2D);
+            return default(Texture);
         }
 
         /// <inheritdoc/>

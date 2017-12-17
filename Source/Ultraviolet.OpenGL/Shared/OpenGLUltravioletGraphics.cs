@@ -79,7 +79,7 @@ namespace Ultraviolet.OpenGL
             this.capabilities = new OpenGLGraphicsCapabilities(configuration);
 
             this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
-            this.textures = new Texture2D[maxTextureStages];
+            this.textures = new Texture[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
             this.samplerObjects = capabilities.SupportsIndependentSamplerState ? new OpenGLSamplerObject[maxTextureStages] : null;
             this.backBufferRenderTargetUsage = configuration.BackBufferRenderTargetUsage;
@@ -262,7 +262,7 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public void UnbindTexture(Texture2D texture)
+        public void UnbindTexture(Texture texture)
         {
             Contract.Require(texture, nameof(texture));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -275,7 +275,7 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public void UnbindTextures(Object state, Func<Texture2D, Object, Boolean> predicate)
+        public void UnbindTextures(Object state, Func<Texture, Object, Boolean> predicate)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(predicate, nameof(predicate));
@@ -284,6 +284,38 @@ namespace Ultraviolet.OpenGL
             {
                 if (predicate(textures[i], state))
                     SetTexture(i, null);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void UnbindTextures(Object state, Func<Texture2D, Object, Boolean> predicate)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(predicate, nameof(predicate));
+
+            for (int i = 0; i < textures.Length; i++)
+            {
+                if (textures[i] is Texture2D t2d)
+                {
+                    if (predicate(t2d, state))
+                        SetTexture(i, null);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void UnbindTextures(Object state, Func<Texture3D, Object, Boolean> predicate)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(predicate, nameof(predicate));
+
+            for (int i = 0; i < textures.Length; i++)
+            {
+                if (textures[i] is Texture3D t3d)
+                {
+                    if (predicate(t3d, state))
+                        SetTexture(i, null);
+                }
             }
         }
 
@@ -297,7 +329,7 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public void SetTexture(Int32 sampler, Texture2D texture)
+        public void SetTexture(Int32 sampler, Texture texture)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, nameof(sampler));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -314,7 +346,14 @@ namespace Ultraviolet.OpenGL
             {
                 var textureName = (texture == null) ? 0 : ((IOpenGLResource)texture).OpenGLName;
                 OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
-                OpenGLState.BindTexture2D(textureName);
+                if (texture is Texture3D)
+                {
+                    OpenGLState.BindTexture3D(textureName);
+                }
+                else
+                {
+                    OpenGLState.BindTexture2D(textureName);
+                }
 
                 if (this.textures[sampler] != null)
                     ((IBindableResource)this.textures[sampler]).UnbindRead();
@@ -330,14 +369,17 @@ namespace Ultraviolet.OpenGL
                     for (int i = 0; i < samplerStates.Length; i++)
                     {
                         if (this.textures[i] == texture)
-                            samplerState.Apply(sampler);
+                        {
+                            var target = (texture is Texture3D) ? gl.GL_TEXTURE_3D : gl.GL_TEXTURE_2D;
+                            samplerState.Apply(sampler, target);
+                        }
                     }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public Texture2D GetTexture(Int32 sampler)
+        public Texture GetTexture(Int32 sampler)
         {
             Contract.EnsureRange(sampler >= 0 && sampler < maxTextureStages, nameof(sampler));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -465,12 +507,14 @@ namespace Ultraviolet.OpenGL
                 }
                 else
                 {
-                    oglstate.Apply(sampler);
                     this.samplerStates[sampler] = state;
 
                     var texture = this.textures[sampler];
                     if (texture != null)
                     {
+                        var target = (texture is Texture3D) ? gl.GL_TEXTURE_3D : gl.GL_TEXTURE_2D;
+                        oglstate.Apply(sampler, target);
+
                         for (int i = 0; i < samplerStates.Length; i++)
                         {
                             if (i == sampler)
@@ -478,7 +522,7 @@ namespace Ultraviolet.OpenGL
 
                             if (this.textures[i] == texture && this.samplerStates[i] != oglstate)
                             {
-                                oglstate.Apply(sampler);
+                                oglstate.Apply(sampler, target);
                                 this.samplerStates[sampler] = state;
                             }
                         }
@@ -1007,7 +1051,7 @@ namespace Ultraviolet.OpenGL
 
         // Current textures.
         private readonly Int32 maxTextureStages;
-        private readonly Texture2D[] textures;
+        private readonly Texture[] textures;
         private readonly SamplerState[] samplerStates;
         private readonly OpenGLSamplerObject[] samplerObjects;
 

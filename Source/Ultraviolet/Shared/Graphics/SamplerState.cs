@@ -180,6 +180,26 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the texture address mode for the w-coordinate.
+        /// </summary>
+        public TextureAddressMode AddressW
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return addressW;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+                Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
+
+                addressW = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the texture filtering mode.
         /// </summary>
         public TextureFilter Filter
@@ -272,6 +292,7 @@ namespace Ultraviolet.Graphics
         // Property values.
         private TextureAddressMode addressU;
         private TextureAddressMode addressV;
+        private TextureAddressMode addressW;
         private TextureFilter filter;
         private Int32 maxAnisotropy = 4;
         private Single mipMapLevelOfDetailBias;

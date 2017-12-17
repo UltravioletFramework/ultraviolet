@@ -15,4 +15,9 @@
       <Variant>The surface has already been prepared for export.</Variant>
     </en-US>
   </String>
+  <String Key="SURFACE_IS_NOT_COMPLETE">
+    <en-US>
+      <Variant>The specified surface does not contain a complete set of layers.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

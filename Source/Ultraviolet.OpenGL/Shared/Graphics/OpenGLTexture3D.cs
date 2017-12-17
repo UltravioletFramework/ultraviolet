@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
-
+using System.Runtime.InteropServices;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
@@ -27,9 +27,47 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(bytesPerPixel == 4, nameof(bytesPerPixel));
 
-            this.width = width;
-            this.height = height;
-            this.depth = layers.Count;
+            var mode = gl.GL_NONE;
+            var internalformat = gl.GL_NONE;
+            if (bytesPerPixel == 3)
+            {
+                mode = gl.GL_RGB;
+                internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
+            }
+            else
+            {
+                mode = gl.GL_RGBA;
+                internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
+            }
+
+            if (mode == gl.GL_NONE)
+                throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
+
+            var pixels = IntPtr.Zero;
+            var pixelsOffset = 0;
+            try
+            {
+                pixels = Marshal.AllocHGlobal(width * height * layers.Count * bytesPerPixel);
+                foreach (var layer in layers)
+                {
+                    var pLayer = (Byte*)layer;
+                    var pPixels = (Byte*)(pixels + pixelsOffset);
+
+                    var count = width * height * bytesPerPixel;
+                    for (int i = 0; i < count; i++)
+                        *pPixels++ = *pLayer++;
+
+                    pixelsOffset += width * height * bytesPerPixel;
+                }
+
+                CreateNativeTexture(uv, internalformat, width, height, layers.Count, mode, 
+                    gl.GL_UNSIGNED_BYTE, (void*)pixels, true);
+            }
+            finally
+            {
+                if (pixels != IntPtr.Zero)
+                    Marshal.FreeHGlobal(pixels);
+            }
         }
 
         /// <inheritdoc/>
@@ -159,21 +197,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="internalformat">The texture's internal format.</param>
-        /// <param name="width">The texture's width in pixels.</param>
-        /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="format">The texel format.</param>
-        /// <param name="type">The texel data type.</param>
-        /// <param name="pixels">A pointer to the beginning of the texture's pixel data.</param>
-        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
-        private void CreateNativeTexture(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, void* pixels, Boolean immutable)
+        private void CreateNativeTexture(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, Int32 depth, 
+            UInt32 format, UInt32 type, void* pixels, Boolean immutable)
         {
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
 
             this.width = width;
             this.height = height;
+            this.depth = depth;
             this.internalformat = internalformat;
             this.format = format;
             this.type = type;
@@ -196,13 +228,16 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
+                    
+                    gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_R, (int)gl.GL_CLAMP_TO_EDGE);
+                    gl.ThrowIfError();
 
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_S, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
 
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
-
+                    
                     if (immutable)
                     {
                         if (gl.IsTextureStorageAvailable)

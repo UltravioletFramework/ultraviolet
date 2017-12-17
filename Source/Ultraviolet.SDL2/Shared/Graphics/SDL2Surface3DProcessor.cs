@@ -52,13 +52,15 @@ namespace Ultraviolet.SDL2.Graphics
             }
 
             var surface = new SDL2Surface3D(manager.Ultraviolet, layer0.Width, layer0.Height, 1 + layers.Count, layer0.BytesPerPixel);
+            surface.SetLayer(0, Surface2D.Create(layer0), true);
+
             for (int i = 0; i < layers.Count; i++)
             {
                 var layerAsset = layers[1 + i];
                 metadata.AddAssetDependency(layerAsset);
 
-                var layerSurface = manager.Load<Surface2D>(layerAsset, metadata.AssetDensity, true, metadata.IsLoadedFromSolution);
-                surface.SetLayer(1 + i, layerSurface);
+                var layerSurface = manager.Load<Surface2D>(layerAsset, metadata.AssetDensity, false, metadata.IsLoadedFromSolution);
+                surface.SetLayer(1 + i, layerSurface, true);
             }
 
             return surface;

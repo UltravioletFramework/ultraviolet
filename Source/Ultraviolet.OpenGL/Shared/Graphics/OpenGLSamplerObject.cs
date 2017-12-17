@@ -35,6 +35,14 @@ namespace Ultraviolet.OpenGL.Graphics
         public void ApplySamplerState(SamplerState state)
         {
             Contract.Require(state, nameof(state));
+            
+            var textureWrapR = OpenGLSamplerState.GetTextureAddressModeGL(state.AddressW);
+            if (textureWrapR != cachedTextureWrapR)
+            {
+                cachedTextureWrapR = textureWrapR;
+                gl.SamplerParameteri(sampler, gl.GL_TEXTURE_WRAP_R, textureWrapR);
+                gl.ThrowIfError();
+            }
 
             var textureWrapS = OpenGLSamplerState.GetTextureAddressModeGL(state.AddressU);
             if (textureWrapS != cachedTextureWrapS)
@@ -198,6 +206,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private UInt32 sampler;
 
         // Cached state values.
+        private Int32 cachedTextureWrapR = (int)gl.GL_REPEAT;
         private Int32 cachedTextureWrapS = (int)gl.GL_REPEAT;
         private Int32 cachedTextureWrapT = (int)gl.GL_REPEAT;
         private Single cachedMipMapLODBias = 0.0f;

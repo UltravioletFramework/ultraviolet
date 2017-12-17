@@ -101,7 +101,14 @@ namespace Ultraviolet
         /// Unbinds the specified texture from the graphics device.
         /// </summary>
         /// <param name="texture">The texture to unbind.</param>
-        void UnbindTexture(Texture2D texture);
+        void UnbindTexture(Texture texture);
+
+        /// <summary>
+        /// Unbinds any textures which satisfy the specified predicate from the graphics device.
+        /// </summary>
+        /// <param name="state">A state object to pass to the predicat.e</param>
+        /// <param name="predicate">A predicate which indicates which textures should be unbound.</param>
+        void UnbindTextures(Object state, Func<Texture, Object, Boolean> predicate);
 
         /// <summary>
         /// Unbinds any textures which satisfy the specified predicate from the graphics device.
@@ -109,6 +116,13 @@ namespace Ultraviolet
         /// <param name="state">A state object to pass to the predicat.e</param>
         /// <param name="predicate">A predicate which indicates which textures should be unbound.</param>
         void UnbindTextures(Object state, Func<Texture2D, Object, Boolean> predicate);
+
+        /// <summary>
+        /// Unbinds any textures which satisfy the specified predicate from the graphics device.
+        /// </summary>
+        /// <param name="state">A state object to pass to the predicat.e</param>
+        /// <param name="predicate">A predicate which indicates which textures should be unbound.</param>
+        void UnbindTextures(Object state, Func<Texture3D, Object, Boolean> predicate);
 
         /// <summary>
         /// Unbinds all textures from the graphics device.
@@ -120,14 +134,14 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="sampler">The sampler index.</param>
         /// <param name="texture">The texture to bind to the specified texture stage.</param>
-        void SetTexture(Int32 sampler, Texture2D texture);
+        void SetTexture(Int32 sampler, Texture texture);
 
         /// <summary>
         /// Gets the texture that is bound to the specified sampler.
         /// </summary>
         /// <param name="sampler">The sampler index.</param>
         /// <returns>The texture that is bound to the specified sampler.</returns>
-        Texture2D GetTexture(Int32 sampler);
+        Texture GetTexture(Int32 sampler);
 
         /// <summary>
         /// Binds a geometry stream to the graphics device.

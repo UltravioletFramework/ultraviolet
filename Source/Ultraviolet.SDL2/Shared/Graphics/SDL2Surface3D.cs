@@ -25,13 +25,14 @@ namespace Ultraviolet.SDL2.Graphics
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(depth > 0, nameof(depth));
-            Contract.EnsureRange(bytesPerPixel == 4, nameof(bytesPerPixel));
+            Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
             this.width = width;
             this.height = height;
             this.bytesPerPixel = bytesPerPixel;
 
             this.layers = new Surface2D[depth];
+            this.layerOwnership = new Boolean[depth];
         }
 
         /// <inheritdoc/>
@@ -43,7 +44,7 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override void SetLayer(Int32 layer, Surface2D surface)
+        public override void SetLayer(Int32 layer, Surface2D surface, Boolean transferOwnership = false)
         {
             Contract.EnsureRange(layer >= 0, nameof(layer));
 
@@ -58,20 +59,21 @@ namespace Ultraviolet.SDL2.Graphics
             }
 
             this.layers[layer] = surface;
+            this.layerOwnership[layer] = transferOwnership;
             this.isComplete = !this.layers.Contains(null);
             this.isReadyForTextureExport = this.isComplete && this.layers.All(x => x.IsReadyForTextureExport);
         }
 
         /// <inheritdoc/>
-        public override void SetLayers(IEnumerable<Surface2D> surfaces)
+        public override void SetLayers(IEnumerable<Surface2D> surfaces, Boolean transferOwnership = false)
         {
             Contract.Require(surfaces, nameof(surfaces));
 
-            SetLayers(surfaces, 0);
+            SetLayers(surfaces, 0, transferOwnership);
         }
 
         /// <inheritdoc/>
-        public override void SetLayers(IEnumerable<Surface2D> surfaces, Int32 offset)
+        public override void SetLayers(IEnumerable<Surface2D> surfaces, Int32 offset, Boolean transferOwnership = false)
         {
             Contract.Require(surfaces, nameof(surfaces));
 
@@ -80,7 +82,7 @@ namespace Ultraviolet.SDL2.Graphics
                 throw new ArgumentException(CoreStrings.NotEnoughData.Format(nameof(surfaces)));
 
             for (int i = 0; i < Depth; i++)
-                SetLayer(i, layers[i]);
+                SetLayer(i, layers[i], transferOwnership);
         }
 
         /// <inheritdoc/>
@@ -88,11 +90,46 @@ namespace Ultraviolet.SDL2.Graphics
         {
             foreach (var layer in layers)
             {
-                if (!layer.IsReadyForTextureExport)
+                if (layer != null && !layer.IsReadyForTextureExport)
                     layer.PrepareForTextureExport(premultiply, flip);
             }
 
             this.isReadyForTextureExport = this.isComplete;
+        }
+
+        /// <inheritdoc/>
+        public override Texture3D CreateTexture()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return CreateTexture(true, Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
+        }
+
+        /// <inheritdoc/>
+        public override Texture3D CreateTexture(Boolean premultiply, Boolean flip)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
+
+            var copysurfs = new Surface2D[Depth];
+            var surfsdata = new IntPtr[Depth];
+            try
+            {
+                for (int i = 0; i < copysurfs.Length; i++)
+                {
+                    copysurfs[i] = layers[i].CreateSurface();
+                    copysurfs[i].PrepareForTextureExport(premultiply, flip);
+                    surfsdata[i] = (IntPtr)((SDL2Surface2D)copysurfs[i]).NativePtr->pixels;
+                }
+
+                var texture = Texture3D.Create(surfsdata, Width, Height, BytesPerPixel);
+                return texture;
+            }
+            finally
+            {
+                foreach (var copysurf in copysurfs)
+                    copysurf?.Dispose();
+            }
         }
 
         /// <inheritdoc/>
@@ -161,8 +198,27 @@ namespace Ultraviolet.SDL2.Graphics
             }
         }
 
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (disposing)
+            {
+                for (int i = 0; i < layers.Length; i++)
+                {
+                    if (layerOwnership[i] && layers[i] != null)
+                    {
+                        layers[i].Dispose();
+                        layers[i] = null;
+                        layerOwnership[i] = false;
+                    }
+                }
+            }
+            base.Dispose(disposing);
+        }
+
         // State values.
         private readonly Surface2D[] layers;
+        private readonly Boolean[] layerOwnership;
 
         // Property values.
         private Int32 width;

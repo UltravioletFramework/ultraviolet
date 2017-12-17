@@ -31,6 +31,7 @@ namespace Ultraviolet.OpenGL.Graphics
             state.Filter = TextureFilter.Point;
             state.AddressU = TextureAddressMode.Clamp;
             state.AddressV = TextureAddressMode.Clamp;
+            state.AddressW = TextureAddressMode.Clamp;
             state.MakeImmutable();
             return state;
         }
@@ -46,6 +47,7 @@ namespace Ultraviolet.OpenGL.Graphics
             state.Filter = TextureFilter.Point;
             state.AddressU = TextureAddressMode.Wrap;
             state.AddressV = TextureAddressMode.Wrap;
+            state.AddressW = TextureAddressMode.Wrap;
             state.MakeImmutable();
             return state;
         }
@@ -61,6 +63,7 @@ namespace Ultraviolet.OpenGL.Graphics
             state.Filter = TextureFilter.Linear;
             state.AddressU = TextureAddressMode.Clamp;
             state.AddressV = TextureAddressMode.Clamp;
+            state.AddressW = TextureAddressMode.Clamp;
             state.MakeImmutable();
             return state;
         }
@@ -76,6 +79,7 @@ namespace Ultraviolet.OpenGL.Graphics
             state.Filter = TextureFilter.Linear;
             state.AddressU = TextureAddressMode.Wrap;
             state.AddressV = TextureAddressMode.Wrap;
+            state.AddressW = TextureAddressMode.Wrap;
             state.MakeImmutable();
             return state;
         }
@@ -91,6 +95,7 @@ namespace Ultraviolet.OpenGL.Graphics
             state.Filter = TextureFilter.Anisotropic;
             state.AddressU = TextureAddressMode.Clamp;
             state.AddressV = TextureAddressMode.Clamp;
+            state.AddressW = TextureAddressMode.Clamp;
             state.MakeImmutable();
             return state;
         }
@@ -106,6 +111,7 @@ namespace Ultraviolet.OpenGL.Graphics
             state.Filter = TextureFilter.Anisotropic;
             state.AddressU = TextureAddressMode.Wrap;
             state.AddressV = TextureAddressMode.Wrap;
+            state.AddressW = TextureAddressMode.Wrap;
             state.MakeImmutable();
             return state;
         }
@@ -114,7 +120,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Applies the sampler state to the device.
         /// </summary>
         /// <param name="sampler">The sampler index on which to set the state.</param>
-        internal void Apply(Int32 sampler)
+        /// <param name="target">GL_TEXTURE_2D or GL_TEXTURE_3D, as appropriate.</param>
+        internal void Apply(Int32 sampler, UInt32 target)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -122,59 +129,62 @@ namespace Ultraviolet.OpenGL.Graphics
                 throw new InvalidOperationException(UltravioletStrings.GenericError);
 
             OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
-
-            gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
+            
+            gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_R, GetTextureAddressModeGL(AddressW));
             gl.ThrowIfError();
 
-            gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_T, GetTextureAddressModeGL(AddressV));
+            gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
+            gl.ThrowIfError();
+
+            gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_T, GetTextureAddressModeGL(AddressV));
             gl.ThrowIfError();
 
             if (MipMapLevelOfDetailBias != 0)
             {
                 gl.ThrowIfGLES(OpenGLStrings.UnsupportedLODBiasGLES);
 
-                gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_LOD_BIAS, MipMapLevelOfDetailBias);
+                gl.TexParameterf(target, gl.GL_TEXTURE_LOD_BIAS, MipMapLevelOfDetailBias);
                 gl.ThrowIfError();
             }
 
             switch (Filter)
             {
                 case TextureFilter.Point:
-                    gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                    gl.TexParameterf(target, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
                     gl.ThrowIfError();
 
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
+                    gl.TexParameteri(target, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_NEAREST);
                     gl.ThrowIfError();
 
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
+                    gl.TexParameteri(target, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_NEAREST);
                     gl.ThrowIfError();
                     break;
 
                 case TextureFilter.Linear:
                     if (gl.IsAnisotropicFilteringAvailable)
                     {
-                        gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
+                        gl.TexParameterf(target, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, 1f);
                         gl.ThrowIfError();
                     }
 
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
+                    gl.TexParameteri(target, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
 
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                    gl.TexParameteri(target, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
                     break;
 
                 case TextureFilter.Anisotropic:
                     if (gl.IsAnisotropicFilteringAvailable)
                     {
-                        gl.TexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, MaxAnisotropy));
+                        gl.TexParameterf(target, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, Math.Min(1f, MaxAnisotropy));
                         gl.ThrowIfError();
                     }
 
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
+                    gl.TexParameteri(target, gl.GL_TEXTURE_MIN_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
 
-                    gl.TexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
+                    gl.TexParameteri(target, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
                     break;
 

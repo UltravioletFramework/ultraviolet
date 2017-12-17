@@ -274,6 +274,18 @@ namespace Ultraviolet.Graphics
         public abstract void SetValue(Texture2D value);
 
         /// <summary>
+        /// Gets the parameter's value as a <see cref="Texture3D"/>.
+        /// </summary>
+        /// <returns>The parameter's value.</returns>
+        public abstract Texture3D GetValueTexture3D();
+
+        /// <summary>
+        /// Sets the parameter's value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public abstract void SetValue(Texture3D value);
+
+        /// <summary>
         /// Gets the effect parameter's name.
         /// </summary>
         public abstract String Name

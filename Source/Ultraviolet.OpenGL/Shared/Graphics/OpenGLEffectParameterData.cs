@@ -90,6 +90,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 case OpenGLEffectParameterDataType.ColorArray:
                 case OpenGLEffectParameterDataType.MatrixArray:
                 case OpenGLEffectParameterDataType.Texture2D:
+                case OpenGLEffectParameterDataType.Texture3D:
                     return this.refData == other.refData;
 
                 default:
@@ -333,6 +334,16 @@ namespace Ultraviolet.OpenGL.Graphics
         public void Set(Texture2D value)
         {
             dataType = OpenGLEffectParameterDataType.Texture2D;
+            refData = value;
+        }
+
+        /// <summary>
+        /// Sets a value into the buffer.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        public void Set(Texture3D value)
+        {
+            dataType = OpenGLEffectParameterDataType.Texture3D;
             refData = value;
         }
 
@@ -682,6 +693,21 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (dataType == OpenGLEffectParameterDataType.Texture2D)
                 return (Texture2D)refData;
+
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Gets the value that is set into the buffer.
+        /// </summary>
+        /// <returns>The value that is set into the buffer.</returns>
+        public Texture3D GetTexture3D()
+        {
+            if (dataType == OpenGLEffectParameterDataType.None)
+                return null;
+
+            if (dataType == OpenGLEffectParameterDataType.Texture3D)
+                return (Texture3D)refData;
 
             throw new InvalidCastException();
         }

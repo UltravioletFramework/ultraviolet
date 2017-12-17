@@ -386,6 +386,24 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override Texture3D GetValueTexture3D()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure<InvalidCastException>(type == gl.GL_SAMPLER_3D);
+
+            return data.GetTexture3D();
+        }
+
+        /// <inheritdoc/>
+        public override void SetValue(Texture3D value)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure<InvalidCastException>(type == gl.GL_SAMPLER_3D);
+
+            data.Set(value);
+        }
+
+        /// <inheritdoc/>
         public override String Name
         {
             get 

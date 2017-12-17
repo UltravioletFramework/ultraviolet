@@ -80,7 +80,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLStateInteger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture3DProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture3DProcessorMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture2DProcessorMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLTexture3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexBuffer.cs" />

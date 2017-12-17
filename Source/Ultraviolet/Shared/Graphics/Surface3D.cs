@@ -43,7 +43,7 @@ namespace Ultraviolet.Graphics
             Contract.Ensure(width > 0, nameof(width));
             Contract.Ensure(height > 0, nameof(height));
             Contract.Ensure(depth > 0, nameof(depth));
-            Contract.Ensure(bytesPerPixel == 4, nameof(bytesPerPixel));
+            Contract.Ensure(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Surface3DFactory>()(uv, width, height, depth, bytesPerPixel);
@@ -65,7 +65,9 @@ namespace Ultraviolet.Graphics
         /// <param name="layer">The index of the layer to set.</param>
         /// <param name="surface">The <see cref="Surface2D"/> which represents the
         /// specified layer of this <see cref="Surface3D"/> instance.</param>
-        public abstract void SetLayer(Int32 layer, Surface2D surface);
+        /// <param name="transferOwnership">A value indicating whether ownership of the layer
+        /// is transferred to this object. If so, the layer surface will be disposed when this object is disposed.</param>
+        public abstract void SetLayer(Int32 layer, Surface2D surface, Boolean transferOwnership = false);
 
         /// <summary>
         /// Sets the collection of <see cref="Surface2D"/> instances which make up the 
@@ -73,7 +75,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="surfaces">The collection that contains the <see cref="Surface2D"/>
         /// instances which make up the layers of this <see cref="Surface3D"/> instance.</param>
-        public abstract void SetLayers(IEnumerable<Surface2D> surfaces);
+        /// <param name="transferOwnership">A value indicating whether ownership of the layer
+        /// is transferred to this object. If so, the layer surface will be disposed when this object is disposed.</param>
+        public abstract void SetLayers(IEnumerable<Surface2D> surfaces, Boolean transferOwnership = false);
 
         /// <summary>
         /// Sets the collection of <see cref="Surface2D"/> instances which make up the
@@ -82,7 +86,9 @@ namespace Ultraviolet.Graphics
         /// <param name="surfaces">The collection that contains the <see cref="Surface2D"/>
         /// instances which make up the layers of this <see cref="Surface3D"/> instance.</param>
         /// <param name="offset">The offset at which to begin retrieving layers from <paramref name="surfaces"/>.</param>
-        public abstract void SetLayers(IEnumerable<Surface2D> surfaces, Int32 offset);
+        /// <param name="transferOwnership">A value indicating whether ownership of the layers
+        /// is transferred to this object. If so, the layer surfaces will be disposed when this object is disposed.</param>
+        public abstract void SetLayers(IEnumerable<Surface2D> surfaces, Int32 offset, Boolean transferOwnership = false);
 
         /// <summary>
         /// Prepares the layers of this surface to be exported as texture data.
@@ -90,7 +96,21 @@ namespace Ultraviolet.Graphics
         /// <param name="premultiply">A value indicating whether to premultiply the layers' alpha.</param>
         /// <param name="flip">A value indicating whether to flip the layer data upside-down.</param>
         public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip);
-        
+
+        /// <summary>
+        /// Creates a texture from the surface.
+        /// </summary>
+        /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
+        public abstract Texture3D CreateTexture();
+
+        /// <summary>
+        /// Creates a texture from the surface.
+        /// </summary>
+        /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
+        /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
+        /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
+        public abstract Texture3D CreateTexture(Boolean premultiply, Boolean flip);
+
         /// <summary>
         /// Gets the surface's width in pixels.
         /// </summary>
