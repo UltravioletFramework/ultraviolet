@@ -256,5 +256,58 @@ namespace Ultraviolet.Tests.Graphics
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_RendersFrameCorrectly_WithCustomCompositor.png");
         }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the Graphics subsystem correctly handles 3D textures which are used as a shader parameter.")]
+        public void UltravioletGraphics_CanRender3DTextures()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteTexture = default(Texture2D);
+            var spriteEffect = default(Effect);
+            var lutIdentity = default(Texture3D);
+            var lutShifted = default(Texture3D);
+            var lutPosterize = default(Texture3D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteTexture = content.Load<Texture2D>("Textures\\ColorGradingBackground");
+                    spriteEffect = content.Load<Effect>("Effects\\ColorGradingEffect");
+                    lutIdentity = content.Load<Texture3D>("Textures\\ColorGradingIdentity");
+                    lutShifted = content.Load<Texture3D>("Textures\\ColorGradingShifted");
+                    lutPosterize = content.Load<Texture3D>("Textures\\ColorGradingPosterize");
+                })
+                .Render(uv =>
+                {
+                    var gfx = uv.GetGraphics();
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
+
+                    spriteEffect.Parameters["ColorGradingLUT"].SetValue(lutIdentity);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, null, null, spriteEffect);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(0, 0, spriteTexture.Width, spriteTexture.Height), Color.White);
+                    spriteBatch.End();
+
+                    spriteEffect.Parameters["ColorGradingLUT"].SetValue(lutShifted);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, null, null, spriteEffect);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(viewport.Width / 3, 0, spriteTexture.Width, spriteTexture.Height), Color.White);
+                    spriteBatch.End();
+                    
+                    spriteEffect.Parameters["ColorGradingLUT"].SetValue(lutPosterize);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, null, null, spriteEffect);
+                    spriteBatch.Draw(spriteTexture, new RectangleF(2 * viewport.Width / 3, 0, spriteTexture.Width, spriteTexture.Height), Color.White);
+                    spriteBatch.End();
+                });
+            
+            result.Save(@"C:\Users\colec\result.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRender3DTextures.png");
+        }
     }
 }
