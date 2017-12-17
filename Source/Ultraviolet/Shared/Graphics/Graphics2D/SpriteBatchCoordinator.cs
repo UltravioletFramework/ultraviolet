@@ -58,7 +58,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets the singleton instance of the <see cref="SpriteBatchCoordinator"/> class.
         /// </summary>
-        public static SpriteBatchCoordinator Instance { get; } = 
+        public static SpriteBatchCoordinator Instance => instance.Value;
+
+        // The coordinator's singleton instance.
+        private static UltravioletSingleton<SpriteBatchCoordinator> instance =
             new UltravioletSingleton<SpriteBatchCoordinator>(UltravioletSingletonFlags.DisabledInServiceMode, uv => new SpriteBatchCoordinator(uv));
 
         // Track how many batches are operating in each mode.
