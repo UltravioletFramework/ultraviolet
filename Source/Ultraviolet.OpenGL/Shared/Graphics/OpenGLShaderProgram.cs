@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
@@ -30,6 +31,10 @@ namespace Ultraviolet.OpenGL.Graphics
             this.vertexShader = vertexShader;
             this.fragmentShader = fragmentShader;
             this.programOwnsShaders = programOwnsShaders;
+
+            var concatenatedSourceMetadata = new ShaderSourceMetadata();
+            concatenatedSourceMetadata.Concat(vertexShader.ShaderSourceMetadata);
+            concatenatedSourceMetadata.Concat(fragmentShader.ShaderSourceMetadata);
 
             var program = 0u;
 
@@ -87,7 +92,7 @@ namespace Ultraviolet.OpenGL.Graphics
             });
 
             this.program = program;
-            this.uniforms = CreateUniformCollection();
+            this.uniforms = CreateUniformCollection(concatenatedSourceMetadata);            
         }
 
         /// <summary>
@@ -222,15 +227,16 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Creates the effect pass' collection of uniforms.
         /// </summary>
+        /// <param name="ssmd">The source metadata for this program.</param>
         /// <returns>The collection of uniforms that was created.</returns>
-        private OpenGLShaderUniformCollection CreateUniformCollection()
+        private OpenGLShaderUniformCollection CreateUniformCollection(ShaderSourceMetadata ssmd)
         {
-            return Ultraviolet.QueueWorkItemAndWait((state) =>
+            var result = Ultraviolet.QueueWorkItemAndWait((state) =>
             {
                 var programObject = ((OpenGLShaderProgram)state);
                 var program = programObject.program;
                 var uniforms = new List<OpenGLShaderUniform>();
-                var sampler = 0;
+                var samplerCount = 0;
 
                 var count = gl.GetProgrami(program, gl.GL_ACTIVE_UNIFORMS);
                 gl.ThrowIfError();
@@ -244,8 +250,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var location = gl.GetUniformLocation(program, name);
                     gl.ThrowIfError();
 
-                    uniforms.Add(new OpenGLShaderUniform(programObject.Ultraviolet, name, type, program, location, sampler));
-
+                    var isSampler = false;
                     switch (type)
                     {
                         case gl.GL_SAMPLER_1D:
@@ -265,13 +270,28 @@ namespace Ultraviolet.OpenGL.Graphics
                         case gl.GL_SAMPLER_CUBE_MAP_ARRAY:
                         case gl.GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW:
                         case gl.GL_SAMPLER_CUBE_SHADOW:
-                            sampler++;
+                            isSampler = true;
                             break;
-                    }                    
+                    }
+
+                    var sampler = isSampler ? samplerCount++ : -1;
+                    if (isSampler && ssmd.PreferredSamplerIndices.ContainsKey(name))
+                    {
+                        samplerCount = ssmd.PreferredSamplerIndices[name];
+                        sampler = samplerCount++;
+                    }
+                    uniforms.Add(new OpenGLShaderUniform(programObject.Ultraviolet, name, type, program, location, sampler));                
                 }
 
-                return new OpenGLShaderUniformCollection(uniforms);
+                return uniforms;
             }, this);
+
+            // Validation: make sure all preferred samplers correspond to an actual uniform
+            var missingUniform = ssmd.PreferredSamplerIndices.Keys.Where(x => !result.Where(y => String.Equals(y.Name, x, StringComparison.Ordinal)).Any()).FirstOrDefault();
+            if (missingUniform != null)
+                throw new ArgumentException(OpenGLStrings.SamplerDirectiveInvalidUniform.Format(missingUniform));
+
+            return new OpenGLShaderUniformCollection(result);
         }
 
         // Property values.

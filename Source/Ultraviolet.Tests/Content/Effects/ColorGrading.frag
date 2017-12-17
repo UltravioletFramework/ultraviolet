@@ -1,5 +1,8 @@
 ﻿#version 140
 
+#sampler 0 "Texture"
+#sampler 1 "ColorGradingLUT"
+
 uniform sampler2D Texture;
 uniform sampler3D ColorGradingLUT;
 

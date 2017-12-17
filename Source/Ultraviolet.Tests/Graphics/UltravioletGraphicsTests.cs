@@ -285,6 +285,8 @@ namespace Ultraviolet.Tests.Graphics
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
 
+                    gfx.SetSamplerState(1, SamplerState.PointClamp);
+
                     spriteEffect.Parameters["ColorGradingLUT"].SetValue(lutIdentity);
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, null, null, spriteEffect);

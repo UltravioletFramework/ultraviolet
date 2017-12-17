@@ -14,24 +14,25 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="source">The shader source.</param>
-        public OpenGLVertexShader(UltravioletContext uv, String[] source)
+        public OpenGLVertexShader(UltravioletContext uv, ShaderSource[] source)
             : base(uv)
         {
             Contract.Require(source, nameof(source));
 
             var shader = 0u;
+            var ssmd = default(ShaderSourceMetadata);
 
             uv.QueueWorkItemAndWait(() =>
             {
                 shader = gl.CreateShader(gl.GL_VERTEX_SHADER);
                 gl.ThrowIfError();
-
-                var log = String.Empty;
-                if (!ShaderCompiler.Compile(shader, source, out log))
-                    throw new InvalidOperationException(log);
+                
+                if (!ShaderCompiler.Compile(shader, source, out var log, out ssmd))
+                    throw new InvalidOperationException(log);                
             });
 
             this.shader = shader;
+            this.ShaderSourceMetadata = ssmd;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="source">The shader source.</param>
-        public OpenGLVertexShader(UltravioletContext uv, String source)
+        public OpenGLVertexShader(UltravioletContext uv, ShaderSource source)
             : this(uv, new[] { source })
         {
 
@@ -57,6 +58,11 @@ namespace Ultraviolet.OpenGL.Graphics
                 return shader;
             }
         }
+
+        /// <summary>
+        /// Gets the shader source metadata for this shader.
+        /// </summary>
+        public ShaderSourceMetadata ShaderSourceMetadata { get; }
 
         /// <summary>
         /// Releases resources associated with this object.

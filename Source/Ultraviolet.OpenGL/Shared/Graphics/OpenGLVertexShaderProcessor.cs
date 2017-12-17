@@ -15,7 +15,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public override OpenGLVertexShader Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
             var source = ShaderSource.ProcessRawSource(manager, metadata, input);
-            return new OpenGLVertexShader(manager.Ultraviolet, new[] { (String)source });
+            return new OpenGLVertexShader(manager.Ultraviolet, new[] { source });
         }
     }
 }

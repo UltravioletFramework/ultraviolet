@@ -73,6 +73,8 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource DoublePrecisionVAttribsNotSupported   = new StringResource(StringDatabase, "DOUBLE_PRECISION_VATTRIBS_NOT_SUPPORTED");
         public static readonly StringResource IntegerVAttribsNotSupported           = new StringResource(StringDatabase, "INTEGER_VATTRIBS_NOT_SUPPORTED");
         public static readonly StringResource NonZeroBaseInstanceNotSupported       = new StringResource(StringDatabase, "NON_ZERO_BASE_INSTANCE_NOT_SUPPORTED");
+        public static readonly StringResource SamplerDirectiveInvalidUniform        = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_INVALID_UNIFORM");
+        public static readonly StringResource SamplerDirectiveAlreadyInUse          = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_ALREADY_IN_USE");
 #pragma warning restore 1591
     }
 }

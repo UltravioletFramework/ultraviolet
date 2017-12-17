@@ -91,6 +91,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLVertexShaderProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ShaderSourceProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OpenGLStrings.cs" />

@@ -245,4 +245,14 @@
       <Variant>A non-zero base instance value is not supported by the current OpenGL driver.</Variant>
     </en-US>
   </String>
+  <String Key="SAMPLER_DIRECTIVE_INVALID_UNIFORM">
+    <en-US>
+      <Variant>Sampler "{0}" does not refer to a valid uniform.</Variant>
+    </en-US>
+  </String>
+  <String Key="SAMPLER_DIRECTIVE_ALREADY_IN_USE">
+    <en-US>
+      <Variant>Sampler "{0}" cannot be set to index {1} because that index is already in use.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

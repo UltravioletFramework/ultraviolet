@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Ultraviolet.Content;
 using Ultraviolet.OpenGL.Bindings;
+using System.Linq;
 
 namespace Ultraviolet.OpenGL.Graphics
 {
@@ -16,10 +17,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="ShaderSource"/> class.
         /// </summary>
-        /// <param name="source"></param>
-        private ShaderSource(String source)
+        /// <param name="source">The source code for this shader.</param>
+        /// <param name="metadata">The metadata for this shader.</param>
+        private ShaderSource(String source, ShaderSourceMetadata metadata)
         {
             this.Source = source;
+            this.Metadata = metadata;
         }
 
         /// <summary>
@@ -33,32 +36,36 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             var output = new StringBuilder();
             var line = default(String);
+            var ssmd = new ShaderSourceMetadata();
 
             using (var reader = new StringReader(source))
             {
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (ProcessIncludeDirective(manager, metadata, line, output))
+                    if (ProcessIncludeDirective(manager, metadata, line, output, ssmd))
                         continue;
 
-                    if (ProcessIncludeResourceDirective(manager, metadata, line, output))
+                    if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd))
                         continue;
 
-                    if (ProcessIfVerDirective(manager, metadata, line, output))
+                    if (ProcessIfVerDirective(manager, metadata, line, output, ssmd))
+                        continue;
+
+                    if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
                         continue;
 
                     output.AppendLine(line);
                 }
             }
 
-            return new ShaderSource(output.ToString());
+            return new ShaderSource(output.ToString(), ssmd);
         }
         
         /// <summary>
-        /// Implicitly converts a <see cref="ShaderSource"/> object to its underlying source string.
+        /// Implicitly converts a <see cref="String"/> object to a new <see cref="ShaderSource"/> instance.
         /// </summary>
-        /// <param name="source">The underlying source string of the specified <see cref="ShaderSource"/> object.</param>
-        public static implicit operator String(ShaderSource source) => source.Source;
+        /// <param name="source">The underlying source string of the <see cref="ShaderSource"/> object to create.</param>
+        public static implicit operator ShaderSource(String source) => new ShaderSource(source, new ShaderSourceMetadata());
 
         /// <summary>
         /// Gets the processed shader source.
@@ -66,9 +73,14 @@ namespace Ultraviolet.OpenGL.Graphics
         public String Source { get; }
 
         /// <summary>
+        /// Gets the metadata for this shader.
+        /// </summary>
+        public ShaderSourceMetadata Metadata { get; }
+
+        /// <summary>
         /// Processes #include directives.
         /// </summary>
-        private static Boolean ProcessIncludeDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output)
+        private static Boolean ProcessIncludeDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
         {
             var includeMatch = regexIncludeDirective.Match(line);
             if (includeMatch.Success)
@@ -81,7 +93,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 metadata.AddAssetDependency(includePath);
 
                 var includeSrc = manager.Load<ShaderSource>(includePath, metadata.AssetDensity, false, metadata.IsLoadedFromSolution);
-                output.AppendLine(includeSrc);
+                ssmd.Concat(includeSrc.Metadata);
+                output.AppendLine(includeSrc.Source);
 
                 return true;
             }
@@ -91,7 +104,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Processes #includeres directives.
         /// </summary>
-        private static Boolean ProcessIncludeResourceDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output)
+        private static Boolean ProcessIncludeResourceDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
         {
             var includeResourceMatch = regexincludeResourceDirective.Match(line);
             if (includeResourceMatch.Success)
@@ -110,7 +123,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 using (var resReader = new StreamReader(resStream))
                 {
                     var includeSrc = ProcessRawSource(manager, metadata, resReader.ReadToEnd());
-                    output.AppendLine(includeSrc);
+                    ssmd.Concat(includeSrc.Metadata);
+                    output.AppendLine(includeSrc.Source);
                 }
 
                 return true;
@@ -121,7 +135,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Processes #ifver directives.
         /// </summary>
-        private static Boolean ProcessIfVerDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output)
+        private static Boolean ProcessIfVerDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
         {
             var ifVerMatch = regexIfVerDirective.Match(line);
             if (ifVerMatch.Success)
@@ -166,13 +180,35 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
 
                 if (dirSatisfied)
-                    output.AppendLine(ProcessRawSource(manager, metadata, source));
+                {
+                    var includedSource = ProcessRawSource(manager, metadata, source);
+                    ssmd.Concat(includedSource.Metadata);
+                    output.AppendLine(includedSource.Source);
+                }
 
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// Processes #sampler directives.
+        /// </summary>
+        private static Boolean ProcessSamplerDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
+        {
+            var samplerMatch = regexSamplerDirective.Match(line);
+            if (samplerMatch.Success)
+            {
+                var sampler = Int32.Parse(samplerMatch.Groups["sampler"].Value);
+                var uniform = samplerMatch.Groups["uniform"].Value;
+
+                ssmd.AddPreferredSamplerIndex(uniform, sampler);
+
+                return true;
+            }
+            return false;
+        }
+        
         // Regular expressions used to identify directives
         private static readonly Regex regexIncludeDirective =
             new Regex(@"^\s*#include\s+""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
@@ -180,5 +216,7 @@ namespace Ultraviolet.OpenGL.Graphics
             new Regex(@"^\s*#includeres\s+""(?<resource>.*)""\s*(?<asm>entry|executing)?\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexIfVerDirective =
             new Regex(@"^\s*#(?<op>ifver(_gt|_gte|_lt|_lte)?)\s+\""(?<gles>es)?(?<version_maj>\d+).(?<version_min>\d+)\""\s+\{\s*(?<source>.+)\s*\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex regexSamplerDirective =
+            new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

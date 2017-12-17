@@ -15,7 +15,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public override OpenGLFragmentShader Process(ContentManager manager, IContentProcessorMetadata metadata, String input)
         {
             var source = ShaderSource.ProcessRawSource(manager, metadata, input);
-            return new OpenGLFragmentShader(manager.Ultraviolet, new[] { (String)source });
+            return new OpenGLFragmentShader(manager.Ultraviolet, new[] { source });
         }
     }
 }

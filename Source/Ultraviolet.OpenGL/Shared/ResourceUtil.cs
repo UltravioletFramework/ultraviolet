@@ -44,7 +44,7 @@ namespace Ultraviolet.OpenGL
         /// </summary>
         /// <param name="name">The name of the file to read.</param>
         /// <returns>A string of text that contains the file data.</returns>
-        public static String ReadShaderResourceString(String name)
+        public static ShaderSource ReadShaderResourceString(String name)
         {
             Contract.RequireNotEmpty(name, nameof(name));
 
