@@ -16,5 +16,5 @@ void main()
 {
     gl_Position        = uv_Position0 * World * View * Projection;
 	vColor             = DiffuseColor * uv_Color0;
-    vTextureCoordinate = uv_TextureCoordinate0;
+    vTextureCoordinate = vec2(uv_TextureCoordinate0.x, 1.0 - uv_TextureCoordinate0.y);
 }
