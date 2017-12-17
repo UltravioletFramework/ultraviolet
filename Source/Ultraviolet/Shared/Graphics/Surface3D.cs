@@ -95,7 +95,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="premultiply">A value indicating whether to premultiply the layers' alpha.</param>
         /// <param name="flip">A value indicating whether to flip the layer data upside-down.</param>
-        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip);
+        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
+        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque);
 
         /// <summary>
         /// Creates a texture from the surface.
@@ -108,8 +109,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
         /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
+        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
         /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
-        public abstract Texture3D CreateTexture(Boolean premultiply, Boolean flip);
+        public abstract Texture3D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque);
 
         /// <summary>
         /// Gets the surface's width in pixels.

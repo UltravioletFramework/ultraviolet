@@ -60,7 +60,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
         /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
-        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip);
+        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
+        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque);
 
         /// <summary>
         /// Gets the surface's data.

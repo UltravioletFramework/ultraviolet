@@ -420,7 +420,7 @@ namespace Ultraviolet.Graphics
         {
             using (var output = CreateOutputSurface(atlasDesc, atlasImages, content, metadata, width, height, images))
             {
-                return output.CreateTexture(true, content.Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
+                return output.CreateTexture(true, content.Ultraviolet.GetGraphics().Capabilities.FlippedTextures, false);
             }
         }
 

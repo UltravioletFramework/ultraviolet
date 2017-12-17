@@ -52,11 +52,11 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip)
+        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            nativesurf.PrepareForTextureExport(premultiply, flip);
+            nativesurf.PrepareForTextureExport(premultiply, flip, opaque);
         }
 
         /// <inheritdoc/>
@@ -161,11 +161,11 @@ namespace Ultraviolet.SDL2.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return CreateTexture(true, Ultraviolet.GetGraphics().Capabilities.FlippedTextures);
+            return CreateTexture(true, Ultraviolet.GetGraphics().Capabilities.FlippedTextures, false);
         }
 
         /// <inheritdoc/>
-        public override Texture2D CreateTexture(Boolean premultiply, Boolean flip)
+        public override Texture2D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -174,7 +174,7 @@ namespace Ultraviolet.SDL2.Graphics
                 if (SDL.BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
                     throw new SDL2Exception();
 
-                copysurf.PrepareForTextureExport(premultiply, flip);
+                copysurf.PrepareForTextureExport(premultiply, flip, opaque);
                 return Texture2D.Create((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
             }
         }

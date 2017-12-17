@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
-using System.Runtime.InteropServices;
 namespace Ultraviolet.OpenGL.Graphics
 {
     /// <summary>
@@ -15,52 +15,39 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Initializes a new instance of the <see cref="OpenGLTexture3D"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="layers">A pointer to the raw pixel data for each of the texture's layers.</param>
+        /// <param name="data">A list of pointers to the raw pixel data for each of the texture's layers.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
-        public OpenGLTexture3D(UltravioletContext uv, IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel)
+        public OpenGLTexture3D(UltravioletContext uv, IList<IntPtr> data, Int32 width, Int32 height, Int32 bytesPerPixel)
             : base(uv)
         {
-            Contract.Require(layers, nameof(layers));
+            Contract.Require(data, nameof(data));
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
-            Contract.EnsureRange(bytesPerPixel == 4, nameof(bytesPerPixel));
+            Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
-            var mode = gl.GL_NONE;
+            var type = gl.GL_NONE;
             var internalformat = gl.GL_NONE;
             if (bytesPerPixel == 3)
             {
-                mode = gl.GL_RGB;
+                type = gl.GL_RGB;
                 internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
             }
             else
             {
-                mode = gl.GL_RGBA;
+                type = gl.GL_RGBA;
                 internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
             }
 
-            if (mode == gl.GL_NONE)
+            if (type == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
             var pixels = IntPtr.Zero;
-            var pixelsOffset = 0;
             try
             {
-                pixels = Marshal.AllocHGlobal(width * height * layers.Count * bytesPerPixel);
-                foreach (var layer in layers)
-                {
-                    var pLayer = (Byte*)layer;
-                    var pPixels = (Byte*)(pixels + pixelsOffset);
-
-                    var count = width * height * bytesPerPixel;
-                    for (int i = 0; i < count; i++)
-                        *pPixels++ = *pLayer++;
-
-                    pixelsOffset += width * height * bytesPerPixel;
-                }
-
-                CreateNativeTexture(uv, internalformat, width, height, layers.Count, mode, 
+                pixels = CreateConcatenatedPixelBuffer(data, width * height * bytesPerPixel);
+                CreateNativeTexture(uv, internalformat, width, height, data.Count, type, 
                     gl.GL_UNSIGNED_BYTE, (void*)pixels, true);
             }
             finally
@@ -70,6 +57,55 @@ namespace Ultraviolet.OpenGL.Graphics
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLTexture3D"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="depth">The texture's depth in layers.</param>
+        public OpenGLTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth)
+            : base(uv)
+        {
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+
+            CreateNativeTexture(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, depth, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null, immutable);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLTexture3D"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="internalformat">The texture's internal format.</param>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="format">The texture's texel format.</param>
+        /// <param name="type">The texture's texel type.</param>
+        /// <param name="data">A list of pointers to the raw pixel data for each of the texture's layers.</param>
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
+        public OpenGLTexture3D(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, IList<IntPtr> data, Boolean immutable)
+            : base(uv)
+        {
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+
+            var bytesPerPixel = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
+            var pixels = IntPtr.Zero;
+            try
+            {
+                pixels = CreateConcatenatedPixelBuffer(data, width * height * bytesPerPixel);
+                CreateNativeTexture(uv, internalformat, width, height, data.Count, format,
+                    type, (void*)pixels, immutable);
+            }
+            finally
+            {
+                if (pixels != IntPtr.Zero)
+                    Marshal.FreeHGlobal(pixels);
+            }            
+        }
+        
         /// <inheritdoc/>
         public void BindRead()
         {
@@ -193,7 +229,82 @@ namespace Ultraviolet.OpenGL.Graphics
                 return texture;
             }
         }
-        
+
+        /// <summary>
+        /// Creates a new buffer in unmanaged memory which contains the contents of the specified buffers.
+        /// </summary>
+        private static IntPtr CreateConcatenatedPixelBuffer(IList<IntPtr> data, Int32 lengthInBytes)
+        {
+            var pixels = Marshal.AllocHGlobal(data.Count * lengthInBytes);
+            var pixelsOffset = 0;
+            if (Environment.Is64BitProcess && lengthInBytes % sizeof(Int64) == 0)
+            {
+                var lengthInInt64 = lengthInBytes / sizeof(Int64);
+                foreach (var layer in data)
+                {
+                    CopyBuffer64(layer, pixels, pixelsOffset, lengthInInt64);
+                    pixelsOffset += lengthInInt64;
+                }
+            }
+            else
+            {
+                if (lengthInBytes % sizeof(Int32) == 0)
+                {
+                    var lengthInInt32 = lengthInBytes / sizeof(Int32);
+                    foreach (var layer in data)
+                    {
+                        CopyBuffer32(layer, pixels, pixelsOffset, lengthInInt32);
+                        pixelsOffset += lengthInInt32;
+                    }
+                }
+                else
+                {
+                    foreach (var layer in data)
+                    {
+                        CopyBuffer8(layer, pixels, pixelsOffset, lengthInBytes);
+                        pixelsOffset += lengthInBytes;
+                    }
+                }
+            }
+            return pixels;
+        }
+
+        /// <summary>
+        /// Copies an unmanaged buffer into another unmanaged buffer at the specified offset.
+        /// </summary>
+        private static void CopyBuffer64(IntPtr src, IntPtr dst, Int32 dstOffset, Int32 length)
+        {
+            var pSrc = ((Int64*)src);
+            var pDst = ((Int64*)dst + dstOffset);
+            
+            for (int i = 0; i < length; i++)
+                *pDst++ = *pSrc++;
+        }
+
+        /// <summary>
+        /// Copies an unmanaged buffer into another unmanaged buffer at the specified offset.
+        /// </summary>
+        private static void CopyBuffer32(IntPtr src, IntPtr dst, Int32 dstOffset, Int32 length)
+        {
+            var pSrc = ((Int32*)src);
+            var pDst = ((Int32*)dst + dstOffset);
+
+            for (int i = 0; i < length; i++)
+                *pDst++ = *pSrc++;
+        }
+
+        /// <summary>
+        /// Copies an unmanaged buffer into another unmanaged buffer at the specified offset.
+        /// </summary>
+        private static void CopyBuffer8(IntPtr src, IntPtr dst, Int32 dstOffset, Int32 length)
+        {
+            var pSrc = ((Byte*)src);
+            var pDst = ((Byte*)dst + dstOffset);
+
+            for (int i = 0; i < length; i++)
+                *pDst++ = *pSrc++;
+        }
+
         /// <summary>
         /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>

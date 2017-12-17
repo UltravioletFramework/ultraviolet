@@ -59,10 +59,10 @@ namespace Ultraviolet.Shims.Desktop.Graphics
                 unsafe
                 {
                     var pixel = ((byte*)bmpData.Scan0) + (bmpData.Stride * y) + (x * sizeof(UInt32));
-                    var a = *pixel++;
-                    var r = *pixel++;
-                    var g = *pixel++;
                     var b = *pixel++;
+                    var g = *pixel++;
+                    var r = *pixel++;
+                    var a = *pixel++;
                     return new Color(r, g, b, a);
                 }
             }
@@ -113,7 +113,7 @@ namespace Ultraviolet.Shims.Desktop.Graphics
         }
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
 
         /// <summary>
         /// Releases resources associated with the object.

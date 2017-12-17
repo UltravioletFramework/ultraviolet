@@ -75,21 +75,21 @@ namespace Ultraviolet.SDL2.Graphics
             {
                 for (int x = 0; x < width; x++)
                 {
-                    srcR = *pSrcData++;
-                    srcG = *pSrcData++;
                     srcB = *pSrcData++;
+                    srcG = *pSrcData++;
+                    srcR = *pSrcData++;
                     srcA = *pSrcData++;
 
-                    if (source.DataFormat == SurfaceSourceDataFormat.BGRA)
+                    if (source.DataFormat == SurfaceSourceDataFormat.RGBA)
                     {
                         var temp = srcR;
                         srcR = srcB;
                         srcB = temp;
                     }
 
-                    *pDstData++ = srcB;
-                    *pDstData++ = srcG;
                     *pDstData++ = srcR;
+                    *pDstData++ = srcG;
+                    *pDstData++ = srcB;
                     *pDstData++ = srcA;
                 }
 
@@ -99,7 +99,7 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip)
+        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(isReadyForTextureExport, SDL2Strings.SurfaceAlreadyPreparedForExport);
@@ -130,7 +130,7 @@ namespace Ultraviolet.SDL2.Graphics
                         srcValue = *pSrc;
                         dstValue = *pDst;
 
-                        if (srcValue == magenta)
+                        if (!opaque && srcValue == magenta)
                         {
                             *pDst = transparent;
                         }
@@ -152,7 +152,7 @@ namespace Ultraviolet.SDL2.Graphics
                             *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
                         }
 
-                        if (dstValue == magenta)
+                        if (!opaque && dstValue == magenta)
                         {
                             *pSrc = transparent;
                         }
@@ -190,7 +190,7 @@ namespace Ultraviolet.SDL2.Graphics
                     {
                         srcValue = *pSrc;
 
-                        if (srcValue == magenta)
+                        if (!opaque && srcValue == magenta)
                         {
                             *pDst = transparent;
                         }

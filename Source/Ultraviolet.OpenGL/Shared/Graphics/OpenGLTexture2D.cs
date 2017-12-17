@@ -26,23 +26,23 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(bytesPerPixel >= 3 || bytesPerPixel <= 4, nameof(bytesPerPixel));
 
-            var mode = gl.GL_NONE;
+            var format = gl.GL_NONE;
             var internalformat = gl.GL_NONE;
             if (bytesPerPixel == 3)
             {
-                mode = gl.GL_RGB;
+                format = gl.GL_RGB;
                 internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
             }
             if (bytesPerPixel == 4)
             {
-                mode = gl.GL_RGBA;
+                format = gl.GL_RGBA;
                 internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
             }
 
-            if (mode == gl.GL_NONE)
+            if (format == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
-            CreateNativeTexture(uv, internalformat, width, height, mode, 
+            CreateNativeTexture(uv, internalformat, width, height, format, 
                 gl.GL_UNSIGNED_BYTE, (void*)pixels, true);
         }
 
