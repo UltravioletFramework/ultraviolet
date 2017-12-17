@@ -2576,6 +2576,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             var graphics = Ultraviolet.GetGraphics();
 
+            if (sortMode == SpriteSortMode.Immediate)
+                ApplyTexture(null);
+
             graphics.SetGeometryStream(geometryStream);
             graphics.SetBlendState(blendState ?? BlendState.AlphaBlend);
             graphics.SetSamplerState(0, samplerState ?? SamplerState.LinearClamp);
@@ -2601,6 +2604,24 @@ namespace Ultraviolet.Graphics.Graphics2D
             }
 
             customEffect.CurrentTechnique.Passes[0].Apply();
+        }
+
+        /// <summary>
+        /// Applies the specified texture to the current effect.
+        /// </summary>
+        private void ApplyTexture(Texture2D texture)
+        {
+            var textureSize = texture == null ? Size2.Zero : new Size2(texture.Width, texture.Height);
+
+            if (customEffect is IEffectTexture iet)
+                iet.Texture = texture;
+            else
+                customEffect.Parameters["Texture"]?.SetValue(texture);
+
+            if (customEffect is IEffectTextureSize iets)
+                iets.TextureSize = textureSize;
+            else
+                customEffect.Parameters["TextureSize"]?.SetValue((Vector2)textureSize);
         }
 
         /// <summary>
@@ -2639,37 +2660,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="count">The number of sprites in the set to flush.</param>
         private void FlushSprites(Texture2D texture, Int32 offset, Int32 count)
         {
-            // Set the texture via a shader parameter.
-            var effectTexture = customEffect as IEffectTexture;
-            if (effectTexture != null)
-            {
-                effectTexture.Texture = texture;
-            }
-            else
-            {
-                var textureParam = customEffect.Parameters["Texture"];
-                if (textureParam != null)
-                {
-                    textureParam.SetValue(texture);
-                }
-            }
-
-            // Set the texture size via a shader parameter.
-            var effectTextureSize = customEffect as IEffectTextureSize;
-            if (effectTextureSize != null)
-            {
-                effectTextureSize.TextureSize = (texture == null) ?
-                    Size2.Zero : new Size2(texture.Width, texture.Height); ;
-            }
-            else
-            {
-                var textureSizeParam = customEffect.Parameters["TextureSize"];
-                if (textureSizeParam != null)
-                {
-                    textureSizeParam.SetValue((texture == null) ?
-                        Vector2.Zero : new Vector2(texture.Width, texture.Height));
-                }
-            }
+            ApplyTexture(texture);
 
             // Draw the sprites in this batch.
             var options = SetDataOptions.NoOverwrite;
