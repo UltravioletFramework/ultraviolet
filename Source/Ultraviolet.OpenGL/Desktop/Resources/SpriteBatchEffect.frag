@@ -1,6 +1,6 @@
 ﻿#version 140
 
-uniform sampler2D textureSampler;
+uniform sampler2D Texture;
 
 in  vec4 vColor;
 in  vec2 vTextureCoordinate;
@@ -9,5 +9,5 @@ out vec4 fColor;
 
 void main()
 {
-	fColor = texture(textureSampler, vTextureCoordinate) * vColor;
+	fColor = texture(Texture, vTextureCoordinate) * vColor;
 }

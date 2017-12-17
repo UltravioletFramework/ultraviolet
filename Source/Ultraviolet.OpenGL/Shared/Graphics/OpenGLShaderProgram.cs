@@ -246,10 +246,28 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     uniforms.Add(new OpenGLShaderUniform(programObject.Ultraviolet, name, type, program, location, sampler));
 
-                    if (type == gl.GL_SAMPLER_2D)
+                    switch (type)
                     {
-                        sampler++;
-                    }
+                        case gl.GL_SAMPLER_1D:
+                        case gl.GL_SAMPLER_1D_ARRAY:
+                        case gl.GL_SAMPLER_1D_ARRAY_SHADOW:
+                        case gl.GL_SAMPLER_1D_SHADOW:
+                        case gl.GL_SAMPLER_2D:
+                        case gl.GL_SAMPLER_2D_ARRAY:
+                        case gl.GL_SAMPLER_2D_ARRAY_SHADOW:
+                        case gl.GL_SAMPLER_2D_MULTISAMPLE:
+                        case gl.GL_SAMPLER_2D_MULTISAMPLE_ARRAY:
+                        case gl.GL_SAMPLER_2D_RECT:
+                        case gl.GL_SAMPLER_2D_RECT_SHADOW:
+                        case gl.GL_SAMPLER_2D_SHADOW:
+                        case gl.GL_SAMPLER_3D:
+                        case gl.GL_SAMPLER_CUBE:
+                        case gl.GL_SAMPLER_CUBE_MAP_ARRAY:
+                        case gl.GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW:
+                        case gl.GL_SAMPLER_CUBE_SHADOW:
+                            sampler++;
+                            break;
+                    }                    
                 }
 
                 return new OpenGLShaderUniformCollection(uniforms);

@@ -49,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage9.Parsing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture.cs" />

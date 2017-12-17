@@ -2639,9 +2639,20 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="count">The number of sprites in the set to flush.</param>
         private void FlushSprites(Texture2D texture, Int32 offset, Int32 count)
         {
-            // Set the sprite texture.
-            var graphics = Ultraviolet.GetGraphics();
-            graphics.SetTexture(0, texture);
+            // Set the texture via a shader parameter.
+            var effectTexture = customEffect as IEffectTexture;
+            if (effectTexture != null)
+            {
+                effectTexture.Texture = texture;
+            }
+            else
+            {
+                var textureParam = customEffect.Parameters["Texture"];
+                if (textureParam != null)
+                {
+                    textureParam.SetValue(texture);
+                }
+            }
 
             // Set the texture size via a shader parameter.
             var effectTextureSize = customEffect as IEffectTextureSize;
@@ -2709,6 +2720,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 GenerateVertices(texture, spriteMetadata, vertices, spriteCustomData, offset, drawn);
                 vertexBuffer.SetDataAligned(vertices, 0, drawn * 4, vertexBufferOffset, out drawnSizeInBytes, options);
 
+                var graphics = Ultraviolet.GetGraphics();
                 foreach (var pass in customEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();

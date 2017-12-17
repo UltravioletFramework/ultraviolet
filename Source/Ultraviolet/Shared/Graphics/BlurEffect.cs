@@ -13,7 +13,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents an <see cref="Effect"/> which draws 2D drop shadows using a two-pass Gaussian blur.
     /// </summary>
-    public class BlurEffect : Effect, IEffectMatrices, IEffectTextureSize
+    public class BlurEffect : Effect, IEffectMatrices, IEffectTexture, IEffectTextureSize
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BlurEffect"/> class.
@@ -22,11 +22,12 @@ namespace Ultraviolet.Graphics
         protected BlurEffect(EffectImplementation impl)
             : base(impl)
         {
+            this.epTexture = Parameters["Texture"];
+            this.epTextureSize = Parameters["TextureSize"];
             this.epWorld = Parameters["World"];
             this.epView = Parameters["View"];
             this.epProjection = Parameters["Projection"];
             this.epMix = Parameters["Mix"];
-            this.epTextureSize = Parameters["TextureSize"];
 
             this.Radius = 5f;
         }
@@ -39,6 +40,46 @@ namespace Ultraviolet.Graphics
         {
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<BlurEffectFactory>()(uv);
+        }
+
+        /// <inheritdoc/>
+        public Texture2D Texture
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return epTexture.GetValueTexture2D();
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                epTexture.SetValue(value);
+            }
+        }
+
+        /// <inheritdoc/>
+        public Size2 TextureSize
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return textureSize;
+            }
+            set
+            {
+
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                if (textureSize != value)
+                {
+                    textureSize = value;
+                    epTextureSize.SetValue((Vector2)value);
+                    OnTextureSizeChanged();
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -89,29 +130,6 @@ namespace Ultraviolet.Graphics
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 epProjection.SetValue(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public Size2 TextureSize
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return textureSize;
-            }
-            set
-            {
-
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (textureSize != value)
-                {
-                    textureSize = value;
-                    epTextureSize.SetValue((Vector2)value);
-                    OnTextureSizeChanged();
-                }
             }
         }
 
@@ -211,10 +229,11 @@ namespace Ultraviolet.Graphics
         private Single radius;
 
         // Cached effect parameters.
+        private readonly EffectParameter epTexture;
+        private readonly EffectParameter epTextureSize;
         private readonly EffectParameter epWorld;
         private readonly EffectParameter epView;
         private readonly EffectParameter epProjection;
         private readonly EffectParameter epMix;
-        private readonly EffectParameter epTextureSize;
     }
 }

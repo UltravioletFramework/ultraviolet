@@ -12,7 +12,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents the <see cref="Effect"/> used by <see cref="SpriteBatchBase{VertexType, SpriteData}"/> to render sprites.
     /// </summary>
-    public abstract class SpriteBatchEffect : Effect, ISpriteBatchEffect, IEffectTextureSize
+    public abstract class SpriteBatchEffect : Effect, ISpriteBatchEffect, IEffectTexture, IEffectTextureSize
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteBatchEffect"/> class.
@@ -21,8 +21,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         protected SpriteBatchEffect(EffectImplementation impl)
             : base(impl)
         {
-            this.epMatrixTransform = Parameters["MatrixTransform"];
+            this.epTexture = Parameters["Texture"];
             this.epTextureSize = Parameters["TextureSize"];
+            this.epMatrixTransform = Parameters["MatrixTransform"];
         }
 
         /// <summary>
@@ -36,19 +37,23 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public Matrix MatrixTransform
+        public Texture2D Texture
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return epMatrixTransform.GetValueMatrix();
+                if (epTexture != null)
+                    return epTexture.GetValueTexture2D();
+
+                return null;
             }
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                epMatrixTransform.SetValue(value);
+                if (epTexture != null)
+                    epTexture.SetValue(value);
             }
         }
 
@@ -76,8 +81,26 @@ namespace Ultraviolet.Graphics.Graphics2D
             }
         }
 
+        /// <inheritdoc/>
+        public Matrix MatrixTransform
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return epMatrixTransform.GetValueMatrix();
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                epMatrixTransform.SetValue(value);
+            }
+        }
+
         // Cached effect parameters.
-        private readonly EffectParameter epMatrixTransform;
+        private readonly EffectParameter epTexture;
         private readonly EffectParameter epTextureSize;
+        private readonly EffectParameter epMatrixTransform;
     }
 }
