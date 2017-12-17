@@ -24,13 +24,52 @@ namespace Ultraviolet.SDL2.Graphics
         /// <returns>The game asset that was created.</returns>
         public override Surface3D Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
-            var layer0 = input.CreateCopy();
-            var layers = new Dictionary<Int32, String>();
-            var layerIndex = 1;
+            var isSingleFile = true;
 
             var filename = Path.GetFileNameWithoutExtension(metadata.AssetFileName);
             if (filename != null && filename.EndsWith("_0"))
+            {
                 filename = filename.Substring(0, filename.Length - "_0".Length);
+                isSingleFile = false;
+            }
+
+            return isSingleFile ? ProcessSingleFile(manager, metadata, input, filename) :
+                ProcessMultipleFiles(manager, metadata, input, filename);
+        }
+
+        /// <summary>
+        /// Processes a single file which has all of the layers of the surface within it.
+        /// </summary>
+        private Surface3D ProcessSingleFile(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input, String filename)
+        {
+            // Layers must be square. Validate our dimensions.
+            var layerHeight = input.Height;
+            var layerWidth = layerHeight;
+            var layerCount = input.Width / layerWidth;
+            if (input.Width % layerWidth != 0)
+                throw new InvalidDataException(SDL2Strings.SurfaceMustHaveSquareLayers);
+
+            // Create surfaces for each of our layers.
+            using (var mainSurface = Surface2D.Create(input))
+            {
+                var result = new SDL2Surface3D(manager.Ultraviolet, layerWidth, layerHeight, layerCount, mainSurface.BytesPerPixel);
+                for (int i = 0; i < layerCount; i++)
+                {
+                    var layerSurface = mainSurface.CreateSurface(new Rectangle(i * layerWidth, 0, layerWidth, layerHeight));
+                    result.SetLayer(i, layerSurface, true);
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Processes a collection of files, each of which represents a separate layer of the surface.
+        /// </summary>
+        private Surface3D ProcessMultipleFiles(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input, String filename)
+        {
+            var layer0 = input.CreateCopy();
+            var layers = new Dictionary<Int32, String>();
+            var layerIndex = 1;
 
             var extension = Path.GetExtension(metadata.AssetFileName);
             var directory = (metadata.AssetPath == null) ? String.Empty : Path.GetDirectoryName(metadata.AssetPath);
@@ -39,7 +78,7 @@ namespace Ultraviolet.SDL2.Graphics
                 var assetsInDirectory = manager.GetAssetFilePathsInDirectory(directory);
                 while (true)
                 {
-                    var layerAsset = assetsInDirectory.Where(x => String.Equals(Path.GetFileName(x), 
+                    var layerAsset = assetsInDirectory.Where(x => String.Equals(Path.GetFileName(x),
                         $"{filename}_{layerIndex}{extension}", StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
                     if (layerAsset == null)
                         break;
