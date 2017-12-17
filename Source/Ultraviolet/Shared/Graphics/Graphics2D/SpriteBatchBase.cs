@@ -2197,11 +2197,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             if (sortMode == SpriteSortMode.Immediate)
             {
-                SpriteBatchCoordinator.DemandImmediate();
+                SpriteBatchCoordinator.Instance.DemandImmediate();
             }
             else
             {
-                SpriteBatchCoordinator.DemandDeferred();
+                SpriteBatchCoordinator.Instance.DemandDeferred();
             }
 
             this.sortMode = sortMode;
@@ -2234,7 +2234,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             if (sortMode == SpriteSortMode.Immediate)
             {
-                SpriteBatchCoordinator.RelinquishImmediate();
+                SpriteBatchCoordinator.Instance.RelinquishImmediate();
             }
             else
             {
@@ -2243,7 +2243,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                     ApplyState();
                     FlushBatch();
                 }
-                SpriteBatchCoordinator.RelinquishDeferred();
+                SpriteBatchCoordinator.Instance.RelinquishDeferred();
             }
             begun = false;
         }

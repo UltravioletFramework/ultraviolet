@@ -5,12 +5,20 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Contains methods for coordinating the operations of multiple sprite batches.
     /// </summary>
-    internal static class SpriteBatchCoordinator
+    internal class SpriteBatchCoordinator : UltravioletResource
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteBatchCoordinator"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        private SpriteBatchCoordinator(UltravioletContext uv)
+            : base(uv)
+        { }
+
         /// <summary>
         /// Demands the right to operate in immediate mode.  If the right is denied, an InvalidOperationException is thrown.
         /// </summary>
-        public static void DemandImmediate()
+        public void DemandImmediate()
         {
             if (immediate > 0 || deferred > 0)
                 throw new InvalidOperationException(UltravioletStrings.SpriteBatchNestingError);
@@ -21,7 +29,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Demands the right to operate in deferred mode.  If the right is denied, an InvalidOperationException is thrown.
         /// </summary>
-        public static void DemandDeferred()
+        public void DemandDeferred()
         {
             if (immediate > 0)
                 throw new InvalidOperationException(UltravioletStrings.SpriteBatchNestingError);
@@ -32,7 +40,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Relinquishes the right to operate in immediate mode.
         /// </summary>
-        public static void RelinquishImmediate()
+        public void RelinquishImmediate()
         {
             if (--immediate < 0)
                 throw new InvalidOperationException(UltravioletStrings.SpriteBatchDemandImbalance);
@@ -41,14 +49,20 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Relinquishes the right to operate in deferred mode.
         /// </summary>
-        public static void RelinquishDeferred()
+        public void RelinquishDeferred()
         {
             if (--deferred < 0)
                 throw new InvalidOperationException(UltravioletStrings.SpriteBatchDemandImbalance);
         }
 
+        /// <summary>
+        /// Gets the singleton instance of the <see cref="SpriteBatchCoordinator"/> class.
+        /// </summary>
+        public static SpriteBatchCoordinator Instance { get; } = 
+            new UltravioletSingleton<SpriteBatchCoordinator>(UltravioletSingletonFlags.DisabledInServiceMode, uv => new SpriteBatchCoordinator(uv));
+
         // Track how many batches are operating in each mode.
-        private static Int32 immediate;
-        private static Int32 deferred;
+        private Int32 immediate;
+        private Int32 deferred;
     }
 }
