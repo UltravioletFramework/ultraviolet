@@ -80,9 +80,9 @@ namespace Ultraviolet.Tests.Graphics
                     vertexBuffer = VertexBuffer.Create(VertexPositionTexture.VertexDeclaration, 3);
                     vertexBuffer.SetData(new[]
                     {
-                        new VertexPositionTexture(new Vector3(0, 1, 0), new Vector2(0, 1)),
-                        new VertexPositionTexture(new Vector3(1, -1, 0), new Vector2(1, 1)),
-                        new VertexPositionTexture(new Vector3(-1, -1, 0), new Vector2(0, 0))
+                        new VertexPositionTexture(new Vector3(0, 1, 0), new Vector2(0, 0)),
+                        new VertexPositionTexture(new Vector3(1, -1, 0), new Vector2(1, 0)),
+                        new VertexPositionTexture(new Vector3(-1, -1, 0), new Vector2(0, 1))
                     });
 
                     geometryStream = GeometryStream.Create();
