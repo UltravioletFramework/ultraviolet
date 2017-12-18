@@ -68,7 +68,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32 CompareTo(Texture2D other)
+        public override Int32 CompareTo(Texture other)
         {
             return texture.CompareTo(other);
         }

@@ -25,6 +25,7 @@ namespace Ultraviolet.OpenGL
             factory.SetFactoryMethod<Texture2DFromRawDataFactory>((uv, pixels, width, height, bytesPerPixel) => new OpenGLTexture2D(uv, pixels, width, height, bytesPerPixel));
             factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, immutable) => new OpenGLTexture2D(uv, width, height, immutable));
             factory.SetFactoryMethod<Texture3DFromRawDataFactory>((uv, layers, width, height, bytesPerPixel) => new OpenGLTexture3D(uv, layers, width, height, bytesPerPixel));
+            factory.SetFactoryMethod<Texture3DFactory>((uv, width, height, depth, immutable) => new OpenGLTexture3D(uv, width, height, depth, immutable));
             factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height, usage) => new OpenGLRenderTarget2D(uv, width, height, usage));
             factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height, options) => new OpenGLRenderBuffer2D(uv, format, width, height, options));
 

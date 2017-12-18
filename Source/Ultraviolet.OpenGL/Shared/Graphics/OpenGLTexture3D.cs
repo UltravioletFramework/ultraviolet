@@ -27,18 +27,8 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
-            var type = gl.GL_NONE;
-            var internalformat = gl.GL_NONE;
-            if (bytesPerPixel == 3)
-            {
-                type = gl.GL_RGB;
-                internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
-            }
-            else
-            {
-                type = gl.GL_RGBA;
-                internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
-            }
+            var format = GetOpenGLTextureFormatFromBytesPerPixel(bytesPerPixel);
+            var internalformat = GetOpenGLTextureInternalFormatFromBytesPerPixel(bytesPerPixel);
 
             if (type == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
@@ -64,11 +54,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="depth">The texture's depth in layers.</param>
-        public OpenGLTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth)
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
+        public OpenGLTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
+            Contract.EnsureRange(depth > 0, nameof(depth));
 
             CreateNativeTexture(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, depth, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null, immutable);
         }
@@ -85,11 +77,32 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="data">A list of pointers to the raw pixel data for each of the texture's layers.</param>
         /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
         public OpenGLTexture3D(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, IList<IntPtr> data, Boolean immutable)
+            : this(uv, internalformat, width, height, format, type, data, immutable, false)
+        {
+            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLTexture3D"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="internalformat">The texture's internal format.</param>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="format">The texture's texel format.</param>
+        /// <param name="type">The texture's texel type.</param>
+        /// <param name="data">The texture's data.</param>
+        /// <param name="immutable">A value indicating whether to use immutable texture storage.</param>
+        /// <param name="rbuffer">A value indicating whether this texture is being used as a render buffer.</param>
+        /// <returns>The instance of Texture2D that was created.</returns>
+        internal OpenGLTexture3D(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, UInt32 format, UInt32 type, IList<IntPtr> data, Boolean immutable, Boolean rbuffer)
             : base(uv)
         {
             Contract.Require(data, nameof(data));
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
+
+            this.rbuffer = rbuffer;
 
             var bytesPerPixel = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
             var pixels = IntPtr.Zero;
@@ -103,9 +116,75 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 if (pixels != IntPtr.Zero)
                     Marshal.FreeHGlobal(pixels);
-            }            
+            }
         }
-        
+
+        /// <inheritdoc/>
+        public override Int32 CompareTo(Texture other)
+        {
+            var id1 = texture;
+            var id2 = (other == null) ? 0 : ((IOpenGLResource)other).OpenGLName;
+            return id1.CompareTo(id2);
+        }
+
+        /// <inheritdoc/>
+        public override void Resize(Int32 width, Int32 height, Int32 depth)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(width >= 1, nameof(width));
+            Contract.EnsureRange(height >= 1, nameof(height));
+
+            if (BoundForReading || BoundForWriting)
+                throw new InvalidOperationException(OpenGLStrings.InvalidOperationWhileBound);
+
+            this.width = width;
+            this.height = height;
+            this.depth = depth;
+
+            if (immutable)
+                throw new InvalidOperationException(rbuffer ? OpenGLStrings.RenderBufferIsImmutable : OpenGLStrings.TextureIsImmutable);
+
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+            {
+                ProcessResize();
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem((state) => { ((OpenGLTexture3D)state).ProcessResize(); }, this);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void SetData<T>(T[] data)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+
+            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, 0, data.Length);
+        }
+
+        /// <inheritdoc/>
+        public override void SetData<T>(T[] data, Int32 startIndex, Int32 elementCount)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
+            Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
+
+            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, startIndex, elementCount);
+        }
+
+        /// <inheritdoc/>
+        public override void SetData<T>(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, T[] data, Int32 startIndex, Int32 elementCount)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
+            Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
+
+            SetDataInternal(level, left, top, right, bottom, front, back, data, startIndex, elementCount);
+        }
+
         /// <inheritdoc/>
         public void BindRead()
         {
@@ -220,6 +299,28 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (Disposed)
+                return;
+
+            if (disposing)
+            {
+                if (!Ultraviolet.Disposed)
+                {
+                    ((OpenGLUltravioletGraphics)Ultraviolet.GetGraphics()).UnbindTexture(this);
+                    Ultraviolet.QueueWorkItem((state) =>
+                    {
+                        gl.DeleteTexture(((OpenGLTexture3D)state).texture);
+                        gl.ThrowIfError();
+                    }, this);
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        /// <inheritdoc/>
         public UInt32 OpenGLName
         {
             get
@@ -306,6 +407,51 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Gets the OpenGL internal texture format that corresponds to the specified number of bytes per pixel.
+        /// </summary>
+        private static UInt32 GetOpenGLTextureInternalFormatFromBytesPerPixel(Int32 bytesPerPixel)
+        {
+            if (bytesPerPixel == 4)
+                return gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
+
+            if (bytesPerPixel == 3)
+                return gl.GL_RGB;
+
+            return gl.GL_NONE;
+        }
+
+        /// <summary>
+        /// Gets the OpenGL texture format that corresponds to the specified number of bytes per pixel.
+        /// </summary>
+        private static UInt32 GetOpenGLTextureFormatFromBytesPerPixel(Int32 bytesPerPixel)
+        {
+            if (bytesPerPixel == 4)
+                return gl.GL_RGBA;
+
+            if (bytesPerPixel == 3)
+                return gl.GL_RGB;
+
+            return gl.GL_NONE;
+        }
+
+        /// <summary>
+        /// Gets the OpenGL texture format flag that corresponds to the specified texture data format.
+        /// </summary>
+        /// <param name="format">The texture data format to convert.</param>
+        /// <returns>The converted texture data format.</returns>
+        private static UInt32 GetOpenGLTextureFormatFromTextureDataFormat(TextureDataFormat format)
+        {
+            switch (format)
+            {
+                case TextureDataFormat.RGBA:
+                    return gl.GL_RGBA;
+                case TextureDataFormat.BGRA:
+                    return gl.GL_BGRA;
+            }
+            throw new NotSupportedException("format");
+        }
+
+        /// <summary>
         /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>
         private void CreateNativeTexture(UltravioletContext uv, UInt32 internalformat, Int32 width, Int32 height, Int32 depth, 
@@ -383,6 +529,46 @@ namespace Ultraviolet.OpenGL.Graphics
             });
         }
 
+        /// <summary>
+        /// Processes a resize operation for this texture.
+        /// </summary>
+        private void ProcessResize()
+        {
+            using (OpenGLState.ScopedBindTexture3D(texture, true))
+            {
+                gl.TexImage3D(gl.GL_TEXTURE_3D, 0, (int)internalformat,
+                    width, height, depth, 0, format, type, null);
+            }
+        }
+
+        /// <summary>
+        /// Sets the texture's data.
+        /// </summary>
+        private void SetDataInternal<T>(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, T[] data, Int32 startIndex, Int32 elementCount) where T : struct
+        {
+            var elementSizeInBytes = Marshal.SizeOf(typeof(T));
+            var width = right - left;
+            var height = bottom - top;
+            var depth = back - front;
+
+            var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
+            if (pixelSizeInBytes * width * height * depth != elementSizeInBytes * elementCount)
+                throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
+
+            Ultraviolet.QueueWorkItemAndWait(() =>
+            {
+                var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    var pData = dataHandle.AddrOfPinnedObject() + (startIndex * Marshal.SizeOf(typeof(T)));
+                    gl.TextureSubImage3D(OpenGLName, gl.GL_TEXTURE_3D, level, left, top, front, 
+                        right - left, bottom - top, back - front, format, type, (void*)pData);
+                    gl.ThrowIfError();
+                }
+                finally { dataHandle.Free(); }
+            });
+        }
+
         // Property values.
         private UInt32 texture;
         private Int32 width;
@@ -392,6 +578,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private UInt32 format;
         private UInt32 type;
         private Boolean immutable;
+        private Boolean rbuffer;
         private Int32 boundRead;
         private Int32 boundWrite;
     }

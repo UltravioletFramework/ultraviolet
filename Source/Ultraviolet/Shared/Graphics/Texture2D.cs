@@ -27,7 +27,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents a two-dimensional texture.
     /// </summary>
-    public abstract class Texture2D : Texture, IComparable<Texture2D>
+    public abstract class Texture2D : Texture
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Texture2D"/> class.
@@ -82,14 +82,6 @@ namespace Ultraviolet.Graphics
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height, immutable);
         }
-
-        /// <summary>
-        /// Compares the texture with another texture and returns a value indicating whether the current
-        /// instance comes before, after, or in the same position as the specified texture.
-        /// </summary>
-        /// <param name="other">The <see cref="Texture2D"/> to compare to this instance.</param>
-        /// <returns>A value indicating the relative order of the objects being compared.</returns>
-        public abstract Int32 CompareTo(Texture2D other);
 
         /// <summary>
         /// Resizes the texture.

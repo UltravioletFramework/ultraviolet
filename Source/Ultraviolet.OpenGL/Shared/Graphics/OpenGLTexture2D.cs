@@ -26,19 +26,9 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(bytesPerPixel >= 3 || bytesPerPixel <= 4, nameof(bytesPerPixel));
 
-            var format = gl.GL_NONE;
-            var internalformat = gl.GL_NONE;
-            if (bytesPerPixel == 3)
-            {
-                format = gl.GL_RGB;
-                internalformat = gl.IsGLES2 ? gl.GL_RGB : gl.GL_RGB;
-            }
-            if (bytesPerPixel == 4)
-            {
-                format = gl.GL_RGBA;
-                internalformat = gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
-            }
-
+            var format = GetOpenGLTextureFormatFromBytesPerPixel(bytesPerPixel);
+            var internalformat = GetOpenGLTextureInternalFormatFromBytesPerPixel(bytesPerPixel);
+            
             if (format == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
@@ -99,7 +89,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32 CompareTo(Texture2D other)
+        public override Int32 CompareTo(Texture other)
         {
             var id1 = texture;
             var id2 = (other == null) ? 0 : ((IOpenGLResource)other).OpenGLName;
@@ -326,11 +316,39 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Gets the OpenGL internal texture format that corresponds to the specified number of bytes per pixel.
+        /// </summary>
+        private static UInt32 GetOpenGLTextureInternalFormatFromBytesPerPixel(Int32 bytesPerPixel)
+        {
+            if (bytesPerPixel == 4)
+                return gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
+
+            if (bytesPerPixel == 3)
+                return gl.GL_RGB;
+
+            return gl.GL_NONE;
+        }
+
+        /// <summary>
+        /// Gets the OpenGL texture format that corresponds to the specified number of bytes per pixel.
+        /// </summary>
+        private static UInt32 GetOpenGLTextureFormatFromBytesPerPixel(Int32 bytesPerPixel)
+        {
+            if (bytesPerPixel == 4)
+                return gl.GL_RGBA;
+
+            if (bytesPerPixel == 3)
+                return gl.GL_RGB;
+
+            return gl.GL_NONE;
+        }
+
+        /// <summary>
         /// Gets the OpenGL texture format flag that corresponds to the specified texture data format.
         /// </summary>
         /// <param name="format">The texture data format to convert.</param>
         /// <returns>The converted texture data format.</returns>
-        private static UInt32 GetOpenGLTextureFormat(TextureDataFormat format)
+        private static UInt32 GetOpenGLTextureFormatFromTextureDataFormat(TextureDataFormat format)
         {
             switch (format)
             {
@@ -481,7 +499,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     for (int i = 0; i < height; i++)
                     {
                         gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y + i, region.Width, 1,
-                            GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, ptr);
+                            GetOpenGLTextureFormatFromTextureDataFormat(format), gl.GL_UNSIGNED_BYTE, ptr);
                         
                         ptr += stride * 4;
                     }
@@ -498,7 +516,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
 
                     gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y, region.Width, region.Height,
-                        GetOpenGLTextureFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
+                        GetOpenGLTextureFormatFromTextureDataFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
                     gl.ThrowIfError();
 
                     if (rowLengthSupported)
