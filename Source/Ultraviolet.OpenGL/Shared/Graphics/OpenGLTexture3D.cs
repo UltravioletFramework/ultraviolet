@@ -37,7 +37,7 @@ namespace Ultraviolet.OpenGL.Graphics
             try
             {
                 pixels = CreateConcatenatedPixelBuffer(data, width * height * bytesPerPixel);
-                CreateNativeTexture(uv, internalformat, width, height, data.Count, type, 
+                CreateNativeTexture(uv, internalformat, width, height, data.Count, format, 
                     gl.GL_UNSIGNED_BYTE, (void*)pixels, true);
             }
             finally
