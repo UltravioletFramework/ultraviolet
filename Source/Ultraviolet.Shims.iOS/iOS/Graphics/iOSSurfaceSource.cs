@@ -63,10 +63,10 @@ namespace Ultraviolet.Shims.iOS.Graphics
                 unsafe
                 {
                     var pixel = ((byte*)bmpData.ToPointer()) + (stride * y) + (x * sizeof(UInt32));
-                    var a = *pixel++;
-                    var b = *pixel++;
-                    var g = *pixel++;
                     var r = *pixel++;
+                    var g = *pixel++;
+                    var b = *pixel++;
+                    var a = *pixel++;
                     return new Color(r, g, b, a);
                 }
             }
@@ -117,7 +117,7 @@ namespace Ultraviolet.Shims.iOS.Graphics
         }
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
 
         /// <summary>
         /// Reverses the premultiplication which is automatically applied by the iOS API's...
