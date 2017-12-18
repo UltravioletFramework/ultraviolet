@@ -123,61 +123,35 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft)
-        {
-            SetData(0, null, data, 0, (data == null) ? 0 : data.Length);
-        }
-
-        /// <inheritdoc/>
-        public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
-        {
-            SetData(0, null, data, offset, count);
-        }
-
-        /// <inheritdoc/>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        public override void SetData<T>(T[] data)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
 
-            var handle = default(GCHandle);
-            try
-            {
-                handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-
-                SetDataInternal(level, rect, handle.AddrOfPinnedObject(), offset, count, 0, TextureDataFormat.RGBA, origin);
-            }
-            finally
-            {
-                if (handle.IsAllocated)
-                    handle.Free();
-            }
+            SetDataInternal(0, null, data, 0, data.Length);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        public override void SetData<T>(T[] data, Int32 startIndex, Int32 elementCount)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
+            Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
 
-            var handle = default(GCHandle);
-            try
-            {
-                handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-
-                SetDataInternal(level, rect, handle.AddrOfPinnedObject(), offset, count, stride, TextureDataFormat.RGBA, origin);
-            }
-            finally
-            {
-                if (handle.IsAllocated)
-                    handle.Free();
-            }
+            SetDataInternal(0, null, data, startIndex, elementCount);
         }
 
         /// <inheritdoc/>
-        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 startIndex, Int32 elementCount)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(level >= 0, nameof(level));
+            Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
+            Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
 
-            SetDataInternal(level, rect, data, offset, count, stride, format, origin);
+            SetDataInternal(level, rect, data, startIndex, elementCount);
         }
 
         /// <inheritdoc/>
@@ -342,24 +316,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             return gl.GL_NONE;
         }
-
-        /// <summary>
-        /// Gets the OpenGL texture format flag that corresponds to the specified texture data format.
-        /// </summary>
-        /// <param name="format">The texture data format to convert.</param>
-        /// <returns>The converted texture data format.</returns>
-        private static UInt32 GetOpenGLTextureFormatFromTextureDataFormat(TextureDataFormat format)
-        {
-            switch (format)
-            {
-                case TextureDataFormat.RGBA:
-                    return gl.GL_RGBA;
-                case TextureDataFormat.BGRA:
-                    return gl.GL_BGRA;
-            }
-            throw new NotSupportedException("format");
-        }
-
+        
         /// <summary>
         /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>
@@ -456,76 +413,33 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the texture's data.
         /// </summary>
-        /// <param name="level">The mipmap level for which to set data.</param>
-        /// <param name="rect">A rectangle describing the position and size of the data to set.</param>
-        /// <param name="data">A pointer to the data to set.</param>
-        /// <param name="offset">The index of the first element to set.</param>
-        /// <param name="count">The number of elements to set.</param>
-        /// <param name="stride">The number of elements in one row of data.</param>
-        /// <param name="format">The format of the data being set.</param>
-        /// <param name="origin">A <see cref="SetDataOrigin"/> value specifying the origin of the texture data in <paramref name="data"/>.</param>
-        private unsafe void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin)
+        private unsafe void SetDataInternal<T>(Int32 level, Rectangle? rect, T[] data, Int32 startIndex, Int32 elementCount) where T : struct
         {
+            var elementSizeInBytes = Marshal.SizeOf(typeof(T));
+
             var region = rect ?? new Rectangle(0, 0, width, height);
-            if (region.Width * region.Height != count)
+            var regionWidth = region.Width;
+            var regionHeight = region.Height;
+
+            var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
+            if (pixelSizeInBytes * width * height != elementSizeInBytes * elementCount)
+                throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
+
+            Ultraviolet.QueueWorkItemAndWait(() =>
             {
-                throw new InvalidOperationException(UltravioletStrings.BufferIsWrongSize);
-            }
-
-            const Int32 SizeOfTextureElementInBytes = 4;
-
-            var flipHorizontally = (origin == SetDataOrigin.TopRight || origin == SetDataOrigin.BottomRight);
-            var flipVertically   = (origin == SetDataOrigin.TopLeft || origin == SetDataOrigin.TopRight);
-
-            TextureUtil.ReorientTextureData(data.ToPointer(), region.Width, region.Height, 
-                SizeOfTextureElementInBytes, flipHorizontally, flipVertically);
-
-            if (flipHorizontally)
-            {
-                region = new Rectangle((width - region.Width) - region.X, region.Y, region.Width, region.Height);
-            }
-            if (flipVertically)
-            {
-                region = new Rectangle(region.X, (height - region.Height) - region.Y, region.Width, region.Height);
-            }
-
-            using (OpenGLState.ScopedBindTexture2D(texture))
-            {
-                var rowLengthSupported = (!gl.IsGLES2 || gl.IsExtensionSupported("GL_EXT_unpack_subimage"));
-                var rowLengthFallbackRequired = (stride != 0 && !rowLengthSupported);
-                if (rowLengthFallbackRequired)
+                var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
                 {
-                    var ptr = (Byte*)data.ToPointer();
-                    for (int i = 0; i < height; i++)
+                    using (OpenGLState.ScopedBindTexture3D(OpenGLName))
                     {
-                        gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y + i, region.Width, 1,
-                            GetOpenGLTextureFormatFromTextureDataFormat(format), gl.GL_UNSIGNED_BYTE, ptr);
-                        
-                        ptr += stride * 4;
-                    }
-                }
-                else
-                {
-                    if (rowLengthSupported)
-                    {
-                        gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, stride);
-                        gl.ThrowIfError();
-                    }
-
-                    gl.PixelStorei(gl.GL_UNPACK_ALIGNMENT, 1);
-                    gl.ThrowIfError();
-
-                    gl.TextureSubImage2D(texture, gl.GL_TEXTURE_2D, level, region.X, region.Y, region.Width, region.Height,
-                        GetOpenGLTextureFormatFromTextureDataFormat(format), gl.GL_UNSIGNED_BYTE, data.ToPointer());
-                    gl.ThrowIfError();
-
-                    if (rowLengthSupported)
-                    {
-                        gl.PixelStorei(gl.GL_UNPACK_ROW_LENGTH, 0);
+                        var pData = dataHandle.AddrOfPinnedObject() + (startIndex * elementSizeInBytes);
+                        gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
+                            region.Width, region.Height, format, type, (void*)pData);
                         gl.ThrowIfError();
                     }
                 }
-            }
+                finally { dataHandle.Free(); }
+            });            
         }
 
         // Property values.

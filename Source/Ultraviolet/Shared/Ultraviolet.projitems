@@ -335,7 +335,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderTargetUsage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SamplerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SetDataOrigin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\StencilOperation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceSaver.cs" />
@@ -351,9 +350,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureAtlasProcessor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureDataFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureFilter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexElement.cs" />

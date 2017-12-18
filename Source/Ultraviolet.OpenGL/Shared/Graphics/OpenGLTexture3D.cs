@@ -433,24 +433,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             return gl.GL_NONE;
         }
-
-        /// <summary>
-        /// Gets the OpenGL texture format flag that corresponds to the specified texture data format.
-        /// </summary>
-        /// <param name="format">The texture data format to convert.</param>
-        /// <returns>The converted texture data format.</returns>
-        private static UInt32 GetOpenGLTextureFormatFromTextureDataFormat(TextureDataFormat format)
-        {
-            switch (format)
-            {
-                case TextureDataFormat.RGBA:
-                    return gl.GL_RGBA;
-                case TextureDataFormat.BGRA:
-                    return gl.GL_BGRA;
-            }
-            throw new NotSupportedException("format");
-        }
-
+        
         /// <summary>
         /// Creates the underlying native OpenGL texture with the specified format and data.
         /// </summary>
@@ -560,10 +543,13 @@ namespace Ultraviolet.OpenGL.Graphics
                 var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
                 {
-                    var pData = dataHandle.AddrOfPinnedObject() + (startIndex * Marshal.SizeOf(typeof(T)));
-                    gl.TextureSubImage3D(OpenGLName, gl.GL_TEXTURE_3D, level, left, top, front, 
-                        right - left, bottom - top, back - front, format, type, (void*)pData);
-                    gl.ThrowIfError();
+                    using (OpenGLState.ScopedBindTexture3D(OpenGLName))
+                    {
+                        var pData = dataHandle.AddrOfPinnedObject() + (startIndex * elementSizeInBytes);
+                        gl.TextureSubImage3D(OpenGLName, gl.GL_TEXTURE_3D, level, left, top, front,
+                            right - left, bottom - top, back - front, format, type, (void*)pData);
+                        gl.ThrowIfError();
+                    }
                 }
                 finally { dataHandle.Free(); }
             });

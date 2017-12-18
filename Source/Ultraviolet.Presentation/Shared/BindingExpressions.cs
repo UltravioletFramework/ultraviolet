@@ -483,16 +483,12 @@ namespace Ultraviolet.Presentation
             comparerRegistry[typeof(RenderTargetUsage?)] = new DataBindingComparer<RenderTargetUsage?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SetDataOptions)] = new DataBindingComparer<SetDataOptions>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SetDataOptions?)] = new DataBindingComparer<SetDataOptions?>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(SetDataOrigin)] = new DataBindingComparer<SetDataOrigin>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(SetDataOrigin?)] = new DataBindingComparer<SetDataOrigin?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(StencilOperation)] = new DataBindingComparer<StencilOperation>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(StencilOperation?)] = new DataBindingComparer<StencilOperation?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SurfaceSourceDataFormat)] = new DataBindingComparer<SurfaceSourceDataFormat>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SurfaceSourceDataFormat?)] = new DataBindingComparer<SurfaceSourceDataFormat?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextureAddressMode)] = new DataBindingComparer<TextureAddressMode>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextureAddressMode?)] = new DataBindingComparer<TextureAddressMode?>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(TextureDataFormat)] = new DataBindingComparer<TextureDataFormat>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(TextureDataFormat?)] = new DataBindingComparer<TextureDataFormat?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextureFilter)] = new DataBindingComparer<TextureFilter>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextureFilter?)] = new DataBindingComparer<TextureFilter?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(VertexFormat)] = new DataBindingComparer<VertexFormat>((v1, v2) => v1 == v2);

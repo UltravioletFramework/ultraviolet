@@ -89,48 +89,30 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        public override void SetData<T>(T[] data)
         {
             if (willNotBeSampled)
                 throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
 
-            texture.SetData<T>(data, origin);
+            texture.SetData(data);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        public override void SetData<T>(T[] data, Int32 startIndex, Int32 elementCount)
         {
             if (willNotBeSampled)
                 throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
 
-            texture.SetData(data, offset, count, origin);
+            texture.SetData(data, startIndex, elementCount);
         }
 
         /// <inheritdoc/>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, SetDataOrigin origin = SetDataOrigin.TopLeft)
+        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 startIndex, Int32 elementCount)
         {
             if (willNotBeSampled)
                 throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
 
-            texture.SetData(level, rect, data, offset, count, 0, origin);
-        }
-
-        /// <inheritdoc/>
-        public override void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 offset, Int32 count, Int32 stride, SetDataOrigin origin = SetDataOrigin.TopLeft)
-        {
-            if (willNotBeSampled)
-                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
-
-            texture.SetData(level, rect, data, offset, count, stride, origin);
-        }
-
-        /// <inheritdoc/>
-        public override void SetData(Int32 level, Rectangle? rect, IntPtr data, Int32 offset, Int32 count, Int32 stride, TextureDataFormat format, SetDataOrigin origin = SetDataOrigin.TopLeft)
-        {
-            if (willNotBeSampled)
-                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
-
-            texture.SetData(level, rect, data, offset, count, stride, format, origin);
+            texture.SetData(level, rect, data, startIndex, elementCount);
         }
 
         /// <inheritdoc/>
