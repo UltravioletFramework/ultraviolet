@@ -594,7 +594,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 var flags = SDL.GetWindowFlags(ptr);
-                return (flags & SDL_WindowFlags.RESIZABLE) == SDL_WindowFlags.RESIZABLE;
+                return (flags & SDL_WindowFlags.SHOWN) == SDL_WindowFlags.SHOWN;
             }
             set
             {
