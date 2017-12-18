@@ -20,7 +20,10 @@ namespace Ultraviolet.Shims.Android.Graphics
         {
             Contract.Require(stream, nameof(stream));
 
-            using (var bmp = BitmapFactory.DecodeStream(stream))
+            var opts = new BitmapFactory.Options();
+            opts.InPreferredConfig = Bitmap.Config.Argb8888;
+
+            using (var bmp = BitmapFactory.DecodeStream(stream, new Rect(), opts))
             {
                 this.width = bmp.Width;
                 this.height = bmp.Height;
@@ -54,10 +57,10 @@ namespace Ultraviolet.Shims.Android.Graphics
                 unsafe
                 {
                     var pixel = ((byte*)Data.ToPointer()) + (stride * y) + (x * sizeof(UInt32));
-                    var a = *pixel++;
-                    var b = *pixel++;
-                    var g = *pixel++;
                     var r = *pixel++;
+                    var g = *pixel++;
+                    var b = *pixel++;
+                    var a = *pixel++;
                     return new Color(r, g, b, a);
                 }
             }
@@ -108,7 +111,7 @@ namespace Ultraviolet.Shims.Android.Graphics
         }
 
         /// <inheritdoc/>
-        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;
+        public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.RGBA;
 
         /// <summary>
         /// Releases resources associated with the object.
