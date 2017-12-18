@@ -234,15 +234,22 @@ namespace Ultraviolet.OpenGL.Bindings
         public static void GetShaderInfoLog(uint shader, out String infoLog)
         {
             var infoLogLength = GetShaderi(shader, GL_INFO_LOG_LENGTH);
-            var infoLogPtr = Marshal.AllocHGlobal(infoLogLength);
-            try
+            if (infoLogLength == 0)
             {
-                glGetShaderInfoLog(shader, infoLogLength, IntPtr.Zero, infoLogPtr);
-                infoLog = Marshal.PtrToStringAnsi(infoLogPtr);
+                infoLog = String.Empty;
             }
-            finally
+            else
             {
-                Marshal.FreeHGlobal(infoLogPtr);
+                var infoLogPtr = Marshal.AllocHGlobal(infoLogLength);
+                try
+                {
+                    glGetShaderInfoLog(shader, infoLogLength, IntPtr.Zero, infoLogPtr);
+                    infoLog = Marshal.PtrToStringAnsi(infoLogPtr);
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(infoLogPtr);
+                }
             }
         }
 
