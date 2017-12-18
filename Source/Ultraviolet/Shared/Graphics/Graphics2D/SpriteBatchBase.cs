@@ -2576,8 +2576,8 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             var graphics = Ultraviolet.GetGraphics();
 
-            if (sortMode == SpriteSortMode.Immediate)
-                ApplyTexture(null);
+            var texture = batchInfo.Count > 0 ? batchInfo.GetTexture(0) : null;
+            ApplyTexture(texture);
 
             graphics.SetGeometryStream(geometryStream);
             graphics.SetBlendState(blendState ?? BlendState.AlphaBlend);
