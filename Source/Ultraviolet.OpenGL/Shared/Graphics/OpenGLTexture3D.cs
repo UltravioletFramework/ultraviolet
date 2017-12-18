@@ -30,7 +30,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var format = GetOpenGLTextureFormatFromBytesPerPixel(bytesPerPixel);
             var internalformat = GetOpenGLTextureInternalFormatFromBytesPerPixel(bytesPerPixel);
 
-            if (type == gl.GL_NONE)
+            if (format == gl.GL_NONE || internalformat == gl.GL_NONE)
                 throw new NotSupportedException(OpenGLStrings.UnsupportedImageType);
 
             var pixels = IntPtr.Zero;
