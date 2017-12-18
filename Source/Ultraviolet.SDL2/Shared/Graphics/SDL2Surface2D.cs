@@ -182,6 +182,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override void SaveAsJpeg(Stream stream)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(stream, nameof(stream));
 
             var saver = SurfaceSaver.Create();
@@ -191,6 +192,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override void SaveAsPng(Stream stream)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(stream, nameof(stream));
 
             var saver = SurfaceSaver.Create();

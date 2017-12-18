@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
@@ -18,8 +19,8 @@ namespace Ultraviolet.SDL2.Graphics
         /// <param name="width">The surface's width in pixels.</param>
         /// <param name="height">The surface's height in pixels.</param>
         /// <param name="depth">The surface's depth in pixels.</param>
-        /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on this surface.</param>
-        public SDL2Surface3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel)
+        /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on the surface.</param>
+        public SDL2Surface3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel = 4)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
@@ -38,6 +39,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override Surface2D GetLayer(Int32 layer)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(layer >= 0, nameof(layer));
 
             return this.layers[layer];
@@ -46,6 +48,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override void SetLayer(Int32 layer, Surface2D surface, Boolean transferOwnership = false)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(layer >= 0, nameof(layer));
 
             if (surface != null)
@@ -67,6 +70,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override void SetLayers(IEnumerable<Surface2D> surfaces, Boolean transferOwnership = false)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(surfaces, nameof(surfaces));
 
             SetLayers(surfaces, 0, transferOwnership);
@@ -75,6 +79,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override void SetLayers(IEnumerable<Surface2D> surfaces, Int32 offset, Boolean transferOwnership = false)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(surfaces, nameof(surfaces));
 
             var layers = surfaces.Skip(offset).Take(Depth).ToArray();
@@ -88,6 +93,8 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             foreach (var layer in layers)
             {
                 if (layer != null && !layer.IsReadyForTextureExport)
@@ -95,6 +102,20 @@ namespace Ultraviolet.SDL2.Graphics
             }
 
             this.isReadyForTextureExport = this.isComplete;
+        }
+
+        /// <inheritdoc/>
+        public override Surface3D CreateSurface()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var result = new SDL2Surface3D(Ultraviolet, Width, Height, Depth);
+            for (int i = 0; i < Depth; i++)
+            {
+                var layerCopy = this.GetLayer(i).CreateSurface();
+                result.SetLayer(i, layerCopy, true);
+            }
+            return result;
         }
 
         /// <inheritdoc/>
@@ -129,6 +150,48 @@ namespace Ultraviolet.SDL2.Graphics
             {
                 foreach (var copysurf in copysurfs)
                     copysurf?.Dispose();
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void SaveAsJpeg(Stream stream)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(stream, nameof(stream));
+            Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
+
+            using (var outputSurface = Surface2D.Create(Width * Depth, Height))
+            {
+                var position = 0;
+                for (int i = 0; i < Depth; i++)
+                {
+                    GetLayer(i).Blit(outputSurface, new Rectangle(position, 0, Width, Height));
+                    position += Width;
+                }
+
+                var surfaceSaver = SurfaceSaver.Create();
+                surfaceSaver.SaveAsJpeg(outputSurface, stream);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void SaveAsPng(Stream stream)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(stream, nameof(stream));
+            Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
+
+            using (var outputSurface = Surface2D.Create(Width * Depth, Height))
+            {
+                var position = 0;
+                for (int i = 0; i < Depth; i++)
+                {
+                    GetLayer(i).Blit(outputSurface, new Rectangle(position, 0, Width, Height));
+                    position += Width;
+                }
+
+                var surfaceSaver = SurfaceSaver.Create();
+                surfaceSaver.SaveAsPng(outputSurface, stream);
             }
         }
 

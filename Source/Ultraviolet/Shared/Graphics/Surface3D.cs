@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
@@ -43,7 +44,6 @@ namespace Ultraviolet.Graphics
             Contract.Ensure(width > 0, nameof(width));
             Contract.Ensure(height > 0, nameof(height));
             Contract.Ensure(depth > 0, nameof(depth));
-            Contract.Ensure(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Surface3DFactory>()(uv, width, height, depth, bytesPerPixel);
@@ -99,6 +99,12 @@ namespace Ultraviolet.Graphics
         public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque);
 
         /// <summary>
+        /// Creates a deep copy of this surface.
+        /// </summary>
+        /// <returns>A new instance of the <see cref="Surface3D"/> class which is a deep copy of this instance.</returns>
+        public abstract Surface3D CreateSurface();
+
+        /// <summary>
         /// Creates a texture from the surface.
         /// </summary>
         /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
@@ -112,6 +118,18 @@ namespace Ultraviolet.Graphics
         /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
         /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
         public abstract Texture3D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque);
+
+        /// <summary>
+        /// Saves the surface as a JPEG image to the specified stream.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>
+        public abstract void SaveAsJpeg(Stream stream);
+
+        /// <summary>
+        /// Saves the surface as a PNG image to the specified stream.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>
+        public abstract void SaveAsPng(Stream stream);
 
         /// <summary>
         /// Gets the surface's width in pixels.
