@@ -85,13 +85,40 @@ namespace Ultraviolet.Presentation.Controls
             get { return GetValue<Orientation>(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
-        
+
         /// <summary>
-        /// Identifies the <see cref="Orientation"/> dependency property.
+        /// Gets or sets a value that specifies whether the slider is oriented vertically or horizontally.
         /// </summary>
-        /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(Slider),
-            new PropertyMetadata<Orientation>(Orientation.Vertical, HandleOrientationChanged));
+        /// <value>An <see cref="TickPlacement"/> that specifies whether the slider is oriented vertically or horizontally.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="TickPlacementProperty"/></dpropField>
+        ///		<dpropStylingName>tick-placement</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public TickPlacement TickPlacement
+        {
+            get { return GetValue<TickPlacement>(TickPlacementProperty); }
+            set { SetValue(TickPlacementProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the interval between tick marks.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the interval between tick marks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TickFrequencyProperty"/></dpropField>
+        ///     <dpropStylingName>tick-frequency</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double TickFrequency
+        {
+            get { return GetValue<Double>(TickFrequencyProperty); }
+            set { SetValue(TickFrequencyProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the amount of time, in milliseconds, that one of the slider's repeat buttons waits prior to 
@@ -147,6 +174,27 @@ namespace Ultraviolet.Presentation.Controls
             get { return GetValue<Boolean>(IsDirectionReversedProperty); }
             set { SetValue(IsDirectionReversedProperty, value); }
         }
+        
+        /// <summary>
+        /// Identifies the <see cref="Orientation"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="Orientation"/> dependency property.</value>
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(Slider),
+            new PropertyMetadata<Orientation>(Orientation.Vertical, HandleOrientationChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="TickPlacement"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickPlacement"/> dependency property.</value>
+        public static readonly DependencyProperty TickPlacementProperty = DependencyProperty.Register("TickPlacement", typeof(TickPlacement), typeof(Slider),
+            new PropertyMetadata<TickPlacement>(TickPlacement.None));
+
+        /// <summary>
+        /// Identifies the <see cref="TickFrequency"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickFrequency"/> dependency property.</value>
+        public static readonly DependencyProperty TickFrequencyProperty = DependencyProperty.Register("TickFrequency", typeof(Double), typeof(Slider),
+            new PropertyMetadata<Double>(1.0));
 
         /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.

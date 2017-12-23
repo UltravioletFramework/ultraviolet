@@ -41,6 +41,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ArrangeOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingConversions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TickBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TickBarPlacement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TickPlacement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapperUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Compilation.cs" />
