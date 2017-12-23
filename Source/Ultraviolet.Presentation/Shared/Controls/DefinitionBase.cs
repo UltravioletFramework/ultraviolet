@@ -14,18 +14,6 @@ namespace Ultraviolet.Presentation.Controls
     /// </summary>
     public abstract class DefinitionBase : DependencyObject
     {
-        /// <inheritdoc/>
-        internal override Object DependencyDataSource
-        {
-            get { return Grid == null ? null : Grid.DependencyDataSource; }
-        }
-
-        /// <inheritdoc/>
-        internal override DependencyObject DependencyContainer
-        {
-            get { return Grid; }
-        }
-
         /// <summary>
         /// Resets the row or column's minimum content dimension.
         /// </summary>
