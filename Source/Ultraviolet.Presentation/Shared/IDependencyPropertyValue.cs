@@ -242,6 +242,14 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this property has its default value on this object.
+        /// </summary>
+        Boolean HasDefaultValue
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the clock which is driving the value's current animation, if any.
         /// </summary>
         Clock AnimationClock

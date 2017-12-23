@@ -168,5 +168,34 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             get { return GetValue<TickBarPlacement>(PlacementProperty); }
             set { SetValue(PlacementProperty, value); }
         }
+
+        /// <inheritdoc/>
+        internal override void OnPreApplyTemplate()
+        {
+            if (TemplatedParent is OrientedSlider parent)
+            {
+                var templateWrapperType = PresentationFoundation.GetDataSourceWrapper(parent).GetType();
+
+                if (HasDefaultValue(MinimumProperty))
+                    BindValue(MinimumProperty, templateWrapperType, "{{Minimum}}");
+                if (HasDefaultValue(MaximumProperty))
+                    BindValue(MaximumProperty, templateWrapperType, "{{Maximum}}");
+                if (HasDefaultValue(TickFrequencyProperty))
+                    BindValue(TickFrequencyProperty, templateWrapperType, "{{TickFrequency}}");
+            }
+            base.OnPreApplyTemplate();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="dc"></param>
+        protected override void OnDrawing(UltravioletTime time, DrawingContext dc)
+        {
+            DrawBlank(dc, Color.Lime);
+
+            base.OnDrawing(time, dc);
+        }
     }
 }

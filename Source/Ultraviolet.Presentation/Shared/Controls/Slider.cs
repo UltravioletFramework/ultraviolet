@@ -18,13 +18,6 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         static Slider()
         {
-            // Dependency property overrides
-            ValueProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Double>(HandleValueChanged));
-            MinimumProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Double>(HandleMinimumChanged));
-            MaximumProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Double>(HandleMaximumChanged));
-            SmallChangeProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Double>(HandleSmallChangeChanged));
-            LargeChangeProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Double>(HandleLargeChangeChanged));
-
             // Commands - decrease
             CommandManager.RegisterClassBindings(typeof(Slider), DecreaseLargeCommand, ExecutedDecreaseLargeCommand,
                 new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp")));
@@ -296,91 +289,6 @@ namespace Ultraviolet.Presentation.Controls
         }
         
         /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.Value"/> dependency property changes.
-        /// </summary>
-        private static void HandleValueChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            if (!(element is Slider))
-                return;
-
-            var hscroll = ((Slider)element).PART_HSlider;
-            if (hscroll != null)
-                hscroll.Value = newValue;
-
-            var vscroll = ((Slider)element).PART_VSlider;
-            if (vscroll != null)
-                vscroll.Value = newValue;
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.Minimum"/> dependency property changes.
-        /// </summary>
-        private static void HandleMinimumChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            if (!(element is Slider))
-                return;
-
-            var hscroll = ((Slider)element).PART_HSlider;
-            if (hscroll != null)
-                hscroll.Minimum = newValue;
-
-            var vscroll = ((Slider)element).PART_VSlider;
-            if (vscroll != null)
-                vscroll.Minimum = newValue;
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.Maximum"/> dependency property changes.
-        /// </summary>
-        private static void HandleMaximumChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            if (!(element is Slider))
-                return;
-
-            var hscroll = ((Slider)element).PART_HSlider;
-            if (hscroll != null)
-                hscroll.Maximum = newValue;
-
-            var vscroll = ((Slider)element).PART_VSlider;
-            if (vscroll != null)
-                vscroll.Maximum = newValue;
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.SmallChange"/> dependency property changes.
-        /// </summary>
-        private static void HandleSmallChangeChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            if (!(element is Slider))
-                return;
-
-            var hscroll = ((Slider)element).PART_HSlider;
-            if (hscroll != null)
-                hscroll.SmallChange = newValue;
-
-            var vscroll = ((Slider)element).PART_VSlider;
-            if (vscroll != null)
-                vscroll.SmallChange = newValue;
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="RangeBase.LargeChange"/> dependency property changes.
-        /// </summary>
-        private static void HandleLargeChangeChanged(DependencyObject element, Double oldValue, Double newValue)
-        {
-            if (!(element is Slider))
-                return;
-
-            var hscroll = ((Slider)element).PART_HSlider;
-            if (hscroll != null)
-                hscroll.LargeChange = newValue;
-
-            var vscroll = ((Slider)element).PART_VSlider;
-            if (vscroll != null)
-                vscroll.LargeChange = newValue;
-        }
-
-        /// <summary>
         /// Occurs when the value of the <see cref="Orientation"/> dependency property changes.
         /// </summary>
         private static void HandleOrientationChanged(DependencyObject element, Orientation oldValue, Orientation newValue)
@@ -552,12 +460,6 @@ namespace Ultraviolet.Presentation.Controls
             {
                 childActive.Visibility = Visibility.Visible;
                 childActive.IsEnabled = true;
-
-                Value = childActive.Value;
-                Minimum = childActive.Minimum;
-                Maximum = childActive.Maximum;
-                SmallChange = childActive.SmallChange;
-                LargeChange = childActive.LargeChange;
             }
         }
 

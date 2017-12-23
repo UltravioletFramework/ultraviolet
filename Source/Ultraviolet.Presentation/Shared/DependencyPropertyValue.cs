@@ -540,6 +540,12 @@ namespace Ultraviolet.Presentation
             }
 
             /// <inheritdoc/>
+            public Boolean HasDefaultValue
+            {
+                get { return GetValueSource() == ValueSource.DefaultValue; }
+            }
+
+            /// <inheritdoc/>
             public Clock AnimationClock
             {
                 get { return GetAnimationState(false)?.Clock; }

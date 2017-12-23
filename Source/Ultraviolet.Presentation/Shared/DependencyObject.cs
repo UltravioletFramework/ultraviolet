@@ -20,8 +20,19 @@ namespace Ultraviolet.Presentation
         /// <returns><see langword="true"/> if the specified property has a defined value on this object; otherwise, <see langword="false"/>.</returns>
         public Boolean HasDefinedValue(DependencyProperty dp)
         {
-            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType);
-            return wrapper.HasDefinedValue;
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType, false);
+            return wrapper != null && wrapper.HasDefinedValue;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this object has the default value for the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified property has its default value on this object; otherwise, <see langword="false"/>.</returns>
+        public Boolean HasDefaultValue(DependencyProperty dp)
+        {
+            var wrapper = GetDependencyPropertyValue(dp, dp.PropertyType, false);
+            return wrapper == null || wrapper.HasDefaultValue;
         }
 
         /// <summary>
@@ -997,10 +1008,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">The dependency property for which to create a value wrapper.</param>
+        /// <param name="createIfMissing">A value indicating whether to create the property value if it does not exist.</param>
         /// <returns>The <see cref="DependencyPropertyValue{T}"/> instance which was retrieved.</returns>
-        private DependencyPropertyValue<T> GetDependencyPropertyValue<T>(DependencyProperty dp)
+        private DependencyPropertyValue<T> GetDependencyPropertyValue<T>(DependencyProperty dp, Boolean createIfMissing = true)
         {
-            return (DependencyPropertyValue<T>)GetDependencyPropertyValue(dp, typeof(T));
+            return (DependencyPropertyValue<T>)GetDependencyPropertyValue(dp, typeof(T), createIfMissing);
         }
 
         /// <summary>
@@ -1008,13 +1020,14 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="dp">The dependency property for which to create a value wrapper.</param>
         /// <param name="type">The type of value contained by the dependency property.</param>
+        /// <param name="createIfMissing">A value indicating whether to create the property value if it does not exist.</param>
         /// <returns>The <see cref="IDependencyPropertyValue"/> instance which was retrieved.</returns>
-        private IDependencyPropertyValue GetDependencyPropertyValue(DependencyProperty dp, Type type)
+        private IDependencyPropertyValue GetDependencyPropertyValue(DependencyProperty dp, Type type, Boolean createIfMissing = true)
         {
             IDependencyPropertyValue valueWrapper;
             dependencyPropertyValues.TryGetValue(dp.ID, out valueWrapper);
 
-            if (valueWrapper == null)
+            if (valueWrapper == null && createIfMissing)
             {
                 var dpValueType = typeof(DependencyPropertyValue<>).MakeGenericType(type);
                 valueWrapper = (IDependencyPropertyValue)Activator.CreateInstance(dpValueType, this, dp);

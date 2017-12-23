@@ -86,6 +86,40 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value that specifies whether the slider is oriented vertically or horizontally.
+        /// </summary>
+        /// <value>An <see cref="TickPlacement"/> that specifies whether the slider is oriented vertically or horizontally.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="TickPlacementProperty"/></dpropField>
+        ///		<dpropStylingName>tick-placement</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public TickPlacement TickPlacement
+        {
+            get { return GetValue<TickPlacement>(TickPlacementProperty); }
+            set { SetValue(TickPlacementProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the interval between tick marks.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value that represents the interval between tick marks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TickFrequencyProperty"/></dpropField>
+        ///     <dpropStylingName>tick-frequency</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double TickFrequency
+        {
+            get { return GetValue<Double>(TickFrequencyProperty); }
+            set { SetValue(TickFrequencyProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the amount of time, in milliseconds, that one of the slider's repeat buttons waits prior to 
         /// issuing a command to move the slider's thumb.
         /// </summary>
@@ -141,6 +175,18 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <summary>
+        /// Identifies the <see cref="TickPlacement"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickPlacement"/> dependency property.</value>
+        public static readonly DependencyProperty TickPlacementProperty = Slider.TickPlacementProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <summary>
+        /// Identifies the <see cref="TickFrequency"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickFrequency"/> dependency property.</value>
+        public static readonly DependencyProperty TickFrequencyProperty = Slider.TickFrequencyProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <summary>
         /// Identifies the <see cref="Delay"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Delay"/> dependency property.</value>
@@ -157,6 +203,31 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
         public static readonly DependencyProperty IsDirectionReversedProperty = Slider.IsDirectionReversedProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <inheritdoc/>
+        internal override void OnPreApplyTemplate()
+        {
+            if (TemplatedParent is Slider parent)
+            {
+                var templateWrapperType = PresentationFoundation.GetDataSourceWrapper(parent).GetType();
+
+                if (HasDefaultValue(ValueProperty))
+                    BindValue(ValueProperty, templateWrapperType, "{{Value}}");
+                if (HasDefaultValue(MinimumProperty))
+                    BindValue(MinimumProperty, templateWrapperType, "{{Minimum}}");
+                if (HasDefaultValue(MaximumProperty))
+                    BindValue(MaximumProperty, templateWrapperType, "{{Maximum}}");
+                if (HasDefaultValue(SmallChangeProperty))
+                    BindValue(SmallChangeProperty, templateWrapperType, "{{SmallChange}}");
+                if (HasDefaultValue(LargeChangeProperty))
+                    BindValue(LargeChangeProperty, templateWrapperType, "{{LargeChange}}");
+                if (HasDefaultValue(TickPlacementProperty))
+                    BindValue(TickPlacementProperty, templateWrapperType, "{{TickPlacement}}");
+                if (HasDefaultValue(TickFrequencyProperty))
+                    BindValue(TickFrequencyProperty, templateWrapperType, "{{TickFrequency}}");
+            }
+            base.OnPreApplyTemplate();
+        }
 
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)

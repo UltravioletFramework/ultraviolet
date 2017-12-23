@@ -59,6 +59,27 @@ namespace Ultraviolet.Presentation
             return FocusNavigator.PerformNavigation(View, this, direction, false);
         }
 
+        /// <summary>
+        /// Builds the current template's visual tree if necessary, and returns a value that indicates whether
+        /// the visual tree was rebuilt by this call.
+        /// </summary>
+        /// <remarks>The Ultraviolet Presentation Foundation does not currently implement the same templating
+        /// system used by the Windows Presentation Foundation, so this method doesn't do much beyond signaling
+        /// to certain primitives when to perform binding. You probably don't need to call this.</remarks>
+        /// <returns><see langword="true"/> if visuals were added to the tree; otherwise, <see langword="false"/>.</returns>
+        public Boolean ApplyTemplate()
+        {
+            OnPreApplyTemplate();
+
+            // NOTE: UPF does not implement the WPF templating system at this time, so
+            // this method doesn't actually do anything beyond signaling to primitives
+            // when to perform binding.
+
+            OnPostApplyTemplate();
+
+            return false;
+        }
+        
         /// <inheritdoc/>
         public void BeginInit()
         {
@@ -494,6 +515,22 @@ namespace Ultraviolet.Presentation
             RaiseLoadedOrUnloaded(value);
         }
 
+        /// <summary>
+        /// Called at the beginning of the <see cref="ApplyTemplate"/> method.
+        /// </summary>
+        internal virtual void OnPreApplyTemplate()
+        {
+
+        }
+
+        /// <summary>
+        /// Called at the end of the <see cref="ApplyTemplate"/> method.
+        /// </summary>
+        internal virtual void OnPostApplyTemplate()
+        {
+
+        }
+
         /// <inheritdoc/>
         internal override void OnVisualParentChangedInternal(Visual oldParent, Visual newParent)
         {
@@ -724,6 +761,8 @@ namespace Ultraviolet.Presentation
         /// <inheritdoc/>
         protected sealed override Size2D MeasureCore(Size2D availableSize)
         {
+            ApplyTemplate();
+
             var margin = PerformLayoutRounding(this.Margin);
 
             var xMargin = margin.Left + margin.Right;
