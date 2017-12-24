@@ -86,14 +86,14 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
-        /// Gets the element in the current namescope with the specified name.
+        /// Gets the object in the current namescope with the specified name.
         /// </summary>
-        /// <typeparam name="T">The type of element to retrieve.</typeparam>
-        /// <param name="name">The name of the element to retrieve.</param>
-        /// <returns>The element with the specified name.</returns>
-        protected T __UPF_GetElementByName<T>(String name) where T : FrameworkElement
+        /// <typeparam name="T">The type of object to retrieve.</typeparam>
+        /// <param name="name">The name of the object to retrieve.</param>
+        /// <returns>The object with the specified name, or <see langword="null"/> if no such object exists.</returns>
+        protected T __UPF_FindName<T>(String name) where T : class
         {
-            return namescope.GetElementByName(name) as T;
+            return namescope.FindName(name) as T;
         }
 
         // State values.

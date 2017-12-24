@@ -569,7 +569,7 @@ namespace Ultraviolet.Presentation.Compiler
                         CompilerStrings.ExpressionTargetIsUnrecognizedType.Format(expOriginal, matchName));
                 }
 
-                expTarget = String.Format("__UPF_GetElementByName<{0}>(\"{1}\").", CSharpLanguage.GetCSharpTypeName(expTargetType), expPartTarget);
+                expTarget = String.Format("__UPF_FindName<{0}>(\"{1}\").", CSharpLanguage.GetCSharpTypeName(expTargetType), expPartTarget);
 
                 return true;
             }

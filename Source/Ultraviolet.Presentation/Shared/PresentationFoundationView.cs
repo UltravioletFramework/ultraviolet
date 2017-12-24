@@ -484,15 +484,15 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
-        /// Gets the element within the view which has the specified identifying name.
+        /// Gets the element object the view's namescope which has the specified identifying name.
         /// </summary>
-        /// <param name="name">The identifying name of the element to retrieve.</param>
-        /// <returns>The element with the specified identifying name, or <see langword="null"/> if no such element exists.</returns>
-        public UIElement GetElementByName(String name)
+        /// <param name="name">The identifying name of the object to retrieve.</param>
+        /// <returns>The object with the specified identifying name, or <see langword="null"/> if no such object exists.</returns>
+        public Object FindName(String name)
         {
             Contract.RequireNotEmpty(name, nameof(name));
 
-            return namescope.GetElementByName(name);
+            return namescope.FindName(name);
         }
 
         /// <summary>

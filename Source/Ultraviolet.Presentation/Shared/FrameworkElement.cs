@@ -54,32 +54,17 @@ namespace Ultraviolet.Presentation
         }
 
         /// <inheritdoc/>
+        public override sealed DependencyObject PredictFocus(FocusNavigationDirection direction)
+        {
+            return FocusNavigator.PredictNavigation(View, this, direction, false) as DependencyObject;
+        }
+
+        /// <inheritdoc/>
         public override Boolean MoveFocus(FocusNavigationDirection direction)
         {
             return FocusNavigator.PerformNavigation(View, this, direction, false);
         }
 
-        /// <summary>
-        /// Builds the current template's visual tree if necessary, and returns a value that indicates whether
-        /// the visual tree was rebuilt by this call.
-        /// </summary>
-        /// <remarks>The Ultraviolet Presentation Foundation does not currently implement the same templating
-        /// system used by the Windows Presentation Foundation, so this method doesn't do much beyond signaling
-        /// to certain primitives when to perform binding. You probably don't need to call this.</remarks>
-        /// <returns><see langword="true"/> if visuals were added to the tree; otherwise, <see langword="false"/>.</returns>
-        public Boolean ApplyTemplate()
-        {
-            OnPreApplyTemplate();
-
-            // NOTE: UPF does not implement the WPF templating system at this time, so
-            // this method doesn't actually do anything beyond signaling to primitives
-            // when to perform binding.
-
-            OnPostApplyTemplate();
-
-            return false;
-        }
-        
         /// <inheritdoc/>
         public void BeginInit()
         {
@@ -103,6 +88,71 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Builds the current template's visual tree if necessary, and returns a value that indicates whether
+        /// the visual tree was rebuilt by this call.
+        /// </summary>
+        /// <remarks>The Ultraviolet Presentation Foundation does not currently implement the same templating
+        /// system used by the Windows Presentation Foundation, so this method doesn't do much beyond signaling
+        /// to certain primitives when to perform binding. You probably don't need to call this.</remarks>
+        /// <returns><see langword="true"/> if visuals were added to the tree; otherwise, <see langword="false"/>.</returns>
+        public Boolean ApplyTemplate()
+        {
+            OnPreApplyTemplate();
+
+            // NOTE: UPF does not implement the WPF templating system at this time, so
+            // this method doesn't actually do anything beyond signaling to primitives
+            // when to perform binding.
+
+            OnPostApplyTemplate();
+
+            return false;
+        }
+
+        /// <summary>
+        /// Finds an element that has the provided identifier name.
+        /// </summary>
+        /// <param name="name">The name of the requested element.</param>
+        /// <returns>The requested element. This can be <see langword="null"/> if no matching element was found.</returns>
+        public Object FindName(String name)
+        {
+            Contract.Require(name, nameof(name));
+
+            var namescope = FindCurrentNamescope();
+            if (namescope != null)
+            {
+                return namescope.FindName(name);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Registers the specified object within this element's namescope.
+        /// </summary>
+        /// <param name="name">The identifying name under which to register the object.</param>
+        /// <param name="scopedElement">The object to register within this element's namescope.</param>
+        public void RegisterName(String name, Object scopedElement)
+        {
+            var namescope = FindCurrentNamescope();
+            if (namescope == null)
+                throw new InvalidOperationException(PresentationStrings.ElementDoesNotHaveNamescope);
+
+            namescope.RegisterName(name, scopedElement);
+        }
+
+        /// <summary>
+        /// Unregisters a name from this element's namescope.
+        /// </summary>
+        /// <param name="name">The name to unregister from this element's namescope.</param>
+        public void UnregisterName(String name)
+        {
+            var namescope = FindCurrentNamescope();
+            if (namescope == null)
+                throw new InvalidOperationException(PresentationStrings.ElementDoesNotHaveNamescope);
+
+            namescope.UnregisterName(name);
+        }
+
+        /// <summary>
         /// Attempts to bring this element into view.
         /// </summary>
         public void BringIntoView()
@@ -119,12 +169,6 @@ namespace Ultraviolet.Presentation
             var evtData = RoutedEventData.Retrieve(this);
             var evtDelegate = EventManager.GetInvocationDelegate<UpfRequestBringIntoViewEventHandler>(RequestBringIntoViewEvent);
             evtDelegate(this, targetRectangle, evtData);
-        }
-
-        /// <inheritdoc/>
-        public override sealed DependencyObject PredictFocus(FocusNavigationDirection direction)
-        {
-            return FocusNavigator.PredictNavigation(View, this, direction, false) as DependencyObject;
         }
 
         /// <summary>
@@ -733,8 +777,9 @@ namespace Ultraviolet.Presentation
 
             if (namescope != null)
             {
-                namescope.UnregisterElement(this);
-                namescope.RegisterElement(this);
+                var name = Name;
+                if (!String.IsNullOrEmpty(name))
+                    namescope.RegisterName(name, this);
             }
 
             CacheLayoutParametersOverride();

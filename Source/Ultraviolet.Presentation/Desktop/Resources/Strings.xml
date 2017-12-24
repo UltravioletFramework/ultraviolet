@@ -85,9 +85,9 @@
       <Variant>An element tried to bind a dependency property, but no view model is defined for the element's view.</Variant>
     </en-US>
   </String>
-  <String Key="ELEMENT_WITH_NAME_ALREADY_EXISTS">
+  <String Key="DUPLICATE_NAMESCOPE_NAME">
     <en-US>
-      <Variant>An element with name '{0}' already exists within the layout.</Variant>
+      <Variant>The name '{0}' is already being used within the current namescope.</Variant>
     </en-US>
   </String>
   <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">
@@ -388,6 +388,11 @@
   <String Key="DELEGATE_COMMAND_PARAM_TYPE_MISMATCH">
     <en-US>
       <Variant>The parameter type of a DelegateCommand{T} must be either a reference type or Nullable{T}.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_DOES_NOT_HAVE_NAMESCOPE">
+    <en-US>
+      <Variant>This element does not have a namescope.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

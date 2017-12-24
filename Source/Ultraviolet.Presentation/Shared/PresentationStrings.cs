@@ -44,7 +44,7 @@ namespace Ultraviolet.Presentation
         public static readonly StringResource UnrecognizedType                     = new StringResource(StringDatabase, "UNRECOGNIZED_TYPE");
         public static readonly StringResource InvalidDefaultProperty               = new StringResource(StringDatabase, "INVALID_DEFAULT_PROPERTY");
         public static readonly StringResource NoViewModel                          = new StringResource(StringDatabase, "NO_VIEW_MODEL");
-        public static readonly StringResource ElementWithNameAlreadyExists         = new StringResource(StringDatabase, "ELEMENT_WITH_NAME_ALREADY_EXISTS");
+        public static readonly StringResource DuplicateNamescopeName               = new StringResource(StringDatabase, "DUPLICATE_NAMESCOPE_NAME");
         public static readonly StringResource AmbiguousDependencyProperty          = new StringResource(StringDatabase, "AMBIGUOUS_DEPENDENCY_PROPERTY");
         public static readonly StringResource InvalidChildElements                 = new StringResource(StringDatabase, "INVALID_CHILD_ELEMENTS");
         public static readonly StringResource InvalidElementPropertyValue          = new StringResource(StringDatabase, "INVALID_ELEMENT_PROPERTY_VALUE");
@@ -105,6 +105,7 @@ namespace Ultraviolet.Presentation
         public static readonly StringResource TemplateMustSpecifyViewModelType     = new StringResource(StringDatabase, "TEMPLATE_MUST_SPECIFY_VIEW_MODEL_TYPE");
         public static readonly StringResource ElementDoesNotBelongToView           = new StringResource(StringDatabase, "ELEMENT_DOES_NOT_BELONG_TO_VIEW");
         public static readonly StringResource DelegateCommandParamTypeMismatch     = new StringResource(StringDatabase, "DELEGATE_COMMAND_PARAM_TYPE_MISMATCH");
+        public static readonly StringResource ElementDoesNotHaveNamescope          = new StringResource(StringDatabase, "ELEMENT_DOES_NOT_HAVE_NAMESCOPE");
 #pragma warning restore 1591
     }
 }

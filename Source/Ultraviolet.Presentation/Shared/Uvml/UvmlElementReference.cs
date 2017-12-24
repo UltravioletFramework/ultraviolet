@@ -21,12 +21,12 @@ namespace Ultraviolet.Presentation.Uvml
         /// Retrieves the referenced element from the specified namescope.
         /// </summary>
         /// <param name="namescope">The namescope from which to retrieve the referenced element.</param>
-        /// <returns></returns>
+        /// <returns>The referenced element from the specified namescope, or <see langword="null"/> if no such element exists.</returns>
         public IInputElement GetReferencedElement(Namescope namescope)
         {
             Contract.Require(namescope, nameof(namescope));
 
-            var element = namescope.GetElementByName(Name);
+            var element = namescope.FindName(Name) as IInputElement;
             if (element == null)
                 throw new UvmlException(PresentationStrings.NamedElementDoesNotExist.Format(Name));
 

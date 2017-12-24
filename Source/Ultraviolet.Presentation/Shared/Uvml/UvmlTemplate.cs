@@ -139,7 +139,8 @@ namespace Ultraviolet.Presentation.Uvml
             if (frameworkElement == null)
                 return;
 
-            context.Namescope.RegisterElement(frameworkElement);
+            if (!String.IsNullOrEmpty(frameworkElement.Name))
+                context.Namescope.RegisterName(frameworkElement.Name, frameworkElement);
 
             frameworkElement.BeginInit();
             frameworkElement.TemplatedParent = context.TemplatedParent as DependencyObject;

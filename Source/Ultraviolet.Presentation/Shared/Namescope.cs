@@ -22,53 +22,49 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
-        /// Adds an element to the registry.
+        /// Registers an object with the specified identifying name within the namescope.
         /// </summary>
-        /// <param name="element">The element to add to the registry.</param>
-        public void RegisterElement(FrameworkElement element)
+        /// <param name="name">The identifying name with which to register the object.</param>
+        /// <param name="scopedElement">The object to register under the specified name.</param>
+        public void RegisterName(String name, Object scopedElement)
         {
-            if (String.IsNullOrEmpty(element.Name))
-                return;
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.Require(scopedElement, nameof(scopedElement));
 
-            FrameworkElement existing;
-            if (elementsByName.TryGetValue(element.Name, out existing))
+            if (elementsByName.TryGetValue(name, out var existing))
             {
-                if (existing == element)
-                {
-                    return;
-                }
-                throw new InvalidOperationException(PresentationStrings.ElementWithNameAlreadyExists.Format(element.Name));
+                if (existing != scopedElement)
+                    throw new InvalidOperationException(PresentationStrings.DuplicateNamescopeName.Format(name));
             }
-            elementsByName[element.Name] = element;
+            else
+            {
+                elementsByName[name] = scopedElement;
+            }
         }
 
         /// <summary>
-        /// Removes an element from the registry.
+        /// Removes an object from the registry.
         /// </summary>
-        /// <param name="element">The element to remove from the registry.</param>
-        public void UnregisterElement(FrameworkElement element)
+        /// <param name="name"></param>
+        public void UnregisterName(String name)
         {
-            if (String.IsNullOrEmpty(element.Name))
+            if (String.IsNullOrEmpty(name))
                 return;
 
-            FrameworkElement existing;
-            if (elementsByName.TryGetValue(element.Name, out existing))
-            {
-                if (existing != element)
-                    return;
-            }
-            elementsByName.Remove(element.Name);
+            elementsByName.Remove(name);
         }
-
+        
         /// <summary>
-        /// Gets the registered element with the specified identifying name.
+        /// Gets the registered object with the specified identifying name.
         /// </summary>
-        /// <param name="name">The identifying name of the element to retrieve.</param>
-        /// <returns>The element with the specified identifying name, or <see langword="null"/> if no such element exists within the registry.</returns>
-        public FrameworkElement GetElementByName(String name)
+        /// <param name="name">The identifying name of the object to retrieve.</param>
+        /// <returns>The object with the specified identifying name, or <see langword="null"/> if no such object exists within the registry.</returns>
+        public Object FindName(String name)
         {
-            FrameworkElement element;
-            elementsByName.TryGetValue(name, out element);
+            if (String.IsNullOrEmpty(name))
+                return null;
+
+            elementsByName.TryGetValue(name, out var element);
             return element;
         }
 
@@ -77,7 +73,7 @@ namespace Ultraviolet.Presentation
         /// fields which have the same name as the element's identifier.
         /// </summary>
         /// <param name="obj">The object to populate with element references.</param>
-        public void PopulateFieldsFromRegisteredElements(Object obj)
+        internal void PopulateFieldsFromRegisteredElements(Object obj)
         {
             Contract.Require(obj, nameof(obj));
 
@@ -99,8 +95,7 @@ namespace Ultraviolet.Presentation
 
                 foreach (var kvp in elementsByName)
                 {
-                    FieldInfo field;
-                    if (!fields.TryGetValue(kvp.Key, out field))
+                    if (!fields.TryGetValue(kvp.Key, out var field))
                         continue;
 
                     if (!field.FieldType.IsAssignableFrom(kvp.Value.GetType()))
@@ -114,7 +109,7 @@ namespace Ultraviolet.Presentation
         }
 
         // The registry of elements for each known context.
-        private readonly Dictionary<String, FrameworkElement> elementsByName = 
-            new Dictionary<String, FrameworkElement>();
+        private readonly Dictionary<String, Object> elementsByName = 
+            new Dictionary<String, Object>();
     }
 }
