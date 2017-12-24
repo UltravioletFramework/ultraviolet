@@ -174,6 +174,86 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Finds the property or field of a type which has the specified name.
+        /// </summary>
+        /// <param name="type">The type to search for the member.</param>
+        /// <param name="name">The name of the member for which to search.</param>
+        public static MemberInfo FindPropertyOrField(Type type, String name)
+        {
+            Contract.Require(type, nameof(type));
+            Contract.RequireNotEmpty(name, nameof(name));
+
+            var members = type.GetMember(name, BindingFlags.Public | BindingFlags.Instance);
+            if (members == null || !members.Any())
+                return null;
+
+            var member = members.Where(x =>
+                x.MemberType == MemberTypes.Property ||
+                x.MemberType == MemberTypes.Field).FirstOrDefault() ?? members.First();
+
+            return member;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified member is readable.
+        /// </summary>
+        /// <param name="member">The member to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified member is readable; otherwise, <see langword="false"/>.</returns>
+        public static Boolean CanReadMember(MemberInfo member)
+        {
+            Contract.Require(member, nameof(member));
+
+            switch (member)
+            {
+                case FieldInfo f:
+                    return true;
+                case PropertyInfo p:
+                    return p.CanRead;
+                default:
+                    return true;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified member is writable.
+        /// </summary>
+        /// <param name="member">The member to evaluate.</param>
+        /// <returns><see langword="true"/> if the specified member is writable; otherwise, <see langword="false"/>.</returns>
+        public static Boolean CanWriteMember(MemberInfo member)
+        {
+            Contract.Require(member, nameof(member));
+
+            switch (member)
+            {
+                case FieldInfo f:
+                    return !f.IsInitOnly;
+                case PropertyInfo p:
+                    return p.CanWrite;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the specified member.
+        /// </summary>
+        /// <param name="member">The member to evaluate.</param>
+        /// <returns>The type of the specified member.</returns>
+        public static Type GetMemberType(MemberInfo member)
+        {
+            switch (member.MemberType)
+            {
+                case MemberTypes.Property:
+                    return ((PropertyInfo)member).PropertyType;
+                case MemberTypes.Field:
+                    return ((FieldInfo)member).FieldType;
+                case MemberTypes.Method:
+                    return ((MethodInfo)member).ReturnType;
+            }
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Gets the type of the specified binding expression.
         /// </summary>
         /// <param name="dataSourceType">The type of the data source to evaluate.</param>
@@ -185,15 +265,37 @@ namespace Ultraviolet.Presentation
             Contract.Require(dataSourceType, nameof(dataSourceType));
             Contract.RequireNotEmpty(expression, nameof(expression));
 
+            var currentDataSourceType = dataSourceType;
+
             var expMemberPath = GetBindingMemberPathPart(expression, braces);
+            var expMemberPathParts = expMemberPath.Contains(".") ? expMemberPath.Split('.') : null;
+            var expMemberFinalPart = (expMemberPathParts == null) ? expMemberPath : expMemberPathParts[expMemberPathParts.Length - 1];
 
-            var members = dataSourceType.GetMember(expMemberPath, BindingFlags.Public | BindingFlags.Instance);
-            if (members == null || !members.Any())
-                return null;
+            if (expMemberPathParts != null && expMemberPathParts.Length > 1)
+            {
+                for (int i = 0; i < expMemberPathParts.Length - 1; i++)
+                {
+                    var nextMember = FindPropertyOrField(currentDataSourceType, expMemberPathParts[i]);
+                    if (nextMember == null)
+                        throw new InvalidOperationException(PresentationStrings.CannotResolveBindingExpression.Format(expression));
 
-            var member = members.Where(x =>
-                x.MemberType == MemberTypes.Property ||
-                x.MemberType == MemberTypes.Field).FirstOrDefault() ?? members.First();
+                    switch (nextMember)
+                    {
+                        case FieldInfo f:
+                            currentDataSourceType = f.FieldType;
+                            break;
+                        case PropertyInfo p:
+                            currentDataSourceType = p.PropertyType;
+                            break;
+                        default:
+                            throw new InvalidOperationException();
+                    }
+
+                    currentDataSourceType = PresentationFoundation.Instance.GetDataSourceWrapperType(currentDataSourceType) ?? currentDataSourceType;
+                }
+            }
+
+            var member = FindPropertyOrField(currentDataSourceType, expMemberFinalPart);
 
             return GetMemberType(member);
         }
@@ -601,25 +703,6 @@ namespace Ultraviolet.Presentation
             comparerRegistry[typeof(VerticalAlignment?)] = new DataBindingComparer<VerticalAlignment?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Visibility)] = new DataBindingComparer<Visibility>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Visibility?)] = new DataBindingComparer<Visibility?>((v1, v2) => v1 == v2);
-        }
-
-        /// <summary>
-        /// Gets the type of the specified member.
-        /// </summary>
-        /// <param name="member">The member to evaluate.</param>
-        /// <returns>The type of the specified member.</returns>
-        private static Type GetMemberType(MemberInfo member)
-        {
-            switch (member.MemberType)
-            {
-                case MemberTypes.Property:
-                    return ((PropertyInfo)member).PropertyType;
-                case MemberTypes.Field:
-                    return ((FieldInfo)member).FieldType;
-                case MemberTypes.Method:
-                    return ((MethodInfo)member).ReturnType;
-            }
-            throw new NotSupportedException();
         }
 
         /// <summary>

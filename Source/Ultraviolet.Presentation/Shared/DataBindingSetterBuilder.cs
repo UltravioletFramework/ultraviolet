@@ -27,16 +27,23 @@ namespace Ultraviolet.Presentation
                 CreateReturnTarget();
 
                 var path = BindingExpressions.GetBindingMemberPathPart(expression);
+                var pathParts = path.Contains(".") ? path.Split('.') : null;
+                var pathFinalPart = (pathParts == null) ? path : pathParts[pathParts.Length - 1];
+
                 var current = AddDataSourceReference();
                 var value = AddValueParameter();
 
                 if (current.Type.IsValueType)
                     return;
 
-                if (!AddValueAssignment(current, value, path))
+                if (pathParts != null)
                 {
-                    return;
+                    for (int i = 0; i < pathParts.Length - 1; i++)
+                        current = AddSafeReference(expression, current, pathParts[i]);
                 }
+
+                if (!AddValueAssignment(current, value, pathFinalPart))
+                    return;
 
                 AddReturn();
                 AddReturnLabel();
@@ -55,14 +62,29 @@ namespace Ultraviolet.Presentation
                     BindingFlags.NonPublic | BindingFlags.Static);
 
                 var path = BindingExpressions.GetBindingMemberPathPart(expression);
-                var property = dataSourceType.GetProperty(path);
+                var pathParts = path.Contains(".") ? path.Split('.') : null;
+                var pathFinalPart = (pathParts == null) ? path : pathParts[pathParts.Length - 1];
 
-                if (!property.CanWrite)
+                var expDataSource = (Expression)Expression.Convert(expParamDataSource, dataSourceType);
+                var expDataSourceType = dataSourceType;
+
+                var current = dataSourceType;
+                if (pathParts != null)
+                {
+                    for (int i = 0; i < pathParts.Length - 1; i++)
+                    {
+                        expDataSourceType = BindingExpressions.GetMemberType(BindingExpressions.FindPropertyOrField(expDataSourceType, pathParts[i]));
+                        expDataSource = Expression.PropertyOrField(expDataSource, pathParts[i]);
+                    }
+                }
+
+                var member = BindingExpressions.FindPropertyOrField(expDataSourceType, pathFinalPart);
+                if (!BindingExpressions.CanWriteMember(member))
                     return;
 
                 var expImplMethodCall = Expression.Call(implMethod,
-                    Expression.Constant(property),
-                    Expression.Convert(expParamDataSource, typeof(Object)),
+                    Expression.Constant(member),
+                    Expression.Convert(expDataSource, typeof(Object)),
                     Expression.Convert(expParamValue, typeof(Object)));
 
                 lambdaExpression = Expression.Lambda(delegateType, expImplMethodCall, expParamDataSource, expParamValue);
