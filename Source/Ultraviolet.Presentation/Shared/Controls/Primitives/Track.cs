@@ -30,41 +30,41 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         public Track(UltravioletContext uv, String name)
             : base(uv, name)
         {
-            this.Thumb = new Thumb(uv, null)
+            this.thumb = new Thumb(uv, null)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Focusable = false,
             };
-            this.Thumb.Classes.Add("track-thumb");
-            this.Thumb.ChangeLogicalAndVisualParents(this, this);
-            KeyboardNavigation.SetIsTabStop(this.Thumb, false);
+            this.thumb.Classes.Add("track-thumb");
+            this.thumb.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.thumb, false);
 
-            this.IncreaseButton = new RepeatButton(uv, null)
+            this.increaseRepeatButton = new RepeatButton(uv, null)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Opacity = 0,
                 Focusable = false,
             };
-            this.IncreaseButton.Classes.Add("track-increase");
-            this.IncreaseButton.Command = IncreaseCommand;
-            this.IncreaseButton.CommandTarget = this;
-            this.IncreaseButton.ChangeLogicalAndVisualParents(this, this);
-            KeyboardNavigation.SetIsTabStop(this.IncreaseButton, false);
+            this.increaseRepeatButton.Classes.Add("track-increase");
+            this.increaseRepeatButton.Command = IncreaseCommand;
+            this.increaseRepeatButton.CommandTarget = this;
+            this.increaseRepeatButton.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.increaseRepeatButton, false);
 
-            this.DecreaseButton = new RepeatButton(uv, null)
+            this.decreaseRepeatButton = new RepeatButton(uv, null)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Opacity = 0,
                 Focusable = false,
             };
-            this.DecreaseButton.Classes.Add("track-decrease");
-            this.DecreaseButton.Command = DecreaseCommand;
-            this.DecreaseButton.CommandTarget = this;
-            this.DecreaseButton.ChangeLogicalAndVisualParents(this, this);
-            KeyboardNavigation.SetIsTabStop(this.DecreaseButton, false);
+            this.decreaseRepeatButton.Classes.Add("track-decrease");
+            this.decreaseRepeatButton.Command = DecreaseCommand;
+            this.decreaseRepeatButton.CommandTarget = this;
+            this.decreaseRepeatButton.ChangeLogicalAndVisualParents(this, this);
+            KeyboardNavigation.SetIsTabStop(this.decreaseRepeatButton, false);
         }
 
         /// <summary>
@@ -79,12 +79,12 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (Orientation == Orientation.Horizontal)
             {
                 return Math.Sign(horizontal) *
-                    (OffsetToValue(Math.Abs(horizontal), RenderSize.Width, Thumb.RenderSize.Width) - OffsetToValue(0, RenderSize.Width, Thumb.RenderSize.Width));
+                    (OffsetToValue(Math.Abs(horizontal), RenderSize.Width, thumb.RenderSize.Width) - OffsetToValue(0, RenderSize.Width, thumb.RenderSize.Width));
             }
             else
             {
                 return Math.Sign(vertical) *
-                    (OffsetToValue(Math.Abs(vertical), RenderSize.Height, Thumb.RenderSize.Height) - OffsetToValue(0, RenderSize.Height, Thumb.RenderSize.Height));
+                    (OffsetToValue(Math.Abs(vertical), RenderSize.Height, thumb.RenderSize.Height) - OffsetToValue(0, RenderSize.Height, thumb.RenderSize.Height));
             }
         }
 
@@ -98,14 +98,41 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             if (Orientation == Orientation.Horizontal)
             {
-                var relX = pt.X - (Thumb.RenderSize.Width / 2);
-                return OffsetToValue(relX, RenderSize.Width, Thumb.RenderSize.Width);
+                var relX = pt.X - (thumb.RenderSize.Width / 2);
+                return OffsetToValue(relX, RenderSize.Width, thumb.RenderSize.Width);
             }
             else
             {
-                var relY = pt.Y - (Thumb.RenderSize.Height / 2);
-                return OffsetToValue(relY, RenderSize.Height, Thumb.RenderSize.Height);
+                var relY = pt.Y - (thumb.RenderSize.Height / 2);
+                return OffsetToValue(relY, RenderSize.Height, thumb.RenderSize.Height);
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Thumb"/> control which is used to adjust
+        /// the value of the track.
+        /// </summary>
+        public Thumb Thumb
+        {
+            get { return thumb; }
+        }
+        
+        /// <summary>
+        /// Gets the <see cref="RepeatButton"/> control which is used to
+        /// increase the value of the track.
+        /// </summary>
+        public RepeatButton IncreaseRepeatButton
+        {
+            get { return increaseRepeatButton; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="RepeatButton"/> control which is used to
+        /// decrease the value of the track.
+        /// </summary>
+        public RepeatButton DecreaseRepeatButton
+        {
+            get { return decreaseRepeatButton; }
         }
 
         /// <summary>
@@ -253,9 +280,9 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             switch (childIndex)
             {
-                case 0: return DecreaseButton;
-                case 1: return Thumb;
-                case 2: return IncreaseButton;
+                case 0: return decreaseRepeatButton;
+                case 1: return thumb;
+                case 2: return increaseRepeatButton;
             }
             throw new ArgumentOutOfRangeException("childIndex");
         }
@@ -265,9 +292,9 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             switch (childIndex)
             {
-                case 0: return DecreaseButton;
-                case 1: return Thumb;
-                case 2: return IncreaseButton;
+                case 0: return decreaseRepeatButton;
+                case 1: return thumb;
+                case 2: return increaseRepeatButton;
             }
             throw new ArgumentOutOfRangeException("childIndex");
         }
@@ -277,8 +304,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             var desiredSize = Size2D.Zero;
 
-            Thumb.Measure(availableSize);
-            desiredSize = Thumb.DesiredSize;
+            thumb.Measure(availableSize);
+            desiredSize = thumb.DesiredSize;
 
             return desiredSize;
         }
@@ -297,23 +324,23 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             if (IsDirectionReversed)
             {
-                IncreaseButton.Arrange(new RectangleD(position, increaseButtonSize));
+                increaseRepeatButton.Arrange(new RectangleD(position, increaseButtonSize));
                 position += (orientation == Orientation.Horizontal) ? new Point2D(increaseButtonSize.Width, 0) : new Point2D(0, increaseButtonSize.Height);
 
-                Thumb.Arrange(new RectangleD(position, thumbSize));
+                thumb.Arrange(new RectangleD(position, thumbSize));
                 position += (orientation == Orientation.Horizontal) ? new Point2D(thumbSize.Width, 0) : new Point2D(0, thumbSize.Height);
 
-                DecreaseButton.Arrange(new RectangleD(position, decreaseButtonSize));
+                decreaseRepeatButton.Arrange(new RectangleD(position, decreaseButtonSize));
             }
             else
             {
-                DecreaseButton.Arrange(new RectangleD(position, decreaseButtonSize));
+                decreaseRepeatButton.Arrange(new RectangleD(position, decreaseButtonSize));
                 position += (orientation == Orientation.Horizontal) ? new Point2D(decreaseButtonSize.Width, 0) : new Point2D(0, decreaseButtonSize.Height);
 
-                Thumb.Arrange(new RectangleD(position, thumbSize));
+                thumb.Arrange(new RectangleD(position, thumbSize));
                 position += (orientation == Orientation.Horizontal) ? new Point2D(thumbSize.Width, 0) : new Point2D(0, thumbSize.Height);
 
-                IncreaseButton.Arrange(new RectangleD(position, increaseButtonSize));
+                increaseRepeatButton.Arrange(new RectangleD(position, increaseButtonSize));
             }
 
             return finalSize;
@@ -383,7 +410,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         protected Size2D CalculateThumbSize(Size2D trackSize)
         {
             if (Double.IsNaN(ViewportSize))
-                return Thumb.DesiredSize;
+                return thumb.DesiredSize;
 
             var orientation = this.Orientation;
             var max = Maximum;
@@ -461,8 +488,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (track == null)
                 return;
 
-            track.IncreaseButton.Delay = newValue;
-            track.DecreaseButton.Delay = newValue;
+            track.increaseRepeatButton.Delay = newValue;
+            track.decreaseRepeatButton.Delay = newValue;
         }
 
         /// <summary>
@@ -474,8 +501,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (track == null)
                 return;
 
-            track.IncreaseButton.Interval = newValue;
-            track.DecreaseButton.Interval = newValue;
+            track.increaseRepeatButton.Interval = newValue;
+            track.decreaseRepeatButton.Interval = newValue;
         }
 
 #pragma warning disable 414
@@ -495,8 +522,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 #pragma warning restore 414
 
         // Component element references.
-        private readonly Thumb Thumb = null;
-        private readonly RepeatButton DecreaseButton = null;
-        private readonly RepeatButton IncreaseButton = null;
+        private readonly Thumb thumb = null;
+        private readonly RepeatButton decreaseRepeatButton = null;
+        private readonly RepeatButton increaseRepeatButton = null;
     }
 }
