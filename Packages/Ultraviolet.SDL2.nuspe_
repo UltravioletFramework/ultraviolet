@@ -29,5 +29,6 @@
 
     <file src="..\Binaries\iOS\Signed\Ultraviolet.SDL2.dll" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.SDL2.XML" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.SDL2.pdb" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>

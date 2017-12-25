@@ -29,5 +29,6 @@
 
     <file src="..\Binaries\iOS\Signed\Ultraviolet.BASS.dll" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.BASS.XML" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.BASS.pdb" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>

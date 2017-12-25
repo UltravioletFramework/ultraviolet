@@ -20,11 +20,10 @@
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.XML" target="lib\net40\"/>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.pdb" target="lib\net40\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.dll" target="lib\MonoAndroid60\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.dll.mdb" target="lib\MonoAndroid60\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.XML" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.XML" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.pdb" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.XML" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>

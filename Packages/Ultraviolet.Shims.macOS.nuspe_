@@ -19,6 +19,6 @@
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.macOS.dll" target="lib\net45"/>  
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.macOS.dll.mdb" target="lib\net45"/>  
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.macOS.pdb" target="lib\net45"/>  
   </files>  
 </package>

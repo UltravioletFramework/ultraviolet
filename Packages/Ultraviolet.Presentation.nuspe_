@@ -30,10 +30,10 @@
     <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.pdb" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.XML" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.dll.mdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>
