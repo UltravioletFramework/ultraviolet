@@ -42,6 +42,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             this.increaseRepeatButton = new RepeatButton(uv, null)
             {
+                Width = Double.NaN,
+                Height = Double.NaN,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Opacity = 0,
@@ -55,6 +57,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             this.decreaseRepeatButton = new RepeatButton(uv, null)
             {
+                Width = Double.NaN,
+                Height = Double.NaN,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Opacity = 0,
