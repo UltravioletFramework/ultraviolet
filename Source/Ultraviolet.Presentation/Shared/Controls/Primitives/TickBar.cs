@@ -28,6 +28,27 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
         /// <summary>
+        /// Identifies the <see cref="TickColor"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickColor"/> dependency property.</value>
+        public static readonly DependencyProperty TickColorProperty = DependencyProperty.Register("TickColor", typeof(Color), typeof(TickBar),
+            new PropertyMetadata<Color>(Color.Black));
+
+        /// <summary>
+        /// Identifies the <see cref="TickLengthMajor"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickLengthMajor"/> dependency property.</value>
+        public static readonly DependencyProperty TickLengthMajorProperty = DependencyProperty.Register("TickLengthMajor", typeof(Double), typeof(TickBar),
+            new PropertyMetadata<Double>(1.0));
+
+        /// <summary>
+        /// Identifies the <see cref="TickLengthMinor"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TickLengthMinor"/> dependency property.</value>
+        public static readonly DependencyProperty TickLengthMinorProperty = DependencyProperty.Register("TickLengthMinor", typeof(Double), typeof(TickBar),
+            new PropertyMetadata<Double>(0.75));
+
+        /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Minimum"/> dependency property.</value>
@@ -77,6 +98,59 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             get { return GetValue<Boolean>(IsDirectionReversedProperty); }
             set { SetValue(IsDirectionReversedProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a the color of the tick bar's ticks.
+        /// </summary>
+        /// <value>A <see cref="Color"/> value which represents the color of the tick bar's ticks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TickColorProperty"/></dpropField>
+        ///     <dpropStylingName>tick-color</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Color TickColor
+        {
+            get { return GetValue<Color>(TickColorProperty); }
+            set { SetValue(TickColorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a the relative length of the tick bar's major ticks.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which represents the proportion 
+        /// of the tick bar which is filled by the tick bar's major ticks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TickLengthMajorProperty"/></dpropField>
+        ///     <dpropStylingName>tick-length-major</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double TickLengthMajor
+        {
+            get { return GetValue<Double>(TickLengthMajorProperty); }
+            set { SetValue(TickLengthMajorProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a the relative length of the tick bar's minor ticks.
+        /// </summary>
+        /// <value>A <see cref="Double"/> value which represents the proportion 
+        /// of the tick bar which is filled by the tick bar's minor ticks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="TickLengthMajorProperty"/></dpropField>
+        ///     <dpropStylingName>tick-length-minor</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Double TickLengthMinor
+        {
+            get { return GetValue<Double>(TickLengthMinorProperty); }
+            set { SetValue(TickLengthMinorProperty, value); }
         }
 
         /// <summary>
@@ -182,6 +256,19 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                     BindValue(MaximumProperty, templateWrapperType, "{{Maximum}}");
                 if (HasDefaultValue(TickFrequencyProperty))
                     BindValue(TickFrequencyProperty, templateWrapperType, "{{TickFrequency}}");
+                if (HasDefaultValue(IsDirectionReversedProperty))
+                    BindValue(IsDirectionReversedProperty, templateWrapperType, "{{IsDirectionReversed}}");
+                if (HasDefaultValue(ReservedSpaceProperty))
+                {
+                    if (TemplatedParent is HSlider)
+                    {
+                        BindValue(ReservedSpaceProperty, templateWrapperType, "{{Track.Thumb.ActualWidth}}");
+                    }
+                    else
+                    {
+                        BindValue(ReservedSpaceProperty, templateWrapperType, "{{Track.Thumb.ActualHeight}}");
+                    }
+                }
             }
             base.OnPreApplyTemplate();
         }
@@ -193,8 +280,122 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <param name="dc"></param>
         protected override void OnDrawing(UltravioletTime time, DrawingContext dc)
         {
-            DrawBlank(dc, Color.Lime);
+            RectangleD NormalizeRect(Double x, Double y, Double width, Double height)
+            {
+                var x1 = x;
+                var x2 = x + width;
+                var y1 = y;
+                var y2 = y + height;
+                return new RectangleD(Math.Min(x1, x2), Math.Min(y1, y2), Math.Abs(width), Math.Abs(height));
+            };
 
+            // Determine tick placement based on orientation.
+            var size = new Size2D(ActualWidth, ActualHeight);
+            var range = Math.Max(0.0, Maximum - Minimum);
+            var frequency = TickFrequency;
+            var reserved = ReservedSpace / 2.0;
+            var conversion = 1.0;
+
+            var tickColor = TickColor;
+            var tickLength = 1.0;
+            var tickPosStart = Point2D.Zero;
+            var tickPosEnd = Point2D.Zero;
+
+            switch (Placement)
+            {
+                case TickBarPlacement.Left:
+                    if (MathUtil.AreApproximatelyEqual(ReservedSpace, size.Height))
+                        return;
+                    size.Height -= ReservedSpace;
+                    tickLength = -size.Width;
+                    tickPosStart = new Point2D(size.Width, reserved);
+                    tickPosEnd = new Point2D(size.Width, reserved + size.Height);
+                    conversion = Math.Abs(size.Height) / range;
+                    break;
+
+                case TickBarPlacement.Top:
+                    if (MathUtil.AreApproximatelyEqual(ReservedSpace, size.Width))
+                        return;
+                    size.Width -= ReservedSpace;
+                    tickLength = -size.Height;
+                    tickPosStart = new Point2D(reserved, size.Height);
+                    tickPosEnd = new Point2D(reserved + size.Width, size.Height);
+                    conversion = Math.Abs(size.Width) / range;
+                    break;
+
+                case TickBarPlacement.Right:
+                    if (MathUtil.AreApproximatelyEqual(ReservedSpace, size.Height))
+                        return;
+                    size.Height -= ReservedSpace;
+                    tickLength = size.Width;
+                    tickPosStart = new Point2D(0, reserved);
+                    tickPosEnd = new Point2D(0, reserved + size.Height);
+                    conversion = Math.Abs(size.Height) / range;
+                    break;
+
+                case TickBarPlacement.Bottom:
+                    if (MathUtil.AreApproximatelyEqual(ReservedSpace, size.Width))
+                        return;
+                    size.Width -= ReservedSpace;
+                    tickLength = size.Height;
+                    tickPosStart = new Point2D(reserved, 0);
+                    tickPosEnd = new Point2D(reserved + size.Width, 0);
+                    conversion = Math.Abs(size.Width) / range;
+                    break;
+            }
+
+            // Account for reversed directionality.
+            if (IsDirectionReversed)
+            {
+                var tmp = tickPosStart;
+                tickPosStart = tickPosEnd;
+                tickPosEnd = tmp;
+                conversion = -conversion;
+            }
+
+            // Draw the bar's ticks.
+            var isVertical = (Placement == TickBarPlacement.Left || Placement == TickBarPlacement.Right);
+            if (isVertical)
+            {
+                var minFrequency = range / size.Height;
+                if (minFrequency > frequency && MathUtil.IsApproximatelyGreaterThan(frequency, 0.0))
+                    frequency = minFrequency;
+
+                // Draw end ticks
+                DrawBlank(dc, NormalizeRect(tickPosStart.X, tickPosStart.Y, tickLength * TickLengthMajor, 1), tickColor);
+                DrawBlank(dc, NormalizeRect(tickPosEnd.X, tickPosEnd.Y, tickLength * TickLengthMajor, 1), tickColor);
+
+                // Draw minor ticks
+                for (var f = frequency; MathUtil.IsApproximatelyLessThan(f, range); f += frequency)
+                {
+                    var x = tickPosStart.X;
+                    var y = f * conversion + tickPosStart.Y;
+                    var w = tickLength * TickLengthMinor;
+                    var h = 1;
+                    DrawBlank(dc, NormalizeRect(x, y, w, h), tickColor);
+                }
+            }
+            else
+            {
+                var minFrequency = range / size.Width;
+                if (minFrequency > frequency && MathUtil.IsApproximatelyGreaterThan(frequency, 0.0))
+                    frequency = minFrequency;
+
+                // Draw end ticks
+                DrawBlank(dc, NormalizeRect(tickPosStart.X, tickPosStart.Y, 1, tickLength * TickLengthMajor), tickColor);
+                DrawBlank(dc, NormalizeRect(tickPosEnd.X, tickPosEnd.Y, 1, tickLength * TickLengthMajor), tickColor);
+
+                // Draw minor ticks
+                for (var f = frequency; MathUtil.IsApproximatelyLessThan(f, range); f += frequency)
+                {
+                    var x = f * conversion + tickPosStart.X;
+                    var y = tickPosStart.Y;
+                    var w = 1.0;
+                    var h = tickLength * TickLengthMinor;
+                    DrawBlank(dc, NormalizeRect(x, y, w, h), tickColor);
+                }
+            }
+            
             base.OnDrawing(time, dc);
         }
     }

@@ -438,6 +438,21 @@ HSlider! .slider-focus-image, VSlider .slider-focus-image
     source-image: #Global:Textures:DefaultUI 35 467 32 32 4 4 4 4 tile-edges;
 }
 
+TickBar! 
+{
+	tick-color: #ffffffff;
+}
+
+HSlider! TickBar!
+{
+	height: 4;
+}
+
+VSlider! TickBar!
+{
+	width: 4;
+}
+
 // ============================================================================
 // PROGRESS BARS
 // ============================================================================

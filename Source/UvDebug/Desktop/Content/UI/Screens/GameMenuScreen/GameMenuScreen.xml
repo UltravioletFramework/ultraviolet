@@ -25,7 +25,6 @@
             <StackPanel Name="mainmenu-panel-options">
               <Button Name="btn-start" Click="Click_Start">Start</Button>
               <Button Name="btn-exit" Click="Click_Exit">Exit</Button>
-              <TextBox Width="100"/>
             </StackPanel>
           </Grid>
         </Border>
