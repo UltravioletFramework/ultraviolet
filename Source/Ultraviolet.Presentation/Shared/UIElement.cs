@@ -170,6 +170,9 @@ namespace Ultraviolet.Presentation
         {
             EnsureOutOfBandRenderTargetsExist();
 
+            if (Visibility == Visibility.Collapsed)
+                return;
+
             var clip = ClipRectangle;
             if (clip != null)
                 dc.PushClipRectangle(clip.Value);
