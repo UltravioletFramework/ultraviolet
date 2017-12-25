@@ -18,6 +18,9 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         static Slider()
         {
+            // Dependency property overrides.
+            FocusableProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+
             // Commands - decrease
             CommandManager.RegisterClassBindings(typeof(Slider), DecreaseLargeCommand, ExecutedDecreaseLargeCommand,
                 new ConditionalGesture(src => (src as Slider)?.Orientation == Orientation.Vertical, new KeyGesture(Key.PageUp, ModifierKeys.None, "PageUp")));

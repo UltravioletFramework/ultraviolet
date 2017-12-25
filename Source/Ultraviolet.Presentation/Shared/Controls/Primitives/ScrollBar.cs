@@ -31,6 +31,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             MaximumProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleMaximumChanged));
             SmallChangeProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleSmallChangeChanged));
             LargeChangeProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Double>(HandleLargeChangeChanged));
+            FocusableProperty.OverrideMetadata(typeof(ScrollBar), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
             // Event handlers
             EventManager.RegisterClassHandler(typeof(ScrollBar), ScrollEvent, new UpfScrollEventHandler(HandleScrollEvent));
