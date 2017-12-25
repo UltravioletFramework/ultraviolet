@@ -18,11 +18,6 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         static OrientedSlider()
         {
-            // Dependency properties
-            MinimumProperty.AddOwner(typeof(OrientedSlider), new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsMeasure));
-            MaximumProperty.AddOwner(typeof(OrientedSlider), new PropertyMetadata<Double>(10.0, PropertyMetadataOptions.AffectsMeasure));
-            ValueProperty.AddOwner(typeof(OrientedSlider), new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
-
             // Event handlers
             EventManager.RegisterClassHandler(typeof(OrientedSlider), Mouse.PreviewMouseDownEvent, new UpfMouseButtonEventHandler(HandlePreviewMouseDown));
             EventManager.RegisterClassHandler(typeof(OrientedSlider), Thumb.DragStartedEvent, new UpfDragStartedEventHandler(HandleThumbDragStarted));

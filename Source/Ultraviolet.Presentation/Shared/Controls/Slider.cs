@@ -20,6 +20,9 @@ namespace Ultraviolet.Presentation.Controls
         {
             // Dependency property overrides.
             FocusableProperty.OverrideMetadata(typeof(Slider), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
+            MinimumProperty.AddOwner(typeof(Slider), new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsMeasure));
+            MaximumProperty.AddOwner(typeof(Slider), new PropertyMetadata<Double>(10.0, PropertyMetadataOptions.AffectsMeasure));
+            ValueProperty.AddOwner(typeof(Slider), new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
 
             // Commands - decrease
             CommandManager.RegisterClassBindings(typeof(Slider), DecreaseLargeCommand, ExecutedDecreaseLargeCommand,
