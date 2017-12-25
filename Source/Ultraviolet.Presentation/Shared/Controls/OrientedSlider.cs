@@ -175,6 +175,42 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the slider's thumb is automatically snapped to the slider's ticks.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether the slider's thumb is automatically snapped to the slider's ticks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsSnapToTickEnabledProperty"/></dpropField>
+        ///     <dpropStylingName>snap-to-tick-enabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsSnapToTickEnabled
+        {
+            get { return GetValue<Boolean>(IsSnapToTickEnabledProperty); }
+            set { SetValue(IsSnapToTickEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether left-clicking on the slider with the mouse causes the thumb
+        /// to immediately move to the clicked point.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether left-clicking on the slider with the mouse causes the thumb
+        /// to immediately move to the clicked point.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsMoveToPointEnabledProperty"/></dpropField>
+        ///     <dpropStylingName>move-to-point-enabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsMoveToPointEnabled
+        {
+            get { return GetValue<Boolean>(IsMoveToPointEnabledProperty); }
+            set { SetValue(IsMoveToPointEnabledProperty, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="TickPlacement"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="TickPlacement"/> dependency property.</value>
@@ -201,8 +237,20 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Identifies the <see cref="IsDirectionReversed"/> dependency property.
         /// </summary>
-        /// <value>The identifier for the <see cref="Interval"/> dependency property.</value>
+        /// <value>The identifier for the <see cref="IsDirectionReversed"/> dependency property.</value>
         public static readonly DependencyProperty IsDirectionReversedProperty = Slider.IsDirectionReversedProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <summary>
+        /// Identifies the <see cref="IsSnapToTickEnabled"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsSnapToTickEnabled"/> dependency property.</value>
+        public static readonly DependencyProperty IsSnapToTickEnabledProperty = Slider.IsSnapToTickEnabledProperty.AddOwner(typeof(OrientedSlider));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMoveToPointEnabled"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsMoveToPointEnabled"/> dependency property.</value>
+        public static readonly DependencyProperty IsMoveToPointEnabledProperty = Slider.IsMoveToPointEnabledProperty.AddOwner(typeof(OrientedSlider));
 
         /// <inheritdoc/>
         internal override void OnPreApplyTemplate()
@@ -225,6 +273,10 @@ namespace Ultraviolet.Presentation.Controls
                     BindValue(TickPlacementProperty, templateWrapperType, "{{TickPlacement}}");
                 if (HasDefaultValue(TickFrequencyProperty))
                     BindValue(TickFrequencyProperty, templateWrapperType, "{{TickFrequency}}");
+                if (HasDefaultValue(IsDirectionReversedProperty))
+                    BindValue(IsDirectionReversedProperty, templateWrapperType, "{{IsDirectionReversed}}");
+                if (HasDefaultValue(IsSnapToTickEnabledProperty))
+                    BindValue(IsSnapToTickEnabledProperty, templateWrapperType, "{{IsSnapToTickEnabled}}");
             }
             base.OnPreApplyTemplate();
         }
@@ -235,7 +287,23 @@ namespace Ultraviolet.Presentation.Controls
             PART_Track?.InvalidateMeasure();
             return base.MeasureOverride(availableSize);
         }
-        
+
+        /// <inheritdoc/>
+        protected override void OnPreviewMouseDown(MouseDevice device, MouseButton button, RoutedEventData data)
+        {
+            if (IsMoveToPointEnabled && Track != null && Track.Thumb != null && !Track.Thumb.IsMouseOver)
+            {
+                var pos = Mouse.GetPosition(Track);
+                var val = Track.ValueFromPoint(pos);
+                if (!Double.IsNaN(val) && !Double.IsInfinity(val))
+                {
+                    SetValue(val);
+                }
+                data.Handled = true;
+            }
+            base.OnPreviewMouseDown(device, button, data);
+        }
+
         /// <summary>
         /// Occurs when the user begins dragging the slider's thumb button.
         /// </summary>
@@ -259,9 +327,10 @@ namespace Ultraviolet.Presentation.Controls
                 return;
 
             var valueDelta = Track.ValueFromDistance(hchange, vchange);
-            if (!Double.IsNaN(valueDelta) && valueDelta != 0.0)
+            var valueAfterChange = Value + valueDelta;
+            if (!Double.IsNaN(valueAfterChange) && !Double.IsInfinity(valueAfterChange))
             {
-                Value += valueDelta;
+                SetValue(valueAfterChange);
             }
         }
 
@@ -281,7 +350,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         protected virtual void OnDecreaseLarge()
         {
-            Value -= LargeChange;
+            SetValueToNextTick(-LargeChange);  
         }
 
         /// <summary>
@@ -289,7 +358,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         protected virtual void OnDecreaseSmall()
         {
-            Value -= SmallChange;
+            SetValueToNextTick(-SmallChange);
         }
 
         /// <summary>
@@ -297,7 +366,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         protected virtual void OnIncreaseLarge()
         {
-            Value += LargeChange;
+            SetValueToNextTick(LargeChange);
         }
 
         /// <summary>
@@ -305,7 +374,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         protected virtual void OnIncreaseSmall()
         {
-            Value += SmallChange;
+            SetValueToNextTick(SmallChange);
         }
 
         /// <summary>
@@ -440,6 +509,71 @@ namespace Ultraviolet.Presentation.Controls
 
             slider.OnMinimizeValue();
             data.Handled = true;
+        }
+
+        /// <summary>
+        /// Snaps the specified slider value to the nearest tick.
+        /// </summary>
+        private Double SnapToTick(Double value)
+        {
+            if (IsSnapToTickEnabled)
+            {
+                var min = Minimum;
+                var max = Maximum;
+
+                var prev = min;
+                var next = max;
+
+                if (MathUtil.IsApproximatelyGreaterThan(TickFrequency, 0.0))
+                {
+                    var frequency = TickFrequency;
+                    prev = min + (Math.Round(((value - min) / frequency)) * frequency);
+                    next = Math.Min(max, prev + frequency);
+                }
+
+                value = MathUtil.IsApproximatelyGreaterThanOrEqual(value, (prev + next) * 0.5) ? next : prev;
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Sets the slider's value, snapping it to the nearest tick if necessary.
+        /// </summary>
+        private void SetValue(Double value)
+        {
+            var snapped = SnapToTick(value);
+            if (snapped != Value)
+            {
+                Value = MathUtil.Clamp(snapped, Minimum, Maximum);
+            }
+        }
+
+        /// <summary>
+        /// Sets the slider's value, snapping it to the next tick in the direction of movement if necessary.
+        /// </summary>
+        private void SetValueToNextTick(Double delta)
+        {
+            if (MathUtil.IsApproximatelyZero(delta))
+                return;
+
+            var dir = Math.Sign(delta);
+            var val = Value;
+            var min = Minimum;
+            var max = Maximum;
+            var frequency = TickFrequency;
+
+            var next = SnapToTick(MathUtil.Clamp(val + delta, min, max));
+            if (next == val && !(dir > 0 && val == max) && !(dir < 0 && val == min))
+            {
+                if (MathUtil.IsApproximatelyGreaterThan(frequency, 0.0))
+                {
+                    var tickIndex = Math.Round((val - min) / frequency) + dir;                    
+                    next = min + tickIndex * frequency;
+                }
+            }
+
+            if (next != val)
+                Value = next;
         }
 
         // Component references.

@@ -167,7 +167,43 @@ namespace Ultraviolet.Presentation.Controls
             get { return GetValue<Boolean>(IsDirectionReversedProperty); }
             set { SetValue(IsDirectionReversedProperty, value); }
         }
-        
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the slider's thumb is automatically snapped to the slider's ticks.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether the slider's thumb is automatically snapped to the slider's ticks.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsSnapToTickEnabledProperty"/></dpropField>
+        ///     <dpropStylingName>snap-to-tick-enabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsSnapToTickEnabled
+        {
+            get { return GetValue<Boolean>(IsSnapToTickEnabledProperty); }
+            set { SetValue(IsSnapToTickEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether left-clicking on the slider with the mouse causes the thumb
+        /// to immediately move to the clicked point.
+        /// </summary>
+        /// <value>A <see cref="Boolean"/> value indicating whether left-clicking on the slider with the mouse causes the thumb
+        /// to immediately move to the clicked point.</value>
+        /// <remarks>
+        /// <dprop>
+        ///     <dpropField><see cref="IsMoveToPointEnabledProperty"/></dpropField>
+        ///     <dpropStylingName>move-to-point-enabled</dpropStylingName>
+        ///     <dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public Boolean IsMoveToPointEnabled
+        {
+            get { return GetValue<Boolean>(IsMoveToPointEnabledProperty); }
+            set { SetValue(IsMoveToPointEnabledProperty, value); }
+        }
+
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
@@ -209,6 +245,20 @@ namespace Ultraviolet.Presentation.Controls
         /// <value>The identifier for the <see cref="IsDirectionReversed"/> dependency property.</value>
         public static readonly DependencyProperty IsDirectionReversedProperty = DependencyProperty.Register("IsDirectionReversed", typeof(Boolean), typeof(Slider),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None, HandleIsDirectionReversedChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="IsSnapToTickEnabled"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsSnapToTickEnabled"/> dependency property.</value>
+        public static readonly DependencyProperty IsSnapToTickEnabledProperty = DependencyProperty.Register("IsSnapToTickEnabled", typeof(Boolean), typeof(Slider),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="IsMoveToPointEnabled"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="IsMoveToPointEnabled"/> dependency property.</value>
+        public static readonly DependencyProperty IsMoveToPointEnabledProperty = DependencyProperty.Register("IsMoveToPointEnabled", typeof(Boolean), typeof(Slider),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
 
         /// <summary>
         /// A command that decreases the value of the slider by a large amount.
