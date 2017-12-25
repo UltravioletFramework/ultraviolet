@@ -30,10 +30,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     using (var memstream = new MemoryStream())
                     {
                         surface.GetLayer(i).SaveAsPng(memstream);
-
-                        using (var fs = File.OpenWrite("foo.png"))
-                            surface.GetLayer(i).SaveAsPng(fs);
-
                         writer.Write((int)memstream.Length);
                         writer.Write(memstream.ToArray());
                     }
