@@ -3,7 +3,7 @@
 
 @if [%1]==[] (set UV_BUILD=0) else (set UV_BUILD=%1)
 
-@for /f %%x in (../Source/VersionString.txt) do @(set UV_VERSION_MAJOR_MINOR=%%x)
+@for /f %%x in ('powershell -Command "[string]::Format([System.IO.File]::ReadAllText(\"../Source/VersionString.txt\"), [System.DateTime]::Now)"') do @(set UV_VERSION_MAJOR_MINOR=%%x)
 @set UV_VERSION=%UV_VERSION_MAJOR_MINOR%.%UV_BUILD%
 
 @echo Creating NuGet packages for Ultraviolet Framework %UV_VERSION%...
