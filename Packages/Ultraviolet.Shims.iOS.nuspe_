@@ -17,7 +17,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.iOS.dll" target="lib\Xamarin.iOS10\"/>  
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.iOS.pdb" target="lib\Xamarin.iOS10\"/>  
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Shims.iOS.dll" target="lib\Xamarin.iOS10\"/>  
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.Shims.iOS.pdb" target="lib\Xamarin.iOS10\"/>  
   </files>  
 </package>
