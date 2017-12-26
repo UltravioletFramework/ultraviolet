@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>Ultraviolet.WindowsForms</id>
+    <id>Ultraviolet.Windows.Forms</id>
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <title>Ultraviolet.WindowsForms</title>
+    <title>Ultraviolet.Windows.Forms</title>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains an Ultraviolet host implementation which is embeddable within a Windows Forms application.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
@@ -18,7 +18,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.WindowsForms.dll" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.WindowsForms.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.dll" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.pdb" target="lib\net40\"/>
   </files>  
 </package>
