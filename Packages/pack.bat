@@ -67,3 +67,9 @@ nuget pack Ultraviolet.Game.iOS.nuspec
 
 powershell -Command "(gc Ultraviolet.Game.macOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.macOS.nuspec"
 nuget pack Ultraviolet.Game.macOS.nuspec
+
+powershell -Command "(gc Ultraviolet.WindowsForms.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.WindowsForms.nuspec"
+nuget pack Ultraviolet.WindowsForms.nuspec
+
+powershell -Command "(gc Ultraviolet.Game.WindowsForms.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.WindowsForms.nuspec"
+nuget pack Ultraviolet.Game.WindowsForms.nuspec
