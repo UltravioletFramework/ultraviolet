@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.iOS", "Ult
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.UIKit", "Ultraviolet.SDL2.UIKit\Ultraviolet.SDL2.UIKit.csproj", "{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.iOS", "Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj", "{F7D661D7-101B-417F-BBF7-8170CC04AB55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -359,6 +361,36 @@ Global
 		{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}.Signed|iPhone.Build.0 = Signed|Any CPU
 		{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}.Signed|iPhoneSimulator.ActiveCfg = Signed|Any CPU
 		{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}.Signed|iPhoneSimulator.Build.0 = Signed|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Ad-Hoc|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Ad-Hoc|Any CPU.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Ad-Hoc|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.AppStore|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.AppStore|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Release|iPhone.Build.0 = Release|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhone.ActiveCfg = Signed|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhone.Build.0 = Signed|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhoneSimulator.ActiveCfg = Signed|Any CPU
+		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhoneSimulator.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -366,11 +398,9 @@ Global
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.TextStylePolicy = $1
-		$1.FileWidth = 120
 		$1.EolMarker = Windows
-		$1.inheritsSet = VisualStudio
-		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
+		$1.TabsToSpaces = True
 		$0.CSharpFormattingPolicy = $2
 		$2.AnonymousMethodBraceStyle = NextLine
 		$2.PropertyBraceStyle = NextLine
@@ -388,25 +418,6 @@ Global
 		$2.AfterDelegateDeclarationParameterComma = True
 		$2.NewParentheses = False
 		$2.SpacesBeforeBrackets = False
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
-		$2.IndentSwitchSection = True
-		$2.NewLinesForBracesInProperties = True
-		$2.NewLinesForBracesInAccessors = True
-		$2.NewLinesForBracesInAnonymousMethods = True
-		$2.NewLinesForBracesInControlBlocks = True
-		$2.NewLinesForBracesInAnonymousTypes = True
-		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
-		$2.NewLinesForBracesInLambdaExpressionBody = True
-		$2.NewLineForElse = True
-		$2.NewLineForCatch = True
-		$2.NewLineForFinally = True
-		$2.NewLineForMembersInObjectInit = True
-		$2.NewLineForMembersInAnonymousTypes = True
-		$2.NewLineForClausesInQuery = True
-		$2.SpacingAfterMethodDeclarationName = False
-		$2.SpaceAfterMethodCallName = False
-		$2.SpaceBeforeOpenSquareBracket = False
 	EndGlobalSection
 EndGlobal
