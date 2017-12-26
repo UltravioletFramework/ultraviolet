@@ -4,11 +4,7 @@
 var buildNumber = System.Environment.GetEnvironmentVariable("BAMBOO_ultraviolet_buildNumber");
 var buildConfig = System.Environment.GetEnvironmentVariable("BAMBOO_buildType");
 var buildBranch = System.Environment.GetEnvironmentVariable("BAMBOO_planRepository_branchName");
-var releaseName = System.Environment.GetEnvironmentVariable("BAMBOO_releaseName");
-if (!String.IsNullOrEmpty(releaseName))
-{
-	buildBranch = releaseName;
-}
+
 var date = DateTime.Now;
 var asmVersion = String.Format("{0:yyyy}.{0:MM}.0.0", date);
 var asmFileVersion = String.Format(System.IO.File.ReadAllText(Host.ResolvePath("VersionString.txt")) + "." + (String.IsNullOrEmpty(buildNumber) ? "0" : buildNumber), date);
@@ -21,7 +17,7 @@ var yearEnd = DateTime.Now.Year;
 #>using System.Reflection;
 
 [assembly: AssemblyProduct("Ultraviolet Framework")]
-[assembly: AssemblyCopyright("Copyright © Cole Campbell <#=yearStart#>-<#=yearEnd#>")]
+[assembly: AssemblyCopyright("Copyright (c) Cole Campbell <#=yearStart#>-<#=yearEnd#>")]
 
 [assembly: AssemblyVersion("<#=asmVersion#>")]
 [assembly: AssemblyFileVersion("<#=asmFileVersion#>")]
