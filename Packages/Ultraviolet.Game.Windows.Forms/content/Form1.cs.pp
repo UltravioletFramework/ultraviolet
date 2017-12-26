@@ -1,9 +1,9 @@
 using System;
-using TwistedLogik.Nucleus;
-using TwistedLogik.Ultraviolet;
-using TwistedLogik.Ultraviolet.Content;
-using TwistedLogik.Ultraviolet.OpenGL;
-using TwistedLogik.Ultraviolet.WindowsForms;
+using Ultraviolet;
+using Ultraviolet.Content;
+using Ultraviolet.Core;
+using Ultraviolet.OpenGL;
+using Ultraviolet.Windows.Forms;
 
 namespace $RootNamespace$
 {
