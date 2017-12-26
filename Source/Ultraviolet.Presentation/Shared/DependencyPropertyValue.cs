@@ -32,6 +32,7 @@ namespace Ultraviolet.Presentation
                 this.comparer = BindingExpressions.GetComparisonFunction(typeof(T));
                 this.metadata = property.GetMetadataForOwner(owner.GetType());                
                 this.flags = DependencyPropertyValueFlags.None;
+                this.defaultValue = (T)(metadata.DefaultValue ?? default(T));
 
                 if (typeof(T).GetInterfaces().Any(x => x == typeof(IResourceWrapper)))
                     flags |= DependencyPropertyValueFlags.IsResourceWrapper;
@@ -40,13 +41,10 @@ namespace Ultraviolet.Presentation
                 if (typeof(T).IsValueType)
                     flags |= DependencyPropertyValueFlags.IsValueType;
 
-                if (metadata.HasDefaultValue)
+                if (metadata.HasDefaultValue && IsCoerced)
                 {
-                    this.defaultValue = (T)(metadata.DefaultValue ?? default(T));
-                    if (IsCoerced)
-                    {
-                        this.coercedValue = metadata.CoerceValue(owner, this.defaultValue);
-                    }
+                    this.coercedValue = metadata.CoerceValue(owner, this.defaultValue);
+                    this.useDefaultValue = false;
                 }
 
                 UpdateRequiresDigest(GetValue());
@@ -86,6 +84,7 @@ namespace Ultraviolet.Presentation
                 {
                     RaisePendingChangeEvent();
                 }
+
                 CheckForChanges();
             }
 
@@ -103,7 +102,8 @@ namespace Ultraviolet.Presentation
                 var oldValue = GetValue();
 
                 triggeredValueSource = action;
-                triggeredValue       = action.GetValue<T>();
+                triggeredValue = action.GetValue<T>();
+                useDefaultValue = false;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -127,6 +127,7 @@ namespace Ultraviolet.Presentation
                 animState.HandOffValue = oldValue;
                 animState.Clock = clock;
                 animState.Clock.Subscribe(this);
+                useDefaultValue = false;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -153,6 +154,7 @@ namespace Ultraviolet.Presentation
                 animState.EasingFunction = fn ?? Easings.EaseInLinear;
                 animState.Clock = clock;
                 animState.Clock.Subscribe(this);
+                useDefaultValue = false;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -172,6 +174,7 @@ namespace Ultraviolet.Presentation
                 clockValue.SetLoopBehavior(loopBehavior);
                 clockValue.SetDuration(duration);
                 clockValue.Start();
+                useDefaultValue = false;
 
                 Animate(value, fn, clockValue);
             }
@@ -183,6 +186,7 @@ namespace Ultraviolet.Presentation
 
                 var animState = GetAnimationState();
                 animState.StoryboardInstance = storyboardInstance;
+                useDefaultValue = false;
             }
 
             /// <inheritdoc/>
@@ -208,6 +212,7 @@ namespace Ultraviolet.Presentation
 
                 IsDataBound = true;
                 CreateCachedBoundValue(dataSourceType, expression);
+                useDefaultValue = false;
 
                 UpdateRequiresDigest(oldValue);
             }
@@ -273,6 +278,8 @@ namespace Ultraviolet.Presentation
                 animState.StoryboardInstance = null;
 
                 UpdateRequiresDigest(oldValue);
+
+                this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
             /// <inheritdoc/>
@@ -283,6 +290,8 @@ namespace Ultraviolet.Presentation
                 HasLocalValue = false;
 
                 UpdateRequiresDigest(oldValue);
+                
+                this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
             /// <inheritdoc/>
@@ -293,6 +302,8 @@ namespace Ultraviolet.Presentation
                 HasStyledValue = false;
 
                 UpdateRequiresDigest(oldValue);
+                
+                this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
             /// <inheritdoc/>
@@ -304,6 +315,8 @@ namespace Ultraviolet.Presentation
                 triggeredValueSource = null;
 
                 UpdateRequiresDigest(oldValue);
+                
+                this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
             /// <inheritdoc/>
@@ -315,6 +328,8 @@ namespace Ultraviolet.Presentation
                     return;
 
                 ClearTriggeredValue();
+                
+                this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
             /// <inheritdoc/>
@@ -338,6 +353,8 @@ namespace Ultraviolet.Presentation
             /// <param name="value">The value to set.</param>
             public void SetValue(T value)
             {
+                useDefaultValue = false;
+
                 if (IsAnimated)
                 {
                     ClearAnimation();
@@ -374,6 +391,7 @@ namespace Ultraviolet.Presentation
                     value = UpdateCoercedValue(value);
 
                     localValue = value;
+                    useDefaultValue = false;
                     HasLocalValue = true;
 
                     UpdateRequiresDigest(oldValue);
@@ -393,7 +411,9 @@ namespace Ultraviolet.Presentation
                     value = UpdateCoercedValue(value);
 
                     styledValue = value;
+                    useDefaultValue = false;
                     HasStyledValue = true;
+
                     UpdateRequiresDigest(oldValue);
                 }
             }
@@ -1069,34 +1089,30 @@ namespace Ultraviolet.Presentation
             /// <returns>The dependency property's calculated value.</returns>
             private T GetValueInternal(Boolean includeAnimation, Boolean includeCoerced = true)
             {
+                if (useDefaultValue)
+                    return defaultValue;
+
                 if (IsCoerced && includeCoerced)
-                {
                     return coercedValue;
-                }
+
                 if (includeAnimation && IsAnimated)
-                {
                     return GetAnimationState().CurrentValue;
-                }
+
                 if (IsDataBound)
-                {
                     return cachedBoundValue.Get();
-                }
+
                 if (HasLocalValue)
-                {
                     return localValue;
-                }
+
                 if (HasTriggeredValue)
-                {
                     return triggeredValue;
-                }
+
                 if (HasStyledValue)
-                {
                     return styledValue;
-                }
+
                 if (metadata.IsInherited && Owner.DependencyContainer != null)
-                {
                     return Owner.DependencyContainer.GetValue<T>(Property);
-                }
+
                 return defaultValue;
             }
 
@@ -1122,34 +1138,30 @@ namespace Ultraviolet.Presentation
             /// <returns>The <see cref="ValueSource"/> value for this dependency property.</returns>
             private ValueSource GetValueSource()
             {
+                if (useDefaultValue)
+                    return ValueSource.DefaultValue;
+
                 if (IsCoerced)
-                {
                     return ValueSource.CoervedValue;
-                }
+
                 if (IsAnimated)
-                {
                     return ValueSource.AnimatedValue;
-                }
+
                 if (IsDataBound)
-                {
                     return ValueSource.BoundValue;
-                }
+
                 if (HasLocalValue)
-                {
                     return ValueSource.LocalValue;
-                }
+
                 if (HasTriggeredValue)
-                {
                     return ValueSource.TriggeredValue;
-                }
+
                 if (HasStyledValue)
-                {
                     return ValueSource.StyledValue;
-                }
+
                 if (metadata.IsInherited && Owner.DependencyContainer != null)
-                {
                     return ValueSource.InheritedValue;
-                }
+
                 return ValueSource.DefaultValue;
             }
                         
@@ -1158,6 +1170,7 @@ namespace Ultraviolet.Presentation
             private readonly DependencyProperty property;
             private readonly PropertyMetadata metadata;
             private DependencyPropertyValueFlags flags;
+            private Boolean useDefaultValue = true;
             private T localValue;
             private T styledValue;
             private T defaultValue;

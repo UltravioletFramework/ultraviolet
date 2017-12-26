@@ -1067,9 +1067,11 @@ namespace Ultraviolet.Presentation
         private PooledObjectScope<List<IDependencyPropertyValue>> GetDependencyPropertyValuesBuffer()
         {
             var scope = dpValueBufferPool.RetrieveScoped();
-            
-            foreach (var kvp in dependencyPropertyValues)
-                scope.Object.Add(kvp.Value);
+
+            if (scope.Object.Capacity < dependencyPropertyValues.Count)
+                scope.Object.Capacity = dependencyPropertyValues.Count;
+
+            scope.Object.AddRange(dependencyPropertyValues.Values);
 
             return scope;
         }
@@ -1080,9 +1082,11 @@ namespace Ultraviolet.Presentation
         private PooledObjectScope<List<IDependencyPropertyValue>> GetDependencyPropertyValuesOfTypeDependencyObjectBuffer()
         {
             var scope = dpValueBufferPool.RetrieveScoped();
-            
-            foreach (var kvp in dependencyPropertyValuesOfTypeDependencyObject)
-                scope.Object.Add(kvp.Value);
+
+            if (scope.Object.Capacity < dependencyPropertyValuesOfTypeDependencyObject.Count)
+                scope.Object.Capacity = dependencyPropertyValuesOfTypeDependencyObject.Count;
+
+            scope.Object.AddRange(dependencyPropertyValuesOfTypeDependencyObject.Values);
 
             return scope;
         }
@@ -1094,8 +1098,10 @@ namespace Ultraviolet.Presentation
         {
             var scope = dpValueBufferPool.RetrieveScoped();
 
-            foreach (var value in digestedDependencyProperties)
-                scope.Object.Add(value);
+            if (scope.Object.Capacity < digestedDependencyProperties.Count)
+                scope.Object.Capacity = digestedDependencyProperties.Count;
+
+            scope.Object.AddRange(digestedDependencyProperties);
 
             return scope;
         }

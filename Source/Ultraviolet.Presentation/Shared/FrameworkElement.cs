@@ -1007,14 +1007,10 @@ namespace Ultraviolet.Presentation
         /// <param name="dc">The drawing context that describes the render state of the layout.</param>
         protected virtual void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            var children = VisualTreeHelper.GetChildrenCount(this);
+            var children = VisualChildrenCount;
             for (int i = 0; i < children; i++)
             {
-                var child = VisualTreeHelper.GetChildByZOrder(this, i) as UIElement;
-                if (child != null)
-                {
-                    child.Draw(time, dc);
-                }
+                GetVisualChildByZOrder(i).Draw(time, dc);
             }
         }
 
@@ -1025,10 +1021,11 @@ namespace Ultraviolet.Presentation
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         protected virtual void UpdateOverride(UltravioletTime time)
         {
-            VisualTreeHelper.ForEachChild<UIElement>(this, time, (child, state) =>
+            var children = VisualChildrenCount;
+            for (int i = 0; i < children; i++)
             {
-                child.Update((UltravioletTime)state);
-            });
+                GetVisualChild(i).Update(time);
+            }
         }
 
         /// <summary>

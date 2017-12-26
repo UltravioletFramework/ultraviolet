@@ -5,12 +5,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 
 namespace Ultraviolet.OpenGL.Bindings
 {
+    [SuppressUnmanagedCodeSecurity]
     public static unsafe partial class gl
     {
         /// <summary>
