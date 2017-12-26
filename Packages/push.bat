@@ -17,11 +17,13 @@ if [%BAMBOO_NuGetPush%] == [] (
     
     for %%f in (*.nupkg) do (
         "nuget.exe" push %%~nf.nupkg -Source %BAMBOO_NuGetPackageSource% -ApiKey !_apikey!
+        @if %errorlevel% neq 0 @exit /b %errorlevel%
     )
     
     cd Symbols
     
     for %%f in (*.nupkg) do (
         "..\nuget.exe" push %%~nf.nupkg -Source %BAMBOO_NuGetSymbolsSource% -ApiKey !_apikey!
+        @if %errorlevel% neq 0 @exit /b %errorlevel%
     )
 )
