@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.Game.WindowsForms</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Ultraviolet Framework Game (Windows Forms)</title>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the Windows platform that is embedded within a Windows Forms application.</description>
+    <tags>ultraviolet gamedev</tags>	
+    <dependencies>
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet.BASS" version="UV_VERSION" />
+        <dependency id="Ultraviolet.BASS.Native" version="UV_VERSION" />
+        <dependency id="Ultraviolet.Shims.Desktop" version="UV_VERSION" />
+        <dependency id="Ultraviolet.OpenGL" version="UV_VERSION" />
+        <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />
+        <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
+        <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />
+        <dependency id="Ultraviolet.WindowsForms" version="UV_VERSION" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Ultraviolet.Game.WindowsForms\content\Program.cs.pp" target="content"/>
+    <file src="Ultraviolet.Game.WindowsForms\content\Form1.cs.pp" target="content"/>
+    <file src="Ultraviolet.Game.WindowsForms\content\Form1.Designer.cs.pp" target="content"/>
+  </files>  
+</package>
