@@ -22,7 +22,7 @@
         <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />
         <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
         <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />
-        <dependency id="Ultraviolet.WindowsForms" version="UV_VERSION" />
+        <dependency id="Ultraviolet.Windows.Forms" version="UV_VERSION" />
     </dependencies>
   </metadata>
   <files>
