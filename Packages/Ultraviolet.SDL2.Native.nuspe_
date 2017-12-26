@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.SDL2.Native</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Ultraviolet.SDL2 Native Dependencies</title>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the SDL2 implementation of the Framework's platform and input subsystems.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="Ultraviolet.SDL2.Native\build\net40\Ultraviolet.SDL2.Native.targets" target="build\net40\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net40\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net40\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net40\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net40\x64\win32nt\SDL2.dll"/>
+    
+    <file src="Ultraviolet.SDL2.Native\build\net45\Ultraviolet.SDL2.Native.targets" target="build\net45\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net45\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net45\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net45\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net45\x64\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net45\x64\osx\libSDL2.dylib"/>
+  
+    <file src="Ultraviolet.SDL2.Native\build\MonoAndroid60\Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid60\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid60\lib\armeabi-v7a\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2.so" target="build\MonoAndroid60\lib\armeabi\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\x86\libSDL2.so" target="build\MonoAndroid60\lib\x86\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\org.libsdl.app.dll" target="lib\MonoAndroid60\org.libsdl.app.dll"/>
+  </files>  
+</package>

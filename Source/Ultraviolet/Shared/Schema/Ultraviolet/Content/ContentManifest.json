@@ -1,0 +1,38 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Content.ContentManifest Schema",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "groups": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/contentManifestGroup" }
+    }
+  },
+  "required": [ "name" ],
+  "definitions": {
+    "contentManifestGroup": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "directory": { "type": "string" },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/contentManifestAsset"
+          }
+        }
+      },
+      "required": [ "name", "type", "directory" ]
+    },
+    "contentManifestAsset": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "path": { "type": "string" }
+      },
+      "required": [ "name", "path" ]
+    }
+  }
+}

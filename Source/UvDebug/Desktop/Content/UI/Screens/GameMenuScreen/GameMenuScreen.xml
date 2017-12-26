@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UIPanelDefinition>
+  <StyleSheet>GameMenuScreenStyles</StyleSheet>
+  <View ViewModelType="UvDebug.UI.Screens.GameMenuViewModel, UvDebug">
+    <Grid Name="container" Focusable="true" KeyboardNavigation.IsTabStop="false" KeyDown="HandleKeyDown" View.Opened="HandleViewOpened">
+
+      <Image Name="mainmenu-background"/>
+
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Image Name="logo" Grid.Row="0">
+          <Image.RenderTransform>
+            <ScaleTransform/>
+          </Image.RenderTransform>
+        </Image>
+
+        <Border Name="mainmenu-panel" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+          <Grid>
+            <Rectangle Name="mainmenu-panel-background"/>
+            <StackPanel Name="mainmenu-panel-options">
+              <Button Name="btn-start" Click="Click_Start">Start</Button>
+              <Button Name="btn-exit" Click="Click_Exit">Exit</Button>
+            </StackPanel>
+          </Grid>
+        </Border>
+
+      </Grid>
+
+    </Grid>        
+  </View>
+</UIPanelDefinition>

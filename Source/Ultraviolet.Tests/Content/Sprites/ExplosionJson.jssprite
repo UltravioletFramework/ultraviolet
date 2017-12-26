@@ -1,0 +1,99 @@
+﻿{
+  "$schema": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Graphics/Graphics2D/Sprite.json",
+  "frameDefaults": {
+    "texture": "Textures/Explosion",
+    "duration": 50,
+    "origin": {
+      "x": 50,
+      "y": 50
+    },
+    "width": 100,
+    "height": 100
+  },
+  "animations": {
+    "items": [
+      {
+        "name": "Explosion",
+        "frames": [
+          // row 1
+          {
+            "frameDefaults": {
+              "y": 0
+            },
+            "items": [
+              { "x": 0 },
+              { "x": 100 },
+              { "x": 200 },
+              { "x": 300 },
+              { "x": 400 }
+            ]
+          },
+          // row 2
+          {
+            "frameDefaults": {
+              "y": 100
+            },
+            "items": [
+              { "x": 0 },
+              { "x": 100 },
+              { "x": 200 },
+              { "x": 300 },
+              { "x": 400 }
+            ]
+          },
+          // row 3
+          {
+            "frameDefaults": {
+              "y": 200
+            },
+            "items": [
+              { "x": 0 },
+              { "x": 100 },
+              { "x": 200 },
+              { "x": 300 },
+              { "x": 400 }
+            ]
+          },
+          // row 4
+          {
+            "frameDefaults": {
+              "y": 300
+            },
+            "items": [
+              { "x": 0 },
+              { "x": 100 },
+              { "x": 200 },
+              { "x": 300 },
+              { "x": 400 }
+            ]
+          },
+          // row 5
+          {
+            "frameDefaults": {
+              "y": 400
+            },
+            "items": [
+              { "x": 0 },
+              { "x": 100 },
+              { "x": 200 },
+              { "x": 300 },
+              { "x": 400 }
+            ]
+          },
+          // row 6
+          {
+            "frameDefaults": {
+              "y": 500
+            },
+            "items": [
+              { "x": 0 },
+              { "x": 100 },
+              { "x": 200 },
+              { "x": 300 }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

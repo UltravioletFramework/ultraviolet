@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ComponentTemplate>
+  <Directive Type="import">Ultraviolet.Presentation.Controls.Primitives</Directive>
+  <View>
+    <Grid Class="slider-component"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto" MinWidth="{{MinWidth}}"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <TickBar Placement="Left"
+               Visibility="{{TickPlacement == TickPlacement.TopLeft || TickPlacement == TickPlacement.Both ? Visibility.Visible : Visibility.Collapsed}}"
+               Grid.Column="0"/>
+      
+      <Image Class="slider-track-background slider-track-background-vertical"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Stretch"
+             Grid.Column="1"/>
+      <Track Name="PART_Track"
+             Class="slider-track slider-track-vertical"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Stretch"
+             Orientation="Vertical"
+             IsDirectionReversed="{{IsDirectionReversed}}"
+             Delay="{{Delay}}"
+             Interval="{{Interval}}"
+             Minimum="{{Minimum}}"
+             Maximum="{{Maximum}}"
+             Value="{{Value}}"
+             Grid.Column="1"/>
+      <Image Class="slider-focus-image"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Opacity="{{IsFocusVisualVisible ? 1 : 0}}"
+             IsHitTestVisible="false"
+             Grid.Column="1"/>
+
+      <TickBar Placement="Right"
+               Visibility="{{TickPlacement == TickPlacement.BottomRight || TickPlacement == TickPlacement.Both ? Visibility.Visible : Visibility.Collapsed}}"
+               Grid.Column="2"/>
+      
+    </Grid>
+  </View>
+</ComponentTemplate>

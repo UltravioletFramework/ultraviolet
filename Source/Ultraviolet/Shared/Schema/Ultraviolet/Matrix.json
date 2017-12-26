@@ -1,0 +1,10 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Matrix Schema",
+  "type": "array",
+  "minItems": 16,
+  "maxItems": 16,
+  "items": {
+    "type": "number"
+  }
+}

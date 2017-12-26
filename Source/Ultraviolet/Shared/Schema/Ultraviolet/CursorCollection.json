@@ -1,0 +1,22 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.CursorCollection Schema",
+  "type": "object",
+  "properties": {
+    "texture": { "type": "string" },
+    "cursors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "area": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Rectangle.json" },
+          "hotspot": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
+        }
+      }
+    }
+  },
+  "required": [ "texture", "cursors" ]
+}

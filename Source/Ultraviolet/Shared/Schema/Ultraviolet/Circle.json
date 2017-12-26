@@ -1,0 +1,20 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Circle Schema",
+  "type": "object",
+  "properties": {
+    "x": {
+      "type": "number",
+      "multipleOf": 1.0
+    },
+    "y": {
+      "type": "number",
+      "multipleOf": 1.0
+    },
+    "radius": {
+      "type": "number",
+      "multipleOf": 1.0
+    }
+  },
+  "required": [ "x", "y", "radius" ]
+}

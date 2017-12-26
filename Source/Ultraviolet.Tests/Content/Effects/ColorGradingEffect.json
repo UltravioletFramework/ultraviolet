@@ -1,0 +1,17 @@
+﻿{
+  "parameters": [ "MatrixTransform", "TextureSize", "Texture", "ColorGradingLUT" ],
+  "techniques": [
+    {
+      "name": "Technique0",
+      "passes": [
+        {
+          "name": "Pass0",
+          "stages": {
+            "vert": "ColorGrading.vert",
+            "frag": "ColorGrading.frag"
+          }
+        }
+      ]
+    }
+  ]
+}

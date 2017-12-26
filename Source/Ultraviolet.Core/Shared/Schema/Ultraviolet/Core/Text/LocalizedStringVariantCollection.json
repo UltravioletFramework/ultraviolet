@@ -1,0 +1,11 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Core.Text.LocalizedStringVariantCollection Schema",
+  "properties": {
+    "properties": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizedStringVariant.json" }
+    }
+  }
+}

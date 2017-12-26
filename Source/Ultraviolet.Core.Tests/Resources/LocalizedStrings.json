@@ -1,0 +1,65 @@
+﻿{
+  "$schema": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizationDatabase.json",
+  "strings": [
+    {
+      "key": "LOCALIZED_RESOURCE",
+      "variants": {
+        "en-US": "This is a test",
+        "fr-FR": "C'est un test"
+      }
+    },
+    {
+      "key": "SWORD",
+      "variants": {
+        "en-US": {
+          "items": [
+            {
+              "group": "singular",
+              "text": "sword"
+            },
+            {
+              "group": "plural",
+              "text": "swords"
+            }
+          ]
+        },
+        "fr-FR": [
+          {
+            "group": "singulier",
+            "properties": "voyelle, féminin",
+            "text": "epée"
+          },
+          {
+            "group": "pluriel",
+            "properties": "voyelle, féminin",
+            "text": "epées"
+          }
+        ]
+      }
+    },
+    {
+      "key": "GLOWING",
+      "variants": {
+        "en-US": "glowing",
+        "fr-FR": [
+          {
+            "group": "sing_masculin",
+            "text": "rougeoyant"
+          },
+          {
+            "group": "plur_masculin",
+            "text": "rougeoyants"
+          },
+          {
+            "group": "sing_féminin",
+            "text": "rougeoyante"
+          },
+          {
+            "group": "plur_féminin",
+            "text": "rougeoyantes"
+          }
+        ]
+      }
+    }
+  ]
+}

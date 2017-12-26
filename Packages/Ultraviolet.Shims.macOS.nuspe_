@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.Shims.macOS</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for macOS.</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+    <dependency id="Ultraviolet" version="UV_VERSION" />
+    <dependency id="Ultraviolet.Shims.Desktop" version="UV_VERSION" />
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.macOS.dll" target="lib\net45"/>  
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.macOS.pdb" target="lib\net45"/>  
+  </files>  
+</package>

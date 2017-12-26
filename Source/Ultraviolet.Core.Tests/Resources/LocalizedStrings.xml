@@ -1,0 +1,32 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<LocalizedStrings>
+  <String Key='LOCALIZED_RESOURCE'>
+    <en-US>
+      <Variant>This is a test</Variant>
+    </en-US>
+    <fr-FR>
+      <Variant>C'est un test</Variant>
+    </fr-FR>
+  </String>
+  <String Key='SWORD'>
+    <en-US>
+      <Variant Group='singular'>sword</Variant>
+      <Variant Group='plural'>swords</Variant>
+    </en-US>
+    <fr-FR>
+      <Variant Group='singulier' Properties='voyelle, féminin'>epée</Variant>
+      <Variant Group='pluriel' Properties='voyelle, féminin'>epées</Variant>
+    </fr-FR>
+  </String>
+  <String Key='GLOWING'>
+    <en-US>
+      <Variant>glowing</Variant>
+    </en-US>
+    <fr-FR>
+      <Variant Group='sing_masculin'>rougeoyant</Variant>
+      <Variant Group='plur_masculin'>rougeoyants</Variant>
+      <Variant Group='sing_féminin'>rougeoyante</Variant>
+      <Variant Group='plur_féminin'>rougeoyantes</Variant>
+    </fr-FR>
+  </String>
+</LocalizedStrings>

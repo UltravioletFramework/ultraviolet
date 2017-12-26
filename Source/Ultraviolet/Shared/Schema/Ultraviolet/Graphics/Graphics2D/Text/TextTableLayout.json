@@ -1,0 +1,55 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Graphics.Graphics2D.Text.TextTableLayout Schema",
+  "type": "object",
+  "properties": {
+    "width": {
+      "type": [ "number", "null" ],
+      "multipleOf": 1.0
+    },
+    "height": {
+      "type": [ "number", "null" ],
+      "multipleOf": 1.0
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cells": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "textFlags": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "text": { "type": "string" },
+                "format": { "type": "string" },
+                "binding": { "type": "string" },
+                "width": {
+                  "type": [ "number", "null" ],
+                  "multipleOf": 1.0
+                },
+                "height": {
+                  "type": [ "number", "null" ],
+                  "multipleOf": 1.0
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

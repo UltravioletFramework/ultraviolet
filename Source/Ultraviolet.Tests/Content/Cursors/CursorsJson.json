@@ -1,0 +1,50 @@
+﻿{
+  "$schema": "http://schema.ultraviolet.tl/2.0/Ultraviolet/CursorCollection.json",
+  "texture": "CursorsImage",
+  "cursors": [
+    {
+      "name": "Normal",
+      "area": {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32
+      }
+    },
+    {
+      "name": "NormalDisabled",
+      "area": {
+        "x": 32,
+        "y": 0,
+        "width": 32,
+        "height": 32
+      }
+    },
+    {
+      "name": "IBeam",
+      "area": {
+        "x": 64,
+        "y": 0,
+        "width": 32,
+        "height": 32
+      },
+      "hotspot": {
+        "x": 0,
+        "y": 14
+      }
+    },
+    {
+      "name": "IBeamDisabled",
+      "area": {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32
+      },
+      "hotspot": {
+        "x": 0,
+        "y": 14
+      }
+    }
+  ]
+}

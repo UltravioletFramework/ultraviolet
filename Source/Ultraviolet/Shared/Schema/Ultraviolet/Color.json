@@ -1,0 +1,13 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Color Schema",
+  "type": "array",
+  "minItems": 3,
+  "maxItems": 4,
+  "items": {
+    "type": "number",
+    "multipleOf": 1.0,
+    "minimum": 0,
+    "maximum": 255
+  }
+}

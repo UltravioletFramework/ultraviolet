@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentManifest Name="Test">
+  <ContentGroup Name="Textures" Directory="Textures" Type="Ultraviolet.Graphics.Texture2D">
+    <Asset Name="Triangle">Triangle</Asset>
+  </ContentGroup>
+</ContentManifest>

@@ -1,0 +1,12 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.BoundingSphere Schema",
+  "type": "object",
+  "properties": {
+    "center": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Vector3.json" },
+    "radius": {
+      "type": "number"
+    }
+  },
+  "required": [ "center", "radius" ]
+}

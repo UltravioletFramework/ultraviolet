@@ -1,0 +1,23 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Core.Text.LocalizedString Schema",
+  "properties": {
+    "key": { "type": "string" },
+    "html": { "type": "boolean" },
+    "pseudo": { "type": "boolean" },
+    "variants": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          { "type": "string" },
+          {
+            "type": "array",
+            "items": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizedStringVariant.json" }
+          },
+          { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Core/Text/LocalizedStringVariantCollection.json" }
+        ]
+      }
+    }
+  },
+  "required": [ "key", "variants" ]
+}

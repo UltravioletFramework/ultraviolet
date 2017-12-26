@@ -1,0 +1,16 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Size2 Schema",
+  "type": "object",
+  "properties": {
+    "width": {
+      "type": "number",
+      "multipleOf": 1.0
+    },
+    "height": {
+      "type": "number",
+      "multipleOf": 1.0
+    }
+  },
+  "required": [ "width", "height" ]
+}

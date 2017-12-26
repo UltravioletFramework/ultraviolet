@@ -1,0 +1,48 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Graphics.TextureAtlas Schema",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "rootDirectory": {
+          "type": "string"
+        },
+        "requirePowerOfTwo": {
+          "type": "boolean"
+        },
+        "requireSquare": {
+          "type": "boolean"
+        },
+        "maximumWidth": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "maximumHeight": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "padding": {
+          "type": "number",
+          "multipleOf": 1.0
+        }
+      }
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [ "path" ]
+      }
+    }
+  }
+}

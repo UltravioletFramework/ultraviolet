@@ -1,0 +1,20 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Vector4 Schema",
+  "type": "object",
+  "properties": {
+    "x": {
+      "type": "number"
+    },
+    "y": {
+      "type": "number"
+    },
+    "z": {
+      "type": "number"
+    },
+    "w": {
+      "type": "number"
+    }
+  },
+  "required": [ "x", "y", "z", "w" ]
+}

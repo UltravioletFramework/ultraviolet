@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="STYLE_SHEET_PARSER_ERROR">
+    <en-US>
+      <Variant>Failed to compile style sheet due to parsing errors.</Variant>
+    </en-US>
+  </String>
+  <String Key="IS_NOT_DEPENDENCY_OBJECT">
+    <en-US>
+      <Variant>The specified object is not a dependency object.</Variant>
+    </en-US>
+  </String>
+  <String Key="PROPERTY_HAS_NO_GETTER">
+    <en-US>
+      <Variant>The property '{0}' cannot be used in this context because it has no get accessor.</Variant>
+    </en-US>
+  </String>
+  <String Key="PROPERTY_HAS_NO_SETTER">
+    <en-US>
+      <Variant>The property '{0}' cannot be used in this context because it has no set accessor.</Variant>
+    </en-US>
+  </String>
+  <String Key="DEPENDENCY_PROPERTY_ALREADY_REGISTERED">
+    <en-US>
+      <Variant>Dependency property has already been registered.</Variant>
+    </en-US>
+  </String>
+  <String Key="DEPENDENCY_PROPERTY_IS_READ_ONLY">
+    <en-US>
+      <Variant>Dependency property '{0}' is read-only.</Variant>
+    </en-US>
+  </String>
+  <String Key="ROUTED_EVENT_ALREADY_REGISTERED">
+    <en-US>
+      <Variant>Routed event has already been registered.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_RESOLVE_BINDING_EXPRESSION">
+    <en-US>
+      <Variant>The binding expression '{0}' cannot be resolved because a method or member which makes up part of the binding path could not be found.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_BINDING_EXPRESSION">
+    <en-US>
+      <Variant>The specified expression '{0}' is not a valid binding expression.</Variant>
+    </en-US>
+  </String>
+  <String Key="BINDING_IS_READ_ONLY">
+    <en-US>
+      <Variant>Attempted to write to a read-only data binding.</Variant>
+    </en-US>
+  </String>
+  <String Key="BINDING_IS_WRITE_ONLY">
+    <en-US>
+      <Variant>Attempted to read from a write-only binding.</Variant>
+    </en-US>
+  </String>
+  <String Key="UIELEMENT_INVALID_CTOR">
+    <en-US>
+      <Variant>The UI element of type '{0}' cannot be instantiated because it does not have a compatible constructor.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_TYPE_NOT_FOUND">
+    <en-US>
+      <Variant>The specified view model type '{0}' could not be found.</Variant>
+    </en-US>
+  </String>
+  <String Key="KNOWN_TYPE_ALREADY_REGISTERED">
+    <en-US>
+      <Variant>A type named '{0}' has already been registered with the Presentation Foundation.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_TYPE">
+    <en-US>
+      <Variant>No type named '{0}' has been registered with the Presentation Foundation.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_DEFAULT_PROPERTY">
+    <en-US>
+      <Variant>The default property '{0}' on element type '{1}' could not be found within the dependency property system.</Variant>
+    </en-US>
+  </String>
+  <String Key="NO_VIEW_MODEL">
+    <en-US>
+      <Variant>An element tried to bind a dependency property, but no view model is defined for the element's view.</Variant>
+    </en-US>
+  </String>
+  <String Key="DUPLICATE_NAMESCOPE_NAME">
+    <en-US>
+      <Variant>The name '{0}' is already being used within the current namescope.</Variant>
+    </en-US>
+  </String>
+  <String Key="AMBIGUOUS_DEPENDENCY_PROPERTY">
+    <en-US>
+      <Variant>Cannot resolve dependency property '{0}': property is ambiguous under current filters.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_CHILD_ELEMENTS">
+    <en-US>
+      <Variant>Element '{0}' has too many child elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_ELEMENT_PROPERTY_VALUE">
+    <en-US>
+      <Variant>The value '{0}' specified for property '{1}' is not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPONENT_ROOT_ALREADY_LOADED">
+    <en-US>
+      <Variant>The control's component root has already been loaded.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CONTAINS_INVALID_ELEMENTS">
+    <en-US>
+      <Variant>The collection '{0}' contains invalid elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_HAS_NO_ADD_METHOD">
+    <en-US>
+      <Variant>The collection type '{0}' could not be instantiated because it does not have a compatible 'Add' or 'AddRange' method.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CANNOT_BE_CLEARED">
+    <en-US>
+      <Variant>The collection property '{0}' already has a value, but new items cannot be specified because the existing collection does not have a 'Clear' method.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CANNOT_BE_CREATED">
+    <en-US>
+      <Variant>The collection property '{0}' cannot be set because a new collection instance could not be created.</Variant>
+    </en-US>
+  </String>
+  <String Key="CONTENT_PRESENTER_IS_NOT_A_COMPONENT">
+    <en-US>
+      <Variant>The specified content presenter is not a component of this control.</Variant>
+    </en-US>
+  </String>
+  <String Key="MEASURE_MUST_PRODUCE_FINITE_DESIRED_SIZE">
+    <en-US>
+      <Variant>The MeasureOverride() method must always produce a finite desired size, even if the constraining size is infinite.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_IS_BOUND_TO_ITEMS_SOURCE">
+    <en-US>
+      <Variant>The collection cannot be directly modified because it is currently bound to the value of the ItemsSource property.</Variant>
+    </en-US>
+  </String>
+  <String Key="ITEM_PRESENTER_NOT_IN_ITEMS_CONTROL">
+    <en-US>
+      <Variant>An ItemPresenter element is not valid outside of the component template for an ItemsControl.</Variant>
+    </en-US>    
+  </String>
+  <String Key="ITEM_PRESENTER_NOT_CREATED_CORRECTLY">
+    <en-US>
+      <Variant>An instance of the {0} type failed to produce a valid item presenter.</Variant>
+    </en-US>    
+  </String>
+  <String Key="INVALID_ROUTED_EVENT_DELEGATE">
+    <en-US>
+      <Variant>The specified delegate type '{0}' is not valid for routed events. Routed event delegates must take a DependencyObject as their first parameter and a by-RoutedEventData as their final parameter, and must return void.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_ROUTING_STRATEGY">
+    <en-US>
+      <Variant>The specified routing strategy is invalid.</Variant>
+    </en-US>
+  </String>
+  <String Key="EVENT_OR_PROPERTY_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>The event or property '{0}' does not exist on the type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="CLASS_TYPE_MUST_BE_SUBCLASS_OF_OWNER_TYPE">
+    <en-US>
+      <Variant>The specified class type '{0}' is not valid because it is not a subclass of owner type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="KNOWN_TYPE_MISSING_ATTRIBUTE">
+    <en-US>
+      <Variant>The specified type '{0}' cannot be registered as a UVML known type because it is not annotated with a UvmlKnownTypeAttribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="HANDLER_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The specified event handler '{0}' is invalid because it is not a delegate of type '{1}.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_VISUAL_OBJECT">
+    <en-US>
+      <Variant>The specified object is not a visual object.</Variant>
+    </en-US>
+  </String>
+  <String Key="CLIP_RECTANGLE_MUST_HAVE_VALID_DIMENSIONS">
+    <en-US>
+      <Variant>The specified clip rectangle does not have valid dimensions.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_UIELEMENT">
+    <en-US>
+      <variant>The specified object is not an interface element.</variant>
+    </en-US>
+  </String>
+  <String Key="NOT_AN_INPUT_ELEMENT">
+    <en-US>
+      <Variant>The specified object is not an input element.</Variant>
+    </en-US>
+  </String>
+  <String Key="VISUAL_ALREADY_HAS_A_PARENT">
+    <en-US>
+      <Variant>The specified Visual already has a parent.</Variant>
+    </en-US>
+  </String>
+  <String Key="BEGIN_INIT_ALREADY_CALLED">
+    <en-US>
+      <Variant>BeginInit() cannot be called again until EndInit() has been called.</Variant>
+    </en-US>
+  </String>
+  <String Key="BEGIN_INIT_NOT_CALLED">
+    <en-US>
+      <Variant>EndInit() cannot be called because BeginInit() has not been called.</Variant>
+    </en-US>
+  </String>
+  <String Key="LOCAL_PROPERTY_CANNOT_BE_APPLIED_TO_TYPE">
+    <en-US>
+      <Variant>The local property '{0}' can only be applied to '{1}' or one of its descendant types.</Variant>
+    </en-US>
+  </String>
+  <String Key="TYPE_IS_NOT_COMPARABLE">
+    <en-US>
+      <Variant>The type '{0}' cannot be used in a trigger condition because it doesn't define Equals() or CompareTo() methods.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_TRIGGER_COMPARISON">
+    <en-US>
+      <Variant>The dependency property '{0}' does not support the {1} comparison operator because it is of type '{2}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_ASSET_IDENTIFIER">
+    <en-US>
+      <Variant>The asset identifier '{0}' is not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_IS_NOT_AN_ANCESTOR">
+    <en-US>
+      <Variant>The specified element is not an ancestor of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_IS_NOT_A_DESCENDANT">
+    <en-US>
+      <Variant>The specified element is not a descendant of this element.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_TRANSFORMATION">
+    <en-US>
+      <Variant>The specified transformation is not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="DRAWING_CONTEXT_DOES_NOT_HAVE_SPRITEBATCH">
+    <en-US>
+      <Variant>The operation is invalid because the drawing context is not associated with a SpriteBatch object.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPILED_EXPRESSIONS_ASSEMBLY_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find the compiled expressions assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="COMPILED_EXPRESSION_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find a compiled implementation of the binding expression '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_COMPILER_NOT_FOUND">
+    <en-US>
+      <Variant>Could not find the expression compiler assembly '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="EXPRESSION_COMPILER_TYPE_NOT_VALID">
+    <en-US>
+      <Variant>Could not find a valid expression compiler type.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_FIND_DEPENDENCY_PROPERTY_FIELD">
+    <en-US>
+      <Variant>Could not find the field which declares dependency property '{1}' for owner type '{0}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_BINDING_EXPRESSION_COMPILER_ASM">
+    <en-US>
+      <Variant>Could not load the binding expressions compiler because no compiler assembly was specified.</Variant>
+    </en-US>
+  </String>
+  <String Key="ATTACHABLE_PROPERTY_NOT_FOUND">
+    <en-US>
+      <Variant>The attachable property '{0}' was not found in type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="INCOMPATIBLE_TYPE">
+    <en-US>
+      <Variant>The type '{0}' is not assignable from the type '{1}'.</Variant>
+    </en-US>
+  </String>
+  <String Key="FACTORY_METHOD_MISSING">
+    <en-US>
+      <Variant>The factory method '{0}' could not be found on the current Ultraviolet context.</Variant>
+    </en-US>
+  </String>
+  <String Key="FACTORY_METHOD_INVALID_RESULT">
+    <en-US>
+      <Variant>The factory method '{0}' produced an invalid result.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_COMPILER_OPTIONS">
+    <en-US>
+      <Variant>The specified compiler options are not valid.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_FIND_VIEW_MODEL_WRAPPER">
+    <en-US>
+      <Variant>Cannot locate the view wrapper for the type named '{0}'. You may need to recompile your application's binding expressions assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="VERSIONED_STRING_SOURCE_IS_STALE">
+    <en-US>
+      <Variant>The operation is invalid because the string source contains stale data.</Variant>
+    </en-US>
+  </String>
+  <String Key="VIEW_MODEL_MISMATCH">
+    <en-US>
+      <Variant>Error initializing view model. The view definition specifies that the view model is of type '{0}' but the provided view model was of type '{1}'</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_EVENT_HANDLER">
+    <en-US>
+      <Variant>Event handler '{0}' for event '{1}' was invalid or could not be found on the data source.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_TYPE_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Collection type '{0}' is not supported because it does not implement IEnumerable&lt;T&gt; or because it implements IEnumerable&lt;T&gt; more than once.</Variant>
+    </en-US>
+  </String>
+  <String Key="TEMPLATE_TYPE_MISMATCH">
+    <en-US>
+      <Variant>Failed to construct UVML template for type '{0}' because UVML specified an incompatible type '{1}'</Variant>
+    </en-US>
+  </String>
+  <String Key="NAMED_ELEMENT_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>No element named '{0}' exists within the current namescope.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_LINK_COLORIZER">
+    <en-US>
+      <Variant>View model method '{0}' was not found or is not a valid link colorizer.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_LINK_STATE_EVALUATOR">
+    <en-US>
+      <Variant>View model method '{0}' was not found or is not a valid link state evaluator.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_LINK_CLICK_HANDLER">
+    <en-US>
+      <Variant>View model method '{0}' was not found or is not a valid link click handler.</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CONTAINS_INVALID_RESOURCES">
+    <en-US>
+      <Variant>The specified resource collection contains an invalid asset identifier.</Variant>
+    </en-US>
+  </String>
+  <String Key="POOLED_RESOURCE_ALREADY_RELEASED">
+    <en-US>
+      <Variant>Attempted to release a pooled resource which has already been released.</Variant>
+    </en-US>
+  </String>
+  <String Key="TEMPLATE_MUST_SPECIFY_VIEW_MODEL_TYPE">
+    <en-US>
+      <Variant>Templates must specify a ViewModelType attribute.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_DOES_NOT_BELONG_TO_VIEW">
+    <en-US>
+      <Variant>The specified element does not belong to the specified view.</Variant>
+    </en-US>
+  </String>
+  <String Key="DELEGATE_COMMAND_PARAM_TYPE_MISMATCH">
+    <en-US>
+      <Variant>The parameter type of a DelegateCommand{T} must be either a reference type or Nullable{T}.</Variant>
+    </en-US>
+  </String>
+  <String Key="ELEMENT_DOES_NOT_HAVE_NAMESCOPE">
+    <en-US>
+      <Variant>This element does not have a namescope.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

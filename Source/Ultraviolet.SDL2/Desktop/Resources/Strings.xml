@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="CANNOT_CREATE_HEADLESS_CONTEXT_ON_MOBILE">
+    <en-US>
+      <Variant>A headless context cannot be created on the Android or iOS platforms.</Variant>
+    </en-US>
+  </String>
+  <String Key="BUFFER_IS_TOO_SMALL">
+    <en-US>
+      <Variant>Buffer '{0}' is too small for the requested data.</Variant>
+    </en-US>
+  </String>
+  <String Key="SURFACE_ALREADY_PREPARED_FOR_EXPORT">
+    <en-US>
+      <Variant>The surface has already been prepared for export.</Variant>
+    </en-US>
+  </String>
+  <String Key="SURFACE_IS_NOT_COMPLETE">
+    <en-US>
+      <Variant>The specified surface does not contain a complete set of layers.</Variant>
+    </en-US>
+  </String>
+  <String Key="SURFACE_MUST_HAVE_SQUARE_LAYERS">
+    <en-US>
+      <Variant>A Surface3D which is loaded from a single file must consist of square layers arranged from left to right, and the file must contain no excess space.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

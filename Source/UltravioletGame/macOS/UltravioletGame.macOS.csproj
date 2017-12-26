@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AE469C94-75D7-4387-A030-D3C53CCA90B1}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SAFE_PROJECT_NAME</RootNamespace>
+    <AssemblyName>UltravioletGame</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <UseXamMacFullFramework>true</UseXamMacFullFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;MACOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <LinkMode>None</LinkMode>
+    <XamMacArch></XamMacArch>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>MACOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <XamMacArch></XamMacArch>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Signed</OutputPath>
+    <DefineConstants>MACOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <XamMacArch></XamMacArch>
+    <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Mac" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv64.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="..\Desktop\README-SDL.txt">
+      <Link>README-SDL.txt</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Desktop\Ultraviolet.OpenGL.Bindings.Desktop.csproj">
+      <Project>{08B2B8D5-152F-45FB-B4EB-8C09010A9908}</Project>
+      <Name>Ultraviolet.OpenGL.Bindings.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
+      <Name>Ultraviolet.Core.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
+      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
+      <Name>Ultraviolet.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
+      <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
+      <Name>Ultraviolet.BASS.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
+      <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
+      <Name>Ultraviolet.OpenGL.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Shims.macOS\Ultraviolet.Shims.macOS.csproj">
+      <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
+      <Name>Ultraviolet.Shims.macOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
+      <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
+      <Name>Ultraviolet.SDL2.Desktop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="x64\" />
+    <Folder Include="x64\osx\" />
+    <Folder Include="Assets\" />
+    <Folder Include="Content\" />
+    <Folder Include="Input\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
+      <Link>Content\Cursors\CursorsImage.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\DefaultUI.png">
+      <Link>Content\Fonts\DefaultUI.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Cursors\Cursors.xml">
+      <Link>Content\Cursors\Cursors.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\DefaultUIFont.xml">
+      <Link>Content\Fonts\DefaultUIFont.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Localization\GameStrings.xml">
+      <Link>Content\Localization\GameStrings.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Desktop\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\Desktop\Assets\GlobalFontID.cs">
+      <Link>Assets\GlobalFontID.cs</Link>
+    </Compile>
+    <Compile Include="..\Desktop\Input\GameInputActions.cs">
+      <Link>Input\GameInputActions.cs</Link>
+    </Compile>
+    <Compile Include="..\Desktop\Input\IUltravioletInputExtensions.cs">
+      <Link>Input\IUltravioletInputExtensions.cs</Link>
+    </Compile>
+    <Compile Include="Game.Init.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+</Project>

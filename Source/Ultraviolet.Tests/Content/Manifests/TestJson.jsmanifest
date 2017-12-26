@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Content/ContentManifest.json",
+  "name": "Test",
+  "groups": [
+    {
+      "name": "Textures",
+      "type": "Ultraviolet.Graphics.Texture2D",
+      "directory": "Textures",
+      "assets": [
+        {
+          "name": "Triangle",
+          "path": "Triangle"
+        }
+      ]
+    }
+  ]
+}

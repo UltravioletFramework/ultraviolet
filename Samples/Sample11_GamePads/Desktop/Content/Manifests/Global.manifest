@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentManifest Name="Global">
+  <ContentGroup Name="Fonts" Directory="Fonts" Type="Ultraviolet.Graphics.Graphics2D.SpriteFont">
+    <Asset Name="SegoeUI">SegoeUI12</Asset>
+  </ContentGroup>
+  <ContentGroup Name="Sprites" Directory="Sprites" Type="Ultraviolet.Graphics.Graphics2D.Sprite">
+    <Asset Name="Xbox360Controller">Xbox360Controller</Asset>
+  </ContentGroup>
+</ContentManifest>

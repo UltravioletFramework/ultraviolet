@@ -1,0 +1,38 @@
+﻿{
+  "$schema": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Graphics/Graphics2D/Text/TextTableLayout.json",
+  "width": 300,
+  "rows": [
+    {
+      "cells": [
+        {
+          "format": "|font:header||b||c:FFFF8000|{0}",
+          "text": "Name Goes Here",
+          "textFlags": [ "AlignLeft", "AlignMiddle" ]
+        }
+      ]
+    },
+    {
+      "cells": [
+        {
+          "format": "|font:text||c:FF808080|{0}",
+          "text": "Type",
+          "textFlags": [ "AlignLeft", "AlignTop" ]
+        },
+        {
+          "format": "|font:text||c:FF808080|{0}",
+          "text": "Subtype",
+          "textFlags": [ "AlignRight", "AlignTop" ]
+        }
+      ]
+    },
+    {
+      "cells": [
+        {
+          "format": "|font:text|{0}",
+          "text": "Item Description Goes Here",
+          "textFlags": [ "AlignLeft", "AlignTop" ]
+        }
+      ]
+    }
+  ]
+}

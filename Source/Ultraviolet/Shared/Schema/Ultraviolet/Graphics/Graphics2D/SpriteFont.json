@@ -1,0 +1,63 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Graphics.Graphics2D.SpriteFont Schema",
+  "type": "object",
+  "properties": {
+    "faces": {
+      "properties": {
+        "regular": { "$ref": "#/definitions/spriteFontFace" },
+        "bold": { "$ref": "#/definitions/spriteFontFace" },
+        "italic": { "$ref": "#/definitions/spriteFontFace" },
+        "boldItalic": { "$ref": "#/definitions/spriteFontFace" }
+      }
+    },
+    "characterRegions": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "pattern": "^.$"
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^.$"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "spriteFontFace": {
+      "type": "object",
+      "properties": {
+        "texture": { "type": "string" },
+        "textureRegion": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Rectangle.json" },
+        "glyphs": {
+          "type": "object",
+          "properties": {            
+            "substitution": {
+              "type": "string",
+              "pattern": "^.$"
+            }
+          }
+        },
+        "kernings": {
+          "type": "object",
+          "properties": {
+            "default": {
+              "type": "number",
+              "multipleOf": 1.0
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^..$": {
+              "type": "number",
+              "multipleOf": 1.0
+            }
+          }
+        }
+      },
+      "required": [ "texture", "textureRegion" ]
+    }
+  }
+}

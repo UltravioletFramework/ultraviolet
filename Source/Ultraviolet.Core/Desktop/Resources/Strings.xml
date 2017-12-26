@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="MISSING_DEFAULT_CTOR">
+    <en-US>
+      <Variant>Could not find a parameterless constructor for type '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="CTOR_MATCH_NOT_FOUND">
+    <en-US>
+      <Variant>No matching constructors found.</Variant>
+    </en-US>
+  </String>
+  <String Key="CTOR_MATCH_IS_AMBIGUOUS">
+    <en-US>
+      <Variant>Unable to resolve constructor due to ambiguous match.</Variant>
+    </en-US>
+  </String>
+  <String Key="QUEUE_IS_EMPTY">
+    <en-US>
+      <Variant>Queue is empty.</Variant>
+    </en-US>
+  </String>
+  <String Key="LIST_NODE_DOES_NOT_BELONG_TO_LIST">
+    <en-US>
+      <Variant>The specified node does not belong to this list.</Variant>
+    </en-US>
+  </String>
+  <String Key="MIN_MUST_BE_LESS_THAN_MAX">
+    <en-US>
+      <Variant>{0} must be less than {1}.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_WRITE_METHOD">
+    <en-US>
+      <Variant>Invalid write method.</Variant>
+    </en-US>
+  </String>
+  <String Key="BUFFER_LENGTH_EXCEEDED">
+    <en-US>
+      <Variant>Buffer length exceeded.</Variant>
+    </en-US>
+  </String>
+  <String Key="POOL_IMBALANCE">
+    <en-US>
+      <Variant>Pool imbalance. Objects were returned to the pool which did not belong to the pool, or objects were returned multiple times.</Variant>
+    </en-US>
+  </String>
+  <String Key="POOL_CANNOT_CREATE_DEFAULT_ALLOCATOR">
+    <en-US>
+      <Variant>Pool cannot create a default allocator for '{0}' because it does not have a parameterless constructor.</Variant>
+    </en-US>
+  </String>
+  <String Key="POOL_REGISTRY_ALREADY_CONTAINS_TYPE">
+    <en-US>
+      <Variant>Pool registry already contains a pool for the type '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="COLLECTION_CHANGED">
+    <en-US>
+      <Variant>Collection has changed.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNRECOGNIZED_DATA_TYPE">
+    <en-US>
+      <Variant>Unrecognized data type.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNABLE_TO_DETECT_DATA_TYPE_FROM_EXT">
+    <en-US>
+      <Variant>Unable to detect data type from file extension.</Variant>
+    </en-US>
+  </String>
+  <String Key="INVALID_DATA_OBJECT_REFERENCE">
+    <en-US>
+      <Variant>Invalid data object reference: {0}</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_ALREADY_EXISTS">
+    <en-US>
+      <Variant>A registry for the type '{0}' has already been created.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_DOES_NOT_EXIST">
+    <en-US>
+      <Variant>Could not find a registry for type '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_CAPACITY_EXCEEDED">
+    <en-US>
+      <Variant>Registry capacity exceeded.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_ALREADY_CONTAINS_ID">
+    <en-US>
+      <Variant>Registry already contains an object with global identifier '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_MUST_LOAD_KEYS">
+    <en-US>
+      <Variant>Registry must load keys before loading objects.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_ALREADY_LOADED_KEYS">
+    <en-US>
+      <Variant>Registry keys have already been loaded.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_REGISTRY_ALREADY_LOADED_OBJECTS">
+    <en-US>
+      <Variant>Registry objects have already been loaded.</Variant>
+    </en-US>
+  </String>
+  <String Key="TYPE_ALIAS_ALREADY_REGISTERED">
+    <en-US>
+      <Variant>The alias '{0}' is already registered.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_MISSING_CLASS">
+    <en-US>
+      <Variant>Object does not specify a class.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_INVALID_CLASS_ALIAS">
+    <en-US>
+      <Variant>Invalid class alias.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_MISSING_KEY">
+    <en-US>
+      <Variant>Object does not specify a key.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_MISSING_ID">
+    <en-US>
+      <Variant>Object does not specify an identifier.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_INVALID_TYPE">
+    <en-US>
+      <Variant>Invalid type specified for element '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_INCOMPATIBLE_TYPE">
+    <en-US>
+      <Variant>Incompatible type specified for element '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_INVALID_CLASS">
+    <en-US>
+      <Variant>Invalid class '{0}' for object with ID '{1}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_INVALID_KEY">
+    <en-US>
+      <Variant>Invalid key '{0}' for object with ID '{1}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_INVALID_ID">
+    <en-US>
+      <Variant>Invalid object identifier '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_PROPERTY_IS_READ_ONLY">
+    <en-US>
+      <Variant>Property '{0}' is read-only.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_MISSING_INDEX_PARAM">
+    <en-US>
+      <Variant>Missing index parameter '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_HAS_TOO_MANY_INDEX_PARAMS">
+    <en-US>
+      <Variant>Too many index parameters specified.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_ALREADY_SET_DEFAULT_ALIAS">
+    <en-US>
+      <Variant>Default class alias has already been set.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_DEFAULT_MISSING_CLASS_NAME">
+    <en-US>
+      <Variant>Default element does not specify a class name and no default class was provided.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_DEFAULT_HAS_INVALID_CLASS">
+    <en-US>
+      <Variant>Invalid class '{0}' on Default element.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_DEFAULT_HAS_RESERVED_KEYWORD">
+    <en-US>
+      <Variant>Reserved keyword '{0}' on Default element.</Variant>
+    </en-US>
+  </String>
+  <String Key="NON_ITEM_ELEMENTS_IN_ARRAY_DEF">
+    <en-US>
+      <Variant>Non-item elements in array definition.</Variant>
+    </en-US>
+  </String>
+  <String Key="NON_ITEM_ELEMENTS_IN_LIST_DEF">
+    <en-US>
+      <Variant>Non-item elements in list definition.</Variant>
+    </en-US>
+  </String>
+  <String Key="MEMBER_DOES_NOT_IMPLEMENT_LIST">
+    <en-US>
+      <Variant>Member '{0}' does not implement IList&lt;T&gt;.</Variant>
+    </en-US>
+  </String>
+  <String Key="MEMBER_IMPLEMENTS_MULTIPLE_LIST_IMPLS">
+    <en-US>
+      <Variant>Member '{0}' implements multiple definitions of IList&lt;T&gt;.</Variant>
+    </en-US>
+  </String>
+  <String Key="MESSAGE_POOL_NOT_FOUND">
+    <en-US>
+      <Variant>Unable to find a pool for the specified message type. Was this message created by another message queue?</Variant>
+    </en-US>
+  </String>
+  <String Key="MESSAGE_MERGE_TYPE_CONFLICT">
+    <en-US>
+      <Variant>Merged message data is not of a compatible type.</Variant>
+    </en-US>
+  </String>
+  <String Key="FMT_ARGUMENT_OUT_OF_RANGE">
+    <en-US>
+      <Variant>Index (zero based) must be greater than or equal to zero and less than the size of the argument list.</Variant>
+    </en-US>
+  </String>
+  <String Key="FMT_CMD_UNRECOGNIZED">
+    <en-US>
+      <Variant>The command '{0}' was not recognized and no custom handler is registered which accepts it.</Variant>      
+    </en-US>      
+  </String>
+  <String Key="FMT_CMD_PARSE_FAILURE">
+    <en-US>
+      <Variant>Could not parse arguments for '{0}' formatter command.</Variant>
+    </en-US>
+  </String>
+  <String Key="FMT_CMD_INVALID_FOR_ARGUMENT">
+    <en-US>
+      <Variant>Formatter command '{0}' is invalid for argument type '{1}'</Variant>
+    </en-US>
+  </String>
+  <String Key="FMT_CMD_INVALID_WITHOUT_ARGUMENT">
+    <en-US>
+      <Variant>Formatter command '{0}' is invalid without an argument index.</Variant>
+    </en-US>
+  </String>
+  <String Key="FMT_CMD_INVALID_FOR_GENERATED_STRINGS">
+    <en-US>
+      <Variant>Generated strings are incompatible with the '{0}' formatter command.</Variant>
+    </en-US>
+  </String>
+  <String Key="FMT_CMD_HANDLER_ALREADY_REGISTERED">
+    <en-US>
+        <Variant>The specified command handler has already been registered with this formatter.</Variant>
+    </en-US>      
+  </String>
+  <String Key="SEGMENT_IS_EMPTY">
+    <en-US>
+      <Variant>String segment is empty.</Variant>
+    </en-US>
+  </String>
+  <String Key="SEGMENTS_ARE_NOT_CONTIGUOUS">
+    <en-US>
+      <Variant>String segments are not contiguous.</Variant>
+    </en-US>
+  </String>
+  <String Key="LOCALIZED_STRING_MISSING_KEY">
+    <en-US>
+      <Variant>Localized string is missing a Key value.</Variant>
+    </en-US>
+  </String>
+  <String Key="DATA_OBJECT_FAILED_VALIDATION">
+    <en-US>
+      <Variant>Error in {0} ({1}): {2}</Variant>
+    </en-US>
+  </String>
+  <String Key="TYPE_METADATA_ALREADY_LOADED">
+    <en-US>
+      <Variant>Type metadata has already been loaded for this assembly.</Variant>
+    </en-US>
+  </String>
+  <String Key="SEQUENCE_HAS_NO_ELEMENTS">
+    <en-US>
+      <Variant>Sequence contains no elements.</Variant>
+    </en-US>
+  </String>
+  <String Key="SEQUENCE_HAS_MORE_THAN_ONE_ELEMENT">
+    <en-US>
+      <Variant>Sequence contains more than one element.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_MUST_ACQUIRE_POINTERS">
+    <en-US>
+      <Variant>You must call AcquirePointers() before performing this operation on this stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_HAS_ALREADY_ACQUIRED_POINTERS">
+    <en-US>
+      <Variant>AcquirePointers() cannot be called again until ReleasePointers() is called.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_CAN_ONLY_RESERVE_AT_STREAM_END">
+    <en-US>
+      <Variant>Reserve() and ReserveMultiple() can only be called when the stream's current position is at the end of the stream.</Variant>
+    </en-US>
+  </String>
+  <String Key="UNSAFE_STREAM_WOULD_OVERWRITE_OBJECT">
+    <en-US>
+      <Variant>The operation is invalid because an attempt was made to overwrite an existing object.</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_INCORRECT_ARRAY_LENGTH_FOR_TYPE">
+    <en-US>
+      <Variant>Array does not have the correct number of elements to represent an object of type '{0}'</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_CANNOT_WRITE_NON_GLOBAL_STRING_RESOURCE">
+    <en-US>
+      <Variant>Cannot serialize StringResource because it does not reference the global string database.</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_CANNOT_READ_STRING_VARIANT_COLLECTION">
+    <en-US>
+      <Variant>Cannot read LocalizedStringVariantCollectionDescription. JSON data is not in the correct format.</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_OBJECT_RESOLVER_REQUIRES_STRING">
+    <en-US>
+      <Variant>Cannot read object because the resolver requires a String value, but instead found a {0} value.</Variant>
+    </en-US>
+  </String>
+  <String Key="JSON_VALUE_CANNOT_BE_NULL">
+    <en-US>
+      <Variant>Value cannot be null.</Variant>
+    </en-US>
+  </String>
+  <String Key="CANNOT_MODIFY_READ_ONLY_COLLECTION">
+    <en-US>
+      <Variant>The specified collection cannot be modified because it is read-only.</Variant>
+    </en-US>
+  </String>
+  <String Key="NOT_ENOUGH_DATA">
+    <en-US>
+      <Variant>There is not enough data in the '{0}' buffer to satisfy the request.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

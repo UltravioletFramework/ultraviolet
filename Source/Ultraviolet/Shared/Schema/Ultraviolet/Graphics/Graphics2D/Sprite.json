@@ -1,0 +1,215 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Graphics.Graphics2D.Sprite Schema",
+  "type": "object",
+  "properties": {
+    "frameDefaults": { "$ref": "#/definitions/frameDefaults" },
+    "frameGroupDefaults": { "$ref": "#/definitions/frameGroupDefaults" },
+    "animations": {
+      "oneOf": [
+        { "$ref": "#/definitions/animationBatch" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/definitions/animationBatch" }
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "frameDefaults": {
+      "type": "object",
+      "properties": {
+        "atlas": { "type": "string" },
+        "atlasCell": { "type": "string" },
+        "texture": { "type": "string" },
+        "duration": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "x": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "y": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "width": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "height": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
+      }
+    },
+    "frameGroupDefaults": {
+      "type": "object",
+      "properties": {
+        "texture": { "type": "string" },
+        "duration": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "x": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "y": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "width": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "height": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "frameCount": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "frameWidth": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "frameHeight": {
+          "type": "number",
+          "multipleOf": 1.0
+        },
+        "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
+      }
+    },
+    "animationBatch": {
+      "type": "object",
+      "properties": {
+        "frameDefaults": { "$ref": "#/definitions/frameDefaults" },
+        "frameGroupDefaults": { "$ref": "#/definitions/frameGroupDefaults" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "repeat": {
+                "type": "string",
+                "pattern": "loop|none"
+              },
+              "frames": {
+                "oneOf": [
+                  { "$ref": "#/definitions/spriteFrameBatch" },
+                  {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/spriteFrameBatch" }
+                  }
+                ]
+              },
+              "frameGroups": {
+                "oneOf": [
+                  { "$ref": "#/definitions/spriteFrameGroupBatch" },
+                  {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/spriteFrameGroupBatch" }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "required": [ "items" ]
+    },
+    "spriteFrameBatch": {
+      "type": "object",
+      "properties": {
+        "frameDefaults": { "$ref": "#/definitions/frameDefaults" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "atlas": { "type": "string" },
+              "atlasCell": { "type": "string" },
+              "texture": { "type": "string" },
+              "duration": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "x": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "y": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "width": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "height": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
+            }
+          }
+        }
+      },
+      "required": [ "items" ]
+    },
+    "spriteFrameGroupBatch": {
+      "type": "object",
+      "properties": {
+        "frameGroupDefaults": { "$ref": "#/definitions/frameGroupDefaults" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "texture": { "type": "string" },
+              "duration": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "x": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "y": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "width": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "height": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "frameCount": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "frameWidth": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "frameHeight": {
+                "type": "number",
+                "multipleOf": 1.0
+              },
+              "origin": { "$ref": "http://schema.ultraviolet.tl/2.0/Ultraviolet/Point2.json" }
+            }
+          }
+        }
+      },
+      "required": [ "items" ]
+    }
+  }
+}

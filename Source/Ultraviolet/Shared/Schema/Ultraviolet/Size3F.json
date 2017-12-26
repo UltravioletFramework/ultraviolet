@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Ultraviolet.Size3F Schema",
+  "type": "object",
+  "properties": {
+    "width": {
+      "type": "number"
+    },
+    "height": {
+      "type": "number"
+    },
+    "depth": {
+      "type": "number"
+    }
+  },
+  "required": [ "width", "height", "depth" ]
+}

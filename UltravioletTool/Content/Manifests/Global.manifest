@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentManifest Name="Global">
-  <ContentGroup Name="Fonts" Directory="Fonts" Type="TwistedLogik.Ultraviolet.Graphics.Graphics2D.SpriteFont">
-    <Asset Name="SegoeUI">SegoeUI</Asset>
-  </ContentGroup>
-</ContentManifest>

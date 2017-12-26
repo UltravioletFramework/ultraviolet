@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentManifest Name="Global">
-  <ContentGroup Name="Textures" Directory="Textures" Type="TwistedLogik.Ultraviolet.Graphics.Texture2D">
-    <Asset Name="Triangle">Triangle</Asset>
-  </ContentGroup>
-</ContentManifest>
