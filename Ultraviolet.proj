@@ -204,12 +204,12 @@
     <CreateItem Include="Source/Ultraviolet.Design/bin/$(Configuration)/Ultraviolet.Design.*">		
         <Output TaskParameter="Include" ItemName="Ultraviolet_Design"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.WindowsForms/bin/$(Configuration)/Ultraviolet.WindowsForms.*">	
-        <Output TaskParameter="Include" ItemName="Ultraviolet_WindowsForms"/>
+    <CreateItem Include="Source/Ultraviolet.Windows.Forms/bin/$(Configuration)/Ultraviolet.Windows.Forms.*">	
+        <Output TaskParameter="Include" ItemName="Ultraviolet_Windows_Forms"/>
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Core_Design)" DestinationFiles="@(Ultraviolet_Core_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Design)" DestinationFiles="@(Ultraviolet_Design->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(Ultraviolet_WindowsForms)" DestinationFiles="@(Ultraviolet_WindowsForms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
+    <Copy SourceFiles="@(Ultraviolet_Windows_Forms)" DestinationFiles="@(Ultraviolet_Windows_Forms->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>	
   </Target>
   <Target Name="CopyMacOSBinaries">
     <CreateItem	Include="Source/Ultraviolet.Shims.macOS/bin/$(Configuration)/Ultraviolet.Shims.macOS.*">
