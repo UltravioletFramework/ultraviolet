@@ -92,6 +92,8 @@ namespace Ultraviolet.Core
         public static readonly StringResource JsonValueCannotBeNull                  = new StringResource(StringDatabase, "JSON_VALUE_CANNOT_BE_NULL");
         public static readonly StringResource CannotModifyReadOnlyCollection         = new StringResource(StringDatabase, "CANNOT_MODIFY_READ_ONLY_COLLECTION");
         public static readonly StringResource NotEnoughData                          = new StringResource(StringDatabase, "NOT_ENOUGH_DATA");
+        public static readonly StringResource CouldNotLoadLibraryFromName            = new StringResource(StringDatabase, "COULD_NOT_LOAD_LIBRARY_FROM_NAME");
+        public static readonly StringResource CouldNotLoadLibraryFromNames           = new StringResource(StringDatabase, "COULD_NOT_LOAD_LIBRARY_FROM_NAMES");
 #pragma warning restore 1591
     }
 }

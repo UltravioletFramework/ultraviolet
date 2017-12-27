@@ -93,6 +93,7 @@
     <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
+    <None Include="app.config" />
     <None Include="BindingExpressionCompilerTemplate.t4" />
   </ItemGroup>
   <ItemGroup>

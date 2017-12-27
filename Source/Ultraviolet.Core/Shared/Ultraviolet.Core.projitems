@@ -74,6 +74,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\MessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SubscriberCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\Win32LibraryLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MonoNativeFunctionWrapperAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MonoPInvokeCallbackAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
@@ -81,6 +83,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CoreEnumerableJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CoreStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\DefaultPathResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\LibraryLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\PathResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.NativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\NamespaceDoc.cs" />

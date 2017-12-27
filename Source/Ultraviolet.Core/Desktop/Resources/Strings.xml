@@ -350,4 +350,14 @@
       <Variant>There is not enough data in the '{0}' buffer to satisfy the request.</Variant>
     </en-US>
   </String>
+  <String Key="COULD_NOT_LOAD_LIBRARY_FROM_NAME">
+    <en-US>
+      <Variant>Could not find or load the native library: {0}</Variant>
+    </en-US>
+  </String>
+  <String Key="COULD_NOT_LOAD_LIBRARY_FROM_NAMES">
+    <en-US>
+      <Variant>Could not find or load the native library from any name: [{0}]</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

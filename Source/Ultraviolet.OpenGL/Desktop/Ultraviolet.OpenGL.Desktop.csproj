@@ -216,6 +216,7 @@
     </Content>
     <EmbeddedResource Include="Resources\HeaderES.verth" />
     <EmbeddedResource Include="Resources\HeaderES.fragh" />
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Resources\BlurEffectRadius1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
