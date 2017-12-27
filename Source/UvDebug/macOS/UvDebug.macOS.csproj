@@ -13,7 +13,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>UvDebug</RootNamespace>
     <AssemblyName>UvDebug</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <UseXamMacFullFramework>true</UseXamMacFullFramework>
   </PropertyGroup>
