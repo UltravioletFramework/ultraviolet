@@ -6,25 +6,26 @@ namespace Ultraviolet.OpenGL.Bindings
     public static unsafe partial class gl
     {
         [MonoNativeFunctionWrapper]
-        private delegate void glGetInteger64i_vDelegate(uint pname, uint index, long* data);
+        private delegate void glGetInteger64i_vDelegate(uint pname, uint index, IntPtr data);
         [Require(MinVersion = "3.2")]
         private static readonly glGetInteger64i_vDelegate glGetInteger64i_v = null;
 
-        public static void GetInteger64i_v(uint pname, uint index, long* data) { glGetInteger64i_v(pname, index, data); }
+        public static void GetInteger64i_v(uint pname, uint index, long* data) { glGetInteger64i_v(pname, index, (IntPtr)data); }
 
         public static long GetInteger64i(uint pname, uint index)
         {
-            long value;
-            glGetInteger64i_v(pname, index, &value);
+            var value = 0u;
+            var pValue = &value;
+            glGetInteger64i_v(pname, index, (IntPtr)pValue);
             return value;
         }
 
         [MonoNativeFunctionWrapper]
-        private delegate void glGetBufferParameteri64vDelegate(uint target, uint value, long* data);
+        private delegate void glGetBufferParameteri64vDelegate(uint target, uint value, IntPtr data);
         [Require(MinVersion = "3.2")]
         private static readonly glGetBufferParameteri64vDelegate glGetBufferParameteri64v = null;
 
-        public static void GetBufferParameteri64v(uint target, uint value, long* data) { glGetBufferParameteri64v(target, value, data); }
+        public static void GetBufferParameteri64v(uint target, uint value, long* data) { glGetBufferParameteri64v(target, value, (IntPtr)data); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glFramebufferTextureDelegate(uint target, uint attachment, uint texture, int level);

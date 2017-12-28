@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Configurations>Debug;Release;Signed</Configurations>
+    <AssemblyName>UvDebug</AssemblyName>
+    <RootNamespace>UvDebug</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -67,9 +69,9 @@
     <None Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml" Link="Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+    <Content Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -103,9 +105,7 @@
     <None Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml" Link="UI\Controls\Templates\TriangleColorSelector.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml" Link="UI\Controls\Templates\TriangleColorSelector.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -187,6 +187,13 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Ultraviolet.Presentation.CompiledExpressions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
 
+  
 </Project>

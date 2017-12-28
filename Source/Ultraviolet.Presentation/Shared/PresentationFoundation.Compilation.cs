@@ -157,6 +157,10 @@ namespace Ultraviolet.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
 
+            if (Ultraviolet.Runtime == UltravioletRuntime.CoreCLR)
+            {
+                return;
+            }
             if (Ultraviolet.Platform == UltravioletPlatform.Android ||
                 Ultraviolet.Platform == UltravioletPlatform.iOS)
             {
@@ -271,6 +275,9 @@ namespace Ultraviolet.Presentation
         /// </summary>
         private void LoadBindingExpressionCompiler()
         {
+            if (Ultraviolet.Runtime == UltravioletRuntime.CoreCLR)
+                throw new NotSupportedException();
+
             if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                 throw new NotSupportedException();
 

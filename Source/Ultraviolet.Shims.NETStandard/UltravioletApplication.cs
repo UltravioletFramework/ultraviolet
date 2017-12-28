@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -18,6 +19,14 @@ namespace Ultraviolet
         IUltravioletHost,
         IDisposable
     {
+        /// <summary>
+        /// Initializes the <see cref="UltravioletApplication"/> type.
+        /// </summary>
+        static UltravioletApplication()
+        {
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletApplication"/> class.
         /// </summary>
