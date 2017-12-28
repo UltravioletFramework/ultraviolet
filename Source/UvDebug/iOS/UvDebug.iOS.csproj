@@ -173,6 +173,15 @@
     </BundleResource>
     <Content Include="Entitlements.plist" />
     <Compile Include="Game.cs" />
+    <BundleResource Include="..\Desktop\Content\Textures\test_2.png">
+      <Link>Content\Textures\test_2.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\test_1.png">
+      <Link>Content\Textures\test_1.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\test_0.png">
+      <Link>Content\Textures\test_0.png</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
