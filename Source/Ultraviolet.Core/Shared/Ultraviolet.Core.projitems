@@ -140,6 +140,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentConversion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Tokenizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletRuntime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WeakNullReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WeakReferenceOfT.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xml\NamespaceDoc.cs" />

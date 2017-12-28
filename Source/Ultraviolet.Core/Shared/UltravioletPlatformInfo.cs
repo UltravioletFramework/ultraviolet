@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace Ultraviolet.Core
@@ -15,61 +13,10 @@ namespace Ultraviolet.Core
         /// </summary>
         static UltravioletPlatformInfo()
         {
-            CurrentPlatformMachineHardwareName = Environment.OSVersion.Platform.ToString();
+            CurrentPlatform = DetectCurrentPlatform(out var machineHardwareName);
+            CurrentPlatformMachineHardwareName = machineHardwareName;
             CurrentPlatformVersion = Environment.OSVersion.VersionString;
-
-            switch (Environment.OSVersion.Platform)
-            {
-                case PlatformID.Win32NT:
-                    CurrentPlatform = UltravioletPlatform.Windows;
-                    break;
-
-                case PlatformID.Unix:
-                    {
-                        var buf = IntPtr.Zero;
-                        try
-                        {
-                            buf = Marshal.AllocHGlobal(8192);
-                            if (UltravioletNative.uname(buf) == 0)
-                            {
-                                var os = Marshal.PtrToStringAnsi(buf);
-                                if (String.Equals("Darwin", os, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    if (Type.GetType("UIKit.UIApplicationDelegate, Xamarin.iOS") != null)
-                                    {
-                                        CurrentPlatform = UltravioletPlatform.iOS;
-                                    }
-                                    else
-                                    {
-                                        CurrentPlatform = UltravioletPlatform.macOS;
-                                    }
-                                }
-                                else
-                                {
-                                    if (Type.GetType("Android.App.Activity, Mono.Android") != null)
-                                    {
-                                        CurrentPlatform = UltravioletPlatform.Android;
-                                    }
-                                    else
-                                    {
-                                        CurrentPlatform = UltravioletPlatform.Linux;
-                                    }
-                                }
-
-                                CurrentPlatformMachineHardwareName = os;
-                            }
-                        }
-                        finally
-                        {
-                            if (buf != IntPtr.Zero)
-                                Marshal.FreeHGlobal(buf);
-                        }
-                    }
-                    break;
-
-                default:
-                    throw new NotSupportedException();
-            }
+            CurrentRuntime = DetectCurrentRuntime();
         }
         
         /// <summary>
@@ -95,6 +42,12 @@ namespace Ultraviolet.Core
         }
 
         /// <summary>
+        /// Gets an <see cref="UltravioletRuntime"/> value indicating which of Ultraviolet's supported
+        /// runtimes is currently executing this application.
+        /// </summary>
+        public static UltravioletRuntime CurrentRuntime { get; }
+
+        /// <summary>
         /// Gets an <see cref="UltravioletPlatform"/> value indicating which of Ultraviolet's supported
         /// platforms is currently executing this application.
         /// </summary>
@@ -109,5 +62,76 @@ namespace Ultraviolet.Core
         /// Gets the string which contains the version information for the current platform.
         /// </summary>
         public static String CurrentPlatformVersion { get; }
+
+        /// <summary>
+        /// Attempts to detect the current runtime.
+        /// </summary>
+        private static UltravioletRuntime DetectCurrentRuntime()
+        {
+            if (String.Equals("System.Private.CoreLib", typeof(Object).Assembly.GetName().Name, StringComparison.Ordinal))
+                return UltravioletRuntime.CoreCLR;
+
+            if (Type.GetType("Mono.Runtime") != null)
+                return UltravioletRuntime.Mono;
+
+            return UltravioletRuntime.CLR;
+        }
+
+        /// <summary>
+        /// Attempts to detect the current platform.
+        /// </summary>
+        private static UltravioletPlatform DetectCurrentPlatform(out String machineHardwareName)
+        {
+            machineHardwareName = Environment.OSVersion.Platform.ToString();
+
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    return UltravioletPlatform.Windows;
+
+                case PlatformID.Unix:
+                    {
+                        var buf = IntPtr.Zero;
+                        try
+                        {
+                            buf = Marshal.AllocHGlobal(8192);
+                            if (UltravioletNative.uname(buf) == 0)
+                            {
+                                machineHardwareName = Marshal.PtrToStringAnsi(buf);
+                                if (String.Equals("Darwin", machineHardwareName, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    if (Type.GetType("UIKit.UIApplicationDelegate, Xamarin.iOS") != null)
+                                    {
+                                        return UltravioletPlatform.iOS;
+                                    }
+                                    else
+                                    {
+                                        return UltravioletPlatform.macOS;
+                                    }
+                                }
+                                else
+                                {
+                                    if (Type.GetType("Android.App.Activity, Mono.Android") != null)
+                                    {
+                                        return UltravioletPlatform.Android;
+                                    }
+                                    else
+                                    {
+                                        return UltravioletPlatform.Linux;
+                                    }
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            if (buf != IntPtr.Zero)
+                                Marshal.FreeHGlobal(buf);
+                        }
+                    }
+                    break;                    
+            }
+
+            throw new PlatformNotSupportedException();
+        }
     }
 }
