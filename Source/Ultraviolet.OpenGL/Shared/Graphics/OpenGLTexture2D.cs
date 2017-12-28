@@ -430,7 +430,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
                 {
-                    using (OpenGLState.ScopedBindTexture3D(OpenGLName))
+                    using (OpenGLState.ScopedBindTexture2D(OpenGLName))
                     {
                         var pData = dataHandle.AddrOfPinnedObject() + (startIndex * elementSizeInBytes);
                         gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
