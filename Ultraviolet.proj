@@ -131,7 +131,7 @@
     <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
-  <Target Name="CleanNETStandard">
+  <Target Name="CleanNETCore">
     <RemoveDir Directories="Binaries/netstandard2.0"/>
     <MSBuild Projects="@(Ultraviolet_NETCore_Solution)" Targets="Clean"/>
   </Target>
