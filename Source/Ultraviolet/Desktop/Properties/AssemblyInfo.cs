@@ -31,6 +31,7 @@ using Ultraviolet.Core;
 #else
 [assembly: InternalsVisibleTo("Ultraviolet.Design")]
 [assembly: InternalsVisibleTo("Ultraviolet.Shims.Desktop")]
+[assembly: InternalsVisibleTo("Ultraviolet.Shims.NETStandard")]
 #endif
 
 #if SIGNED

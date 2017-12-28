@@ -722,6 +722,19 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets the runtime on which this context is running.
+        /// </summary>
+        public UltravioletRuntime Runtime
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return UltravioletPlatformInfo.CurrentRuntime;
+            }
+        }
+
+        /// <summary>
         /// Gets the platform on which this context is running.
         /// </summary>
         public UltravioletPlatform Platform
@@ -1211,27 +1224,34 @@ namespace Ultraviolet
             {
                 var shim = default(Assembly);
 
-                switch (Platform)
+                if (Runtime == UltravioletRuntime.CoreCLR)
                 {
-                    case UltravioletPlatform.Windows:
-                    case UltravioletPlatform.Linux:
-                        shim = Assembly.Load("Ultraviolet.Shims.Desktop");
-                        break;
+                    shim = Assembly.Load("Ultraviolet.Shims.NETStandard");
+                }
+                else
+                {
+                    switch (Platform)
+                    {
+                        case UltravioletPlatform.Windows:
+                        case UltravioletPlatform.Linux:
+                            shim = Assembly.Load("Ultraviolet.Shims.Desktop");
+                            break;
 
-                    case UltravioletPlatform.macOS:
-                        shim = Assembly.Load("Ultraviolet.Shims.macOS");
-                        break;
+                        case UltravioletPlatform.macOS:
+                            shim = Assembly.Load("Ultraviolet.Shims.macOS");
+                            break;
 
-                    case UltravioletPlatform.Android:
-                        shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
-                        break;
+                        case UltravioletPlatform.Android:
+                            shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
+                            break;
 
-                    case UltravioletPlatform.iOS:
-                        shim = Assembly.Load("Ultraviolet.Shims.iOS.dll");
-                        break;
+                        case UltravioletPlatform.iOS:
+                            shim = Assembly.Load("Ultraviolet.Shims.iOS.dll");
+                            break;
 
-                    default:
-                        throw new NotSupportedException();
+                        default:
+                            throw new NotSupportedException();
+                    }
                 }
 
                 if (shim != null)
