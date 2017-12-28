@@ -143,20 +143,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
-      <Link>x64\osx\libbass_fx.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
-      <Link>x64\osx\libbass.dylib</Link>
-    </BundleResource>
     <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
       <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Textures\Logo-mdpi.png">
       <Link>Content\Textures\Logo-mdpi.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>    
@@ -263,6 +260,11 @@
       <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
+    </Content>
+  </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" Condition="Exists('..\Shared\UvDebug.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />  
   <PropertyGroup>
@@ -273,6 +275,5 @@
   </PropertyGroup>
   <Target Name="UvCompileContent" Condition="'$(BAMBOO_buildType)'==''">
     <Message Text="Compiling content archive and binding expressions assembly..." />
-    <Exec Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'true' " WorkingDirectory="$(OutputPath)" Command="open &quot;./$(AssemblyName).app&quot; --args -resolve:content -compile:content -compile:expressions" />
   </Target>  
 </Project>

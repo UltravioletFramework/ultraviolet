@@ -21,15 +21,22 @@ namespace Ultraviolet.Core.Native
         /// <inheritdoc/>
         public override IEnumerable<String> EnumeratePossibleLibraryLoadTargets(String name)
         {
-            yield return Path.Combine(AppContext.BaseDirectory, name);
-            if (TryLocateNativeAssetInPlatformFolder(name, out var platformResolvedPath))
+            if (name == "__Internal")
             {
-                yield return platformResolvedPath;
+                yield return "__Internal";
             }
-            yield return name;
-            if (TryLocateNativeAssetFromDeps(name, out var depsResolvedPath))
+            else
             {
-                yield return depsResolvedPath;
+                yield return Path.Combine(AppContext.BaseDirectory, name);
+                if (TryLocateNativeAssetInPlatformFolder(name, out var platformResolvedPath))
+                {
+                    yield return platformResolvedPath;
+                }
+                yield return name;
+                if (TryLocateNativeAssetFromDeps(name, out var depsResolvedPath))
+                {
+                    yield return depsResolvedPath;
+                }
             }
         }
 
