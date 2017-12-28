@@ -155,6 +155,15 @@
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
       <Link>x64\osx\libbass_fx.dylib</Link>
     </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\test_2.png">
+      <Link>Content\Textures\test_2.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\test_1.png">
+      <Link>Content\Textures\test_1.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Textures\test_0.png">
+      <Link>Content\Textures\test_0.png</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>    
     <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
