@@ -172,7 +172,7 @@
     <Content Include="..\..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Version1.cs</LastGenOutput>
+      <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Resources\Strings.xml" />
   </ItemGroup>

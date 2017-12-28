@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Signed</Configurations>
+    <AssemblyName>Ultraviolet.Core</AssemblyName>
+    <RootNamespace>Ultraviolet.Core</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Import Project="..\Shared\Ultraviolet.Core.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>  
+    </Compile>
+    <Compile Include="..\Desktop\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml" Link="Resources\Strings.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  
+</Project>
