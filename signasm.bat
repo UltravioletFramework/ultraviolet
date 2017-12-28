@@ -13,6 +13,7 @@ ECHO Strong naming assemblies...
 
 IF "%1"=="sign_android" GOTO sign_android
 IF "%1"=="sign_ios" GOTO sign_ios
+IF "%1"=="sign_netcore" GOTO sign_netcore
 IF "%1"=="test_nucleus" GOTO test_nucleus
 IF "%1"=="test_ultraviolet" GOTO test_ultraviolet
 IF "%1"=="test_uvss" GOTO test_uvss
@@ -60,6 +61,19 @@ sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.UIKit.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Shims.iOS.dll" "%TLSN%"
+GOTO :eof
+
+:sign_netcore
+sn.exe -R "Ultraviolet.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.OpenGL.Bindings.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.Presentation.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Presentation.Uvss.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Shims.NETCore.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Tooling.dll" "%TLSN%"
 GOTO :eof
 
 :test_nucleus
