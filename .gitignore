@@ -172,7 +172,6 @@ gen/
 /Packages/*.nupkg
 /Samples/packages
 /Samples/Dependencies/*
-!/Samples/Dependencies/*.dll.config
 !/Samples/Dependencies/x86
 !/Samples/Dependencies/x64
 !/Samples/Dependencies/Android/armeabi
