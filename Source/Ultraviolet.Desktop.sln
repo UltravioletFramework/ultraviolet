@@ -91,7 +91,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore", "UvDebug\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{6AD030D7-A7E6-41E4-AE16-39F4455B9F41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.NETCore", "Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj", "{5FAEFB02-3B9E-4649-8865-9296B02F731A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETCore", "Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj", "{5FAEFB02-3B9E-4649-8865-9296B02F731A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltravioletGame.NETCore", "UltravioletGame\NETCore\UltravioletGame.NETCore.csproj", "{7975D912-A507-432B-B029-D18AFBDEC851}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -726,6 +728,24 @@ Global
 		{5FAEFB02-3B9E-4649-8865-9296B02F731A}.Signed|x64.Build.0 = Debug|Any CPU
 		{5FAEFB02-3B9E-4649-8865-9296B02F731A}.Signed|x86.ActiveCfg = Debug|Any CPU
 		{5FAEFB02-3B9E-4649-8865-9296B02F731A}.Signed|x86.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Debug|x64.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Debug|x86.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x64.ActiveCfg = Release|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x64.Build.0 = Release|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x86.ActiveCfg = Release|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x86.Build.0 = Release|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x64.ActiveCfg = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x64.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x86.ActiveCfg = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
