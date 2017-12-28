@@ -59,6 +59,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStress.macOS", "UvStress\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.Desktop", "Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj", "{073CAFC1-86CB-414D-A71E-46440E25A3F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.NETStandard", "Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj", "{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.NETStandard", "Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj", "{EB47A770-9C0A-4A13-B90C-120CEA05DA98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.NETStandard", "Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj", "{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{7EE9E678-5086-4E04-9870-68B9627A061D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.NETStandard", "Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj", "{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.NETStandard", "Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj", "{87039806-462C-4909-A8B9-C824D3C50BF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{F24A7B2C-1526-485B-8B14-00140F034C47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.NETStandard", "Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj", "{577D0679-8AFA-4C97-AE8B-6F71612A7665}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,15 +190,61 @@ Global
 		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{073CAFC1-86CB-414D-A71E-46440E25A3F4}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{9B7DAB1D-623D-42DD-ABFB-8CFF02420A8C}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{EB47A770-9C0A-4A13-B90C-120CEA05DA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB47A770-9C0A-4A13-B90C-120CEA05DA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB47A770-9C0A-4A13-B90C-120CEA05DA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB47A770-9C0A-4A13-B90C-120CEA05DA98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB47A770-9C0A-4A13-B90C-120CEA05DA98}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{EB47A770-9C0A-4A13-B90C-120CEA05DA98}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{24E364F4-78C5-42C2-AA47-C0E9D83DE84E}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{7EE9E678-5086-4E04-9870-68B9627A061D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE9E678-5086-4E04-9870-68B9627A061D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE9E678-5086-4E04-9870-68B9627A061D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE9E678-5086-4E04-9870-68B9627A061D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE9E678-5086-4E04-9870-68B9627A061D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{7EE9E678-5086-4E04-9870-68B9627A061D}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{3D3359E2-EA29-4D43-9FB3-137BA4AEDCD2}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{87039806-462C-4909-A8B9-C824D3C50BF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87039806-462C-4909-A8B9-C824D3C50BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87039806-462C-4909-A8B9-C824D3C50BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87039806-462C-4909-A8B9-C824D3C50BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87039806-462C-4909-A8B9-C824D3C50BF7}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{87039806-462C-4909-A8B9-C824D3C50BF7}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{F24A7B2C-1526-485B-8B14-00140F034C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F24A7B2C-1526-485B-8B14-00140F034C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F24A7B2C-1526-485B-8B14-00140F034C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F24A7B2C-1526-485B-8B14-00140F034C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F24A7B2C-1526-485B-8B14-00140F034C47}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{F24A7B2C-1526-485B-8B14-00140F034C47}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{577D0679-8AFA-4C97-AE8B-6F71612A7665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{577D0679-8AFA-4C97-AE8B-6F71612A7665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{577D0679-8AFA-4C97-AE8B-6F71612A7665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{577D0679-8AFA-4C97-AE8B-6F71612A7665}.Release|Any CPU.Build.0 = Release|Any CPU
+		{577D0679-8AFA-4C97-AE8B-6F71612A7665}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{577D0679-8AFA-4C97-AE8B-6F71612A7665}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.TextStylePolicy = $1
-		$1.FileWidth = 120
 		$1.EolMarker = Windows
-		$1.inheritsSet = VisualStudio
-		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
+		$1.TabsToSpaces = True
 		$0.CSharpFormattingPolicy = $2
 		$2.AnonymousMethodBraceStyle = NextLine
 		$2.PropertyBraceStyle = NextLine
@@ -200,26 +262,7 @@ Global
 		$2.AfterDelegateDeclarationParameterComma = True
 		$2.NewParentheses = False
 		$2.SpacesBeforeBrackets = False
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
-		$2.IndentSwitchSection = True
-		$2.NewLinesForBracesInProperties = True
-		$2.NewLinesForBracesInAccessors = True
-		$2.NewLinesForBracesInAnonymousMethods = True
-		$2.NewLinesForBracesInControlBlocks = True
-		$2.NewLinesForBracesInAnonymousTypes = True
-		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
-		$2.NewLinesForBracesInLambdaExpressionBody = True
-		$2.NewLineForElse = True
-		$2.NewLineForCatch = True
-		$2.NewLineForFinally = True
-		$2.NewLineForMembersInObjectInit = True
-		$2.NewLineForMembersInAnonymousTypes = True
-		$2.NewLineForClausesInQuery = True
-		$2.SpacingAfterMethodDeclarationName = False
-		$2.SpaceAfterMethodCallName = False
-		$2.SpaceBeforeOpenSquareBracket = False
 		StartupItem = Ultraviolet\macOS\Ultraviolet.macOS.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
