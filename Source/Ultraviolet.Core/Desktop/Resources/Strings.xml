@@ -360,4 +360,9 @@
       <Variant>Could not find or load the native library from any name: [{0}]</Variant>
     </en-US>
   </String>
+  <String Key="COULD_NOT_LOAD_FUNCTION_FROM_NAME">
+    <en-US>
+      <Variant>Could not find or load the native function: {0}</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

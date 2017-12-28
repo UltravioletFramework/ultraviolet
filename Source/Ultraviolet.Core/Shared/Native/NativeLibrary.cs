@@ -96,7 +96,7 @@ namespace Ultraviolet.Core.Native
         {
             var ptr = loader.LoadFunctionPointer(Handle, name);
             if (ptr == IntPtr.Zero)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(CoreStrings.CouldNotLoadFunctionFromName.Format(name));
 
             return Marshal.GetDelegateForFunctionPointer<T>(ptr);
         }

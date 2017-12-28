@@ -94,6 +94,7 @@ namespace Ultraviolet.Core
         public static readonly StringResource NotEnoughData                          = new StringResource(StringDatabase, "NOT_ENOUGH_DATA");
         public static readonly StringResource CouldNotLoadLibraryFromName            = new StringResource(StringDatabase, "COULD_NOT_LOAD_LIBRARY_FROM_NAME");
         public static readonly StringResource CouldNotLoadLibraryFromNames           = new StringResource(StringDatabase, "COULD_NOT_LOAD_LIBRARY_FROM_NAMES");
+        public static readonly StringResource CouldNotLoadFunctionFromName           = new StringResource(StringDatabase, "COULD_NOT_LOAD_FUNCTION_FROM_NAME");
 #pragma warning restore 1591
     }
 }
