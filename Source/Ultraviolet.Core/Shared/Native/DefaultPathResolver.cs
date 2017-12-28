@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Ultraviolet.Core.Native
 {
@@ -37,21 +38,31 @@ namespace Ultraviolet.Core.Native
         /// </summary>
         private Boolean TryLocateNativeAssetInPlatformFolder(String name, out String platformResolvedPath)
         {
-            platformResolvedPath = Path.Combine(AppContext.BaseDirectory, Environment.Is64BitProcess ? "x64" : "x86");
+            var dir = Path.Combine(AppContext.BaseDirectory, Environment.Is64BitProcess ? "x64" : "x86");
 
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
                 case UltravioletPlatform.Windows:
-                    platformResolvedPath = Path.Combine(platformResolvedPath, "win32nt");
-                    return true;
+                    dir = Path.Combine(dir, "win32nt");
+                    break;
 
                 case UltravioletPlatform.Android:
                 case UltravioletPlatform.Linux:
                 case UltravioletPlatform.macOS:
-                    platformResolvedPath = Path.Combine(platformResolvedPath, "unix");
-                    return true;
+                    dir = Path.Combine(dir, "unix");
+                    break;
             }
-            
+
+            foreach (var file in Directory.GetFiles(dir))
+            {
+                if (Path.GetFileName(file) == name || Path.GetFileNameWithoutExtension(file) == name)
+                {
+                    platformResolvedPath = Path.Combine(dir, Path.GetFileName(file));
+                    return true;
+                }
+            }
+
+            platformResolvedPath = null;
             return false;
         }
 
