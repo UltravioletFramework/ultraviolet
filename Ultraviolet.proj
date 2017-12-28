@@ -130,8 +130,11 @@
     <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Newtonsoft.Json.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/System.Numerics.Vectors.*">
-        <Output TaskParameter="Include" ItemName="System_Numerics_Vectors_Desktop"/>    
+    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
+        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_Desktop"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
+        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_Desktop"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Desktop"/>
@@ -179,7 +182,8 @@
         <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <Copy SourceFiles="@(System_Numerics_Vectors_Desktop)" DestinationFiles="@(System_Numerics_Vectors_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_Desktop)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_Desktop)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Desktop)" DestinationFiles="@(Ultraviolet_Core_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Desktop)" DestinationFiles="@(Ultraviolet_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -247,6 +251,12 @@
     <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Newtonsoft.Json.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Android"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
+        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_Android"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
+        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_Android"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/Android/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_Android"/>
     </CreateItem>
@@ -278,6 +288,8 @@
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_Android)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_Android)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_Android)" DestinationFiles="@(Ultraviolet_Core_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Android)" DestinationFiles="@(Ultraviolet_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -325,6 +337,12 @@
     <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Newtonsoft.Json.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_iOS"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
+        <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_iOS"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
+        <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_iOS"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Core/iOS/bin/$(Configuration)/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_iOS"/>
     </CreateItem>
@@ -362,6 +380,8 @@
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_iOS)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_iOS)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Core_iOS)" DestinationFiles="@(Ultraviolet_Core_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Bindings_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_iOS)" DestinationFiles="@(Ultraviolet_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
