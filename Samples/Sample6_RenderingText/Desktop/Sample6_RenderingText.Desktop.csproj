@@ -117,14 +117,6 @@
       <Link>x64\win32nt\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\Dependencies\Ultraviolet.BASS.dll.config">
-      <Link>Ultraviolet.BASS.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Dependencies\Ultraviolet.SDL2.dll.config">
-      <Link>Ultraviolet.SDL2.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

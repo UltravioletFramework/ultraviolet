@@ -113,14 +113,6 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="..\..\Dependencies\Ultraviolet.BASS.dll.config">
-      <Link>Ultraviolet.BASS.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Dependencies\Ultraviolet.SDL2.dll.config">
-      <Link>Ultraviolet.SDL2.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\Dependencies\x64\osx\libSDL2.dylib">
       <Link>x64\osx\libSDL2.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
