@@ -61,7 +61,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\BinaryReaderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\BinaryWriterExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\NamespaceDoc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LibraryLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt32.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt64.cs" />
