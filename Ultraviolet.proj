@@ -76,24 +76,27 @@
   </Target>
   <Target Name="RestoreWindows">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
   </Target>
   <Target Name="RestoreLinux">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Desktop_Solution)&quot;"/>
   </Target>
   <Target Name="RestoreMacOS">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_MacOS_Solution)&quot;"/>
   </Target>
   <Target Name="RestoreNETCore">
-    <Exec Command="dotnet restore &quot;@(Ultraviolet_NETCore_Solution)&quot;"/>
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_NETCore_Solution)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_NETCore_Solution)&quot;"/>
   </Target>
   
   <Target Name="CleanWindows" Condition="'$(OS)' == 'Windows_NT'">
@@ -101,7 +104,6 @@
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
-    <CallTarget Targets="RestoreNETCore"/>
     <CallTarget Targets="RestoreWindows"/>
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)"/>
     <CallTarget Targets="CopyWindowsBinaries"/>
@@ -112,7 +114,6 @@
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
-    <CallTarget Targets="RestoreNETCore"/>
     <CallTarget Targets="RestoreLinux"/>
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
