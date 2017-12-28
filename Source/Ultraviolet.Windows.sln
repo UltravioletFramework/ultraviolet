@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.Desktop",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvArchive.csproj", "{40ED4BE1-0B7C-40D5-B702-C08500CDB2A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Desktop", "Ultraviolet.Presentation\Desktop\Ultraviolet.Presentation.Desktop.csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
 EndProject
@@ -97,9 +97,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.NE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{BC8E21E9-2CA1-47BC-BCEC-4AD3C9E73790}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETStandard", "Ultraviolet.Shims.NETStandard\Ultraviolet.Shims.NETStandard.csproj", "{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETCore", "Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj", "{5C813F4D-13C7-437D-9497-1CDF59EA22B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebug.NETCore", "UvDebug.NETCore\UvDebug.NETCore.csproj", "{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore", "UvDebug\NETCore\UvDebug.NETCore.csproj", "{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -343,18 +343,18 @@ Global
 		{BC8E21E9-2CA1-47BC-BCEC-4AD3C9E73790}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BC8E21E9-2CA1-47BC-BCEC-4AD3C9E73790}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{BC8E21E9-2CA1-47BC-BCEC-4AD3C9E73790}.Signed|Any CPU.Build.0 = Signed|Any CPU
-		{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
-		{1F5D7B9A-8287-4428-9EFD-7AF4C67B1431}.Signed|Any CPU.Build.0 = Signed|Any CPU
-		{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
-		{5DA257BF-3B0F-4198-B643-5D1C19AC94A4}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{5C813F4D-13C7-437D-9497-1CDF59EA22B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C813F4D-13C7-437D-9497-1CDF59EA22B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C813F4D-13C7-437D-9497-1CDF59EA22B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C813F4D-13C7-437D-9497-1CDF59EA22B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C813F4D-13C7-437D-9497-1CDF59EA22B5}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{5C813F4D-13C7-437D-9497-1CDF59EA22B5}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
