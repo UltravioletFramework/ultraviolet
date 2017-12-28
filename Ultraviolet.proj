@@ -316,9 +316,9 @@
   <!-- ANDROID -->
   <Target Name="RestoreAndroid">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Android_Solution)&quot;"/>
   </Target>
 
   <Target Name="CleanAndroid" Condition="'$(OS)' == 'Windows_NT' Or $(IsMac)">
@@ -397,9 +397,9 @@
   <!-- IOS -->	
   <Target Name="RestoreiOS">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Dependencies/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
     <Exec Condition="'$(OS)'=='Unix'" 
-      Command="mono Dependencies/nuget.exe restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_iOS_Solution)&quot;"/>
   </Target>
   
   <Target Name="CleaniOS" Condition="$(IsMac)">
