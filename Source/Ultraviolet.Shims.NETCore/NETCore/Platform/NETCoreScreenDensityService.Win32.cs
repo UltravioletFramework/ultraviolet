@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Ultraviolet.Shims.NETStandard.Platform
+namespace Ultraviolet.Shims.NETCore.Platform
 {
-    partial class NETStandardScreenDensityService
+    partial class NETCoreScreenDensityService
     {
         /// <summary>
         /// Contains native Win32 methods used to calculate screen density on Windows.

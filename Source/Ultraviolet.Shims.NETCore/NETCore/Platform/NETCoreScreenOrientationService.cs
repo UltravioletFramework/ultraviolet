@@ -1,17 +1,17 @@
 ﻿using Ultraviolet.Platform;
 
-namespace Ultraviolet.Shims.NETStandard.Platform
+namespace Ultraviolet.Shims.NETCore.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenRotationService"/> class for the .NET Standard 2.0 platform.
     /// </summary>
-    public sealed class NETStandardScreenOrientationService : ScreenRotationService
+    public sealed class NETCoreScreenOrientationService : ScreenRotationService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NETStandardScreenOrientationService"/> class.
+        /// Initializes a new instance of the <see cref="NETCoreScreenOrientationService"/> class.
         /// </summary>
         /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve rotation information.</param>
-        public NETStandardScreenOrientationService(IUltravioletDisplay display)
+        public NETCoreScreenOrientationService(IUltravioletDisplay display)
             : base(display)
         {
 

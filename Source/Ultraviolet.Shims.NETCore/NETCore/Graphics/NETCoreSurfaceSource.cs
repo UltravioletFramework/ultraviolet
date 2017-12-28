@@ -5,18 +5,18 @@ using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
-namespace Ultraviolet.Shims.NETStandard.Graphics
+namespace Ultraviolet.Shims.NETCore.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for the .NET Standard 2.0 platform.
     /// </summary>
-    public sealed class NETStandardSurfaceSource : SurfaceSource
+    public sealed class NETCoreSurfaceSource : SurfaceSource
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NETStandardSurfaceSource"/> class.
+        /// Initializes a new instance of the <see cref="NETCoreSurfaceSource"/> class.
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> that contains the surface data.</param>
-        public NETStandardSurfaceSource(Stream stream)
+        public NETCoreSurfaceSource(Stream stream)
         {
             Contract.Require(stream, nameof(stream));
 
@@ -31,10 +31,10 @@ namespace Ultraviolet.Shims.NETStandard.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NETStandardSurfaceSource"/> class.
+        /// Initializes a new instance of the <see cref="NETCoreSurfaceSource"/> class.
         /// </summary>
         /// <param name="bmp">The bitmap from which to read surface data.</param>
-        public NETStandardSurfaceSource(Bitmap bmp)
+        public NETCoreSurfaceSource(Bitmap bmp)
         {
             Contract.Require(bmp, nameof(bmp));
 

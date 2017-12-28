@@ -2,39 +2,25 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <Configurations>Debug;Release;Signed</Configurations>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="UltravioletApplication.Standard.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\Version.tt" Link="Properties\Version.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Include="UltravioletApplication.Standard.cs" />
     <Compile Include="..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
-    <ProjectReference Include="..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
-  </ItemGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
     <AssemblyOriginatorKeyFile>..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -47,6 +33,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  
-  
+
+  <ItemGroup>
+    <Compile Remove="UltravioletApplication.Standard.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
+    <ProjectReference Include="..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="UltravioletApplication.Standard.cs" />
+  </ItemGroup>
+
 </Project>

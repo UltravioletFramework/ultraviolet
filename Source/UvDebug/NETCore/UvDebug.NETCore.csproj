@@ -116,7 +116,7 @@
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Shims.NETStandard\Ultraviolet.Shims.NETStandard.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
   </ItemGroup>
 

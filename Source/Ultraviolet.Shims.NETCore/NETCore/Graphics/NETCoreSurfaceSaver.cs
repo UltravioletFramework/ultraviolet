@@ -6,12 +6,12 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using GDIRect = System.Drawing.Rectangle;
 
-namespace Ultraviolet.Shims.NETStandard.Graphics
+namespace Ultraviolet.Shims.NETCore.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for the .NET Standard 2.0 platform.
     /// </summary>
-    public sealed class NETStandardSurfaceSaver : SurfaceSaver
+    public sealed class NETCoreSurfaceSaver : SurfaceSaver
     {
         /// <inheritdoc/>
         public override void SaveAsPng(Surface2D surface, Stream stream)

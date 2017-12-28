@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Reflection;
-using Ultraviolet.Shims.NETStandard.Graphics;
+using Ultraviolet.Shims.NETCore.Graphics;
 using Ultraviolet.Graphics;
 using Ultraviolet.Platform;
 
-namespace Ultraviolet.Shims.NETStandard.Platform
+namespace Ultraviolet.Shims.NETCore.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="IconLoader"/> class for the .NET Standard 2.0 platform.
     /// </summary>
-    public sealed class NETStandardIconLoader : IconLoader
+    public sealed class NETCoreIconLoader : IconLoader
     {
         /// <inheritdoc/>
         public override Surface2D LoadIcon()
@@ -33,7 +33,7 @@ namespace Ultraviolet.Shims.NETStandard.Platform
             {
                 using (var iconbmp = icon.ToBitmap())
                 {
-                    using (var source = new NETStandardSurfaceSource(iconbmp))
+                    using (var source = new NETCoreSurfaceSource(iconbmp))
                     {
                         return Surface2D.Create(source);
                     }

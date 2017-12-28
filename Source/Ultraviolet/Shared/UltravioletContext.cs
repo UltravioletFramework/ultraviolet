@@ -1226,7 +1226,7 @@ namespace Ultraviolet
 
                 if (Runtime == UltravioletRuntime.CoreCLR)
                 {
-                    shim = Assembly.Load("Ultraviolet.Shims.NETStandard");
+                    shim = Assembly.Load("Ultraviolet.Shims.NETCore");
                 }
                 else
                 {
