@@ -172,9 +172,6 @@
       <Link>Ultraviolet.Public.snk</Link>
     </None>
     <None Include="app.config" />
-    <None Include="Ultraviolet.SDL2.dll.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Version.tt">
