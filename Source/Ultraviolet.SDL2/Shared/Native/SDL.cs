@@ -16,7 +16,7 @@ namespace Ultraviolet.SDL2.Native
     {
         private static readonly NativeLibrary lib = new NativeLibrary(
             UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.iOS ? "__Internal" :
-            UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "SDL2.dll" : "libSDL2.so");
+            UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "SDL2" : "libSDL2");
         
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate Int32 EventFilter(IntPtr userdata, SDL_Event* @event);
