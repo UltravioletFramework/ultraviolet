@@ -47,6 +47,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csproj", "{F224C80E-2D2F-403D-AB1A-29FE13AF726B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.NETStandard", "Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj", "{F4E7215F-B079-4E55-86CD-3A842BD6B517}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.NETStandard", "Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj", "{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.NETStandard", "Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj", "{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{A702B8D1-C3CE-44FE-890D-CB3460820785}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.NETStandard", "Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj", "{DF514C84-FAA8-4403-9881-10282FC06EAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.NETStandard", "Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj", "{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.NETStandard", "Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj", "{DEF6CD7F-9865-467A-8425-3CBE578C0433}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,15 +148,61 @@ Global
 		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{F224C80E-2D2F-403D-AB1A-29FE13AF726B}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{F4E7215F-B079-4E55-86CD-3A842BD6B517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4E7215F-B079-4E55-86CD-3A842BD6B517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4E7215F-B079-4E55-86CD-3A842BD6B517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4E7215F-B079-4E55-86CD-3A842BD6B517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4E7215F-B079-4E55-86CD-3A842BD6B517}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{F4E7215F-B079-4E55-86CD-3A842BD6B517}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{A702B8D1-C3CE-44FE-890D-CB3460820785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A702B8D1-C3CE-44FE-890D-CB3460820785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A702B8D1-C3CE-44FE-890D-CB3460820785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A702B8D1-C3CE-44FE-890D-CB3460820785}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A702B8D1-C3CE-44FE-890D-CB3460820785}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{A702B8D1-C3CE-44FE-890D-CB3460820785}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{DF514C84-FAA8-4403-9881-10282FC06EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF514C84-FAA8-4403-9881-10282FC06EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF514C84-FAA8-4403-9881-10282FC06EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF514C84-FAA8-4403-9881-10282FC06EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF514C84-FAA8-4403-9881-10282FC06EAA}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{DF514C84-FAA8-4403-9881-10282FC06EAA}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{DEF6CD7F-9865-467A-8425-3CBE578C0433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEF6CD7F-9865-467A-8425-3CBE578C0433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEF6CD7F-9865-467A-8425-3CBE578C0433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEF6CD7F-9865-467A-8425-3CBE578C0433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEF6CD7F-9865-467A-8425-3CBE578C0433}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{DEF6CD7F-9865-467A-8425-3CBE578C0433}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.TextStylePolicy = $1
-		$1.FileWidth = 120
 		$1.EolMarker = Windows
-		$1.inheritsSet = VisualStudio
-		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
+		$1.TabsToSpaces = True
 		$0.CSharpFormattingPolicy = $2
 		$2.AnonymousMethodBraceStyle = NextLine
 		$2.PropertyBraceStyle = NextLine
@@ -158,26 +220,7 @@ Global
 		$2.AfterDelegateDeclarationParameterComma = True
 		$2.NewParentheses = False
 		$2.SpacesBeforeBrackets = False
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
-		$2.IndentSwitchSection = True
-		$2.NewLinesForBracesInProperties = True
-		$2.NewLinesForBracesInAccessors = True
-		$2.NewLinesForBracesInAnonymousMethods = True
-		$2.NewLinesForBracesInControlBlocks = True
-		$2.NewLinesForBracesInAnonymousTypes = True
-		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
-		$2.NewLinesForBracesInLambdaExpressionBody = True
-		$2.NewLineForElse = True
-		$2.NewLineForCatch = True
-		$2.NewLineForFinally = True
-		$2.NewLineForMembersInObjectInit = True
-		$2.NewLineForMembersInAnonymousTypes = True
-		$2.NewLineForClausesInQuery = True
-		$2.SpacingAfterMethodDeclarationName = False
-		$2.SpaceAfterMethodCallName = False
-		$2.SpaceBeforeOpenSquareBracket = False
 		StartupItem = Ultraviolet\Desktop\Ultraviolet.Desktop.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
