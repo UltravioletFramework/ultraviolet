@@ -101,6 +101,7 @@
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
+    <CallTarget Targets="RestoreNETCore"/>
     <CallTarget Targets="RestoreWindows"/>
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)"/>
     <CallTarget Targets="CopyWindowsBinaries"/>
@@ -111,6 +112,7 @@
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
+    <CallTarget Targets="RestoreNETCore"/>
     <CallTarget Targets="RestoreLinux"/>
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
@@ -217,53 +219,47 @@
     <CallTarget Targets="CopyDesktopSampleDependencies"/>		
   </Target>  
   <Target Name="CopyNETCoreBinaries">
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/Newtonsoft.Json.*">
+    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/Newtonsoft.Json.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/Microsoft.DotNet.PlatformAbstractions.*">
+    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/Microsoft.DotNet.PlatformAbstractions.*">
         <Output TaskParameter="Include" ItemName="Microsoft_DotNet_PlatformAbstractions_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/Microsoft.Extensions.DependencyModel.*">
+    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/Microsoft.Extensions.DependencyModel.*">
         <Output TaskParameter="Include" ItemName="Microsoft_Extensions_DependencyModel_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/Ultraviolet.Core.*">
+    <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Core.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Core_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/NETStandard/bin/$(Configuration)/Ultraviolet.OpenGL.Bindings.*">
+    <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.OpenGL.Bindings.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet/NETStandard/bin/$(Configuration)/Ultraviolet.*">
+    <CreateItem Include="Source/Ultraviolet/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/NETStandard/bin/$(Configuration)/Ultraviolet.Profiler.dotTrace.*">
+    <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.NETCore/bin/$(Configuration)/Ultraviolet.Shims.NETCore.*">
+    <CreateItem Include="Source/Ultraviolet.Shims.NETCore/bin/$(Configuration)/netstandard2.0/Ultraviolet.Shims.NETCore.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_NETCore"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.BASS/NETStandard/bin/$(Configuration)/Ultraviolet.BASS.*">
+    <CreateItem Include="Source/Ultraviolet.BASS/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.BASS.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.OpenGL/NETStandard/bin/$(Configuration)/Ultraviolet.OpenGL.*">
+    <CreateItem Include="Source/Ultraviolet.OpenGL/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.SDL2/NETStandard/bin/$(Configuration)/Ultraviolet.SDL2.*">
+    <CreateItem Include="Source/Ultraviolet.SDL2/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation/NETStandard/bin/$(Configuration)/Ultraviolet.Presentation.*">
+    <CreateItem Include="Source/Ultraviolet.Presentation/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/NETStandard/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
+    <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/Ultraviolet.Tooling.*">
+    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/Ultraviolet.Tooling.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvFont/bin/$(Configuration)/uvfont.exe">
-        <Output TaskParameter="Include" ItemName="uvfont_exe"/>
-    </CreateItem>
-    <CreateItem Include="Source/UvArchive/bin/$(Configuration)/uvarchive.exe">
-        <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
     </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_NETStandard)" DestinationFiles="@(Newtonsoft_Json_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_NETStandard)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
