@@ -1,0 +1,96 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.SDL2.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.NETCore">
+      <HintPath>..\..\Dependencies\netstandard2.0\Ultraviolet.Shims.NETCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="x64\win32nt\" />
+    <Folder Include="x64\unix\" />
+    <Folder Include="x64\osx\" />
+    <Folder Include="x86\win32nt\" />
+    <Folder Include="x86\unix\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Dependencies\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\osx\libSDL2.dylib" Link="x64\osx\libSDL2.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\unix\libbass.so" Link="x64\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\unix\libbass_fx.so" Link="x64\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\unix\libSDL2.so" Link="x64\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\win32nt\bass_fx.dll" Link="x64\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x64\win32nt\SDL2.dll" Link="x64\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\unix\libbass.so" Link="x86\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\unix\libbass_fx.so" Link="x86\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\unix\libSDL2.so" Link="x86\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\win32nt\bass_fx.dll" Link="x86\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\x86\win32nt\SDL2.dll" Link="x86\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1-beta1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
+  </ItemGroup>
+
+  <Import Project="..\Shared\Sample1_CreatingAnApplication.projitems" Label="Shared" />
+
+</Project>
