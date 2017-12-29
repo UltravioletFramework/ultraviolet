@@ -17,7 +17,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.NETCore.dll" target="lib\netcoreapp2.0\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.NETCore.pdb" target="lib\netcoreapp2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Shims.NETCore.dll" target="lib\netcoreapp2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Shims.NETCore.pdb" target="lib\netcoreapp2.0\"/>
   </files>  
 </package>
