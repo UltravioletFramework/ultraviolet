@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.Game.NETCore</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>Ultraviolet Framework Game (.NET Core 2.0)</title>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the .NET Core 2.0 platform.</description>
+    <tags>ultraviolet gamedev</tags>	
+    <dependencies>
+        <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />	
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet.BASS" version="UV_VERSION" />
+        <dependency id="Ultraviolet.BASS.Native" version="UV_VERSION" />
+        <dependency id="Ultraviolet.Shims.NETCore" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.OpenGL" version="UV_VERSION" />
+        <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
+        <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />
+        <dependency id="Ultraviolet.Tools" version="UV_VERSION" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Ultraviolet.Game.Desktop\content\Program.cs.pp" target="content"/>
+    <file src="Ultraviolet.Game.Desktop\content\Game.cs.pp" target="content"/>
+  </files>  
+</package>

@@ -17,7 +17,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.Desktop.dll" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.Desktop.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.Desktop.dll" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.Desktop.pdb" target="lib\net47\"/>
   </files>  
 </package>

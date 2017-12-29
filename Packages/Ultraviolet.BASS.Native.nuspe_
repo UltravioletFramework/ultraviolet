@@ -17,28 +17,30 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Ultraviolet.BASS.Native\build\net40\Ultraviolet.BASS.Native.targets" target="build\net40\Ultraviolet.BASS.Native.targets"/>
-    <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\net40\x86\unix\libbass.so"/>
-    <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\net40\x86\unix\libbass_fx.so"/>
-    <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\net40\x64\unix\libbass.so"/>
-    <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\net40\x64\unix\libbass_fx.so"/>
-    <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\net40\x86\win32nt\bass.dll"/>
-    <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\net40\x86\win32nt\bass_fx.dll"/>
-    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\net40\x64\win32nt\bass.dll"/>
-    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\net40\x64\win32nt\bass_fx.dll"/>
-    
-    <file src="Ultraviolet.BASS.Native\build\net45\Ultraviolet.BASS.Native.targets" target="build\net45\Ultraviolet.BASS.Native.targets"/>
-    <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\net45\x86\unix\libbass.so"/>
-    <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\net45\x86\unix\libbass_fx.so"/>
-    <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\net45\x64\unix\libbass.so"/>
-    <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\net45\x64\unix\libbass_fx.so"/>
-    <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\net45\x86\win32nt\bass.dll"/>
-    <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\net45\x86\win32nt\bass_fx.dll"/>
-    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\net45\x64\win32nt\bass.dll"/>
-    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\net45\x64\win32nt\bass_fx.dll"/>
-    <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\net45\x64\osx\libbass.dylib"/>
-    <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\net45\x64\osx\libbass_fx.dylib"/>
+    <file src="Ultraviolet.BASS.Native\build\net47\Ultraviolet.BASS.Native.targets" target="build\net47\Ultraviolet.BASS.Native.targets"/>
+    <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\net47\x86\unix\libbass.so"/>
+    <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\net47\x86\unix\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\net47\x64\unix\libbass.so"/>
+    <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\net47\x64\unix\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\net47\x86\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\net47\x86\win32nt\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\net47\x64\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\net47\x64\win32nt\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\net47\x64\osx\libbass.dylib"/>
+    <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\net47\x64\osx\libbass_fx.dylib"/>
   
+    <file src="Ultraviolet.BASS.Native\build\netcoreapp2.0\Ultraviolet.BASS.Native.targets" target="build\netcoreapp2.0\Ultraviolet.BASS.Native.targets"/>
+    <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\netcoreapp2.0\x86\unix\libbass.so"/>
+    <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\netcoreapp2.0\x86\unix\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\netcoreapp2.0\x64\unix\libbass.so"/>
+    <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\netcoreapp2.0\x64\unix\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\x86\win32nt\bass.dll" target="build\netcoreapp2.0\x86\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x86\win32nt\bass_fx.dll" target="build\netcoreapp2.0\x86\win32nt\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\netcoreapp2.0\x64\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\netcoreapp2.0\x64\win32nt\bass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\netcoreapp2.0\x64\osx\libbass.dylib"/>
+    <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\netcoreapp2.0\x64\osx\libbass_fx.dylib"/>
+    
     <file src="Ultraviolet.BASS.Native\build\MonoAndroid60\Ultraviolet.BASS.Native.targets" target="build\MonoAndroid60\Ultraviolet.BASS.Native.targets"/>
     <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid60\lib\armeabi-v7a\libbass.so"/>
     <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid60\lib\armeabi-v7a\libbass_fx.so"/>	

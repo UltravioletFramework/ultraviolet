@@ -16,19 +16,13 @@
     <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />
   </dependencies>
   </metadata>
-  <files>
-    <file src="Ultraviolet.SDL2.Native\build\net40\Ultraviolet.SDL2.Native.targets" target="build\net40\Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net40\x86\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net40\x64\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net40\x86\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net40\x64\win32nt\SDL2.dll"/>
-    
-    <file src="Ultraviolet.SDL2.Native\build\net45\Ultraviolet.SDL2.Native.targets" target="build\net45\Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net45\x86\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net45\x64\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net45\x86\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net45\x64\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net45\x64\osx\libSDL2.dylib"/>
+  <files>    
+    <file src="Ultraviolet.SDL2.Native\build\net45\Ultraviolet.SDL2.Native.targets" target="build\net47\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net47\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net47\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net47\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net47\x64\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net47\x64\osx\libSDL2.dylib"/>
   
     <file src="Ultraviolet.SDL2.Native\build\MonoAndroid60\Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid60\Ultraviolet.SDL2.Native.targets"/>
     <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid60\lib\armeabi-v7a\libSDL2.so"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>Ultraviolet.Windows.Forms</id>
+    <id>Ultraviolet.Shims.NETCore</id>
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
@@ -9,8 +9,7 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <title>Ultraviolet.Windows.Forms</title>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains an Ultraviolet host implementation which is embeddable within a Windows Forms application.</description>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for the .NET Core 2.0 platform.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
@@ -18,7 +17,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.dll" target="lib\net47\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.pdb" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.NETCore.dll" target="lib\netcoreapp2.0\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Shims.NETCore.pdb" target="lib\netcoreapp2.0\"/>
   </files>  
 </package>

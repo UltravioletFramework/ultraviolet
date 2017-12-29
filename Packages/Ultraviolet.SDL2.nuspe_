@@ -17,12 +17,14 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="Ultraviolet.SDL2\build\net40\Ultraviolet.SDL2.targets" target="build\net40\Ultraviolet.SDL2.targets"/>
-    <file src="..\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.dll.config" target="lib\net40\Ultraviolet.SDL2.dll.config"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.dll" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.XML" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.dll" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.XML" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.SDL2.pdb" target="lib\net47\"/>
 
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.SDL2.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.SDL2.XML" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.SDL2.pdb" target="lib\netstandard2.0\"/>
+    
     <file src="..\Binaries\Android\Signed\Ultraviolet.SDL2.dll" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.SDL2.XML" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.SDL2.pdb" target="lib\MonoAndroid60\"/>

@@ -16,12 +16,18 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.XML" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.XML" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.pdb" target="lib\net47\"/>
+
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Core.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Core.XML" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Core.pdb" target="lib\netstandard2.0\"/>
+    
     <file src="..\Binaries\Android\Signed\Ultraviolet.Core.dll" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.Core.pdb" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.Core.XML" target="lib\MonoAndroid60\"/>
+
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Core.dll" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Core.pdb" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.Core.XML" target="lib\Xamarin.iOS10\"/>

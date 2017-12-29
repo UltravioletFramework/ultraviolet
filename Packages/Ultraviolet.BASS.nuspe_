@@ -17,11 +17,13 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="Ultraviolet.BASS\build\net40\Ultraviolet.BASS.targets" target="build\net40\Ultraviolet.BASS.targets"/>
-    <file src="..\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.dll.config" target="lib\net40\Ultraviolet.BASS.dll.config"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.dll" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.XML" target="lib\net40\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.pdb" target="lib\net40\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.dll" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.XML" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.BASS.pdb" target="lib\net47\"/>
+
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.BASS.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.BASS.XML" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.BASS.pdb" target="lib\netstandard2.0\"/>
     
     <file src="..\Binaries\Android\Signed\Ultraviolet.BASS.dll" target="lib\MonoAndroid60\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.BASS.XML" target="lib\MonoAndroid60\"/>
