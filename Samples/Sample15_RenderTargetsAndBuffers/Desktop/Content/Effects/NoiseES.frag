@@ -18,7 +18,7 @@ precision mediump int;
     #define DECLARE_OUTPUT_COLOR out vec4 fColor
 #endif
 
-uniform sampler2D TextureSampler;
+uniform sampler2D Texture;
 uniform float Time;
 
 DECLARE_INPUT_COLOR;
@@ -30,5 +30,5 @@ DECLARE_OUTPUT_COLOR;
 
 void main() 
 {         
-    fColor = texture(TextureSampler, vTextureCoordinate) * vColor * calculate_noise(gl_FragCoord.xy, vec2(640.0, 480.0), Time);
+    fColor = texture(Texture, vTextureCoordinate) * vColor * calculate_noise(gl_FragCoord.xy, vec2(640.0, 480.0), Time);
 }
