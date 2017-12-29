@@ -41,17 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\Cursors\" />
-    <Folder Include="Content\Fonts\" />
-    <Folder Include="Content\Localization\" />
-    <Folder Include="Content\Manifests\" />
-    <Folder Include="Input\" />
     <Folder Include="Assets\" />
-    <Folder Include="x64\osx\" />
-    <Folder Include="x64\win32nt\" />
-    <Folder Include="x64\unix\" />
-    <Folder Include="x86\win32nt\" />
-    <Folder Include="x86\unix\" />
   </ItemGroup>
 
   <ItemGroup>

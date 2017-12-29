@@ -121,25 +121,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\Cursors\" />
-    <Folder Include="Content\Fonts\" />
-    <Folder Include="Content\Localization\" />
-    <Folder Include="Content\Manifests\" />
-    <Folder Include="Content\Textures\" />
-    <Folder Include="Content\Sprites\" />
-    <Folder Include="Content\SoundEffects\" />
-    <Folder Include="Content\UI\Dialogs\EscMenuDialog\" />
-    <Folder Include="Content\UI\Screens\GameMenuScreen\" />
-    <Folder Include="Content\UI\Screens\GamePlayScreen\" />
-    <Folder Include="UI\Controls\Templates\" />
-    <Folder Include="x64\unix\" />
-    <Folder Include="x64\win32nt\" />
-    <Folder Include="x64\osx\" />
-    <Folder Include="x86\win32nt\" />
-    <Folder Include="x86\unix\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
