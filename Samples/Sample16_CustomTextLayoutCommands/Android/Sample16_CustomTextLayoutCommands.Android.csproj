@@ -19,6 +19,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -36,6 +37,7 @@
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <Debugger>Xamarin</Debugger>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,6 +55,7 @@
     <MandroidI18n />
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
@@ -70,44 +73,15 @@
     <MandroidI18n />
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
-    <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="org.libsdl.app, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Dependencies\Android\org.libsdl.app.dll</HintPath>
+    <Reference Include="org.libsdl.app">
+      <HintPath>..\..\..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="Ultraviolet.OpenGL.Bindings">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.OpenGL.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Core">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Shims.Android">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.Shims.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.BASS">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.BASS.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.OpenGL">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.OpenGL.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.SDL2">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.SDL2.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
@@ -120,31 +94,31 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Content.uvarc" />
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libbass.so">
-      <Link>lib\armeabi-v7a\libbass.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libbass_fx.so">
-      <Link>lib\armeabi-v7a\libbass_fx.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi-v7a\libSDL2.so">
-      <Link>lib\armeabi-v7a\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libbass.so">
+    <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libbass_fx.so">
+    <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass_fx.so">
       <Link>lib\armeabi\libbass_fx.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\armeabi\libSDL2.so">
+    <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\armeabi\libSDL2.so">
       <Link>lib\armeabi\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libbass.so">
+    <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi-v7a\libbass.so">
+      <Link>lib\armeabi-v7a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi-v7a\libbass_fx.so">
+      <Link>lib\armeabi-v7a\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\armeabi-v7a\libSDL2.so">
+      <Link>lib\armeabi-v7a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libbass_fx.so">
+    <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\x86\libbass_fx.so">
       <Link>lib\x86\libbass_fx.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\Dependencies\Android\x86\libSDL2.so">
+    <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
     <None Include="packages.config" />
@@ -157,6 +131,34 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\Android\Ultraviolet.BASS.Android.csproj">
+      <Project>{381b05eb-e12e-451c-a272-2f5c2fd9c106}</Project>
+      <Name>Ultraviolet.BASS.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
+      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
+      <Name>Ultraviolet.Core.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\Android\Ultraviolet.OpenGL.Bindings.Android.csproj">
+      <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
+      <Name>Ultraviolet.OpenGL.Bindings.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\Android\Ultraviolet.OpenGL.Android.csproj">
+      <Project>{3416af37-8a39-479d-b78f-88d72cadd458}</Project>
+      <Name>Ultraviolet.OpenGL.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\Android\Ultraviolet.SDL2.Android.csproj">
+      <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
+      <Name>Ultraviolet.SDL2.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
+      <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
+      <Name>Ultraviolet.Shims.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\Android\Ultraviolet.Android.csproj">
+      <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
+      <Name>Ultraviolet.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SampleSharedLib\Android\SampleSharedLib.Android.csproj">
       <Project>{b238a15b-e99b-45f5-99fc-da32ce11ef4d}</Project>
       <Name>SampleSharedLib.Android</Name>
@@ -172,7 +174,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" />
+      <UserProperties ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -36,21 +36,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
-    <Reference Include="mscorlib" />
     <Reference Include="org.libsdl.app">
-      <HintPath>..\..\Dependencies\Android\org.libsdl.app.dll</HintPath>
+      <HintPath>..\..\..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Ultraviolet.Core">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Shims.Android">
-      <HintPath>..\..\Dependencies\Android\Ultraviolet.Shims.Android.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
@@ -65,7 +55,23 @@
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Values\Strings.xml" />
+    <AndroidResource Include="Resources\Values\Strings.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
+      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
+      <Name>Ultraviolet.Core.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
+      <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
+      <Name>Ultraviolet.Shims.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\Android\Ultraviolet.Android.csproj">
+      <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
+      <Name>Ultraviolet.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Shared\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
