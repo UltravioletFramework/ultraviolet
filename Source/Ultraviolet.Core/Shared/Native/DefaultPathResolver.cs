@@ -27,7 +27,7 @@ namespace Ultraviolet.Core.Native
             }
             else
             {
-                yield return Path.Combine(AppContext.BaseDirectory, name);
+                yield return Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), name);
                 if (TryLocateNativeAssetInPlatformFolder(name, out var platformResolvedPath))
                 {
                     yield return platformResolvedPath;
@@ -45,11 +45,12 @@ namespace Ultraviolet.Core.Native
         /// </summary>
         private Boolean TryLocateNativeAssetInPlatformFolder(String name, out String platformResolvedPath)
         {
-            var dir = Path.Combine(AppContext.BaseDirectory);
+            var dir = Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory());
             if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.macOS)
                 dir = Path.Combine("..", "Resources");
 
-            dir = Path.Combine(dir, Environment.Is64BitProcess ? "x64" : "x86");
+            if (UltravioletPlatformInfo.CurrentPlatform != UltravioletPlatform.Android)
+                dir = Path.Combine(dir, Environment.Is64BitProcess ? "x64" : "x86");
 
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
@@ -58,6 +59,9 @@ namespace Ultraviolet.Core.Native
                     break;
 
                 case UltravioletPlatform.Android:
+                    dir = Path.Combine(dir, "lib");
+                    break;
+
                 case UltravioletPlatform.Linux:
                     dir = Path.Combine(dir, "unix");
                     break;

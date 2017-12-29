@@ -36,6 +36,15 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Initializes the <see cref="UltravioletActivity"/> type.
+        /// </summary>
+        static UltravioletActivity()
+        {
+            var dataDir = Android.App.Application.Context.ApplicationContext.DataDir.AbsolutePath;
+            Directory.SetCurrentDirectory(dataDir);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletActivity"/> class.
         /// </summary>
         /// <param name="company">The name of the company that produced the application.</param>
