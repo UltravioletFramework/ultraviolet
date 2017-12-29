@@ -22,10 +22,8 @@ namespace Ultraviolet.Core.Native
                 case UltravioletPlatform.Windows:
                     return new Win32LibraryLoader();
 
-                case UltravioletPlatform.Android:
                 case UltravioletPlatform.Linux:
                 case UltravioletPlatform.macOS:
-                case UltravioletPlatform.iOS:
                     return new UnixLibraryLoader();
 
                 default:

@@ -21,22 +21,15 @@ namespace Ultraviolet.Core.Native
         /// <inheritdoc/>
         public override IEnumerable<String> EnumeratePossibleLibraryLoadTargets(String name)
         {
-            if (name == "__Internal")
+            yield return Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), name);
+            if (TryLocateNativeAssetInPlatformFolder(name, out var platformResolvedPath))
             {
-                yield return "__Internal";
+                yield return platformResolvedPath;
             }
-            else
+            yield return name;
+            if (TryLocateNativeAssetFromDeps(name, out var depsResolvedPath))
             {
-                yield return Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), name);
-                if (TryLocateNativeAssetInPlatformFolder(name, out var platformResolvedPath))
-                {
-                    yield return platformResolvedPath;
-                }
-                yield return name;
-                if (TryLocateNativeAssetFromDeps(name, out var depsResolvedPath))
-                {
-                    yield return depsResolvedPath;
-                }
+                yield return depsResolvedPath;
             }
         }
 
@@ -49,19 +42,14 @@ namespace Ultraviolet.Core.Native
             if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.macOS)
                 dir = Path.Combine("..", "Resources");
 
-            if (UltravioletPlatformInfo.CurrentPlatform != UltravioletPlatform.Android)
-                dir = Path.Combine(dir, Environment.Is64BitProcess ? "x64" : "x86");
+            dir = Path.Combine(dir, Environment.Is64BitProcess ? "x64" : "x86");
 
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
                 case UltravioletPlatform.Windows:
                     dir = Path.Combine(dir, "win32nt");
                     break;
-
-                case UltravioletPlatform.Android:
-                    dir = Path.Combine(dir, "lib");
-                    break;
-
+                    
                 case UltravioletPlatform.Linux:
                     dir = Path.Combine(dir, "unix");
                     break;
