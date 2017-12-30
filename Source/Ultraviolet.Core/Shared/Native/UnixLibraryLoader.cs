@@ -28,7 +28,7 @@ namespace Ultraviolet.Core.Native
 
         /// <inheritdoc/>
         protected override IntPtr CoreLoadNativeLibrary(String libraryName) => 
-            Native.dlopen(libraryName == "__Internal" ? null : libraryName, Native.RTLD_NOW);
+            Native.dlopen(libraryName, Native.RTLD_NOW);
 
         /// <inheritdoc/>
         protected override IntPtr CoreLoadNativeFunctionPointer(IntPtr handle, String functionName) => 
