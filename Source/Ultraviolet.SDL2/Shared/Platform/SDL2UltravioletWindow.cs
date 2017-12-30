@@ -465,7 +465,14 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
-                SDL.GetDrawableSize(ptr, opengl, out w, out h);
+                if (opengl)
+                {
+                    SDL.GL_GetDrawableSize(ptr, out w, out h);
+                }
+                else
+                {
+                    SDL.GetWindowSize(ptr, out w, out h);
+                }
 
                 return new Size2(w, h);
             }
