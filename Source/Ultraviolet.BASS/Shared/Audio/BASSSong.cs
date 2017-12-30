@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
@@ -100,11 +101,48 @@ namespace Ultraviolet.BASS.Audio
         private void ReadTagsFromStream(UInt32 stream)
         {
             var tagsOgg = default(IDictionary<String, String>);
-            if (BASSNative.ChannelGetTags_Ogg(stream, out tagsOgg))
+            if (ReadOggTagsFromStream(stream, out tagsOgg))
             {
                 foreach (var tagOgg in tagsOgg)
                     tags.Add(tagOgg.Key, tagOgg.Value);
             }
+        }
+
+        /// <summary>
+        /// Attempts to read OGG tags from the specified stream.
+        /// </summary>
+        private unsafe Boolean ReadOggTagsFromStream(UInt32 handle, out IDictionary<String, String> tags)
+        {
+            var ptr = (Byte*)BASSNative.ChannelGetTags(handle, BASSNative.BASS_TAG_OGG);
+            if (ptr == null)
+            {
+                var error = BASSNative.ErrorGetCode();
+                if (error == BASSNative.BASS_ERROR_NOTAVAIL)
+                {
+                    tags = null;
+                    return false;
+                }
+
+                throw new BASSException(error);
+            }
+
+            var result = new Dictionary<String, String>();
+
+            while (*ptr != 0)
+            {
+                var str = Marshal.PtrToStringAnsi((IntPtr)ptr);
+
+                var tag = str.Split('=');
+                var key = tag[0];
+                var value = tag[1];
+
+                result[key] = value;
+
+                ptr += str.Length + 1;
+            }
+
+            tags = result;
+            return true;
         }
 
         // The file from which to stream the song.
