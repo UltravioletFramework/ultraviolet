@@ -107,6 +107,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Controls\Primitives\Templates\ScrollBar.xml">
+      <Link>Controls\Primitives\Templates\ScrollBar.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Controls\Primitives\Templates\Thumb.xml">
+      <Link>Controls\Primitives\Templates\Thumb.xml</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
       <Link>Resources\Strings.xml</Link>
     </EmbeddedResource>
