@@ -79,15 +79,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
-    <Reference Include="Ultraviolet">
-      <HintPath>..\..\Dependencies\Ultraviolet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Core">
-      <HintPath>..\..\Dependencies\Ultraviolet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Shims.macOS">
-      <HintPath>..\..\Dependencies\Ultraviolet.Shims.macOS.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -99,6 +90,20 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
+      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
+      <Name>Ultraviolet.Core.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
+      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
+      <Name>Ultraviolet.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.macOS\Ultraviolet.Shims.macOS.csproj">
+      <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
+      <Name>Ultraviolet.Shims.macOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Shared\SampleSharedLib.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
