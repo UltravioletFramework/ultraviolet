@@ -1,0 +1,128 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Sample15_RenderTargetsAndBuffers</AssemblyName>
+    <RootNamespace>UltravioletSample.Sample15_RenderTargetsAndBuffers</RootNamespace>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Desktop\Content\Effects\NoiseEffect.json" Link="Content\Effects\NoiseEffect.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Fonts\SegoeUI.xml" Link="Content\Fonts\SegoeUI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Fonts\SegoeUITexture.png" Link="Content\Fonts\SegoeUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\SoundEffects\Shutter.wav" Link="Content\SoundEffects\Shutter.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Textures\Blank.png" Link="Content\Textures\Blank.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content\Effects\" />
+    <Folder Include="Content\Fonts\" />
+    <Folder Include="Content\Manifests\" />
+    <Folder Include="Content\Textures\" />
+    <Folder Include="Content\SoundEffects\" />
+    <Folder Include="x64\osx\" />
+    <Folder Include="x64\unix\" />
+    <Folder Include="x64\win32nt\" />
+    <Folder Include="x86\unix\" />
+    <Folder Include="x86\win32nt\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass.so" Link="x64\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass_fx.so" Link="x64\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass_fx.dll" Link="x64\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass.so" Link="x86\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass_fx.so" Link="x86\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass_fx.dll" Link="x86\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib" Link="x64\osx\libSDL2.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\unix\libSDL2.so" Link="x64\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\win32nt\SDL2.dll" Link="x64\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x86\unix\libSDL2.so" Link="x86\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll" Link="x86\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\Noise.frag" Link="Content\Effects\Noise.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\Noise.vert" Link="Content\Effects\Noise.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\NoiseCommon.fragh" Link="Content\Effects\NoiseCommon.fragh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\NoiseES.frag" Link="Content\Effects\NoiseES.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\NoiseES.vert" Link="Content\Effects\NoiseES.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\NoiseGL.frag" Link="Content\Effects\NoiseGL.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Effects\NoiseGL.vert" Link="Content\Effects\NoiseGL.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Manifests\Global.manifest" Link="Content\Manifests\Global.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+    <ProjectReference Include="..\..\SampleSharedLib\NETCore\SampleSharedLib.NETCore.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Shared\Sample15_RenderTargetsAndBuffers.projitems" Label="Shared" />
+
+</Project>

@@ -3,25 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Sample1_CreatingAnApplication</AssemblyName>
-    <RootNamespace>UltravioletSample.Sample1_CreatingAnApplication</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="..\Shared\Sample1_CreatingAnApplication.projitems" Label="Shared" />
-
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
-    <ProjectReference Include="..\..\..\Source\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="x64\win32nt\" />
     <Folder Include="x64\osx\" />
+    <Folder Include="x64\unix\" />
+    <Folder Include="x64\win32nt\" />
     <Folder Include="x86\unix\" />
     <Folder Include="x86\win32nt\" />
   </ItemGroup>
@@ -73,5 +60,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Shared\Sample2_HandlingInput.projitems" Label="Shared" />
 
 </Project>

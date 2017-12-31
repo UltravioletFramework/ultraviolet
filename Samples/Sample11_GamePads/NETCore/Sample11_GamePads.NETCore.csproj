@@ -3,11 +3,21 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Sample1_CreatingAnApplication</AssemblyName>
-    <RootNamespace>UltravioletSample.Sample1_CreatingAnApplication</RootNamespace>
+    <AssemblyName>Sample11_GamePads</AssemblyName>
+    <RootNamespace>UltravioletSample.Sample11_GamePads</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="..\Shared\Sample1_CreatingAnApplication.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include="..\Desktop\Content\Fonts\SegoeUI12.xml" Link="Content\Fonts\SegoeUI12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Fonts\SegoeUI12Texture.png" Link="Content\Fonts\SegoeUI12Texture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Sprites\Textures\Xbox360Controller.png" Link="Content\Sprites\Textures\Xbox360Controller.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
@@ -17,11 +27,16 @@
     <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
     <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
     <ProjectReference Include="..\..\..\Source\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+    <ProjectReference Include="..\..\SampleSharedLib\NETCore\SampleSharedLib.NETCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="x64\win32nt\" />
+    <Folder Include="Content\Fonts\" />
+    <Folder Include="Content\Manifests\" />
+    <Folder Include="Content\Sprites\Textures\" />
     <Folder Include="x64\osx\" />
+    <Folder Include="x64\unix\" />
+    <Folder Include="x64\win32nt\" />
     <Folder Include="x86\unix\" />
     <Folder Include="x86\win32nt\" />
   </ItemGroup>
@@ -72,6 +87,14 @@
     <None Include="..\..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll" Link="x86\win32nt\SDL2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Desktop\Content\Manifests\Global.manifest" Link="Content\Manifests\Global.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Sprites\Xbox360Controller.sprite" Link="Content\Sprites\Xbox360Controller.sprite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+
+  <Import Project="..\Shared\Sample11_GamePads.projitems" Label="Shared" />
 
 </Project>

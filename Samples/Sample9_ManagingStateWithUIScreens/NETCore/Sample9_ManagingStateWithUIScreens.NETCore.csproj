@@ -1,0 +1,110 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Sample9_ManagingStateWithUIScreens</AssemblyName>
+    <RootNamespace>UltravioletSample.Sample9_ManagingStateWithUIScreens</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Desktop\Content\Textures\Blank.png" Link="Content\Textures\Blank.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\UI\Screens\SampleScreen1\SampleScreen1.xml" Link="Content\UI\Screens\SampleScreen1\SampleScreen1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\UI\Screens\SampleScreen1\SegoeUI.xml" Link="Content\UI\Screens\SampleScreen1\SegoeUI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\UI\Screens\SampleScreen1\SegoeUITexture.png" Link="Content\UI\Screens\SampleScreen1\SegoeUITexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\UI\Screens\SampleScreen2\Garamond.xml" Link="Content\UI\Screens\SampleScreen2\Garamond.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\UI\Screens\SampleScreen2\GaramondTexture.png" Link="Content\UI\Screens\SampleScreen2\GaramondTexture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\UI\Screens\SampleScreen2\SampleScreen2.xml" Link="Content\UI\Screens\SampleScreen2\SampleScreen2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content\Manifests\" />
+    <Folder Include="Content\Textures\" />
+    <Folder Include="Content\UI\Screens\SampleScreen2\" />
+    <Folder Include="Content\UI\Screens\SampleScreen1\" />
+    <Folder Include="x64\osx\" />
+    <Folder Include="x64\unix\" />
+    <Folder Include="x64\win32nt\" />
+    <Folder Include="x86\unix\" />
+    <Folder Include="x86\win32nt\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass.so" Link="x64\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass_fx.so" Link="x64\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass_fx.dll" Link="x64\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass.so" Link="x86\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass_fx.so" Link="x86\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass_fx.dll" Link="x86\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib" Link="x64\osx\libSDL2.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\unix\libSDL2.so" Link="x64\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\win32nt\SDL2.dll" Link="x64\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x86\unix\libSDL2.so" Link="x86\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll" Link="x86\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Manifests\Global.manifest" Link="Content\Manifests\Global.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+    <ProjectReference Include="..\..\SampleSharedLib\NETCore\SampleSharedLib.NETCore.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Shared\Sample9_ManagingStateWithUIScreens.projitems" Label="Shared" />
+
+</Project>
