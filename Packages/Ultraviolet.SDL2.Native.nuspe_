@@ -17,7 +17,7 @@
   </dependencies>
   </metadata>
   <files>    
-    <file src="Ultraviolet.SDL2.Native\build\net45\Ultraviolet.SDL2.Native.targets" target="build\net47\Ultraviolet.SDL2.Native.targets"/>
+    <file src="Ultraviolet.SDL2.Native\build\net47\Ultraviolet.SDL2.Native.targets" target="build\net47\Ultraviolet.SDL2.Native.targets"/>
     <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net47\x86\unix\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net47\x64\unix\libSDL2.so"/>
     <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net47\x86\win32nt\SDL2.dll"/>
