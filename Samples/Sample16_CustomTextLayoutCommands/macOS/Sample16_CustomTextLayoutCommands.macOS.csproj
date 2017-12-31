@@ -120,20 +120,20 @@
     <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI12Texture.png">
       <Link>Content\Fonts\SegoeUI12Texture.png</Link>
     </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\osx\libbass.dylib">
-      <Link>x64\osx\libbass.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\Dependencies\x64\osx\libbass_fx.dylib">
-      <Link>x64\osx\libbass_fx.dylib</Link>
-    </BundleResource>
     <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI12.xml">
       <Link>Content\Fonts\SegoeUI12.xml</Link>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="x64\" />
   </ItemGroup>
   <Import Project="..\Shared\Sample16_CustomTextLayoutCommands.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
