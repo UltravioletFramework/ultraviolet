@@ -235,7 +235,7 @@
     <CreateItem Include="Source/Ultraviolet.Profiler.dotTrace/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Profiler.dotTrace.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Profiler_dotTrace_NETStandard"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Shims.NETCore/bin/$(Configuration)/netstandard2.0/Ultraviolet.Shims.NETCore.*">
+    <CreateItem Include="Source/Ultraviolet.Shims.NETCore/bin/$(Configuration)/netcoreapp.0/Ultraviolet.Shims.NETCore.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Shims_NETCore"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.BASS/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.BASS.*">
