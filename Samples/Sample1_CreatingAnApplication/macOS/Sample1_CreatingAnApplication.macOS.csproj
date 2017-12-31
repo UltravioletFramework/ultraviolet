@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,7 +31,8 @@
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
     <LinkMode>None</LinkMode>
-    <XamMacArch></XamMacArch>
+    <XamMacArch>
+    </XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -51,7 +52,8 @@
     <LinkMode>None</LinkMode>
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
-    <XamMacArch></XamMacArch>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -70,7 +72,8 @@
     <LinkMode>None</LinkMode>
     <HttpClientHandler>HttpClientHandler</HttpClientHandler>
     <TlsProvider>Default</TlsProvider>
-    <XamMacArch></XamMacArch>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -95,18 +98,11 @@
     <None Include="Info.plist" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="x64\" />
-    <Folder Include="x64\osx\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

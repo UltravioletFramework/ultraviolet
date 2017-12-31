@@ -16,7 +16,8 @@
     <DebugSymbols>false</DebugSymbols>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
@@ -30,7 +31,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -47,9 +49,6 @@
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

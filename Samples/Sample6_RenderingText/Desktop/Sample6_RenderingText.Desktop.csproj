@@ -99,9 +99,6 @@
     <None Include="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

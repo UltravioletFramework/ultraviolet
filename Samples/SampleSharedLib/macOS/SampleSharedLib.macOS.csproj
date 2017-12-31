@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -26,10 +26,14 @@
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <UseSGen>false</UseSGen>
-    <HttpClientHandler></HttpClientHandler>
-    <TlsProvider></TlsProvider>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <TlsProvider>
+    </TlsProvider>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -43,10 +47,14 @@
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <UseSGen>false</UseSGen>
-    <HttpClientHandler></HttpClientHandler>
-    <TlsProvider></TlsProvider>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <TlsProvider>
+    </TlsProvider>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -60,35 +68,44 @@
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <UseSGen>false</UseSGen>
-    <HttpClientHandler></HttpClientHandler>
-    <TlsProvider></TlsProvider>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
-    <CodeSigningKey></CodeSigningKey>
-    <CodeSignProvision></CodeSignProvision>
-    <CodeSignExtraArgs></CodeSignExtraArgs>
-    <PackageSigningKey></PackageSigningKey>
-    <PackagingExtraArgs></PackagingExtraArgs>
-    <I18n></I18n>
-    <MonoBundlingExtraArgs></MonoBundlingExtraArgs>
-    <CodeSignEntitlements></CodeSignEntitlements>
-    <CodeSignResourceRules></CodeSignResourceRules>
-    <ProductDefinition></ProductDefinition>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <TlsProvider>
+    </TlsProvider>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
+    <CodeSigningKey>
+    </CodeSigningKey>
+    <CodeSignProvision>
+    </CodeSignProvision>
+    <CodeSignExtraArgs>
+    </CodeSignExtraArgs>
+    <PackageSigningKey>
+    </PackageSigningKey>
+    <PackagingExtraArgs>
+    </PackagingExtraArgs>
+    <I18n>
+    </I18n>
+    <MonoBundlingExtraArgs>
+    </MonoBundlingExtraArgs>
+    <CodeSignEntitlements>
+    </CodeSignEntitlements>
+    <CodeSignResourceRules>
+    </CodeSignResourceRules>
+    <ProductDefinition>
+    </ProductDefinition>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

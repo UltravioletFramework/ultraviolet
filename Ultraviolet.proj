@@ -37,11 +37,6 @@
     </Ultraviolet_NETCore_Solution>
   </ItemGroup>
   
-  <!-- VERSIONING -->
-  <Target Name="CopyVersionFile">
-    <Copy SourceFiles="Source/Version.cs" DestinationFiles="Samples/Version.cs"/>
-  </Target>
-    
   <!-- DESKTOP -->	
   <Target Name="RepackArchives">
     <!-- TODO: Get this target working on non-Windows platforms -->
@@ -217,7 +212,6 @@
     <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <CallTarget Targets="CopyDesktopSampleDependencies"/>		
   </Target>  
   <Target Name="CopyNETCoreBinaries">
     <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/Newtonsoft.Json.*">
@@ -276,7 +270,6 @@
     <Copy SourceFiles="@(Ultraviolet_Presentation_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <CallTarget Targets="CopyNETCoreSampleDependencies"/>		
   </Target>
   <Target Name="CopyWindowsBinaries">
     <CreateItem Include="Source/Ultraviolet.Core.Design/bin/$(Configuration)/Ultraviolet.Core.Design.*">
@@ -298,20 +291,6 @@
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Shims_macOS)" DestinationFiles="@(Ultraviolet_Shims_macOS->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
-  <Target Name="CopyDesktopSampleDependencies">
-    <CreateItem Include="Binaries/AnyCPU/$(Configuration)/*.*">
-      <Output TaskParameter="Include" ItemName="SampleDependencies_Desktop"/>
-    </CreateItem>
-    <Copy SourceFiles="@(SampleDependencies_Desktop)" DestinationFiles="@(SampleDependencies_Desktop->'Samples/Dependencies/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-    <CallTarget Targets="CopyVersionFile"/>
-  </Target>  
-  <Target Name="CopyNETCoreSampleDependencies">
-    <CreateItem Include="Binaries/netstandard2.0/$(Configuration)/*.*">
-      <Output TaskParameter="Include" ItemName="SampleDependencies_NETCore"/>
-    </CreateItem>
-    <Copy SourceFiles="@(SampleDependencies_NETCore)" DestinationFiles="@(SampleDependencies_NETCore->'Samples/Dependencies/netstandard2.0/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-    <CallTarget Targets="CopyVersionFile"/>
-  </Target>  
   
   <!-- ANDROID -->
   <Target Name="RestoreAndroid">
@@ -384,14 +363,6 @@
     <Copy SourceFiles="@(Ultraviolet_SDL2_Android)" DestinationFiles="@(Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Android)" DestinationFiles="@(Ultraviolet_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Android)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <CallTarget Targets="CopyAndroidSampleDependencies"/>
-  </Target>
-  <Target Name="CopyAndroidSampleDependencies">
-    <CreateItem Include="Binaries/Android/$(Configuration)/*.*">
-      <Output TaskParameter="Include" ItemName="SampleDependencies_Android"/>
-    </CreateItem>
-    <Copy SourceFiles="@(SampleDependencies_Android)" DestinationFiles="@(SampleDependencies_Android->'Samples/Dependencies/Android/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-    <CallTarget Targets="CopyVersionFile"/>
   </Target>
   
   <!-- IOS -->	
@@ -478,13 +449,5 @@
     <Copy SourceFiles="@(Ultraviolet_SDL2_UIKit_iOS)" DestinationFiles="@(Ultraviolet_SDL2_UIKit_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_iOS)" DestinationFiles="@(Ultraviolet_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_iOS)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
-    <CallTarget Targets="CopyiOSSampleDependencies"/>
-  </Target>
-  <Target Name="CopyiOSSampleDependencies">
-    <CreateItem Include="Binaries/iOS/$(Configuration)/*.*">
-      <Output TaskParameter="Include" ItemName="SampleDependencies_iOS"/>
-    </CreateItem>
-    <Copy SourceFiles="@(SampleDependencies_iOS)" DestinationFiles="@(SampleDependencies_iOS->'Samples/Dependencies/iOS/%(RecursiveDir)%(Filename)%(Extension)')"/>	
-    <CallTarget Targets="CopyVersionFile"/>
   </Target>
 </Project>

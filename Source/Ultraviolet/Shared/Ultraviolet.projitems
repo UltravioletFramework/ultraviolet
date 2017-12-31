@@ -521,7 +521,6 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Point2.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\CircleF.json" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)uv.ico" />
-    <None Include="$(MSBuildThisFileDirectory)Ultraviolet.OpenGL.NETStandard.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Circle.json" />

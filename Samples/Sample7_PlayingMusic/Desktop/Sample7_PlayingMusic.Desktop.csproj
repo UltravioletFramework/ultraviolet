@@ -101,9 +101,6 @@
     <None Include="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="..\..\Version.cs">
-      <Link>Properties\Version.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Content\Songs\Deep Haze.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
