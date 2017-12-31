@@ -40,18 +40,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Ultraviolet">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.SDL2.UIKit\iOS">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.SDL2.UIKit.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Core">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Shims.iOS">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.Shims.iOS.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -63,6 +51,24 @@
     <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj">
+      <Project>{F7D661D7-101B-417F-BBF7-8170CC04AB55}</Project>
+      <Name>Ultraviolet.Shims.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2.UIKit\Ultraviolet.SDL2.UIKit.csproj">
+      <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
+      <Name>Ultraviolet.SDL2.UIKit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
+      <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
+      <Name>Ultraviolet.Core.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
+      <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
+      <Name>Ultraviolet.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Shared\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -95,38 +95,11 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Ultraviolet.OpenGL.Bindings">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.OpenGL.Bindings.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Core">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.BASS">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.BASS.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.OpenGL">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.OpenGL.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.SDL2">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.SDL2.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.SDL2.UIKit">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.SDL2.UIKit.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.Shims.iOS">
-      <HintPath>..\..\Dependencies\iOS\Ultraviolet.Shims.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +169,44 @@
       <InProject>false</InProject>
     </ImageAsset>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SampleSharedLib\iOS\SampleSharedLib.iOS.csproj">
+      <Project>{55F3D708-B0C1-446B-A83E-555E7E9EC9E1}</Project>
+      <Name>SampleSharedLib.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
+      <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
+      <Name>Ultraviolet.BASS.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
+      <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
+      <Name>Ultraviolet.Core.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
+      <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
+      <Name>Ultraviolet.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
+      <Project>{65ECB0C3-FD4E-494A-A000-43500B9CB851}</Project>
+      <Name>Ultraviolet.OpenGL.Bindings.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\iOS\Ultraviolet.OpenGL.iOS.csproj">
+      <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
+      <Name>Ultraviolet.OpenGL.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
+      <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
+      <Name>Ultraviolet.SDL2.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2.UIKit\Ultraviolet.SDL2.UIKit.csproj">
+      <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
+      <Name>Ultraviolet.SDL2.UIKit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj">
+      <Project>{F7D661D7-101B-417F-BBF7-8170CC04AB55}</Project>
+      <Name>Ultraviolet.Shims.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Shared\Sample3_RenderingGeometry.projitems" Label="Shared" />
-  <Import Project="..\..\SampleSharedLib\Shared\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
