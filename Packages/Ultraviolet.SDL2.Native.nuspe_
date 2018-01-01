@@ -24,10 +24,17 @@
     <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net47\x64\win32nt\SDL2.dll"/>
     <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net47\x64\osx\libSDL2.dylib"/>
   
-    <file src="Ultraviolet.SDL2.Native\build\MonoAndroid60\Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid60\Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid60\lib\armeabi-v7a\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2.so" target="build\MonoAndroid60\lib\armeabi\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\x86\libSDL2.so" target="build\MonoAndroid60\lib\x86\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\Android\org.libsdl.app.dll" target="lib\MonoAndroid60\org.libsdl.app.dll"/>
+    <file src="Ultraviolet.SDL2.Native\build\netcoreapp2.0\Ultraviolet.SDL2.Native.targets" target="build\netcoreapp2.0\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\netcoreapp2.0\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\netcoreapp2.0\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\netcoreapp2.0\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\netcoreapp2.0\x64\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\netcoreapp2.0\x64\osx\libSDL2.dylib"/>
+  
+    <file src="Ultraviolet.SDL2.Native\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid80\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid80\lib\armeabi-v7a\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\armeabi\libSDL2.so" target="build\MonoAndroid80\lib\armeabi\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\x86\libSDL2.so" target="build\MonoAndroid80\lib\x86\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\Android\org.libsdl.app.dll" target="lib\MonoAndroid80\org.libsdl.app.dll"/>
   </files>  
 </package>

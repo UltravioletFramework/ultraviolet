@@ -17,7 +17,7 @@
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Shims.Android.dll" target="lib\MonoAndroid60\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Shims.Android.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Shims.Android.dll" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.Shims.Android.pdb" target="lib\MonoAndroid80\"/>
   </files>  
 </package>

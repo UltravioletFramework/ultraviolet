@@ -22,8 +22,8 @@
     <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\netstandard2.0\"/>
     <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\netstandard2.0\"/>
     
-    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\MonoAndroid60\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\MonoAndroid60\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\MonoAndroid80\"/>
 
     <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\Xamarin.iOS10\"/>

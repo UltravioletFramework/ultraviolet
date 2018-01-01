@@ -41,12 +41,12 @@
     <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\netcoreapp2.0\x64\osx\libbass.dylib"/>
     <file src="..\Dependencies\BASS\x64\osx\libbass_fx.dylib" target="build\netcoreapp2.0\x64\osx\libbass_fx.dylib"/>
     
-    <file src="Ultraviolet.BASS.Native\build\MonoAndroid60\Ultraviolet.BASS.Native.targets" target="build\MonoAndroid60\Ultraviolet.BASS.Native.targets"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid60\lib\armeabi-v7a\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid60\lib\armeabi-v7a\libbass_fx.so"/>	
-    <file src="..\Dependencies\BASS\Android\armeabi\libbass.so" target="build\MonoAndroid60\lib\armeabi\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\armeabi\libbass_fx.so" target="build\MonoAndroid60\lib\armeabi\libbass_fx.so"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid60\lib\x86\libbass.so"/>
-    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid60\lib\x86\libbass_fx.so"/>
+    <file src="Ultraviolet.BASS.Native\build\MonoAndroid80\Ultraviolet.BASS.Native.targets" target="build\MonoAndroid80\Ultraviolet.BASS.Native.targets"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass.so" target="build\MonoAndroid80\lib\armeabi-v7a\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so" target="build\MonoAndroid80\lib\armeabi-v7a\libbass_fx.so"/>	
+    <file src="..\Dependencies\BASS\Android\armeabi\libbass.so" target="build\MonoAndroid80\lib\armeabi\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\armeabi\libbass_fx.so" target="build\MonoAndroid80\lib\armeabi\libbass_fx.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass.so" target="build\MonoAndroid80\lib\x86\libbass.so"/>
+    <file src="..\Dependencies\BASS\Android\x86\libbass_fx.so" target="build\MonoAndroid80\lib\x86\libbass_fx.so"/>
   </files>  
 </package>
