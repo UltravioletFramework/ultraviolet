@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
+  <metadata minClientVersion="3.3.0">
     <id>Ultraviolet.Game.NETCore</id>
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
@@ -25,11 +25,11 @@
         <dependency id="Ultraviolet.Tools" version="UV_VERSION" />
     </dependencies>
     <contentFiles>
-        <files include="*.cs.pp" buildAction="Compile" />
+        <files include="cs/**/*.*" buildAction="Compile" />
     </contentFiles>
   </metadata>
   <files>
-    <file src="Ultraviolet.Game.Desktop\content\Program.cs.pp" target="contentFiles"/>
-    <file src="Ultraviolet.Game.Desktop\content\Game.cs.pp" target="contentFiles"/>
+    <file src="Ultraviolet.Game.Desktop\content\Program.cs.pp" target="contentFiles\cs\any"/>
+    <file src="Ultraviolet.Game.Desktop\content\Game.cs.pp" target="contentFiles\cs\any"/>
   </files>  
 </package>
