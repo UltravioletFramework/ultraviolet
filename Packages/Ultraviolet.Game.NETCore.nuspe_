@@ -25,4 +25,5 @@
         <dependency id="Ultraviolet.Tools" version="UV_VERSION" />
     </dependencies>
   </metadata>
+  <files />
 </package>
