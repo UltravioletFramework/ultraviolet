@@ -17,7 +17,7 @@ namespace Ultraviolet
         private static class Native
         {
             [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void SDL_UV_SetMainProc(IntPtr proc);
+            public static extern void SDL_SetDynamicMain(IntPtr proc);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Ultraviolet
                 mainProcDelegate = new Func<Int32>(SDLMainProcThunk);
                 mainProcPtr = Marshal.GetFunctionPointerForDelegate(mainProcDelegate);
 
-                Native.SDL_UV_SetMainProc(mainProcPtr);
+                Native.SDL_SetDynamicMain(mainProcPtr);
             }
 
             UIApplication.Main(new String[0], null, nameof(UltravioletAppDelegate));
@@ -94,7 +94,7 @@ namespace Ultraviolet
             {
                 Instance = null;
 
-                Native.SDL_UV_SetMainProc(IntPtr.Zero);
+                Native.SDL_SetDynamicMain(IntPtr.Zero);
 
                 mainProcDelegate = null;
                 mainProcPtr = IntPtr.Zero;
