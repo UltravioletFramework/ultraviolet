@@ -34,9 +34,11 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)x64\osx\libbass.dylib">
       <Link>x64\osx\libbass.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)x64\osx\libbass_fx.dylib">
       <Link>x64\osx\libbass_fx.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>  
   </ItemGroup>
 </Project>

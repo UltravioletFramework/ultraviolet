@@ -18,6 +18,7 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)x64\osx\libSDL2.dylib">
       <Link>x64\osx\libSDL2.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>
