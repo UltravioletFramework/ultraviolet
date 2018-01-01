@@ -61,6 +61,7 @@
     <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
