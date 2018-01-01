@@ -16,10 +16,8 @@
       <Link>x64\win32nt\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="$(MSBuildThisFileDirectory)x64\osx\libSDL2.dylib">
+    <None Include="$(MSBuildThisFileDirectory)x64\osx\libSDL2.dylib">
       <Link>x64\osx\libSDL2.dylib</Link>
-    </BundleResource>
+    </None>
   </ItemGroup>
 </Project>
