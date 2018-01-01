@@ -26,7 +26,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Ultraviolet.Game.Desktop\content\Program.cs.pp" target="content"/>
-    <file src="Ultraviolet.Game.Desktop\content\Game.cs.pp" target="content"/>
+    <file src="Ultraviolet.Game.Desktop\content\Program.cs.pp" target="contentFiles"/>
+    <file src="Ultraviolet.Game.Desktop\content\Game.cs.pp" target="contentFiles"/>
   </files>  
 </package>
