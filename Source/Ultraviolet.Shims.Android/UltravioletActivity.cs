@@ -53,7 +53,7 @@ namespace Ultraviolet
         {
             Contract.RequireNotEmpty(company, nameof(company));
             Contract.RequireNotEmpty(application, nameof(application));
-
+            
             PreserveApplicationSettings = true;
 
             this.company = company;

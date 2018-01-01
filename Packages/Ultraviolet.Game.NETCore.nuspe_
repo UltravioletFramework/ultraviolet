@@ -24,6 +24,9 @@
         <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />
         <dependency id="Ultraviolet.Tools" version="UV_VERSION" />
     </dependencies>
+    <contentFiles>
+        <files include="*.cs.pp" buildAction="Compile" />
+    </contentFiles>
   </metadata>
   <files>
     <file src="Ultraviolet.Game.Desktop\content\Program.cs.pp" target="contentFiles"/>
