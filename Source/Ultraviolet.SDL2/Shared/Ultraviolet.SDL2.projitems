@@ -53,6 +53,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_JoyButtonEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_JoyDeviceEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_JoyHatEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_JoystickGUID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_KeyboardEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Keycode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Keymod.cs" />

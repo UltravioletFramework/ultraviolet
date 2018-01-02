@@ -4,6 +4,7 @@ using Ultraviolet.Core.Messages;
 using Ultraviolet.Input;
 using Ultraviolet.SDL2.Input;
 using Ultraviolet.SDL2.Native;
+using System.Diagnostics;
 
 namespace Ultraviolet.SDL2
 {
@@ -27,6 +28,8 @@ namespace Ultraviolet.SDL2
             this.gamePadInfo.GamePadConnected += OnGamePadConnected;
             this.gamePadInfo.GamePadDisconnected += OnGamePadDisconnected;
             this.touchInfo = new TouchDeviceInfo(uv);
+
+            LoadGameControllerMappingDatabase(uv);
 
             uv.Messages.Subscribe(this,
                 UltravioletMessages.TextInputRegionChanged);
@@ -464,7 +467,26 @@ namespace Ultraviolet.SDL2
 
             base.Dispose(disposing);
         }
-                
+
+        /// <summary>
+        /// Attempts to load gamecontrollerdb.txt, if it is located in the application's root directory. 
+        /// </summary>
+        private void LoadGameControllerMappingDatabase(UltravioletContext uv)
+        {
+            const string DatabasePath = "gamecontrollerdb.txt";
+
+            var fss = new Ultraviolet.Platform.FileSystemService();
+            if (fss.FileExists(DatabasePath))
+            {
+                using (var stream = fss.OpenRead(DatabasePath))
+                using (var wrapper = new SDL2StreamWrapper(stream))
+                {
+                    if (SDL.GameControllerAddMappingsFromRW(wrapper.ToIntPtr(), 0) < 0)
+                        throw new SDL2Exception();
+                }
+            }
+        }
+
         /// <summary>
         /// Raises the <see cref="GamePadConnected"/> event.
         /// </summary>

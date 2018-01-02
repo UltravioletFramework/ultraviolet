@@ -480,14 +480,18 @@ namespace Ultraviolet.SDL2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_LoadBMP_RW", CallingConvention = CallingConvention.Cdecl)]
-        public static extern SDL_Surface* LoadBMP_RW([MarshalAs(UnmanagedType.LPStr)] String file);
+        public static extern SDL_Surface* LoadBMP_RW(IntPtr src, Int32 freesrc);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate SDL_Surface* SDL_LoadBMP_RWDelegate([MarshalAs(UnmanagedType.LPStr)] String file);
+        private delegate SDL_Surface* SDL_LoadBMP_RWDelegate(IntPtr src, Int32 freesrc);
         private static readonly SDL_LoadBMP_RWDelegate pSDL_LoadBMP_RW = lib.LoadFunction<SDL_LoadBMP_RWDelegate>("SDL_LoadBMP_RW");
-        public static SDL_Surface* LoadBMP_RW(String file) => pSDL_LoadBMP_RW(file);
+        public static SDL_Surface* LoadBMP_RW(IntPtr src, Int32 freesrc) => pSDL_LoadBMP_RW(src, freesrc);
 #endif
+        public static SDL_Surface* LoadBMP(String file)
+        {
+            return LoadBMP_RW(RWFromFile(file, "r"), 1);
+        }
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_SaveBMP_RW", CallingConvention = CallingConvention.Cdecl)]
@@ -1207,5 +1211,76 @@ namespace Ultraviolet.SDL2.Native
         private static readonly SDL_GetWindowOpacityDelegate pSDL_GetWindowOpacity = lib.LoadFunction<SDL_GetWindowOpacityDelegate>("SDL_GetWindowOpacity");
         public static Int32 GetWindowOpacity(IntPtr window, Single* opacity) => pSDL_GetWindowOpacity(window, opacity);
 #endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_GameControllerAddMapping", CallingConvention = CallingConvention.Cdecl)]
+        public static extern Int32 GameControllerAddMapping([MarshalAs(UnmanagedType.LPStr)] String mappingString);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Int32 SDL_GameControllerAddMappingDelegate([MarshalAs(UnmanagedType.LPStr)] String mappingString);
+        private static readonly SDL_GameControllerAddMappingDelegate pSDL_GameControllerAddMapping = lib.LoadFunction<SDL_GameControllerAddMappingDelegate>("SDL_GameControllerAddMapping");
+        public static Int32 GameControllerAddMapping([MarshalAs(UnmanagedType.LPStr)] String mappingString) => pSDL_GameControllerAddMapping(mappingString);
+#endif
+        
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_GameControllerAddMappingsFromRW", CallingConvention = CallingConvention.Cdecl)]
+        public static extern Int32 GameControllerAddMappingsFromRW(IntPtr rw, Int32 freerw);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Int32 SDL_GameControllerAddMappingsFromRWDelegate(IntPtr rw, Int32 freerw);
+        private static readonly SDL_GameControllerAddMappingsFromRWDelegate pSDL_GameControllerAddMappingsFromRW = lib.LoadFunction<SDL_GameControllerAddMappingsFromRWDelegate>("SDL_GameControllerAddMappingsFromRW");
+        public static Int32 GameControllerAddMappingsFromRW(IntPtr rw, Int32 freerw) => pSDL_GameControllerAddMappingsFromRW(rw, freerw);
+#endif
+        public static Int32 GameControllerAddMappingsFromFile(String file) => GameControllerAddMappingsFromRW(RWFromFile(file, "rb"), 1);
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_GameControllerMapping", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr GameControllerMapping_Impl(IntPtr gamecontroller);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr SDL_GameControllerMappingDelegate(IntPtr gamecontroller);
+        private static readonly SDL_GameControllerMappingDelegate pSDL_GameControllerMapping = lib.LoadFunction<SDL_GameControllerMappingDelegate>("SDL_GameControllerMapping");
+        private static IntPtr GameControllerMapping_Impl(IntPtr gamecontroller) => pSDL_GameControllerMapping(gamecontroller);
+#endif      
+        public static String GameControllerMapping(IntPtr gamecontroller) => Marshal.PtrToStringAnsi(GameControllerMapping_Impl(gamecontroller));
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_GameControllerMappingForGUID", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr GameControllerMappingForGUID_Impl(Guid guid);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr SDL_GameControllerMappingForGUIDDelegate(Guid guid);
+        private static readonly SDL_GameControllerMappingForGUIDDelegate pSDL_GameControllerMappingForGUID = lib.LoadFunction<SDL_GameControllerMappingForGUIDDelegate>("SDL_GameControllerMappingForGUID");
+        private static IntPtr GameControllerMappingForGUID_Impl(Guid guid) => pSDL_GameControllerMappingForGUID(guid);
+#endif
+        public static String GameControllerMappingForGUID(Guid guid) => Marshal.PtrToStringAnsi(GameControllerMappingForGUID_Impl(SDL_JoystickGUID.Marshal(guid)));
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_JoystickGetGUID", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Guid JoystickGetGUID_Impl(IntPtr joystick);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Guid SDL_JoystickGetGUIDDelegate(IntPtr joystick);
+        private static readonly SDL_JoystickGetGUIDDelegate pSDL_JoystickGetGUID = lib.LoadFunction<SDL_JoystickGetGUIDDelegate>("SDL_JoystickGetGUID");
+        private static Guid JoystickGetGUID_Impl(IntPtr joystick) => pSDL_JoystickGetGUID(joystick);
+#endif
+        public static Guid JoystickGetGUID(IntPtr joystick) => SDL_JoystickGUID.Marshal(JoystickGetGUID_Impl(joystick));
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_JoystickGetGUIDFromString", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Guid JoystickGetGUIDFromString_Impl([MarshalAs(UnmanagedType.LPStr)] String pchGUID);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Guid SDL_JoystickGetGUIDFromStringDelegate([MarshalAs(UnmanagedType.LPStr)] String pchGUID);
+        private static readonly SDL_JoystickGetGUIDFromStringDelegate pSDL_JoystickGetGUIDFromString = lib.LoadFunction<SDL_JoystickGetGUIDFromStringDelegate>("SDL_JoystickGetGUIDFromString");
+        private static Guid JoystickGetGUIDFromString_Impl([MarshalAs(UnmanagedType.LPStr)] String pchGUID) => pSDL_JoystickGetGUIDFromString(pchGUID);
+#endif
+        public static Guid JoystickGetGUIDFromString(String pchGUID) => SDL_JoystickGUID.Marshal(JoystickGetGUIDFromString_Impl(pchGUID));        
     }
 }
