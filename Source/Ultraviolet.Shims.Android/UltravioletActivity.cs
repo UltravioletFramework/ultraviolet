@@ -1,18 +1,17 @@
+using Android.Text;
+using Org.Libsdl.App;
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Xml;
-using Android.Text;
-using Org.Libsdl.App;
-using Ultraviolet.Shims.Android.Input;
-using Ultraviolet.Shims.Android.Platform;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Messages;
 using Ultraviolet.Platform;
+using Ultraviolet.Shims.Android.Input;
+using Ultraviolet.Shims.Android.Platform;
 
 namespace Ultraviolet
 {
@@ -26,15 +25,6 @@ namespace Ultraviolet
         IUltravioletHost,
         IDisposable
     {
-        /// <summary>
-        /// Contains native methods used by the <see cref="UltravioletActivity"/> class.
-        /// </summary>
-        private static class Native
-        {
-            [DllImport("SDL2", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UV_SetMainProc")]
-            public static extern void UVSetMainProc(IntPtr proc);
-        }
-
         /// <summary>
         /// Initializes the <see cref="UltravioletActivity"/> type.
         /// </summary>
@@ -53,14 +43,11 @@ namespace Ultraviolet
         {
             Contract.RequireNotEmpty(company, nameof(company));
             Contract.RequireNotEmpty(application, nameof(application));
-            
+
             PreserveApplicationSettings = true;
 
             this.company = company;
             this.application = application;
-
-            this.sdlMainProc = new Func<Int32>(SDLMainProc);
-            Native.UVSetMainProc(Marshal.GetFunctionPointerForDelegate(this.sdlMainProc));
         }
 
         /// <summary>
@@ -71,6 +58,27 @@ namespace Ultraviolet
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
             OnReceivedMessage(type, data);
+        }
+
+        /// <inheritdoc/>
+        public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
+        {
+            if (Ultraviolet != null && !Ultraviolet.Disposed)
+            {
+                var display = Ultraviolet.GetPlatform().Displays[0];
+                var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
+
+                if (rotation != display.Rotation)
+                {
+                    AndroidScreenRotationService.UpdateScreenRotation(rotation);
+
+                    var messageData = Ultraviolet.Messages.CreateMessageData<OrientationChangedMessageData>();
+                    messageData.Display = display;
+                    Ultraviolet.Messages.Publish(UltravioletMessages.OrientationChanged, messageData);
+                }
+            }
+
+            base.OnConfigurationChanged(newConfig);
         }
 
         /// <summary>
@@ -118,36 +126,6 @@ namespace Ultraviolet
 
             running = false;
             finished = true;
-        }
-
-        /// <summary>
-        /// Gets or sets the activity's current keyboard type.
-        /// </summary>
-        internal InputTypes KeyboardInputType
-        {
-            get { return (InputTypes)MCurrentInputType; }
-            set { MCurrentInputType = (Int32)value; }
-        }
-
-        /// <inheritdoc/>
-        public override void OnConfigurationChanged(global::Android.Content.Res.Configuration newConfig)
-        {
-            if (Ultraviolet != null && !Ultraviolet.Disposed)
-            {
-                var display = Ultraviolet.GetPlatform().Displays[0];
-                var rotation = (ScreenRotation)WindowManager.DefaultDisplay.Rotation;
-
-                if (rotation != display.Rotation)
-                {
-                    AndroidScreenRotationService.UpdateScreenRotation(rotation);
-
-                    var messageData = Ultraviolet.Messages.CreateMessageData<OrientationChangedMessageData>();
-                    messageData.Display = display;
-                    Ultraviolet.Messages.Publish(UltravioletMessages.OrientationChanged, messageData);
-                }
-            }
-
-            base.OnConfigurationChanged(newConfig);
         }
 
         /// <summary>
@@ -278,6 +256,23 @@ namespace Ultraviolet
             }
         }
 
+        /// <summary>
+        /// Gets the current instance of the <see cref="UltravioletActivity"/> class.
+        /// </summary>
+        internal static UltravioletActivity Instance
+        {
+            get { return MSingleton as UltravioletActivity; }
+        }
+
+        /// <summary>
+        /// Gets or sets the activity's current keyboard type.
+        /// </summary>
+        internal InputTypes KeyboardInputType
+        {
+            get { return (InputTypes)MCurrentInputType; }
+            set { MCurrentInputType = (Int32)value; }
+        }
+        
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
@@ -480,12 +475,15 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        protected override void OnCreate(global::Android.OS.Bundle savedInstanceState)
+        protected sealed override void OnUltravioletRun()
         {
-            base.OnCreate(savedInstanceState);
+            Run();
 
-            AndroidScreenDensityService.Activity = this;
-            AndroidSoftwareKeyboardService.Activity = this;
+            SafeDispose.DisposeRef(ref uv);
+            if (finished)
+            {
+                Finish();
+            }
         }
 
         /// <summary>
@@ -753,23 +751,6 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// The procedure invoked by SDL_main.
-        /// </summary>
-        /// <returns>The program's status code on exit.</returns>
-        private Int32 SDLMainProc()
-        {
-            Run();
-
-            SafeDispose.DisposeRef(ref uv);
-            if (finished)
-            {
-                Finish();
-            }
-
-            return 0;
-        }
-
-        /// <summary>
         /// Writes a warning to the debug output if no file system source has been specified.
         /// </summary>
         private void WarnIfFileSystemSourceIsMissing()
@@ -785,7 +766,6 @@ namespace Ultraviolet
 
         // State values.
         private readonly Object stateSyncObject = new Object();
-        private readonly Func<Int32> sdlMainProc;
         private UltravioletHostCore hostcore;
         private Boolean created;
         private Boolean running;

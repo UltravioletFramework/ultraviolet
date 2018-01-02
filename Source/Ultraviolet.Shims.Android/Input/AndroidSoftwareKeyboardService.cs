@@ -12,7 +12,8 @@ namespace Ultraviolet.Shims.Android.Input
         /// <inheritdoc/>
         public override Boolean ShowSoftwareKeyboard(KeyboardMode mode)
         {
-            if (Activity == null)
+            var activity = UltravioletActivity.Instance;
+            if (activity == null)
                 return false;
 
             switch (mode)
@@ -21,19 +22,19 @@ namespace Ultraviolet.Shims.Android.Input
                     /* NOTE: We use TextVariationVisiblePassword here to match SDL's default behavior.
                      * This is done to disable text suggestions due to the fact that some keyboards implement
                      * them in a way which is difficult to handle properly. */
-                    Activity.KeyboardInputType = InputTypes.ClassText | InputTypes.TextVariationVisiblePassword;
+                    activity.KeyboardInputType = InputTypes.ClassText | InputTypes.TextVariationVisiblePassword;
                     break;
 
                 case KeyboardMode.Number:
-                    Activity.KeyboardInputType = InputTypes.ClassNumber;
+                    activity.KeyboardInputType = InputTypes.ClassNumber;
                     break;
 
                 case KeyboardMode.Phone:
-                    Activity.KeyboardInputType = InputTypes.ClassPhone;
+                    activity.KeyboardInputType = InputTypes.ClassPhone;
                     break;
 
                 case KeyboardMode.Datetime:
-                    Activity.KeyboardInputType = InputTypes.ClassDatetime;
+                    activity.KeyboardInputType = InputTypes.ClassDatetime;
                     break;
             }
 
@@ -45,7 +46,8 @@ namespace Ultraviolet.Shims.Android.Input
         /// <inheritdoc/>
         public override Boolean HideSoftwareKeyboard()
         {
-            if (Activity == null)
+            var activity = UltravioletActivity.Instance;
+            if (activity == null)
                 return false;
 
             OnHidingSoftwareKeyboard();
@@ -67,17 +69,7 @@ namespace Ultraviolet.Shims.Android.Input
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the current Android activity.
-        /// </summary>
-        [CLSCompliant(false)]
-        public static UltravioletActivity Activity
-        {
-            get;
-            internal set;
-        }
-
+        
         // Property values.
         private Rectangle? textInputRegion;
     }

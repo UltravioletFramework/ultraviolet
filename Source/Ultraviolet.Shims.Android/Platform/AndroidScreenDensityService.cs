@@ -17,13 +17,15 @@ namespace Ultraviolet.Shims.Android.Platform
         public AndroidScreenDensityService(IUltravioletDisplay display)
             : base(display)
         {
-
+            EnsureMetrics();
         }
 
         /// <inheritdoc/>
         public override Boolean Refresh()
         {
-            if (Activity == null)
+            EnsureMetrics();
+
+            if (activity == null)
                 return false;
 
             var oldDensityScale = DensityScale;
@@ -31,7 +33,7 @@ namespace Ultraviolet.Shims.Android.Platform
             var oldDensityY = DensityY;
             var oldDensityBucket = DensityBucket;
 
-            Activity.WindowManager.DefaultDisplay.GetMetrics(metrics);
+            activity.WindowManager.DefaultDisplay.GetMetrics(metrics);
 
             return
                 oldDensityScale != DensityScale ||
@@ -39,27 +41,7 @@ namespace Ultraviolet.Shims.Android.Platform
                 oldDensityY != DensityY ||
                 oldDensityBucket != DensityBucket;            
         }
-
-        /// <summary>
-        /// Gets the current Android activity.
-        /// </summary>
-        [CLSCompliant(false)]
-        public static Activity Activity
-        {
-            get { return activity; }
-            internal set
-            {
-                activity = value;
-                metrics = null;
-
-                if (value != null)
-                {
-                    metrics = new DisplayMetrics();
-                    value.WindowManager.DefaultDisplay.GetMetrics(metrics);
-                }
-            }
-        }
-
+        
         /// <inheritdoc/>
         public override Single DeviceScale
         {
@@ -74,6 +56,7 @@ namespace Ultraviolet.Shims.Android.Platform
         {
             get
             {
+                EnsureMetrics();
                 return (metrics == null) ? 1 : (160f / 96f) * metrics.Density;
             }
         }
@@ -83,6 +66,7 @@ namespace Ultraviolet.Shims.Android.Platform
         {
             get
             {
+                EnsureMetrics();
                 return (metrics == null) ? 0 : metrics.Xdpi;
             }
         }
@@ -92,6 +76,7 @@ namespace Ultraviolet.Shims.Android.Platform
         {
             get
             {
+                EnsureMetrics();
                 return (metrics == null) ? 0 : metrics.Ydpi;
             }
         }
@@ -101,6 +86,8 @@ namespace Ultraviolet.Shims.Android.Platform
         {
             get
             {
+                EnsureMetrics();
+
                 if (metrics == null)
                     return ScreenDensityBucket.Desktop;
 
@@ -123,8 +110,30 @@ namespace Ultraviolet.Shims.Android.Platform
             }
         }
 
+        /// <summary>
+        /// Ensures that the service has retrieved the display metrics.
+        /// </summary>
+        private void EnsureMetrics()
+        {
+            var activity = UltravioletActivity.Instance;
+            if (activity == this.activity)
+                return;
+
+            if (activity == null)
+            {
+                this.activity = null;
+                this.metrics = null;
+            }
+            else
+            {
+                this.activity = activity;
+                this.metrics = new DisplayMetrics();
+                activity.WindowManager.DefaultDisplay.GetMetrics(metrics);
+            }
+        }
+
         // State values.
-        private static Activity activity;
-        private static DisplayMetrics metrics;
+        private Activity activity;
+        private DisplayMetrics metrics;
     }
 }
