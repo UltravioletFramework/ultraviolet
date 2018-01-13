@@ -91,6 +91,10 @@ sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Shims.Desktop.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Core.TestFramework.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Core.Tests.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.TestFramework.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Tests.dll" "%TLSN%"
 GOTO :eof
 
 :test_uvss

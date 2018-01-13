@@ -162,6 +162,14 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Gets the clock which is driving the value's current animation, if any.
+        /// </summary>
+        Clock AnimationClock
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the dependency property's underlying value implements the <see cref="IResourceWrapper"/> interface.
         /// </summary>
         Boolean IsResourceWrapper
@@ -250,9 +258,9 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
-        /// Gets the clock which is driving the value's current animation, if any.
+        /// Gets the identifier of the digest cycle during which this value was last changed.
         /// </summary>
-        Clock AnimationClock
+        Int64 LastChangedDigestCycleID
         {
             get;
         }

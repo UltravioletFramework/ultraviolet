@@ -19,6 +19,17 @@ namespace Ultraviolet.Presentation.Media
             Children = new TransformCollection();
         }
 
+        /// <inheritdoc/>
+        public override Boolean WasInvalidatedAfterDigest(Int64 digestID)
+        {
+            foreach (var child in Children)
+            {
+                if (child.WasInvalidatedAfterDigest(digestID))
+                    return true;
+            }
+            return base.WasInvalidatedAfterDigest(digestID);
+        }
+
         /// <summary>
         /// Gets the transform at the specified index within the group.
         /// </summary>
@@ -37,7 +48,7 @@ namespace Ultraviolet.Presentation.Media
         }
 
         /// <inheritdoc/>
-        Object IIndexable.this[int index]
+        Object IIndexable.this[Int32 index]
         {
             get
             {
@@ -112,35 +123,7 @@ namespace Ultraviolet.Presentation.Media
                 return true;
             }
         }
-
-        /// <inheritdoc/>
-        public override Boolean WasInvalidatedThisDigest
-        {
-            get
-            {
-                foreach (var child in Children)
-                {
-                    if (child.WasInvalidatedThisDigest)
-                        return true;
-                }
-                return false;
-            }
-        }
-
-        /// <inheritdoc/>
-        public override Boolean WasInvalidatedLastDigest
-        {
-            get
-            {
-                foreach (var child in Children)
-                {
-                    if (child.WasInvalidatedLastDigest)
-                        return true;
-                }
-                return false;
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets the transform group's list of child transformations.
         /// </summary>

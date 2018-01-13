@@ -61,6 +61,7 @@ namespace Ultraviolet.Presentation
                 var oldValue = defaultValue;
                 var newValue = GetValue();
                 metadata.HandleChanged(owner, property, oldValue, newValue);
+                lastChangedDigestCycleID = PresentationFoundation.Instance?.DigestCycleID ?? 0;
             }
 
             /// <inheritdoc/>
@@ -455,6 +456,12 @@ namespace Ultraviolet.Presentation
                 get { return property; }
             }
 
+            /// <inheritdoc/>
+            public Clock AnimationClock
+            {
+                get { return GetAnimationState(false)?.Clock; }
+            }
+
             /// <summary>
             /// Gets a value indicating whether the value must be digested.
             /// </summary>
@@ -566,9 +573,9 @@ namespace Ultraviolet.Presentation
             }
 
             /// <inheritdoc/>
-            public Clock AnimationClock
+            public Int64 LastChangedDigestCycleID
             {
-                get { return GetAnimationState(false)?.Clock; }
+                get { return lastChangedDigestCycleID; }
             }
 
             /// <inheritdoc/>
@@ -759,6 +766,7 @@ namespace Ultraviolet.Presentation
                 else
                 {
                     metadata.HandleChanged(owner, property, oldValue, newValue);
+                    lastChangedDigestCycleID = PresentationFoundation.Instance?.DigestCycleID ?? 0;
                 }
             }
 
@@ -1171,6 +1179,7 @@ namespace Ultraviolet.Presentation
             private readonly PropertyMetadata metadata;
             private DependencyPropertyValueFlags flags;
             private Boolean useDefaultValue = true;
+            private Int64 lastChangedDigestCycleID;
             private T localValue;
             private T styledValue;
             private T defaultValue;

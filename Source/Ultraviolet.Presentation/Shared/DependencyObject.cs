@@ -40,12 +40,10 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void RaisePendingChangeEvents()
         {
-            using (var buffer = GetDependencyPropertyValuesBuffer())
+            for (int i = 0; i < dependencyPropertyValues.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    value.RaisePendingChangeEvent();
-                }
+                var value = dependencyPropertyValues[i];
+                value.RaisePendingChangeEvent();
             }
         }
 
@@ -70,13 +68,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void DigestImmediately()
         {
-            using (var buffer = GetDigestedDependencyPropertiesBuffer())
+            for (int i = 0; i < dependencyPropertyValuesNeedingDigestion.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    value.DigestImmediately();
-                    OnDigestingImmediately(value.Property);
-                }
+                var value = dependencyPropertyValuesNeedingDigestion[i];
+                value.DigestImmediately();
+                OnDigestingImmediately(value.Property);
             }
         }
 
@@ -103,36 +99,25 @@ namespace Ultraviolet.Presentation
             if (digestCycleID == lastDigestedCycleID)
                 return;
 
-            lastDigestedCycleID = PresentationFoundation.Instance.DigestCycleID;
+            lastDigestedCycleID = digestCycleID;
 
-            if (dependencyPropertyValuesOfTypeDependencyObject.Count > 0)
+            for (int i = 0; i < dependencyPropertyValuesOfTypeDependencyObject.Count; i++)
             {
-                using (var buffer = GetDependencyPropertyValuesOfTypeDependencyObjectBuffer())
+                var value = dependencyPropertyValuesOfTypeDependencyObject[i];
+                var dobj = (DependencyObject)value.GetUntypedValue();
+                if (dobj != null)
                 {
-                    foreach (var value in buffer.Object)
-                    {
-                        var dobj = (DependencyObject)value.GetUntypedValue();
-                        if (dobj != null)
-                        {
-                            if (dobj.WasInvalidatedLastDigest)
-                            {
-                                value.HandleForcedInvalidation();
-                            }
-                            dobj.Digest(time);
-                        }
-                    }
+                    if (dobj.WasInvalidatedAfterDigest(value.LastChangedDigestCycleID))
+                        value.HandleForcedInvalidation();
+
+                    dobj.Digest(time);
                 }
             }
 
-            if (digestedDependencyProperties.Count > 0)
+            for (int i = 0; i < dependencyPropertyValuesNeedingDigestion.Count; i++)
             {
-                using (var buffer = GetDigestedDependencyPropertiesBuffer())
-                {
-                    foreach (var value in buffer.Object)
-                    {
-                        value.Digest(time);
-                    }
-                }
+                var value = dependencyPropertyValuesNeedingDigestion[i];
+                value.Digest(time);
             }
 
             OnDigesting(time);
@@ -162,13 +147,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void ClearBindings()
         {
-            using (var buffer = GetDependencyPropertyValuesBuffer())
+            for (int i = 0; i < dependencyPropertyValues.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    if (value.IsDataBound)
-                        value.Unbind();
-                }
+                var value = dependencyPropertyValues[i];
+                if (value.IsDataBound)
+                    value.Unbind();
             }
         }
 
@@ -177,13 +160,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void ClearAnimations()
         {
-            using (var buffer = GetDependencyPropertyValuesBuffer())
+            for (int i = 0; i < dependencyPropertyValues.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    if (!value.Property.IsReadOnly)
-                        value.ClearAnimation();
-                }
+                var value = dependencyPropertyValues[i];
+                if (!value.Property.IsReadOnly)
+                    value.ClearAnimation();
             }
         }
 
@@ -192,13 +173,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void ClearLocalValues()
         {
-            using (var buffer = GetDependencyPropertyValuesBuffer())
+            for (int i = 0; i < dependencyPropertyValues.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    if (!value.Property.IsReadOnly)
-                        value.ClearLocalValue();
-                }
+                var value = dependencyPropertyValues[i];
+                if (!value.Property.IsReadOnly)
+                    value.ClearLocalValue();
             }
         }
 
@@ -207,13 +186,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void ClearStyledValues()
         {
-            using (var buffer = GetDependencyPropertyValuesBuffer())
+            for (int i = 0; i < dependencyPropertyValues.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    if (!value.Property.IsReadOnly)
-                        value.ClearStyledValue();
-                }
+                var value = dependencyPropertyValues[i];
+                if (!value.Property.IsReadOnly)
+                    value.ClearStyledValue();
             }
 
             if (attachedTriggers != null)
@@ -231,13 +208,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         public void ClearTriggeredValues()
         {
-            using (var buffer = GetDependencyPropertyValuesBuffer())
+            for (int i = 0; i < dependencyPropertyValues.Count; i++)
             {
-                foreach (var value in buffer.Object)
-                {
-                    if (!value.Property.IsReadOnly)
-                        value.ClearTriggeredValue();
-                }
+                var value = dependencyPropertyValues[i];
+                if (!value.Property.IsReadOnly)
+                    value.ClearTriggeredValue();
             }
         }
 
@@ -358,11 +333,7 @@ namespace Ultraviolet.Presentation
         public void InvalidateDependencyObject()
         {
             var digestCycleID = PresentationFoundation.Instance.DigestCycleID;
-            if (digestCycleID == invalidatedDigestCount1 || digestCycleID == invalidatedDigestCount2)
-                return;
-
-            invalidatedDigestCount1 = invalidatedDigestCount2;
-            invalidatedDigestCount2 = digestCycleID;
+            invalidatedDigestCycleID = digestCycleID;
         }
 
         /// <summary>
@@ -782,35 +753,24 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Gets a value indicating whether this dependency object was forcibly invalidated
+        /// on or after the specified digest cycle.
+        /// </summary>
+        /// <param name="digestID">The identifier of the digest cycle to compare against 
+        /// the cycle during which the object was invalidated.</param>
+        /// <returns><see langword="true"/> if the object was invalidated on or after the
+        /// specified digest cycle; otherwise, <see langword="false"/>.</returns>
+        public virtual Boolean WasInvalidatedAfterDigest(Int64 digestID)
+        {
+            return invalidatedDigestCycleID >= digestID;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether change events are being deferred for this object.
         /// </summary>
         public virtual Boolean IsDeferringChangeEvents
         {
             get { return false; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this dependency object was forcibly invalidated during the current digest.
-        /// </summary>
-        public virtual Boolean WasInvalidatedThisDigest
-        {
-            get
-            {
-                var digest = PresentationFoundation.Instance.DigestCycleID;
-                return digest > 0 && (digest == invalidatedDigestCount2);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this dependency object was forcibly invalidated during the previous digest cycle.
-        /// </summary>
-        public virtual Boolean WasInvalidatedLastDigest
-        {
-            get
-            {
-                var digest = PresentationFoundation.Instance.DigestCycleID - 1;
-                return digest > 0 && (digest == invalidatedDigestCount1 || digest == invalidatedDigestCount2);
-            }
         }
 
         /// <summary>
@@ -1025,18 +985,17 @@ namespace Ultraviolet.Presentation
         private IDependencyPropertyValue GetDependencyPropertyValue(DependencyProperty dp, Type type, Boolean createIfMissing = true)
         {
             IDependencyPropertyValue valueWrapper;
-            dependencyPropertyValues.TryGetValue(dp.ID, out valueWrapper);
+            dependencyPropertyValuesByID.TryGetValue(dp.ID, out valueWrapper);
 
             if (valueWrapper == null && createIfMissing)
             {
                 var dpValueType = typeof(DependencyPropertyValue<>).MakeGenericType(type);
                 valueWrapper = (IDependencyPropertyValue)Activator.CreateInstance(dpValueType, this, dp);
-                dependencyPropertyValues[dp.ID] = valueWrapper;
+                dependencyPropertyValuesByID[dp.ID] = valueWrapper;
+                dependencyPropertyValues.Add(valueWrapper);
 
                 if (typeof(DependencyObject).IsAssignableFrom(type))
-                {
-                    dependencyPropertyValuesOfTypeDependencyObject[dp.ID] = valueWrapper;
-                }
+                    dependencyPropertyValuesOfTypeDependencyObject.Add(valueWrapper);
             }
             return valueWrapper;
         }
@@ -1050,82 +1009,32 @@ namespace Ultraviolet.Presentation
         {
             if (digest)
             {
-                if (!digestedDependencyProperties.Contains(value))
+                if (!dependencyPropertyValuesNeedingDigestion.Contains(value))
                 {
-                    digestedDependencyProperties.Add(value);
+                    dependencyPropertyValuesNeedingDigestion.Add(value);
                 }
             }
             else
             {
-                digestedDependencyProperties.Remove(value);
+                dependencyPropertyValuesNeedingDigestion.Remove(value);
             }
         }
         
-        /// <summary>
-        /// Retrieves a pooled buffer which is populated with the object's dependency property values.
-        /// </summary>
-        private PooledObjectScope<List<IDependencyPropertyValue>> GetDependencyPropertyValuesBuffer()
-        {
-            var scope = dpValueBufferPool.RetrieveScoped();
-
-            if (scope.Object.Capacity < dependencyPropertyValues.Count)
-                scope.Object.Capacity = dependencyPropertyValues.Count;
-
-            scope.Object.AddRange(dependencyPropertyValues.Values);
-
-            return scope;
-        }
-
-        /// <summary>
-        /// Retrieves a pooled buffer which is populated with the object's dependency property values of type <see cref="DependencyObject"/>.
-        /// </summary>
-        private PooledObjectScope<List<IDependencyPropertyValue>> GetDependencyPropertyValuesOfTypeDependencyObjectBuffer()
-        {
-            var scope = dpValueBufferPool.RetrieveScoped();
-
-            if (scope.Object.Capacity < dependencyPropertyValuesOfTypeDependencyObject.Count)
-                scope.Object.Capacity = dependencyPropertyValuesOfTypeDependencyObject.Count;
-
-            scope.Object.AddRange(dependencyPropertyValuesOfTypeDependencyObject.Values);
-
-            return scope;
-        }
-
-        /// <summary>
-        /// Retrieves a pooled buffer which is populated with the object's digested dependency property values.
-        /// </summary>
-        private PooledObjectScope<List<IDependencyPropertyValue>> GetDigestedDependencyPropertiesBuffer()
-        {
-            var scope = dpValueBufferPool.RetrieveScoped();
-
-            if (scope.Object.Capacity < digestedDependencyProperties.Count)
-                scope.Object.Capacity = digestedDependencyProperties.Count;
-
-            scope.Object.AddRange(digestedDependencyProperties);
-
-            return scope;
-        }
-
         // The list of attached triggers.
         private List<UvssTrigger> attachedTriggers;
 
         // The list of values for this object's dependency properties.
-        private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValues =
+        private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValuesByID =
             new Dictionary<Int64, IDependencyPropertyValue>();
-        private readonly Dictionary<Int64, IDependencyPropertyValue> dependencyPropertyValuesOfTypeDependencyObject =
-            new Dictionary<Int64, IDependencyPropertyValue>();
-
-        // The list of dependency properties which need to participate in the digest cycle.
-        private readonly List<IDependencyPropertyValue> digestedDependencyProperties =
+        private readonly List<IDependencyPropertyValue> dependencyPropertyValues =
+            new List<IDependencyPropertyValue>();
+        private readonly List<IDependencyPropertyValue> dependencyPropertyValuesOfTypeDependencyObject =
+            new List<IDependencyPropertyValue>();
+        private readonly List<IDependencyPropertyValue> dependencyPropertyValuesNeedingDigestion =
             new List<IDependencyPropertyValue>();
 
         // State values.
         private Int64 lastDigestedCycleID;
-        private Int64 invalidatedDigestCount1;
-        private Int64 invalidatedDigestCount2;
-
-        // The dependency system's pool of buffers for manipulating dependency property value lists.
-        private static readonly Pool<List<IDependencyPropertyValue>> dpValueBufferPool =
-            new ExpandingPool<List<IDependencyPropertyValue>>(4, () => new List<IDependencyPropertyValue>(128), buffer => buffer.Clear());
+        private Int64 invalidatedDigestCycleID = -1;        
     }
 }
