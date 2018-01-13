@@ -45,12 +45,28 @@ namespace Ultraviolet.TestFramework
         IUltravioletTestApplication WithDispose(Action disposer);
 
         /// <summary>
-        /// Registers an action to be performed on the specified frame.
+        /// Registers an action to be performed at the start of the specified frame.
         /// </summary>
         /// <param name="frame">The index of the frame in which to perform the action.</param>
         /// <param name="action">The action to perform on the specified frame.</param>
         /// <returns>The Ultraviolet test application.</returns>
-        IUltravioletTestApplication OnFrame(Int32 frame, Action<IUltravioletTestApplication> action);
+        IUltravioletTestApplication OnFrameStart(Int32 frame, Action<IUltravioletTestApplication> action);
+
+        /// <summary>
+        /// Registers an action to be performed at the start of the specified update.
+        /// </summary>
+        /// <param name="update">The index of the update in which to perform the action.</param>
+        /// <param name="action">The action to perform on the specified update.</param>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication OnUpdate(Int32 update, Action<IUltravioletTestApplication> action);
+
+        /// <summary>
+        /// Registers an action to be performed at the start of the specified render.
+        /// </summary>
+        /// <param name="render">The index of the render in which to perform the action.</param>
+        /// <param name="action">The action to perform on the specified render.</param>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication OnRender(Int32 render, Action<IUltravioletTestApplication> action);
 
         /// <summary>
         /// Skips the specified number of frames prior to rendering the tested scene.

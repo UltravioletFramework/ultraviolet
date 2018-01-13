@@ -1,16 +1,42 @@
 ﻿using System;
+using Ultraviolet.Presentation.Media;
 using System.Drawing;
 using NUnit.Framework;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Tests.UI.Presentation.Screens;
 using Ultraviolet.UI;
+using Ultraviolet.Presentation;
 
 namespace Ultraviolet.Tests.UI.Presentation
 {
     [TestFixture]
-    public class PresentationFoundationTests : PresentationFoundationTestFramework
+    public partial class PresentationFoundationTests : PresentationFoundationTestFramework
     {
+        [Test]
+        [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that dependency objects correctly handle forced invalidation of their dependency values.")]
+        public void UPF_DependencyObject_CorrectlyHandlesForcedInvalidation()
+        {
+            var dobj = default(InvalidationTestObject);
+
+            GivenAnUltravioletApplication()
+                .WithPresentationFoundationConfigured()
+                .WithInitialization(initializer =>
+                {
+                    dobj = new InvalidationTestObject
+                    {
+                        Transform = new RotateTransform(),
+                        TransformChanged = false
+                    };
+                })
+                .OnUpdate(0, app => { ((RotateTransform)dobj.Transform).Angle = 100; })
+                .OnUpdate(1, app => { dobj.Digest(new UltravioletTime(TimeSpan.FromMilliseconds(16), TimeSpan.FromMilliseconds(16))); })
+                .RunUntil(() => PresentationFoundation.Instance.DigestCycleID == 3);
+
+            TheResultingValue(dobj.TransformChanged).ShouldBe(true);
+        }
+
         [Test]
         [Category("UPF"), Category("Rendering")]
         [Description("Ensures that a reasonably complex screen featuring multiple control types is correctly laid out by the Presentation Foundation.")]

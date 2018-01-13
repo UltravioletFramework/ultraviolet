@@ -14,7 +14,7 @@ namespace Ultraviolet.Tests.UI.Presentation.Styles
         public void UvssCompiler_DefaultsToInvariantCulture()
         {
             GivenAnUltravioletApplicationInServiceMode()
-                .OnFrame(0, app =>
+                .OnFrameStart(0, app =>
                 {
                     UsingCulture("ru-RU", () =>
                     {
@@ -39,7 +39,7 @@ namespace Ultraviolet.Tests.UI.Presentation.Styles
         public void UvssCompiler_ReadsCultureDirective()
         {
             GivenAnUltravioletApplicationInServiceMode()
-               .OnFrame(0, app =>
+               .OnFrameStart(0, app =>
                {
                    UsingCulture("en-US", () =>
                    {
@@ -66,7 +66,7 @@ namespace Ultraviolet.Tests.UI.Presentation.Styles
         public void UvssCompiler_ReadsCultureDirective_WhenMultipleDirectivesExist()
         {
             GivenAnUltravioletApplicationInServiceMode()
-               .OnFrame(0, app =>
+               .OnFrameStart(0, app =>
                {
                     UsingCulture("en-US", () =>
                     {

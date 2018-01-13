@@ -29,7 +29,7 @@ namespace Ultraviolet.TestFramework
             : base("Ultraviolet", "Ultraviolet Unit Tests")
         {
             PreserveApplicationSettings = false;
-            
+
             this.headless = headless;
             this.serviceMode = serviceMode;
         }
@@ -86,18 +86,40 @@ namespace Ultraviolet.TestFramework
             framesToSkip = frameCount;
             return this;
         }
-        
+
         /// <inheritdoc/>
-        public IUltravioletTestApplication OnFrame(Int32 frame, Action<IUltravioletTestApplication> action)
+        public IUltravioletTestApplication OnFrameStart(Int32 frame, Action<IUltravioletTestApplication> action)
         {
             if (frameActions == null)
                 frameActions = new List<FrameAction>();
 
-            frameActions.Add(new FrameAction(frame, action));
+            frameActions.Add(new FrameAction(FrameActionType.FrameStart, frame, action));
 
             return this;
         }
-        
+
+        /// <inheritdoc/>
+        public IUltravioletTestApplication OnUpdate(Int32 update, Action<IUltravioletTestApplication> action)
+        {
+            if (frameActions == null)
+                frameActions = new List<FrameAction>();
+
+            frameActions.Add(new FrameAction(FrameActionType.Update, update, action));
+
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletTestApplication OnRender(Int32 render, Action<IUltravioletTestApplication> action)
+        {
+            if (frameActions == null)
+                frameActions = new List<FrameAction>();
+
+            frameActions.Add(new FrameAction(FrameActionType.Render, render, action));
+
+            return this;
+        }
+
         /// <inheritdoc/>
         public Bitmap Render(Action<UltravioletContext> renderer)
         {
@@ -136,7 +158,10 @@ namespace Ultraviolet.TestFramework
         {
             RunUntil(() =>
             {
-                return !frameActions.Any(x => x.Frame >= frameCount);
+                return 
+                    !frameActions.Any(x => x.ActionType == FrameActionType.FrameStart && x.ActionIndex >= frameCount) &&
+                    !frameActions.Any(x => x.ActionType == FrameActionType.Render && x.ActionIndex >= renderCount) &&
+                    !frameActions.Any(x => x.ActionType == FrameActionType.Update && x.ActionIndex >= updateCount);
             });
         }
 
@@ -227,7 +252,7 @@ namespace Ultraviolet.TestFramework
             initializer?.Invoke(Ultraviolet);
 
             Ultraviolet.FrameStart += OnFrameStart;
-            
+
             base.OnInitialized();
         }
 
@@ -272,6 +297,8 @@ namespace Ultraviolet.TestFramework
         /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
         {
+            RunFrameActions(FrameActionType.Update, updateCount);
+
             if (framesToSkip == 0)
             {
                 if (shouldExit())
@@ -279,12 +306,17 @@ namespace Ultraviolet.TestFramework
                     Exit();
                 }
             }
+
+            updateCount++;
+
             base.OnUpdating(time);
         }
 
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time)
         {
+            RunFrameActions(FrameActionType.Render, renderCount);
+
             if (framesToSkip == 0)
             {
                 var window = 
@@ -315,6 +347,9 @@ namespace Ultraviolet.TestFramework
             {
                 framesToSkip--;
             }
+
+            renderCount++;
+
             base.OnDrawing(time);
         }
 
@@ -339,15 +374,21 @@ namespace Ultraviolet.TestFramework
             if (frameCount == 0)
                 startTime = DateTime.UtcNow;
 
-            if (frameActions != null)
-            {
-                var actions = frameActions.Where(x => x.Frame == frameCount);
-                foreach (var action in actions)
-                {
-                    action.Action(this);
-                }
-            }
+            RunFrameActions(FrameActionType.FrameStart, frameCount);
             frameCount++;
+        }
+
+        /// <summary>
+        /// Runs the specified set of frame actions.
+        /// </summary>
+        private void RunFrameActions(FrameActionType actionType, Int32 actionIndex)
+        {
+            if (frameActions == null)
+                return;
+
+            var actions = frameActions.Where(x => x.ActionType == actionType && x.ActionIndex == actionIndex);
+            foreach (var action in actions)
+                action.Action(this);
         }
 
         /// <summary>
@@ -397,6 +438,8 @@ namespace Ultraviolet.TestFramework
         private Action<UltravioletContext> renderer;
         private Action disposer;
         private Bitmap bmp;
+        private Int32 updateCount;
+        private Int32 renderCount;
         private Int32 frameCount;
         private Int32 framesToSkip;
         private DateTime startTime;

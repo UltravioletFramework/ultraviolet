@@ -84,6 +84,7 @@
     <Compile Include="UltravioletTestApplication.cs" />
     <Compile Include="UltravioletTestApplication.FrameAction.cs" />
     <Compile Include="QuaternionResult.cs" />
+    <Compile Include="UltravioletTestApplication.FrameActionType.cs" />
     <Compile Include="Vector4Result.cs" />
     <Compile Include="Vector3Result.cs" />
     <Compile Include="Vector2Result.cs" />

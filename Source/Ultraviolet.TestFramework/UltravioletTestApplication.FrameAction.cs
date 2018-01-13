@@ -13,35 +13,32 @@ namespace Ultraviolet.TestFramework
             /// <summary>
             /// Initializes a new instance of the <see cref="FrameAction"/> structure.
             /// </summary>
-            /// <param name="frame">The index of the frame on which to perform the action.</param>
+            /// <param name="actionType">The type of frame action which this structure represents.</param>
+            /// <param name="actionIndex">The index of the frame, update, or render on which to perform the action.</param>
             /// <param name="action">The action to perform on the specified frame.</param>
-            public FrameAction(Int32 frame, Action<IUltravioletTestApplication> action)
+            public FrameAction(FrameActionType actionType, Int32 actionIndex, Action<IUltravioletTestApplication> action)
             {
                 Contract.Require(action, nameof(action));
 
-                this.frame = frame;
-                this.action = action;
+                this.ActionType = actionType;
+                this.ActionIndex = actionIndex;
+                this.Action = action;
             }
 
             /// <summary>
-            /// Gets the index of the frame on which to perform the action.
+            /// Gets the type of frame action which this structure represents.
             /// </summary>
-            public Int32 Frame
-            {
-                get { return frame; }
-            }
+            public FrameActionType ActionType { get; }
+
+            /// <summary>
+            /// Gets the index of the frame, update, or render on which to perform the action.
+            /// </summary>
+            public Int32 ActionIndex { get; }
 
             /// <summary>
             /// Gets the action to perform on the specified frame.
             /// </summary>
-            public Action<IUltravioletTestApplication> Action
-            {
-                get { return action; }
-            }
-
-            // Property values.
-            private readonly Int32 frame;
-            private readonly Action<IUltravioletTestApplication> action;
+            public Action<IUltravioletTestApplication> Action { get; }
         }
     }
 }
