@@ -76,6 +76,19 @@ sn.exe -R "Ultraviolet.Shims.NETCore.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Tooling.dll" "%TLSN%"
 GOTO :eof
 
+:sign_uvdebug
+sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.OpenGL.Bindings.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Presentation.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Presentation.Uvss.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Presentation.Compiler.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Shims.Desktop.dll" "%TLSN%"
+GOTO :eof
+
 :test_nucleus
 sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
 GOTO :eof
