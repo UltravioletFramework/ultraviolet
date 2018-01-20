@@ -10,6 +10,11 @@
       <Variant>Expression compilation failed during the final compiler pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
     </en-US>
   </String>
+  <String Key="FAILED_EMIT">
+    <en-US>
+      <Variant>Expression compilation failed during the emit pass. Please see 'Compilation Errors.txt' in the compiler's working directory for more information.</Variant>
+    </en-US>
+  </String>
   <String Key="VIEW_MODEL_TYPE_IS_NOT_FULLY_QUALIFIED">
     <en-US>
       <Variant>The view model type '{0}' is not valid because view model types must be assembly-qualified (e.g.: "Contoso.Game.ViewModelType, Contoso.Game").</Variant>

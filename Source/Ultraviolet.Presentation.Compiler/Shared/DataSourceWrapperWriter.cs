@@ -312,7 +312,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="dataSourceWrapperInfo">A <see cref="DataSourceWrapperInfo"/> describing the data source for which to write an expression property.</param>
         /// <param name="expressionInfo">The binding expression for which to write a property.</param>
         /// <param name="id">The expression's identifier within the view model.</param>
-        public void WriteExpressionProperty(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo expressionInfo, Int32 id)
+        public void WriteExpressionProperty(IExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo, BindingExpressionInfo expressionInfo, Int32 id)
         {
             var isDependencyProperty = false;
             var isSimpleDependencyProperty = false;
@@ -528,7 +528,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Given a targeted binding expression (in the form "foo->bar"), this method extracts the target name, target type, and expression text.
         /// </summary>
-        private Boolean GetExpressionTargetInfo(ExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo,
+        private Boolean GetExpressionTargetInfo(IExpressionCompilerState state, DataSourceWrapperInfo dataSourceWrapperInfo,
             XObject source, ref String expText, out String expTarget, out Type expTargetType)
         {
             const string TargetExpressionDelimiter = "->";

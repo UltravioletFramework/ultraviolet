@@ -1,8 +1,9 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation.Compiler
@@ -18,8 +20,8 @@ namespace Ultraviolet.Presentation.Compiler
     /// <summary>
     /// Contains methods for compiling UPF binding expressions into a managed assembly.
     /// </summary>
-    public class ExpressionCompiler/* : IBindingExpressionCompiler*/
-    {   
+    public class RoslynExpressionCompiler : IBindingExpressionCompiler
+    {
         /// <summary>
         /// Gets the type associated with the specified placeholder string in the context of the specified type.
         /// </summary>
@@ -36,7 +38,7 @@ namespace Ultraviolet.Presentation.Compiler
             }
             return null;
         }
-        
+
         /// <inheritdoc/>
         public BindingExpressionCompilationResult Compile(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
@@ -48,7 +50,7 @@ namespace Ultraviolet.Presentation.Compiler
 
             var state = CreateCompilerState(uv, options);
             var dataSourceWrapperInfos = GetDataSourceWrapperInfos(state, uv, options.Input);
-            
+
             var cacheFile = Path.ChangeExtension(options.Output, "cache");
             var cacheNew = CompilerCache.FromDataSourceWrappers(dataSourceWrapperInfos);
             if (File.Exists(options.Output))
@@ -89,7 +91,7 @@ namespace Ultraviolet.Presentation.Compiler
             var state = CreateCompilerState(uv, options);
             var dataSourceWrapperInfo = GetDataSourceWrapperInfo(state, definition.Value);
             var dataSourceWrapperInfos = new[] { dataSourceWrapperInfo };
-            
+
             var result = CompileViewModels(state, dataSourceWrapperInfos, null);
             if (result.Succeeded)
             {
@@ -102,62 +104,83 @@ namespace Ultraviolet.Presentation.Compiler
 
             return result;
         }
-        
+
         /// <summary>
-        /// Creates the code provider which is used to compile binding expressions.
+        /// Gets the line number of the specified diagnostic.
         /// </summary>
-        /// <returns>An instance of <see cref="CSharpCodeProvider"/> which is used to compile binding expressions.</returns>
-        protected virtual CSharpCodeProvider CreateCodeProvider()
+        private static Int32 GetDiagnosticLine(Diagnostic diagnostic)
         {
-            return new CSharpCodeProvider(new Dictionary<String, String> { { "CompilerVersion", "v4.0" } });
+            return diagnostic.Location.GetMappedLineSpan().StartLinePosition.Line + 1;
         }
 
         /// <summary>
         /// Compiles the specified collection of view models.
         /// </summary>
-        private static BindingExpressionCompilationResult CompileViewModels(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
+        private static BindingExpressionCompilationResult CompileViewModels(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
         {
             DeleteWorkingDirectory(state);
 
             var referencedAssemblies = GetDefaultReferencedAssemblies();
 
-            var expressionVerificationResult = 
+            var expressionVerificationResult =
                 PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
 
-            if (expressionVerificationResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
+            if (expressionVerificationResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
             {
                 if (state.WriteErrorsToFile)
                     WriteErrorsToWorkingDirectory(state, models, expressionVerificationResult);
 
                 return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedExpressionValidationPass,
-                    CreateBindingExpressionCompilationErrors(state, models, expressionVerificationResult.Errors));
+                    CreateBindingExpressionCompilationErrors(state, models, expressionVerificationResult.GetDiagnostics()));
             }
 
             var setterEliminationPassResult =
                 PerformSetterEliminationCompilationPass(state, models, referencedAssemblies);
-            
+
             var conversionFixupPassResult =
                 PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult);
-            
-            var finalPassResult = 
+
+            var finalPassResult =
                 PerformFinalCompilationPass(state, state.GenerateInMemory ? null : output, models, referencedAssemblies, conversionFixupPassResult);
 
-            if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
+            if (finalPassResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
             {
                 if (state.WriteErrorsToFile)
                     WriteErrorsToWorkingDirectory(state, models, finalPassResult);
 
                 return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedFinalPass,
-                    CreateBindingExpressionCompilationErrors(state, models, finalPassResult.Errors));
+                    CreateBindingExpressionCompilationErrors(state, models, finalPassResult.GetDiagnostics()));
             }
 
-            return BindingExpressionCompilationResult.CreateSucceeded(finalPassResult.CompiledAssembly);
+            var outputStream = default(Stream);
+            try
+            {
+                outputStream = state.GenerateInMemory ? new MemoryStream() : (Stream)File.OpenWrite(output);
+
+                var emitResult = finalPassResult.Emit(outputStream);
+                if (emitResult.Success)
+                {
+                    var assembly = state.GenerateInMemory ? Assembly.Load(((MemoryStream)outputStream).ToArray()) : null;
+                    return BindingExpressionCompilationResult.CreateSucceeded(assembly);
+                }
+                else
+                {
+                    return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedEmit,
+                        CreateBindingExpressionCompilationErrors(state, models, emitResult.Diagnostics));
+                }
+            }
+            finally
+            {
+                if (outputStream != null)
+                    outputStream.Dispose();
+            }
+
         }
 
         /// <summary>
         /// Performs the first compilation pass, which generates expression getters in order to verify that the expressions are valid code.
         /// </summary>
-        private static CompilerResults PerformExpressionVerificationCompilationPass(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static Compilation PerformExpressionVerificationCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
         {
             Parallel.ForEach(models, model =>
             {
@@ -172,7 +195,7 @@ namespace Ultraviolet.Presentation.Compiler
                     expression.GenerateGetter = true;
                     expression.GenerateSetter = false;
                 }
-                
+
                 WriteSourceCodeForDataSourceWrapper(state, model);
             });
 
@@ -182,7 +205,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Performs the second compilation pass, which generates setters in order to determine which expressions support two-way bindings.
         /// </summary>
-        private static CompilerResults PerformSetterEliminationCompilationPass(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static Compilation PerformSetterEliminationCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
         {
             Parallel.ForEach(models, model =>
             {
@@ -200,11 +223,11 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Performs the third compilation pass, which attempts to fix any errors caused by non-implicit conversions and nullable types that need to be cast to non-nullable types.
         /// </summary>
-        private static CompilerResults PerformConversionFixupCompilationPass(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
+        private static Compilation PerformConversionFixupCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Compilation setterEliminationResult)
         {
-            var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
+            var errors = setterEliminationResult.GetDiagnostics().Where(x => x.Location.IsInSource && x.Severity == DiagnosticSeverity.Error).ToList();
 
-            var fixableErrorNumbers = new List<String> 
+            var fixableErrorNumbers = new List<String>
             {
                 "CS0266",
                 "CS1502",
@@ -214,20 +237,22 @@ namespace Ultraviolet.Presentation.Compiler
             Parallel.ForEach(models, model =>
             {
                 var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
-                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.FileName) == dataSourceWrapperFilename).ToList();
+                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.Location.SourceTree.FilePath) == dataSourceWrapperFilename).ToList();
 
                 foreach (var expression in model.Expressions)
                 {
-                    var setterErrors = dataSourceWrapperErrors.Where(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd).ToList();
+                    var setterErrors = dataSourceWrapperErrors.Where(x =>
+                        GetDiagnosticLine(x) >= expression.SetterLineStart &&
+                        GetDiagnosticLine(x) <= expression.SetterLineEnd).ToList();
                     var setterIsNullable = Nullable.GetUnderlyingType(expression.Type) != null;
 
-                    expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.ErrorNumber)));
-                    expression.NullableFixup  = setterIsNullable;
+                    expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.Id)));
+                    expression.NullableFixup = setterIsNullable;
 
-                    if (setterErrors.Count == 1 && setterErrors.Single().ErrorNumber == "CS0266")
+                    if (setterErrors.Count == 1 && setterErrors.Single().Id == "CS0266")
                     {
                         var error = setterErrors.Single();
-                        var match = regexCS0266.Match(error.ErrorText);
+                        var match = regexCS0266.Match(error.GetMessage(CultureInfo.InvariantCulture));
                         expression.CS0266SourceType = match.Groups["source"].Value;
                         expression.CS0266TargetType = match.Groups["target"].Value;
                         expression.GenerateSetter = true;
@@ -242,18 +267,20 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
         /// </summary>
-        private static CompilerResults PerformFinalCompilationPass(ExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults nullableFixupResult)
+        private static Compilation PerformFinalCompilationPass(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Compilation nullableFixupResult)
         {
-            var errors = nullableFixupResult.Errors.Cast<CompilerError>().ToList();
+            var errors = nullableFixupResult.GetDiagnostics().Where(x => x.Location.IsInSource && x.Severity == DiagnosticSeverity.Error).ToList();
 
             Parallel.ForEach(models, model =>
             {
                 var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
-                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.FileName) == dataSourceWrapperFilename).ToList();
+                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.Location.SourceTree.FilePath) == dataSourceWrapperFilename).ToList();
 
                 foreach (var expression in model.Expressions)
                 {
-                    if (expression.GenerateSetter && dataSourceWrapperErrors.Any(x => x.Line >= expression.SetterLineStart && x.Line <= expression.SetterLineEnd))
+                    if (expression.GenerateSetter && dataSourceWrapperErrors.Any(x =>
+                        GetDiagnosticLine(x) >= expression.SetterLineStart &&
+                        GetDiagnosticLine(x) <= expression.SetterLineEnd))
                     {
                         expression.GenerateSetter = false;
                     }
@@ -273,28 +300,25 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="infos">A collection of <see cref="DataSourceWrapperInfo"/> instances containing the source code to compile.</param>
         /// <param name="references">A collection of assembly locations which should be referenced by the compiled assembly.</param>
         /// <returns>A <see cref="CompilerResults"/> instance that represents the result of compilation.</returns>
-        private static CompilerResults CompileDataSourceWrapperSources(ExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
+        private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
         {
-            var options = new CompilerParameters();
-            options.OutputAssembly = output;
-            options.GenerateExecutable = false;
-            options.GenerateInMemory = true;
-            options.IncludeDebugInformation = false;
-            options.TreatWarningsAsErrors = false;
-            options.ReferencedAssemblies.AddRange(references.Distinct().ToArray());
-
-            var files = new List<String>();
-            files.Add(WriteCompilerMetadataFile());
+            var files = new List<String> { WriteCompilerMetadataFile() };
+            var trees = new List<SyntaxTree>();
+            var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
 
             foreach (var info in infos)
             {
                 var path = GetWorkingFileForDataSourceWrapper(info);
                 files.Add(path);
-
+                trees.Add(CSharpSyntaxTree.ParseText(info.DataSourceWrapperSourceCode, path: path));
+                
                 File.WriteAllText(path, info.DataSourceWrapperSourceCode);
             }
-            
-            return state.Compiler.CompileAssemblyFromFile(options, files.ToArray());
+
+            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            var compilation = CSharpCompilation.Create("Ultraviolet.Presentation.CompiledExpressions.dll", trees, mrefs, options);
+
+            return compilation;
         }
 
         /// <summary>
@@ -303,12 +327,13 @@ namespace Ultraviolet.Presentation.Compiler
         /// <returns>A <see cref="ConcurrentBag{String}"/> which contains the default referenced assemblies.</returns>
         private static ConcurrentBag<String> GetDefaultReferencedAssemblies()
         {
-            var referencedAssemblies = new ConcurrentBag<String>();
-            referencedAssemblies.Add("System.dll");
-            referencedAssemblies.Add(typeof(Contract).Assembly.Location);
-            referencedAssemblies.Add(typeof(UltravioletContext).Assembly.Location);
-            referencedAssemblies.Add(typeof(PresentationFoundation).Assembly.Location);
-
+            var referencedAssemblies = new ConcurrentBag<String>
+            {
+                typeof(Object).Assembly.Location,
+                typeof(Contract).Assembly.Location,
+                typeof(UltravioletContext).Assembly.Location,
+                typeof(PresentationFoundation).Assembly.Location
+            };
             return referencedAssemblies;
         }
 
@@ -319,7 +344,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="root">The root directory to search for views.</param>
         /// <returns>A collection of <see cref="DataSourceWrapperInfo"/> instances which represent the views and templates which were found.</returns>
-        private static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(ExpressionCompilerState state, UltravioletContext uv, String root)
+        private static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(RoslynExpressionCompilerState state, UltravioletContext uv, String root)
         {
             var viewDefinitions = RecursivelySearchForViews(root, root);
             var viewModelInfos = RetrieveDataSourceWrapperInfos(state, viewDefinitions);
@@ -434,7 +459,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// are currently registered with the Ultraviolet Presentation Foundation.
         /// </summary>
         /// <returns>A collection of <see cref="DataSourceDefinition"/> instances which represent UPF component template definitions.</returns>
-        private static IEnumerable<DataSourceDefinition> RetrieveTemplateDefinitions(ExpressionCompilerState state)
+        private static IEnumerable<DataSourceDefinition> RetrieveTemplateDefinitions(RoslynExpressionCompilerState state)
         {
             if (state.ComponentTemplateManager == null)
                 return Enumerable.Empty<DataSourceDefinition>();
@@ -455,7 +480,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="dataSourceDefinitions">The collection of <see cref="DataSourceDefinition"/> objects for which to create <see cref="DataSourceWrapperInfo"/> instances.</param>
         /// <returns>A collection containing the <see cref="DataSourceWrapperInfo"/> instances which were created.</returns>
-        private static IEnumerable<DataSourceWrapperInfo> RetrieveDataSourceWrapperInfos(ExpressionCompilerState state, IEnumerable<DataSourceDefinition> dataSourceDefinitions)
+        private static IEnumerable<DataSourceWrapperInfo> RetrieveDataSourceWrapperInfos(RoslynExpressionCompilerState state, IEnumerable<DataSourceDefinition> dataSourceDefinitions)
         {
             var dataSourceWrapperInfos = new ConcurrentBag<DataSourceWrapperInfo>();
 
@@ -477,7 +502,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="dataSourceDefinition">The data source definition for which to retrieve data source wrapper info.</param>
         /// <returns>The <see cref="DataSourceWrapperInfo"/> that was created to represent the specified data source.</returns>
-        private static DataSourceWrapperInfo GetDataSourceWrapperInfo(ExpressionCompilerState state, DataSourceDefinition dataSourceDefinition)
+        private static DataSourceWrapperInfo GetDataSourceWrapperInfo(RoslynExpressionCompilerState state, DataSourceDefinition dataSourceDefinition)
         {
             var dataSourceWrappedType = dataSourceDefinition.TemplatedControl;
             if (dataSourceWrappedType == null)
@@ -486,14 +511,14 @@ namespace Ultraviolet.Presentation.Compiler
                 var definedDataSourceTypeName = (String)definedDataSourceTypeAttr;
                 if (definedDataSourceTypeName == null)
                     return null;
-                
+
                 var typeNameCommaIx = definedDataSourceTypeName.IndexOf(',');
                 if (typeNameCommaIx < 0)
                 {
                     throw new BindingExpressionCompilationErrorException(definedDataSourceTypeAttr, dataSourceDefinition.DefinitionPath,
                         CompilerStrings.ViewModelTypeIsNotFullyQualified.Format(definedDataSourceTypeName));
                 }
-                
+
                 var definedDataSourceType = Type.GetType(definedDataSourceTypeName);
                 if (definedDataSourceType == null)
                 {
@@ -503,12 +528,12 @@ namespace Ultraviolet.Presentation.Compiler
 
                 dataSourceWrappedType = definedDataSourceType;
             }
-            
+
             var dataSourceWrapperName = dataSourceDefinition.DataSourceWrapperName;
             var dataSourceWrapperExpressions = new List<BindingExpressionInfo>();
             foreach (var element in dataSourceDefinition.Definition.Elements())
             {
-                FindBindingExpressionsInDataSource(state, 
+                FindBindingExpressionsInDataSource(state,
                     dataSourceDefinition, dataSourceWrappedType, element, dataSourceWrapperExpressions);
             }
 
@@ -524,7 +549,7 @@ namespace Ultraviolet.Presentation.Compiler
                 var xmlDirectiveType = (String)xmlDirective.Attribute("Type");
                 if (String.IsNullOrEmpty(xmlDirectiveType))
                 {
-                    throw new BindingExpressionCompilationErrorException(xmlDirective, dataSourceDefinition.DefinitionPath, 
+                    throw new BindingExpressionCompilationErrorException(xmlDirective, dataSourceDefinition.DefinitionPath,
                         CompilerStrings.ViewDirectiveMustHaveType);
                 }
 
@@ -563,7 +588,7 @@ namespace Ultraviolet.Presentation.Compiler
             var frameworkTemplates = new Dictionary<String, XElement>();
             GetFrameworkTemplateElements(dataSourceDefinition.Definition, frameworkTemplates);
 
-            var frameworkTemplateWrapperDefs = frameworkTemplates.Select(x => 
+            var frameworkTemplateWrapperDefs = frameworkTemplates.Select(x =>
                 DataSourceDefinition.FromView(dataSourceDefinition.DataSourceWrapperNamespace, x.Key, dataSourceDefinition.DefinitionPath, x.Value)).ToList();
 
             var frameworkTemplateWrapperInfos = frameworkTemplateWrapperDefs.Select(definition =>
@@ -585,7 +610,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Creates a new <see cref="DataSourceWrapperInfo"/> instance which represents a particular framework template.
         /// </summary>
-        private static DataSourceWrapperInfo GetDataSourceWrapperInfoForFrameworkTemplate(ExpressionCompilerState state,
+        private static DataSourceWrapperInfo GetDataSourceWrapperInfoForFrameworkTemplate(RoslynExpressionCompilerState state,
             IEnumerable<String> references, IEnumerable<String> imports, DataSourceDefinition definition)
         {
             var dataSourceWrappedTypeAttr = definition.Definition.Attribute("ViewModelType");
@@ -610,7 +635,7 @@ namespace Ultraviolet.Presentation.Compiler
             {
                 FindBindingExpressionsInDataSource(state,
                     dataSourceDefinition, dataSourceWrappedType, element, expressions);
-            }            
+            }
             expressions = CollapseDataSourceExpressions(expressions);
 
             return new DataSourceWrapperInfo()
@@ -641,7 +666,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Writes the source code for the specified data source wrapper.
         /// </summary>
-        private static void WriteSourceCodeForDataSourceWrapper(ExpressionCompilerState state, 
+        private static void WriteSourceCodeForDataSourceWrapper(RoslynExpressionCompilerState state,
             DataSourceWrapperInfo dataSourceWrapperInfo)
         {
             using (var writer = new DataSourceWrapperWriter())
@@ -680,7 +705,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Writes the source code for an individual data source wrapper class.
         /// </summary>
-        private static void WriteSourceCodeForDataSourceWrapperClass(ExpressionCompilerState state,
+        private static void WriteSourceCodeForDataSourceWrapperClass(RoslynExpressionCompilerState state,
             DataSourceWrapperInfo dataSourceWrapperInfo, DataSourceWrapperWriter writer)
         {
             // Class declaration
@@ -780,7 +805,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="dataSourceWrappedType">The type for which a data source wrapper is being compiled.</param>
         /// <param name="element">The root of the XML element tree to search.</param>
         /// <param name="expressions">The list to populate with any binding expressions that are found.</param>
-        private static void FindBindingExpressionsInDataSource(ExpressionCompilerState state, DataSourceDefinition dataSourceDefinition,
+        private static void FindBindingExpressionsInDataSource(RoslynExpressionCompilerState state, DataSourceDefinition dataSourceDefinition,
             Type dataSourceWrappedType, XElement element, List<BindingExpressionInfo> expressions)
         {
             var templateAnnotation = element.Annotation<FrameworkTemplateNameAnnotation>();
@@ -788,7 +813,7 @@ namespace Ultraviolet.Presentation.Compiler
                 return;
 
             var elementName = element.Name.LocalName;
-            var elementType = GetPlaceholderType(dataSourceWrappedType, elementName);            
+            var elementType = GetPlaceholderType(dataSourceWrappedType, elementName);
             if (elementType != null || state.GetKnownType(elementName, out elementType))
             {
                 var attrs = Enumerable.Union(
@@ -844,8 +869,9 @@ namespace Ultraviolet.Presentation.Compiler
                             var expText = BindingExpressions.GetBindingMemberPathPart(elementValue);
                             var expProp = GetBindablePropertyOnDataSource(dataSourceWrappedType, expText);
 
-                            expressions.Add(new BindingExpressionInfo(singleChild, 
-                                elementValue, expProp?.PropertyType ?? dprop.PropertyType) { GenerateGetter = true });
+                            expressions.Add(new BindingExpressionInfo(singleChild,
+                                elementValue, expProp?.PropertyType ?? dprop.PropertyType)
+                            { GenerateGetter = true });
                         }
                     }
                 }
@@ -854,7 +880,7 @@ namespace Ultraviolet.Presentation.Compiler
             var children = element.Elements();
             foreach (var child in children)
             {
-                FindBindingExpressionsInDataSource(state, dataSourceDefinition, 
+                FindBindingExpressionsInDataSource(state, dataSourceDefinition,
                     dataSourceWrappedType, child, expressions);
             }
         }
@@ -863,7 +889,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// Deletes the compiler's working directory.
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
-        private static void DeleteWorkingDirectory(ExpressionCompilerState state)
+        private static void DeleteWorkingDirectory(RoslynExpressionCompilerState state)
         {
             try
             {
@@ -877,7 +903,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="models">The list of models which were compiled.</param>
-        private static void WriteCompiledFilesToWorkingDirectory(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models)
+        private static void WriteCompiledFilesToWorkingDirectory(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models)
         {
             var workingDirectory = GetWorkingDirectory(state);
             Directory.CreateDirectory(workingDirectory);
@@ -895,25 +921,25 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="models">The list of models which were compiled.</param>
         /// <param name="results">The results of the previous compilation pass.</param>
-        private static void WriteErrorsToWorkingDirectory(ExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, CompilerResults results)
+        private static void WriteErrorsToWorkingDirectory(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, Compilation results)
         {
             var logpath = Path.Combine(GetWorkingDirectory(state), "Compilation Errors.txt");
             try
             {
                 File.Delete(logpath);
             }
-            catch(DirectoryNotFoundException) {	}
+            catch (DirectoryNotFoundException) { }
 
             var logdir = Path.GetDirectoryName(logpath);
             Directory.CreateDirectory(logdir);
 
             // NOTE: Under Mono we seem to get warnings even when "Treat Warnings as Errors" is turned off.
-            var trueErrors = results.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).ToList();
+            var trueErrors = results.GetDiagnostics().Where(x => x.Location.IsInSource && x.Severity == DiagnosticSeverity.Error).ToList();
             if (trueErrors.Count > 0)
             {
-                var filesWithErrors = trueErrors.Select(x => x.FileName).Where(x => !String.IsNullOrEmpty(x)).Distinct();
+                var filesWithErrors = trueErrors.Select(x => x.Location.SourceTree.FilePath).Where(x => !String.IsNullOrEmpty(x)).Distinct();
                 var filesWithErrorsPretty = new Dictionary<String, String> { { String.Empty, String.Empty } };
-                
+
                 foreach (var fileWithErrors in filesWithErrors)
                 {
                     var modelNameForFile = models.Where(x => x.UniqueID.ToString() == Path.GetFileNameWithoutExtension(fileWithErrors))
@@ -928,8 +954,8 @@ namespace Ultraviolet.Presentation.Compiler
                 }
 
                 var errorStrings = trueErrors.Select(x =>
-                    String.Format("{0}\t{1}\t{2}\t{3}", x.ErrorNumber, x.ErrorText, filesWithErrorsPretty[x.FileName ?? String.Empty], x.Line));
-                
+                    String.Format("{0}\t{1}\t{2}\t{3}", x.Id, x.GetMessage(), filesWithErrorsPretty[x.Location.SourceTree.FilePath ?? String.Empty], GetDiagnosticLine(x)));
+
                 File.WriteAllLines(logpath, Enumerable.Union(new[] { "Code\tDescription\tFile\tLine" }, errorStrings));
             }
         }
@@ -950,7 +976,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <param name="name">The name of the dependency or attached property to retrieve.</param>
         /// <param name="ownerType">The type that references the dependency or attached property.</param>
         /// <returns>The <see cref="DependencyProperty"/> referred to by the specified name, or <see langword="null"/> if there is no such dependency property.</returns>
-        private static DependencyProperty FindDependencyOrAttachedPropertyByName(ExpressionCompilerState state, String name, Type ownerType)
+        private static DependencyProperty FindDependencyOrAttachedPropertyByName(RoslynExpressionCompilerState state, String name, Type ownerType)
         {
             String container;
             String property;
@@ -1027,7 +1053,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
         /// <returns>The working directory for the specified compilation.</returns>
-        private static String GetWorkingDirectory(ExpressionCompilerState state)
+        private static String GetWorkingDirectory(RoslynExpressionCompilerState state)
         {
             return state.WorkInTemporaryDirectory ? Path.Combine(Path.GetTempPath(), "UV_CompiledExpressions") : "UV_CompiledExpressions";
         }
@@ -1040,7 +1066,7 @@ namespace Ultraviolet.Presentation.Compiler
             var path = Path.ChangeExtension(Path.Combine(Path.GetTempPath(), dataSourceWrapperInfo.UniqueID.ToString()), "cs");
             return path;
         }
-        
+
         /// <summary>
         /// Gets the source text for the specified parameter when it is part of a parameter list.
         /// </summary>
@@ -1079,8 +1105,8 @@ namespace Ultraviolet.Presentation.Compiler
             writer.WriteLine("{");
             writer.WriteLine("#pragma warning disable 1591");
             writer.WriteLine("#pragma warning disable 0184");
+            writer.WriteLine("// Generated by the UPF Binding Expression Compiler, version {0}", version);
             writer.WriteLine("[System.CLSCompliant(false)]");
-            writer.WriteLine("// Generated by the UPF Binding Expression Compiler, version {0}", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
             writer.WriteLine("public sealed class CompilerMetadata");
             writer.WriteLine("{");
             writer.WriteLine("public static String Version {{ get {{ return \"{0}\"; }} }}", version);
@@ -1117,22 +1143,22 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
         /// <param name="models">The list of models which were compiled.</param>
-        /// <param name="errors">The collection of errors produced during compilation.</param>
+        /// <param name="diagnostics">The array of diagnostics containing the errors to write.</param>
         /// <returns>A list containing the converted errors.</returns>
-        private static List<BindingExpressionCompilationError> CreateBindingExpressionCompilationErrors(ExpressionCompilerState state,
-            IEnumerable<DataSourceWrapperInfo> models, CompilerErrorCollection errors)
+        private static List<BindingExpressionCompilationError> CreateBindingExpressionCompilationErrors(RoslynExpressionCompilerState state,
+            IEnumerable<DataSourceWrapperInfo> models, ImmutableArray<Diagnostic> diagnostics)
         {
             var result = new List<BindingExpressionCompilationError>();
 
             var workingDirectory = GetWorkingDirectory(state);
 
-            var errorsByFile = errors.Cast<CompilerError>()
-                .Where(x => !x.IsWarning).GroupBy(x => Path.GetFileName(x.FileName)).ToDictionary(x => x.Key, x => x.ToList());
+            var errorsByFile = diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error && x.Location.IsInSource)
+                .GroupBy(x => Path.GetFileName(x.Location.SourceTree.FilePath)).ToDictionary(x => x.Key, x => x.ToList());
 
             foreach (var model in models)
             {
                 var dataSourceWrapperFilename = Path.GetFileName(GetWorkingFileForDataSourceWrapper(model));
-                var dataSourceErrors = default(List<CompilerError>);
+                var dataSourceErrors = default(List<Diagnostic>);
                 if (errorsByFile.TryGetValue(dataSourceWrapperFilename, out dataSourceErrors))
                 {
                     foreach (var dataSourceError in dataSourceErrors)
@@ -1140,12 +1166,17 @@ namespace Ultraviolet.Presentation.Compiler
                         var fullPathToFile = model.DataSourceWrapperName;
                         if (state.WriteErrorsToFile)
                         {
-                            fullPathToFile = Path.GetFullPath(Path.Combine(workingDirectory, 
+                            fullPathToFile = Path.GetFullPath(Path.Combine(workingDirectory,
                                 Path.ChangeExtension(model.DataSourceWrapperName, "cs")));
                         }
 
-                        result.Add(new BindingExpressionCompilationError(fullPathToFile,
-                            dataSourceError.Line, dataSourceError.Column, dataSourceError.ErrorNumber, dataSourceError.ErrorText));
+                        var lineSpan = dataSourceError.Location.GetMappedLineSpan();
+                        var line = lineSpan.StartLinePosition.Line + 1;
+                        var column = lineSpan.StartLinePosition.Character + 1;
+                        var errno = dataSourceError.Id;
+                        var message = dataSourceError.GetMessage(CultureInfo.InvariantCulture);
+
+                        result.Add(new BindingExpressionCompilationError(fullPathToFile, line, column, errno, message));
                     }
                 }
             }
@@ -1154,12 +1185,11 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ExpressionCompilerState"/> from the specified set of compiler options.
+        /// Creates a new instance of <see cref="RoslynExpressionCompilerState"/> from the specified set of compiler options.
         /// </summary>
-        private ExpressionCompilerState CreateCompilerState(UltravioletContext uv, BindingExpressionCompilerOptions options)
+        private RoslynExpressionCompilerState CreateCompilerState(UltravioletContext uv, BindingExpressionCompilerOptions options)
         {
-            var compiler = CreateCodeProvider();
-            var state = new ExpressionCompilerState(uv, compiler);
+            var state = new RoslynExpressionCompilerState(uv);
             state.GenerateInMemory = options.GenerateInMemory;
             state.WorkInTemporaryDirectory = options.WorkInTemporaryDirectory;
             state.WriteErrorsToFile = options.WriteErrorsToFile;
@@ -1168,7 +1198,7 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         // Regular expressions for error parsing
-        private static readonly Regex regexCS0266 = new Regex(@"Cannot implicitly convert type \'(?<source>\S+)\' to \'(?<target>\S+)\'\. An explicit conversion exists \(are you missing a cast\?\)", 
-            RegexOptions.Compiled | RegexOptions.Singleline);        
+        private static readonly Regex regexCS0266 = new Regex(@"Cannot implicitly convert type \'(?<source>\S+)\' to \'(?<target>\S+)\'\. An explicit conversion exists \(are you missing a cast\?\)",
+            RegexOptions.Compiled | RegexOptions.Singleline);
     }
 }

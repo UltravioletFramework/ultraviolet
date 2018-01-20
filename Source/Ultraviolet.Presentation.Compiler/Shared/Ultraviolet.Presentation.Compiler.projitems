@@ -6,7 +6,7 @@
     <SharedGUID>f04e0c37-afc2-4b85-90c7-9d77dcfd074c</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Ultraviolet.OpenGL</Import_RootNamespace>
+    <Import_RootNamespace>Ultraviolet.Presentation.Compiler</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionInfo.cs" />
@@ -18,5 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceWrapperWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynExpressionCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynExpressionCompilerState.cs" />
   </ItemGroup>
 </Project>

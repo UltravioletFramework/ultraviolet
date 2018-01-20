@@ -2,24 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.CSharp;
 
 namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
-    /// Represents the state of a compilation performed by the <see cref="ExpressionCompiler"/> class.
+    /// Represents the state of a compilation performed by the <see cref="RoslynExpressionCompiler"/> class.
     /// </summary>
-    internal class ExpressionCompilerState : IExpressionCompilerState
+    public class RoslynExpressionCompilerState : IExpressionCompilerState
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionCompilerState"/> class.
+        /// Initializes a new instance of the <see cref="RoslynExpressionCompilerState"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        /// <param name="compiler">The compiler used to produce view model code.</param>
-        public ExpressionCompilerState(UltravioletContext uv, CSharpCodeProvider compiler)
+        public RoslynExpressionCompilerState(UltravioletContext uv)
         {
             this.uv = uv;
-            this.compiler = compiler;
             this.knownTypes = new Dictionary<String, Type>();
             this.knownDefaultProperties = new Dictionary<Type, String>();
             this.componentTemplateManager = (uv == null) ? null : uv.GetUI().GetPresentationFoundation().ComponentTemplates;
@@ -56,15 +53,7 @@ namespace Ultraviolet.Presentation.Compiler
         {
             get { return uv; }
         }
-
-        /// <summary>
-        /// Gets the compiler used to produce view model code.
-        /// </summary>
-        public CSharpCodeProvider Compiler
-        {
-            get { return compiler; }
-        }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether the compiler should generate its output assembly in memory
         /// rather than writing a file to disk.
@@ -144,7 +133,6 @@ namespace Ultraviolet.Presentation.Compiler
 
         // Property values.
         private readonly UltravioletContext uv;
-        private readonly CSharpCodeProvider compiler;
         private readonly ComponentTemplateManager componentTemplateManager;
 
         // State values.
