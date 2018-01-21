@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.IO;
 
 namespace Ultraviolet.Presentation.Compiler
 {
     /// <summary>
     /// Represents the state of a compilation performed by the <see cref="RoslynExpressionCompiler"/> class.
     /// </summary>
-    public class RoslynExpressionCompilerState : IExpressionCompilerState
+    internal class RoslynExpressionCompilerState : IExpressionCompilerState
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoslynExpressionCompilerState"/> class.
@@ -22,6 +23,37 @@ namespace Ultraviolet.Presentation.Compiler
             this.componentTemplateManager = (uv == null) ? null : uv.GetUI().GetPresentationFoundation().ComponentTemplates;
 
             LoadKnownTypes(uv);
+        }
+        
+        /// <summary>
+        /// Deletes the compiler's working directory.
+        /// </summary>
+        public void DeleteWorkingDirectory()
+        {
+            try
+            {
+                Directory.Delete(GetWorkingDirectory(), true);
+            }
+            catch (IOException) { }
+        }
+
+        /// <summary>
+        /// Gets the working directory for the specified compilation.
+        /// </summary>
+        /// <returns>The working directory for the specified compilation.</returns>
+        public String GetWorkingDirectory()
+        {
+            return WorkInTemporaryDirectory ? Path.Combine(Path.GetTempPath(), "UV_CompiledExpressions") : "UV_CompiledExpressions";
+        }
+
+        /// <summary>
+        /// Gets the name of the file in which the specified data source wrapper's source code is saved during compilation.
+        /// </summary>
+        /// <param name="dataSourceWrapperInfo">The <see cref="DataSourceWrapperInfo"/> for which to retrieve a file name.</param>
+        /// <returns>The name of the file in which the specified data souurce wrapper's source code is saved during compilation.</returns>
+        public String GetWorkingFileForDataSourceWrapper(DataSourceWrapperInfo dataSourceWrapperInfo)
+        {
+            return Path.ChangeExtension(Path.Combine(Path.GetTempPath(), dataSourceWrapperInfo.UniqueID.ToString()), "cs");
         }
 
         /// <summary>

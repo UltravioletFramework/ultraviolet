@@ -157,10 +157,6 @@ namespace Ultraviolet.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
 
-            if (Ultraviolet.Runtime == UltravioletRuntime.CoreCLR)
-            {
-                return;
-            }
             if (Ultraviolet.Platform == UltravioletPlatform.Android ||
                 Ultraviolet.Platform == UltravioletPlatform.iOS)
             {
@@ -275,9 +271,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         private void LoadBindingExpressionCompiler()
         {
-            if (Ultraviolet.Runtime == UltravioletRuntime.CoreCLR)
-                throw new NotSupportedException();
-
             if (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS)
                 throw new NotSupportedException();
 
@@ -298,7 +291,10 @@ namespace Ultraviolet.Presentation
                 throw new InvalidOperationException(PresentationStrings.ExpressionCompilerNotFound.Format(compilerAsmName), e);
             }
 
-            var compilerType = compilerAsm.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IBindingExpressionCompiler))).FirstOrDefault();
+            var compilerType = compilerAsm.GetTypes()
+                .Where(x => x.GetInterfaces().Contains(typeof(IBindingExpressionCompiler)))
+                .Where(x => x.GetCustomAttribute(typeof(ObsoleteAttribute)) == null)
+                .FirstOrDefault();
             if (compilerType == null || compilerType.IsAbstract)
             {
                 throw new InvalidOperationException(PresentationStrings.ExpressionCompilerTypeNotValid);

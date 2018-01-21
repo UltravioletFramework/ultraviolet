@@ -14,12 +14,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)CompilerStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSharpLanguage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataSourceLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceWrapperInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSourceWrapperWriter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCompiler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LegacyExpressionCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LegacyExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyFinder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynExpressionCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UvmlTypeAnalysis.cs" />
   </ItemGroup>
 </Project>

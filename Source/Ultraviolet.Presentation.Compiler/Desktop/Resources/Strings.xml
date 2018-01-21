@@ -55,4 +55,9 @@
       <Variant>The expression '{0}' targets an element of type '{1}' but that type has not been registered with the Presentation Foundation.</Variant>
     </en-US>
   </String>
+  <String Key="COULD_NOT_LOCATE_REFERENCE_ASSEMBLIES">
+    <en-US>
+      <Variant>Failed to locate the .NET Standard 2.0 reference assemblies. Install the .NET Framework 4.7.1 or .NET Core 2.0 SDKs.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

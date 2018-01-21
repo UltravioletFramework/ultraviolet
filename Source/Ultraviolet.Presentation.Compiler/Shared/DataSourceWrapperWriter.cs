@@ -561,7 +561,7 @@ namespace Ultraviolet.Presentation.Compiler
                 var matchName = match.Name.LocalName;
 
                 expText = expPartText;
-                expTargetType = ExpressionCompiler.GetPlaceholderType(dataSourceWrapperInfo.DataSourceType, matchName);
+                expTargetType = UvmlTypeAnalysis.GetPlaceholderType(dataSourceWrapperInfo.DataSourceType, matchName);
                 
                 if (expTargetType == null && !state.GetKnownType(matchName, out expTargetType))
                 {

@@ -35,6 +35,7 @@ namespace Ultraviolet.Presentation.Compiler
         public static readonly StringResource ExpressionTargetIsNotFound         = new StringResource(StringDatabase, "EXPRESSION_TARGET_IS_NOT_FOUND");
         public static readonly StringResource ExpressionTargetIsAmbiguous        = new StringResource(StringDatabase, "EXPRESSION_TARGET_IS_AMBIGUOUS");
         public static readonly StringResource ExpressionTargetIsUnrecognizedType = new StringResource(StringDatabase, "EXPRESSION_TARGET_IS_UNRECOGNIZED_TYPE");
+        public static readonly StringResource CouldNotLocateReferenceAssemblies  = new StringResource(StringDatabase, "COULD_NOT_LOCATE_REFERENCE_ASSEMBLIES");
 #pragma warning restore 1591
     }
 }

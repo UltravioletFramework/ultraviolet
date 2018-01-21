@@ -97,6 +97,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETCore",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore", "UvDebug\NETCore\UvDebug.NETCore.csproj", "{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Compiler.NETStandard", "Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj", "{D18F7183-7E27-4564-8496-6990621F606D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
@@ -344,6 +346,12 @@ Global
 		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{3BACAC57-6317-42AE-ADA9-8C4732EBBC1D}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{D18F7183-7E27-4564-8496-6990621F606D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18F7183-7E27-4564-8496-6990621F606D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D18F7183-7E27-4564-8496-6990621F606D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D18F7183-7E27-4564-8496-6990621F606D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D18F7183-7E27-4564-8496-6990621F606D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{D18F7183-7E27-4564-8496-6990621F606D}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

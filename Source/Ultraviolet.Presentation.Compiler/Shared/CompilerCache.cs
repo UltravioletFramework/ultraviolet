@@ -37,13 +37,22 @@ namespace Ultraviolet.Presentation.Compiler
             var cache = new CompilerCache();
 
             var lines = File.ReadAllLines(path);
+            var compilerType = default(String);
             var versionUltraviolet = default(String);
             var versionMscorlib = default(String);
 
-            foreach (var line in lines)
+            for(int i = 0; i < lines.Length; i++)
             {
+                var line = lines[i];
+
                 if (String.IsNullOrEmpty(line))
                     continue;
+
+                if (i == 0 && line.StartsWith("#compiler "))
+                {
+                    compilerType = line.Substring("#compiler ".Length).Trim();
+                    continue;
+                }
 
                 if (versionUltraviolet == default(String))
                 {
@@ -67,6 +76,7 @@ namespace Ultraviolet.Presentation.Compiler
                 cache.hashes[name] = hash;
             }
 
+            cache.compilerType = compilerType;
             cache.versionUltraviolet = versionUltraviolet;
             cache.versionMscorlib = versionMscorlib;
             return cache;
@@ -94,14 +104,17 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Creates a new instance of <see cref="CompilerCache"/> from the specified collection of data source wrappers.
         /// </summary>
+        /// <param name="compiler">The compiler which is creating this cache.</param>
         /// <param name="dataSourceWrappers">A collection of data source wrappers from which to create a cache object.</param>
         /// <returns>The <see cref="CompilerCache"/> instance that was created.</returns>
-        public static CompilerCache FromDataSourceWrappers(IEnumerable<DataSourceWrapperInfo> dataSourceWrappers)
+        public static CompilerCache FromDataSourceWrappers(IBindingExpressionCompiler compiler, IEnumerable<DataSourceWrapperInfo> dataSourceWrappers)
         {
+            Contract.Require(compiler, nameof(compiler));
             Contract.Require(dataSourceWrappers, nameof(dataSourceWrappers));
 
-            var cache = new CompilerCache();
             var types = new HashSet<Type>();
+            var cache = new CompilerCache();
+            cache.compilerType = compiler.GetType().FullName;
             
             foreach (var dataSourceWrapper in dataSourceWrappers)
             {
@@ -173,6 +186,9 @@ namespace Ultraviolet.Presentation.Compiler
             using (var stream = File.Open(path, FileMode.Create))
             using (var writer = new StreamWriter(stream))
             {
+                if (compilerType != null)
+                    writer.WriteLine("#compiler " + compilerType);
+
                 writer.WriteLine(versionUltraviolet);
                 writer.WriteLine(versionMscorlib);
 
@@ -201,12 +217,10 @@ namespace Ultraviolet.Presentation.Compiler
             var keys = Enumerable.Union(this.hashes.Keys, other.hashes.Keys).ToList();
             foreach (var key in keys)
             {
-                String hash1, hash2;
-
-                if (!this.hashes.TryGetValue(key, out hash1))
+                if (!this.hashes.TryGetValue(key, out var hash1))
                     return true;
 
-                if (!other.hashes.TryGetValue(key, out hash2))
+                if (!other.hashes.TryGetValue(key, out var hash2))
                     return true;
 
                 if (!String.Equals(hash1, hash2, StringComparison.Ordinal))
@@ -350,6 +364,7 @@ namespace Ultraviolet.Presentation.Compiler
         private readonly Dictionary<String, String> hashes = new Dictionary<String, String>();
 
         // Versioning information
+        private String compilerType;
         private String versionUltraviolet;
         private String versionMscorlib;
     }
