@@ -328,8 +328,10 @@ namespace Ultraviolet.Presentation.Compiler
 
             if (netStandardRefAsmDir == null && DependencyFinder.IsNuGetAvailable())
             {
+                Directory.CreateDirectory(state.GetWorkingDirectory());
+
                 DependencyFinder.DownloadNuGetExecutable();
-                DependencyFinder.InstallNuGetPackage("NETStandard.Library", "2.0.1");
+                DependencyFinder.InstallNuGetPackage(state, "NETStandard.Library", "2.0.1");
 
                 netStandardRefAsmDir = DependencyFinder.GetNetStandardLibraryDirFromWorkingDir(state.GetWorkingDirectory());
             }

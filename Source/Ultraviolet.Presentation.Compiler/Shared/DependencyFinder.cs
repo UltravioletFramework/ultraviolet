@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Ultraviolet.Core;
+using System.Reflection;
 
 namespace Ultraviolet.Presentation.Compiler
 {
@@ -35,8 +36,11 @@ namespace Ultraviolet.Presentation.Compiler
 
             Debug.Write("NuGet: Downloading client from nuget.org... ");
 
+            var dir = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var exe = Path.Combine(dir, "nuget.exe");
+
             using (var client = new WebClient())
-                client.DownloadFile("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe");
+                client.DownloadFile("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", exe);
 
             Debug.WriteLine("done.");
 
@@ -46,26 +50,34 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Installs the specified NuGet package into the current working directory.
         /// </summary>
+        /// <param name="state">The compiler's current state.</param>
         /// <param name="packageID">The identifier of the package to install.</param>
         /// <param name="version">The version of the package to install, or <see langword="null"/> to install the newest version.</param>
         /// <returns><see langword="true"/> if the package was installed successfully; otherwise, <see langword="false"/>.</returns>
-        public static Boolean InstallNuGetPackage(String packageID, String version = null)
+        public static Boolean InstallNuGetPackage(IExpressionCompilerState state, String packageID, String version = null)
         {
+            Contract.Require(state, nameof(state));
+            Contract.RequireNotEmpty(packageID, nameof(packageID));
+
             if (!IsNuGetAvailable())
                 throw new PlatformNotSupportedException();
 
             Debug.Write("NuGet: Installing package " + packageID + "... ");
+
+            var dir = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var exe = Path.Combine(dir, "nuget.exe");
 
             var args = String.IsNullOrEmpty(version) ? $"install {packageID}" : $"install {packageID} -Version {version}";
             var proc = new Process()
             {
                 StartInfo = new ProcessStartInfo()
                 {
-                    FileName = "nuget.exe",
+                    FileName = exe,
                     Arguments = args,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
+                    WorkingDirectory = state.GetWorkingDirectory()
                 }
             };
             proc.Start();

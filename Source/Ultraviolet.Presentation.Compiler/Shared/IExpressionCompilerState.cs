@@ -8,6 +8,12 @@ namespace Ultraviolet.Presentation.Compiler
     internal interface IExpressionCompilerState
     {
         /// <summary>
+        /// Gets the working directory for the specified compilation.
+        /// </summary>
+        /// <returns>The working directory for the specified compilation.</returns>
+        String GetWorkingDirectory();
+
+        /// <summary>
         /// Gets the known type with the specified name.
         /// </summary>
         /// <param name="name">The name of the known type to retrieve.</param>
