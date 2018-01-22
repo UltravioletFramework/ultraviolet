@@ -87,7 +87,7 @@ namespace Ultraviolet.Presentation
                 var rootGridContext = UvmlInstantiationContext.ForView(puv, view);
 
                 var rootGridTemplateInstance = (UvmlTemplateInstance)rootGridTemplate.Instantiate(puv, rootGridContext);
-                var rootGrid = (Grid)rootGridTemplateInstance.Finalize();
+                var rootGrid = (Grid)rootGridTemplateInstance.FinalizeInstance();
 
                 rootAdornerDecorator.Child = rootGrid;
 
@@ -96,7 +96,7 @@ namespace Ultraviolet.Presentation
 
             // Instantiate the view template.
             var viewTemplateInstance = (UvmlTemplateInstance)viewTemplate.Instantiate(uv, null);
-            var viewInstance = (PresentationFoundationView)viewTemplateInstance.Finalize();
+            var viewInstance = (PresentationFoundationView)viewTemplateInstance.FinalizeInstance();
 
             var viewRoot = viewInstance.LayoutRoot;
             var viewRootAdornerDecorator = (AdornerDecorator)viewRoot.Child;
@@ -163,7 +163,7 @@ namespace Ultraviolet.Presentation
             }
 
             var componentTemplateInstance = (UvmlTemplateInstance)componentTemplate.Instantiate(control.Ultraviolet, componentContext);
-            var component = (UIElement)componentTemplateInstance.Finalize();
+            var component = (UIElement)componentTemplateInstance.FinalizeInstance();
             componentContext.Namescope.PopulateFieldsFromRegisteredElements(control);
 
             return component;

@@ -38,8 +38,8 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Gets or sets the list box's selection mode.
         /// </summary>
-        /// <value>A <see cref="SelectionMode"/> value indicating how items in the list box are selected.
-        /// The default value is <see cref="SelectionMode.Single"/>.</value>
+        /// <value>A <see cref="Controls.SelectionMode"/> value indicating how items in the list box are selected.
+        /// The default value is <see cref="Controls.SelectionMode.Single"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="SelectionModeProperty"/></dpropField>

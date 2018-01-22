@@ -14,7 +14,7 @@ namespace Ultraviolet.Presentation.Uvss
         internal sealed class MissingList : SyntaxList
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="MissingList"/> class.
+            /// Initializes a new instance of the <see cref="SyntaxList.MissingList"/> class.
             /// </summary>
             internal MissingList()
             {
@@ -22,7 +22,7 @@ namespace Ultraviolet.Presentation.Uvss
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="MissingList"/> class from
+            /// Initializes a new instance of the <see cref="SyntaxList.MissingList"/> class from
             /// the specified binary reader.
             /// </summary>
             /// <param name="reader">The binary reader with which to deserialize the object.</param>

@@ -5,8 +5,8 @@ namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents an element container which stacks its children either directly on top of each
-    /// other (if <see cref="Orientation"/> is <see cref="Orientation.Vertical"/>) or
-    /// side-by-side if (see <see cref="Orientation"/> is <see cref="Orientation.Horizontal"/>,
+    /// other (if <see cref="Orientation"/> is <see cref="Controls.Orientation.Vertical"/>) or
+    /// side-by-side if (see <see cref="Orientation"/> is <see cref="Controls.Orientation.Horizontal"/>,
     /// wrapping the content if necessary to fit within the available space.
     /// </summary>
     [Preserve(AllMembers = true)]
@@ -28,7 +28,7 @@ namespace Ultraviolet.Presentation.Controls
         /// Gets or sets the panel's orientation.
         /// </summary>
         /// <value>An <see cref="Orientation"/> value specifying whether the panel is arranged horizontally
-        /// or vertically. The default value is <see cref="Orientation.Horizontal"/>.</value>
+        /// or vertically. The default value is <see cref="Controls.Orientation.Horizontal"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="OrientationProperty"/></dpropField>

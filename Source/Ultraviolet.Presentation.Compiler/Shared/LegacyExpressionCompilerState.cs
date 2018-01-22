@@ -11,6 +11,7 @@ namespace Ultraviolet.Presentation.Compiler
     /// <summary>
     /// Represents the state of a compilation performed by the <see cref="LegacyExpressionCompiler"/> class.
     /// </summary>
+    [Obsolete]
     internal class LegacyExpressionCompilerState : IExpressionCompilerState
     {
         /// <summary>

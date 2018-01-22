@@ -14,7 +14,7 @@ namespace Ultraviolet.Presentation.Uvss
         internal sealed class WithTwoChildren : SyntaxList
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="WithTwoChildren"/> class.
+            /// Initializes a new instance of the <see cref="SyntaxList.WithTwoChildren"/> class.
             /// </summary>
             /// <param name="child0">The list's first child.</param>
             /// <param name="child1">The list's second child.</param>
@@ -30,7 +30,7 @@ namespace Ultraviolet.Presentation.Uvss
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="WithTwoChildren"/> class from
+            /// Initializes a new instance of the <see cref="SyntaxList.WithTwoChildren"/> class from
             /// the specified binary reader.
             /// </summary>
             /// <param name="reader">The binary reader with which to deserialize the object.</param>

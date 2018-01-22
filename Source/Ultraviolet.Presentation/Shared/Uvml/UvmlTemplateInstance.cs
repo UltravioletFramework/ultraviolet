@@ -22,7 +22,7 @@ namespace Ultraviolet.Presentation.Uvml
         /// Finalizes the object and returns the result.
         /// </summary>
         /// <returns>The finalized object instance.</returns>
-        public Object Finalize()
+        public Object FinalizeInstance()
         {
             if (finalized)
                 throw new InvalidOperationException();

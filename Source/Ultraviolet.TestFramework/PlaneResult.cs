@@ -35,9 +35,7 @@ namespace Ultraviolet.TestFramework
         /// <summary>
         /// Asserts that this value should have the specified normal vector.
         /// </summary>
-        /// <param name="x">The expected x-coordinate of the plane's normal.</param>
-        /// <param name="y">The expected y-coordinate of the plane's normal.</param>
-        /// <param name="z">The expected z-coordinate of the plane's normal.</param>
+        /// <param name="normal">The expected coordinates of the plane's normal.</param>
         /// <returns>The result object.</returns>
         public PlaneResult ShouldHaveNormal(Vector3 normal)
         {

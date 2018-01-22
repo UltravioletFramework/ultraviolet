@@ -12,6 +12,7 @@ namespace Ultraviolet.Shims.Desktop.Platform
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopScreenDensityService"/> class.
         /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="display">The <see cref="IUltravioletDisplay"/> for which to retrieve density information.</param>
         public DesktopScreenDensityService(UltravioletContext uv, IUltravioletDisplay display)
             : base(display)

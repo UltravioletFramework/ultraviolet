@@ -289,9 +289,9 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Gets or sets the text box's current keyboard mode.
         /// </summary>
-        /// <value>A <see cref="KeyboardMode"/> value which determines the kind of software keyboard
+        /// <value>A <see cref="Ultraviolet.Input.KeyboardMode"/> value which determines the kind of software keyboard
         /// which is displayed by this text box on platforms which use software keyboard. The default
-        /// value is <see cref="KeyboardMode.Text"/>.</value>
+        /// value is <see cref="Ultraviolet.Input.KeyboardMode.Text"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="KeyboardModeProperty"/></dpropField>
@@ -306,11 +306,11 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="CharacterCasing"/> value which specifies the casing which is 
+        /// Gets or sets a <see cref="Controls.CharacterCasing"/> value which specifies the casing which is 
         /// applied to the text box's text.
         /// </summary>
-        /// <value>A <see cref="CharacterCasing"/> value which specifies the casing which is 
-        /// applied to the text box's text. The default value is <see cref="CharacterCasing.Normal"/>.</value>
+        /// <value>A <see cref="Controls.CharacterCasing"/> value which specifies the casing which is 
+        /// applied to the text box's text. The default value is <see cref="Controls.CharacterCasing.Normal"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="CharacterCasingProperty"/></dpropField>
@@ -327,8 +327,8 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Gets or sets a value specifying how the text box's text is aligned.
         /// </summary>
-        /// <value>A <see cref="TextAlignment"/> value which specifies how the text box's text is aligned.
-        /// The default value is <see cref="TextAlignment.Left"/>.</value>
+        /// <value>A <see cref="Presentation.TextAlignment"/> value which specifies how the text box's text is aligned.
+        /// The default value is <see cref="Presentation.TextAlignment.Left"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="TextAlignmentProperty"/></dpropField>
@@ -345,8 +345,8 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Gets or sets a value specifying how the text box's text wraps when it reaches the edge of its container.
         /// </summary>
-        /// <value>A <see cref="TextWrapping"/> value which specifies how the text box's text is wrapped
-        /// when it reaches the edge of its container. The default value is <see cref="TextWrapping.NoWrap"/>.</value>
+        /// <value>A <see cref="Presentation.TextWrapping"/> value which specifies how the text box's text is wrapped
+        /// when it reaches the edge of its container. The default value is <see cref="Presentation.TextWrapping.NoWrap"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="TextWrappingProperty"/></dpropField>

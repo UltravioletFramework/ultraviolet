@@ -529,7 +529,7 @@ namespace Ultraviolet.Presentation.Compiler
         }
         
         /// <summary>
-        /// Converts a <see cref="CompilerErrorCollection"/> to a collection of <see cref="BindingExpressionCompilationError"/> objects.
+        /// Converts an array of <see cref="Diagnostic"/> instances to a collection of <see cref="BindingExpressionCompilationError"/> objects.
         /// </summary>
         private static List<BindingExpressionCompilationError> CreateBindingExpressionCompilationErrors(RoslynExpressionCompilerState state,
             IEnumerable<DataSourceWrapperInfo> models, ImmutableArray<Diagnostic> diagnostics)

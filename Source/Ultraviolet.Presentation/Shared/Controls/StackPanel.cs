@@ -5,8 +5,8 @@ namespace Ultraviolet.Presentation.Controls
 {
     /// <summary>
     /// Represents an element container which stacks its children either directly on top of each
-    /// other (if <see cref="Orientation"/> is <see cref="Orientation.Vertical"/>) or
-    /// side-by-side if (see <see cref="Orientation"/> is <see cref="Orientation.Horizontal"/>).
+    /// other (if <see cref="Orientation"/> is <see cref="Controls.Orientation.Vertical"/>) or
+    /// side-by-side if (see <see cref="Orientation"/> is <see cref="Controls.Orientation.Horizontal"/>).
     /// </summary>
     [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.StackPanel.xml")]
@@ -26,8 +26,8 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Gets or sets the panel's orientation.
         /// </summary>
-        /// <value>A <see cref="Orientation"/> value which determines whether the panel is oriented horizontally
-        /// or vertically. The default value is <see cref="Orientation.Vertical"/>.</value>
+        /// <value>A <see cref="Controls.Orientation"/> value which determines whether the panel is oriented horizontally
+        /// or vertically. The default value is <see cref="Controls.Orientation.Vertical"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="OrientationProperty"/></dpropField>

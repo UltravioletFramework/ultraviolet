@@ -212,7 +212,6 @@ namespace UvDebug
         /// <summary>
         /// Called when the application state is being updated.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="time">Time elapsed since the last call to Update.</param>
         protected override void OnUpdating(UltravioletTime time)
         {

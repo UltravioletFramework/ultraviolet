@@ -35,7 +35,7 @@ namespace Ultraviolet.Presentation
             var namescope = default(Namescope);
             var wrapper = CreateDataSourceWrapper(dataSource, out namescope);
             var context = new UvmlInstantiationContext(uv, null, wrapper, wrapper?.GetType(), namescope);
-            var dobj = (DependencyObject)((UvmlTemplateInstance)template.Instantiate(uv, context)).Finalize();
+            var dobj = (DependencyObject)((UvmlTemplateInstance)template.Instantiate(uv, context)).FinalizeInstance();
 
             var element = dobj as FrameworkElement;
             if (element != null)

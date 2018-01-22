@@ -142,8 +142,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <summary>
         /// Gets or sets the track's orientation.
         /// </summary>
-        /// <value>A <see cref="Orientation"/> value which indicates whether the track is oriented vertically
-        /// or horizontally. The default value is <see cref="Orientation.Horizontal"/>.</value>
+        /// <value>A <see cref="Controls.Orientation"/> value which indicates whether the track is oriented vertically
+        /// or horizontally. The default value is <see cref="Controls.Orientation.Horizontal"/>.</value>
         /// <remarks>
         /// <dprop>
         ///		<dpropField><see cref="OrientationProperty"/></dpropField>

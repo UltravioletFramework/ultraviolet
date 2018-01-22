@@ -44,7 +44,7 @@ namespace Ultraviolet.Presentation.Uvml
         {
             var templateInstance = value as UvmlTemplateInstance;
             if (templateInstance != null)
-                return (T)templateInstance.Finalize();
+                return (T)templateInstance.FinalizeInstance();
 
             var elementReference = value as UvmlElementReference;
             if (elementReference != null)

@@ -11,7 +11,7 @@ namespace Ultraviolet.Presentation
         public sealed class Mouse : CursorTracker
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="Mouse"/> class.
+            /// Initializes a new instance of the <see cref="CursorTracker.Mouse"/> class.
             /// </summary>
             /// <param name="view">The view which owns this tracker.</param>
             /// <param name="device">The mouse device which is being tracked.</param>

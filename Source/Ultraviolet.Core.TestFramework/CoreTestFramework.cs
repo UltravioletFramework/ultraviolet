@@ -54,9 +54,9 @@ namespace Ultraviolet.Core.TestFramework
         /// </summary>
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected static CollectionResult<T> TheResultingCollection<T>(IEnumerable<T> collection)
+        protected static CollectionResult<T> TheResultingCollection<T>(IEnumerable<T> value)
         {
-            return new CollectionResult<T>(collection);
+            return new CollectionResult<T>(value);
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Ultraviolet.Core.TestFramework
         /// </summary>
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected static StringResult TheResultingString(String str)
+        protected static StringResult TheResultingString(String value)
         {
-            return new StringResult(str);
+            return new StringResult(value);
         }
 
         /// <summary>
@@ -104,9 +104,9 @@ namespace Ultraviolet.Core.TestFramework
         /// </summary>
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected static StringResult TheResultingString(StringBuilder str)
+        protected static StringResult TheResultingString(StringBuilder value)
         {
-            return new StringResult(str == null ? null : str.ToString());
+            return new StringResult(value == null ? null : value.ToString());
         }
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace Ultraviolet.Core.TestFramework
         /// </summary>
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected static LocalizedStringResult TheResultingString(LocalizedString str)
+        protected static LocalizedStringResult TheResultingString(LocalizedString value)
         {
-            return new LocalizedStringResult(str);
+            return new LocalizedStringResult(value);
         }
 
         /// <summary>
@@ -124,9 +124,9 @@ namespace Ultraviolet.Core.TestFramework
         /// </summary>
         /// <param name="value">The value to wrap.</param>
         /// <returns>The wrapped value.</returns>
-        protected static LocalizedStringVariantResult TheResultingString(LocalizedStringVariant variant)
+        protected static LocalizedStringVariantResult TheResultingString(LocalizedStringVariant value)
         {
-            return new LocalizedStringVariantResult(variant);
+            return new LocalizedStringVariantResult(value);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Ultraviolet.Presentation.Media
         /// Gets or sets the transformation matrix that this transform represents.
         /// </summary>
         /// <value>A <see cref="Matrix"/> which represents the transformation applied by this instance.
-        /// The default value is <see cref="Matrix.Identity"/>.</value>
+        /// The default value is <see cref="Ultraviolet.Matrix.Identity"/>.</value>
         /// <remarks>
         /// <dprop>
         ///		<dpropField><see cref="MatrixProperty"/></dpropField>

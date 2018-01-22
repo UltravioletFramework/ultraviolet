@@ -14,7 +14,7 @@ namespace Ultraviolet.Presentation.Uvss
         internal sealed class WithManyChildren : WithManyChildrenBase
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="WithManyChildren"/> class.
+            /// Initializes a new instance of the <see cref="SyntaxList.WithManyChildren"/> class.
             /// </summary>
             /// <param name="children">An array containing the list's children.</param>
             internal WithManyChildren(ArrayElement<SyntaxNode>[] children)
@@ -24,7 +24,7 @@ namespace Ultraviolet.Presentation.Uvss
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="WithManyChildren"/> class from
+            /// Initializes a new instance of the <see cref="SyntaxList.WithManyChildren"/> class from
             /// the specified binary reader.
             /// </summary>
             /// <param name="reader">The binary reader with which to deserialize the object.</param>

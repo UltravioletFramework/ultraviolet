@@ -234,7 +234,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Writes a wrapper property for the specified property.
         /// </summary>
-        /// <param name="method">The method for which to write a wrapper.</param>
+        /// <param name="property">The property for which to write a wrapper.</param>
         public void WriteWrapperProperty(PropertyInfo property)
         {
             var getter = property.GetGetMethod(false);
@@ -284,7 +284,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Writes a wrapper property for the specified field.
         /// </summary>
-        /// <param name="method">The method for which to write a wrapper.</param>
+        /// <param name="field">The field for which to write a wrapper.</param>
         public void WriteWrapperProperty(FieldInfo field)
         {
             var isStatic = field.IsStatic;

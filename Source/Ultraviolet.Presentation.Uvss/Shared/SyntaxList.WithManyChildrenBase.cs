@@ -13,7 +13,7 @@ namespace Ultraviolet.Presentation.Uvss
         internal abstract class WithManyChildrenBase : SyntaxList
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="WithManyChildrenBase"/> class.
+            /// Initializes a new instance of the <see cref="SyntaxList.WithManyChildrenBase"/> class.
             /// </summary>
             /// <param name="children">An array containing the list's children.</param>
             internal WithManyChildrenBase(ArrayElement<SyntaxNode>[] children)
@@ -26,7 +26,7 @@ namespace Ultraviolet.Presentation.Uvss
             }
             
             /// <summary>
-            /// Initializes a new instance of the <see cref="WithManyChildrenBase"/> class from
+            /// Initializes a new instance of the <see cref="SyntaxList.WithManyChildrenBase"/> class from
             /// the specified binary reader.
             /// </summary>
             /// <param name="reader">The binary reader with which to deserialize the object.</param>
