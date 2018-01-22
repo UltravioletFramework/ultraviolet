@@ -34,18 +34,22 @@ namespace Ultraviolet.Presentation.Compiler
                     var symbol = model.GetDeclaredSymbol(fds.Declaration.Variables[0]);
                     if (symbol.Name.StartsWith("__Set__UPF_Expression"))
                     {
-                        // Find the field's corresponding property.
-                        var propertyName = symbol.Name.Substring("__Set".Length);
-                        var property = model.SyntaxTree.GetRoot().DescendantNodes().OfType<PropertyDeclarationSyntax>()
-                            .Where(x => x.Identifier.ValueText == propertyName)
-                            .SingleOrDefault();
-                        if (property != null)
+                        var containingClass = fds.FirstAncestorOrSelf<ClassDeclarationSyntax>();
+                        if (containingClass != null)
                         {
-                            // If the property doesn't have a set accessor, remove this field.
-                            var propertySetter = property.AccessorList.Accessors.Where(x => x.Kind() == SyntaxKind.SetAccessorDeclaration).SingleOrDefault();
-                            if (propertySetter == null)
+                            // Find the field's corresponding property.
+                            var propertyName = symbol.Name.Substring("__Set".Length);
+                            var property = containingClass.DescendantNodes().OfType<PropertyDeclarationSyntax>()
+                                .Where(x => x.Identifier.ValueText == propertyName)
+                                .SingleOrDefault();
+                            if (property != null)
                             {
-                                return null;
+                                // If the property doesn't have a set accessor, remove this field.
+                                var propertySetter = property.AccessorList.Accessors.Where(x => x.Kind() == SyntaxKind.SetAccessorDeclaration).SingleOrDefault();
+                                if (propertySetter == null)
+                                {
+                                    return null;
+                                }
                             }
                         }
                     }
