@@ -145,7 +145,7 @@ namespace Ultraviolet.TestFramework
         /// <summary>
         /// Wraps the specified unit test result for evaluation.
         /// </summary>
-        /// <param name="value">The value to wrap.</param>
+        /// <param name="bitmap">The bitmap to wrap.</param>
         /// <returns>The wrapped value.</returns>
         protected BitmapResult TheResultingImage(Bitmap bitmap)
         {

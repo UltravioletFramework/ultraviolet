@@ -76,7 +76,7 @@ namespace Ultraviolet.TestFramework
         /// <summary>
         /// Asserts that this value should have the specified packed value.
         /// </summary>
-        /// <param name="value">The color's expected packed value.</param>
+        /// <param name="packedValue">The color's expected packed value.</param>
         /// <returns>The result object.</returns>
         public void ShouldHavePackedValue(UInt32 packedValue)
         {
