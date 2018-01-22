@@ -66,7 +66,7 @@ namespace Ultraviolet.Tests.UI.Presentation
                 .WithInitialization(uv =>
                 {
                     var upf = uv.GetUI().GetPresentationFoundation();
-                    upf.CompileExpressions("Content", CompileExpressionsFlags.GenerateInMemory);
+                    upf.CompileExpressions("Content", CompileExpressionsFlags.GenerateInMemory | CompileExpressionsFlags.WorkInTemporaryDirectory);
                     upf.LoadCompiledExpressions();
                 })
                 .WithContent(content =>

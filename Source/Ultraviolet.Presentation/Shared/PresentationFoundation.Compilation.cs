@@ -127,6 +127,7 @@ namespace Ultraviolet.Presentation
             options.Input = root;
             options.Output = CompiledExpressionsAssemblyName;
             options.IgnoreCache = options.GenerateInMemory || (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache;
+            options.WorkInTemporaryDirectory = (flags & CompileExpressionsFlags.WorkInTemporaryDirectory) == CompileExpressionsFlags.WorkInTemporaryDirectory;
 
             try
             {

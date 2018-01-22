@@ -32,5 +32,11 @@ namespace Ultraviolet.Presentation
         /// a file on disk.
         /// </summary>
         GenerateInMemory = 0x0004,
+
+        /// <summary>
+        /// The expression compiler will perform its compilation in a temporary directory instead
+        /// of in the application's working directory.
+        /// </summary>
+        WorkInTemporaryDirectory = 0x0008,
     }
 }
