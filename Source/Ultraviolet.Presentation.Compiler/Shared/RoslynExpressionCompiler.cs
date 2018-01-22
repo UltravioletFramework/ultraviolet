@@ -121,9 +121,57 @@ namespace Ultraviolet.Presentation.Compiler
 
             var referencedAssemblies = GetDefaultReferencedAssemblies(state);
 
+            var initialPassResult =
+                PerformInitialCompilationPass(state, models, referencedAssemblies);
+
+            var fixupPassResult =
+                PerformSyntaxTreeFixup(initialPassResult);
+
+            if (fixupPassResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
+            {
+                if (state.WriteErrorsToFile)
+                    WriteErrorsToWorkingDirectory(state, models, fixupPassResult);
+
+                return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedFinalPass,
+                    CreateBindingExpressionCompilationErrors(state, models, fixupPassResult.GetDiagnostics()));
+            }
+
+            var outputStream = default(Stream);
+            try
+            {
+                outputStream = state.GenerateInMemory ? new MemoryStream() : (Stream)File.OpenWrite(output);
+
+                var emitResult = fixupPassResult.Emit(outputStream);
+                if (emitResult.Success)
+                {
+                    var assembly = state.GenerateInMemory ? Assembly.Load(((MemoryStream)outputStream).ToArray()) : null;
+                    return BindingExpressionCompilationResult.CreateSucceeded(assembly);
+                }
+                else
+                {
+                    return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedEmit,
+                        CreateBindingExpressionCompilationErrors(state, models, emitResult.Diagnostics));
+                }
+            }
+            finally
+            {
+                if (outputStream != null)
+                    outputStream.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Compiles the specified collection of view models.
+        /// </summary>
+        private static BindingExpressionCompilationResult OldCompileViewModels(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
+        {
+            state.DeleteWorkingDirectory();
+            
+            var referencedAssemblies = GetDefaultReferencedAssemblies(state);
+
             var expressionVerificationResult =
                 PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
-
+            
             if (expressionVerificationResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
             {
                 if (state.WriteErrorsToFile)
@@ -173,7 +221,32 @@ namespace Ultraviolet.Presentation.Compiler
                 if (outputStream != null)
                     outputStream.Dispose();
             }
+        }
 
+        /// <summary>
+        /// Performs the first compilation pass, which the semantic model which will be used for fixup.
+        /// </summary>
+        private static Compilation PerformInitialCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        {
+            Parallel.ForEach(models, model =>
+            {
+                referencedAssemblies.Add(model.DataSourceType.Assembly.Location);
+                foreach (var reference in model.References)
+                {
+                    referencedAssemblies.Add(reference);
+                }
+
+                foreach (var expression in model.Expressions)
+                {
+                    expression.GenerateGetter = true;
+                    expression.GenerateSetter = true;
+                    expression.NullableFixup = false;
+                }
+
+                WriteSourceCodeForDataSourceWrapper(state, model);
+            });
+
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
         }
 
         /// <summary>
@@ -292,18 +365,17 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         /// <summary>
-        /// Compiles the specified data source wrapper sources into a managed assembly.
+        /// Compiles the specified data source wrapper sources into a Roslyn compilation object.
         /// </summary>
         private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
         {
-            var files = new List<String> { WriteCompilerMetadataFile() };
+            // TODO: var files = new List<String> { WriteCompilerMetadataFile() };
             var trees = new List<SyntaxTree>();
             var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
 
             foreach (var info in infos)
             {
                 var path = state.GetWorkingFileForDataSourceWrapper(info);
-                files.Add(path);
                 trees.Add(CSharpSyntaxTree.ParseText(info.DataSourceWrapperSourceCode, path: path));
                 
                 File.WriteAllText(path, info.DataSourceWrapperSourceCode);
@@ -314,7 +386,66 @@ namespace Ultraviolet.Presentation.Compiler
 
             return compilation;
         }
-        
+
+        /// <summary>
+        /// Compiles the specified set of syntax trees into a Roslyn compilation object.
+        /// </summary>
+        private static Compilation CompileFinalSyntaxTrees(RoslynExpressionCompilerState state, String output, IEnumerable<SyntaxTree> trees, IEnumerable<String> references)
+        {
+            var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
+
+            foreach (var tree in trees)
+                File.WriteAllText(tree.FilePath, tree.ToString());
+
+            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            var compilation = CSharpCompilation.Create("Ultraviolet.Presentation.CompiledExpressions.dll", trees, mrefs, options);
+
+            return compilation;
+        }
+
+        /// <summary>
+        /// Performs fixup steps on the specified compilation.
+        /// </summary>
+        private static Compilation PerformSyntaxTreeFixup(Compilation compilation)
+        {
+            var result = compilation;
+            var trees = compilation.SyntaxTrees.ToList();
+
+            foreach (var tree in trees)
+            {
+                var oldTree = (CSharpSyntaxTree)tree;
+                var newTree = (CSharpSyntaxTree)tree;
+
+                oldTree = newTree;
+                newTree = RewriteSyntaxTree(result, newTree, semanticModel => new FixupExpressionPropertiesRewriter(semanticModel));
+                if (newTree != oldTree)
+                    result = result.ReplaceSyntaxTree(oldTree, newTree);
+
+                oldTree = newTree;
+                newTree = RewriteSyntaxTree(result, newTree, semanticModel => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(semanticModel));
+                if (newTree != oldTree)
+                    result = result.ReplaceSyntaxTree(oldTree, newTree);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Rewrites a syntax tree using the specified rewriter.
+        /// </summary>
+        private static CSharpSyntaxTree RewriteSyntaxTree(Compilation compilation, CSharpSyntaxTree tree, Func<SemanticModel, CSharpSyntaxRewriter> rewriter)
+        {
+            var semanticModel = compilation.GetSemanticModel(tree, true);
+
+            var rewrittenRoot = rewriter(semanticModel).Visit(tree.GetRoot());
+            if (rewrittenRoot != tree.GetRoot())
+            {
+                return (CSharpSyntaxTree)CSharpSyntaxTree.Create((CSharpSyntaxNode)rewrittenRoot, tree.Options, tree.FilePath, tree.Encoding);
+            }
+
+            return tree;
+        }
+
         /// <summary>
         /// Creates a collection containing the assemblies which are referenced by default during compilation.
         /// </summary>

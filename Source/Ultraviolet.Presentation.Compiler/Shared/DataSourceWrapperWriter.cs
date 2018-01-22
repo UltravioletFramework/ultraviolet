@@ -447,12 +447,12 @@ namespace Ultraviolet.Presentation.Compiler
                     {
                         if (expressionInfo.NullableFixup)
                         {
-                            WriteLine(targetTypeSpecified ? "set {{ {0}{1} = ({3})(value ?? default({2})); }}" : "set {{ {0}{1} = value ?? default({2}); }}",
+                            WriteLine(targetTypeSpecified ? "set {{ ({0}{1}) = ({3})(value ?? default({2})); }}" : "set {{ ({0}{1}) = value ?? default({2}); }}",
                                 expTarget, expText, CSharpLanguage.GetCSharpTypeName(Nullable.GetUnderlyingType(expressionInfo.Type)), targetTypeName);
                         }
                         else
                         {
-                            WriteLine(targetTypeSpecified ? "set {{ {0}{1} = ({2})(value); }}" : "set {{ {0}{1} = value; }}",
+                            WriteLine(targetTypeSpecified ? "set {{ ({0}{1}) = ({2})(value); }}" : "set {{ ({0}{1}) = value; }}",
                                 expTarget, expText, targetTypeName);
                         }
                     }

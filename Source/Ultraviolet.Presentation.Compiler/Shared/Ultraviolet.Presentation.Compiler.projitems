@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.Presentation.Compiler</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FixupExpressionPropertiesRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingExpressionInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilerCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompilerStrings.cs" />
@@ -24,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DependencyFinder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynExpressionCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoslynExpressionCompilerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FixupBindingSettersRewriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UvmlTypeAnalysis.cs" />
   </ItemGroup>
 </Project>
