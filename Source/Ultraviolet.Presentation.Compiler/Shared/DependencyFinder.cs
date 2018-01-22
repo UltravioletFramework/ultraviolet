@@ -109,7 +109,11 @@ namespace Ultraviolet.Presentation.Compiler
         /// <returns>The path to the reference assemblies, or <see langword="null"/> if they don't exist.</returns>
         public static String GetNetStandardLibraryDirFromNuGetCache()
         {
-            var dir = Path.Combine(GetNuGetCacheDirectory(), "netstandard.library", "2.0.1", "build", "netstandard2.0", "ref");
+            var cache = GetNuGetCacheDirectory();
+            if (cache == null)
+                return null;
+
+            var dir = Path.Combine(cache, "netstandard.library", "2.0.1", "build", "netstandard2.0", "ref");
 
             return Directory.Exists(dir) ? dir : null;
         }
