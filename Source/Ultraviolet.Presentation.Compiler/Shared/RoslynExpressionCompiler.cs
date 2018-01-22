@@ -136,75 +136,20 @@ namespace Ultraviolet.Presentation.Compiler
                     CreateBindingExpressionCompilationErrors(state, models, fixupPassResult.GetDiagnostics()));
             }
 
-            var outputStream = default(Stream);
-            try
-            {
-                outputStream = state.GenerateInMemory ? new MemoryStream() : (Stream)File.OpenWrite(output);
-
-                var emitResult = fixupPassResult.Emit(outputStream);
-                if (emitResult.Success)
-                {
-                    var assembly = state.GenerateInMemory ? Assembly.Load(((MemoryStream)outputStream).ToArray()) : null;
-                    return BindingExpressionCompilationResult.CreateSucceeded(assembly);
-                }
-                else
-                {
-                    return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedEmit,
-                        CreateBindingExpressionCompilationErrors(state, models, emitResult.Diagnostics));
-                }
-            }
-            finally
-            {
-                if (outputStream != null)
-                    outputStream.Dispose();
-            }
+            return EmitCompilation(state, models, output, fixupPassResult);
         }
 
         /// <summary>
-        /// Compiles the specified collection of view models.
+        /// Emits the specified compilation to either an in-memory stream or a file.
         /// </summary>
-        private static BindingExpressionCompilationResult OldCompileViewModels(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
+        private static BindingExpressionCompilationResult EmitCompilation(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output, Compilation compilation)
         {
-            state.DeleteWorkingDirectory();
-            
-            var referencedAssemblies = GetDefaultReferencedAssemblies(state);
-
-            var expressionVerificationResult =
-                PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
-            
-            if (expressionVerificationResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
-            {
-                if (state.WriteErrorsToFile)
-                    WriteErrorsToWorkingDirectory(state, models, expressionVerificationResult);
-
-                return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedExpressionValidationPass,
-                    CreateBindingExpressionCompilationErrors(state, models, expressionVerificationResult.GetDiagnostics()));
-            }
-
-            var setterEliminationPassResult =
-                PerformSetterEliminationCompilationPass(state, models, referencedAssemblies);
-
-            var conversionFixupPassResult =
-                PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult);
-
-            var finalPassResult =
-                PerformFinalCompilationPass(state, state.GenerateInMemory ? null : output, models, referencedAssemblies, conversionFixupPassResult);
-
-            if (finalPassResult.GetDiagnostics().Where(x => x.Severity == DiagnosticSeverity.Error).Any())
-            {
-                if (state.WriteErrorsToFile)
-                    WriteErrorsToWorkingDirectory(state, models, finalPassResult);
-
-                return BindingExpressionCompilationResult.CreateFailed(CompilerStrings.FailedFinalPass,
-                    CreateBindingExpressionCompilationErrors(state, models, finalPassResult.GetDiagnostics()));
-            }
-
             var outputStream = default(Stream);
             try
             {
                 outputStream = state.GenerateInMemory ? new MemoryStream() : (Stream)File.OpenWrite(output);
 
-                var emitResult = finalPassResult.Emit(outputStream);
+                var emitResult = compilation.Emit(outputStream);
                 if (emitResult.Success)
                 {
                     var assembly = state.GenerateInMemory ? Assembly.Load(((MemoryStream)outputStream).ToArray()) : null;
@@ -250,127 +195,11 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         /// <summary>
-        /// Performs the first compilation pass, which generates expression getters in order to verify that the expressions are valid code.
-        /// </summary>
-        private static Compilation PerformExpressionVerificationCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
-        {
-            Parallel.ForEach(models, model =>
-            {
-                referencedAssemblies.Add(model.DataSourceType.Assembly.Location);
-                foreach (var reference in model.References)
-                {
-                    referencedAssemblies.Add(reference);
-                }
-
-                foreach (var expression in model.Expressions)
-                {
-                    expression.GenerateGetter = true;
-                    expression.GenerateSetter = false;
-                }
-
-                WriteSourceCodeForDataSourceWrapper(state, model);
-            });
-
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
-        }
-
-        /// <summary>
-        /// Performs the second compilation pass, which generates setters in order to determine which expressions support two-way bindings.
-        /// </summary>
-        private static Compilation PerformSetterEliminationCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
-        {
-            Parallel.ForEach(models, model =>
-            {
-                foreach (var expression in model.Expressions)
-                {
-                    expression.GenerateGetter = true;
-                    expression.GenerateSetter = true;
-                }
-
-                WriteSourceCodeForDataSourceWrapper(state, model);
-            });
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
-        }
-
-        /// <summary>
-        /// Performs the third compilation pass, which attempts to fix any errors caused by non-implicit conversions and nullable types that need to be cast to non-nullable types.
-        /// </summary>
-        private static Compilation PerformConversionFixupCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Compilation setterEliminationResult)
-        {
-            var errors = setterEliminationResult.GetDiagnostics().Where(x => x.Location.IsInSource && x.Severity == DiagnosticSeverity.Error).ToList();
-
-            var fixableErrorNumbers = new List<String>
-            {
-                "CS0266",
-                "CS1502",
-                "CS1503"
-            };
-
-            Parallel.ForEach(models, model =>
-            {
-                var dataSourceWrapperFilename = Path.GetFileName(state.GetWorkingFileForDataSourceWrapper(model));
-                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.Location.SourceTree.FilePath) == dataSourceWrapperFilename).ToList();
-
-                foreach (var expression in model.Expressions)
-                {
-                    var setterErrors = dataSourceWrapperErrors.Where(x =>
-                        GetDiagnosticLine(x) >= expression.SetterLineStart &&
-                        GetDiagnosticLine(x) <= expression.SetterLineEnd).ToList();
-                    var setterIsNullable = Nullable.GetUnderlyingType(expression.Type) != null;
-                    
-                    expression.GenerateSetter = !setterErrors.Any() || (setterIsNullable && setterErrors.All(x => fixableErrorNumbers.Contains(x.Id)));
-                    expression.NullableFixup = setterIsNullable;
-
-                    if (setterErrors.Count == 1 && setterErrors.Single().Id == "CS0266")
-                    {
-                        var error = setterErrors.Single();
-                        var match = regexCS0266.Match(error.GetMessage(CultureInfo.InvariantCulture));
-                        expression.CS0266SourceType = match.Groups["source"].Value;
-                        expression.CS0266TargetType = match.Groups["target"].Value;
-                        expression.GenerateSetter = true;
-                    }
-                }
-
-                WriteSourceCodeForDataSourceWrapper(state, model);
-            });
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
-        }
-
-        /// <summary>
-        /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
-        /// </summary>
-        private static Compilation PerformFinalCompilationPass(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Compilation nullableFixupResult)
-        {
-            var errors = nullableFixupResult.GetDiagnostics().Where(x => x.Location.IsInSource && x.Severity == DiagnosticSeverity.Error).ToList();
-
-            Parallel.ForEach(models, model =>
-            {
-                var dataSourceWrapperFilename = Path.GetFileName(state.GetWorkingFileForDataSourceWrapper(model));
-                var dataSourceWrapperErrors = errors.Where(x => Path.GetFileName(x.Location.SourceTree.FilePath) == dataSourceWrapperFilename).ToList();
-
-                foreach (var expression in model.Expressions)
-                {
-                    if (expression.GenerateSetter && dataSourceWrapperErrors.Any(x =>
-                        GetDiagnosticLine(x) >= expression.SetterLineStart &&
-                        GetDiagnosticLine(x) <= expression.SetterLineEnd))
-                    {
-                        expression.GenerateSetter = false;
-                    }
-                }
-
-                WriteSourceCodeForDataSourceWrapper(state, model);
-            });
-
-            return CompileDataSourceWrapperSources(state, output, models, referencedAssemblies);
-        }
-
-        /// <summary>
         /// Compiles the specified data source wrapper sources into a Roslyn compilation object.
         /// </summary>
         private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
         {
-            // TODO: var files = new List<String> { WriteCompilerMetadataFile() };
-            var trees = new List<SyntaxTree>();
+            var trees = new List<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(), CSharpParseOptions.Default, "CompilerMetadata.cs") };
             var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
 
             foreach (var info in infos)
@@ -484,7 +313,7 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         /// <summary>
-        /// Builds the source code for the CompilerMetadata class and writes it to a file.
+        /// Builds the source code for the CompilerMetadata class.
         /// </summary>
         private static String WriteCompilerMetadataFile()
         {
@@ -505,11 +334,7 @@ namespace Ultraviolet.Presentation.Compiler
             writer.WriteLine("#pragma warning restore 1591");
             writer.WriteLine("#pragma warning restore 0184");
             writer.WriteLine("}");
-
-            var path = Path.Combine(Path.GetTempPath(), "CompilerMetadata.cs");
-            File.WriteAllText(path, writer.ToString());
-
-            return path;
+            return writer.ToString();
         }
 
         /// <summary>
@@ -742,10 +567,6 @@ namespace Ultraviolet.Presentation.Compiler
             }
 
             return result;
-        }
-        
-        // Regular expressions for error parsing
-        private static readonly Regex regexCS0266 = new Regex(@"Cannot implicitly convert type \'(?<source>\S+)\' to \'(?<target>\S+)\'\. An explicit conversion exists \(are you missing a cast\?\)",
-            RegexOptions.Compiled | RegexOptions.Singleline);
+        }        
     }
 }
