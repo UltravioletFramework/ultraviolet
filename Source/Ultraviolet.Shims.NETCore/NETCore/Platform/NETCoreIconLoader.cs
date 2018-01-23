@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Ultraviolet.Shims.NETCore.Graphics;
 using Ultraviolet.Graphics;
 using Ultraviolet.Platform;
 
@@ -22,27 +21,23 @@ namespace Ultraviolet.Shims.NETCore.Platform
             var uri = new Uri(assemblyLocation);
             if (uri.IsUnc)
                 return null;
-
-            var icon = System.Drawing.Icon.ExtractAssociatedIcon(assemblyLocation);
-            if (icon == null)
+            
+            var iconStream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.icon.ico");
+            if (iconStream == null)
             {
-                throw new InvalidOperationException();
+                assembly = typeof(NETCoreIconLoader).Assembly;
+                iconStream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.icon.ico");
             }
 
-            try
+            if (iconStream != null)
             {
-                using (var iconbmp = icon.ToBitmap())
+                using (var source = SurfaceSource.Create(iconStream))
                 {
-                    using (var source = new NETCoreSurfaceSource(iconbmp))
-                    {
-                        return Surface2D.Create(source);
-                    }
+                    return Surface2D.Create(source);
                 }
             }
-            finally
-            {
-                icon.Dispose();
-            }
+
+            return null;
         }
     }
 }

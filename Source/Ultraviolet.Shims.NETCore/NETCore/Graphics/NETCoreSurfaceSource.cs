@@ -10,6 +10,7 @@ namespace Ultraviolet.Shims.NETCore.Graphics
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for the .NET Standard 2.0 platform.
     /// </summary>
+    [CLSCompliant(false)]
     public sealed class NETCoreSurfaceSource : SurfaceSource
     {
         /// <summary>

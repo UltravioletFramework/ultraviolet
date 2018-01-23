@@ -39,7 +39,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
+    <None Remove="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +53,10 @@
 
   <ItemGroup>
     <None Include="UltravioletApplication.Standard.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@
     <Configurations>Debug;Release;Signed</Configurations>
     <AssemblyName>UvDebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
+    <ApplicationIcon></ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
