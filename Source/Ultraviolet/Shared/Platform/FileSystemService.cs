@@ -62,20 +62,26 @@ namespace Ultraviolet.Platform
             if (String.IsNullOrEmpty(root))
                 return path;
 
+            var isCoreClrUnix =
+                UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR &&
+                UltravioletPlatformInfo.CurrentPlatform != UltravioletPlatform.Windows;                
+            var kind = isCoreClrUnix ?
+                (root.StartsWith("/") ? UriKind.Absolute : UriKind.Relative) : UriKind.RelativeOrAbsolute;
+            
             root = root.EndsWith("/") ? root : root + "/";
 
             var rootFull = GetFullPath(root);
-            var rootUri = new Uri(rootFull, UriKind.RelativeOrAbsolute);
+            var rootUri = new Uri(rootFull, kind);
 
             if (!rootUri.IsAbsoluteUri && source != null)
                 rootUri = new Uri("file://" + rootFull);
 
             var pathFull = GetFullPath(path);
-            var pathUri = new Uri(pathFull, UriKind.RelativeOrAbsolute);
+            var pathUri = new Uri(pathFull, kind);
 
             if (!pathUri.IsAbsoluteUri && source != null)
                 pathUri = new Uri("file://" + pathFull);
-
+            
             return rootUri.MakeRelativeUri(pathUri).ToString();
         }
 
