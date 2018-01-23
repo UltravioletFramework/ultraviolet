@@ -39,7 +39,7 @@ namespace Ultraviolet.Core.Native
         private Boolean TryLocateNativeAssetInPlatformFolder(String name, out String platformResolvedPath)
         {
             var dir = Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory());
-            if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.macOS)
+            if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.macOS && UltravioletPlatformInfo.CurrentRuntime != UltravioletRuntime.CoreCLR)
                 dir = Path.Combine("..", "Resources");
 
             dir = Path.Combine(dir, Environment.Is64BitProcess ? "x64" : "x86");
