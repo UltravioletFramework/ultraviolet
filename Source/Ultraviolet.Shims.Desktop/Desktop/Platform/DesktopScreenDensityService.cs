@@ -33,15 +33,8 @@ namespace Ultraviolet.Shims.Desktop.Platform
             if (uv.Platform != UltravioletPlatform.Windows || Environment.OSVersion.Version < new Version(6, 3))
                 return false;
 
-            var rect = new Win32.RECT
-            {
-                left = display.Bounds.Left,
-                top = display.Bounds.Top,
-                right = display.Bounds.Right,
-                bottom = display.Bounds.Bottom
-            };
-
             var hmonitor = IntPtr.Zero;
+            var rect = new Win32.RECT { left = display.Bounds.Left, top = display.Bounds.Top, right = display.Bounds.Right, bottom = display.Bounds.Bottom };
 
             unsafe
             {
@@ -54,9 +47,8 @@ namespace Ultraviolet.Shims.Desktop.Platform
 
             if (hmonitor == IntPtr.Zero)
                 return false;
-
-            UInt32 x, y;
-            Win32.GetDpiForMonitor(hmonitor, 0, out x, out y);
+            
+            Win32.GetDpiForMonitor(hmonitor, 0, out var x, out var y);
 
             this.densityX = x;
             this.densityY = y;
@@ -67,32 +59,32 @@ namespace Ultraviolet.Shims.Desktop.Platform
         }
 
         /// <summary>
-        /// Retrieves DPI information on macOS when the Mac-specific compatibility shim is missing.
-        /// </summary>
-        private Boolean InitMacOS(UltravioletContext uv, IUltravioletDisplay display)
-        {
-            if (uv.Platform != UltravioletPlatform.macOS)
-                return false;
-
-            this.densityX = 96f;
-            this.densityY = 96f;
-            this.densityScale = 1.0f;
-
-            return true;
-        }
-
-        /// <summary>
         /// Retrieves DPI information in the general case.
         /// </summary>
         private Boolean InitFallback(UltravioletContext uv, IUltravioletDisplay display)
         {
-            using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            if (implFallbackService == null)
+                implFallbackService = uv.TryGetFactoryMethod<ScreenDensityServiceFactory>("ImplFallback")?.Invoke(display);
+
+            if (implFallbackService != null)
             {
-                this.densityX = graphics.DpiX;
-                this.densityY = graphics.DpiY;
-                this.densityScale = graphics.DpiX / 96f;
-                this.densityBucket = GuessBucketFromDensityScale(densityScale);
+                implFallbackService.Refresh();
+                this.densityX = implFallbackService.DensityX;
+                this.densityY = implFallbackService.DensityY;
+                this.densityScale = implFallbackService.DensityScale;
+                this.densityBucket = implFallbackService.DensityBucket;
             }
+            else
+            {
+                using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    this.densityX = graphics.DpiX;
+                    this.densityY = graphics.DpiY;
+                    this.densityScale = graphics.DpiX / 96f;
+                    this.densityBucket = GuessBucketFromDensityScale(densityScale);
+                }
+            }
+
             return true;
         }
 
@@ -104,7 +96,7 @@ namespace Ultraviolet.Shims.Desktop.Platform
             var oldDensityScale = densityScale;
             var oldDensityBucket = densityBucket;
 
-            if (!InitWindows8_1(uv, display) && !InitMacOS(uv, display))
+            if (!InitWindows8_1(uv, display))
                 InitFallback(uv, display);
 
             return oldDensityX != densityX || oldDensityY != densityY || oldDensityScale != densityScale || oldDensityBucket != densityBucket;
@@ -147,5 +139,8 @@ namespace Ultraviolet.Shims.Desktop.Platform
         private Single densityY;
         private Single densityScale;
         private ScreenDensityBucket densityBucket;
+
+        // Fallback implementation.
+        private ScreenDensityService implFallbackService;
     }
 }
