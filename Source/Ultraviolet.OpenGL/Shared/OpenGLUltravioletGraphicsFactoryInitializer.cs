@@ -1,4 +1,6 @@
 ﻿using Ultraviolet.Core;
+using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Platform;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.OpenGL.Bindings;
@@ -81,6 +83,9 @@ namespace Ultraviolet.OpenGL
             factory.SetFactoryMethod<SamplerStateFactory>("LinearWrap", (uv) => samplerStateLinearWrap);
             factory.SetFactoryMethod<SamplerStateFactory>("AnisotropicClamp", (uv) => samplerStateAnisotropicClamp);
             factory.SetFactoryMethod<SamplerStateFactory>("AnisotropicWrap", (uv) => samplerStateAnisotropicWrap);
+
+            // Platform services
+            factory.SetFactoryMethod<ScreenDensityServiceFactory>("ImplFallback", (display) => new SDL2ScreenDensityService(owner, display));
         }
     }
 }

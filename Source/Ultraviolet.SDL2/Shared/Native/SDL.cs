@@ -1281,6 +1281,17 @@ namespace Ultraviolet.SDL2.Native
         private static readonly SDL_JoystickGetGUIDFromStringDelegate pSDL_JoystickGetGUIDFromString = lib.LoadFunction<SDL_JoystickGetGUIDFromStringDelegate>("SDL_JoystickGetGUIDFromString");
         private static Guid JoystickGetGUIDFromString_Impl([MarshalAs(UnmanagedType.LPStr)] String pchGUID) => pSDL_JoystickGetGUIDFromString(pchGUID);
 #endif
-        public static Guid JoystickGetGUIDFromString(String pchGUID) => SDL_JoystickGUID.Marshal(JoystickGetGUIDFromString_Impl(pchGUID));        
+        public static Guid JoystickGetGUIDFromString(String pchGUID) => SDL_JoystickGUID.Marshal(JoystickGetGUIDFromString_Impl(pchGUID));
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_GetDisplayDPI", CallingConvention = CallingConvention.Cdecl)]
+        public static extern Int32 GetDisplayDPI(Int32 displayIndex, Single* ddpi, Single* hdpi, Single *vdpi);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Int32 SDL_GetDisplayDPIDelegate(Int32 displayIndex, Single* ddpi, Single* hdpi, Single *vdpi);
+        private static readonly SDL_GetDisplayDPIDelegate pSDL_GetDisplayDPI = lib.LoadFunction<SDL_GetDisplayDPIDelegate>("SDL_GetDisplayDPI");
+        public static Int32 GetDisplayDPI(Int32 displayIndex, Single* ddpi, Single* hdpi, Single *vdpi) => pSDL_GetDisplayDPI(displayIndex, ddpi, hdpi, vdpi);
+#endif
     }
 }

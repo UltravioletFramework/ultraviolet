@@ -21,12 +21,16 @@ namespace Ultraviolet.Shims.NETCore
         /// <param name="factory">The <see cref="UltravioletFactory"/> to initialize.</param>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
+            // .NET Core doesn't have a reliable way to do certain things yet without pulling in a bunch 
+            // of extra dependencies on some platforms, so fall back to the UV implementation if it's available.
+            factory.SetFactoryMethod(factory.TryGetFactoryMethod<ScreenDensityServiceFactory>("ImplFallback") ??
+                ((display) => new NETCoreScreenDensityService(owner, display)));
+
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new NETCoreSurfaceSource(stream));
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new NETCoreSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new NETCoreIconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new NETCoreScreenOrientationService(display));
-            factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new NETCoreScreenDensityService(owner, display));
 
             var softwareKeyboardService = new NETCoreSoftwareKeyboardService();
             factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);
