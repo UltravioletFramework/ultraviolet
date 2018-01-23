@@ -22,9 +22,11 @@ namespace Ultraviolet.Core.Native
                 case UltravioletPlatform.Windows:
                     return new Win32LibraryLoader();
 
-                case UltravioletPlatform.Linux:
                 case UltravioletPlatform.macOS:
-                    return new UnixLibraryLoader();
+                    return new UnixLibraryLoaderLibdl();
+
+                case UltravioletPlatform.Linux:
+                    return FindLibraryLoaderForLinux();
 
                 default:
                     throw new PlatformNotSupportedException();
@@ -142,6 +144,35 @@ namespace Ultraviolet.Core.Native
         /// </summary>
         /// <param name="handle">The handle of the shared library to free.</param>
         protected abstract void CoreFreeNativeLibrary(IntPtr handle);
+
+        /// <summary>
+        /// Determines which library loader instance to use for the current Linux platform.
+        /// </summary>
+        private static LibraryLoader FindLibraryLoaderForLinux()
+        {
+            return
+                TestLibraryLoaderForLinux(new UnixLibraryLoaderLibdl2()) ??
+                TestLibraryLoaderForLinux(new UnixLibraryLoaderLibdl()) ??
+                TestLibraryLoaderForLinux(new UnixLibraryLoaderLibc());
+        }
+
+        /// <summary>
+        /// Tests a library loader to determine whether it is valid for the current Linux platform.
+        /// </summary>
+        private static LibraryLoader TestLibraryLoaderForLinux(LibraryLoader loader)
+        {
+            try
+            {
+                loader.CoreLoadNativeLibrary(null);
+            }
+            catch (Exception e)
+            {
+                if (e is DllNotFoundException || e is EntryPointNotFoundException)
+                    return null;
+                else throw;
+            }
+            return loader;
+        }
 
         /// <summary>
         /// Attempts to load a native library with the specified path resolver.

@@ -6,22 +6,22 @@ namespace Ultraviolet.Core.Native
     /// <summary>
     /// Contains methods for loading shared libraries on Unix-based platforms.
     /// </summary>
-    internal sealed class UnixLibraryLoader : LibraryLoader
+    internal sealed class UnixLibraryLoaderLibc : LibraryLoader
     {
         /// <summary>
-        /// Contains native methods used by the <see cref="UnixLibraryLoader"/> class.
+        /// Contains native methods used by the <see cref="UnixLibraryLoaderLibc"/> class.
         /// </summary>
         private static class Native
         {
             public const Int32 RTLD_NOW = 0x002;
 
-            [DllImport("libdl")]
+            [DllImport("libc")]
             public static extern IntPtr dlopen(String fileName, Int32 flags);
 
-            [DllImport("libdl")]
+            [DllImport("libc")]
             public static extern IntPtr dlsym(IntPtr handle, String name);
 
-            [DllImport("libdl")]
+            [DllImport("libc")]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern Boolean dlclose(IntPtr handle);
         }

@@ -73,7 +73,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\MessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SubscriberCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoaderLibdl2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoaderLibdl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoaderLibc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\Win32LibraryLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MonoNativeFunctionWrapperAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MonoPInvokeCallbackAttribute.cs" />
