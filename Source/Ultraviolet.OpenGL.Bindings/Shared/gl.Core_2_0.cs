@@ -200,8 +200,11 @@ namespace Ultraviolet.OpenGL.Bindings
             var infoLogPtr = Marshal.AllocHGlobal(infoLogLength);
             try
             {
-                glGetProgramInfoLog(program, infoLogLength, IntPtr.Zero, infoLogPtr);
-                infoLog = Marshal.PtrToStringAnsi(infoLogPtr);
+                if (infoLogLength > 0)
+                {
+                    glGetProgramInfoLog(program, infoLogLength, IntPtr.Zero, infoLogPtr);
+                    infoLog = Marshal.PtrToStringAnsi(infoLogPtr);
+                }
             }
             finally
             {
