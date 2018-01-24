@@ -74,6 +74,9 @@ namespace Ultraviolet
             this.isRunningInServiceMode = configuration.EnableServiceMode;
             this.supportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
 
+            if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR)
+                this.supportsHighDensityDisplayModes = false;
+
             this.host = host;
 
             this.thread = Thread.CurrentThread;
