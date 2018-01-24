@@ -44,7 +44,7 @@ The Ultraviolet Framework's source code is [available on GitHub](https://github.
 Requirements
 ============
 
-Building Ultraviolet requires Visual Studio 2015 or later, or an equivalent version of Mono.
+Building Ultraviolet requires Visual Studio 2017 or later, or an equivalent version of Mono.
 
 Building the mobile projects requires the appropriate Xamarin tools to be installed.
 
@@ -55,54 +55,29 @@ The following platforms are supported for building the Framework:
 * macOS
 * iOS
 
-Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work provided that they can run Mono, but only Ubuntu has been thoroughly tested.
+Please file an issue if you encounter any difficulty building on any of these platforms. Linux distributions other than Ubuntu should work, assuming that they can run Mono and you can provide appropriate versions of the native dependencies, but only Ubuntu has been thoroughly tested.
 
 Building
 ========
 
-__On Windows__
+__Desktop Platforms__
 
-From the Developer Command Prompt for VS2015, navigate to the root of the Ultraviolet source tree and run the following command:
-
-    msbuild Ultraviolet.proj
-    
-This will build the Desktop version of the Framework assemblies and copy them into the `Samples/Dependencies` directory so that the sample projects can be built.
-
-__On Unix__
-
-With Mono installed, navigate to the root of the Ultraviolet source tree and run the following command:
-
-    xbuild Ultraviolet.proj
-    
-This will build the Desktop version of the Framework assemblies, plus the macOS compatibility shim if you are building on a Mac, and copy them into the `Samples/Dependencies` directory so that the sample projects can be built.
+The `Sources` folder contains several solution files for the various platforms which Ultraviolet supports. Alternatively, you can run `msbuild Ultraviolet.proj` from the command line in the repository's root directory; this will automatically select and build the correct solution for your current platform, and additionally will copy the build results into a single `Binaries` folder.
 
 __Mobile Platforms__
 
-Building Ultraviolet for iOS and Android requires that Xamarin be installed. As with the desktop version of the Framework, you need to run either `msbuild` or `xbuild` on `Ultraviolet.proj`, but you must also explicitly specify that you want to use one of the mobile build targets, i.e.:
+Building Ultraviolet for iOS and Android requires that Xamarin be installed. As with the desktop version of the Framework, you can either build the appropriate solution file or `Ultraviolet.proj`, but in the latter case you must also explicitly specify that you want to use one of the mobile build targets, i.e.:
 
     msbuild Ultraviolet.proj /t:BuildAndroid
     
 or
 
     msbuild Ultraviolet.proj /t:BuildiOS
-   
-Building the iOS version of the Framework should only be done on a Mac. While Xamarin theoretically supports building iOS assemblies remotely on Windows using a Mac as a server, in practice this doesn't work reliably (at least not for Ultraviolet).
-   
-__Sample Projects__
-
-The sample projects in the `Samples` directory cannot be built until the Framework itself has been built and its output files have been copied into the `Samples/Dependencies` directory. Once that has been done, simply run `msbuild` or `xbuild` on the appropriate solution (`.sln`) file in the samples directory.
-
-Known Issues
-============
-
-* __The imported project "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\CodeSharing\Microsoft.CodeSharing.CSharp.targets" was not found...__
-
-  This was an issue with the MSBuild targets provided by the RTM version of Visual Studio 2015. This issue has been fixed in Visual Studio 2015 Update 1; please make sure you're using the latest update.
 
 Documentation
 =============
 
-[Reference Documentation](http://uv.twistedlogik.net/ultraviolet/reference/v1.1)
+[Reference Documentation](http://uv.twistedlogik.net/ultraviolet/reference/v2017.12)
 
 _Overview_
 
@@ -147,37 +122,3 @@ _Advanced Topics_
   * [Ultraviolet Style Sheets](http://wiki.ultraviolet.tl/index.php?title=Ultraviolet_Style_Sheets)
   * [Dependency properties](http://wiki.ultraviolet.tl/index.php?title=Dependency_properties)
   * [Routed events](http://wiki.ultraviolet.tl/index.php?title=Routed_events)
-
-Project Road Map
-================
-
-What follows is a tentative road map for the next several major revisions of Ultraviolet. This list is subject to change at any time. Items which have been ~~struck through~~ are basically complete, though they may not yet be part of an official release.
-
-* __Ultraviolet 1.4__
-  * _Graphics_
-    * Improved 3D rendering support
-    * Model class or equivalent
-    * Support for model instancing
-    * Support for skeletal animation
-  * Signed distance field fonts
-* __Ultraviolet 1.3__
-  * _UI_
-    * ~~Continued work on UPF~~
-* __Ultraviolet 1.2__
-  * _UI_
-    * ~~Ultraviolet Presentation Foundation (UPF)~~
-* __Ultraviolet 1.1__
-  * _Miscellaneous_
-    * ~~Android support~~
-    * ~~Performance improvements~~
-    * ~~Design assembly (i.e. ``TypeConverter`` implementations) for Nucleus~~
-    * ~~Design assembly (i.e. ``TypeConverter`` implementations) for Ultraviolet~~
-  * _Input_
-    * ~~New input device: GamePad~~
-    * ~~New input device: TouchPad~~
-  * _Graphics_
-    * ~~Support for Direct State Access (DSA)~~
-    * ~~Better support for East Asian character sets in ``SpriteFont``~~
-* __Ultraviolet 1.0__
-  * _Miscellaneous_
-    * ~~First release~~
