@@ -202,13 +202,13 @@ namespace Ultraviolet.Presentation.Compiler
             var trees = new List<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(), CSharpParseOptions.Default, "CompilerMetadata.cs") };
             var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
 
-            foreach (var info in infos)
+            Parallel.ForEach(infos, info =>
             {
                 var path = state.GetWorkingFileForDataSourceWrapper(info);
-                trees.Add(CSharpSyntaxTree.ParseText(info.DataSourceWrapperSourceCode, path: path));
-                
                 File.WriteAllText(path, info.DataSourceWrapperSourceCode);
-            }
+
+                trees.Add(CSharpSyntaxTree.ParseText(info.DataSourceWrapperSourceCode, path: path));                
+            });
 
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
             var compilation = CSharpCompilation.Create("Ultraviolet.Presentation.CompiledExpressions.dll", trees, mrefs, options);
