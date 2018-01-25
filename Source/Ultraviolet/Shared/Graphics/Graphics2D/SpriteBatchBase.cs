@@ -33,7 +33,7 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             this.spriteEffect = SpriteBatchEffect.Create();
 
-            uv.QueueWorkItemAndWait(CreateVertexAndIndexBuffers);
+            uv.QueueWorkItem(state => ((SpriteBatchBase<VertexType, SpriteData>)state).CreateVertexAndIndexBuffers(), this).Wait();
         }
 
         /// <summary>

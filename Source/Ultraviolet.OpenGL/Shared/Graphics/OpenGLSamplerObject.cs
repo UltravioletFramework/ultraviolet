@@ -19,11 +19,11 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             var sampler = 0u;
 
-            uv.QueueWorkItemAndWait(() =>
+            uv.QueueWorkItem(state =>
             {
                 sampler = gl.GenSampler();
                 gl.ThrowIfError();
-            });
+            }).Wait();
 
             this.sampler = sampler;
         }

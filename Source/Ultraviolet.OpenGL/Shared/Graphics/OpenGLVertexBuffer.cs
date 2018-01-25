@@ -29,14 +29,14 @@ namespace Ultraviolet.OpenGL.Graphics
 
             var buffer = 0u;
 
-            uv.QueueWorkItemAndWait(() =>
+            uv.QueueWorkItem(state =>
             {
                 using (OpenGLState.ScopedCreateArrayBuffer(out buffer))
                 {
                     gl.NamedBufferData(buffer, gl.GL_ARRAY_BUFFER, size, null, usage);
                     gl.ThrowIfError();
                 }
-            });
+            }).Wait();
 
             this.buffer = buffer;
         }

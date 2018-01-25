@@ -301,29 +301,6 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Spawns a new task.
-        /// </summary>
-        /// <remarks>Tasks spawned using this method will not be started until the next call to <see cref="Update(UltravioletTime)"/>, and will prevent
-        /// the Ultraviolet context from shutting down until they complete or are canceled.  Do not attempt to <see cref="Task.Wait()"/> on these
-        /// tasks from the main Ultraviolet thread; doing so will introduce a deadlock.</remarks>
-        /// <param name="action">The action to perform within the task.</param>
-        /// <returns>The <see cref="Task"/> that was spawned.</returns>
-        public Task SpawnTask(Action<CancellationToken> action)
-        {
-            Contract.Require(action, nameof(action));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotSpawnTasks);
-
-            var token = cancellationTokenSource.Token;
-            var task = taskFactory.StartNew(() => action(token), token, TaskCreationOptions.None, TaskScheduler.Default);
-
-            lock (tasksPending)
-                tasksPending.Add(task);
-
-            return task;
-        }
-
-        /// <summary>
         /// Waits for any pending tasks to complete.
         /// </summary>
         /// <param name="cancel">A value indicating whether to cancel pending tasks.</param>
@@ -358,131 +335,28 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread and
-        /// waits for the work item to be executed.
+        /// Spawns a new task.
         /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item 
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        public void QueueWorkItemAndWait(Action workItem, Boolean forceAsync = false)
+        /// <remarks>Tasks spawned using this method will not be started until the next call to <see cref="Update(UltravioletTime)"/>, and will prevent
+        /// the Ultraviolet context from shutting down until they complete or are canceled.  Do not attempt to <see cref="Task.Wait()"/> on these
+        /// tasks from the main Ultraviolet thread; doing so will introduce a deadlock.</remarks>
+        /// <param name="action">The action to perform within the task.</param>
+        /// <returns>The <see cref="Task"/> that was spawned.</returns>
+        public Task SpawnTask(Action<CancellationToken> action)
         {
-            QueueWorkItem(workItem, forceAsync).Wait();
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread and
-        /// waits for the work item to be executed.
-        /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="state">An object containing state to pass to the work item.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        public void QueueWorkItemAndWait(Action<Object> workItem, Object state, Boolean forceAsync = false)
-        {
-            QueueWorkItem(workItem, state, forceAsync).Wait();
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread and
-        /// waits for the work item to be executed.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>The result of executing the work item.</returns>
-        public T QueueWorkItemAndWait<T>(Func<T> workItem, Boolean forceAsync = false)
-        {
-            var task = QueueWorkItem(workItem, forceAsync);
-            task.Wait();
-            return task.Result;
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread and
-        /// waits for the work item to be executed.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="state">An object containing state to pass to the work item.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>The result of executing the work item.</returns>
-        public T QueueWorkItemAndWait<T>(Func<Object, T> workItem, Object state, Boolean forceAsync = false)
-        {
-            var task = QueueWorkItem(workItem, state, forceAsync);
-            task.Wait();
-            return task.Result;
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread and
-        /// waits for the work item to be executed.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <remarks>Unlike <see cref="QueueWorkItemAndWait{T}(Func{T}, bool)"/>, this method will not 
-        /// automatically unwrap the inner <see cref="Task"/> which is produced by <paramref name="workItem"/>.</remarks>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>The result of executing the work item.</returns>
-        public Task<T> QueueWorkItemWrappedAndWait<T>(Func<Task<T>> workItem, Boolean forceAsync = false)
-        {
-            var task = QueueWorkItemWrapped(workItem, forceAsync);
-            task.Wait();
-            return task.Result;
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread and
-        /// waits for the work item to be executed.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <remarks>Unlike <see cref="QueueWorkItemAndWait{T}(Func{object, T}, object, bool)"/>, this method will not 
-        /// automatically unwrap the inner <see cref="Task"/> which is produced by <paramref name="workItem"/>.</remarks>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="state">An object containing state to pass to the work item.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>The result of executing the work item.</returns>
-        public Task<T> QueueWorkItemWrappedAndWait<T>(Func<Object, Task<T>> workItem, Object state, Boolean forceAsync)
-        {
-            var task = QueueWorkItemWrapped(workItem, state, forceAsync);
-            task.Wait();
-            return task.Result;
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task QueueWorkItem(Action workItem, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
+            Contract.Require(action, nameof(action));
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
+            Contract.EnsureNot(disposing, UltravioletStrings.CannotSpawnTasks);
 
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromAction(workItem) :
-                taskFactory.StartNew(workItem);
+            var token = cancellationTokenSource.Token;
+            var task = taskFactory.StartNew(() => action(token), token, TaskCreationOptions.None, TaskScheduler.Default);
+
+            lock (tasksPending)
+                tasksPending.Add(task);
+
+            return task;
         }
-
+                
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread.
         /// </summary>
@@ -493,7 +367,7 @@ namespace Ultraviolet
         /// If this value is <see langword="false"/>, then calls to this method from
         /// the main Ultraviolet thread will execute synchronously.</param>
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task QueueWorkItem(Action<Object> workItem, Object state, Boolean forceAsync = false)
+        public Task QueueWorkItem(Action<Object> workItem, Object state = null, Boolean forceAsync = false)
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -506,27 +380,6 @@ namespace Ultraviolet
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread.
         /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<T> QueueWorkItem<T>(Func<T> workItem, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()) :
-                taskFactory.StartNew(workItem);
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
         /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item
@@ -534,46 +387,7 @@ namespace Ultraviolet
         /// If this value is <see langword="false"/>, then calls to this method from
         /// the main Ultraviolet thread will execute synchronously.</param>
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<T> QueueWorkItem<T>(Func<Object, T> workItem, Object state, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                taskFactory.StartNew(workItem, state);
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task QueueWorkItem(Func<Task> workItem, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()).Unwrap() :
-                taskFactory.StartNew(workItem).Unwrap();
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="state">An object containing state to pass to the work item.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task QueueWorkItem(Func<Object, Task> workItem, Object state, Boolean forceAsync = false)
+        public Task QueueWorkItem(Func<Object, Task> workItem, Object state = null, Boolean forceAsync = false)
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -588,19 +402,20 @@ namespace Ultraviolet
         /// </summary>
         /// <typeparam name="T">The type of value returned by the work item.</typeparam>
         /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
+        /// <param name="state">An object containing state to pass to the work item.</param>
         /// <param name="forceAsync">A value indicating whether to force the work item
         /// to be queued and executed asynchronously.
         /// If this value is <see langword="false"/>, then calls to this method from
         /// the main Ultraviolet thread will execute synchronously.</param>
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<T> QueueWorkItem<T>(Func<Task<T>> workItem, Boolean forceAsync = false)
+        public Task<T> QueueWorkItem<T>(Func<Object, T> workItem, Object state = null, Boolean forceAsync = false)
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()).Unwrap() :
-                taskFactory.StartNew(workItem).Unwrap();
+            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
+                taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -614,7 +429,7 @@ namespace Ultraviolet
         /// If this value is <see langword="false"/>, then calls to this method from
         /// the main Ultraviolet thread will execute synchronously.</param>
         /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<T> QueueWorkItem<T>(Func<Object, Task<T>> workItem, Object state, Boolean forceAsync = false)
+        public Task<T> QueueWorkItem<T>(Func<Object, Task<T>> workItem, Object state = null, Boolean forceAsync = false)
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -623,93 +438,7 @@ namespace Ultraviolet
             return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)).Unwrap() :
                 taskFactory.StartNew(workItem, state).Unwrap();
        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<Task> QueueWorkItemWrapped(Func<Task> workItem, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()) :
-                taskFactory.StartNew(workItem);
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="state">An object containing state to pass to the work item.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<Task> QueueWorkItemWrapped(Func<Object, Task> workItem, Object state, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                taskFactory.StartNew(workItem, state);
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <remarks>Unlike <see cref="QueueWorkItem{T}(Func{Task{T}}, bool)"/>, this method will not 
-        /// automatically unwrap the inner <see cref="Task"/> which is produced by <paramref name="workItem"/>.</remarks>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<Task<T>> QueueWorkItemWrapped<T>(Func<Task<T>> workItem, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem()) :
-                taskFactory.StartNew(workItem);
-        }
-
-        /// <summary>
-        /// Queues a work item for execution on Ultraviolet's main thread.
-        /// </summary>
-        /// <typeparam name="T">The type of value returned by the work item.</typeparam>
-        /// <remarks>Unlike <see cref="QueueWorkItem{T}(Func{object, Task{T}}, object, bool)"/>, this method will not 
-        /// automatically unwrap the inner <see cref="Task"/> which is produced by <paramref name="workItem"/>.</remarks>
-        /// <remarks>This method will not automatically unwrap the inner <see cref="Task"/>
-        /// which is produced by <paramref name="workItem"/>.</remarks>
-        /// <param name="workItem">The work item to execute on Ultraviolet's main thread.</param>
-        /// <param name="state">An object containing state to pass to the work item.</param>
-        /// <param name="forceAsync">A value indicating whether to force the work item
-        /// to be queued and executed asynchronously.
-        /// If this value is <see langword="false"/>, then calls to this method from
-        /// the main Ultraviolet thread will execute synchronously.</param>
-        /// <returns>A <see cref="Task"/> that encapsulates the work item.</returns>
-        public Task<Task<T>> QueueWorkItemWrapped<T>(Func<Object, Task<T>> workItem, Object state, Boolean forceAsync = false)
-        {
-            Contract.Require(workItem, nameof(workItem));
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                taskFactory.StartNew(workItem, state);
-        }
-
+        
         /// <summary>
         /// Ensures that the specified resource was created by this context.
         /// This method is compiled out if the <c>DEBUG</c> compilation symbol is not specified.
@@ -850,7 +579,7 @@ namespace Ultraviolet
         /// created the Ultraviolet context.
         /// </summary>
         /// <remarks>Many tasks, such as content loading, must take place on the Ultraviolet
-        /// context's main thread.  Such tasks can be queued using the <see cref="QueueWorkItem(Action, Boolean)"/> method
+        /// context's main thread.  Such tasks can be queued using the <see cref="QueueWorkItem(Action{Object}, Object, Boolean)"/> method
         /// or one of its overloads, which will run the task at the start of the next update.</remarks>
         public Boolean IsExecutingOnCurrentThread
         {

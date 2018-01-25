@@ -340,7 +340,7 @@ namespace Ultraviolet.OpenGL.Graphics
             this.type = type;
             this.immutable = immutable;
 
-            this.texture = uv.QueueWorkItemAndWait(() =>
+            this.texture = uv.QueueWorkItem(state =>
             {
                 uint glname;
 
@@ -395,7 +395,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
 
                 return glname;
-            });
+            }).Result;
         }
 
         /// <summary>
@@ -425,7 +425,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (pixelSizeInBytes * width * height != elementSizeInBytes * elementCount)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
-            Ultraviolet.QueueWorkItemAndWait(() =>
+            Ultraviolet.QueueWorkItem(state =>
             {
                 var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
@@ -439,7 +439,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     }
                 }
                 finally { dataHandle.Free(); }
-            });            
+            }).Wait();
         }
 
         // Property values.

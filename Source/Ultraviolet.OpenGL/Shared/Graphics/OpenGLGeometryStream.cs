@@ -34,11 +34,11 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (OpenGLState.SupportsVertexArrayObjects)
             {
-                uv.QueueWorkItemAndWait(() =>
+                uv.QueueWorkItem(state =>
                 {
                     vao = gl.GenVertexArray();
                     gl.ThrowIfError();
-                });
+                }).Wait();
             }
 
             this.vao = vao;

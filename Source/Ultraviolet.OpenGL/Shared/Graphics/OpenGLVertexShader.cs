@@ -22,14 +22,14 @@ namespace Ultraviolet.OpenGL.Graphics
             var shader = 0u;
             var ssmd = default(ShaderSourceMetadata);
 
-            uv.QueueWorkItemAndWait(() =>
+            uv.QueueWorkItem(state =>
             {
                 shader = gl.CreateShader(gl.GL_VERTEX_SHADER);
                 gl.ThrowIfError();
                 
                 if (!ShaderCompiler.Compile(shader, source, out var log, out ssmd))
                     throw new InvalidOperationException(log);                
-            });
+            }).Wait();
 
             this.shader = shader;
             this.ShaderSourceMetadata = ssmd;

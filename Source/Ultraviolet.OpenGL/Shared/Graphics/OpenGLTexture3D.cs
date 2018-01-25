@@ -451,7 +451,7 @@ namespace Ultraviolet.OpenGL.Graphics
             this.type = type;
             this.immutable = immutable;
 
-            this.texture = uv.QueueWorkItemAndWait(() =>
+            this.texture = uv.QueueWorkItem(state =>
             {
                 uint glname;
 
@@ -468,7 +468,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_MAG_FILTER, (int)gl.GL_LINEAR);
                     gl.ThrowIfError();
-                    
+
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_R, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
 
@@ -477,7 +477,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_WRAP_T, (int)gl.GL_CLAMP_TO_EDGE);
                     gl.ThrowIfError();
-                    
+
                     if (immutable)
                     {
                         if (gl.IsTextureStorageAvailable)
@@ -509,7 +509,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
 
                 return glname;
-            });
+            }).Result;
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (pixelSizeInBytes * width * height * depth != elementSizeInBytes * elementCount)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
-            Ultraviolet.QueueWorkItemAndWait(() =>
+            Ultraviolet.QueueWorkItem(state =>
             {
                 var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
@@ -552,7 +552,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     }
                 }
                 finally { dataHandle.Free(); }
-            });
+            }).Wait();
         }
 
         // Property values.

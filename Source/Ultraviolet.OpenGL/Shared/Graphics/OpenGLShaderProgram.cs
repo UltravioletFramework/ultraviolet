@@ -38,7 +38,7 @@ namespace Ultraviolet.OpenGL.Graphics
             
             var program = 0u;
 
-            uv.QueueWorkItemAndWait(() =>
+            uv.QueueWorkItem(state =>
             {
                 program = gl.CreateProgram();
                 gl.ThrowIfError();
@@ -89,7 +89,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 if (status == 0)
                     throw new InvalidOperationException(log);
-            });
+            }).Wait();
 
             this.program = program;
             this.uniforms = CreateUniformCollection(concatenatedSourceMetadata);            
@@ -231,7 +231,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The collection of uniforms that was created.</returns>
         private OpenGLShaderUniformCollection CreateUniformCollection(ShaderSourceMetadata ssmd)
         {
-            var result = Ultraviolet.QueueWorkItemAndWait((state) =>
+            var result = Ultraviolet.QueueWorkItem(state =>
             {
                 var programObject = ((OpenGLShaderProgram)state);
                 var program = programObject.program;
@@ -284,7 +284,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
 
                 return uniforms;
-            }, this);
+            }, this).Result;
 
             // Validation: make sure all preferred samplers correspond to an actual uniform
             var missingUniform = ssmd.PreferredSamplerIndices.Keys.Where(x => !result.Where(y => String.Equals(y.Name, x, StringComparison.Ordinal)).Any()).FirstOrDefault();

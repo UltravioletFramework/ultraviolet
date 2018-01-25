@@ -34,7 +34,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             var framebuffer = 0u;
 
-            uv.QueueWorkItemAndWait(() =>
+            uv.QueueWorkItem(state =>
             {
                 using (OpenGLState.ScopedCreateFramebuffer(out framebuffer))
                 {
@@ -46,7 +46,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         }
                     }
                 }
-            });
+            }).Wait();
 
             this.width = width;
             this.height = height;
@@ -67,7 +67,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
             var oglBuffer = (OpenGLRenderBuffer2D)buffer;
 
-            Ultraviolet.QueueWorkItemAndWait(() =>
+            Ultraviolet.QueueWorkItem(state =>
             {
                 using (OpenGLState.ScopedBindFramebuffer(framebuffer))
                 {
@@ -76,7 +76,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     framebufferStatus = gl.CheckNamedFramebufferStatus(framebuffer, gl.GL_FRAMEBUFFER);
                     gl.ThrowIfError();
                 }
-            });
+            }).Wait();
 
             oglBuffer.MarkAttached();
 

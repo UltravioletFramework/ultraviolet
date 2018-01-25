@@ -1564,7 +1564,7 @@ namespace Ultraviolet.Content
             var assetPath = assetWatchersForFile?.AssetPath ?? assetDependenciesForFile?.AssetPath;
             if (assetPath != null && assetCache.TryGetValue(assetPath, out var assetEntry))
             {
-                Ultraviolet.QueueWorkItem(() =>
+                Ultraviolet.QueueWorkItem(state =>
                 {
                     assetEntry.Reload(this, assetPath, assetWatchersForFile);
                 });
