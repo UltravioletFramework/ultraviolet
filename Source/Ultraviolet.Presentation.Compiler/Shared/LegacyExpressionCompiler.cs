@@ -47,7 +47,7 @@ namespace Ultraviolet.Presentation.Compiler
                     return BindingExpressionCompilationResult.CreateSucceeded();
             }
 
-            var result = CompileViewModels(state, dataSourceWrapperInfos, options.Output);
+            var result = CompileViewModels(state, dataSourceWrapperInfos, options.Output, options.GenerateDebugAssembly);
             if (result.Succeeded)
             {
                 if (!options.GenerateInMemory)
@@ -85,7 +85,7 @@ namespace Ultraviolet.Presentation.Compiler
             var dataSourceWrapperInfo = DataSourceLoader.GetDataSourceWrapperInfo(state, definition.Value);
             var dataSourceWrapperInfos = new[] { dataSourceWrapperInfo };
             
-            var result = CompileViewModels(state, dataSourceWrapperInfos, null);
+            var result = CompileViewModels(state, dataSourceWrapperInfos, null, options.GenerateDebugAssembly);
             if (result.Succeeded)
             {
                 options.Output = dataSourceWrapperInfos[0].DataSourceWrapperSourceCode;
@@ -109,14 +109,14 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Compiles the specified collection of view models.
         /// </summary>
-        private static BindingExpressionCompilationResult CompileViewModels(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
+        private static BindingExpressionCompilationResult CompileViewModels(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output, Boolean debug)
         {
             state.DeleteWorkingDirectory();
 
             var referencedAssemblies = GetDefaultReferencedAssemblies();
 
             var expressionVerificationResult = 
-                PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies);
+                PerformExpressionVerificationCompilationPass(state, models, referencedAssemblies, debug);
 
             if (expressionVerificationResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
@@ -128,13 +128,13 @@ namespace Ultraviolet.Presentation.Compiler
             }
 
             var setterEliminationPassResult =
-                PerformSetterEliminationCompilationPass(state, models, referencedAssemblies);
+                PerformSetterEliminationCompilationPass(state, models, referencedAssemblies, debug);
             
             var conversionFixupPassResult =
-                PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult);
+                PerformConversionFixupCompilationPass(state, models, referencedAssemblies, setterEliminationPassResult, debug);
             
             var finalPassResult = 
-                PerformFinalCompilationPass(state, state.GenerateInMemory ? null : output, models, referencedAssemblies, conversionFixupPassResult);
+                PerformFinalCompilationPass(state, state.GenerateInMemory ? null : output, models, referencedAssemblies, conversionFixupPassResult, debug);
 
             if (finalPassResult.Errors.Cast<CompilerError>().Where(x => !x.IsWarning).Any())
             {
@@ -151,7 +151,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Performs the first compilation pass, which generates expression getters in order to verify that the expressions are valid code.
         /// </summary>
-        private static CompilerResults PerformExpressionVerificationCompilationPass(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static CompilerResults PerformExpressionVerificationCompilationPass(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Boolean debug)
         {
             Parallel.ForEach(models, model =>
             {
@@ -170,13 +170,13 @@ namespace Ultraviolet.Presentation.Compiler
                 WriteSourceCodeForDataSourceWrapper(state, model);
             });
 
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies, debug);
         }
 
         /// <summary>
         /// Performs the second compilation pass, which generates setters in order to determine which expressions support two-way bindings.
         /// </summary>
-        private static CompilerResults PerformSetterEliminationCompilationPass(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static CompilerResults PerformSetterEliminationCompilationPass(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Boolean debug)
         {
             Parallel.ForEach(models, model =>
             {
@@ -188,13 +188,13 @@ namespace Ultraviolet.Presentation.Compiler
 
                 WriteSourceCodeForDataSourceWrapper(state, model);
             });
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies, debug);
         }
 
         /// <summary>
         /// Performs the third compilation pass, which attempts to fix any errors caused by non-implicit conversions and nullable types that need to be cast to non-nullable types.
         /// </summary>
-        private static CompilerResults PerformConversionFixupCompilationPass(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult)
+        private static CompilerResults PerformConversionFixupCompilationPass(LegacyExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults setterEliminationResult, Boolean debug)
         {
             var errors = setterEliminationResult.Errors.Cast<CompilerError>().ToList();
 
@@ -230,13 +230,13 @@ namespace Ultraviolet.Presentation.Compiler
 
                 WriteSourceCodeForDataSourceWrapper(state, model);
             });
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies, debug);
         }
 
         /// <summary>
         /// Performs the final compilation pass, which removes invalid expression setters based on the results of the previous pass.
         /// </summary>
-        private static CompilerResults PerformFinalCompilationPass(LegacyExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults nullableFixupResult)
+        private static CompilerResults PerformFinalCompilationPass(LegacyExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, CompilerResults nullableFixupResult, Boolean debug)
         {
             var errors = nullableFixupResult.Errors.Cast<CompilerError>().ToList();
 
@@ -256,19 +256,19 @@ namespace Ultraviolet.Presentation.Compiler
                 WriteSourceCodeForDataSourceWrapper(state, model);
             });
 
-            return CompileDataSourceWrapperSources(state, output, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, output, models, referencedAssemblies, debug);
         }
 
         /// <summary>
         /// Compiles the specified data source wrapper sources into a managed assembly.
         /// </summary>
-        private static CompilerResults CompileDataSourceWrapperSources(LegacyExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
+        private static CompilerResults CompileDataSourceWrapperSources(LegacyExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references, Boolean debug)
         {
             var options = new CompilerParameters();
             options.OutputAssembly = output;
             options.GenerateExecutable = false;
             options.GenerateInMemory = true;
-            options.IncludeDebugInformation = false;
+            options.IncludeDebugInformation = debug;
             options.TreatWarningsAsErrors = false;
             options.ReferencedAssemblies.AddRange(references.Distinct().ToArray());
 

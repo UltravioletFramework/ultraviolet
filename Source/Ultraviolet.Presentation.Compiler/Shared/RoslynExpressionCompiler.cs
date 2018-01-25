@@ -46,7 +46,7 @@ namespace Ultraviolet.Presentation.Compiler
                     return BindingExpressionCompilationResult.CreateSucceeded();
             }
 
-            var result = CompileViewModels(state, dataSourceWrapperInfos, options.Output);
+            var result = CompileViewModels(state, dataSourceWrapperInfos, options.Output, options.GenerateDebugAssembly);
             if (result.Succeeded)
             {
                 if (!options.GenerateInMemory)
@@ -83,7 +83,7 @@ namespace Ultraviolet.Presentation.Compiler
             var dataSourceWrapperInfo = DataSourceLoader.GetDataSourceWrapperInfo(state, definition.Value);
             var dataSourceWrapperInfos = new[] { dataSourceWrapperInfo };
 
-            var result = CompileViewModels(state, dataSourceWrapperInfos, null);
+            var result = CompileViewModels(state, dataSourceWrapperInfos, null, options.GenerateDebugAssembly);
             if (result.Succeeded)
             {
                 options.Output = dataSourceWrapperInfos[0].DataSourceWrapperSourceCode;
@@ -115,14 +115,14 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Compiles the specified collection of view models.
         /// </summary>
-        private static BindingExpressionCompilationResult CompileViewModels(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output)
+        private static BindingExpressionCompilationResult CompileViewModels(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, String output, Boolean debug)
         {
             state.DeleteWorkingDirectory();
 
             var referencedAssemblies = GetDefaultReferencedAssemblies(state);
 
             var initialPassResult =
-                PerformInitialCompilationPass(state, models, referencedAssemblies);
+                PerformInitialCompilationPass(state, models, referencedAssemblies, debug);
 
             var fixupPassResult =
                 PerformSyntaxTreeFixup(initialPassResult);
@@ -171,7 +171,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Performs the first compilation pass, which the semantic model which will be used for fixup.
         /// </summary>
-        private static Compilation PerformInitialCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies)
+        private static Compilation PerformInitialCompilationPass(RoslynExpressionCompilerState state, IEnumerable<DataSourceWrapperInfo> models, ConcurrentBag<String> referencedAssemblies, Boolean debug)
         {
             Parallel.ForEach(models, model =>
             {
@@ -191,13 +191,13 @@ namespace Ultraviolet.Presentation.Compiler
                 WriteSourceCodeForDataSourceWrapper(state, model);
             });
 
-            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies);
+            return CompileDataSourceWrapperSources(state, null, models, referencedAssemblies, debug);
         }
 
         /// <summary>
         /// Compiles the specified data source wrapper sources into a Roslyn compilation object.
         /// </summary>
-        private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references)
+        private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references, Boolean debug)
         {
             var trees = new List<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(), CSharpParseOptions.Default, "CompilerMetadata.cs") };
             var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
@@ -209,8 +209,8 @@ namespace Ultraviolet.Presentation.Compiler
 
                 trees.Add(CSharpSyntaxTree.ParseText(info.DataSourceWrapperSourceCode, path: path));                
             });
-
-            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            
+            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: debug ? OptimizationLevel.Debug : OptimizationLevel.Release);
             var compilation = CSharpCompilation.Create("Ultraviolet.Presentation.CompiledExpressions.dll", trees, mrefs, options);
 
             return compilation;

@@ -333,7 +333,10 @@ namespace UvDebug
                 if (compileExpressions)
                     flags |= CompileExpressionsFlags.IgnoreCache;
 
+                var sw = System.Diagnostics.Stopwatch.StartNew();
                 upf.CompileExpressionsIfSupported("Content", flags);
+                sw.Stop();
+                Console.WriteLine(sw.Elapsed);
             }
         }        
         
