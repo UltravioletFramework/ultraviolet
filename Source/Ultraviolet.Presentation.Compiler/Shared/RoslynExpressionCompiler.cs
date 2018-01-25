@@ -7,7 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -199,7 +198,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references, Boolean debug)
         {
-            var trees = new List<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(), CSharpParseOptions.Default, "CompilerMetadata.cs") };
+            var trees = new ConcurrentBag<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(), CSharpParseOptions.Default, "CompilerMetadata.cs") };
             var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
 
             Parallel.ForEach(infos, info =>
