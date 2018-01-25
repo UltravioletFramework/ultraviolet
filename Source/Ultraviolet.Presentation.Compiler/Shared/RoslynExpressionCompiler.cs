@@ -215,47 +215,48 @@ namespace Ultraviolet.Presentation.Compiler
 
             return compilation;
         }
-
-        /// <summary>
-        /// Compiles the specified set of syntax trees into a Roslyn compilation object.
-        /// </summary>
-        private static Compilation CompileFinalSyntaxTrees(RoslynExpressionCompilerState state, String output, IEnumerable<SyntaxTree> trees, IEnumerable<String> references)
-        {
-            var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
-
-            foreach (var tree in trees)
-                File.WriteAllText(tree.FilePath, tree.ToString());
-
-            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
-            var compilation = CSharpCompilation.Create("Ultraviolet.Presentation.CompiledExpressions.dll", trees, mrefs, options);
-
-            return compilation;
-        }
-
+        
         /// <summary>
         /// Performs fixup steps on the specified compilation.
         /// </summary>
         private static Compilation PerformSyntaxTreeFixup(Compilation compilation)
         {
-            var result = compilation;
+            var syncObject = new Object();
             var trees = compilation.SyntaxTrees.ToList();
+            var result = compilation;
 
-            foreach (var tree in trees)
+            Parallel.ForEach(trees, tree =>
             {
+                var treeCompilation = compilation;
+
+                var changed = false;
+                var originalTree = (CSharpSyntaxTree)tree;
                 var oldTree = (CSharpSyntaxTree)tree;
                 var newTree = (CSharpSyntaxTree)tree;
 
                 oldTree = newTree;
-                newTree = RewriteSyntaxTree(result, newTree, semanticModel => new FixupExpressionPropertiesRewriter(semanticModel));
+                newTree = RewriteSyntaxTree(treeCompilation, newTree, semanticModel => new FixupExpressionPropertiesRewriter(semanticModel));
                 if (newTree != oldTree)
-                    result = result.ReplaceSyntaxTree(oldTree, newTree);
+                {
+                    treeCompilation = treeCompilation.ReplaceSyntaxTree(oldTree, newTree);
+                    changed = true;
+                }
 
                 oldTree = newTree;
-                newTree = RewriteSyntaxTree(result, newTree, semanticModel => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(semanticModel));
+                newTree = RewriteSyntaxTree(treeCompilation, newTree, semanticModel => new RemoveUnnecessaryDataBindingSetterFieldsRewriter(semanticModel));
                 if (newTree != oldTree)
-                    result = result.ReplaceSyntaxTree(oldTree, newTree);
-            }
+                {
+                    treeCompilation = treeCompilation.ReplaceSyntaxTree(oldTree, newTree);
+                    changed = true;
+                }
 
+                if (changed)
+                {
+                    lock (syncObject)
+                        result = result.ReplaceSyntaxTree(originalTree, newTree);
+                }
+            });
+            
             return result;
         }
 
