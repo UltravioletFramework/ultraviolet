@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Presentation.Controls;
 
@@ -111,6 +112,57 @@ namespace Ultraviolet.Presentation
 
         /// <summary>
         /// Compiles the binding expressions in the specified content directory tree.
+        /// Compilation is performed on a background thread.
+        /// </summary>
+        /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
+        /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
+        /// <returns>A <see cref="Task"/> representing the compilation process.</returns>
+        public async Task CompileExpressionsAsync(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(root, nameof(root));
+
+            LoadBindingExpressionCompiler();
+
+            var options = CreateCompilerOptions(root, flags);
+            try
+            {
+                var result = await Task.Run(() => bindingExpressionCompiler.Compile(Ultraviolet, options));
+                if (result.Failed)
+                    throw new BindingExpressionCompilationFailedException(result.Message, result);
+
+                inMemoryBindingExpressionsAsm = result.Assembly;
+            }
+            catch (Exception e)
+            {
+                LogExceptionToBuildOutputConsole(root, e,
+                    (flags & CompileExpressionsFlags.ResolveContentFiles) == CompileExpressionsFlags.ResolveContentFiles);
+                throw;
+            }
+
+            GC.Collect(2, GCCollectionMode.Forced);
+        }
+
+        /// <summary>
+        /// Compiles the binding expressions in the specified content directory tree if the application is running
+        /// one one of the platforms which supports doing so. Otherwise, this method has no effect.
+        /// Compilation is performed on a background thread.
+        /// </summary>
+        /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
+        /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
+        public async Task CompileExpressionsIfSupportedAsync(String root, CompileExpressionsFlags flags = CompileExpressionsFlags.None)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.RequireNotEmpty(root, nameof(root));
+
+            if (!IsSupportedPlatform(Ultraviolet.Runtime, Ultraviolet.Platform))
+                return;
+
+            await CompileExpressionsAsync(root, flags);
+        }
+
+        /// <summary>
+        /// Compiles the binding expressions in the specified content directory tree.
         /// </summary>
         /// <param name="root">The root of the content directory tree to search for binding expressions to compile.</param>
         /// <param name="flags">A set of <see cref="CompileExpressionsFlags"/> values specifying how the expressions should be compiled.</param>
@@ -121,14 +173,7 @@ namespace Ultraviolet.Presentation
 
             LoadBindingExpressionCompiler();
 
-            var options = new BindingExpressionCompilerOptions();
-            options.GenerateInMemory = (flags & CompileExpressionsFlags.GenerateInMemory) == CompileExpressionsFlags.GenerateInMemory;
-            options.WriteErrorsToFile = true;
-            options.Input = root;
-            options.Output = CompiledExpressionsAssemblyName;
-            options.IgnoreCache = options.GenerateInMemory || (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache;
-            options.WorkInTemporaryDirectory = (flags & CompileExpressionsFlags.WorkInTemporaryDirectory) == CompileExpressionsFlags.WorkInTemporaryDirectory;
-
+            var options = CreateCompilerOptions(root, flags);
             try
             {
                 var result = bindingExpressionCompiler.Compile(Ultraviolet, options);
@@ -139,14 +184,14 @@ namespace Ultraviolet.Presentation
             }
             catch (Exception e)
             {
-                var resolveContentFiles = (flags & CompileExpressionsFlags.ResolveContentFiles) == CompileExpressionsFlags.ResolveContentFiles;
-                LogExceptionToBuildOutputConsole(root, e, resolveContentFiles);
+                LogExceptionToBuildOutputConsole(root, e,
+                    (flags & CompileExpressionsFlags.ResolveContentFiles) == CompileExpressionsFlags.ResolveContentFiles);
                 throw;
             }
 
             GC.Collect(2, GCCollectionMode.Forced);
         }
-
+        
         /// <summary>
         /// Compiles the binding expressions in the specified content directory tree if the application is running
         /// one one of the platforms which supports doing so. Otherwise, this method has no effect.
@@ -158,11 +203,9 @@ namespace Ultraviolet.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
 
-            if (Ultraviolet.Platform == UltravioletPlatform.Android ||
-                Ultraviolet.Platform == UltravioletPlatform.iOS)
-            {
+            if (!IsSupportedPlatform(Ultraviolet.Runtime, Ultraviolet.Platform))
                 return;
-            }
+
             CompileExpressions(root, flags);
         }
 
@@ -221,6 +264,32 @@ namespace Ultraviolet.Presentation
         {
             get;
             internal set;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="BindingExpressionCompilerOptions"/> class from the specified set of flags.
+        /// </summary>
+        private static BindingExpressionCompilerOptions CreateCompilerOptions(String root, CompileExpressionsFlags flags)
+        {
+            var generateInMemory = (flags & CompileExpressionsFlags.GenerateInMemory) == CompileExpressionsFlags.GenerateInMemory;
+            var options = new BindingExpressionCompilerOptions()
+            {
+                GenerateInMemory = generateInMemory,
+                WriteErrorsToFile = true,
+                Input = root,
+                Output = CompiledExpressionsAssemblyName,
+                IgnoreCache = generateInMemory || (flags & CompileExpressionsFlags.IgnoreCache) == CompileExpressionsFlags.IgnoreCache,
+                WorkInTemporaryDirectory = (flags & CompileExpressionsFlags.WorkInTemporaryDirectory) == CompileExpressionsFlags.WorkInTemporaryDirectory
+            };
+            return options;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the specified platform supports expression compilation.
+        /// </summary>
+        private static Boolean IsSupportedPlatform(UltravioletRuntime runtime, UltravioletPlatform platform)
+        {
+            return platform != UltravioletPlatform.Android && platform != UltravioletPlatform.iOS;
         }
 
         /// <summary>
@@ -310,7 +379,7 @@ namespace Ultraviolet.Presentation
                 throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(compilerType.Name), e);
             }
         }
-
+        
         // The registry of compiled data source wrappers.
         private readonly Dictionary<Type, Type> compiledDataSourceWrappersByWrappedType =
             new Dictionary<Type, Type>();
