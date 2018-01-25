@@ -19,7 +19,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="parameters">The effect's list of expected parameters, or <see langword="null"/> to
         /// determine the parameters by querying shader uniforms.</param>
         public OpenGLEffectImplementation(UltravioletContext uv,
-            IEnumerable<OpenGLEffectTechnique> techniques, IEnumerable<String> parameters = null)
+            IEnumerable<OpenGLEffectTechnique> techniques, HashSet<String> parameters = null)
             : base(uv)
         {
             Contract.RequireNotEmpty(techniques, nameof(techniques));
@@ -105,7 +105,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// effect parameters from shader uniforms.</param>
         /// <returns>The effect parameter collection that was created.</returns>
         private OpenGLEffectParameterCollection CreateEffectParameters(
-            IEnumerable<OpenGLEffectTechnique> techniques, IEnumerable<String> parameters)
+            IEnumerable<OpenGLEffectTechnique> techniques, HashSet<String> parameters)
         {
             var paramlist = new Dictionary<String, OpenGLEffectParameter>();
 
@@ -116,7 +116,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 from unif in prog.Uniforms
                 let name = unif.Name
                 let nameSanitized = name.EndsWith("[0]") ? name.Substring(0, name.Length - "[0]".Length) : name
-                where parameters == null || parameters.Contains(nameSanitized)
+                where parameters == null || parameters.Count == 0 || parameters.Contains(nameSanitized)
                 group unif by nameSanitized into g
                 select g;
 

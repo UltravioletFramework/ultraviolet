@@ -59,6 +59,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
                         if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
                             continue;
+
+                        if (ProcessParamDirective(manager, metadata, line, output, ssmd))
+                            continue;
                     }
                     
                     output.AppendLine(line);
@@ -256,6 +259,23 @@ namespace Ultraviolet.OpenGL.Graphics
             return false;
         }
 
+        /// <summary>
+        /// Processes #param directives.
+        /// </summary>
+        private static Boolean ProcessParamDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
+        {
+            var paramMatch = regexParamDirective.Match(line);
+            if (paramMatch.Success)
+            {
+                var parameter = paramMatch.Groups["parameter"].Value;
+
+                ssmd.AddParameterHint(parameter);
+
+                return true;
+            }
+            return false;
+        }
+
         // Regular expressions used to identify directives
         private static readonly Regex regexCStyleComment =
             new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
@@ -266,6 +286,8 @@ namespace Ultraviolet.OpenGL.Graphics
         private static readonly Regex regexIfVerDirective =
             new Regex(@"^\s*#(?<op>ifver(_gt|_gte|_lt|_lte)?)\s+\""(?<gles>es)?(?<version_maj>\d+).(?<version_min>\d+)\""\s+\{\s*(?<source>.+)\s*\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexSamplerDirective =
-            new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex regexParamDirective =
+            new Regex(@"^\s*#param\s+""(?<parameter>.*?)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

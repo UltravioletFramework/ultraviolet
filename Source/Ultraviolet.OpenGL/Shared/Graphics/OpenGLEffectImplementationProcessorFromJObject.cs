@@ -67,7 +67,7 @@ namespace Ultraviolet.OpenGL.Graphics
             // version
             reader.ReadByte();
 
-            var parameters = new List<String>();
+            var parameters = new HashSet<String>();
             var parameterCount = reader.ReadInt32();
             for (int i = 0; i < parameterCount; i++)
                 parameters.Add(reader.ReadString());
@@ -111,7 +111,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
                     var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, false) };
                     passes.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
@@ -124,13 +124,14 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override EffectImplementation Process(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
-            var description = input.ToObject<EffectDescription>();
+            var desc = input.ToObject<EffectDescription>();
+            var parameters = new HashSet<String>(desc.Parameters);
 
             var techniques = new List<OpenGLEffectTechnique>();
-            if (!description.Techniques?.Any() ?? false)
+            if (!desc.Techniques?.Any() ?? false)
                 throw new ContentLoadException(OpenGLStrings.EffectMustHaveTechniques);
 
-            foreach (var technique in description.Techniques)
+            foreach (var technique in desc.Techniques)
             {
                 var techniqueName = technique.Name;
                 var techniquePasses = new List<OpenGLEffectPass>();
@@ -159,14 +160,20 @@ namespace Ultraviolet.OpenGL.Graphics
                     var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
                     var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
+                    foreach (var hint in vertShader.ShaderSourceMetadata.ParameterHints)
+                        parameters.Add(hint);
+
+                    foreach (var hint in fragShader.ShaderSourceMetadata.ParameterHints)
+                        parameters.Add(hint);
+
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, false) };
                     techniquePasses.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
                 techniques.Add(new OpenGLEffectTechnique(manager.Ultraviolet, techniqueName, techniquePasses));
             }
 
-            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques, description.Parameters);
+            return new OpenGLEffectImplementation(manager.Ultraviolet, techniques, parameters);
         }
 
         /// <inheritdoc/>

@@ -75,6 +75,7 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource NonZeroBaseInstanceNotSupported       = new StringResource(StringDatabase, "NON_ZERO_BASE_INSTANCE_NOT_SUPPORTED");
         public static readonly StringResource SamplerDirectiveInvalidUniform        = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_INVALID_UNIFORM");
         public static readonly StringResource SamplerDirectiveAlreadyInUse          = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_ALREADY_IN_USE");
+        public static readonly StringResource ImplicitEffectsMustLoadFromShaders    = new StringResource(StringDatabase, "IMPLICIT_EFFECTS_MUST_LOAD_FROM_SHADERS");
 #pragma warning restore 1591
     }
 }

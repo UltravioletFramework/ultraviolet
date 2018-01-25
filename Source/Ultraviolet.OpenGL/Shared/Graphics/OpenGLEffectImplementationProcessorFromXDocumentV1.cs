@@ -109,7 +109,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
                     var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, false) };
                     passes.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
@@ -157,7 +157,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
                     var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
 
-                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, true) };
+                    var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, false) };
                     techniquePasses.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
                 }
 
