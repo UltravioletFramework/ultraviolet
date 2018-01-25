@@ -255,4 +255,9 @@
       <Variant>Sampler "{0}" cannot be set to index {1} because that index is already in use.</Variant>
     </en-US>
   </String>
+  <String Key="IMPLICIT_EFFECTS_MUST_LOAD_FROM_SHADERS">
+    <en-US>
+      <Variant>Implicit effects must be loaded from either *.frag or *.vert files; asset "{0}" is neither.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

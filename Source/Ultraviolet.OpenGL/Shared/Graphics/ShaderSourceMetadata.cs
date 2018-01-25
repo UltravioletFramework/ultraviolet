@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Graphics
@@ -20,6 +20,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
             foreach (var kvp in ssmd.PreferredSamplerIndices)
                 AddPreferredSamplerIndex(kvp.Key, kvp.Value);
+
+            foreach (var hint in ssmd.ParameterHints)
+                AddParameterHint(hint);
         }
 
         /// <summary>
@@ -38,8 +41,22 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Adds a parameter hint to this instance's list.
+        /// </summary>
+        /// <param name="parameter">The name of the effect parameter that should be created.</param>
+        public void AddParameterHint(String parameter)
+        {
+            ParameterHints.Add(parameter);
+        }
+
+        /// <summary>
         /// Gets a dictionary which associates uniforms with their preferred sampler indices.
         /// </summary>
         public IDictionary<String, Int32> PreferredSamplerIndices { get; } = new Dictionary<String, Int32>();
+
+        /// <summary>
+        /// Gets a set which contains the list of specified parameter names for this shader.
+        /// </summary>
+        public ISet<String> ParameterHints { get; } = new HashSet<String>();
     }
 }

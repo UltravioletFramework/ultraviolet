@@ -40,27 +40,37 @@ namespace Ultraviolet.OpenGL.Graphics
 
             using (var reader = new StringReader(source))
             {
+                var insideComment = false;
+
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (ProcessIncludeDirective(manager, metadata, line, output, ssmd))
-                        continue;
+                    TrackComments(line, ref insideComment);
 
-                    if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd))
-                        continue;
+                    if (!insideComment)
+                    {
+                        if (ProcessIncludeDirective(manager, metadata, line, output, ssmd))
+                            continue;
 
-                    if (ProcessIfVerDirective(manager, metadata, line, output, ssmd))
-                        continue;
+                        if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd))
+                            continue;
 
-                    if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
-                        continue;
+                        if (ProcessIfVerDirective(manager, metadata, line, output, ssmd))
+                            continue;
 
+                        if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
+                            continue;
+
+                        if (ProcessParamDirective(manager, metadata, line, output, ssmd))
+                            continue;
+                    }
+                    
                     output.AppendLine(line);
                 }
             }
 
             return new ShaderSource(output.ToString(), ssmd);
         }
-        
+
         /// <summary>
         /// Implicitly converts a <see cref="String"/> object to a new <see cref="ShaderSource"/> instance.
         /// </summary>
@@ -76,6 +86,46 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Gets the metadata for this shader.
         /// </summary>
         public ShaderSourceMetadata Metadata { get; }
+
+        /// <summary>
+        /// Parses a line of GLSL for comments and keeps track of whether we're
+        /// currently inside of one that spans multiple lines.
+        /// </summary>
+        private static void TrackComments(String line, ref Boolean insideComment)
+        {
+            var ixCurrent = 0;
+
+            // If we're inside of a C-style comment, look for a */ somewhere on this line...
+            if (insideComment)
+            {
+                var ixCStyleEndToken = line.IndexOf("*/");
+                if (ixCStyleEndToken >= 0)
+                {
+                    ixCurrent = ixCStyleEndToken + "*/".Length;
+                    insideComment = false;
+                }
+            }
+
+            if (insideComment)
+                return;
+
+            // Remove any complete C-style comments from the line
+            var cStyleComments = regexCStyleComment.Matches(line, ixCurrent);
+            if (cStyleComments.Count > 0)
+            {
+                var lastMatch = cStyleComments[cStyleComments.Count - 1];
+                ixCurrent = lastMatch.Index + lastMatch.Length;
+            }
+
+            // Look for comments that finish out the line
+            var ixCppCommentToken = line.IndexOf("//", ixCurrent);
+            var ixCStyleStartToken = line.IndexOf("/*", ixCurrent);
+            if (ixCStyleStartToken >= 0 && (ixCppCommentToken < 0 || ixCStyleStartToken < ixCppCommentToken))
+            {
+                line = line.Substring(0, ixCStyleStartToken);
+                insideComment = true;
+            }
+        }
 
         /// <summary>
         /// Processes #include directives.
@@ -208,8 +258,27 @@ namespace Ultraviolet.OpenGL.Graphics
             }
             return false;
         }
-        
+
+        /// <summary>
+        /// Processes #param directives.
+        /// </summary>
+        private static Boolean ProcessParamDirective(ContentManager manager, IContentProcessorMetadata metadata, String line, StringBuilder output, ShaderSourceMetadata ssmd)
+        {
+            var paramMatch = regexParamDirective.Match(line);
+            if (paramMatch.Success)
+            {
+                var parameter = paramMatch.Groups["parameter"].Value;
+
+                ssmd.AddParameterHint(parameter);
+
+                return true;
+            }
+            return false;
+        }
+
         // Regular expressions used to identify directives
+        private static readonly Regex regexCStyleComment =
+            new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
         private static readonly Regex regexIncludeDirective =
             new Regex(@"^\s*#include\s+""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexincludeResourceDirective =
@@ -217,6 +286,8 @@ namespace Ultraviolet.OpenGL.Graphics
         private static readonly Regex regexIfVerDirective =
             new Regex(@"^\s*#(?<op>ifver(_gt|_gte|_lt|_lte)?)\s+\""(?<gles>es)?(?<version_maj>\d+).(?<version_min>\d+)\""\s+\{\s*(?<source>.+)\s*\}\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexSamplerDirective =
-            new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""$", RegexOptions.Singleline | RegexOptions.Compiled);
+            new Regex(@"^\s*#sampler\s+(?<sampler>\d+)\s+""(?<uniform>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex regexParamDirective =
+            new Regex(@"^\s*#param\s+""(?<parameter>.*?)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

@@ -35,7 +35,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var concatenatedSourceMetadata = new ShaderSourceMetadata();
             concatenatedSourceMetadata.Concat(vertexShader.ShaderSourceMetadata);
             concatenatedSourceMetadata.Concat(fragmentShader.ShaderSourceMetadata);
-
+            
             var program = 0u;
 
             uv.QueueWorkItemAndWait(() =>
