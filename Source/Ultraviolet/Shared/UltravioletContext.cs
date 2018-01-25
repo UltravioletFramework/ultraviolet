@@ -57,6 +57,7 @@ namespace Ultraviolet
     /// </summary>
     public abstract class UltravioletContext : 
         IMessageSubscriber<UltravioletMessageID>,
+        ICrossThreadUltravioletContext,
         IDisposable
     {
         /// <summary>

@@ -54,6 +54,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICrossThreadUltravioletContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\DisplayDensityChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\WindowDensityChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaneIntersectionType.cs" />

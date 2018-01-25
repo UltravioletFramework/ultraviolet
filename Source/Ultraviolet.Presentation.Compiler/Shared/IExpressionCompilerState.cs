@@ -32,7 +32,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Gets the Ultraviolet context.
         /// </summary>
-        UltravioletContext Ultraviolet { get; }
+        ICrossThreadUltravioletContext Ultraviolet { get; }
         
         /// <summary>
         /// Gets or sets a value indicating whether the compiler should generate its output assembly in memory

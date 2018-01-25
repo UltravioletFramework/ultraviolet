@@ -35,7 +35,7 @@ namespace Ultraviolet.Presentation.Compiler
                 WorkInTemporaryDirectory = options.WorkInTemporaryDirectory,
                 WriteErrorsToFile = options.WriteErrorsToFile
             };
-            var dataSourceWrapperInfos = DataSourceLoader.GetDataSourceWrapperInfos(state, uv, options.Input);
+            var dataSourceWrapperInfos = DataSourceLoader.GetDataSourceWrapperInfos(state, options.Input);
 
             var cacheFile = Path.ChangeExtension(options.Output, "cache");
             var cacheNew = CompilerCache.FromDataSourceWrappers(this, dataSourceWrapperInfos);

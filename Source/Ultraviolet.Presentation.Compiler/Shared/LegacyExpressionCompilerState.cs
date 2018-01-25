@@ -19,15 +19,16 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="compiler">The compiler used to produce view model code.</param>
-        public LegacyExpressionCompilerState(UltravioletContext uv, CSharpCodeProvider compiler)
+        public LegacyExpressionCompilerState(ICrossThreadUltravioletContext uv, CSharpCodeProvider compiler)
         {
             this.uv = uv;
             this.compiler = compiler;
             this.knownTypes = new Dictionary<String, Type>();
             this.knownDefaultProperties = new Dictionary<Type, String>();
-            this.componentTemplateManager = (uv == null) ? null : uv.GetUI().GetPresentationFoundation().ComponentTemplates;
+            this.componentTemplateManager = uv?.QueueWorkItem(state => 
+                UltravioletContext.DemandCurrent().GetUI().GetPresentationFoundation().ComponentTemplates).Result;
 
-            LoadKnownTypes(uv);
+            LoadKnownTypes();
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Gets the Ultraviolet context.
         /// </summary>
-        public UltravioletContext Ultraviolet
+        public ICrossThreadUltravioletContext Ultraviolet
         {
             get { return uv; }
         }
@@ -139,19 +140,17 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Loads the set of known types which are available to the compiler.
         /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        private void LoadKnownTypes(UltravioletContext uv)
+        private void LoadKnownTypes()
         {
             if (uv != null)
             {
-                var upf = uv.GetUI().GetPresentationFoundation();
+                var upf = uv.QueueWorkItem(state => UltravioletContext.DemandCurrent().GetUI().GetPresentationFoundation()).Result;
                 foreach (var kvp in upf.GetKnownTypes())
                     knownTypes[kvp.Key] = kvp.Value;
 
                 foreach (var kvp in knownTypes)
                 {
-                    String property;
-                    if (upf.GetElementDefaultProperty(kvp.Value, out property))
+                    if (upf.GetElementDefaultProperty(kvp.Value, out var property))
                         knownDefaultProperties[kvp.Value] = property;
                 }
             }
@@ -177,7 +176,7 @@ namespace Ultraviolet.Presentation.Compiler
         }
 
         // Property values.
-        private readonly UltravioletContext uv;
+        private readonly ICrossThreadUltravioletContext uv;
         private readonly CSharpCodeProvider compiler;
         private readonly ComponentTemplateManager componentTemplateManager;
 

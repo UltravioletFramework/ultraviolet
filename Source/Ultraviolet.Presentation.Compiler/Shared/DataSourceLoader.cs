@@ -20,10 +20,9 @@ namespace Ultraviolet.Presentation.Compiler
         /// as well as all of the component templates which are currently registered with the Ultraviolet context.
         /// </summary>
         /// <param name="state">The expression compiler's current state.</param>
-        /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="root">The root directory to search for views.</param>
         /// <returns>A collection of <see cref="DataSourceWrapperInfo"/> instances which represent the views and templates which were found.</returns>
-        public static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(IExpressionCompilerState state, UltravioletContext uv, String root)
+        public static IEnumerable<DataSourceWrapperInfo> GetDataSourceWrapperInfos(IExpressionCompilerState state, String root)
         {
             var viewDefinitions = RecursivelySearchForViews(root, root);
             var viewModelInfos = RetrieveDataSourceWrapperInfos(state, viewDefinitions);
