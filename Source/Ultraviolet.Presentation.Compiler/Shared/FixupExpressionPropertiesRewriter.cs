@@ -43,8 +43,8 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         private PropertyDeclarationSyntax FixupExpressionGetterConversions(PropertyDeclarationSyntax node)
         {
-            var propertySymbol = model.GetDeclaredSymbol(node);
-            var propertyType = propertySymbol.Type;
+            if (!node.Identifier.ValueText.StartsWith("__UPF_"))
+                return node;
 
             var propertyGetter = node.AccessorList.Accessors.Where(x => x.Kind() == SyntaxKind.GetAccessorDeclaration).SingleOrDefault();
             if (propertyGetter == null || propertyGetter.Body == null)
@@ -53,6 +53,9 @@ namespace Ultraviolet.Presentation.Compiler
             var propertyGetterReturn = propertyGetter.Body.DescendantNodes().OfType<ReturnStatementSyntax>().SingleOrDefault();
             if (propertyGetterReturn == null)
                 return node;
+            
+            var propertySymbol = model.GetDeclaredSymbol(node);
+            var propertyType = propertySymbol.Type;
 
             var propertyGetterReturnType = model.GetTypeInfo(propertyGetterReturn.Expression);
             var propertyGetterConversion = model.Compilation.ClassifyConversion(propertyGetterReturnType.Type, propertyType);
@@ -77,8 +80,8 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         private PropertyDeclarationSyntax FixupExpressionSetterConversions(PropertyDeclarationSyntax node)
         {
-            var propertySymbol = model.GetDeclaredSymbol(node);
-            var propertyType = propertySymbol.Type;
+            if (!node.Identifier.ValueText.StartsWith("__UPF_"))
+                return node;
 
             var propertySetter = node.AccessorList.Accessors.Where(x => x.Kind() == SyntaxKind.SetAccessorDeclaration).SingleOrDefault();
             if (propertySetter == null || propertySetter.Body == null)
@@ -103,6 +106,9 @@ namespace Ultraviolet.Presentation.Compiler
                     var propertySetterConversion = model.Compilation.ClassifyConversion(typeRight.Type, typeLeft.Type);
                     if (propertySetterConversion.Exists && propertySetterConversion.IsExplicit)
                     {
+                        var propertySymbol = model.GetDeclaredSymbol(node);
+                        var propertyType = propertySymbol.Type;
+
                         node = node.ReplaceNode(propertyAssignment,
                             propertyAssignment.WithRight(
                                 SyntaxFactory.CastExpression(

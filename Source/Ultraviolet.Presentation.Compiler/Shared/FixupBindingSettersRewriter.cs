@@ -31,14 +31,14 @@ namespace Ultraviolet.Presentation.Compiler
             {
                 if (fds.Declaration.Variables.Count == 1)
                 {
-                    var symbol = model.GetDeclaredSymbol(fds.Declaration.Variables[0]);
-                    if (symbol.Name.StartsWith("__Set__UPF_Expression"))
+                    var name = fds.Declaration.Variables[0].Identifier.ValueText;
+                    if (name.StartsWith("__Set__UPF_Expression"))
                     {
                         var containingClass = fds.FirstAncestorOrSelf<ClassDeclarationSyntax>();
                         if (containingClass != null)
                         {
                             // Find the field's corresponding property.
-                            var propertyName = symbol.Name.Substring("__Set".Length);
+                            var propertyName = name.Substring("__Set".Length);
                             var property = containingClass.DescendantNodes().OfType<PropertyDeclarationSyntax>()
                                 .Where(x => x.Identifier.ValueText == propertyName)
                                 .SingleOrDefault();
