@@ -244,6 +244,8 @@
     <Compile Include="Audio\SongTests.cs" />
     <Compile Include="BoundingBoxTests.cs" />
     <Compile Include="BoundingSphereTests.cs" />
+    <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
+    <Compile Include="Graphics\EffectTests.cs" />
     <Compile Include="Graphics\ViewportTests.cs" />
     <Compile Include="PlaneTests.cs" />
     <Compile Include="CursorCollectionTests.cs" />
@@ -457,6 +459,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Data\TextStyles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\IncludeDirective.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\IncludedDirective2.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\IncludedDirective1.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\CommentedOutDirective.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Effects\ColorGrading.vert">
