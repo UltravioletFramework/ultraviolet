@@ -373,8 +373,12 @@ namespace Ultraviolet
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromAction(workItem, state) :
-                taskFactory.StartNew(workItem, state);
+            if (IsExecutingOnCurrentThread && !forceAsync)
+            {
+                workItem(state);
+                return Task.FromResult(true);
+            }
+            return taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -393,8 +397,11 @@ namespace Ultraviolet
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)).Unwrap() :
-                taskFactory.StartNew(workItem, state).Unwrap();
+            if (IsExecutingOnCurrentThread && !forceAsync)
+            {
+                return Task.FromResult(workItem(state)).Unwrap();
+            }
+            return taskFactory.StartNew(workItem, state).Unwrap();
         }
 
         /// <summary>
@@ -414,8 +421,11 @@ namespace Ultraviolet
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)) :
-                taskFactory.StartNew(workItem, state);
+            if (IsExecutingOnCurrentThread && !forceAsync)
+            {
+                return Task.FromResult(workItem(state));
+            }
+            return taskFactory.StartNew(workItem, state);
         }
 
         /// <summary>
@@ -435,8 +445,11 @@ namespace Ultraviolet
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
 
-            return (IsExecutingOnCurrentThread && !forceAsync) ? TaskUtil.FromResult(workItem(state)).Unwrap() :
-                taskFactory.StartNew(workItem, state).Unwrap();
+            if (IsExecutingOnCurrentThread && !forceAsync)
+            {
+                return Task.FromResult(workItem(state)).Unwrap();
+            }
+            return taskFactory.StartNew(workItem, state).Unwrap();
        }
         
         /// <summary>

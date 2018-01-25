@@ -445,7 +445,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Size3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Size3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Size3F.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TaskUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tweening.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TweeningInterpolationRegistry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\NamespaceDoc.cs" />

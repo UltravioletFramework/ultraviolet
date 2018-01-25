@@ -317,7 +317,7 @@ namespace Ultraviolet.UI
             {
                 return screen.CloseAsync(duration);
             }
-            return TaskUtil.FromResult(false);
+            return Task.FromResult(false);
         }
 
         /// <summary>
@@ -369,8 +369,8 @@ namespace Ultraviolet.UI
                 }
             }
 
-            return tasks.Count == 0 ? TaskUtil.FromResult(true) :
-                new Task(() => Task.WaitAll(tasks.ToArray()));
+            return tasks.Count == 0 ? 
+                Task.FromResult(true) : new Task(() => Task.WaitAll(tasks.ToArray()));
         }
 
         /// <summary>
@@ -418,8 +418,8 @@ namespace Ultraviolet.UI
                 }
             }
 
-            return tasks.Count == 0 ? TaskUtil.FromResult(true) :
-                new Task(() => Task.WaitAll(tasks.ToArray()));
+            return tasks.Count == 0 ? 
+                Task.FromResult(true) : new Task(() => Task.WaitAll(tasks.ToArray()));
         }
 
         /// <summary>
