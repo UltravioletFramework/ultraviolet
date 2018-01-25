@@ -48,10 +48,6 @@ powershell -Command "(gc Ultraviolet.Shims.iOS.nuspe_) -replace 'UV_VERSION', '%
 nuget pack Ultraviolet.Shims.iOS.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
-powershell -Command "(gc Ultraviolet.Shims.NETCore.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Shims.NETCore.nuspec"
-nuget pack Ultraviolet.Shims.NETCore.nuspec
-@if %errorlevel% neq 0 @exit /b %errorlevel%
-
 powershell -Command "(gc Ultraviolet.SDL2.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.SDL2.Native.nuspec"
 nuget pack Ultraviolet.SDL2.Native.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
@@ -90,10 +86,6 @@ nuget pack Ultraviolet.Game.iOS.nuspec
 
 powershell -Command "(gc Ultraviolet.Game.macOS.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.macOS.nuspec"
 nuget pack Ultraviolet.Game.macOS.nuspec
-@if %errorlevel% neq 0 @exit /b %errorlevel%
-
-powershell -Command "(gc Ultraviolet.Game.NETCore.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.NETCore.nuspec"
-nuget pack Ultraviolet.Game.NETCore.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
 powershell -Command "(gc Ultraviolet.Windows.Forms.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Windows.Forms.nuspec"
