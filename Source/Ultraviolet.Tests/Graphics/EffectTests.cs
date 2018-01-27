@@ -8,7 +8,7 @@ namespace Ultraviolet.Tests.Graphics
     public partial class EffectTests : UltravioletApplicationTestFramework
     {
         [Test]
-        [Category("Rendering")]
+        [Category("Content")]
         [Description("Ensures that directives in GLSL shader source are correctly processed.")]
         public void Effect_GLSLDirectivesAreProcessed()
         {
@@ -32,7 +32,7 @@ namespace Ultraviolet.Tests.Graphics
         }
 
         [Test]
-        [Category("Rendering")]
+        [Category("Content")]
         [Description("Ensures that directives in GLSL shader source are ignored if they fall within comment blocks.")]
         public void Effect_GLSLDirectivesAreIgnoredInsideComments()
         {
