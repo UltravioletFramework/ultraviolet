@@ -14,13 +14,13 @@ namespace Ultraviolet.Tests.UI.Presentation
     public partial class PresentationFoundationTests : PresentationFoundationTestFramework
     {
         [Test]
-        [Category("UPF"), Category("Rendering")]
+        [Category("UPF")]
         [Description("Ensures that dependency objects correctly handle forced invalidation of their dependency values.")]
         public void UPF_DependencyObject_CorrectlyHandlesForcedInvalidation()
         {
             var dobj = default(InvalidationTestObject);
 
-            GivenAnUltravioletApplication()
+            GivenAnUltravioletApplicationWithNoWindow()
                 .WithPresentationFoundationConfigured()
                 .WithInitialization(initializer =>
                 {
