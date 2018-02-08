@@ -1675,11 +1675,18 @@ namespace Ultraviolet.Content
         /// <returns>The processor for the specified type.</returns>
         private IContentProcessor FindContentProcessor(String asset, Type inputType, Type outputType)
         {
-            var processor = Ultraviolet.GetContent().Processors.FindProcessor(inputType, outputType);
-            if (processor == null)
-                throw new InvalidOperationException(UltravioletStrings.NoValidProcessor.Format(asset));
+            if (inputType == outputType)
+            {
+                return PassthroughContentProcessor.Instance;
+            }
+            else
+            {
+                var processor = Ultraviolet.GetContent().Processors.FindProcessor(inputType, outputType);
+                if (processor == null)
+                    throw new InvalidOperationException(UltravioletStrings.NoValidProcessor.Format(asset));
 
-            return processor;
+                return processor;
+            }
         }
         
         /// <summary>

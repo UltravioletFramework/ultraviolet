@@ -43,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcherCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\DelegateAssetWatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\PassthroughContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
