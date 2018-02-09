@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
+using System.Text.RegularExpressions;
 
 namespace Ultraviolet.Content
 {
@@ -33,13 +35,11 @@ namespace Ultraviolet.Content
             if (String.IsNullOrEmpty(typeName))
                 throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupType.Format(name));
 
-            var type = Type.GetType(typeName, false);
-            if (type == null)
-                throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupType.Format(name));
-
+            var type = FindTypeByName(typeName);
+            
             this.Manifest = manifest;
             this.Name = name;
-            this.Type = type;
+            this.Type = type ?? throw new InvalidDataException(UltravioletStrings.InvalidContentManifestGroupType.Format(name));
             this.Directory = directory;
 
             var assets = element.Elements("Asset");
@@ -181,5 +181,50 @@ namespace Ultraviolet.Content
         {
             return item.Name;
         }
+
+        /// <summary>
+        /// Attempts to find the type with the specified name.
+        /// </summary>
+        private static Type FindTypeByName(String name)
+        {
+            if (name.Contains("{"))
+            {
+                var nameType = name.Trim();
+                var nameAsm = String.Empty;
+
+                var ixComma = name.LastIndexOf(',');
+                if (ixComma >= 0)
+                {
+                    nameType = name.Substring(0, ixComma).Trim();
+                    nameAsm = name.Substring(ixComma + 1).Trim();
+                }
+
+                var nameMatch = regexTypeName.Match(nameType);
+                if (nameMatch.Success)
+                {
+                    var asm = String.IsNullOrEmpty(nameAsm) ? default(Assembly) : Assembly.Load(nameAsm);
+
+                    var genericTypeParamNames = nameMatch.Groups["typeparam"].Value.Split(',').Select(x => x.Trim());
+                    var genericTypeParams = genericTypeParamNames.Select(x => asm?.GetType(x, false) ?? Type.GetType(x, false)).ToArray();
+                    if (genericTypeParams.Any(x => x == null))
+                        return null;
+
+                    var genericTypeName = $"{nameMatch.Groups["typename"].Value}`{genericTypeParams.Length}";
+                    var genericType = asm?.GetType(genericTypeName, false) ?? Type.GetType(genericTypeName, false);
+                    if (genericType == null)
+                        return null;
+
+                    return genericType.MakeGenericType(genericTypeParams);
+                }
+
+                return null;
+            }
+
+            return Type.GetType(name, false);
+        }
+
+        // Regex for matching generic types.
+        private static readonly Regex regexTypeName = new Regex(@"^(?<typename>[^{}]+){(?<typeparam>.+)}$", 
+            RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
     }
 }

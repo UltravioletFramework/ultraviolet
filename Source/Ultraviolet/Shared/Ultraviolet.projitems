@@ -154,7 +154,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\JsonContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\TextContentImporter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Content\TextContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\UltravioletDataObjectRegistries.cs" />
