@@ -34,6 +34,11 @@ namespace Ultraviolet.Audio
         public abstract String Artist { get; }
 
         /// <summary>
+        /// Gets the name of the album from which the song was taken, if it is available.
+        /// </summary>
+        public abstract String Album { get; }
+
+        /// <summary>
         /// Gets the song's duration.
         /// </summary>
         public abstract TimeSpan Duration { get; }

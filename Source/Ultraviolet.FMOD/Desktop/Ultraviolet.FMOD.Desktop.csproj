@@ -161,6 +161,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Version.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\..\..\Dev\Repositories\Git\ultraviolet\Source\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">

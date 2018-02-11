@@ -16,6 +16,25 @@
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors></WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
@@ -27,9 +46,15 @@
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml" Link="Resources\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\..\Version.tt" Link="Properties\Version.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>
