@@ -24,6 +24,16 @@ namespace Ultraviolet.Audio
         public abstract SongTagCollection Tags { get; }
 
         /// <summary>
+        /// Gets the song's name, if it is available.
+        /// </summary>
+        public abstract String Name { get; }
+
+        /// <summary>
+        /// Gets the name of the artist who composed the song, if it is available.
+        /// </summary>
+        public abstract String Artist { get; }
+
+        /// <summary>
         /// Gets the song's duration.
         /// </summary>
         public abstract TimeSpan Duration { get; }
