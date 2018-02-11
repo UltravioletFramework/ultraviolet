@@ -10,8 +10,17 @@ namespace Ultraviolet.Audio
     public sealed partial class SongTagCollection : IEnumerable<KeyValuePair<String, SongTag>>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SongTagCollection"/> class.
+        /// </summary>
+        public SongTagCollection()
+        {
+            this.storage = new Dictionary<String, SongTag>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Removes all tag from the collection.
         /// </summary>
+        [Preserve]
         public void Clear()
         {
             storage.Clear();
@@ -29,6 +38,18 @@ namespace Ultraviolet.Audio
             Contract.Require(value, nameof(value));
 
             storage.Add(key, new SongTag(key, value));
+        }
+
+        /// <summary>
+        /// Adds a tag to the collection.
+        /// </summary>
+        /// <param name="tag">The tag to add to the collection.</param>
+        [Preserve]
+        public void Add(SongTag tag)
+        {
+            Contract.Require(tag, nameof(tag));
+
+            storage.Add(tag.Key, tag);
         }
 
         /// <summary>
@@ -64,7 +85,18 @@ namespace Ultraviolet.Audio
         /// <summary>
         /// Gets the number of items in the collection.
         /// </summary>
+        [Preserve]
         public Int32 Count => storage.Count;
+
+        /// <summary>
+        /// Gets a collection containing the keys in this collection.
+        /// </summary>
+        public IEnumerable<String> Keys => storage.Keys;
+
+        /// <summary>
+        /// Gets a collection containing the values in this collection.
+        /// </summary>
+        public IEnumerable<SongTag> Values => storage.Values;
 
         /// <summary>
         /// Attempts to retrieve the tag with the specified key.
@@ -72,6 +104,7 @@ namespace Ultraviolet.Audio
         /// <param name="key">The identifying key of the tag to retrieve.</param>
         /// <returns>The <see cref="SongTag"/> with the specified key, or <see langword="null"/> if
         /// no such tag exists within the collection.</returns>
+        [Preserve]
         public SongTag this[String key]
         {
             get
@@ -83,7 +116,6 @@ namespace Ultraviolet.Audio
         }
 
         // The collection's internal storage.
-        private readonly Dictionary<String, SongTag> storage =
-            new Dictionary<String, SongTag>();
+        private readonly Dictionary<String, SongTag> storage;
     }
 }

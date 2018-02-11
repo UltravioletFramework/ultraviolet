@@ -30,5 +30,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_CHANNELINFO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_FILEPROCS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\TAG_ID3.cs" />
   </ItemGroup>
 </Project>
