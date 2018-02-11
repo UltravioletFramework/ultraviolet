@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Desktop", "Ultraviolet\Desktop\Ultraviolet.Desktop.csproj", "{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}"
 EndProject
@@ -97,6 +97,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltravioletGame.NETCore", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Compiler.NETStandard", "Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj", "{C06031C3-5790-40BC-9D49-046724E5B504}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.Desktop", "Ultraviolet.FMOD\Desktop\Ultraviolet.FMOD.Desktop.csproj", "{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
@@ -116,6 +122,7 @@ Global
 		UvStress\Shared\UvStress.projitems*{97cd0bfb-4bdb-4862-ac0d-153e81a2a9a1}*SharedItemsImports = 13
 		UvDebug\Shared\UvDebug.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
 		UvStress\Shared\UvStress.projitems*{ab20567c-1d12-4b38-ab86-ad7dc9d769f6}*SharedItemsImports = 4
+		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{ce4b6f6f-6542-4ca6-b21c-da4b053b585f}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.projitems*{e1cd102c-6d6d-4eb2-abed-1fad59c9730f}*SharedItemsImports = 4
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}*SharedItemsImports = 4
@@ -123,6 +130,7 @@ Global
 		Ultraviolet\Shared\Ultraviolet.projitems*{f071abe3-05e5-4df9-a929-cf71b01ec50a}*SharedItemsImports = 4
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{f38a5f9e-52f1-424c-9776-7fa80b9f58ff}*SharedItemsImports = 4
+		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{f6fe0208-9ca4-41c6-88a2-bbf5b25b3977}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -766,6 +774,42 @@ Global
 		{C06031C3-5790-40BC-9D49-046724E5B504}.Signed|x64.Build.0 = Debug|Any CPU
 		{C06031C3-5790-40BC-9D49-046724E5B504}.Signed|x86.ActiveCfg = Debug|Any CPU
 		{C06031C3-5790-40BC-9D49-046724E5B504}.Signed|x86.Build.0 = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Release|x64.Build.0 = Release|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Release|x86.Build.0 = Release|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x64.Build.0 = Signed|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x86.Build.0 = Signed|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Debug|x64.Build.0 = Debug|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Debug|x86.Build.0 = Debug|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Release|x64.ActiveCfg = Release|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Release|x64.Build.0 = Release|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Release|x86.ActiveCfg = Release|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Release|x86.Build.0 = Release|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x64.Build.0 = Signed|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x86.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
