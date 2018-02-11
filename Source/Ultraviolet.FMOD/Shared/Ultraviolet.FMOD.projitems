@@ -9,5 +9,26 @@
     <Import_RootNamespace>Ultraviolet.FMOD</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODMediaImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSongProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FMODException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FMODStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletAudio.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletFactoryInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.ErrorString.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TAG.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_MODE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_CREATESOUNDEXINFO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_CHANNELMASK.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TAGDATATYPE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TAGTYPE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TIMEUNIT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_INITFLAGS.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_RESULT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_CHANNELORDER.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SOUND_TYPE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SOUND_FORMAT.cs" />
   </ItemGroup>
 </Project>

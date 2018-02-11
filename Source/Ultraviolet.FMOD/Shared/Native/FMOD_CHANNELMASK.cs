@@ -1,0 +1,20 @@
+﻿using System;
+
+namespace Ultraviolet.FMOD.Native
+{
+#pragma warning disable 1591
+    [Flags]
+    public enum FMOD_CHANNELMASK : uint
+    {
+        FMOD_CHANNELMASK_FRONT_LEFT     = 0x00000001,
+        FMOD_CHANNELMASK_FRONT_RIGHT    = 0x00000002,
+        FMOD_CHANNELMASK_FRONT_CENTER   = 0x00000004,
+        FMOD_CHANNELMASK_LOW_FREQUENCY  = 0x00000008,
+        FMOD_CHANNELMASK_SURROUND_LEFT  = 0x00000010,
+        FMOD_CHANNELMASK_SURROUND_RIGHT = 0x00000020,
+        FMOD_CHANNELMASK_BACK_LEFT      = 0x00000040,
+        FMOD_CHANNELMASK_BACK_RIGHT     = 0x00000080,
+        FMOD_CHANNELMASK_BACK_CENTER    = 0x00000100,
+    }
+#pragma warning restore 1591
+}

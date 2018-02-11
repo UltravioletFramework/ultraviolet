@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="FMOD_VERSION_MISMATCH">
+    <en-US>
+      <Variant>FMOD library version 0x{0:x8} doesn't match header version 0x{0:x8}.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

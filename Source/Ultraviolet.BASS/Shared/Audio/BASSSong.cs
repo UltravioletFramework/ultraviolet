@@ -27,7 +27,7 @@ namespace Ultraviolet.BASS.Audio
 
             var stream = CreateStream(BASSNative.BASS_STREAM_DECODE);
             
-            this.tags = GetTags(stream, out this.name, out this.artist);
+            this.tags = GetTags(stream, out this.name, out this.artist, out this.album);
             this.duration = GetDuration(stream);
 
             if (!BASSNative.StreamFree(stream))
@@ -64,6 +64,17 @@ namespace Ultraviolet.BASS.Audio
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 return artist;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override String Album
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return album;
             }
         }
 
@@ -124,7 +135,7 @@ namespace Ultraviolet.BASS.Audio
         /// <summary>
         /// Reads any supported tags which are contained by the specified stream.
         /// </summary>
-        private static SongTagCollection GetTags(UInt32 stream, out String name, out String artist)
+        private static SongTagCollection GetTags(UInt32 stream, out String name, out String artist, out String album)
         {
             var result = new SongTagCollection();
             var tags = new Dictionary<String, String>();
@@ -142,6 +153,9 @@ namespace Ultraviolet.BASS.Audio
 
             artist = 
                 result["artist"]?.Value;
+
+            album =
+                result["album"]?.Value;
 
             return result;
         }
@@ -220,6 +234,7 @@ namespace Ultraviolet.BASS.Audio
         private readonly SongTagCollection tags;
         private readonly String name;
         private readonly String artist;
+        private readonly String album;
         private readonly TimeSpan duration;
 
         // The instance manager used when we can't read files directly from the file system using BASS.
