@@ -87,6 +87,17 @@ namespace Ultraviolet.FMOD.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_PlaySound", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_PlaySound(FMOD_SYSTEM* system, FMOD_SOUND* sound, FMOD_CHANNELGROUP* channelgroup, Boolean paused, FMOD_CHANNEL** channel);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_PlaySoundDelegate(FMOD_SYSTEM* system, FMOD_SOUND* sound, FMOD_CHANNELGROUP* channelgroup, Boolean paused, FMOD_CHANNEL** channel);
+        private static readonly FMOD_System_PlaySoundDelegate pFMOD_System_PlaySound = lib.LoadFunction<FMOD_System_PlaySoundDelegate>("FMOD_System_PlaySound");
+        public static FMOD_RESULT FMOD_System_PlaySound(FMOD_SYSTEM* system, FMOD_SOUND* sound, FMOD_CHANNELGROUP* channelgroup, Boolean paused, FMOD_CHANNEL** channel) => pFMOD_System_PlaySound(system, sound, channelgroup, paused, channel);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_System_Close", CallingConvention = CallingConvention.StdCall)]
         public static extern FMOD_RESULT FMOD_System_Close(FMOD_SYSTEM* system);
 #else
@@ -142,6 +153,17 @@ namespace Ultraviolet.FMOD.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_CreateChannelGroup", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_CreateChannelGroup(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name, FMOD_CHANNELGROUP** channelgroup);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_CreateChannelGroupDelegate(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name, FMOD_CHANNELGROUP** channelgroup);
+        private static readonly FMOD_System_CreateChannelGroupDelegate pFMOD_System_CreateChannelGroup = lib.LoadFunction<FMOD_System_CreateChannelGroupDelegate>("FMOD_System_CreateChannelGroup");
+        public static FMOD_RESULT FMOD_System_CreateChannelGroup(FMOD_SYSTEM* system, String name, FMOD_CHANNELGROUP** channelgroup) => pFMOD_System_CreateChannelGroup(system, name, channelgroup);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_Sound_GetLength", CallingConvention = CallingConvention.StdCall)]
         public static extern FMOD_RESULT FMOD_Sound_GetLength(FMOD_SOUND* sound, UInt32* length, FMOD_TIMEUNIT lengthtype);
 #else
@@ -186,17 +208,6 @@ namespace Ultraviolet.FMOD.Native
 #endif
 
 #if ANDROID || IOS
-        [DllImport(LIBRARY, EntryPoint="FMOD_System_CreateChannelGroup", CallingConvention = CallingConvention.StdCall)]
-        public static extern FMOD_RESULT FMOD_System_CreateChannelGroup(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name, FMOD_CHANNELGROUP** channelgroup);
-#else
-        [MonoNativeFunctionWrapper]
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate FMOD_RESULT FMOD_System_CreateChannelGroupDelegate(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name, FMOD_CHANNELGROUP** channelgroup);
-        private static readonly FMOD_System_CreateChannelGroupDelegate pFMOD_System_CreateChannelGroup = lib.LoadFunction<FMOD_System_CreateChannelGroupDelegate>("FMOD_System_CreateChannelGroup");
-        public static FMOD_RESULT FMOD_System_CreateChannelGroup(FMOD_SYSTEM* system, String name, FMOD_CHANNELGROUP** channelgroup) => pFMOD_System_CreateChannelGroup(system, name, channelgroup);
-#endif
-
-#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_ChannelGroup_SetVolume", CallingConvention = CallingConvention.StdCall)]
         public static extern FMOD_RESULT FMOD_ChannelGroup_SetVolume(FMOD_CHANNELGROUP* channelgroup, Single volume);
 #else
@@ -216,6 +227,226 @@ namespace Ultraviolet.FMOD.Native
         private delegate FMOD_RESULT FMOD_ChannelGroup_ReleaseDelegate(FMOD_CHANNELGROUP* channelgroup);
         private static readonly FMOD_ChannelGroup_ReleaseDelegate pFMOD_ChannelGroup_Release = lib.LoadFunction<FMOD_ChannelGroup_ReleaseDelegate>("FMOD_ChannelGroup_Release");
         public static FMOD_RESULT FMOD_ChannelGroup_Release(FMOD_CHANNELGROUP* channelgroup) => pFMOD_ChannelGroup_Release(channelgroup);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_Stop", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_Stop(FMOD_CHANNEL* channel);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_StopDelegate(FMOD_CHANNEL* channel);
+        private static readonly FMOD_Channel_StopDelegate pFMOD_Channel_Stop = lib.LoadFunction<FMOD_Channel_StopDelegate>("FMOD_Channel_Stop");
+        public static FMOD_RESULT FMOD_Channel_Stop(FMOD_CHANNEL* channel) => pFMOD_Channel_Stop(channel);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetPaused", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetPaused(FMOD_CHANNEL* channel, Boolean paused);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetPausedDelegate(FMOD_CHANNEL* channel, Boolean paused);
+        private static readonly FMOD_Channel_SetPausedDelegate pFMOD_Channel_SetPaused = lib.LoadFunction<FMOD_Channel_SetPausedDelegate>("FMOD_Channel_SetPaused");
+        public static FMOD_RESULT FMOD_Channel_SetPaused(FMOD_CHANNEL* channel, Boolean paused) => pFMOD_Channel_SetPaused(channel, paused);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetPaused", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetPaused(FMOD_CHANNEL* channel, Boolean* paused);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetPausedDelegate(FMOD_CHANNEL* channel, Boolean* paused);
+        private static readonly FMOD_Channel_GetPausedDelegate pFMOD_Channel_GetPaused = lib.LoadFunction<FMOD_Channel_GetPausedDelegate>("FMOD_Channel_GetPaused");
+        public static FMOD_RESULT FMOD_Channel_GetPaused(FMOD_CHANNEL* channel, Boolean* paused) => pFMOD_Channel_GetPaused(channel, paused);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetVolume", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetVolume(FMOD_CHANNEL* channel, Single volume);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetVolumeDelegate(FMOD_CHANNEL* channel, Single volume);
+        private static readonly FMOD_Channel_SetVolumeDelegate pFMOD_Channel_SetVolume = lib.LoadFunction<FMOD_Channel_SetVolumeDelegate>("FMOD_Channel_SetVolume");
+        public static FMOD_RESULT FMOD_Channel_SetVolume(FMOD_CHANNEL* channel, Single volume) => pFMOD_Channel_SetVolume(channel, volume);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetVolume", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetVolume(FMOD_CHANNEL* channel, Single* volume);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetVolumeDelegate(FMOD_CHANNEL* channel, Single* volume);
+        private static readonly FMOD_Channel_GetVolumeDelegate pFMOD_Channel_GetVolume = lib.LoadFunction<FMOD_Channel_GetVolumeDelegate>("FMOD_Channel_GetVolume");
+        public static FMOD_RESULT FMOD_Channel_GetVolume(FMOD_CHANNEL* channel, Single* volume) => pFMOD_Channel_GetVolume(channel, volume);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetVolumeRamp", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetVolumeRamp(FMOD_CHANNEL* channel, Boolean ramp);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetVolumeRampDelegate(FMOD_CHANNEL* channel, Boolean ramp);
+        private static readonly FMOD_Channel_SetVolumeRampDelegate pFMOD_Channel_SetVolumeRamp = lib.LoadFunction<FMOD_Channel_SetVolumeRampDelegate>("FMOD_Channel_SetVolumeRamp");
+        public static FMOD_RESULT FMOD_Channel_SetVolumeRamp(FMOD_CHANNEL* channel, Boolean ramp) => pFMOD_Channel_SetVolumeRamp(channel, ramp);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetVolumeRamp", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetVolumeRamp(FMOD_CHANNEL* channel, Boolean* ramp);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetVolumeRampDelegate(FMOD_CHANNEL* channel, Boolean* ramp);
+        private static readonly FMOD_Channel_GetVolumeRampDelegate pFMOD_Channel_GetVolumeRamp = lib.LoadFunction<FMOD_Channel_GetVolumeRampDelegate>("FMOD_Channel_GetVolumeRamp");
+        public static FMOD_RESULT FMOD_Channel_GetVolumeRamp(FMOD_CHANNEL* channel, Boolean* ramp) => pFMOD_Channel_GetVolumeRamp(channel, ramp);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetAudibility", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetAudibility(FMOD_CHANNEL* channel, Single* audibility);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetAudibilityDelegate(FMOD_CHANNEL* channel, Single* audibility);
+        private static readonly FMOD_Channel_GetAudibilityDelegate pFMOD_Channel_GetAudibility = lib.LoadFunction<FMOD_Channel_GetAudibilityDelegate>("FMOD_Channel_GetAudibility");
+        public static FMOD_RESULT FMOD_Channel_GetAudibility(FMOD_CHANNEL* channel, Single* audibility) => pFMOD_Channel_GetAudibility(channel, audibility);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetPitch", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetPitch(FMOD_CHANNEL* channel, Single pitch);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetPitchDelegate(FMOD_CHANNEL* channel, Single pitch);
+        private static readonly FMOD_Channel_SetPitchDelegate pFMOD_Channel_SetPitch = lib.LoadFunction<FMOD_Channel_SetPitchDelegate>("FMOD_Channel_SetPitch");
+        public static FMOD_RESULT FMOD_Channel_SetPitch(FMOD_CHANNEL* channel, Single pitch) => pFMOD_Channel_SetPitch(channel, pitch);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetPitch", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetPitch(FMOD_CHANNEL* channel, Single* pitch);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetPitchDelegate(FMOD_CHANNEL* channel, Single* pitch);
+        private static readonly FMOD_Channel_GetPitchDelegate pFMOD_Channel_GetPitch = lib.LoadFunction<FMOD_Channel_GetPitchDelegate>("FMOD_Channel_GetPitch");
+        public static FMOD_RESULT FMOD_Channel_GetPitch(FMOD_CHANNEL* channel, Single* pitch) => pFMOD_Channel_GetPitch(channel, pitch);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetMute", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetMute(FMOD_CHANNEL* channel, Boolean mute);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetMuteDelegate(FMOD_CHANNEL* channel, Boolean mute);
+        private static readonly FMOD_Channel_SetMuteDelegate pFMOD_Channel_SetMute = lib.LoadFunction<FMOD_Channel_SetMuteDelegate>("FMOD_Channel_SetMute");
+        public static FMOD_RESULT FMOD_Channel_SetMute(FMOD_CHANNEL* channel, Boolean mute) => pFMOD_Channel_SetMute(channel, mute);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetMute", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetMute(FMOD_CHANNEL* channel, Boolean* mute);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetMuteDelegate(FMOD_CHANNEL* channel, Boolean* mute);
+        private static readonly FMOD_Channel_GetMuteDelegate pFMOD_Channel_GetMute = lib.LoadFunction<FMOD_Channel_GetMuteDelegate>("FMOD_Channel_GetMute");
+        public static FMOD_RESULT FMOD_Channel_GetMute(FMOD_CHANNEL* channel, Boolean* mute) => pFMOD_Channel_GetMute(channel, mute);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetMode", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetMode(FMOD_CHANNEL* channel, FMOD_MODE mode);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetModeDelegate(FMOD_CHANNEL* channel, FMOD_MODE mode);
+        private static readonly FMOD_Channel_SetModeDelegate pFMOD_Channel_SetMode = lib.LoadFunction<FMOD_Channel_SetModeDelegate>("FMOD_Channel_SetMode");
+        public static FMOD_RESULT FMOD_Channel_SetMode(FMOD_CHANNEL* channel, FMOD_MODE mode) => pFMOD_Channel_SetMode(channel, mode);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetMode", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetMode(FMOD_CHANNEL* channel, FMOD_MODE* mode);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetModeDelegate(FMOD_CHANNEL* channel, FMOD_MODE* mode);
+        private static readonly FMOD_Channel_GetModeDelegate pFMOD_Channel_GetMode = lib.LoadFunction<FMOD_Channel_GetModeDelegate>("FMOD_Channel_GetMode");
+        public static FMOD_RESULT FMOD_Channel_GetMode(FMOD_CHANNEL* channel, FMOD_MODE* mode) => pFMOD_Channel_GetMode(channel, mode);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_IsPlaying", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_IsPlaying(FMOD_CHANNEL* channel, Boolean* isplaying);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_IsPlayingDelegate(FMOD_CHANNEL* channel, Boolean* isplaying);
+        private static readonly FMOD_Channel_IsPlayingDelegate pFMOD_Channel_IsPlaying = lib.LoadFunction<FMOD_Channel_IsPlayingDelegate>("FMOD_Channel_IsPlaying");
+        public static FMOD_RESULT FMOD_Channel_IsPlaying(FMOD_CHANNEL* channel, Boolean* isplaying) => pFMOD_Channel_IsPlaying(channel, isplaying);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetPan", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetPan(FMOD_CHANNEL* channel, Single pan);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetPanDelegate(FMOD_CHANNEL* channel, Single pan);
+        private static readonly FMOD_Channel_SetPanDelegate pFMOD_Channel_SetPan = lib.LoadFunction<FMOD_Channel_SetPanDelegate>("FMOD_Channel_SetPan");
+        public static FMOD_RESULT FMOD_Channel_SetPan(FMOD_CHANNEL* channel, Single pan) => pFMOD_Channel_SetPan(channel, pan);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetPosition", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetPosition(FMOD_CHANNEL* channel, UInt32 position, FMOD_TIMEUNIT postype);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetPositionDelegate(FMOD_CHANNEL* channel, UInt32 position, FMOD_TIMEUNIT postype);
+        private static readonly FMOD_Channel_SetPositionDelegate pFMOD_Channel_SetPosition = lib.LoadFunction<FMOD_Channel_SetPositionDelegate>("FMOD_Channel_SetPosition");
+        public static FMOD_RESULT FMOD_Channel_SetPosition(FMOD_CHANNEL* channel, UInt32 position, FMOD_TIMEUNIT postype) => pFMOD_Channel_SetPosition(channel, position, postype);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetPosition", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetPosition(FMOD_CHANNEL* channel, UInt32* position, FMOD_TIMEUNIT postype);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetPositionDelegate(FMOD_CHANNEL* channel, UInt32* position, FMOD_TIMEUNIT postype);
+        private static readonly FMOD_Channel_GetPositionDelegate pFMOD_Channel_GetPosition = lib.LoadFunction<FMOD_Channel_GetPositionDelegate>("FMOD_Channel_GetPosition");
+        public static FMOD_RESULT FMOD_Channel_GetPosition(FMOD_CHANNEL* channel, UInt32* position, FMOD_TIMEUNIT postype) => pFMOD_Channel_GetPosition(channel, position, postype);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_SetLoopPoints", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_SetLoopPoints(FMOD_CHANNEL* channel, UInt32 loopstart, FMOD_TIMEUNIT loopstarttype, UInt32 loopend, FMOD_TIMEUNIT loopendtype);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_SetLoopPointsDelegate(FMOD_CHANNEL* channel, UInt32 loopstart, FMOD_TIMEUNIT loopstarttype, UInt32 loopend, FMOD_TIMEUNIT loopendtype);
+        private static readonly FMOD_Channel_SetLoopPointsDelegate pFMOD_Channel_SetLoopPoints = lib.LoadFunction<FMOD_Channel_SetLoopPointsDelegate>("FMOD_Channel_SetLoopPoints");
+        public static FMOD_RESULT FMOD_Channel_SetLoopPoints(FMOD_CHANNEL* channel, UInt32 loopstart, FMOD_TIMEUNIT loopstarttype, UInt32 loopend, FMOD_TIMEUNIT loopendtype) => pFMOD_Channel_SetLoopPoints(channel, loopstart, loopstarttype, loopend, loopendtype);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Channel_GetLoopPoints", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Channel_GetLoopPoints(FMOD_CHANNEL* channel, UInt32* loopstart, FMOD_TIMEUNIT loopstarttype, UInt32* loopend, FMOD_TIMEUNIT loopendtype);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Channel_GetLoopPointsDelegate(FMOD_CHANNEL* channel, UInt32* loopstart, FMOD_TIMEUNIT loopstarttype, UInt32* loopend, FMOD_TIMEUNIT loopendtype);
+        private static readonly FMOD_Channel_GetLoopPointsDelegate pFMOD_Channel_GetLoopPoints = lib.LoadFunction<FMOD_Channel_GetLoopPointsDelegate>("FMOD_Channel_GetLoopPoints");
+        public static FMOD_RESULT FMOD_Channel_GetLoopPoints(FMOD_CHANNEL* channel, UInt32* loopstart, FMOD_TIMEUNIT loopstarttype, UInt32* loopend, FMOD_TIMEUNIT loopendtype) => pFMOD_Channel_GetLoopPoints(channel, loopstart, loopstarttype, loopend, loopendtype);
 #endif
     }
 }

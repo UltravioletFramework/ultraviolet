@@ -1,4 +1,6 @@
-﻿using Ultraviolet.Core;
+﻿using Ultraviolet.Audio;
+using Ultraviolet.Core;
+using Ultraviolet.FMOD.Audio;
 
 namespace Ultraviolet.FMOD
 {
@@ -11,7 +13,7 @@ namespace Ultraviolet.FMOD
         /// <inheritdoc/>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
-
+            factory.SetFactoryMethod<SongPlayerFactory>((uv) => new FMODSongPlayer(uv));
         }
     }
 }

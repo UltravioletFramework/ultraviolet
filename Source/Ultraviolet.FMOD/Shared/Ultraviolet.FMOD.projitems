@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODMediaImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSongPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSongProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODStrings.cs" />
