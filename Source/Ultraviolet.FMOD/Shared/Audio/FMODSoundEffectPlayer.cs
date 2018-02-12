@@ -98,7 +98,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            channelPlayer.SlidePitch(pan, time);
+            channelPlayer.SlidePan(pan, time);
         }
 
         /// <inheritdoc/>
