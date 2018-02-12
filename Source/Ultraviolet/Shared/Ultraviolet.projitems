@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AudioImplementation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\PlaybackState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\Song.cs" />

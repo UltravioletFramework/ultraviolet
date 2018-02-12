@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL
@@ -9,29 +8,7 @@ namespace Ultraviolet.OpenGL
     /// </summary>
     [CLSCompliant(true)]
     public sealed class OpenGLUltravioletConfiguration : UltravioletConfiguration
-    {
-        /// <summary>
-        /// Initializes a new instance of the OpenGLUltravioletConfiguration class.
-        /// </summary>
-        public OpenGLUltravioletConfiguration()
-        {
-            var version = Assembly.GetExecutingAssembly().GetName().Version; 
-#if SIGNED
-            AudioSubsystemAssembly = String.Format("Ultraviolet.BASS, Version={0}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL", version);
-#else
-            AudioSubsystemAssembly = String.Format("Ultraviolet.BASS, Version={0}, Culture=neutral, processorArchitecture=MSIL", version);
-#endif
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the assembly that implements the audio subsystem.
-        /// </summary>
-        public String AudioSubsystemAssembly
-        {
-            get { return audioSubsystemAssembly; }
-            set { audioSubsystemAssembly = value; }
-        }
-
+    {        
         /// <summary>
         /// Gets or sets the minimum OpenGL version that is required by the application.
         /// This cannot be lower than the minimum version required by Ultraviolet itself.
@@ -143,7 +120,6 @@ namespace Ultraviolet.OpenGL
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
 
         // Property values.
-        private String audioSubsystemAssembly;
         private Version minimumOpenGLVersion;
         private Version minimumOpenGLESVersion;
         private Int32 backBufferDepthSize = 16;
