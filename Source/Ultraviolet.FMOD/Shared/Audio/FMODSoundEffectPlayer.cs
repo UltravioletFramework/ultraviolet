@@ -5,15 +5,15 @@ using Ultraviolet.Core;
 namespace Ultraviolet.FMOD.Audio
 {
     /// <summary>
-    /// Represents the FMOD implementation of the <see cref="SongPlayer"/> class.
+    /// Represents the BASS implementation of the <see cref="SoundEffectPlayer"/> class.
     /// </summary>
-    public sealed unsafe class FMODSongPlayer : SongPlayer
+    public sealed unsafe class FMODSoundEffectPlayer : SoundEffectPlayer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FMODSongPlayer"/> class.
+        /// Initializes a new instance of the <see cref="FMODSoundEffectPlayer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        public FMODSongPlayer(UltravioletContext uv)
+        public FMODSoundEffectPlayer(UltravioletContext uv)
             : base(uv)
         {
             this.channelPlayer = new FMODChannelPlayer(uv);
@@ -28,79 +28,29 @@ namespace Ultraviolet.FMOD.Audio
         }
 
         /// <inheritdoc/>
-        public override Boolean Play(Song song, Boolean loop = false)
+        public override Boolean Play(SoundEffect soundEffect, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(song, nameof(song));
+            Contract.Require(soundEffect, nameof(soundEffect));
 
-            Ultraviolet.ValidateResource(song);
-            var sound = ((FMODSong)song).Sound;
-            var channelgroup = ((FMODSong)song).ChannelGroup;
+            Ultraviolet.ValidateResource(soundEffect);
+            var sound = ((FMODSoundEffect)soundEffect).Sound;
+            var channelgroup = ((FMODSoundEffect)soundEffect).ChannelGroup;
 
-            if (channelPlayer.Play(sound, channelgroup, song.Duration, loop))
-            {
-                OnStateChanged();
-                OnSongStarted();
-                return true;
-            }
-            return false;
+            return channelPlayer.Play(sound, channelgroup, soundEffect.Duration, loop);
         }
 
         /// <inheritdoc/>
-        public override Boolean Play(Song song, TimeSpan loopStart, TimeSpan? loopLength)
+        public override Boolean Play(SoundEffect soundEffect, Single volume, Single pitch, Single pan, Boolean loop = false)
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(song, nameof(song));
+            Contract.Require(soundEffect, nameof(soundEffect));
 
-            Ultraviolet.ValidateResource(song);
-            var sound = ((FMODSong)song).Sound;
-            var channelgroup = ((FMODSong)song).ChannelGroup;
+            Ultraviolet.ValidateResource(soundEffect);
+            var sound = ((FMODSoundEffect)soundEffect).Sound;
+            var channelgroup = ((FMODSoundEffect)soundEffect).ChannelGroup;
 
-            if (channelPlayer.Play(sound, channelgroup, song.Duration, loopStart, loopLength))
-            {
-                OnStateChanged();
-                OnSongStarted();
-                return true;
-            }
-            return false;
-        }
-
-        /// <inheritdoc/>
-        public override Boolean Play(Song song, Single volume, Single pitch, Single pan, Boolean loop = false)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(song, nameof(song));
-
-            Ultraviolet.ValidateResource(song);
-            var sound = ((FMODSong)song).Sound;
-            var channelgroup = ((FMODSong)song).ChannelGroup;
-
-            if (channelPlayer.Play(sound, channelgroup, song.Duration, volume, pitch, pan, loop))
-            {
-                OnStateChanged();
-                OnSongStarted();
-                return true;
-            }
-            return false;
-        }
-
-        /// <inheritdoc/>
-        public override Boolean Play(Song song, Single volume, Single pitch, Single pan, TimeSpan loopStart, TimeSpan? loopLength)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.Require(song, nameof(song));
-
-            Ultraviolet.ValidateResource(song);
-            var sound = ((FMODSong)song).Sound;
-            var channelgroup = ((FMODSong)song).ChannelGroup;
-
-            if (channelPlayer.Play(sound, channelgroup, song.Duration, volume, pitch, pan, loopStart, loopLength))
-            {
-                OnStateChanged();
-                OnSongStarted();
-                return true;
-            }
-            return false;
+            return channelPlayer.Play(sound, channelgroup, soundEffect.Duration, volume, pitch, pan, loop);
         }
 
         /// <inheritdoc/>
@@ -108,11 +58,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (channelPlayer.Stop())
-            {
-                OnStateChanged();
-                OnSongEnded();
-            }
+            channelPlayer.Stop();
         }
 
         /// <inheritdoc/>
@@ -120,10 +66,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (channelPlayer.Pause())
-            {
-                OnStateChanged();
-            }
+            channelPlayer.Pause();
         }
 
         /// <inheritdoc/>
@@ -131,10 +74,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (channelPlayer.Resume())
-            {
-                OnStateChanged();
-            }
+            channelPlayer.Resume();
         }
 
         /// <inheritdoc/>
@@ -289,7 +229,7 @@ namespace Ultraviolet.FMOD.Audio
             }
             base.Dispose(disposing);
         }
-        
+
         // State values.
         private readonly FMODChannelPlayer channelPlayer;
     }

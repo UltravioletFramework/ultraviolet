@@ -153,6 +153,17 @@ namespace Ultraviolet.FMOD.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_CreateStream", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_CreateStream(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name_or_data, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO* exinfo, FMOD_SOUND** sound);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_CreateStreamDelegate(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name_or_data, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO* exinfo, FMOD_SOUND** sound);
+        private static readonly FMOD_System_CreateStreamDelegate pFMOD_System_CreateStream = lib.LoadFunction<FMOD_System_CreateStreamDelegate>("FMOD_System_CreateStream");
+        public static FMOD_RESULT FMOD_System_CreateStream(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name_or_data, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO* exinfo, FMOD_SOUND** sound) => pFMOD_System_CreateStream(system, name_or_data, mode, exinfo, sound);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_System_CreateChannelGroup", CallingConvention = CallingConvention.StdCall)]
         public static extern FMOD_RESULT FMOD_System_CreateChannelGroup(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name, FMOD_CHANNELGROUP** channelgroup);
 #else

@@ -14,6 +14,7 @@ namespace Ultraviolet.FMOD
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
             factory.SetFactoryMethod<SongPlayerFactory>((uv) => new FMODSongPlayer(uv));
+            factory.SetFactoryMethod<SoundEffectPlayerFactory>((uv) => new FMODSoundEffectPlayer(uv));
         }
     }
 }
