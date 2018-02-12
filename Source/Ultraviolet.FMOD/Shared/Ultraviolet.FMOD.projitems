@@ -10,9 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODMediaImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODChannelPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSoundEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSong.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSongPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSongProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSoundEffectPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSoundEffectProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletAudio.cs" />

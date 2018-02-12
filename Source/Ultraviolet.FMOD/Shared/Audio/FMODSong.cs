@@ -14,7 +14,7 @@ namespace Ultraviolet.FMOD.Audio
     /// <summary>
     /// Represents the FMOD implementation of the <see cref="Song"/> class.
     /// </summary>
-    public sealed unsafe partial class FMODSong : Song
+    public sealed unsafe class FMODSong : Song
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FMODSong"/> class.
@@ -35,7 +35,7 @@ namespace Ultraviolet.FMOD.Audio
                 var exinfo = new FMOD_CREATESOUNDEXINFO();
                 exinfo.cbsize = Marshal.SizeOf(exinfo);
                 
-                result = FMOD_System_CreateSound(system, file, FMOD_LOOP_NORMAL | FMOD_2D | FMOD_3D_WORLDRELATIVE | FMOD_3D_INVERSEROLLOFF, &exinfo, psound);
+                result = FMOD_System_CreateStream(system, file, FMOD_LOOP_NORMAL | FMOD_2D | FMOD_3D_WORLDRELATIVE | FMOD_3D_INVERSEROLLOFF, &exinfo, psound);
                 if (result != FMOD_OK)
                     throw new FMODException(result);
             }
@@ -80,15 +80,18 @@ namespace Ultraviolet.FMOD.Audio
         /// </summary>
         internal FMOD_SOUND* Sound => sound;
 
+        /// <summary>
+        /// Gets the FMOD channel group for this object.
+        /// </summary>
+        internal FMOD_CHANNELGROUP* ChannelGroup => ((FMODUltravioletAudio)Ultraviolet.GetAudio()).ChannelGroupSongs;
+
         /// <inheritdoc/>
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(Boolean disposing)
         {
-            if (disposing)
-            {
-                var result = FMOD_Sound_Release(sound);
-                if (result != FMOD_OK)
-                    throw new FMODException(result);
-            }
+            var result = FMOD_Sound_Release(sound);
+            if (result != FMOD_OK)
+                throw new FMODException(result);
+
             base.Dispose(disposing);
         }
         
