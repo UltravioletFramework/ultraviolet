@@ -338,7 +338,7 @@ namespace Ultraviolet.FMOD
         /// </summary>
         private void UpdateSongsVolume()
         {
-            var volumeSongs = (audioMuted || songsMuted) ? 0 : (uint)(10000 * audioMasterVolume * songsMasterVolume);
+            var volumeSongs = (audioMuted || songsMuted) ? 0f : audioMasterVolume * songsMasterVolume;
 
             var result = FMOD_ChannelGroup_SetVolume(cgroupSongs, volumeSongs);
             if (result != FMOD_OK)
@@ -350,7 +350,7 @@ namespace Ultraviolet.FMOD
         /// </summary>
         private void UpdateSoundVolume()
         {
-            var volumeSoundEffects = (audioMuted || soundEffectsMuted) ? 0 : (uint)(10000 * audioMasterVolume * soundEffectsMasterVolume);
+            var volumeSoundEffects = (audioMuted || soundEffectsMuted) ? 0f : audioMasterVolume * soundEffectsMasterVolume;
 
             var result = FMOD_ChannelGroup_SetVolume(cgroupSoundEffects, volumeSoundEffects);
             if (result != FMOD_OK)

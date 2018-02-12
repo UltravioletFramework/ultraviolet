@@ -35,7 +35,7 @@ namespace Ultraviolet.FMOD.Audio
                 var exinfo = new FMOD_CREATESOUNDEXINFO();
                 exinfo.cbsize = Marshal.SizeOf(exinfo);
                 
-                result = FMOD_System_CreateSound(system, file, FMOD_DEFAULT, &exinfo, psound);
+                result = FMOD_System_CreateSound(system, file, FMOD_LOOP_NORMAL | FMOD_2D | FMOD_3D_WORLDRELATIVE | FMOD_3D_INVERSEROLLOFF, &exinfo, psound);
                 if (result != FMOD_OK)
                     throw new FMODException(result);
             }
