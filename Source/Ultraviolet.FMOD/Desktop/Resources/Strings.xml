@@ -5,4 +5,9 @@
       <Variant>FMOD library version 0x{0:x8} doesn't match header version 0x{0:x8}.</Variant>
     </en-US>
   </String>
+  <String Key="NOT_CURRENTLY_VALID">
+    <en-US>
+      <Variant>That operation is not currently valid on this resource.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

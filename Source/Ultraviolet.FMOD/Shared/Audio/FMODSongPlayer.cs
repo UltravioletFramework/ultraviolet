@@ -123,7 +123,7 @@ namespace Ultraviolet.FMOD.Audio
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (State == PlaybackState.Stopped)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
             this.isSlidingVolume = true;
             this.slideStartVolume = this.Volume;
@@ -138,7 +138,7 @@ namespace Ultraviolet.FMOD.Audio
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (State == PlaybackState.Stopped)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
             this.isSlidingPitch = true;
             this.slideStartPitch = this.Pitch;
@@ -153,7 +153,7 @@ namespace Ultraviolet.FMOD.Audio
             Contract.EnsureNotDisposed(this, Disposed);
 
             if (State == PlaybackState.Stopped)
-                throw new InvalidOperationException("TODO");
+                throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
             this.isSlidingPan = true;
             this.slideStartPan = this.Pan;
@@ -227,7 +227,7 @@ namespace Ultraviolet.FMOD.Audio
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 if (State == PlaybackState.Stopped)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var result = FMOD_Channel_SetMode(channel, value ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
                 if (result != FMOD_OK)
@@ -257,7 +257,7 @@ namespace Ultraviolet.FMOD.Audio
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 if (State == PlaybackState.Stopped)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var result = FMOD_Channel_SetPosition(channel, (UInt32)value.TotalMilliseconds, FMOD_TIMEUNIT_MS);
                 if (result != FMOD_OK)
@@ -293,7 +293,7 @@ namespace Ultraviolet.FMOD.Audio
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 if (State == PlaybackState.Stopped)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var clamped = MathUtil.Clamp(value, 0f, 1f);
                 var result = FMOD_Channel_SetVolume(channel, clamped);
@@ -319,7 +319,7 @@ namespace Ultraviolet.FMOD.Audio
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 if (State == PlaybackState.Stopped)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var clamped = MathUtil.Clamp(value, -1f, 1f);
                 var result = FMOD_Channel_SetPitch(channel, 1f + clamped);
@@ -345,7 +345,7 @@ namespace Ultraviolet.FMOD.Audio
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 if (State == PlaybackState.Stopped)
-                    throw new InvalidOperationException("TODO");
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var clamped = MathUtil.Clamp(pan, -1f, 1f);
                 var result = FMOD_Channel_SetPan(channel, clamped);
