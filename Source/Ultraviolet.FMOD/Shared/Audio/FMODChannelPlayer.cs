@@ -421,7 +421,8 @@ namespace Ultraviolet.FMOD.Audio
             result = FMOD_Channel_SetPaused(channel, false);
             if (result != FMOD_OK)
                 throw new FMODException(result);
-            
+
+            this.channel = channel;
             this.duration = duration;
             this.volume = volume;
             this.pitch = pitch;
