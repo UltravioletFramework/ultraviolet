@@ -70,14 +70,13 @@ namespace Ultraviolet.FMOD.Audio
                 return false;
 
             var result = FMOD_Channel_Stop(channel);
+            if (!ValidateHandle(result))
+                return false;
+
             if (result != FMOD_OK)
                 throw new FMODException(result);
 
-            channel = null;
-
-            isSlidingVolume = false;
-            isSlidingPitch = false;
-            isSlidingPan = false;
+            StopInternal();
 
             return true;
         }
@@ -88,6 +87,9 @@ namespace Ultraviolet.FMOD.Audio
             if (State == PlaybackState.Playing)
             {
                 var result = FMOD_Channel_SetPaused(channel, true);
+                if (!ValidateHandle(result))
+                    return false;
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -102,6 +104,9 @@ namespace Ultraviolet.FMOD.Audio
             if (State == PlaybackState.Paused)
             {
                 var result = FMOD_Channel_SetPaused(channel, false);
+                if (!ValidateHandle(result))
+                    return false;
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -161,6 +166,9 @@ namespace Ultraviolet.FMOD.Audio
                     var ispaused = false;
 
                     result = FMOD_Channel_GetPaused(channel, &ispaused);
+                    if (!ValidateHandle(result))
+                        return PlaybackState.Stopped;
+
                     if (result != FMOD_OK)
                         throw new FMODException(result);
 
@@ -168,6 +176,9 @@ namespace Ultraviolet.FMOD.Audio
                         return PlaybackState.Paused;
 
                     result = FMOD_Channel_IsPlaying(channel, &isplaying);
+                    if (!ValidateHandle(result))
+                        return PlaybackState.Stopped;
+
                     if (result != FMOD_OK)
                         throw new FMODException(result);
 
@@ -196,6 +207,9 @@ namespace Ultraviolet.FMOD.Audio
 
                 var mode = default(FMOD_MODE);
                 var result = FMOD_Channel_GetMode(channel, &mode);
+                if (!ValidateHandle(result))
+                    return false;
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -209,6 +223,9 @@ namespace Ultraviolet.FMOD.Audio
                     throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var result = FMOD_Channel_SetMode(channel, value ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
+                if (!ValidateHandle(result))
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
             }
@@ -224,6 +241,9 @@ namespace Ultraviolet.FMOD.Audio
 
                 var position = 0u;
                 var result = FMOD_Channel_GetPosition(channel, &position, FMOD_TIMEUNIT_MS);
+                if (!ValidateHandle(result))
+                    return TimeSpan.Zero;
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -235,6 +255,9 @@ namespace Ultraviolet.FMOD.Audio
                     throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
                 var result = FMOD_Channel_SetPosition(channel, (UInt32)value.TotalMilliseconds, FMOD_TIMEUNIT_MS);
+                if (!ValidateHandle(result))
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
             }
@@ -245,7 +268,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             get
             {
-                if (channel == null)
+                if (State == PlaybackState.Stopped)
                     return TimeSpan.Zero;
 
                 return duration;
@@ -257,7 +280,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             get
             {
-                return (channel == null) ? 1f : volume;
+                return (State == PlaybackState.Stopped) ? 1f : volume;
             }
             set
             {
@@ -266,6 +289,9 @@ namespace Ultraviolet.FMOD.Audio
 
                 var clamped = MathUtil.Clamp(value, 0f, 1f);
                 var result = FMOD_Channel_SetVolume(channel, clamped);
+                if (!ValidateHandle(result))
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -279,7 +305,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             get
             {
-                return (channel == null) ? 0f : pitch;
+                return (State == PlaybackState.Stopped) ? 0f : pitch;
             }
             set
             {
@@ -288,6 +314,9 @@ namespace Ultraviolet.FMOD.Audio
 
                 var clamped = MathUtil.Clamp(value, -1f, 1f);
                 var result = FMOD_Channel_SetPitch(channel, 1f + clamped);
+                if (!ValidateHandle(result))
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -301,7 +330,7 @@ namespace Ultraviolet.FMOD.Audio
         {
             get
             {
-                return (channel == null) ? 0f : pan;
+                return (State == PlaybackState.Stopped) ? 0f : pan;
             }
             set
             {
@@ -310,6 +339,9 @@ namespace Ultraviolet.FMOD.Audio
 
                 var clamped = MathUtil.Clamp(pan, -1f, 1f);
                 var result = FMOD_Channel_SetPan(channel, clamped);
+                if (!ValidateHandle(result))
+                    throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
+
                 if (result != FMOD_OK)
                     throw new FMODException(result);
 
@@ -328,7 +360,21 @@ namespace Ultraviolet.FMOD.Audio
         }
 
         /// <summary>
-        /// Plays the specified song.
+        /// Checks to see if an FMOD call returned FMOD_ERR_INVALID_HANDLE and, if it did,
+        /// clears out the player's state.
+        /// </summary>
+        private Boolean ValidateHandle(FMOD_RESULT result)
+        {
+            if (result == FMOD_ERR_INVALID_HANDLE)
+            {
+                StopInternal();
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Plays the specified sound.
         /// </summary>
         private Boolean PlayInternal(FMOD_SOUND* sound, FMOD_CHANNELGROUP* channelgroup,
             TimeSpan duration, Single volume, Single pitch, Single pan, TimeSpan? loopStart, TimeSpan? loopLength)
@@ -383,7 +429,21 @@ namespace Ultraviolet.FMOD.Audio
             
             return true;
         }
-        
+
+        /// <summary>
+        /// Stops the channel.
+        /// </summary>
+        private Boolean StopInternal()
+        {
+            channel = null;
+
+            isSlidingVolume = false;
+            isSlidingPitch = false;
+            isSlidingPan = false;
+
+            return true;
+        }
+
         /// <summary>
         /// Updates the player's volume, if its volume is sliding.
         /// </summary>
@@ -398,6 +458,9 @@ namespace Ultraviolet.FMOD.Audio
             var volume = MathUtil.Clamp(Tweening.Lerp(slideStartVolume, slideEndVolume, factor), 0f, 1f);
 
             var result = FMOD_Channel_SetVolume(channel, volume);
+            if (!ValidateHandle(result))
+                return;
+
             if (result != FMOD_OK)
                 throw new FMODException(result);
 
@@ -421,6 +484,9 @@ namespace Ultraviolet.FMOD.Audio
             var pitch = MathUtil.Clamp(Tweening.Lerp(slideStartPitch, slideEndPitch, factor), -1f, 1f);
 
             var result = FMOD_Channel_SetPitch(channel, 1f + pitch);
+            if (!ValidateHandle(result))
+                return;
+
             if (result != FMOD_OK)
                 throw new FMODException(result);
 
@@ -444,6 +510,9 @@ namespace Ultraviolet.FMOD.Audio
             var pan = MathUtil.Clamp(Tweening.Lerp(slideStartPan, slideEndPan, factor), -1f, 1f);
 
             var result = FMOD_Channel_SetPan(channel, pan);
+            if (!ValidateHandle(result))
+                return;
+
             if (result != FMOD_OK)
                 throw new FMODException(result);
 
@@ -451,7 +520,7 @@ namespace Ultraviolet.FMOD.Audio
 
             if (factor == 1f)
                 isSlidingPan = false;
-        }
+        }        
 
         // State values.
         private FMOD_CHANNEL* channel;
