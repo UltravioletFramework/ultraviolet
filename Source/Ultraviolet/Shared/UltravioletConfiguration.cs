@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet
@@ -13,6 +14,8 @@ namespace Ultraviolet
         /// </summary>
         public UltravioletConfiguration()
         {
+            SelectAudioImplementation(AudioImplementation.BASS);
+
             WindowIsVisible = true;
             WindowIsResizable = true;
             InitialWindowPosition = new Rectangle(DefaultWindowPositionX, DefaultWindowPositionY, 
@@ -20,9 +23,48 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Selects which implementation of the Audio subsystem to use.
+        /// </summary>
+        /// <param name="impl">A <see cref="AudioImplementation"/> value corresponding to one of 
+        /// the Ultraviolet Framework's Audio subsystem implementations.</param>
+        public void SelectAudioImplementation(AudioImplementation impl)
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            var asmname = String.Empty;
+            switch (impl)
+            {
+                case AudioImplementation.BASS:
+                    asmname = "Ultraviolet.BASS";
+                    break;
+
+                case AudioImplementation.FMOD:
+                    asmname = "Ultraviolet.FMOD";
+                    break;
+
+                default:
+                    throw new ArgumentException(nameof(impl));
+            }
+
+#if SIGNED
+            AudioSubsystemAssembly = $"{asmname}, Version={version}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
+#else
+            AudioSubsystemAssembly = $"{asmname}, Version={version}, Culture=neutral, processorArchitecture=MSIL";
+#endif
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="RenderTargetUsage"/> value which is used by the back buffer.
         /// </summary>
         public RenderTargetUsage BackBufferRenderTargetUsage
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// Gets or sets the name of the assembly that implements the audio subsystem.
+        /// </summary>
+        public String AudioSubsystemAssembly
         {
             get;
             set;
