@@ -9,13 +9,16 @@ namespace Ultraviolet.Tests.Audio
     public class SongPlayerTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_PlaySetsVolumePitchAndPan()
+        public void SongPlayer_PlaySetsVolumePitchAndPan(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
             var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -28,17 +31,24 @@ namespace Ultraviolet.Tests.Audio
                     TheResultingValue(songPlayer.Pitch).ShouldBe(0.50f);
                     TheResultingValue(songPlayer.Pan).ShouldBe(0.75f);
                 })
+                .OnUpdate((app, time) =>
+                {
+                    songPlayer.Update(time);
+                })
                 .RunForOneFrame();
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified()
+        public void SongPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
             var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -53,17 +63,24 @@ namespace Ultraviolet.Tests.Audio
                     TheResultingValue(songPlayer.Pitch).ShouldBe(0f);
                     TheResultingValue(songPlayer.Pan).ShouldBe(0f);
                 })
+                .OnUpdate((app, time) =>
+                {
+                    songPlayer.Update(time);
+                })
                 .RunForOneFrame();
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_SlidesVolumeCorrectly()
+        public void SongPlayer_SlidesVolumeCorrectly(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
             var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -76,19 +93,26 @@ namespace Ultraviolet.Tests.Audio
 
                     songPlayer.SlideVolume(0f, TimeSpan.FromSeconds(1));
                 })
+                .OnUpdate((app, time) =>
+                {
+                    songPlayer.Update(time);
+                })
                 .RunFor(TimeSpan.FromSeconds(2));
 
             TheResultingValue(songPlayer.Volume).ShouldBe(0f);
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_SlidesPitchCorrectly()
+        public void SongPlayer_SlidesPitchCorrectly(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
             var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -101,19 +125,26 @@ namespace Ultraviolet.Tests.Audio
 
                     songPlayer.SlidePitch(-1f, TimeSpan.FromSeconds(1));
                 })
+                .OnUpdate((app, time) =>
+                {
+                    songPlayer.Update(time);
+                })
                 .RunFor(TimeSpan.FromSeconds(2));
 
             TheResultingValue(songPlayer.Pitch).ShouldBe(-1f);
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_SlidesPanCorrectly()
+        public void SongPlayer_SlidesPanCorrectly(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
             var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -126,45 +157,36 @@ namespace Ultraviolet.Tests.Audio
 
                     songPlayer.SlidePan(-1f, TimeSpan.FromSeconds(1));
                 })
+                .OnUpdate((app, time) =>
+                {
+                    songPlayer.Update(time);
+                })
                 .RunFor(TimeSpan.FromSeconds(2));
 
             TheResultingValue(songPlayer.Pan).ShouldBe(-1f);
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying()
+        public void SongPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
 
             Assert.That(() =>
             {
                 GivenAnUltravioletApplicationWithNoWindow()
+                    .WithAudioImplementation(audioImplementation)
                     .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                     .WithContent(content =>
                     {
                         songPlayer = SongPlayer.Create();
                         songPlayer.Volume = 0f;
                     })
-                    .RunFor(TimeSpan.FromSeconds(1));
-            },
-            Throws.TypeOf<InvalidOperationException>());
-        }
-
-        [Test]
-        [Category("Audio")]
-        public void SongPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying()
-        {
-            var songPlayer = default(SongPlayer);
-
-            Assert.That(() =>
-            {
-                GivenAnUltravioletApplicationWithNoWindow()
-                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                    .WithContent(content =>
+                    .OnUpdate((app, time) =>
                     {
-                        songPlayer = SongPlayer.Create();
-                        songPlayer.Pitch = -1f;
+                        songPlayer.Update(time);
                     })
                     .RunFor(TimeSpan.FromSeconds(1));
             },
@@ -172,19 +194,53 @@ namespace Ultraviolet.Tests.Audio
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void SongPlayer_ThrowsExceptionIfPanSetWhileNotPlaying()
+        public void SongPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
             var songPlayer = default(SongPlayer);
 
             Assert.That(() =>
             {
                 GivenAnUltravioletApplicationWithNoWindow()
+                    .WithAudioImplementation(audioImplementation)
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        songPlayer = SongPlayer.Create();
+                        songPlayer.Pitch = -1f;
+                    })
+                    .OnUpdate((app, time) =>
+                    {
+                        songPlayer.Update(time);
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
+        [Category("Audio")]
+        public void SongPlayer_ThrowsExceptionIfPanSetWhileNotPlaying(AudioImplementation audioImplementation)
+        {
+            var songPlayer = default(SongPlayer);
+
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithAudioImplementation(audioImplementation)
                     .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                     .WithContent(content =>
                     {
                         songPlayer = SongPlayer.Create();
                         songPlayer.Pan = 0f;
+                    })
+                    .OnUpdate((app, time) =>
+                    {
+                        songPlayer.Update(time);
                     })
                     .RunFor(TimeSpan.FromSeconds(1));
             },

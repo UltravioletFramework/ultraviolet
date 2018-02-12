@@ -9,12 +9,15 @@ namespace Ultraviolet.Tests.Audio
     public class SongTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void Song_LoadsTags_FromOggVorbisFile()
+        public void Song_LoadsTags_FromOggVorbisFile(AudioImplementation audioImplementation)
         {
             var song = default(Song);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {

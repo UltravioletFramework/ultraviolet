@@ -16,7 +16,7 @@ namespace Ultraviolet.TestFramework
             /// <param name="actionType">The type of frame action which this structure represents.</param>
             /// <param name="actionIndex">The index of the frame, update, or render on which to perform the action.</param>
             /// <param name="action">The action to perform on the specified frame.</param>
-            public FrameAction(FrameActionType actionType, Int32 actionIndex, Action<IUltravioletTestApplication> action)
+            public FrameAction(FrameActionType actionType, Int32 actionIndex, Delegate action)
             {
                 Contract.Require(action, nameof(action));
 
@@ -38,7 +38,7 @@ namespace Ultraviolet.TestFramework
             /// <summary>
             /// Gets the action to perform on the specified frame.
             /// </summary>
-            public Action<IUltravioletTestApplication> Action { get; }
+            public Delegate Action { get; }
         }
     }
 }
