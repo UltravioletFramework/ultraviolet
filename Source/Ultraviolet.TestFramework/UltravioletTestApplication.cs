@@ -35,9 +35,9 @@ namespace Ultraviolet.TestFramework
         }
 
         /// <inheritdoc/>
-        public IUltravioletTestApplication WithAudioSubsystem(String audioSubsystem)
+        public IUltravioletTestApplication WithAudioImplementation(AudioImplementation audioImplementation)
         {
-            this.audioSubsystem = audioSubsystem;
+            this.audioImplementation = audioImplementation;
             return this;
         }
 
@@ -99,7 +99,18 @@ namespace Ultraviolet.TestFramework
         }
 
         /// <inheritdoc/>
-        public IUltravioletTestApplication OnUpdate(Int32 update, Action<IUltravioletTestApplication> action)
+        public IUltravioletTestApplication OnUpdate(Action<IUltravioletTestApplication, UltravioletTime> action)
+        {
+            if (frameActions == null)
+                frameActions = new List<FrameAction>();
+
+            frameActions.Add(new FrameAction(FrameActionType.Update, -1, action));
+
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletTestApplication OnUpdate(Int32 update, Action<IUltravioletTestApplication, UltravioletTime> action)
         {
             if (frameActions == null)
                 frameActions = new List<FrameAction>();
@@ -110,7 +121,18 @@ namespace Ultraviolet.TestFramework
         }
 
         /// <inheritdoc/>
-        public IUltravioletTestApplication OnRender(Int32 render, Action<IUltravioletTestApplication> action)
+        public IUltravioletTestApplication OnRender(Action<IUltravioletTestApplication, UltravioletTime> action)
+        {
+            if (frameActions == null)
+                frameActions = new List<FrameAction>();
+
+            frameActions.Add(new FrameAction(FrameActionType.Render, -1, action));
+
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletTestApplication OnRender(Int32 render, Action<IUltravioletTestApplication, UltravioletTime> action)
         {
             if (frameActions == null)
                 frameActions = new List<FrameAction>();
@@ -234,8 +256,8 @@ namespace Ultraviolet.TestFramework
                 System.Diagnostics.Debug.WriteLine(message);
             };
 
-            if (!String.IsNullOrEmpty(audioSubsystem))
-                configuration.AudioSubsystemAssembly = audioSubsystem;
+            if (audioImplementation != null)
+                configuration.SelectAudioImplementation(audioImplementation.Value);
 
             if (configureUPF)
                 PresentationFoundation.Configure(configuration);
@@ -297,7 +319,7 @@ namespace Ultraviolet.TestFramework
         /// <inheritdoc/>
         protected override void OnUpdating(UltravioletTime time)
         {
-            RunFrameActions(FrameActionType.Update, updateCount);
+            RunFrameActions(FrameActionType.Update, updateCount, time);
 
             if (framesToSkip == 0)
             {
@@ -315,7 +337,7 @@ namespace Ultraviolet.TestFramework
         /// <inheritdoc/>
         protected override void OnDrawing(UltravioletTime time)
         {
-            RunFrameActions(FrameActionType.Render, renderCount);
+            RunFrameActions(FrameActionType.Render, renderCount, time);
 
             if (framesToSkip == 0)
             {
@@ -374,21 +396,32 @@ namespace Ultraviolet.TestFramework
             if (frameCount == 0)
                 startTime = DateTime.UtcNow;
 
-            RunFrameActions(FrameActionType.FrameStart, frameCount);
+            RunFrameActions(FrameActionType.FrameStart, frameCount, null);
             frameCount++;
         }
 
         /// <summary>
         /// Runs the specified set of frame actions.
         /// </summary>
-        private void RunFrameActions(FrameActionType actionType, Int32 actionIndex)
+        private void RunFrameActions(FrameActionType actionType, Int32 actionIndex, UltravioletTime time)
         {
             if (frameActions == null)
                 return;
 
-            var actions = frameActions.Where(x => x.ActionType == actionType && x.ActionIndex == actionIndex);
+            var actions = frameActions.Where(x => x.ActionType == actionType && (x.ActionIndex < 0 || x.ActionIndex == actionIndex));
             foreach (var action in actions)
-                action.Action(this);
+            {
+                switch (actionType)
+                {
+                    case FrameActionType.FrameStart:
+                        ((Action<IUltravioletTestApplication>)action.Action)(this);
+                        break;
+
+                    default:
+                        ((Action<IUltravioletTestApplication, UltravioletTime>)action.Action)(this, time);
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -429,8 +462,8 @@ namespace Ultraviolet.TestFramework
         // State values.
         private readonly Boolean headless;
         private readonly Boolean serviceMode;
+        private AudioImplementation? audioImplementation;
         private Boolean configureUPF;
-        private String audioSubsystem;
         private Func<Boolean> shouldExit;
         private ContentManager content;
         private Action<UltravioletContext> initializer;

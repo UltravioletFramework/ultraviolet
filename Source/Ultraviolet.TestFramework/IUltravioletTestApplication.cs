@@ -11,11 +11,12 @@ namespace Ultraviolet.TestFramework
     public interface IUltravioletTestApplication : IDisposable
     {
         /// <summary>
-        /// Specifies the application's audio subsystem assembly.
+        /// Specifies the application's Audio subsystem implementation.
         /// </summary>
-        /// <param name="audioSubsystem">The fully-qualified name of the application's audio subsystem assembly.</param>
+        /// <param name="impl">A <see cref="AudioImplementation"/> value corresponding to one of 
+        /// the Ultraviolet Framework's Audio subsystem implementations.</param>
         /// <returns>The Ultraviolet test application.</returns>
-        IUltravioletTestApplication WithAudioSubsystem(String audioSubsystem);
+        IUltravioletTestApplication WithAudioImplementation(AudioImplementation audioImplementation);
 
         /// <summary>
         /// Specifies that the application should configure the Presentation Foundation.
@@ -53,12 +54,26 @@ namespace Ultraviolet.TestFramework
         IUltravioletTestApplication OnFrameStart(Int32 frame, Action<IUltravioletTestApplication> action);
 
         /// <summary>
+        /// Registers an action to be performed at the start of every update.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication OnUpdate(Action<IUltravioletTestApplication, UltravioletTime> action);
+
+        /// <summary>
         /// Registers an action to be performed at the start of the specified update.
         /// </summary>
         /// <param name="update">The index of the update in which to perform the action.</param>
         /// <param name="action">The action to perform on the specified update.</param>
         /// <returns>The Ultraviolet test application.</returns>
-        IUltravioletTestApplication OnUpdate(Int32 update, Action<IUltravioletTestApplication> action);
+        IUltravioletTestApplication OnUpdate(Int32 update, Action<IUltravioletTestApplication, UltravioletTime> action);
+
+        /// <summary>
+        /// Registers an action to be performed at the start of every render.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication OnRender(Action<IUltravioletTestApplication, UltravioletTime> action);
 
         /// <summary>
         /// Registers an action to be performed at the start of the specified render.
@@ -66,7 +81,7 @@ namespace Ultraviolet.TestFramework
         /// <param name="render">The index of the render in which to perform the action.</param>
         /// <param name="action">The action to perform on the specified render.</param>
         /// <returns>The Ultraviolet test application.</returns>
-        IUltravioletTestApplication OnRender(Int32 render, Action<IUltravioletTestApplication> action);
+        IUltravioletTestApplication OnRender(Int32 render, Action<IUltravioletTestApplication, UltravioletTime> action);
 
         /// <summary>
         /// Skips the specified number of frames prior to rendering the tested scene.

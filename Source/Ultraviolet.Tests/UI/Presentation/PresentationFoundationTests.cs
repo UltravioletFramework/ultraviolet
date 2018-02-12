@@ -30,8 +30,8 @@ namespace Ultraviolet.Tests.UI.Presentation
                         TransformChanged = false
                     };
                 })
-                .OnUpdate(0, app => { ((RotateTransform)dobj.Transform).Angle = 100; })
-                .OnUpdate(1, app => { dobj.Digest(new UltravioletTime(TimeSpan.FromMilliseconds(16), TimeSpan.FromMilliseconds(16))); })
+                .OnUpdate(0, (app, time) => { ((RotateTransform)dobj.Transform).Angle = 100; })
+                .OnUpdate(1, (app, time) => { dobj.Digest(new UltravioletTime(TimeSpan.FromMilliseconds(16), TimeSpan.FromMilliseconds(16))); })
                 .RunUntil(() => PresentationFoundation.Instance.DigestCycleID == 3);
 
             TheResultingValue(dobj.TransformChanged).ShouldBe(true);

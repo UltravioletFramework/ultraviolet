@@ -9,13 +9,16 @@ namespace Ultraviolet.Tests.Audio
     public class SoundEffectPlayerTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_PlaySetsVolumePitchAndPan()
+        public void SoundEffectPlayer_PlaySetsVolumePitchAndPan(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
             var sfx       = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -28,17 +31,24 @@ namespace Ultraviolet.Tests.Audio
                     TheResultingValue(sfxPlayer.Pitch).ShouldBe(0.50f);
                     TheResultingValue(sfxPlayer.Pan).ShouldBe(0.75f);
                 })
+                .OnUpdate((app, time) =>
+                {
+                    sfxPlayer.Update(time);
+                })
                 .RunForOneFrame();
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified()
+        public void SoundEffectPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
             var sfx       = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -53,17 +63,24 @@ namespace Ultraviolet.Tests.Audio
                     TheResultingValue(sfxPlayer.Pitch).ShouldBe(0f);
                     TheResultingValue(sfxPlayer.Pan).ShouldBe(0f);
                 })
+                .OnUpdate((app, time) =>
+                {
+                    sfxPlayer.Update(time);
+                })
                 .RunForOneFrame();
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_SlidesVolumeCorrectly()
+        public void SoundEffectPlayer_SlidesVolumeCorrectly(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
             var sfx       = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -76,19 +93,26 @@ namespace Ultraviolet.Tests.Audio
 
                     sfxPlayer.SlideVolume(0f, TimeSpan.FromSeconds(1));
                 })
+                .OnUpdate((app, time) =>
+                {
+                    sfxPlayer.Update(time);
+                })
                 .RunFor(TimeSpan.FromSeconds(2));
 
             TheResultingValue(sfxPlayer.Volume).ShouldBe(0f);
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_SlidesPitchCorrectly()
+        public void SoundEffectPlayer_SlidesPitchCorrectly(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
             var sfx       = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -101,19 +125,26 @@ namespace Ultraviolet.Tests.Audio
 
                     sfxPlayer.SlidePitch(-1f, TimeSpan.FromSeconds(1));
                 })
+                .OnUpdate((app, time) =>
+                {
+                    sfxPlayer.Update(time);
+                })
                 .RunFor(TimeSpan.FromSeconds(2));
 
             TheResultingValue(sfxPlayer.Pitch).ShouldBe(-1f);
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_SlidesPanCorrectly()
+        public void SoundEffectPlayer_SlidesPanCorrectly(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
             var sfx       = default(SoundEffect);
 
             GivenAnUltravioletApplicationWithNoWindow()
+                .WithAudioImplementation(audioImplementation)
                 .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                 .WithContent(content =>
                 {
@@ -126,45 +157,36 @@ namespace Ultraviolet.Tests.Audio
 
                     sfxPlayer.SlidePan(-1f, TimeSpan.FromSeconds(1));
                 })
+                .OnUpdate((app, time) =>
+                {
+                    sfxPlayer.Update(time);
+                })
                 .RunFor(TimeSpan.FromSeconds(2));
 
             TheResultingValue(sfxPlayer.Pan).ShouldBe(-1f);
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying()
+        public void SoundEffectPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
 
             Assert.That(() =>
             {
                 GivenAnUltravioletApplicationWithNoWindow()
+                    .WithAudioImplementation(audioImplementation)
                     .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                     .WithContent(content =>
                     {
                         sfxPlayer = SoundEffectPlayer.Create();
                         sfxPlayer.Volume = 0f;
                     })
-                    .RunFor(TimeSpan.FromSeconds(1));
-            },
-            Throws.TypeOf<InvalidOperationException>());
-        }
-
-        [Test]
-        [Category("Audio")]
-        public void BASS_SoundEffectPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying()
-        {
-            var sfxPlayer = default(SoundEffectPlayer);
-
-            Assert.That(() =>
-            {
-                GivenAnUltravioletApplicationWithNoWindow()
-                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
-                    .WithContent(content =>
+                    .OnUpdate((app, time) =>
                     {
-                        sfxPlayer = SoundEffectPlayer.Create();
-                        sfxPlayer.Pitch = -1f;
+                        sfxPlayer.Update(time);
                     })
                     .RunFor(TimeSpan.FromSeconds(1));
             },
@@ -172,19 +194,53 @@ namespace Ultraviolet.Tests.Audio
         }
 
         [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
-        public void BASS_SoundEffectPlayer_ThrowsExceptionIfPanSetWhileNotPlaying()
+        public void SoundEffectPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
             var sfxPlayer = default(SoundEffectPlayer);
 
             Assert.That(() =>
             {
                 GivenAnUltravioletApplicationWithNoWindow()
+                    .WithAudioImplementation(audioImplementation)
+                    .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
+                    .WithContent(content =>
+                    {
+                        sfxPlayer = SoundEffectPlayer.Create();
+                        sfxPlayer.Pitch = -1f;
+                    })
+                    .OnUpdate((app, time) =>
+                    {
+                        sfxPlayer.Update(time);
+                    })
+                    .RunFor(TimeSpan.FromSeconds(1));
+            },
+            Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
+        [TestCase(AudioImplementation.BASS)]
+        [TestCase(AudioImplementation.FMOD)]
+        [Category("Audio")]
+        public void SoundEffectPlayer_ThrowsExceptionIfPanSetWhileNotPlaying(AudioImplementation audioImplementation)
+        {
+            var sfxPlayer = default(SoundEffectPlayer);
+
+            Assert.That(() =>
+            {
+                GivenAnUltravioletApplicationWithNoWindow()
+                    .WithAudioImplementation(audioImplementation)
                     .WithInitialization(uv => uv.GetAudio().AudioMuted = true)
                     .WithContent(content =>
                     {
                         sfxPlayer = SoundEffectPlayer.Create();
                         sfxPlayer.Pan = 0f;
+                    })
+                    .OnUpdate((app, time) =>
+                    {
+                        sfxPlayer.Update(time);
                     })
                     .RunFor(TimeSpan.FromSeconds(1));
             },
