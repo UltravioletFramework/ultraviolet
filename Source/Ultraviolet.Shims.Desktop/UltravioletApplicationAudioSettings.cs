@@ -21,6 +21,7 @@ namespace Ultraviolet
             Contract.Require(settings, nameof(settings));
 
             return new XElement("Audio",
+                new XElement(nameof(PlaybackDeviceName), settings.PlaybackDeviceName),
                 new XElement(nameof(AudioMasterVolume), settings.AudioMasterVolume),
                 new XElement(nameof(AudioMuted), settings.AudioMuted),
                 new XElement(nameof(SongsMasterVolume), settings.SongsMasterVolume),
@@ -45,6 +46,7 @@ namespace Ultraviolet
             {
                 var settings = new UltravioletApplicationAudioSettings();
 
+                settings.PlaybackDeviceName = xml.ElementValue<String>(nameof(PlaybackDeviceName));
                 settings.AudioMasterVolume = xml.ElementValue<Single>(nameof(AudioMasterVolume));
                 settings.AudioMuted = xml.ElementValue<Boolean>(nameof(AudioMuted));
                 settings.SongsMasterVolume = xml.ElementValue<Single>(nameof(SongsMasterVolume));
@@ -80,6 +82,7 @@ namespace Ultraviolet
             var audio = uv.GetAudio();
             var settings = new UltravioletApplicationAudioSettings();
 
+            settings.PlaybackDeviceName = audio.PlaybackDevice?.Name;
             settings.AudioMasterVolume = audio.AudioMasterVolume;
             settings.AudioMuted = audio.AudioMuted;
             settings.SongsMasterVolume = audio.SongsMasterVolume;
@@ -100,12 +103,22 @@ namespace Ultraviolet
 
             var audio = uv.GetAudio();
 
+            audio.PlaybackDevice = String.IsNullOrEmpty(PlaybackDeviceName) ? null : audio.FindAudioDeviceByName(PlaybackDeviceName);
             audio.AudioMasterVolume = AudioMasterVolume;
             audio.AudioMuted = AudioMuted;
             audio.SongsMasterVolume = SongsMasterVolume;
             audio.SongsMuted = SongsMuted;
             audio.SoundEffectsMasterVolume = SoundEffectsMasterVolume;
             audio.SoundEffectsMuted = SoundEffectsMuted;
+        }
+
+        /// <summary>
+        /// Gets the name of the selected playback device.
+        /// </summary>
+        public String PlaybackDeviceName
+        {
+            get;
+            private set;
         }
 
         /// <summary>
