@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Ultraviolet.Audio;
 
 namespace Ultraviolet
 {
@@ -7,6 +9,12 @@ namespace Ultraviolet
     /// </summary>
     public interface IUltravioletAudio : IUltravioletSubsystem
     {
+        /// <summary>
+        /// Produces an enumeration of the system's currently installed audio devices.
+        /// </summary>
+        /// <returns>A collection which contains the system's currently installed audio devices.</returns>
+        IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices();
+
         /// <summary>
         /// Suspends all audio output.
         /// </summary>

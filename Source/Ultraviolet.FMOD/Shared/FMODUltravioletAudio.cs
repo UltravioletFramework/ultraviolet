@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using Ultraviolet.Audio;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
+using Ultraviolet.FMOD.Audio;
 using Ultraviolet.FMOD.Native;
 using static Ultraviolet.FMOD.Native.FMOD_INITFLAGS;
 using static Ultraviolet.FMOD.Native.FMOD_RESULT;
@@ -87,10 +91,13 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Updates the subsystem's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
+        public IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices()
+        {
+            return new IUltravioletAudioDevice[0];
+        }
+
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -101,12 +108,12 @@ namespace Ultraviolet.FMOD
             if (result != FMOD_OK)
                 throw new FMODException(result);
 
+            UpdateAudioDevices();
+
             Updating?.Invoke(this, time);
         }
 
-        /// <summary>
-        /// Suspends all audio output.
-        /// </summary>
+        /// <inheritdoc/>
         public void Suspend()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -120,9 +127,7 @@ namespace Ultraviolet.FMOD
             suspended = true;
         }
 
-        /// <summary>
-        /// Resumes audio output after a call to <see cref="Suspend"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Resume()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -136,9 +141,7 @@ namespace Ultraviolet.FMOD
             suspended = false;
         }
 
-        /// <summary>
-        /// Gets or sets the master volume for all audio output.
-        /// </summary>
+        /// <inheritdoc/>
         public Single AudioMasterVolume
         {
             get
@@ -162,9 +165,7 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Gets or sets the master volume for songs.
-        /// </summary>
+        /// <inheritdoc/>
         public Single SongsMasterVolume
         {
             get
@@ -187,9 +188,7 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Gets or sets the master volume for sound effects.
-        /// </summary>
+        /// <inheritdoc/>
         public Single SoundEffectsMasterVolume
         {
             get
@@ -212,9 +211,7 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether all audio output is globally muted.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean AudioMuted
         {
             get
@@ -237,9 +234,7 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether songs are globally muted.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean SongsMuted
         {
             get
@@ -261,9 +256,7 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether sound effects are globally muted.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean SoundEffectsMuted
         {
             get
@@ -285,9 +278,7 @@ namespace Ultraviolet.FMOD
             }
         }
 
-        /// <summary>
-        /// Occurs when the subsystem is updating its state.
-        /// </summary>
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
         /// <summary>
@@ -305,10 +296,7 @@ namespace Ultraviolet.FMOD
         /// </summary>
         internal FMOD_CHANNELGROUP* ChannelGroupSoundEffects => cgroupSoundEffects;
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             var result = default(FMOD_RESULT);
@@ -357,6 +345,43 @@ namespace Ultraviolet.FMOD
                 throw new FMODException(result);
         }
 
+        /// <summary>
+        /// Updates the list of audio devices.
+        /// </summary>
+        private void UpdateAudioDevices()
+        {
+            var result = default(FMOD_RESULT);
+
+            var numdrivers = 0;
+            result = FMOD_System_GetNumDrivers(system, &numdrivers);
+            if (result != FMOD_OK)
+                throw new FMODException(result);
+
+            if (numdrivers != knownAudioDevices.Count)
+            {
+                foreach (var device in knownAudioDevices)
+                    device.IsValid = false;
+
+                knownAudioDevices.Clear();
+
+                var namebuf = new StringBuilder(256);
+                var namelen = namebuf.Capacity;
+
+                for (int i = 0; i < numdrivers; i++)
+                {
+                    result = FMOD_System_GetDriverInfo(system, i, namebuf, namelen, null, null, null, null);
+                    if (result != FMOD_OK)
+                        throw new FMODException(result);
+
+                    var device = new FMODUltravioletAudioDevice(namebuf.ToString());
+                    device.IsValid = true;
+                    device.IsDefault = (i == 0);
+
+                    knownAudioDevices.Add(device);
+                }
+            }
+        }
+
         // FMOD state variables.
         private readonly FMOD_SYSTEM* system;
         private readonly FMOD_CHANNELGROUP* cgroupSongs;
@@ -373,5 +398,9 @@ namespace Ultraviolet.FMOD
         // State values.
         private Boolean suspended;
         private Boolean awaitingResume;
+
+        // Audio device cache.
+        private List<FMODUltravioletAudioDevice> knownAudioDevices =
+            new List<FMODUltravioletAudioDevice>();
     }
 }

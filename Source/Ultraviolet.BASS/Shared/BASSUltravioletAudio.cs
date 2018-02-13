@@ -2,13 +2,16 @@
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
+using System.Collections.Generic;
+using Ultraviolet.Audio;
+using Ultraviolet.BASS.Audio;
 
 namespace Ultraviolet.BASS
 {
     /// <summary>
     /// Represents the BASS implementation of the Ultraviolet audio subsystem.
     /// </summary>
-    public sealed class BASSUltravioletAudio : UltravioletResource,
+    public sealed unsafe class BASSUltravioletAudio : UltravioletResource,
         IUltravioletAudio,
         IMessageSubscriber<UltravioletMessageID>
     {
@@ -20,10 +23,18 @@ namespace Ultraviolet.BASS
         public BASSUltravioletAudio(UltravioletContext uv)
             : base(uv)
         {
+            if (uv.Platform == UltravioletPlatform.Windows || uv.Platform == UltravioletPlatform.macOS)
+            {
+                if (!BASSNative.SetConfig(BASSConfig.CONFIG_DEV_DEFAULT, 1))
+                    throw new BASSException();
+            }
+
             var device = -1;
             var freq = 44100u;
             if (!BASSNative.Init(device, freq, 0, IntPtr.Zero, IntPtr.Zero))
                 throw new BASSException();
+
+            UpdateAudioDevices();
 
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
@@ -53,20 +64,25 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Updates the subsystem's state.
-        /// </summary>
-        /// <param name="time">Time elapsed since the last call to Update.</param>
+        /// <inheritdoc/>
+        public IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return knownAudioDevices;
+        }
+
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            UpdateAudioDevices();
+
             OnUpdating(time);
         }
 
-        /// <summary>
-        /// Suspends all audio output.
-        /// </summary>
+        /// <inheritdoc/>
         public void Suspend()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -77,9 +93,7 @@ namespace Ultraviolet.BASS
             suspended = true;
         }
 
-        /// <summary>
-        /// Resumes audio output after a call to <see cref="Suspend"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Resume()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -90,9 +104,7 @@ namespace Ultraviolet.BASS
             suspended = false;
         }
 
-        /// <summary>
-        /// Gets or sets the master volume for all audio output.
-        /// </summary>
+        /// <inheritdoc/>
         public Single AudioMasterVolume 
         { 
             get
@@ -116,9 +128,7 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Gets or sets the master volume for songs.
-        /// </summary>
+        /// <inheritdoc/>
         public Single SongsMasterVolume
         {
             get
@@ -141,9 +151,7 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Gets or sets the master volume for sound effects.
-        /// </summary>
+        /// <inheritdoc/>
         public Single SoundEffectsMasterVolume
         {
             get
@@ -166,9 +174,7 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether all audio output is globally muted.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean AudioMuted 
         {
             get
@@ -191,9 +197,7 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether songs are globally muted.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean SongsMuted
         {
             get
@@ -215,9 +219,7 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether sound effects are globally muted.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean SoundEffectsMuted
         {
             get
@@ -239,15 +241,10 @@ namespace Ultraviolet.BASS
             }
         }
 
-        /// <summary>
-        /// Occurs when the subsystem is updating its state.
-        /// </summary>
+        /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
 
-        /// <summary>
-        /// Releases resources associated with the object.
-        /// </summary>
-        /// <param name="disposing">true if the object is being disposed; false if the object is being finalized.</param>
+        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (!BASSNative.Free())
@@ -288,6 +285,30 @@ namespace Ultraviolet.BASS
                 throw new BASSException();
         }
 
+        /// <summary>
+        /// Updates the list of audio devices.
+        /// </summary>
+        private void UpdateAudioDevices()
+        {
+            BASS_DEVICEINFO info;
+            for (int i = 1; BASSNative.GetDeviceInfo((uint)i, &info); i++)
+            {
+                var isEnabled = (info.flags & BASSNative.BASS_DEVICE_ENABLED) == BASSNative.BASS_DEVICE_ENABLED;
+                var isDefault = (info.flags & BASSNative.BASS_DEVICE_DEFAULT) == BASSNative.BASS_DEVICE_DEFAULT;
+
+                var ix = (i - 1);
+                if (ix >= knownAudioDevices.Count)
+                {
+                    var marshalledInfo = info.ToMarshalledStruct();
+                    knownAudioDevices.Add(new BASSUltravioletAudioDevice(marshalledInfo.name));
+                }
+
+                var device = knownAudioDevices[ix];
+                device.IsValid = isEnabled;
+                device.IsDefault = isDefault;
+            }
+        }
+
         // Property values.
         private Single audioMasterVolume = 1.0f;
         private Single songsMasterVolume = 1.0f;
@@ -299,5 +320,9 @@ namespace Ultraviolet.BASS
         // State values.
         private Boolean suspended;
         private Boolean awaitingResume;
+
+        // Audio device cache.
+        private List<BASSUltravioletAudioDevice> knownAudioDevices = 
+            new List<BASSUltravioletAudioDevice>();
     }
 }

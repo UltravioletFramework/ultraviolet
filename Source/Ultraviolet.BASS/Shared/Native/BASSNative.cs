@@ -112,6 +112,11 @@ namespace Ultraviolet.BASS.Native
         public const UInt32 BASS_TAG_MUSIC_INST = 0x10100;
         public const UInt32 BASS_TAG_MUSIC_SAMPLE = 0x10300;
 
+        public const UInt32 BASS_DEVICE_ENABLED = 1;
+        public const UInt32 BASS_DEVICE_DEFAULT = 2;
+        public const UInt32 BASS_DEVICE_INIT = 4;
+        public const UInt32 BASS_DEVICE_LOOPBACK = 8;
+
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_ErrorGetCode", CallingConvention = CallingConvention.StdCall)]
         public static extern Int32 ErrorGetCode();
@@ -602,6 +607,17 @@ namespace Ultraviolet.BASS.Native
         private delegate Boolean BASS_StartDelegate();
         private static readonly BASS_StartDelegate pBASS_Start = lib.LoadFunction<BASS_StartDelegate>("BASS_Start");
         public static Boolean Start() => pBASS_Start();
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="BASS_GetDeviceInfo", CallingConvention = CallingConvention.StdCall)]
+        public static extern Boolean GetDeviceInfo(UInt32 device, BASS_DEVICEINFO* info);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate Boolean BASS_GetDeviceInfoDelegate(UInt32 device, BASS_DEVICEINFO* info);
+        private static readonly BASS_GetDeviceInfoDelegate pBASS_GetDeviceInfo = lib.LoadFunction<BASS_GetDeviceInfoDelegate>("BASS_GetDeviceInfo");
+        public static Boolean GetDeviceInfo(UInt32 device, BASS_DEVICEINFO* info) => pBASS_GetDeviceInfo(device, info);
 #endif
     }
 }
