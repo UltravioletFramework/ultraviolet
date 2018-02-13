@@ -5,7 +5,7 @@ using Ultraviolet.Core;
 namespace Ultraviolet.FMOD.Native
 {
 #pragma warning disable 1591
-    [Preserve]
+    [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct FMOD_CREATESOUNDEXINFO
     {
