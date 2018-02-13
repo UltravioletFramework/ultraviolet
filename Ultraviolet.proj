@@ -167,6 +167,9 @@
     <CreateItem Include="Source/Ultraviolet.BASS/Desktop/bin/$(Configuration)/Ultraviolet.BASS.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_Desktop"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FMOD/Desktop/bin/$(Configuration)/Ultraviolet.FMOD.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_Desktop"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.OpenGL/Desktop/bin/$(Configuration)/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Desktop"/>
     </CreateItem>
@@ -203,6 +206,7 @@
     <Copy SourceFiles="@(Ultraviolet_Shims_Desktop)" DestinationFiles="@(Ultraviolet_Shims_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_Desktop)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_BASS_Desktop)" DestinationFiles="@(Ultraviolet_BASS_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FMOD_Desktop)" DestinationFiles="@(Ultraviolet_FMOD_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_Desktop)" DestinationFiles="@(Ultraviolet_SDL2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -241,6 +245,9 @@
     <CreateItem Include="Source/Ultraviolet.BASS/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.BASS.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_NETStandard"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FMOD/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.FMOD.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_NETStandard"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.OpenGL/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_NETStandard"/>
     </CreateItem>
@@ -265,6 +272,7 @@
     <Copy SourceFiles="@(Ultraviolet_Shims_NETCore)" DestinationFiles="@(Ultraviolet_Shims_NETCore->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_NETStandard)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_BASS_NETStandard)" DestinationFiles="@(Ultraviolet_BASS_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FMOD_NETStandard)" DestinationFiles="@(Ultraviolet_FMOD_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_NETStandard)" DestinationFiles="@(Ultraviolet_OpenGL_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_NETStandard)" DestinationFiles="@(Ultraviolet_SDL2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
