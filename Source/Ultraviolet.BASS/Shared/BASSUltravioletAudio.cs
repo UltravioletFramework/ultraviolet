@@ -1,10 +1,10 @@
 ﻿using System;
-using Ultraviolet.BASS.Native;
-using Ultraviolet.Core;
-using Ultraviolet.Core.Messages;
 using System.Collections.Generic;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Audio;
+using Ultraviolet.BASS.Native;
+using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS
@@ -37,6 +37,7 @@ namespace Ultraviolet.BASS
                 throw new BASSException();
 
             UpdateAudioDevices();
+            PlaybackDevice = GetDefaultDevice();
 
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
@@ -75,6 +76,21 @@ namespace Ultraviolet.BASS
         }
 
         /// <inheritdoc/>
+        public IUltravioletAudioDevice FindAudioDeviceByName(String name)
+        {
+            Contract.Require(name, nameof(name));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            foreach (var device in knownAudioDevices)
+            {
+                if (device.IsValid && String.Equals(name, device.Name, StringComparison.Ordinal))
+                    return device;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -104,6 +120,43 @@ namespace Ultraviolet.BASS
                 throw new BASSException();
 
             suspended = false;
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletAudioDevice PlaybackDevice
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return playbackDevice;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                var val = value ?? GetDefaultDevice();
+                if (val == null)
+                {
+                    if (!BASS_SetDevice(0))
+                        throw new BASSException();
+
+                    playbackDevice = null;
+                }
+                else
+                {
+                    if (value is BASSUltravioletAudioDevice device)
+                    {
+                        Ultraviolet.ValidateResource(device);
+
+                        if (!BASS_SetDevice(device.ID))
+                            throw new BASSException();
+
+                        playbackDevice = device;
+                    }
+                    else throw new ArgumentException(nameof(value));
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -302,13 +355,29 @@ namespace Ultraviolet.BASS
                 if (ix >= knownAudioDevices.Count)
                 {
                     var marshalledInfo = info.ToMarshalledStruct();
-                    knownAudioDevices.Add(new BASSUltravioletAudioDevice(marshalledInfo.name));
+                    knownAudioDevices.Add(new BASSUltravioletAudioDevice(Ultraviolet, (uint)i, marshalledInfo.name));
                 }
 
                 var device = knownAudioDevices[ix];
                 device.IsValid = isEnabled;
                 device.IsDefault = isDefault;
             }
+
+            if (playbackDevice != null && !playbackDevice.IsValid)
+                this.PlaybackDevice = GetDefaultDevice();
+        }
+
+        /// <summary>
+        /// Gets the default audio device.
+        /// </summary>
+        private BASSUltravioletAudioDevice GetDefaultDevice()
+        {
+            foreach (var device in knownAudioDevices)
+            {
+                if (device.IsValid && device.IsDefault)
+                    return device;
+            }
+            return null;
         }
 
         // Property values.
@@ -324,6 +393,7 @@ namespace Ultraviolet.BASS
         private Boolean awaitingResume;
 
         // Audio device cache.
+        private IUltravioletAudioDevice playbackDevice;
         private List<BASSUltravioletAudioDevice> knownAudioDevices = 
             new List<BASSUltravioletAudioDevice>();
     }
