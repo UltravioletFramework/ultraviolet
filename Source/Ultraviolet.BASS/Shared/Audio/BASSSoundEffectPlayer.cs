@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
+using static Ultraviolet.BASS.Native.BASSFXNative;
+using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
-    /// Represents the BASS implementation of the SoundEffectPlayer class.
+    /// Represents the BASS implementation of the <see cref="SoundEffectPlayer"/> class.
     /// </summary>
     public sealed class BASSSoundEffectPlayer : SoundEffectPlayer
     {
         /// <summary>
-        /// Initializes a new instance of the BASSSoundEffectPlayer class.
+        /// Initializes a new instance of the <see cref="BASSSoundEffectPlayer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public BASSSoundEffectPlayer(UltravioletContext uv)
@@ -47,26 +48,21 @@ namespace Ultraviolet.BASS.Audio
         public override void Stop()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-            
-            if (State != PlaybackState.Stopped)
-            {
-                if (!BASSNative.ChannelStop(channel))
-                    throw new BASSException();
-            }
 
-            Release();
+            if (BASSUtil.IsValidHandle(channel) && !BASS_ChannelStop(channel))
+                throw new BASSException();
+
+            StopInternal();
         }
 
         /// <inheritdoc/>
         public override void Pause()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            EnsureChannelIsValid();
-
+            
             if (State == PlaybackState.Playing)
             {
-                if (!BASSNative.ChannelPause(channel))
+                if (!BASS_ChannelPause(channel))
                     throw new BASSException();
             }
         }
@@ -75,12 +71,10 @@ namespace Ultraviolet.BASS.Audio
         public override void Resume()
         {
             Contract.EnsureNotDisposed(this, Disposed);
-
-            EnsureChannelIsValid();
-
+            
             if (State == PlaybackState.Paused)
             {
-                if (!BASSNative.ChannelPlay(channel, false))
+                if (!BASS_ChannelPlay(channel, false))
                     throw new BASSException();
             }
         }
@@ -90,7 +84,8 @@ namespace Ultraviolet.BASS.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            EnsureChannelIsValid();
+            if (State == PlaybackState.Stopped)
+                throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
             BASSUtil.SlideVolume(channel, volume, time);
         }
@@ -100,7 +95,8 @@ namespace Ultraviolet.BASS.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            EnsureChannelIsValid();
+            if (State == PlaybackState.Stopped)
+                throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
             PromoteToStream(0f);
             BASSUtil.SlidePitch(channel, pitch, time);
@@ -111,7 +107,8 @@ namespace Ultraviolet.BASS.Audio
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            EnsureChannelIsValid();
+            if (State == PlaybackState.Stopped)
+                throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
             BASSUtil.SlidePan(channel, pan, time);
         }
@@ -125,18 +122,18 @@ namespace Ultraviolet.BASS.Audio
 
                 if (BASSUtil.IsValidHandle(channel))
                 {
-                    switch (BASSNative.ChannelIsActive(channel))
+                    switch (BASS_ChannelIsActive(channel))
                     {
-                        case BASSNative.BASS_ACTIVE_STALLED:
+                        case BASS_ACTIVE_STALLED:
                             return PlaybackState.Playing;
 
-                        case BASSNative.BASS_ACTIVE_PLAYING:
+                        case BASS_ACTIVE_PLAYING:
                             return PlaybackState.Playing;
 
-                        case BASSNative.BASS_ACTIVE_STOPPED:
+                        case BASS_ACTIVE_STOPPED:
                             return PlaybackState.Stopped;
 
-                        case BASSNative.BASS_ACTIVE_PAUSED:
+                        case BASS_ACTIVE_PAUSED:
                             return PlaybackState.Stopped;
                     }
                 }
@@ -163,7 +160,7 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (!IsChannelValid())
+                if (!ValidateHandle())
                     return false;
 
                 return BASSUtil.GetIsLooping(channel);
@@ -172,21 +169,21 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                EnsureChannelIsValid();
+                if (State == PlaybackState.Stopped)
+                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
                 BASSUtil.SetIsLooping(channel, value);
             }
         }
 
         /// <inheritdoc/>
-        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public override TimeSpan Position
         {
             get
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (!IsChannelValid())
+                if (!ValidateHandle())
                     return TimeSpan.Zero;
 
                 if (!BASSUtil.IsValidHandle(stream))
@@ -196,7 +193,7 @@ namespace Ultraviolet.BASS.Audio
                 }
                 else
                 {
-                    var position = BASSNative.ChannelBytes2Seconds(channel, (ulong)sampleDataPosition);
+                    var position = BASS_ChannelBytes2Seconds(channel, (ulong)sampleDataPosition);
                     if (position < 0)
                         throw new BASSException();
 
@@ -207,22 +204,23 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                EnsureChannelIsValid();
+                if (State == PlaybackState.Stopped)
+                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
                 if (value.TotalSeconds < 0 || value > Duration)
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
 
-                if (!BASSUtil.IsValidHandle(stream))
+                if (BASSUtil.IsValidHandle(stream))
                 {
-                    BASSUtil.SetPositionInSeconds(channel, value.TotalSeconds);
-                }
-                else
-                {
-                    var position = BASSNative.ChannelSeconds2Bytes(channel, value.TotalSeconds);
+                    var position = BASS_ChannelSeconds2Bytes(channel, value.TotalSeconds);
                     if (!BASSUtil.IsValidValue(position))
                         throw new BASSException();
 
                     sampleDataPosition = (int)position;
+                }
+                else
+                {
+                    BASSUtil.SetPositionInSeconds(channel, value.TotalSeconds);
                 }
             }
         }
@@ -234,7 +232,7 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (!IsChannelValid())
+                if (!ValidateHandle())
                     return TimeSpan.Zero;
 
                 var duration = BASSUtil.GetDurationInSeconds(channel);
@@ -249,7 +247,7 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (!IsChannelValid())
+                if (!ValidateHandle())
                     return 1f;
 
                 return BASSUtil.GetVolume(channel);
@@ -258,7 +256,8 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                EnsureChannelIsValid();
+                if (State == PlaybackState.Stopped)
+                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
                 BASSUtil.SetVolume(channel, MathUtil.Clamp(value, 0f, 1f));
             }
@@ -271,7 +270,7 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (!IsChannelValid() || !promoted)
+                if (!ValidateHandle() || !promoted)
                     return 0f;
 
                 return BASSUtil.GetPitch(channel);
@@ -280,7 +279,8 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                EnsureChannelIsValid();
+                if (State == PlaybackState.Stopped)
+                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid); ;
 
                 var pitch = MathUtil.Clamp(value, -1f, 1f);
                 if (!PromoteToStream(pitch))
@@ -297,7 +297,7 @@ namespace Ultraviolet.BASS.Audio
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                if (!IsChannelValid())
+                if (!ValidateHandle())
                     return 0f;
 
                 return BASSUtil.GetPan(channel);
@@ -305,8 +305,9 @@ namespace Ultraviolet.BASS.Audio
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
-
-                EnsureChannelIsValid();
+                
+                if (State == PlaybackState.Stopped)
+                    throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
                 BASSUtil.SetPitch(channel, MathUtil.Clamp(value, -1f, 1f));
             }
@@ -316,57 +317,20 @@ namespace Ultraviolet.BASS.Audio
         protected override void Dispose(Boolean disposing)
         {
             if (Ultraviolet != null && !Ultraviolet.Disposed)
-                Release();
+                StopInternal();
 
             base.Dispose(disposing);
         }
-
-        /// <summary>
-        /// Releases any BASS resources being held by the player.
-        /// </summary>
-        private void Release()
-        {
-            if (stream != 0)
-            {
-                if (!BASSNative.StreamFree(stream))
-                    throw new BASSException();
-
-                stream = 0;
-            }
-
-            if (sample != 0)
-            {
-                if (!BASSNative.SampleFree(sample))
-                    throw new BASSException();
-
-                sample = 0;
-            }
-
-            channel = 0;
-            promoted = false;
-            playing = null;
-        }
-
-        /// <summary>
-        /// Throws an <see cref="System.InvalidOperationException"/> if the channel is not in a valid state.
-        /// </summary>
-        private void EnsureChannelIsValid()
-        {
-            if (State == PlaybackState.Stopped)
-            {
-                throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
-            }
-        }
-
+        
         /// <summary>
         /// Gets a value indicating whether the channel is in a valid state.
         /// </summary>
         /// <returns>true if the channel is in a valid state; otherwise, false.</returns>
-        private Boolean IsChannelValid()
+        private Boolean ValidateHandle()
         {
             if (playing != null && playing.Disposed)
             {
-                Release();
+                StopInternal();
             }
             return State != PlaybackState.Stopped;
         }
@@ -384,14 +348,14 @@ namespace Ultraviolet.BASS.Audio
             // Retrieve the sample data from the sound effect.
             Ultraviolet.ValidateResource(soundEffect);
             var bassfx = (BASSSoundEffect)soundEffect;
-            var sample = bassfx.GetSampleData(out this.sampleData, out this.sampleInfo);
+            var sample = bassfx.GetSampleInfo(out this.sampleData, out this.sampleInfo);
 
             // Get a channel on which to play the sample.
-            channel = BASSNative.SampleGetChannel(sample, true);
+            channel = BASS_SampleGetChannel(sample, true);
             if (!BASSUtil.IsValidHandle(channel))
             {
-                var error = BASSNative.ErrorGetCode();
-                if (error == BASSNative.BASS_ERROR_NOCHAN)
+                var error = BASS_ErrorGetCode();
+                if (error == BASS_ERROR_NOCHAN)
                     return false;
 
                 throw new BASSException(error);
@@ -410,14 +374,42 @@ namespace Ultraviolet.BASS.Audio
             }
 
             // Play the channel.
-            if (!BASSNative.ChannelPlay(channel, true))
+            if (!BASS_ChannelPlay(channel, true))
                 throw new BASSException();
 
             this.playing = soundEffect;
 
             return true;
         }
-        
+
+        /// <summary>
+        /// Releases any BASS resources being held by the player.
+        /// </summary>
+        private Boolean StopInternal()
+        {
+            if (stream != 0)
+            {
+                if (!BASS_StreamFree(stream))
+                    throw new BASSException();
+
+                stream = 0;
+            }
+
+            if (sample != 0)
+            {
+                if (!BASS_SampleFree(sample))
+                    throw new BASSException();
+
+                sample = 0;
+            }
+
+            channel = 0;
+            promoted = false;
+            playing = null;
+
+            return true;
+        }
+
         /// <summary>
         /// Promotes the current channel to a stream.  
         /// This is necessary if the pitch is shifted, because BASS_FX only works on streams.
@@ -444,12 +436,12 @@ namespace Ultraviolet.BASS.Audio
             var playing = (State == PlaybackState.Playing);
             if (playing)
             {
-                if (!BASSNative.ChannelPause(channel))
+                if (!BASS_ChannelPause(channel))
                     throw new BASSException();
             }
 
             // Get the current position of the playing channel so that we can advance the stream to match.
-            var streampos = (uint)BASSNative.ChannelGetPosition(channel, 0);
+            var streampos = (uint)BASS_ChannelGetPosition(channel, 0);
             if (!BASSUtil.IsValidValue(streampos))
                 throw new BASSException();
 
@@ -483,12 +475,12 @@ namespace Ultraviolet.BASS.Audio
             });
 
             // Create a decoding stream based on our sample channel.
-            stream = BASSNative.StreamCreate(sampleInfo.freq, sampleInfo.chans, sampleInfo.flags | BASSNative.BASS_STREAM_DECODE, sampleDataStreamProc, IntPtr.Zero);
+            stream = BASS_StreamCreate(sampleInfo.freq, sampleInfo.chans, sampleInfo.flags | BASS_STREAM_DECODE, sampleDataStreamProc, IntPtr.Zero);
             if (!BASSUtil.IsValidHandle(stream))
                 throw new BASSException();
 
             // Create an FX stream to shift the sound effect's pitch.
-            stream = BASSFXNative.TempoCreate(stream, BASSNative.BASS_FX_FREESOURCE);
+            stream = BASS_FX_TempoCreate(stream, BASS_FX_FREESOURCE);
             if (!BASSUtil.IsValidHandle(stream))
                 throw new BASSException();
 
@@ -499,14 +491,14 @@ namespace Ultraviolet.BASS.Audio
             BASSUtil.SetIsLooping(stream, loop);
 
             // Stop the old channel and switch to the stream.
-            if (!BASSNative.ChannelStop(channel))
+            if (!BASS_ChannelStop(channel))
                 throw new BASSException();
             channel = stream;
 
             // If we were previously playing, play the stream.
             if (playing)
             {
-                if (!BASSNative.ChannelPlay(channel, false))
+                if (!BASS_ChannelPlay(channel, false))
                     throw new BASSException();
             }
 

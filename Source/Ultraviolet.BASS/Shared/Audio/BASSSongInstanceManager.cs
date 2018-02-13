@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Platform;
+using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
 {
@@ -56,7 +57,7 @@ namespace Ultraviolet.BASS.Audio
 
                     unsafe
                     {
-                        stream = BASSNative.StreamCreateFileUser(1, BASSNative.BASS_STREAM_DECODE, &procs, new IntPtr((int)instanceID));
+                        stream = BASS_StreamCreateFileUser(1, BASS_STREAM_DECODE, &procs, new IntPtr((int)instanceID));
                         if (!BASSUtil.IsValidHandle(stream))
                             throw new BASSException();
                     }

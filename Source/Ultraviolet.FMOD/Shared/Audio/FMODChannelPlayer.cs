@@ -254,6 +254,9 @@ namespace Ultraviolet.FMOD.Audio
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);
 
+                if (value.TotalSeconds < 0 || value > Duration)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+
                 var result = FMOD_Channel_SetPosition(channel, (UInt32)value.TotalMilliseconds, FMOD_TIMEUNIT_MS);
                 if (!ValidateHandle(result))
                     throw new InvalidOperationException(FMODStrings.NotCurrentlyValid);

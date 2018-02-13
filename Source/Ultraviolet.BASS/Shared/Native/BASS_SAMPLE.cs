@@ -4,9 +4,10 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.BASS.Native
 {
+#pragma warning disable 1591
     [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
-    internal struct BASS_SAMPLE
+    public struct BASS_SAMPLE
     {
         public UInt32 freq;
         public Single volume;
@@ -26,4 +27,5 @@ namespace Ultraviolet.BASS.Native
         public UInt32 vam;
         public UInt32 priority;
     }
+#pragma warning restore 1591
 }

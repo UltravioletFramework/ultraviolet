@@ -4,9 +4,10 @@ using Ultraviolet.Core;
 
 namespace Ultraviolet.BASS.Native
 {
+#pragma warning disable 1591
     [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
-    internal struct BASS_CHANNELINFO
+    public struct BASS_CHANNELINFO
     {
         public UInt32 freq;
         public UInt32 chans;
@@ -17,4 +18,5 @@ namespace Ultraviolet.BASS.Native
         public UInt32 sample;
         public IntPtr filename;
     }
+#pragma warning restore 1591
 }
