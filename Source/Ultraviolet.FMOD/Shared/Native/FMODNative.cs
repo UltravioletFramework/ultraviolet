@@ -99,6 +99,28 @@ namespace Ultraviolet.FMOD.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_SetDriver", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_SetDriver(FMOD_SYSTEM* system, Int32 driver);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_SetDriverDelegate(FMOD_SYSTEM* system, Int32 driver);
+        private static readonly FMOD_System_SetDriverDelegate pFMOD_System_SetDriver = lib.LoadFunction<FMOD_System_SetDriverDelegate>("FMOD_System_SetDriver");
+        public static FMOD_RESULT FMOD_System_SetDriver(FMOD_SYSTEM* system, Int32 driver) => pFMOD_System_SetDriver(system, driver);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_GetDriver", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_GetDriver(FMOD_SYSTEM* system, Int32* driver);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_GetDriverDelegate(FMOD_SYSTEM* system, Int32* driver);
+        private static readonly FMOD_System_GetDriverDelegate pFMOD_System_GetDriver = lib.LoadFunction<FMOD_System_GetDriverDelegate>("FMOD_System_GetDriver");
+        public static FMOD_RESULT FMOD_System_GetDriver(FMOD_SYSTEM* system, Int32* driver) => pFMOD_System_GetDriver(system, driver);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_System_Init", CallingConvention = CallingConvention.StdCall)]
         public static extern FMOD_RESULT FMOD_System_Init(FMOD_SYSTEM* system, Int32 maxchannels, FMOD_INITFLAGS flags, void* extradriverdata);
 #else

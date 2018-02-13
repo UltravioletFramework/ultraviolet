@@ -71,6 +71,28 @@ namespace Ultraviolet.BASS.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="BASS_SetDevice", CallingConvention = CallingConvention.StdCall)]
+        public static extern Boolean BASS_SetDevice(UInt32 device);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate Boolean BASS_SetDeviceDelegate(UInt32 device);
+        private static readonly BASS_SetDeviceDelegate pBASS_SetDevice = lib.LoadFunction<BASS_SetDeviceDelegate>("BASS_SetDevice");
+        public static Boolean BASS_SetDevice(UInt32 device) => pBASS_SetDevice(device);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="BASS_GetDevice", CallingConvention = CallingConvention.StdCall)]
+        public static extern UInt32 BASS_GetDevice();
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate UInt32 BASS_GetDeviceDelegate();
+        private static readonly BASS_GetDeviceDelegate pBASS_GetDevice = lib.LoadFunction<BASS_GetDeviceDelegate>("BASS_GetDevice");
+        public static UInt32 BASS_GetDevice() => pBASS_GetDevice();
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_PluginLoad", CallingConvention = CallingConvention.StdCall)]
         public static extern UInt32 BASS_PluginLoad([MarshalAs(UnmanagedType.LPStr)] String file, UInt32 flags);
 #else

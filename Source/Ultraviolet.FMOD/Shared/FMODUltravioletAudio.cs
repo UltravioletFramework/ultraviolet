@@ -62,6 +62,9 @@ namespace Ultraviolet.FMOD
                 if (result != FMOD_OK)
                     throw new FMODException(result);
             }
+
+            UpdateAudioDevices();
+            PlaybackDevice = GetDefaultDevice();
             
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
@@ -95,6 +98,21 @@ namespace Ultraviolet.FMOD
         public IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices()
         {
             return new IUltravioletAudioDevice[0];
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletAudioDevice FindAudioDeviceByName(String name)
+        {
+            Contract.Require(name, nameof(name));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            foreach (var device in knownAudioDevices)
+            {
+                if (device.IsValid && String.Equals(name, device.Name, StringComparison.Ordinal))
+                    return device;
+            }
+
+            return null;
         }
 
         /// <inheritdoc/>
@@ -139,6 +157,41 @@ namespace Ultraviolet.FMOD
                 throw new FMODException(result);
 
             suspended = false;
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletAudioDevice PlaybackDevice
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return playbackDevice;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                var val = value ?? GetDefaultDevice();
+                if (val == null)
+                {
+                    playbackDevice = null;
+                }
+                else
+                {
+                    if (value is FMODUltravioletAudioDevice device)
+                    {
+                        Ultraviolet.ValidateResource(device);
+
+                        var result = FMOD_System_SetDriver(system, device.ID);
+                        if (result != FMOD_OK)
+                            throw new FMODException(result);
+
+                        playbackDevice = device;
+                    }
+                    else throw new ArgumentException(nameof(value));
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -356,7 +409,7 @@ namespace Ultraviolet.FMOD
             result = FMOD_System_GetNumDrivers(system, &numdrivers);
             if (result != FMOD_OK)
                 throw new FMODException(result);
-
+            
             if (numdrivers != knownAudioDevices.Count)
             {
                 foreach (var device in knownAudioDevices)
@@ -373,13 +426,24 @@ namespace Ultraviolet.FMOD
                     if (result != FMOD_OK)
                         throw new FMODException(result);
 
-                    var device = new FMODUltravioletAudioDevice(namebuf.ToString());
+                    var device = new FMODUltravioletAudioDevice(Ultraviolet, i, namebuf.ToString());
                     device.IsValid = true;
                     device.IsDefault = (i == 0);
 
                     knownAudioDevices.Add(device);
                 }
             }
+
+            if (playbackDevice != null && !playbackDevice.IsValid)
+                this.PlaybackDevice = FindAudioDeviceByName(PlaybackDevice.Name) ?? GetDefaultDevice();
+        }
+
+        /// <summary>
+        /// Gets the default audio device.
+        /// </summary>
+        private FMODUltravioletAudioDevice GetDefaultDevice()
+        {
+            return knownAudioDevices.Count == 0 ? null : knownAudioDevices[0];
         }
 
         // FMOD state variables.
@@ -400,6 +464,7 @@ namespace Ultraviolet.FMOD
         private Boolean awaitingResume;
 
         // Audio device cache.
+        private FMODUltravioletAudioDevice playbackDevice;
         private List<FMODUltravioletAudioDevice> knownAudioDevices =
             new List<FMODUltravioletAudioDevice>();
     }

@@ -24,7 +24,15 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             return Enumerable.Empty<IUltravioletAudioDevice>();
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletAudioDevice FindAudioDeviceByName(String name)
+        {
+            return null;
         }
 
         /// <inheritdoc/>
@@ -45,6 +53,21 @@ namespace Ultraviolet
         public void Resume()
         {
             Contract.EnsureNotDisposed(this, Disposed);
+        }
+
+        /// <inheritdoc/>
+        public IUltravioletAudioDevice PlaybackDevice
+        {
+            get
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+
+                return null;
+            }
+            set
+            {
+                Contract.EnsureNotDisposed(this, Disposed);
+            }
         }
 
         /// <inheritdoc/>

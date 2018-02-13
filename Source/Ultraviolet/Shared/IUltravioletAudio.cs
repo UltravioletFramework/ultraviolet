@@ -16,6 +16,13 @@ namespace Ultraviolet
         IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices();
 
         /// <summary>
+        /// Searches the list of known audio devices for a valid device with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the audio device for which to search.</param>
+        /// <returns>The first valid audio device with the specified name, if it is found; otherwise, <see langword="null"/>.</returns>
+        IUltravioletAudioDevice FindAudioDeviceByName(String name);
+
+        /// <summary>
         /// Suspends all audio output.
         /// </summary>
         void Suspend();
@@ -24,6 +31,11 @@ namespace Ultraviolet
         /// Resumes audio output after a call to <see cref="Suspend"/>.
         /// </summary>
         void Resume();
+
+        /// <summary>
+        /// Gets or sets the device which is used for audio playback.
+        /// </summary>
+        IUltravioletAudioDevice PlaybackDevice { get; set; }
 
         /// <summary>
         /// Gets or sets the master volume for all audio output.
