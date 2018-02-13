@@ -145,7 +145,7 @@ namespace Ultraviolet.BASS
                 }
                 else
                 {
-                    if (value is BASSUltravioletAudioDevice device)
+                    if (val is BASSUltravioletAudioDevice device)
                     {
                         Ultraviolet.ValidateResource(device);
 

@@ -179,7 +179,7 @@ namespace Ultraviolet.FMOD
                 }
                 else
                 {
-                    if (value is FMODUltravioletAudioDevice device)
+                    if (val is FMODUltravioletAudioDevice device)
                     {
                         Ultraviolet.ValidateResource(device);
 
