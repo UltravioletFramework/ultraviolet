@@ -183,7 +183,23 @@ namespace Ultraviolet.FMOD
                     {
                         Ultraviolet.ValidateResource(device);
 
-                        var result = FMOD_System_SetDriver(system, device.ID);
+                        var result = default(FMOD_RESULT);
+                        var olddriver = 0;
+
+                        result = FMOD_System_GetDriver(system, &olddriver);
+                        if (result != FMOD_OK)
+                            throw new FMODException(result);
+
+                        result = FMOD_System_SetDriver(system, device.ID);
+                        if (result == FMOD_ERR_OUTPUT_INIT)
+                        {
+                            result = FMOD_System_SetDriver(system, olddriver);
+                            if (result != FMOD_OK)
+                                throw new FMODException(result);
+
+                            return;
+                        }
+
                         if (result != FMOD_OK)
                             throw new FMODException(result);
 
