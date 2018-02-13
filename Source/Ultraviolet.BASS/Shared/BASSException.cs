@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ultraviolet.BASS.Native;
+using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS
 {
@@ -35,7 +35,7 @@ namespace Ultraviolet.BASS
         /// <returns>The exception message for the current error code.</returns>
         private static String GetExceptionMessage()
         {
-            return GetExceptionMessage(BASSNative.ErrorGetCode());
+            return GetExceptionMessage(BASS_ErrorGetCode());
         }
 
         /// <summary>

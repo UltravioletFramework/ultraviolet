@@ -3,16 +3,18 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
+using static Ultraviolet.BASS.Native.BASSFXNative;
+using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
-    /// Represents the BASS implementation of the SongPlayer class.
+    /// Represents the BASS implementation of the <see cref="SongPlayer"/> class.
     /// </summary>
     public sealed class BASSSongPlayer : SongPlayer
     {
         /// <summary>
-        /// Initializes a new instance of the BASSSongPlayer class.
+        /// Initializes a new instance of the <see cref="BASSSongPlayer"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         public BASSSongPlayer(UltravioletContext uv)
@@ -84,7 +86,7 @@ namespace Ultraviolet.BASS.Audio
 
             if (State == PlaybackState.Playing)
             {
-                if (!BASSNative.ChannelPause(stream))
+                if (!BASS_ChannelPause(stream))
                     throw new BASSException();
 
                 OnStateChanged();
@@ -98,7 +100,7 @@ namespace Ultraviolet.BASS.Audio
 
             if (State == PlaybackState.Paused)
             {
-                if (!BASSNative.ChannelPlay(stream, false))
+                if (!BASS_ChannelPlay(stream, false))
                     throw new BASSException();
 
                 OnStateChanged();
@@ -144,16 +146,16 @@ namespace Ultraviolet.BASS.Audio
 
                 if (BASSUtil.IsValidHandle(stream))
                 {
-                    switch (BASSNative.ChannelIsActive(stream))
+                    switch (BASS_ChannelIsActive(stream))
                     {
-                        case BASSNative.BASS_ACTIVE_PLAYING:
-                        case BASSNative.BASS_ACTIVE_STALLED:
+                        case BASS_ACTIVE_PLAYING:
+                        case BASS_ACTIVE_STALLED:
                             return PlaybackState.Playing;
 
-                        case BASSNative.BASS_ACTIVE_STOPPED:
+                        case BASS_ACTIVE_STOPPED:
                             return PlaybackState.Stopped;
 
-                        case BASSNative.BASS_ACTIVE_PAUSED:
+                        case BASS_ACTIVE_PAUSED:
                             return PlaybackState.Paused;
                     }
                 }
@@ -192,7 +194,7 @@ namespace Ultraviolet.BASS.Audio
 
                 if (syncLoop != 0)
                 {
-                    if (!BASSNative.ChannelRemoveSync(stream, syncLoop))
+                    if (!BASS_ChannelRemoveSync(stream, syncLoop))
                         throw new BASSException();
 
                     syncLoop = 0;
@@ -225,7 +227,7 @@ namespace Ultraviolet.BASS.Audio
                 EnsureChannelIsValid();
 
                 if (value.TotalSeconds < 0 || value > Duration)
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
 
                 BASSUtil.SetPositionInSeconds(stream, value.TotalSeconds);
             }
@@ -330,7 +332,7 @@ namespace Ultraviolet.BASS.Audio
         [MonoPInvokeCallback(typeof(SyncProc))]
         private static void SyncLoopThunk(UInt32 handle, UInt32 channel, UInt32 data, IntPtr user)
         {
-            if (!BASSNative.ChannelSetPosition(channel, (UInt32)user, 0))
+            if (!BASS_ChannelSetPosition(channel, (UInt32)user, 0))
                 throw new BASSException();
         }
 
@@ -353,8 +355,8 @@ namespace Ultraviolet.BASS.Audio
 
             Stop();
 
-            stream = ((BASSSong)song).CreateStream(BASSNative.BASS_STREAM_DECODE);
-            stream = BASSFXNative.TempoCreate(stream, BASSNative.BASS_FX_FREESOURCE | BASSNative.BASS_STREAM_AUTOFREE);
+            stream = ((BASSSong)song).CreateStream(BASS_STREAM_DECODE);
+            stream = BASS_FX_TempoCreate(stream, BASS_FX_FREESOURCE | BASS_STREAM_AUTOFREE);
             if (!BASSUtil.IsValidHandle(stream))
                 throw new BASSException();
 
@@ -371,20 +373,20 @@ namespace Ultraviolet.BASS.Audio
 
             if (syncloop)
             {
-                var loopStartInBytes = BASSNative.ChannelSeconds2Bytes(stream, loopStart.Value.TotalSeconds);
-                var loopEndInBytes = BASSNative.ChannelSeconds2Bytes(stream, (loopStart + loopLength).Value.TotalSeconds);
+                var loopStartInBytes = BASS_ChannelSeconds2Bytes(stream, loopStart.Value.TotalSeconds);
+                var loopEndInBytes = BASS_ChannelSeconds2Bytes(stream, (loopStart + loopLength).Value.TotalSeconds);
                 syncLoopDelegate = SyncLoopThunk;
-                syncLoop = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_POS, loopEndInBytes, syncLoopDelegate, new IntPtr((Int32)loopStartInBytes));
+                syncLoop = BASS_ChannelSetSync(stream, BASS_SYNC_POS, loopEndInBytes, syncLoopDelegate, new IntPtr((Int32)loopStartInBytes));
                 if (syncLoop == 0)
                     throw new BASSException();
             }
 
             syncEndDelegate = SyncEndThunk;
-            syncEnd = BASSNative.ChannelSetSync(stream, BASSSync.SYNC_END, 0, syncEndDelegate, GCHandle.ToIntPtr(gcHandle));
+            syncEnd = BASS_ChannelSetSync(stream, BASS_SYNC_END, 0, syncEndDelegate, GCHandle.ToIntPtr(gcHandle));
             if (syncEnd == 0)
                 throw new BASSException();
 
-            if (!BASSNative.ChannelPlay(stream, true))
+            if (!BASS_ChannelPlay(stream, true))
                 throw new BASSException();
 
             OnStateChanged();
@@ -401,7 +403,7 @@ namespace Ultraviolet.BASS.Audio
             if (stream == 0)
                 return false;
 
-            if (!BASSNative.StreamFree(stream))
+            if (!BASS_StreamFree(stream))
                 throw new BASSException();
 
             stream = 0;
@@ -416,14 +418,21 @@ namespace Ultraviolet.BASS.Audio
         }
 
         /// <summary>
+        /// Gets a value indicating whether the channel is in a valid state.
+        /// </summary>
+        /// <returns>true if the channel is in a valid state; otherwise, false.</returns>
+        private Boolean IsChannelValid()
+        {
+            return State != PlaybackState.Stopped;
+        }
+
+        /// <summary>
         /// Throws an <see cref="System.InvalidOperationException"/> if the channel is not in a valid state.
         /// </summary>
         private void EnsureChannelIsValid()
         {
             if (State == PlaybackState.Stopped)
-            {
                 throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
-            }
         }
 
         /// <summary>
@@ -439,15 +448,6 @@ namespace Ultraviolet.BASS.Audio
                     OnSongEnded();
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the channel is in a valid state.
-        /// </summary>
-        /// <returns>true if the channel is in a valid state; otherwise, false.</returns>
-        private Boolean IsChannelValid()
-        {
-            return State != PlaybackState.Stopped;
         }
 
         // State values.

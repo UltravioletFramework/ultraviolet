@@ -5,6 +5,7 @@ using Ultraviolet.Core.Messages;
 using System.Collections.Generic;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Audio;
+using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS
 {
@@ -23,15 +24,16 @@ namespace Ultraviolet.BASS
         public BASSUltravioletAudio(UltravioletContext uv)
             : base(uv)
         {
-            if (uv.Platform == UltravioletPlatform.Windows || uv.Platform == UltravioletPlatform.macOS)
+            if (!BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1))
             {
-                if (!BASSNative.SetConfig(BASSConfig.CONFIG_DEV_DEFAULT, 1))
-                    throw new BASSException();
+                var setConfigError = BASS_ErrorGetCode();
+                if (setConfigError != BASS_ERROR_NOTAVAIL)
+                    throw new BASSException(setConfigError);
             }
 
             var device = -1;
             var freq = 44100u;
-            if (!BASSNative.Init(device, freq, 0, IntPtr.Zero, IntPtr.Zero))
+            if (!BASS_Init(device, freq, 0, IntPtr.Zero, IntPtr.Zero))
                 throw new BASSException();
 
             UpdateAudioDevices();
@@ -87,7 +89,7 @@ namespace Ultraviolet.BASS
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (!BASSNative.Pause())
+            if (!BASS_Pause())
                 throw new BASSException();
 
             suspended = true;
@@ -98,7 +100,7 @@ namespace Ultraviolet.BASS
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (!BASSNative.Start())
+            if (!BASS_Start())
                 throw new BASSException();
 
             suspended = false;
@@ -247,7 +249,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (!BASSNative.Free())
+            if (!BASS_Free())
                 throw new BASSException();
 
             if (disposing && !Ultraviolet.Disposed)
@@ -271,7 +273,7 @@ namespace Ultraviolet.BASS
         private void UpdateStreamVolume()
         {
             var volumeStream = (audioMuted || songsMuted) ? 0 : (uint)(10000 * audioMasterVolume * songsMasterVolume);
-            if (!BASSNative.SetConfig(BASSConfig.CONFIG_GVOL_STREAM, volumeStream))
+            if (!BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, volumeStream))
                 throw new BASSException();
         }
 
@@ -281,7 +283,7 @@ namespace Ultraviolet.BASS
         private void UpdateSampleVolume()
         {
             var volumeSample = (audioMuted || soundEffectsMuted) ? 0 : (uint)(10000 * audioMasterVolume * soundEffectsMasterVolume);
-            if (!BASSNative.SetConfig(BASSConfig.CONFIG_GVOL_SAMPLE, volumeSample))
+            if (!BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, volumeSample))
                 throw new BASSException();
         }
 
@@ -291,10 +293,10 @@ namespace Ultraviolet.BASS
         private void UpdateAudioDevices()
         {
             BASS_DEVICEINFO info;
-            for (int i = 1; BASSNative.GetDeviceInfo((uint)i, &info); i++)
+            for (int i = 1; BASS_GetDeviceInfo((uint)i, &info); i++)
             {
-                var isEnabled = (info.flags & BASSNative.BASS_DEVICE_ENABLED) == BASSNative.BASS_DEVICE_ENABLED;
-                var isDefault = (info.flags & BASSNative.BASS_DEVICE_DEFAULT) == BASSNative.BASS_DEVICE_DEFAULT;
+                var isEnabled = (info.flags & BASS_DEVICE_ENABLED) == BASS_DEVICE_ENABLED;
+                var isDefault = (info.flags & BASS_DEVICE_DEFAULT) == BASS_DEVICE_DEFAULT;
 
                 var ix = (i - 1);
                 if (ix >= knownAudioDevices.Count)

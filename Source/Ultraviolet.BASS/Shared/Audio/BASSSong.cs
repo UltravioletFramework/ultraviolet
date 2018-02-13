@@ -5,6 +5,7 @@ using Ultraviolet.Audio;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
+using static Ultraviolet.BASS.Native.BASSNative;
 
 namespace Ultraviolet.BASS.Audio
 {
@@ -25,13 +26,37 @@ namespace Ultraviolet.BASS.Audio
 
             this.file = file;
 
-            var stream = CreateStream(BASSNative.BASS_STREAM_DECODE);
+            var stream = CreateStream(BASS_STREAM_DECODE);
             
             this.tags = GetTags(stream, out this.name, out this.artist, out this.album);
             this.duration = GetDuration(stream);
 
-            if (!BASSNative.StreamFree(stream))
+            if (!BASS_StreamFree(stream))
                 throw new BASSException();
+        }
+
+        /// <summary>
+        /// Creates a BASS stream that represents the song.
+        /// </summary>
+        /// <param name="flags">The flags to apply to the stream that is created.</param>
+        /// <returns>The handle to the BASS stream that was created.</returns>
+        public UInt32 CreateStream(UInt32 flags)
+        {
+            if (FileSystemService.Source == null)
+            {
+                var stream = BASS_StreamCreateFile(file, flags);
+                if (!BASSUtil.IsValidHandle(stream))
+                    throw new BASSException();
+
+                return stream;
+            }
+            else
+            {
+                if (instanceManager == null)
+                    instanceManager = new BASSSongInstanceManager(file);
+
+                return instanceManager.CreateInstance(flags);
+            }
         }
 
         /// <inheritdoc/>
@@ -89,33 +114,8 @@ namespace Ultraviolet.BASS.Audio
             }
         }
 
-        /// <summary>
-        /// Creates a BASS stream that represents the song.
-        /// </summary>
-        /// <param name="flags">The flags to apply to the stream that is created.</param>
-        /// <returns>The handle to the BASS stream that was created.</returns>
-        internal UInt32 CreateStream(UInt32 flags)
-        {
-            if (FileSystemService.Source == null)
-            {
-                var stream = BASSNative.StreamCreateFile(file, flags);
-                if (!BASSUtil.IsValidHandle(stream))
-                    throw new BASSException();
-
-                return stream;
-            }
-            else
-            {
-                if (instanceManager == null)
-                {
-                    instanceManager = new BASSSongInstanceManager(file);
-                }
-                return instanceManager.CreateInstance(flags);
-            }
-        }
-
         /// <inheritdoc/>
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(Boolean disposing)
         {
             if (disposing)
             {
@@ -169,11 +169,11 @@ namespace Ultraviolet.BASS.Audio
 
             tags = null;
 
-            var ptr = BASSNative.ChannelGetTags(handle, BASSNative.BASS_TAG_ID3);
+            var ptr = BASS_ChannelGetTags(handle, BASS_TAG_ID3);
             if (ptr == null)
             {
-                error = BASSNative.ErrorGetCode();
-                if (error != BASSNative.BASS_ERROR_NOTAVAIL)
+                error = BASS_ErrorGetCode();
+                if (error != BASS_ERROR_NOTAVAIL)
                     throw new BASSException(error);
 
                 return false;
@@ -198,11 +198,11 @@ namespace Ultraviolet.BASS.Audio
         {
             tags = null;
 
-            var ptr = (Byte*)BASSNative.ChannelGetTags(handle, BASSNative.BASS_TAG_OGG);
+            var ptr = (Byte*)BASS_ChannelGetTags(handle, BASS_TAG_OGG);
             if (ptr == null)
             {
-                var error = BASSNative.ErrorGetCode();
-                if (error != BASSNative.BASS_ERROR_NOTAVAIL)
+                var error = BASS_ErrorGetCode();
+                if (error != BASS_ERROR_NOTAVAIL)
                     throw new BASSException(error);
 
                 return false;

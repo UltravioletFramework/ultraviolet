@@ -5,17 +5,17 @@ namespace Ultraviolet.BASS.Native
 {
 #pragma warning disable 1591
     [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct BASS_DEVICEINFO
+    public unsafe struct BASS_DEVICEINFO
     {
         // NOTE: These are defined as wchar_t in Windows Store apps, but Ultraviolet
         // doesn't currently support those, so who cares?
-        public char* name;
-        public char* driver;
+        public Char* name;
+        public Char* driver;
         public UInt32 flags;
         public MARSHALLED_BASS_DEVICEINFO ToMarshalledStruct() { return new MARSHALLED_BASS_DEVICEINFO(this); }
     }
 
-    internal unsafe struct MARSHALLED_BASS_DEVICEINFO
+    public unsafe struct MARSHALLED_BASS_DEVICEINFO
     {
         public MARSHALLED_BASS_DEVICEINFO(BASS_DEVICEINFO deviceinfo)
         {
