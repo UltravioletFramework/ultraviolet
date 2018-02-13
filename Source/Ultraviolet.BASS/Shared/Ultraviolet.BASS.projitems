@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffectPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffectProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSUltravioletAudioDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSStrings.cs" />
@@ -28,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASSNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASSSync.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_CHANNELINFO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_DEVICEINFO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_FILEPROCS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\TAG_ID3.cs" />

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ultraviolet.Audio;
 using Ultraviolet.Core;
 
 namespace Ultraviolet
@@ -17,7 +20,13 @@ namespace Ultraviolet
         {
 
         }
-        
+
+        /// <inheritdoc/>
+        public IEnumerable<IUltravioletAudioDevice> EnumerateAudioDevices()
+        {
+            return Enumerable.Empty<IUltravioletAudioDevice>();
+        }
+
         /// <inheritdoc/>
         public void Update(UltravioletTime time)
         {

@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.FMOD</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODUltravioletAudioDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODMediaImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODChannelPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSoundEffect.cs" />
@@ -23,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.ErrorString.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SPEAKERMODE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TAG.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_MODE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_CREATESOUNDEXINFO.cs" />

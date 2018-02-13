@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
 using Ultraviolet.Core;
@@ -73,6 +74,28 @@ namespace Ultraviolet.FMOD.Native
         private delegate FMOD_RESULT FMOD_System_GetVersionDelegate(FMOD_SYSTEM* system, UInt32* version);
         private static readonly FMOD_System_GetVersionDelegate pFMOD_System_GetVersion = lib.LoadFunction<FMOD_System_GetVersionDelegate>("FMOD_System_GetVersion");
         public static FMOD_RESULT FMOD_System_GetVersion(FMOD_SYSTEM* system, UInt32* version) => pFMOD_System_GetVersion(system, version);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_GetNumDrivers", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_GetNumDrivers(FMOD_SYSTEM* system, Int32* numdrivers);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_GetNumDriversDelegate(FMOD_SYSTEM* system, Int32* numdrivers);
+        private static readonly FMOD_System_GetNumDriversDelegate pFMOD_System_GetNumDrivers = lib.LoadFunction<FMOD_System_GetNumDriversDelegate>("FMOD_System_GetNumDrivers");
+        public static FMOD_RESULT FMOD_System_GetNumDrivers(FMOD_SYSTEM* system, Int32* numdrivers) => pFMOD_System_GetNumDrivers(system, numdrivers);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_System_GetDriverInfo", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_GetDriverInfo(FMOD_SYSTEM* system, Int32 id, [MarshalAs(UnmanagedType.LPStr)] StringBuilder name, Int32 namelen, Guid* guid, Int32* systemrate, FMOD_SPEAKERMODE* speakermode, Int32* speakermodechannels);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_GetDriverInfoDelegate(FMOD_SYSTEM* system, Int32 id, [MarshalAs(UnmanagedType.LPStr)] StringBuilder name, Int32 namelen, Guid* guid, Int32* systemrate, FMOD_SPEAKERMODE* speakermode, Int32* speakermodechannels);
+        private static readonly FMOD_System_GetDriverInfoDelegate pFMOD_System_GetDriverInfo = lib.LoadFunction<FMOD_System_GetDriverInfoDelegate>("FMOD_System_GetDriverInfo");
+        public static FMOD_RESULT FMOD_System_GetDriverInfo(FMOD_SYSTEM* system, Int32 id, [MarshalAs(UnmanagedType.LPStr)] StringBuilder name, Int32 namelen, Guid* guid, Int32* systemrate, FMOD_SPEAKERMODE* speakermode, Int32* speakermodechannels) => pFMOD_System_GetDriverInfo(system, id, name, namelen, guid, systemrate, speakermode, speakermodechannels);
 #endif
 
 #if ANDROID || IOS
