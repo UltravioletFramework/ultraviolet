@@ -228,7 +228,7 @@ namespace Ultraviolet.BASS.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_ChannelIsSliding", CallingConvention = CallingConvention.StdCall)]
-        public static extern Boolean BASS_ChannelIsSliding(UInt32 handle, BASSAttrib attrib);
+        public static extern Boolean BASS_ChannelIsSliding(UInt32 handle, UInt32 attrib);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -338,7 +338,7 @@ namespace Ultraviolet.BASS.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_ChannelGetAttribute", CallingConvention = CallingConvention.StdCall)]
-        public static extern Boolean BASS_ChannelGetAttribute(UInt32 handle, BASSAttrib attrib, Single* value);
+        public static extern Boolean BASS_ChannelGetAttribute(UInt32 handle, UInt32 attrib, Single* value);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -349,7 +349,7 @@ namespace Ultraviolet.BASS.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_ChannelSetAttribute", CallingConvention = CallingConvention.StdCall)]
-        public static extern Boolean BASS_ChannelSetAttribute(UInt32 handle, BASSAttrib attrib, Single value);
+        public static extern Boolean BASS_ChannelSetAttribute(UInt32 handle, UInt32 attrib, Single value);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -360,7 +360,7 @@ namespace Ultraviolet.BASS.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_ChannelSlideAttribute", CallingConvention = CallingConvention.StdCall)]
-        public static extern Boolean BASS_ChannelSlideAttribute(UInt32 handle, BASSAttrib attrib, Single value, UInt32 time);
+        public static extern Boolean BASS_ChannelSlideAttribute(UInt32 handle, UInt32 attrib, Single value, UInt32 time);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
