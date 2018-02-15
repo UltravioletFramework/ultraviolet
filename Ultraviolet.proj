@@ -41,7 +41,7 @@
   <Target Name="RepackArchives">
     <!-- TODO: Get this target working on non-Windows platforms -->
     <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebugSandbox/Android/Content.uvarc UvDebugSandbox_Desktop/Content"/>
+      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebug/Android/Content.uvarc UvDebug/Content"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement/Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement/Desktop/Content&quot;"/>
     <Exec Condition="'$(OS)'=='Windows_NT'" 
@@ -188,7 +188,7 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler_Desktop"/>
     </CreateItem>
-    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/Ultraviolet.Tooling.*">
+    <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/Ultraviolet.Tooling.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
     </CreateItem>
     <CreateItem Include="Source/UvFont/bin/$(Configuration)/uvfont.exe">
