@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
+using System.Collections.Concurrent;
 
 namespace Ultraviolet.Content
 {
@@ -217,8 +218,8 @@ namespace Ultraviolet.Content
             new List<ContentArchiveNode>();
 
         // The archive's path cache.
-        private readonly Dictionary<String, ContentArchiveNode> pathCache = 
-            new Dictionary<String, ContentArchiveNode>();
+        private readonly ConcurrentDictionary<String, ContentArchiveNode> pathCache = 
+            new ConcurrentDictionary<String, ContentArchiveNode>();
 
         // The set of characters used to delimit directories in a path.
         private static readonly Char[] DirectorySeparators = new[] { 
