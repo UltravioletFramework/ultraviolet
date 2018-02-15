@@ -48,6 +48,8 @@ sn.exe -R "Ultraviolet.Presentation.Uvss.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.FMOD.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.FMOD.Android.Bindings.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Shims.Android.dll" "%TLSN%"
 GOTO :eof
 
