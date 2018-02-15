@@ -24,11 +24,14 @@ namespace Ultraviolet.BASS
         public BASSUltravioletAudio(UltravioletContext uv)
             : base(uv)
         {
-            if (!BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1))
+            if (uv.Platform == UltravioletPlatform.Windows || uv.Platform == UltravioletPlatform.macOS)
             {
-                var setConfigError = BASS_ErrorGetCode();
-                if (setConfigError != BASS_ERROR_NOTAVAIL)
-                    throw new BASSException(setConfigError);
+                if (!BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1))
+                {
+                    var setConfigError = BASS_ErrorGetCode();
+                    if (setConfigError != BASS_ERROR_NOTAVAIL)
+                        throw new BASSException(setConfigError);
+                }
             }
 
             var device = -1;
