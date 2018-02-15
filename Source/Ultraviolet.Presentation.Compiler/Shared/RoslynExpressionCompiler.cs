@@ -502,7 +502,7 @@ namespace Ultraviolet.Presentation.Compiler
             Directory.CreateDirectory(logdir);
 
             // NOTE: Under Mono we seem to get warnings even when "Treat Warnings as Errors" is turned off.
-            var trueErrors = results.GetDiagnostics().Where(x => x.Location.IsInSource && x.Severity == DiagnosticSeverity.Error).ToList();
+            var trueErrors = results.GetDiagnostics().Where(x => x.Location.IsInSource && x.Location.SourceTree.FilePath != "CompilerMetadata.cs" && x.Severity == DiagnosticSeverity.Error).ToList();
             if (trueErrors.Count > 0)
             {
                 var filesWithErrors = trueErrors.Select(x => x.Location.SourceTree.FilePath).Where(x => !String.IsNullOrEmpty(x)).Distinct();
