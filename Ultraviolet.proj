@@ -346,6 +346,12 @@
     <CreateItem Include="Source/Ultraviolet.BASS/Android/bin/$(Configuration)/Ultraviolet.BASS.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_BASS_Android"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FMOD/Android/bin/$(Configuration)/Ultraviolet.FMOD.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_Android"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FMOD/Android.Bindings/bin/$(Configuration)/Ultraviolet.FMOD.Android.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD_Android_Bindings"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.OpenGL/Android/bin/$(Configuration)/Ultraviolet.OpenGL.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Android"/>
     </CreateItem>
@@ -367,6 +373,8 @@
     <Copy SourceFiles="@(Ultraviolet_Shims_Android)" DestinationFiles="@(Ultraviolet_Shims_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Profiler_dotTrace_Android)" DestinationFiles="@(Ultraviolet_Profiler_dotTrace_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_BASS_Android)" DestinationFiles="@(Ultraviolet_BASS_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FMOD_Android)" DestinationFiles="@(Ultraviolet_FMOD_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FMOD_Android_Bindings)" DestinationFiles="@(Ultraviolet_FMOD_Android_Bindings->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_Android)" DestinationFiles="@(Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Android)" DestinationFiles="@(Ultraviolet_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
