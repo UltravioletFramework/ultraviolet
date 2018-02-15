@@ -17,6 +17,9 @@ namespace Ultraviolet.Shims.Android
         /// <inheritdoc/>
         public void Initialize(UltravioletContext owner, UltravioletFactory factory)
         {
+            var androidActivityService = new AndroidActivityServiceImpl();
+            factory.SetFactoryMethod<AndroidActivityServiceFactory>(() => androidActivityService);
+
             factory.SetFactoryMethod<SurfaceSourceFactory>((stream) => new AndroidSurfaceSource(stream));
             factory.SetFactoryMethod<SurfaceSaverFactory>(() => new AndroidSurfaceSaver());
             factory.SetFactoryMethod<IconLoaderFactory>(() => new AndroidIconLoader());

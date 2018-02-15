@@ -4,7 +4,7 @@ namespace Ultraviolet
     /// <summary>
     /// Represents the standard set of Ultraviolet Framework events.
     /// </summary>
-    public static class UltravioletMessages
+    public static partial class UltravioletMessages
     {
         /// <summary>
         /// An event indicating that the application should exit.
