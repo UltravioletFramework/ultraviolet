@@ -182,7 +182,22 @@ namespace Ultraviolet.Platform
         public static FileSource Source
         {
             get { return source; }
-            set { source = value; }
+            set
+            {
+                if (source != value)
+                {
+                    source = value;
+
+                    var uv = UltravioletContext.RequestCurrent();
+                    if (uv != null && !uv.Disposed)
+                    {
+                        if (uv.IsExecutingOnCurrentThread)
+                            uv.Messages.PublishImmediate(UltravioletMessages.FileSourceChanged, null);
+                        else
+                            uv.Messages.Publish(UltravioletMessages.FileSourceChanged, null);
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -8,6 +8,21 @@ using Ultraviolet.Core.Native;
 namespace Ultraviolet.FMOD.Native
 {
 #pragma warning disable 1591
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_FILE_OPEN_CALLBACK([MarshalAs(UnmanagedType.LPStr)] String name, UInt32* filesize, void** handle, void* userdadata);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_FILE_CLOSE_CALLBACK(void* handle, void* userdata);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_FILE_READ_CALLBACK(void* handle, void* buffer, UInt32 sizebytes, UInt32* bytesread, void* userdata);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_FILE_SEEK_CALLBACK(void* handle, UInt32 pos, void* userdata);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_FILE_ASYNCREAD_CALLBACK(FMOD_ASYNCREADINFO* info, void* userdata);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_FILE_ASYNCCANCEL_CALLBACK(FMOD_ASYNCREADINFO* info, void* userdata);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate void FMOD_FILE_ASYNCDONE_FUNC(FMOD_ASYNCREADINFO* info, FMOD_RESULT result);
+
     public struct FMOD_SYSTEM { }
     public struct FMOD_SOUND { }
     public struct FMOD_CHANNELCONTROL { }
@@ -20,7 +35,6 @@ namespace Ultraviolet.FMOD.Native
     public struct FMOD_POLYGON { }
     public struct FMOD_GEOMETRY { }
     public struct FMOD_SYNCPOINT { }
-    public struct FMOD_ASYNCREADINFO { }
 
     [SuppressUnmanagedCodeSecurity]
     public static unsafe partial class FMODNative
@@ -41,7 +55,11 @@ namespace Ultraviolet.FMOD.Native
             UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "fmod" : "libfmod");
 #endif
 
+#if ANDROID
+        public const UInt32 FMOD_VERSION = 0x00011002;
+#else
         public const UInt32 FMOD_VERSION = 0x00011003;
+#endif
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_System_Create", CallingConvention = CallingConvention.StdCall)]
@@ -217,6 +235,23 @@ namespace Ultraviolet.FMOD.Native
         private delegate FMOD_RESULT FMOD_System_CreateChannelGroupDelegate(FMOD_SYSTEM* system, [MarshalAs(UnmanagedType.LPStr)] String name, FMOD_CHANNELGROUP** channelgroup);
         private static readonly FMOD_System_CreateChannelGroupDelegate pFMOD_System_CreateChannelGroup = lib.LoadFunction<FMOD_System_CreateChannelGroupDelegate>("FMOD_System_CreateChannelGroup");
         public static FMOD_RESULT FMOD_System_CreateChannelGroup(FMOD_SYSTEM* system, String name, FMOD_CHANNELGROUP** channelgroup) => pFMOD_System_CreateChannelGroup(system, name, channelgroup);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint = "FMOD_System_SetFileSystem", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_System_SetFileSystem(FMOD_SYSTEM* system,
+            FMOD_FILE_OPEN_CALLBACK useropen,
+            FMOD_FILE_CLOSE_CALLBACK userclose,
+            FMOD_FILE_READ_CALLBACK userread,
+            FMOD_FILE_SEEK_CALLBACK userseek,
+            FMOD_FILE_ASYNCREAD_CALLBACK userasyncread,
+            FMOD_FILE_ASYNCCANCEL_CALLBACK userasynccancel, Int32 blockalign);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_System_SetFileSystemDelegate(FMOD_SYSTEM* system, FMOD_FILE_OPEN_CALLBACK useropen, FMOD_FILE_CLOSE_CALLBACK userclose, FMOD_FILE_READ_CALLBACK userread, FMOD_FILE_SEEK_CALLBACK userseek, FMOD_FILE_ASYNCREAD_CALLBACK userasyncread, FMOD_FILE_ASYNCCANCEL_CALLBACK userasynccancel, Int32 blockalign);
+        private static readonly FMOD_System_SetFileSystemDelegate pFMOD_System_SetFileSystem = lib.LoadFunction<FMOD_System_SetFileSystemDelegate>("FMOD_System_SetFileSystem");
+        public static FMOD_RESULT FMOD_System_SetFileSystem(FMOD_SYSTEM* system, FMOD_FILE_OPEN_CALLBACK useropen, FMOD_FILE_CLOSE_CALLBACK userclose, FMOD_FILE_READ_CALLBACK userread, FMOD_FILE_SEEK_CALLBACK userseek, FMOD_FILE_ASYNCREAD_CALLBACK userasyncread, FMOD_FILE_ASYNCCANCEL_CALLBACK userasynccancel, Int32 blockalign) => pFMOD_System_SetFileSystem(system, useropen, userclose, userread, userseek, userasyncread, userasynccancel, blockalign);
 #endif
 
 #if ANDROID || IOS

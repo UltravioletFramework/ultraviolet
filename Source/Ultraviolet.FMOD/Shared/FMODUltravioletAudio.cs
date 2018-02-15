@@ -9,6 +9,7 @@ using Ultraviolet.FMOD.Native;
 using static Ultraviolet.FMOD.Native.FMOD_INITFLAGS;
 using static Ultraviolet.FMOD.Native.FMOD_RESULT;
 using static Ultraviolet.FMOD.Native.FMODNative;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.FMOD
 {
@@ -42,7 +43,7 @@ namespace Ultraviolet.FMOD
             result = FMOD_System_GetVersion(system, &version);
             if (result != FMOD_OK)
                 throw new FMODException(result);
-
+            
             if (version < FMOD_VERSION)
                 throw new Exception(FMODStrings.FMODVersionMismatch.Format(FMOD_VERSION, version));
 
@@ -65,11 +66,13 @@ namespace Ultraviolet.FMOD
                     throw new FMODException(result);
             }
 
+            UpdateFileSource();
             UpdateAudioDevices();
             PlaybackDevice = GetDefaultDevice();
             
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
+            uv.Messages.Subscribe(this, UltravioletMessages.FileSourceChanged);
 
             PlatformSpecificMessageSubscriptions(uv);
         }
@@ -94,6 +97,12 @@ namespace Ultraviolet.FMOD
                     awaitingResume = false;
                     Resume();
                 }
+                return;
+            }
+
+            if (type == UltravioletMessages.FileSourceChanged)
+            {
+                UpdateFileSource();
                 return;
             }
 
@@ -131,7 +140,7 @@ namespace Ultraviolet.FMOD
             result = FMOD_System_Update(system);
             if (result != FMOD_OK)
                 throw new FMODException(result);
-
+            
             UpdateAudioDevices();
 
             Updating?.Invoke(this, time);
@@ -476,6 +485,33 @@ namespace Ultraviolet.FMOD
         }
 
         /// <summary>
+        /// Updates the file source from which FMOD loads files.
+        /// </summary>
+        private void UpdateFileSource()
+        {
+            var result = default(FMOD_RESULT);
+
+            this.fileSource = FileSystemService.Source;
+
+            if (fileSource == null)
+            {
+                result = FMOD_System_SetFileSystem(system, null, null, null, null, null, null, -1);
+                if (result != FMOD_OK)
+                    throw new FMODException(result);
+            }
+            else
+            {
+                result = FMOD_System_SetFileSystem(system,
+                    new FMOD_FILE_OPEN_CALLBACK(FMODFileSystem.UserOpen),
+                    new FMOD_FILE_CLOSE_CALLBACK(FMODFileSystem.UserClose),
+                    new FMOD_FILE_READ_CALLBACK(FMODFileSystem.UserRead),
+                    new FMOD_FILE_SEEK_CALLBACK(FMODFileSystem.UserSeek), null, null, -1);
+                if (result != FMOD_OK)
+                    throw new FMODException(result);
+            }
+        }
+
+        /// <summary>
         /// Gets the default audio device.
         /// </summary>
         private FMODUltravioletAudioDevice GetDefaultDevice()
@@ -497,6 +533,7 @@ namespace Ultraviolet.FMOD
         private Boolean soundEffectsMuted;
 
         // State values.
+        private FileSource fileSource;
         private Boolean suspended;
         private Boolean awaitingResume;
 

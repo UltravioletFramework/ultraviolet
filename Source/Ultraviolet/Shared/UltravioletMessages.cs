@@ -70,5 +70,10 @@ namespace Ultraviolet
         /// An event indicating that a window was moved to a display with a different density.
         /// </summary>
         public static readonly UltravioletMessageID WindowDensityChanged = UltravioletMessageID.Acquire(nameof(WindowDensityChanged));
+
+        /// <summary>
+        /// An event indicating that the file source for content assets has changed.
+        /// </summary>
+        public static readonly UltravioletMessageID FileSourceChanged = UltravioletMessageID.Acquire(nameof(FileSourceChanged));
     }
 }
