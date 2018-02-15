@@ -15,7 +15,7 @@ namespace Ultraviolet.FMOD
     /// <summary>
     /// Represents the FMOD implementation of the Ultraviolet audio subsystem.
     /// </summary>
-    public sealed unsafe class FMODUltravioletAudio : UltravioletResource,
+    public sealed unsafe partial class FMODUltravioletAudio : UltravioletResource,
         IUltravioletAudio,
         IMessageSubscriber<UltravioletMessageID>
     {
@@ -27,6 +27,8 @@ namespace Ultraviolet.FMOD
         public FMODUltravioletAudio(UltravioletContext uv)
             : base(uv)
         {
+            PlatformSpecificInitialization();
+
             var result = default(FMOD_RESULT);
 
             fixed (FMOD_SYSTEM** psystem = &system)
@@ -68,6 +70,8 @@ namespace Ultraviolet.FMOD
             
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
+
+            PlatformSpecificMessageSubscriptions(uv);
         }
 
         /// <inheritdoc/>
@@ -92,6 +96,8 @@ namespace Ultraviolet.FMOD
                 }
                 return;
             }
+
+            PlatformSpecificMessageHandling(type, data);
         }
 
         /// <inheritdoc/>
@@ -389,6 +395,21 @@ namespace Ultraviolet.FMOD
 
             base.Dispose(disposing);
         }
+
+        /// <summary>
+        /// Performs platform-specific initialization steps.
+        /// </summary>
+        partial void PlatformSpecificInitialization();
+
+        /// <summary>
+        /// Performs platform-specific message subscriptions.
+        /// </summary>
+        partial void PlatformSpecificMessageSubscriptions(UltravioletContext uv);
+
+        /// <summary>
+        /// Performs platform-specific message handling.
+        /// </summary>
+        partial void PlatformSpecificMessageHandling(UltravioletMessageID type, MessageData data);
 
         /// <summary>
         /// Updates the global volume of the Songs channel group to match the subsystem's current settings.
