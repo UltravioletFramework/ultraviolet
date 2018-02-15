@@ -1,16 +1,16 @@
-using Android.Text;
-using Org.Libsdl.App;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml;
+using Android.OS;
+using Android.Text;
+using Org.Libsdl.App;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Messages;
 using Ultraviolet.Platform;
-using Ultraviolet.Shims.Android.Input;
 using Ultraviolet.Shims.Android.Platform;
 
 namespace Ultraviolet
@@ -279,6 +279,97 @@ namespace Ultraviolet
         /// <returns>The Ultraviolet context.</returns>
         protected abstract UltravioletContext OnCreatingUltravioletContext();
 
+        /// <inheritdoc/>
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityCreate, data);
+            }
+            base.OnCreate(savedInstanceState);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnStart()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityStart, data);
+            }
+            base.OnStart();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnResume()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityResume, data);
+            }
+            base.OnResume();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPause()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityPause, data);
+            }
+            base.OnPause();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnStop()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityStop, data);
+            }
+            base.OnStop();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDestroy()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityDestroy, data);
+            }
+            base.OnDestroy();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnRestart()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv != null && !uv.Disposed)
+            {
+                var data = uv.Messages.CreateMessageData<AndroidLifecycleMessageData>();
+                data.Activity = this;
+                uv.Messages.Publish(UltravioletMessages.AndroidActivityRestart, data);
+            }
+            base.OnRestart();
+        }
+
         /// <summary>
         /// Releases resources associated with the object.
         /// </summary>
@@ -485,7 +576,7 @@ namespace Ultraviolet
                 Finish();
             }
         }
-
+        
         /// <summary>
         /// Ensures that the assembly which contains the specified type is linked on platforms
         /// which require ahead-of-time compilation.
@@ -549,7 +640,7 @@ namespace Ultraviolet
         /// <returns>The directory that contains the application's local configuration files.</returns>
         protected String GetLocalApplicationSettingsDirectory()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), company, application);
+            var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), company, application);
             Directory.CreateDirectory(path);
             return path;
         }
@@ -561,7 +652,7 @@ namespace Ultraviolet
         /// <returns>The directory that contains the application's roaming configuration files.</returns>
         protected String GetRoamingApplicationSettingsDirectory()
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), company, application);
+            var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), company, application);
             Directory.CreateDirectory(path);
             return path;
         }
