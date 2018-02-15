@@ -19,11 +19,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSoundEffectPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\FMODSoundEffectProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FMODFileStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FMODFileSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletAudio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.ErrorString.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_ASYNCREADINFO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SPEAKERMODE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TAG.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_MODE.cs" />

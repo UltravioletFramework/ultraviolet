@@ -1,0 +1,22 @@
+﻿using System;
+using System.Runtime.InteropServices;
+using Ultraviolet.Core;
+
+namespace Ultraviolet.FMOD.Native
+{
+#pragma warning disable 1591
+    [Preserve(AllMembers = true)]
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct FMOD_ASYNCREADINFO
+    {
+        void* handle;
+        UInt32 offset;
+        UInt32 sizebytes;
+        Int32 priority;
+        void* userdata;
+        void* buffer;
+        UInt32 bytesread;
+        IntPtr done;
+    }
+#pragma warning restore 1591
+}
