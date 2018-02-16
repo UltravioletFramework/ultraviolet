@@ -81,9 +81,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Ultraviolet.Presentation.CompiledExpressions">
-      <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
@@ -136,7 +133,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Presentation\Ultraviolet.Presentation.CompiledExpressions.dll" />
+    <AndroidAsset Include="Presentation\Ultraviolet.Presentation.CompiledExpressions.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\Android\Ultraviolet.BASS.Android.csproj">
