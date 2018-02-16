@@ -54,12 +54,8 @@ namespace Ultraviolet.FMOD.Native
         private static readonly NativeLibrary lib = new NativeLibrary(
             UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "fmod" : "libfmod");
 #endif
-
-#if ANDROID
-        public const UInt32 FMOD_VERSION = 0x00011002;
-#else
+        
         public const UInt32 FMOD_VERSION = 0x00011003;
-#endif
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_System_Create", CallingConvention = CallingConvention.StdCall)]
