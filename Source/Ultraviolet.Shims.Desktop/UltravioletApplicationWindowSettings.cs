@@ -134,7 +134,7 @@ namespace Ultraviolet
 
             primary.SetWindowState(WindowState);
             primary.SetWindowMode(WindowMode);
-            primary.SetWindowBounds(WindowedPosition, WindowScale);
+            primary.SetWindowBounds(WindowedPosition, Math.Max(1f, WindowScale));
             primary.GrabsMouseWhenWindowed = GrabsMouseWhenWindowed;
             primary.GrabsMouseWhenFullscreenWindowed = GrabsMouseWhenFullscreenWindowed;
             primary.GrabsMouseWhenFullscreen = GrabsMouseWhenFullscreen;
