@@ -234,6 +234,13 @@ namespace Ultraviolet.Presentation
                             break;
 
                         case UltravioletPlatform.Android:
+                            LoadCompiledExpressions_Android(ref compiledExpressionsAssembly);
+                            if (compiledExpressionsAssembly == null)
+                            {
+                                compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
+                            }
+                            break;
+
                         case UltravioletPlatform.iOS:
                             compiledExpressionsAssembly = Assembly.Load(CompiledExpressionsAssemblyName);
                             break;
@@ -379,7 +386,12 @@ namespace Ultraviolet.Presentation
                 throw new InvalidOperationException(UltravioletStrings.NoValidConstructor.Format(compilerType.Name), e);
             }
         }
-        
+
+        /// <summary>
+        /// Performs platform-specific steps to load the compiled expresisons assembly.
+        /// </summary>
+        partial void LoadCompiledExpressions_Android(ref Assembly asm);        
+
         // The registry of compiled data source wrappers.
         private readonly Dictionary<Type, Type> compiledDataSourceWrappersByWrappedType =
             new Dictionary<Type, Type>();
