@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation.Compiler
@@ -147,8 +148,10 @@ namespace Ultraviolet.Presentation.Compiler
             try
             {
                 outputStream = state.GenerateInMemory ? new MemoryStream() : (Stream)File.OpenWrite(output);
-
-                var emitResult = compilation.Emit(outputStream);
+                
+                var options = new EmitOptions(outputNameOverride: "Ultraviolet.Presentation.CompiledExpressions.dll",
+                    debugInformationFormat: DebugInformationFormat.PortablePdb, fileAlignment: 512, baseAddress: 0x11000000);
+                var emitResult = compilation.Emit(outputStream, options: options);
                 if (emitResult.Success)
                 {
                     var assembly = state.GenerateInMemory ? Assembly.Load(((MemoryStream)outputStream).ToArray()) : null;
@@ -198,9 +201,9 @@ namespace Ultraviolet.Presentation.Compiler
         /// </summary>
         private static Compilation CompileDataSourceWrapperSources(RoslynExpressionCompilerState state, String output, IEnumerable<DataSourceWrapperInfo> infos, IEnumerable<String> references, Boolean debug)
         {
-            var trees = new ConcurrentBag<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(), CSharpParseOptions.Default, "CompilerMetadata.cs") };
+            var trees = new ConcurrentBag<SyntaxTree>() { CSharpSyntaxTree.ParseText(WriteCompilerMetadataFile(debug), CSharpParseOptions.Default, "CompilerMetadata.cs") };
             var mrefs = references.Distinct().Select(x => MetadataReference.CreateFromFile(Path.IsPathRooted(x) ? x : Assembly.Load(x).Location));
-
+            
             Parallel.ForEach(infos, info =>
             {
                 var path = state.GetWorkingFileForDataSourceWrapper(info);
@@ -208,8 +211,9 @@ namespace Ultraviolet.Presentation.Compiler
 
                 trees.Add(CSharpSyntaxTree.ParseText(info.DataSourceWrapperSourceCode, path: path));                
             });
-            
-            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: debug ? OptimizationLevel.Debug : OptimizationLevel.Release);
+
+            var optimization = debug ? OptimizationLevel.Debug : OptimizationLevel.Release;
+            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: optimization, deterministic: true);
             var compilation = CSharpCompilation.Create("Ultraviolet.Presentation.CompiledExpressions.dll", trees, mrefs, options);
 
             return compilation;
@@ -299,12 +303,12 @@ namespace Ultraviolet.Presentation.Compiler
             if (netStandardRefAsmDir == null)
                 throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssemblies);
 
-            referencedAssemblies.Add(Path.Combine(netStandardRefAsmDir, "netstandard.dll"));
-            referencedAssemblies.Add(Path.Combine(netStandardRefAsmDir, "mscorlib.dll"));
-            referencedAssemblies.Add(Path.Combine(netStandardRefAsmDir, "System.Runtime.dll"));
-            referencedAssemblies.Add(Path.Combine(netStandardRefAsmDir, "System.Runtime.Extensions.dll"));
-            referencedAssemblies.Add(Path.Combine(netStandardRefAsmDir, "System.Runtime.InteropServices.dll"));
-            
+            var refDllFiles = Directory.GetFiles(netStandardRefAsmDir, "*.dll");
+            foreach (var refDllFile in refDllFiles)
+            {
+                referencedAssemblies.Add(refDllFile);
+            }
+
             referencedAssemblies.Add(typeof(Contract).Assembly.Location);
             referencedAssemblies.Add(typeof(UltravioletContext).Assembly.Location);
             referencedAssemblies.Add(typeof(PresentationFoundation).Assembly.Location);
@@ -315,11 +319,22 @@ namespace Ultraviolet.Presentation.Compiler
         /// <summary>
         /// Builds the source code for the CompilerMetadata class.
         /// </summary>
-        private static String WriteCompilerMetadataFile()
+        private static String WriteCompilerMetadataFile(Boolean debug)
         {
             var writer = new DataSourceWrapperWriter();
             var version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
             writer.WriteLine("using System;");
+            writer.WriteLine("using System.Reflection;");
+            writer.WriteLine("using System.Runtime.Versioning;");
+            writer.WriteLine();
+            writer.WriteLine("[assembly: TargetFramework(\".NETStandard,Version=v2.0\", FrameworkDisplayName = \"\")]");
+            writer.WriteLine("[assembly: AssemblyCompany(\"Ultraviolet Framework\")]");
+            writer.WriteLine("[assembly: AssemblyConfiguration(\"" + (debug ? "Debug" : "Release") + "\")]");
+            writer.WriteLine("[assembly: AssemblyFileVersion(\"1.0.0.0\")]");
+            writer.WriteLine("[assembly: AssemblyInformationalVersion(\"1.0.0.0\")]");
+            writer.WriteLine("[assembly: AssemblyProduct(\"Compiled Binding Expressions\")]");
+            writer.WriteLine("[assembly: AssemblyTitle(\"Compiled Binding Expressions\")]");
+            writer.WriteLine("[assembly: AssemblyVersion(\"1.0.0.0\")]");
             writer.WriteLine();
             writer.WriteLine("namespace " + PresentationFoundationView.DataSourceWrapperNamespaceForViews);
             writer.WriteLine("{");
