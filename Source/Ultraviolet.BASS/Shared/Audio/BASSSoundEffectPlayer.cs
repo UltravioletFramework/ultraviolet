@@ -1,7 +1,9 @@
 ﻿using System;
 using Ultraviolet.Audio;
+using Ultraviolet.BASS.Messages;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using static Ultraviolet.BASS.Native.BASSFXNative;
 using static Ultraviolet.BASS.Native.BASSNative;
 
@@ -10,7 +12,8 @@ namespace Ultraviolet.BASS.Audio
     /// <summary>
     /// Represents the BASS implementation of the <see cref="SoundEffectPlayer"/> class.
     /// </summary>
-    public sealed class BASSSoundEffectPlayer : SoundEffectPlayer
+    public sealed class BASSSoundEffectPlayer : SoundEffectPlayer,
+        IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BASSSoundEffectPlayer"/> class.
@@ -19,7 +22,24 @@ namespace Ultraviolet.BASS.Audio
         public BASSSoundEffectPlayer(UltravioletContext uv)
             : base(uv)
         {
+            uv.Messages.Subscribe(this, BASSUltravioletMessages.BASSDeviceChanged);
+        }
 
+        /// <inheritdoc/>
+        void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
+        {
+            if (type == BASSUltravioletMessages.BASSDeviceChanged)
+            {
+                StopInternal();
+
+                if (BASSUtil.IsValidHandle(sample))
+                {
+                    var deviceID = ((BASSDeviceChangedMessageData)data).DeviceID;
+                    if (!BASS_ChannelSetDevice(sample, deviceID))
+                        throw new BASSException();
+                }
+                return;
+            }
         }
 
         /// <inheritdoc/>

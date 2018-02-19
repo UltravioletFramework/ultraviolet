@@ -23,6 +23,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)BASSStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSUltravioletAudio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSUltravioletFactoryInitializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BASSUltravioletMessages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\BASSDeviceChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASSNative.BASS_SYNC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASSNative.BASS_CONFIG.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASSNative.BASS_STREAMPROC.cs" />
