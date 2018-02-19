@@ -6,6 +6,7 @@ using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using static Ultraviolet.BASS.Native.BASSNative;
+using Ultraviolet.BASS.Messages;
 
 namespace Ultraviolet.BASS
 {
@@ -139,25 +140,56 @@ namespace Ultraviolet.BASS
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 var val = value ?? GetDefaultDevice();
-                if (val == null)
+                if (val != PlaybackDevice)
                 {
-                    if (!BASS_SetDevice(0))
-                        throw new BASSException();
-
-                    playbackDevice = null;
-                }
-                else
-                {
-                    if (val is BASSUltravioletAudioDevice device)
+                    if (val == null)
                     {
-                        Ultraviolet.ValidateResource(device);
-
-                        if (!BASS_SetDevice(device.ID))
+                        if (!BASS_Free())
                             throw new BASSException();
 
-                        playbackDevice = device;
+                        if (!BASS_SetDevice(0))
+                            throw new BASSException();
+
+                        playbackDevice = null;
                     }
-                    else throw new ArgumentException(nameof(value));
+                    else
+                    {
+                        if (val is BASSUltravioletAudioDevice device)
+                        {
+                            Ultraviolet.ValidateResource(device);
+
+                            var oldDevice = (playbackDevice == null) ? 0u : BASS_GetDevice();
+
+                            if (!BASS_Init((int)device.ID, 44100u, 0, IntPtr.Zero, IntPtr.Zero))
+                            {
+                                var error = BASS_ErrorGetCode();
+                                if (error != BASS_ERROR_ALREADY)
+                                    throw new BASSException(error);
+                            }
+
+                            if (Ultraviolet != null && !Ultraviolet.Disposed)
+                            {
+                                var data = Ultraviolet.Messages.CreateMessageData<BASSDeviceChangedMessageData>();
+                                data.DeviceID = device.ID;
+                                Ultraviolet.Messages.PublishImmediate(BASSUltravioletMessages.BASSDeviceChanged, data);
+                            }
+
+                            if (oldDevice > 0)
+                            {
+                                if (!BASS_SetDevice(oldDevice))
+                                    throw new BASSException();
+
+                                if (!BASS_Free())
+                                    throw new BASSException();
+
+                                if (!BASS_SetDevice(device.ID))
+                                    throw new BASSException();
+                            }
+
+                            playbackDevice = device;
+                        }
+                        else throw new ArgumentException(nameof(value));
+                    }
                 }
             }
         }

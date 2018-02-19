@@ -5,13 +5,17 @@ using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using static Ultraviolet.BASS.Native.BASSFXNative;
 using static Ultraviolet.BASS.Native.BASSNative;
+using Ultraviolet.Messages;
+using Ultraviolet.Core.Messages;
+using Ultraviolet.BASS.Messages;
 
 namespace Ultraviolet.BASS.Audio
 {
     /// <summary>
     /// Represents the BASS implementation of the <see cref="SongPlayer"/> class.
     /// </summary>
-    public sealed class BASSSongPlayer : SongPlayer
+    public sealed class BASSSongPlayer : SongPlayer,
+        IMessageSubscriber<UltravioletMessageID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BASSSongPlayer"/> class.
@@ -21,6 +25,23 @@ namespace Ultraviolet.BASS.Audio
             : base(uv)
         {
             gcHandle = GCHandle.Alloc(this, GCHandleType.Weak);
+
+            uv.Messages.Subscribe(this, BASSUltravioletMessages.BASSDeviceChanged);
+        }
+
+        /// <inheritdoc/>
+        void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
+        {
+            if (type == BASSUltravioletMessages.BASSDeviceChanged)
+            {
+                if (BASSUtil.IsValidHandle(stream))
+                {
+                    var deviceID = ((BASSDeviceChangedMessageData)data).DeviceID;
+                    if (!BASS_ChannelSetDevice(stream, deviceID))
+                        throw new BASSException();
+                }
+                return;
+            }
         }
 
         /// <inheritdoc/>
@@ -318,7 +339,10 @@ namespace Ultraviolet.BASS.Audio
         protected override void Dispose(Boolean disposing)
         {
             if (Ultraviolet != null && !Ultraviolet.Disposed)
+            {
                 StopInternal();
+                Ultraviolet.Messages.Unsubscribe(this);
+            }
 
             if (gcHandle.IsAllocated)
                 gcHandle.Free();

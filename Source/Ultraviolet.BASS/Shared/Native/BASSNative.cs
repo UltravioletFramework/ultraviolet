@@ -216,6 +216,17 @@ namespace Ultraviolet.BASS.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="BASS_ChannelSetDevice", CallingConvention = CallingConvention.StdCall)]
+        public static extern Boolean BASS_ChannelSetDevice(UInt32 handle, UInt32 device);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate Boolean BASS_ChannelSetDeviceDelegate(UInt32 handle, UInt32 device);
+        private static readonly BASS_ChannelSetDeviceDelegate pBASS_ChannelSetDevice = lib.LoadFunction<BASS_ChannelSetDeviceDelegate>("BASS_ChannelSetDevice");
+        public static Boolean BASS_ChannelSetDevice(UInt32 handle, UInt32 device) => pBASS_ChannelSetDevice(handle, device);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="BASS_ChannelIsActive", CallingConvention = CallingConvention.StdCall)]
         public static extern UInt32 BASS_ChannelIsActive(UInt32 handle);
 #else
