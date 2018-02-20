@@ -322,7 +322,8 @@ namespace Ultraviolet.Presentation.Compiler
         private static String WriteCompilerMetadataFile(Boolean debug)
         {
             var writer = new DataSourceWrapperWriter();
-            var applicationVersion = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).FileVersion;
+            var applicationAsm = Assembly.GetEntryAssembly();
+            var applicationVersion = applicationAsm == null ? "1.0.0.0" : FileVersionInfo.GetVersionInfo(applicationAsm.Location).FileVersion;
             var compilerVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
             writer.WriteLine("using System;");
             writer.WriteLine("using System.Reflection;");
