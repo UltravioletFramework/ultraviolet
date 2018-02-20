@@ -20,12 +20,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors></WarningsAsErrors>
+    <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
+    <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
@@ -33,6 +35,7 @@
     <WarningsAsErrors />
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
+    <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
