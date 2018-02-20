@@ -27,6 +27,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.ErrorString.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_ASYNCREADINFO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_DEBUG_MODE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_DEBUG_FLAGS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SPEAKERMODE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_TAG.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_MODE.cs" />
