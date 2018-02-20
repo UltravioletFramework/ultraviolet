@@ -28,6 +28,14 @@ powershell -Command "(gc Ultraviolet.BASS.nuspe_) -replace 'UV_VERSION', '%UV_VE
 nuget pack Ultraviolet.BASS.nuspec -Symbols
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
+powershell -Command "(gc Ultraviolet.FMOD.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.FMOD.Native.nuspec"
+nuget pack Ultraviolet.FMOD.Native.nuspec
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
+powershell -Command "(gc Ultraviolet.FMOD.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.FMOD.nuspec"
+nuget pack Ultraviolet.FMOD.nuspec -Symbols
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
 powershell -Command "(gc Ultraviolet.Shims.Desktop.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Shims.Desktop.nuspec"
 nuget pack Ultraviolet.Shims.Desktop.nuspec -Symbols
 @if %errorlevel% neq 0 @exit /b %errorlevel%
