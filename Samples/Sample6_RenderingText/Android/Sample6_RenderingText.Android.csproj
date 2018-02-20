@@ -78,7 +78,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -97,7 +96,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -125,6 +123,15 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Cancel.sprite">
+      <Link>Content\Sprites\Cancel.sprite</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\OK.sprite">
+      <Link>Content\Sprites\OK.sprite</Link>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -175,11 +182,33 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\Garamond.xml">
+      <Link>Content\Fonts\Garamond.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\GaramondTexture.png">
+      <Link>Content\Fonts\GaramondTexture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Cancel.png">
+      <Link>Content\Sprites\Textures\Cancel.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\OK.png">
+      <Link>Content\Sprites\Textures\OK.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\Sample6_RenderingText.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" />
+      <UserProperties ProjectLinkReference="b689c7be-e5e6-49af-a594-f7771a74c7d4" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

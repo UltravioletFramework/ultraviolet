@@ -60,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass.so">
       <Link>lib\armeabi-v7a\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -90,7 +89,6 @@
     </AndroidNativeLibrary>
     <None Include="app.config" />
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -131,10 +129,34 @@
       <Project>{b5502009-935a-40ba-b415-abbf55427cad}</Project>
       <Name>Ultraviolet.SDL2.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
+      <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
+      <Name>Ultraviolet.Shims.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet\Android\Ultraviolet.Android.csproj">
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
       <Name>Ultraviolet.Android</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Hexagons.xml">
+      <Link>Content\Sprites\Hexagons.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\HexagonsLicense.txt">
+      <Link>Content\Sprites\HexagonsLicense.txt</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\HexagonsTexture.png">
+      <Link>Content\Sprites\HexagonsTexture.png</Link>
+    </AndroidAsset>
   </ItemGroup>
   <Import Project="..\Shared\UvStress.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

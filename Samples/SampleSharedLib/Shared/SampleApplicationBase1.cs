@@ -30,7 +30,8 @@ namespace UltravioletSample
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            SetFileSourceFromManifestIfExists($"{GetType().Namespace}.Content.uvarc");
+            if (!SetFileSourceFromManifestIfExists($"{GetType().Namespace}.Content.uvarc"))
+                UsePlatformSpecificFileSource();
 
             base.OnInitialized();
         }

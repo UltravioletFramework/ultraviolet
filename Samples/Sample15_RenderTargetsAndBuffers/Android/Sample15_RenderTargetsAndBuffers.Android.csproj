@@ -78,7 +78,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -98,7 +97,6 @@
     <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -126,6 +124,33 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\Effects\Noise.frag">
+      <Link>Content\Effects\Noise.frag</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\Noise.vert">
+      <Link>Content\Effects\Noise.vert</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\NoiseCommon.fragh">
+      <Link>Content\Effects\NoiseCommon.fragh</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\NoiseEffect.json">
+      <Link>Content\Effects\NoiseEffect.json</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\NoiseES.frag">
+      <Link>Content\Effects\NoiseES.frag</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\NoiseES.vert">
+      <Link>Content\Effects\NoiseES.vert</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\NoiseGL.frag">
+      <Link>Content\Effects\NoiseGL.frag</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\NoiseGL.vert">
+      <Link>Content\Effects\NoiseGL.vert</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -176,11 +201,27 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\Shutter.wav">
+      <Link>Content\SoundEffects\Shutter.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Blank.png">
+      <Link>Content\Textures\Blank.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\Sample15_RenderTargetsAndBuffers.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="2c6b942e-3d19-4211-af85-82402fd31a73" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="2c6b942e-3d19-4211-af85-82402fd31a73" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

@@ -66,7 +66,8 @@ namespace UvStress
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            SetFileSourceFromManifestIfExists("UvStress.Content.uvarc");
+            if (!SetFileSourceFromManifestIfExists("UvStress.Content.uvarc"))
+                UsePlatformSpecificFileSource();
 
             Ultraviolet.GetPlatform().Windows.GetPrimary().Caption = "UvStressTest";
 

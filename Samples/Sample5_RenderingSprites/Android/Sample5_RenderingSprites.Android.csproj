@@ -78,7 +78,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -97,7 +96,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -125,6 +123,12 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Explosion.sprite">
+      <Link>Content\Sprites\Explosion.sprite</Link>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -175,11 +179,105 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion.xml">
+      <Link>Content\Sprites\Textures\Explosion.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_01.png">
+      <Link>Content\Sprites\Textures\Explosion_01.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_02.png">
+      <Link>Content\Sprites\Textures\Explosion_02.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_03.png">
+      <Link>Content\Sprites\Textures\Explosion_03.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_04.png">
+      <Link>Content\Sprites\Textures\Explosion_04.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_05.png">
+      <Link>Content\Sprites\Textures\Explosion_05.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_06.png">
+      <Link>Content\Sprites\Textures\Explosion_06.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_07.png">
+      <Link>Content\Sprites\Textures\Explosion_07.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_08.png">
+      <Link>Content\Sprites\Textures\Explosion_08.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_09.png">
+      <Link>Content\Sprites\Textures\Explosion_09.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_10.png">
+      <Link>Content\Sprites\Textures\Explosion_10.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_11.png">
+      <Link>Content\Sprites\Textures\Explosion_11.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_12.png">
+      <Link>Content\Sprites\Textures\Explosion_12.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_13.png">
+      <Link>Content\Sprites\Textures\Explosion_13.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_14.png">
+      <Link>Content\Sprites\Textures\Explosion_14.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_15.png">
+      <Link>Content\Sprites\Textures\Explosion_15.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_16.png">
+      <Link>Content\Sprites\Textures\Explosion_16.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_17.png">
+      <Link>Content\Sprites\Textures\Explosion_17.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_18.png">
+      <Link>Content\Sprites\Textures\Explosion_18.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_19.png">
+      <Link>Content\Sprites\Textures\Explosion_19.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_20.png">
+      <Link>Content\Sprites\Textures\Explosion_20.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_21.png">
+      <Link>Content\Sprites\Textures\Explosion_21.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_22.png">
+      <Link>Content\Sprites\Textures\Explosion_22.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_23.png">
+      <Link>Content\Sprites\Textures\Explosion_23.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_24.png">
+      <Link>Content\Sprites\Textures\Explosion_24.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_25.png">
+      <Link>Content\Sprites\Textures\Explosion_25.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_26.png">
+      <Link>Content\Sprites\Textures\Explosion_26.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_27.png">
+      <Link>Content\Sprites\Textures\Explosion_27.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_28.png">
+      <Link>Content\Sprites\Textures\Explosion_28.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Explosion_29.png">
+      <Link>Content\Sprites\Textures\Explosion_29.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\Sample5_RenderingSprites.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="ab3abbd1-b987-4346-91fc-69d0694008a9" />
+      <UserProperties ProjectLinkReference="ab3abbd1-b987-4346-91fc-69d0694008a9" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

@@ -70,7 +70,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -89,7 +88,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -117,7 +115,25 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
+      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
+    </AndroidAsset>
     <None Include="app.config" />
+    <AndroidAsset Include="Content\UI\DefaultUIStyles-mdpi.uvss" />
+    <AndroidAsset Include="Content\UI\DefaultUIStyles.uvss" />
+    <AndroidAsset Include="Content\UI\GameStyles.uvss" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
@@ -182,6 +198,48 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Cursors\Cursors.xml">
+      <Link>Content\Cursors\Cursors.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Cursors\CursorsImage.png">
+      <Link>Content\Cursors\CursorsImage.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\Click1.wav">
+      <Link>Content\SoundEffects\Click1.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover1.wav">
+      <Link>Content\SoundEffects\rollover1.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover2.wav">
+      <Link>Content\SoundEffects\rollover2.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover3.wav">
+      <Link>Content\SoundEffects\rollover3.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Logo-mdpi.png">
+      <Link>Content\Textures\Logo-mdpi.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Logo.png">
+      <Link>Content\Textures\Logo.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
+      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="Content\UI\DefaultUI-mdpi.png" />
+    <AndroidAsset Include="Content\UI\DefaultUI.png" />
+    <AndroidAsset Include="Content\UI\DefaultUIBackground.png" />
+    <AndroidAsset Include="Content\UI\DefaultUIFont-mdpi.xml" />
+    <AndroidAsset Include="Content\UI\DefaultUIFont.xml" />
   </ItemGroup>
   <Import Project="..\Shared\Sample13_UPFAdvanced.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

@@ -78,7 +78,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -97,7 +96,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -125,6 +123,15 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
+      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIStyles.uvss">
+      <Link>Content\UI\DefaultUIStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -186,11 +193,51 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\ExampleScreen\ExampleScreen.xml">
+      <Link>Content\UI\Screens\ExampleScreen\ExampleScreen.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUI-mdpi.png">
+      <Link>Content\UI\DefaultUI-mdpi.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUI.png">
+      <Link>Content\UI\DefaultUI.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIBackground.png">
+      <Link>Content\UI\DefaultUIBackground.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIFont-mdpi.xml">
+      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIFont.xml">
+      <Link>Content\UI\DefaultUIFont.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\Click1.wav">
+      <Link>Content\SoundEffects\Click1.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover3.wav">
+      <Link>Content\SoundEffects\rollover3.wav</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Cursors\Cursors.xml">
+      <Link>Content\Cursors\Cursors.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Cursors\CursorsImage.png">
+      <Link>Content\Cursors\CursorsImage.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\Sample12_UPF.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" />
+      <UserProperties ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
