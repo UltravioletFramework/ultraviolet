@@ -5,9 +5,9 @@
     <version>UV_VERSION</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
-    <licenseUrl>http://ultraviolet.tl/nuget/license.txt</licenseUrl>
+    <licenseUrl>http://ultraviolet.tl/licenses</licenseUrl>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <iconUrl>http://ultraviolet.tl/nuget/uv.ico</iconUrl>
+    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for Android.</description>
     <tags>ultraviolet gamedev</tags>	
