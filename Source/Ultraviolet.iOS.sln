@@ -52,6 +52,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvStress.iOS", "UvStress\iO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.iOS", "Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj", "{F7D661D7-101B-417F-BBF7-8170CC04AB55}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.iOS", "Ultraviolet.FMOD\iOS\Ultraviolet.FMOD.iOS.csproj", "{C8EAE381-8D8D-43F9-AC87-4A4F64095794}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		UvDebug\Shared\UvDebug.projitems*{00dfa15e-9cb3-4ebb-91c1-4837335b083c}*SharedItemsImports = 4
@@ -254,6 +258,18 @@ Global
 		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhone.Build.0 = Release|Any CPU
 		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{F7D661D7-101B-417F-BBF7-8170CC04AB55}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Release|iPhone.Build.0 = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Signed|iPhone.ActiveCfg = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Signed|iPhone.Build.0 = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C8EAE381-8D8D-43F9-AC87-4A4F64095794}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
