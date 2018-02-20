@@ -63,6 +63,7 @@ sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.UIKit.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.FMOD.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Shims.iOS.dll" "%TLSN%"
 GOTO :eof
 
