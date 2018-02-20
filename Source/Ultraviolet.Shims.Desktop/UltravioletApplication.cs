@@ -455,11 +455,21 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Uses a file source which is appropriate to the current platform.
+        /// </summary>
+        /// <returns><see langword="true"/> if a platform-specific file source was used; otherwise, <see langword="false"/>.</returns>
+        protected Boolean UsePlatformSpecificFileSource()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Sets the file system source to an archive file loaded from a manifest resource stream,
         /// if the specified manifest resource exists.
         /// </summary>
         /// <param name="name">The name of the manifest resource being loaded as the file system source.</param>
-        protected void SetFileSourceFromManifestIfExists(String name)
+        /// <returns><see langword="true"/> if the file source was set; otherwise, <see langword="false"/>.</returns>
+        protected Boolean SetFileSourceFromManifestIfExists(String name)
         {
             Contract.RequireNotEmpty(name, nameof(name));
 
@@ -470,7 +480,10 @@ namespace Ultraviolet
                 {
                     return asm.GetManifestResourceStream(name);
                 });
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

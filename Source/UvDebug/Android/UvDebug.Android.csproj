@@ -107,7 +107,42 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <EmbeddedResource Include="Content.uvarc" />
+    <AndroidAsset Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
+      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss">
+      <Link>Content\UI\DefaultUIStyles-mdpi.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIStyles.uvss">
+      <Link>Content\UI\DefaultUIStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\GameStyles.uvss">
+      <Link>Content\UI\GameStyles.uvss</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\InterfaceIcons.sprite">
+      <Link>Content\Sprites\InterfaceIcons.sprite</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\Test.frag">
+      <Link>Content\Effects\Test.frag</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\Test.vert">
+      <Link>Content\Effects\Test.vert</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Effects\TestEffect.json">
+      <Link>Content\Effects\TestEffect.json</Link>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
@@ -171,11 +206,99 @@
     <Folder Include="Resources\layout\" />
     <Folder Include="Resources\values\" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+      <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+      <Link>Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
+      <Link>Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUI-mdpi.png">
+      <Link>Content\UI\DefaultUI-mdpi.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUI.png">
+      <Link>Content\UI\DefaultUI.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIBackground.png">
+      <Link>Content\UI\DefaultUIBackground.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIFont-mdpi.xml">
+      <Link>Content\UI\DefaultUIFont-mdpi.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\DefaultUIFont.xml">
+      <Link>Content\UI\DefaultUIFont.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Logo-mdpi.png">
+      <Link>Content\Textures\Logo-mdpi.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Logo.png">
+      <Link>Content\Textures\Logo.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\test_0.png">
+      <Link>Content\Textures\test_0.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\test_1.png">
+      <Link>Content\Textures\test_1.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\test_2.png">
+      <Link>Content\Textures\test_2.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\Click1.wav">
+      <Link>Content\SoundEffects\Click1.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover1.wav">
+      <Link>Content\SoundEffects\rollover1.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover2.wav">
+      <Link>Content\SoundEffects\rollover2.wav</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\SoundEffects\rollover3.wav">
+      <Link>Content\SoundEffects\rollover3.wav</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Localization\GameStrings.xml">
+      <Link>Content\Localization\GameStrings.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Cursors\Cursors.xml">
+      <Link>Content\Cursors\Cursors.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Cursors\CursorsImage.png">
+      <Link>Content\Cursors\CursorsImage.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
+      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
