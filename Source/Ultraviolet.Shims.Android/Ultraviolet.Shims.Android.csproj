@@ -88,6 +88,8 @@
     <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
     <Compile Include="Input\AndroidSoftwareKeyboardService.cs" />
     <Compile Include="Platform\AndroidActivityServiceImpl.cs" />
+    <Compile Include="Platform\AndroidAssetFileSource.cs" />
+    <Compile Include="Platform\AndroidAssetFileSourceNode.cs" />
     <Compile Include="Platform\AndroidIconLoader.cs" />
     <Compile Include="Platform\AndroidScreenDensityService.cs" />
     <Compile Include="Platform\AndroidScreenRotationService.cs" />

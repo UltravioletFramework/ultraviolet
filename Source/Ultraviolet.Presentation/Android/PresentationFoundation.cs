@@ -28,21 +28,23 @@ namespace Ultraviolet.Presentation
             if (String.IsNullOrEmpty(path))
                 return;
 
-            var stream = activity.Assets.Open(path);
-            var data = default(Byte[]);
-
-            using (var memstr = new MemoryStream())
+            using (var stream = activity.Assets.Open(path))
             {
-                var buffer = new Byte[4096];
-                while (stream.IsDataAvailable())
-                {
-                    var read = stream.Read(buffer, 0, buffer.Length);
-                    memstr.Write(buffer, 0, read);
-                }
-                data = memstr.ToArray();
-            }
+                var data = default(Byte[]);
 
-            asm = Assembly.Load(data);
+                using (var memstr = new MemoryStream())
+                {
+                    var buffer = new Byte[4096];
+                    while (stream.IsDataAvailable())
+                    {
+                        var read = stream.Read(buffer, 0, buffer.Length);
+                        memstr.Write(buffer, 0, read);
+                    }
+                    data = memstr.ToArray();
+                }
+
+                asm = Assembly.Load(data);
+            }
         }
     }
 }

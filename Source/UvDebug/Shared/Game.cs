@@ -85,7 +85,8 @@ namespace UvDebug
         /// </summary>
         protected override void OnInitialized()
         {
-            SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc");
+            if (!UsePlatformSpecificFileSource())
+                SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc");
 
             base.OnInitialized();
         }
