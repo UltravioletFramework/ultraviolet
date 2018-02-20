@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Ultraviolet.BASS.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Ultraviolet.FMOD.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release\Ultraviolet.BASS.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Ultraviolet.FMOD.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -92,7 +92,7 @@
     <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;SIGNED;DESKTOP</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Signed\Ultraviolet.BASS.xml</DocumentationFile>
+    <DocumentationFile>bin\Signed\Ultraviolet.FMOD.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
