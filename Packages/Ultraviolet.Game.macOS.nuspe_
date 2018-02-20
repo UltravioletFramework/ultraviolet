@@ -26,7 +26,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Ultraviolet.Game.macOS\build\net45\Ultraviolet.Game.macOS.targets" target="build\net45\Ultraviolet.Game.macOS.targets"/>
+    <file src="Ultraviolet.Game.macOS\build\net47\Ultraviolet.Game.macOS.targets" target="build\net47\Ultraviolet.Game.macOS.targets"/>
     <file src="Ultraviolet.Game.macOS\content\Main.cs.pp" target="content"/>
     <file src="Ultraviolet.Game.macOS\content\Game.cs.pp" target="content"/>
   </files>  
