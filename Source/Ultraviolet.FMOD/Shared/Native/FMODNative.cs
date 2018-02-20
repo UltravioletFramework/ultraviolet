@@ -9,6 +9,8 @@ namespace Ultraviolet.FMOD.Native
 {
 #pragma warning disable 1591
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public unsafe delegate FMOD_RESULT FMOD_DEBUG_CALLBACK(FMOD_DEBUG_FLAGS flags, [MarshalAs(UnmanagedType.LPStr)] String file, Int32 line, [MarshalAs(UnmanagedType.LPStr)] String func, [MarshalAs(UnmanagedType.LPStr)] String message);
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public unsafe delegate FMOD_RESULT FMOD_FILE_OPEN_CALLBACK([MarshalAs(UnmanagedType.LPStr)] String name, UInt32* filesize, void** handle, void* userdadata);
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public unsafe delegate FMOD_RESULT FMOD_FILE_CLOSE_CALLBACK(void* handle, void* userdata);
@@ -52,10 +54,21 @@ namespace Ultraviolet.FMOD.Native
         const String LIBRARY = "__Internal";
 #else
         private static readonly NativeLibrary lib = new NativeLibrary(
-            UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "fmod" : "libfmod");
+            UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? new[] { "fmodL", "fmod" } : new[] { "libfmodL", "libfmod" });
 #endif
         
         public const UInt32 FMOD_VERSION = 0x00011003;
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FMOD_Debug_Initialize", CallingConvention = CallingConvention.StdCall)]
+        public static extern FMOD_RESULT FMOD_Debug_Initialize(FMOD_DEBUG_FLAGS flags, FMOD_DEBUG_MODE mode, FMOD_DEBUG_CALLBACK callback, [MarshalAs(UnmanagedType.LPStr)] String filename);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate FMOD_RESULT FMOD_Debug_InitializeDelegate(FMOD_DEBUG_FLAGS flags, FMOD_DEBUG_MODE mode, FMOD_DEBUG_CALLBACK callback, [MarshalAs(UnmanagedType.LPStr)] String filename);
+        private static readonly FMOD_Debug_InitializeDelegate pFMOD_Debug_Initialize = lib.LoadFunction<FMOD_Debug_InitializeDelegate>("FMOD_Debug_Initialize");
+        public static FMOD_RESULT FMOD_Debug_Initialize(FMOD_DEBUG_FLAGS flags, FMOD_DEBUG_MODE mode, FMOD_DEBUG_CALLBACK callback, [MarshalAs(UnmanagedType.LPStr)] String filename) => pFMOD_Debug_Initialize(flags, mode, callback, filename);
+#endif
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FMOD_System_Create", CallingConvention = CallingConvention.StdCall)]

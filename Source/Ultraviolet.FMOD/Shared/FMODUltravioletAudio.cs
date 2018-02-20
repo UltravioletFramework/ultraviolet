@@ -10,6 +10,8 @@ using static Ultraviolet.FMOD.Native.FMOD_INITFLAGS;
 using static Ultraviolet.FMOD.Native.FMOD_RESULT;
 using static Ultraviolet.FMOD.Native.FMODNative;
 using Ultraviolet.Platform;
+using static Ultraviolet.FMOD.Native.FMOD_DEBUG_FLAGS;
+using static Ultraviolet.FMOD.Native.FMOD_DEBUG_MODE;
 
 namespace Ultraviolet.FMOD
 {
@@ -24,13 +26,16 @@ namespace Ultraviolet.FMOD
         /// Initializes a new instance of the FMODUltravioletAudio class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="configuration">The Ultraviolet configuration.</param>
         [Preserve]
-        public FMODUltravioletAudio(UltravioletContext uv)
+        public FMODUltravioletAudio(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {
             PlatformSpecificInitialization();
 
             var result = default(FMOD_RESULT);
+
+            InitializeLogging(configuration);
 
             fixed (FMOD_SYSTEM** psystem = &system)
             {
@@ -406,6 +411,31 @@ namespace Ultraviolet.FMOD
         }
 
         /// <summary>
+        /// Represents a thunk which allows FMOD to call into the managed debug callback.
+        /// </summary>
+        [MonoPInvokeCallback(typeof(FMOD_DEBUG_CALLBACK))]
+        private static FMOD_RESULT DebugCallbackThunk(FMOD_DEBUG_FLAGS flags, String file, Int32 line, String func, String message)
+        {
+            var messageString = $"FMOD: {message.Trim()}";
+            var messageLevel = DebugLevels.Info;
+            switch (flags)
+            {
+                case FMOD_DEBUG_LEVEL_WARNING:
+                    messageLevel = DebugLevels.Warning;
+                    break;
+
+                case FMOD_DEBUG_LEVEL_ERROR:
+                    messageLevel = DebugLevels.Error;
+                    break;
+            }
+            
+            if (UltravioletContext.RequestCurrent()?.GetAudio() is FMODUltravioletAudio audio)
+                audio.debugCallback?.Invoke(audio.Ultraviolet, messageLevel, messageString);
+
+            return FMOD_OK;
+        }
+
+        /// <summary>
         /// Performs platform-specific initialization steps.
         /// </summary>
         partial void PlatformSpecificInitialization();
@@ -419,6 +449,33 @@ namespace Ultraviolet.FMOD
         /// Performs platform-specific message handling.
         /// </summary>
         partial void PlatformSpecificMessageHandling(UltravioletMessageID type, MessageData data);
+
+        /// <summary>
+        /// Initializes FMOD's logging system.
+        /// </summary>
+        private void InitializeLogging(UltravioletConfiguration configuration)
+        {
+            var result = default(FMOD_RESULT);
+            
+            debugCallback = configuration.DebugCallback;
+            debugCallbackFMOD = DebugCallbackThunk;
+
+            var flags = FMOD_DEBUG_LEVEL_NONE;
+            if ((configuration.DebugLevels & DebugLevels.Error) == DebugLevels.Error)
+                flags |= FMOD_DEBUG_LEVEL_ERROR;
+            if ((configuration.DebugLevels & DebugLevels.Warning) == DebugLevels.Warning)
+                flags |= FMOD_DEBUG_LEVEL_WARNING;
+            if ((configuration.DebugLevels & DebugLevels.Info) == DebugLevels.Info)
+                flags |= FMOD_DEBUG_LEVEL_LOG;
+
+            var mode = (configuration.DebugCallback != null) ? FMOD_DEBUG_MODE_CALLBACK : FMOD_DEBUG_MODE_FILE;
+
+            result = FMOD_Debug_Initialize(flags, mode, debugCallbackFMOD, "fmod.log");
+            if (result == FMOD_ERR_UNSUPPORTED)
+                return;
+            if (result != FMOD_OK)
+                throw new FMODException(result);
+        }
 
         /// <summary>
         /// Updates the global volume of the Songs channel group to match the subsystem's current settings.
@@ -541,5 +598,9 @@ namespace Ultraviolet.FMOD
         private FMODUltravioletAudioDevice playbackDevice;
         private List<FMODUltravioletAudioDevice> knownAudioDevices =
             new List<FMODUltravioletAudioDevice>();
+        
+        // Debug output callbacks.
+        private DebugCallback debugCallback;
+        private FMOD_DEBUG_CALLBACK debugCallbackFMOD;
     }
 }
