@@ -1,0 +1,10 @@
+﻿TriangleColorSelector! >> ContentPresenter!
+{
+	valign: center;
+	margin: 0 0 8 0;
+}
+
+TriangleColorSelector! >> ComboBox!
+{
+	width: 100;
+}

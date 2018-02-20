@@ -78,7 +78,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -121,13 +120,12 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
-    <None Include="..\UltravioletSample11\Content\Manifests\Global.manifest">
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
-    </None>
-    <None Include="..\UltravioletSample11\Content\Sprites\Xbox360Controller.sprite">
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Xbox360Controller.sprite">
       <Link>Content\Sprites\Xbox360Controller.sprite</Link>
-    </None>
-    <EmbeddedResource Include="Content.uvarc" />
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -136,15 +134,6 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\UltravioletSample11\Content\Fonts\SegoeUI12.xml">
-      <Link>Content\Fonts\SegoeUI12.xml</Link>
-    </None>
-    <None Include="..\UltravioletSample11\Content\Fonts\SegoeUI12Texture.png">
-      <Link>Content\Fonts\SegoeUI12Texture.png</Link>
-    </None>
-    <None Include="..\UltravioletSample11\Content\Sprites\Textures\Xbox360Controller.png">
-      <Link>Content\Sprites\Textures\Xbox360Controller.png</Link>
-    </None>
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -187,11 +176,24 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI12.xml">
+      <Link>Content\Fonts\SegoeUI12.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI12Texture.png">
+      <Link>Content\Fonts\SegoeUI12Texture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Sprites\Textures\Xbox360Controller.png">
+      <Link>Content\Sprites\Textures\Xbox360Controller.png</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\Sample11_GamePads.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" />
+      <UserProperties ProjectLinkReference="844f907a-e757-4d55-8b66-13a2ca51467d" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

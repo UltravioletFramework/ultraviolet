@@ -77,7 +77,6 @@
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -96,7 +95,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content.uvarc" />
     <AndroidNativeLibrary Include="..\..\..\dependencies\bass\android\armeabi\libbass.so">
       <Link>lib\armeabi\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -124,6 +122,12 @@
     <AndroidNativeLibrary Include="..\..\..\dependencies\sdl2\android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
     </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
+      <Link>Content\Manifests\Global.manifest</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\LoadingScreen\Spinner.sprite">
+      <Link>Content\UI\Screens\LoadingScreen\Spinner.sprite</Link>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -174,11 +178,36 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\desktop_uv72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUI.xml">
+      <Link>Content\Fonts\SegoeUI.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
+      <Link>Content\Fonts\SegoeUITexture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Blank.png">
+      <Link>Content\Textures\Blank.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\Textures\Photograph.jpg">
+      <Link>Content\Textures\Photograph.jpg</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\LoadingScreen\SpinnerTexture.png">
+      <Link>Content\UI\Screens\LoadingScreen\SpinnerTexture.png</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\LoadingScreen\LoadingScreen.xml">
+      <Link>Content\UI\Screens\LoadingScreen\LoadingScreen.xml</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\GameplayScreen\GameplayScreen.xml">
+      <Link>Content\UI\Screens\GameplayScreen\GameplayScreen.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\Sample10_AsynchronousContentLoading.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="573824f0-2acc-46f4-95ee-79b78b0e36d6" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="573824f0-2acc-46f4-95ee-79b78b0e36d6" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />

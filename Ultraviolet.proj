@@ -38,37 +38,6 @@
   </ItemGroup>
   
   <!-- DESKTOP -->	
-  <Target Name="RepackArchives">
-    <!-- TODO: Get this target working on non-Windows platforms -->
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack UvDebug/Android/Content.uvarc UvDebug/Content"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample4_ContentManagement/Android/Content.uvarc&quot; &quot;Samples/Sample4_ContentManagement/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample5_RenderingSprites/Android/Content.uvarc&quot; &quot;Samples/Sample5_RenderingSprites/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample6_RenderingText/Android/Content.uvarc&quot; &quot;Samples/Sample6_RenderingText/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample7_PlayingMusic/Android/Content.uvarc&quot; &quot;Samples/Sample7_PlayingMusic/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample8_PlayingSoundEffects/Android/Content.uvarc&quot; &quot;Samples/Sample8_PlayingSoundEffects/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample9_ManagingStateWithUIScreens/Android/Content.uvarc&quot; &quot;Samples/Sample9_ManagingStateWithUIScreens/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample10_AsynchronousContentLoading/Android/Content.uvarc&quot; &quot;Samples/Sample10_AsynchronousContentLoading/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample11_GamePads/Android/Content.uvarc&quot; &quot;Samples/Sample11_GamePads/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample12_UPF/Android/Content.uvarc&quot; &quot;Samples/Sample12_UPF/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample13_UPFAdvanced/Android/Content.uvarc&quot; &quot;Samples/Sample13_UPFAdvanced/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample14_LoadingImageDataWithSurfaces/Android/Content.uvarc&quot; &quot;Samples/Sample14_LoadingImageDataWithSurfaces/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample15_RenderTargetsAndBuffers/Android/Content.uvarc&quot; &quot;Samples/Sample15_RenderTargetsAndBuffers/Desktop/Content&quot;"/>
-    <Exec Condition="'$(OS)'=='Windows_NT'" 
-      Command="&quot;Binaries/AnyCPU/$(Configuration)/uvarchive.exe&quot; -pack &quot;Samples/Sample16_CustomTextLayoutCommands/Android/Content.uvarc&quot; &quot;Samples/Sample16_CustomTextLayoutCommands/Desktop/Content&quot;"/>
-  </Target>
   <Target Name="RestoreWindows">
     <Exec Condition="'$(OS)'=='Windows_NT'" 
       Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Windows_Solution)&quot;"/>
