@@ -28,11 +28,11 @@
     <file src="..\Binaries\Android\Signed\Ultraviolet.FMOD.dll" target="lib\MonoAndroid80\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.FMOD.XML" target="lib\MonoAndroid80\"/>
     <file src="..\Binaries\Android\Signed\Ultraviolet.FMOD.pdb" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.FMOD.Android.Bindings.dll" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.FMOD.Android.Bindings.pdb" target="lib\MonoAndroid80\"/>
 
     <file src="..\Binaries\iOS\Signed\Ultraviolet.FMOD.dll" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.FMOD.XML" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.FMOD.pdb" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.FMOD.Android.Bindings.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.FMOD.Android.Bindings.pdb" target="lib\Xamarin.iOS10\"/>
   </files>  
 </package>
