@@ -312,9 +312,4 @@
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
-  <Target Name="AfterBuild" Condition="'$(BAMBOO_buildType)'==''">
-    <Message Text="Compiling content archive and binding expressions assembly..." />
-    <Exec Condition=" '$(OS)' == 'Windows_NT' " WorkingDirectory="$(OutputPath)" Command="&quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
-    <Exec Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'false' " WorkingDirectory="$(OutputPath)" Command="mono &quot;$(AssemblyName).exe&quot; -resolve:content -compile:content -compile:expressions" />
-  </Target>
 </Project>
