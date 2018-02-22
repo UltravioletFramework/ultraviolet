@@ -171,9 +171,12 @@ namespace Ultraviolet.Presentation.Compiler
         /// <returns>The path to the reference assemblies, or <see langword="null"/> if they don't exist.</returns>
         public static String GetNetStandardLibraryDirFromWorkingDir(String workingDir)
         {
-            var dir = Path.Combine(workingDir ?? Directory.GetCurrentDirectory(), "NETStandard.Library.2.0.1", "build", "netstandard2.0", "ref");
-            if (Directory.Exists(dir))
-                return dir;
+            var root = workingDir ?? Directory.GetCurrentDirectory();
+            var dirRel = Path.Combine(root, "NETStandard.Library.2.0.1", "build", "netstandard2.0", "ref");
+            var dirAbs = Path.GetFullPath(dirRel);
+
+            if (Directory.Exists(dirAbs))
+                return dirAbs;
 
             return null;
         }
