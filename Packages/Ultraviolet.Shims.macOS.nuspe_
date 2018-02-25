@@ -14,7 +14,6 @@
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
     <dependency id="Ultraviolet" version="UV_VERSION" />
-    <dependency id="Ultraviolet.Shims.Desktop" version="UV_VERSION" />
   </dependencies>
   </metadata>
   <files>
