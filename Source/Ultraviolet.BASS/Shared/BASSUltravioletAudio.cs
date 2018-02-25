@@ -30,7 +30,7 @@ namespace Ultraviolet.BASS
                 if (!BASS_SetConfig(BASS_CONFIG_DEV_DEFAULT, 1))
                 {
                     var setConfigError = BASS_ErrorGetCode();
-                    if (setConfigError != BASS_ERROR_NOTAVAIL)
+                    if (setConfigError != BASS_ERROR_NOTAVAIL && setConfigError != BASS_ERROR_ILLPARAM)
                         throw new BASSException(setConfigError);
                 }
             }
