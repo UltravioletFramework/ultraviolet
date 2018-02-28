@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.IO;
 using System.Linq;
@@ -24,7 +24,9 @@ namespace Ultraviolet
         /// </summary>
         static UltravioletApplication()
         {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            if (assemblyLocation.Length > 0)
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(assemblyLocation));
         }
 
         /// <summary>
