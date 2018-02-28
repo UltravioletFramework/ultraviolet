@@ -20,14 +20,6 @@ namespace Ultraviolet
         IDisposable
     {
         /// <summary>
-        /// Initializes the <see cref="UltravioletApplication"/> type.
-        /// </summary>
-        static UltravioletApplication()
-        {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletApplication"/> class.
         /// </summary>
         /// <param name="company">The name of the company that produced the application.</param>
