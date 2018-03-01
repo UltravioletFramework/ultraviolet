@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Reflection;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using Ultraviolet.Content;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet
@@ -24,7 +23,9 @@ namespace Ultraviolet
         /// </summary>
         static UltravioletApplication()
         {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var baseDir = AppContext.BaseDirectory;
+            if (baseDir != null)
+                Directory.SetCurrentDirectory(baseDir);
         }
 
         /// <summary>

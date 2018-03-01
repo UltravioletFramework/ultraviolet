@@ -21,7 +21,7 @@ namespace Ultraviolet.Core.Native
         /// <inheritdoc/>
         public override IEnumerable<String> EnumeratePossibleLibraryLoadTargets(String name)
         {
-            yield return Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory(), name);
+            yield return Path.Combine(AppContext.BaseDirectory, name);
             if (TryLocateNativeAssetInPlatformFolder(name, out var platformResolvedPath))
             {
                 yield return platformResolvedPath;
@@ -38,7 +38,7 @@ namespace Ultraviolet.Core.Native
         /// </summary>
         private Boolean TryLocateNativeAssetInPlatformFolder(String name, out String platformResolvedPath)
         {
-            var dir = Path.Combine(AppContext.BaseDirectory ?? Directory.GetCurrentDirectory());
+            var dir = Path.Combine(AppContext.BaseDirectory);
             if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.macOS && UltravioletPlatformInfo.CurrentRuntime != UltravioletRuntime.CoreCLR)
                 dir = Path.Combine("..", "Resources");
 

@@ -2265,7 +2265,7 @@ namespace Ultraviolet.Content
                 return null;
             }
 
-            var asmDir = new DirectoryInfo(Path.GetDirectoryName(asm.Location));
+            var asmDir = new DirectoryInfo(Path.GetDirectoryName(AppContext.BaseDirectory));
             if (asmDir == null || !asmDir.Exists)
             {
                 solutionDirectory = String.Empty;
@@ -2273,7 +2273,9 @@ namespace Ultraviolet.Content
             }
 
             // Break out of the bin directory. There's a different number of steps depending on our platform.
-            var depth = (Ultraviolet.Platform == UltravioletPlatform.macOS) ? 5 : 2;
+            var depth = 
+                (Ultraviolet.Runtime == UltravioletRuntime.CoreCLR) ? 3 :
+                (Ultraviolet.Platform == UltravioletPlatform.macOS) ? 5 : 2;
             for (int i = 0; i < depth; i++)
             {
                 asmDir = asmDir.Parent;
@@ -2292,22 +2294,24 @@ namespace Ultraviolet.Content
                 // going up another level and looking for a "Desktop" directory.
                 // If your app doesn't follow the Ultraviolet convention here, then
                 // unfortunately you're out of luck.
-                asmDir = asmDir.Parent;
-                if (asmDir != null && asmDir.Exists)
+                if (Ultraviolet.Runtime == UltravioletRuntime.Mono && Ultraviolet.Platform == UltravioletPlatform.macOS)
                 {
-                    var desktopRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, "Desktop"));
-                    if (desktopRoot != null && desktopRoot.Exists)
+                    asmDir = asmDir.Parent;
+                    if (asmDir != null && asmDir.Exists)
                     {
-                        // Check again for the content root...
-                        projectContentRoot = new DirectoryInfo(Path.Combine(desktopRoot.FullName, RootDirectory));
-                        if (projectContentRoot != null && projectContentRoot.Exists)
+                        var desktopRoot = new DirectoryInfo(Path.Combine(asmDir.FullName, "Desktop"));
+                        if (desktopRoot != null && desktopRoot.Exists)
                         {
-                            solutionDirectory = projectContentRoot.FullName;
-                            return solutionDirectory;
+                            // Check again for the content root...
+                            projectContentRoot = new DirectoryInfo(Path.Combine(desktopRoot.FullName, RootDirectory));
+                            if (projectContentRoot != null && projectContentRoot.Exists)
+                            {
+                                solutionDirectory = projectContentRoot.FullName;
+                                return solutionDirectory;
+                            }
                         }
-                    }                
+                    }
                 }
-
                 solutionDirectory = String.Empty;
                 return null;
             }
@@ -2383,8 +2387,8 @@ namespace Ultraviolet.Content
             if (extension == null && !String.IsNullOrWhiteSpace(specifiedExtension))
                 extension = specifiedExtension;
 
-            var rootdir = (flags & AssetResolutionFlags.LoadFromSolutionDirectory) == AssetResolutionFlags.LoadFromSolutionDirectory ?
-                FindSolutionDirectory() ?? RootDirectory : RootDirectory;
+            var isLoadedFromSln = (flags & AssetResolutionFlags.LoadFromSolutionDirectory) == AssetResolutionFlags.LoadFromSolutionDirectory;
+            var rootdir = isLoadedFromSln ? FindSolutionDirectory() ?? RootDirectory : RootDirectory;
             var path = GetAssetPathFromDirectory(rootdir, asset, ref extension, flags);
             directory = rootdir;
             overridden = false;
@@ -2411,6 +2415,12 @@ namespace Ultraviolet.Content
                     flags &= ~AssetResolutionFlags.PerformSubstitution;
                     path = GetAssetPathFromDirectory(directory, substitution, ref extension, flags);
                 }
+            }
+
+            if (isLoadedFromSln && path == null)
+            {
+                flags &= ~AssetResolutionFlags.LoadFromSolutionDirectory;
+                path = GetAssetPath(asset, extension, out directory, out overridden, flags);
             }
 
             return path;
