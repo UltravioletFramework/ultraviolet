@@ -122,6 +122,9 @@ namespace Ultraviolet.Presentation
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
 
+            if (!IsSupportedPlatform(Ultraviolet.Runtime, Ultraviolet.Platform))
+                throw new NotSupportedException();
+
             LoadBindingExpressionCompiler();
 
             var options = CreateCompilerOptions(root, flags);
@@ -131,7 +134,7 @@ namespace Ultraviolet.Presentation
                 if (result.Failed)
                     throw new BindingExpressionCompilationFailedException(result.Message, result);
 
-                inMemoryBindingExpressionsAsm = result.Assembly;
+                inMemoryBindingExpressionsAsm = result.Assembly;                
             }
             catch (Exception e)
             {
@@ -170,6 +173,9 @@ namespace Ultraviolet.Presentation
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(root, nameof(root));
+
+            if (!IsSupportedPlatform(Ultraviolet.Runtime, Ultraviolet.Platform))
+                throw new NotSupportedException();
 
             LoadBindingExpressionCompiler();
 
@@ -296,6 +302,11 @@ namespace Ultraviolet.Presentation
         /// </summary>
         private static Boolean IsSupportedPlatform(UltravioletRuntime runtime, UltravioletPlatform platform)
         {
+            // NOTE: This is checking to see if we're a .NET Native application.
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly != null && String.IsNullOrEmpty(entryAssembly.Location))
+                return false;
+
             return platform != UltravioletPlatform.Android && platform != UltravioletPlatform.iOS;
         }
 

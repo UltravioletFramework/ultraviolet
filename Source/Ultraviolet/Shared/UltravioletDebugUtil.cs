@@ -27,7 +27,7 @@ namespace Ultraviolet
                 return path;
 
             // Produce a URI which is relative to the directory that contains our application executable.
-            var uriExe = GetDirectoryUri(Path.GetDirectoryName(entryAssembly.Location));
+            var uriExe = GetDirectoryUri(AppContext.BaseDirectory);
             var uriRoot = new Uri(uriExe, root);
             var uriPathAbs = new Uri(Path.GetFullPath(path), UriKind.Absolute);
 
@@ -40,6 +40,10 @@ namespace Ultraviolet
             var dir = new DirectoryInfo(uriExe.LocalPath);
             if (dir.Parent == null)
                 return path;
+
+            // .NET Core 2.0 apps have an extra directory in the way
+            if (String.Equals("netcoreapp2.0", dir.Name, StringComparison.Ordinal))
+                dir = dir.Parent;
 
             dir = dir.Parent;
 
