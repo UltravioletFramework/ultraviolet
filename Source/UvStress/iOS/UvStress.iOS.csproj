@@ -97,6 +97,14 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\desktop_uv1024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\uv180.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
