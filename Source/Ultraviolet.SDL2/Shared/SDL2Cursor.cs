@@ -3,6 +3,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2
 {
@@ -28,7 +29,7 @@ namespace Ultraviolet.SDL2
 
             if (uv.Platform != UltravioletPlatform.Android && uv.Platform != UltravioletPlatform.iOS)
             {
-                this.cursor = SDLNative.SDL_CreateColorCursor(((SDL2Surface2D)surface).NativePtr, hx, hy);
+                this.cursor = SDL_CreateColorCursor(((SDL2Surface2D)surface).NativePtr, hx, hy);
                 this.Width = surface.Width;
                 this.Height = surface.Height;
                 this.HotspotX = hx;
@@ -84,7 +85,7 @@ namespace Ultraviolet.SDL2
                 Ultraviolet.GetPlatform().Cursor = null;
             }
 
-            SDLNative.SDL_FreeCursor(cursor);
+            SDL_FreeCursor(cursor);
 
             base.Dispose(disposing);
         }

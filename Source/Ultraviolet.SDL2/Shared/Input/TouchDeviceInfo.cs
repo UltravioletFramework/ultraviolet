@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 using Ultraviolet.Input;
-using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -17,7 +17,7 @@ namespace Ultraviolet.SDL2.Input
         public TouchDeviceInfo(UltravioletContext uv)
             : base(uv)
         {
-            var count = SDLNative.SDL_GetNumTouchDevices();
+            var count = SDL_GetNumTouchDevices();
             devices = new SDL2TouchDevice[count];
 
             for (int i = 0; i < count; i++)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -21,7 +21,7 @@ namespace Ultraviolet.SDL2.Platform
         {
             Contract.Require(uv, nameof(uv));
 
-            this.displays = Enumerable.Range(0, SDLNative.SDL_GetNumVideoDisplays())
+            this.displays = Enumerable.Range(0, SDL_GetNumVideoDisplays())
                 .Select(x => new SDL2UltravioletDisplay(uv, x))
                 .ToList<IUltravioletDisplay>();
         }

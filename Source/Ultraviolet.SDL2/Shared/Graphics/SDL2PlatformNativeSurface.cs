@@ -3,6 +3,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_BlendMode;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Graphics
 {
@@ -18,10 +19,10 @@ namespace Ultraviolet.SDL2.Graphics
         /// <param name="height">The surface's height.</param>
         public SDL2PlatformNativeSurface(Int32 width, Int32 height)
         {
-            if ((this.ptr = SDLNative.SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
+            if ((this.ptr = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
                 throw new SDL2Exception();
             
-            if (SDLNative.SDL_SetSurfaceBlendMode(this.ptr, SDL_BLENDMODE_NONE) < 0)
+            if (SDL_SetSurfaceBlendMode(this.ptr, SDL_BLENDMODE_NONE) < 0)
                 throw new SDL2Exception();
         }
 
@@ -34,14 +35,14 @@ namespace Ultraviolet.SDL2.Graphics
             if (src == null)
                 throw new ArgumentNullException("src");
 
-            var dst = SDLNative.SDL_CreateRGBSurface(0, src->w, src->h, 32, rmask, gmask, bmask, amask);
+            var dst = SDL_CreateRGBSurface(0, src->w, src->h, 32, rmask, gmask, bmask, amask);
             if (dst == null)
                 throw new SDL2Exception();
 
-            if (SDLNative.SDL_SetSurfaceBlendMode(dst, SDL_BLENDMODE_NONE) < 0)
+            if (SDL_SetSurfaceBlendMode(dst, SDL_BLENDMODE_NONE) < 0)
                 throw new SDL2Exception();
 
-            if (SDLNative.SDL_BlitSurface(src, null, dst, null) < 0)
+            if (SDL_BlitSurface(src, null, dst, null) < 0)
                 throw new SDL2Exception();
 
             this.ptr = dst;
@@ -58,10 +59,10 @@ namespace Ultraviolet.SDL2.Graphics
             var width = source.Width;
             var height = source.Height;
 
-            if ((this.ptr = SDLNative.SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
+            if ((this.ptr = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask)) == null)
                 throw new SDL2Exception();
             
-            if (SDLNative.SDL_SetSurfaceBlendMode(this.ptr, SDL_BLENDMODE_NONE) < 0)
+            if (SDL_SetSurfaceBlendMode(this.ptr, SDL_BLENDMODE_NONE) < 0)
                 throw new SDL2Exception();
 
             var pDstData = (byte*)ptr->pixels;
@@ -291,7 +292,7 @@ namespace Ultraviolet.SDL2.Graphics
 
             var copy = new SDL2PlatformNativeSurface(Width, Height);
 
-            if (SDLNative.SDL_BlitSurface(ptr, null, copy.ptr, null) < 0)
+            if (SDL_BlitSurface(ptr, null, copy.ptr, null) < 0)
                 throw new SDL2Exception();
 
             return copy;
@@ -367,7 +368,7 @@ namespace Ultraviolet.SDL2.Graphics
         protected override void Dispose(bool disposing)
         {
             if (!Disposed)
-                SDLNative.SDL_FreeSurface(ptr);
+                SDL_FreeSurface(ptr);
 
             base.Dispose(disposing);
         }

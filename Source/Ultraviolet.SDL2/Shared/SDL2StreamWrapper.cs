@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2
 {
@@ -22,7 +23,7 @@ namespace Ultraviolet.SDL2
             this.stream = stream;
             this.gchandle = GCHandle.Alloc(this, GCHandleType.Weak);
 
-            this.rwops = (SDL_RWops*)SDLNative.SDL_AllocRW();
+            this.rwops = (SDL_RWops*)SDL_AllocRW();
             this.rwops->size = Marshal.GetFunctionPointerForDelegate(new RWops_size(RWops_size_callback));
             this.rwops->seek = Marshal.GetFunctionPointerForDelegate(new RWops_seek(RWops_seek_callback));
             this.rwops->read = Marshal.GetFunctionPointerForDelegate(new RWops_read(RWops_read_callback));
@@ -174,7 +175,7 @@ namespace Ultraviolet.SDL2
             
             if (rwops != null)
             {
-                SDLNative.SDL_FreeRW((IntPtr)rwops);
+                SDL_FreeRW((IntPtr)rwops);
                 rwops = null;
             }
 

@@ -4,7 +4,7 @@ using Ultraviolet.Core.Messages;
 using Ultraviolet.Input;
 using Ultraviolet.SDL2.Input;
 using Ultraviolet.SDL2.Native;
-using System.Diagnostics;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2
 {
@@ -53,11 +53,11 @@ namespace Ultraviolet.SDL2
                             w = region.Value.Width,
                             h = region.Value.Height,
                         };
-                        SDLNative.SDL_SetTextInputRect(&rect);
+                        SDL_SetTextInputRect(&rect);
                     }
                     else
                     {
-                        SDLNative.SDL_SetTextInputRect(null);
+                        SDL_SetTextInputRect(null);
                     }
                 }
             }
@@ -481,7 +481,7 @@ namespace Ultraviolet.SDL2
                 using (var stream = fss.OpenRead(DatabasePath))
                 using (var wrapper = new SDL2StreamWrapper(stream))
                 {
-                    if (SDLNative.SDL_GameControllerAddMappingsFromRW(wrapper.ToIntPtr(), 0) < 0)
+                    if (SDL_GameControllerAddMappingsFromRW(wrapper.ToIntPtr(), 0) < 0)
                         throw new SDL2Exception();
                 }
             }

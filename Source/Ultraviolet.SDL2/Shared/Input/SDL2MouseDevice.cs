@@ -7,6 +7,7 @@ using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_Button;
 using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -426,7 +427,7 @@ namespace Ultraviolet.SDL2.Input
         private void SetMousePositionFromDevicePosition(UInt32 windowID)
         {
             Int32 x, y;
-            SDLNative.SDL_GetMouseState(out x, out y);
+            SDL_GetMouseState(out x, out y);
             SetMousePosition(windowID, x, y);
         }
 

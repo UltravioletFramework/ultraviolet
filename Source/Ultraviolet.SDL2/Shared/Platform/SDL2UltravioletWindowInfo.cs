@@ -7,6 +7,7 @@ using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_Hint;
 using static Ultraviolet.SDL2.Native.SDL_WindowFlags;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -70,7 +71,7 @@ namespace Ultraviolet.SDL2.Platform
             var match = default(SDL2UltravioletWindow);
             foreach (SDL2UltravioletWindow window in windows)
             {
-                if (SDLNative.SDL_GetWindowID((IntPtr)window) == (UInt32)id)
+                if (SDL_GetWindowID((IntPtr)window) == (UInt32)id)
                 {
                     match = window;
                     break;
@@ -175,9 +176,9 @@ namespace Ultraviolet.SDL2.Platform
             else
                 sdlflags |= SDL_WINDOW_SHOWN;
 
-            var sdlptr = SDLNative.SDL_CreateWindow(caption ?? String.Empty,
-                x == -1 ? (int) SDLNative.SDL_WINDOWPOS_CENTERED_MASK : x,
-                y == -1 ? (int) SDLNative.SDL_WINDOWPOS_CENTERED_MASK : y,
+            var sdlptr = SDL_CreateWindow(caption ?? String.Empty,
+                x == -1 ? (int) SDL_WINDOWPOS_CENTERED_MASK : x,
+                y == -1 ? (int) SDL_WINDOWPOS_CENTERED_MASK : y,
                 width, height, sdlflags);
             
             if (sdlptr == IntPtr.Zero)
@@ -200,7 +201,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The Ultraviolet window that was created.</returns>
         public IUltravioletWindow CreateFromNativePointer(IntPtr ptr)
         {
-            var sdlptr = SDLNative.SDL_CreateWindowFrom(ptr);
+            var sdlptr = SDL_CreateWindowFrom(ptr);
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
@@ -471,12 +472,12 @@ namespace Ultraviolet.SDL2.Platform
             }
 
             // Attempt to create the master window. If that fails, reduce our requirements and try again before failing.
-            var masterptr = SDLNative.SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+            var masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
                 InitializeRenderingAPIFallback(sdlconfig);
 
-                masterptr = SDLNative.SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+                masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
                 if (masterptr == IntPtr.Zero)
                 {
                     throw new SDL2Exception();
@@ -487,7 +488,7 @@ namespace Ultraviolet.SDL2.Platform
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
-            if (!SDLNative.SDL_SetHint(SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT, masterptr.ToStringHex()))
+            if (!SDL_SetHint(SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT, masterptr.ToStringHex()))
                 throw new SDL2Exception();
 
             // If this is not a headless context, create the primary application window.

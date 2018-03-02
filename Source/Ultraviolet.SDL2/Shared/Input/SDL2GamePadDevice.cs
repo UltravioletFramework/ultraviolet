@@ -6,6 +6,7 @@ using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_EventType;
 using static Ultraviolet.SDL2.Native.SDL_GameControllerAxis;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -30,18 +31,18 @@ namespace Ultraviolet.SDL2.Input
             this.repeatingAxis = new Boolean[this.timeLastPressAxis.Length];
             this.repeatingButton = new Boolean[this.timeLastPressButton.Length];
 
-            if ((this.controller = SDLNative.SDL_GameControllerOpen(joystickIndex)) == IntPtr.Zero)
+            if ((this.controller = SDL_GameControllerOpen(joystickIndex)) == IntPtr.Zero)
             {
                 throw new SDL2Exception();
             }
 
-            this.name = SDLNative.SDL_GameControllerNameForIndex(joystickIndex);
+            this.name = SDL_GameControllerNameForIndex(joystickIndex);
             this.states = new InternalButtonState[Enum.GetValues(typeof(GamePadButton)).Length];
             this.playerIndex = playerIndex;
 
-            var joystick = SDLNative.SDL_GameControllerGetJoystick(controller);
+            var joystick = SDL_GameControllerGetJoystick(controller);
 
-            if ((this.instanceID = SDLNative.SDL_JoystickInstanceID(joystick)) < 0)
+            if ((this.instanceID = SDL_JoystickInstanceID(joystick)) < 0)
             {
                 throw new SDL2Exception();
             }
