@@ -38,9 +38,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleIconFiles</key>
-	<array/>
 	<key>XSAppIconAssets</key>
-	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
+	<string>Resources/Media.xcassets/AppIcon.appiconset</string>
+	<key>CFBundleName</key>
+	<string>Sample 16 - Custom Text Layout Commands</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Resources/Media.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>
