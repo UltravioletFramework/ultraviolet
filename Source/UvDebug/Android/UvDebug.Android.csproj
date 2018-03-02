@@ -313,13 +313,6 @@
     <DesktopProjectName>macOS</DesktopProjectName>
     <DesktopProjectDir>macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources</DesktopProjectDir>
   </PropertyGroup>
-  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
-    <Message Text="Copying content archive and binding expressions assembly from $(DesktopProjectName) project..." />
-    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/Content.uvarc')" Text="Could not locate Content.uvarc. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
-    <Error Condition="!Exists('$(ProjectDir)../$(DesktopProjectDir)/Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the $(DesktopProjectName) project has been built before building the Android project." />
-    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/Content.uvarc" DestinationFolder="$(ProjectDir)" />
-    <Copy SourceFiles="$(ProjectDir)../$(DesktopProjectDir)/Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
