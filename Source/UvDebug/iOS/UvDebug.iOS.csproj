@@ -289,9 +289,4 @@
   </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Target Name="BeforeBuild" Condition="'$(BAMBOO_buildType)'=='' ">
-    <Message Text="Copying binding expressions assembly from macOS project..." />
-    <Error Condition="!Exists('$(ProjectDir)../macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources/Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Could not locate the binding expressions assembly. Ensure that the macOS project has been built before building the iOS project." />
-    <Copy SourceFiles="$(ProjectDir)../macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources/Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(ProjectDir)Presentation" />
-  </Target>
 </Project>
