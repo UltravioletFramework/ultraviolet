@@ -17,7 +17,7 @@ namespace Ultraviolet.SDL2.Input
         public TouchDeviceInfo(UltravioletContext uv)
             : base(uv)
         {
-            var count = SDL.GetNumTouchDevices();
+            var count = SDLNative.SDL_GetNumTouchDevices();
             devices = new SDL2TouchDevice[count];
 
             for (int i = 0; i < count; i++)

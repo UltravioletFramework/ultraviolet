@@ -5,6 +5,8 @@ using Ultraviolet.Input;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_Button;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -37,7 +39,7 @@ namespace Ultraviolet.SDL2.Input
                 var evt = ((SDL2EventMessageData)data).Event;
                 switch (evt.type)
                 {
-                    case SDL_EventType.MOUSEMOTION:
+                    case SDL_MOUSEMOTION:
                         {
                             // HACK: On iOS, for some goddamn reason, SDL2 sends us a spurious motion event
                             // with mouse ID 0 when you first touch the screen. This only seems to happen once
@@ -57,7 +59,7 @@ namespace Ultraviolet.SDL2.Input
                         }
                         break;
 
-                    case SDL_EventType.MOUSEBUTTONDOWN:
+                    case SDL_MOUSEBUTTONDOWN:
                         {
                             if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
                                 Register(evt.button.windowID);
@@ -66,7 +68,7 @@ namespace Ultraviolet.SDL2.Input
                         }
                         break;
 
-                    case SDL_EventType.MOUSEBUTTONUP:
+                    case SDL_MOUSEBUTTONUP:
                         {
                             if (!isRegistered && evt.button.which != SDL_TOUCH_MOUSEID)
                                 Register(evt.button.windowID);
@@ -75,7 +77,7 @@ namespace Ultraviolet.SDL2.Input
                         }
                         break;
 
-                    case SDL_EventType.MOUSEWHEEL:
+                    case SDL_MOUSEWHEEL:
                         {
                             if (!isRegistered && evt.wheel.which != SDL_TOUCH_MOUSEID)
                                 Register(evt.wheel.windowID);
@@ -302,15 +304,15 @@ namespace Ultraviolet.SDL2.Input
 
             switch ((SDL_Button)value)
             {
-                case SDL_Button.LEFT:
+                case SDL_BUTTON_LEFT:
                     return MouseButton.Left;
-                case SDL_Button.MIDDLE:
+                case SDL_BUTTON_MIDDLE:
                     return MouseButton.Middle;
-                case SDL_Button.RIGHT:
+                case SDL_BUTTON_RIGHT:
                     return MouseButton.Right;
-                case SDL_Button.X1:
+                case SDL_BUTTON_X1:
                     return MouseButton.XButton1;
-                case SDL_Button.X2:
+                case SDL_BUTTON_X2:
                     return MouseButton.XButton2;
             }
             throw new ArgumentException("value");
@@ -424,7 +426,7 @@ namespace Ultraviolet.SDL2.Input
         private void SetMousePositionFromDevicePosition(UInt32 windowID)
         {
             Int32 x, y;
-            SDL.GetMouseState(out x, out y);
+            SDLNative.SDL_GetMouseState(out x, out y);
             SetMousePosition(windowID, x, y);
         }
 

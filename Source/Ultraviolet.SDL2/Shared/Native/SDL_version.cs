@@ -1,16 +1,17 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using Ultraviolet.Core;
-
-#pragma warning disable 1591
 
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_version
     {
-        public byte major;
-        public byte minor;
-        public byte patch;
+        public Byte major;
+        public Byte minor;
+        public Byte patch;
     }
+#pragma warning restore 1591
 }

@@ -4,6 +4,10 @@ using Ultraviolet.Core;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDL_Hint;
+using static Ultraviolet.SDL2.Native.SDL_Init;
+using static Ultraviolet.SDL2.Native.SDL_WindowEventID;
 
 namespace Ultraviolet.SDL2
 {
@@ -21,15 +25,15 @@ namespace Ultraviolet.SDL2
         protected unsafe SDL2UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
             : base(host, configuration)
         {
-            eventFilter = new SDL.EventFilter(SDLEventFilter);
+            eventFilter = new SDLNative.EventFilter(SDLEventFilter);
             eventFilterPtr = Marshal.GetFunctionPointerForDelegate(eventFilter);
-            SDL.SetEventFilter(eventFilterPtr, IntPtr.Zero);
+            SDLNative.SDL_SetEventFilter(eventFilterPtr, IntPtr.Zero);
         }
         
         /// <inheritdoc/>
         public override void UpdateSuspended()
         {
-            SDL.PumpEvents();
+            SDLNative.SDL_PumpEvents();
 
             base.UpdateSuspended();
         }
@@ -73,8 +77,8 @@ namespace Ultraviolet.SDL2
         /// <inheritdoc/>
         protected override void OnShutdown()
         {
-            SDL.SetEventFilter(IntPtr.Zero, IntPtr.Zero);
-            SDL.Quit();
+            SDLNative.SDL_SetEventFilter(IntPtr.Zero, IntPtr.Zero);
+            SDLNative.SDL_Quit();
 
             base.OnShutdown();
         }
@@ -87,13 +91,13 @@ namespace Ultraviolet.SDL2
         protected Boolean InitSDL(UltravioletConfiguration configuration)
         {
             var sdlFlags = configuration.EnableServiceMode ?
-                SDL_Init.TIMER | SDL_Init.EVENTS :
-                SDL_Init.TIMER | SDL_Init.VIDEO | SDL_Init.JOYSTICK | SDL_Init.GAMECONTROLLER | SDL_Init.EVENTS;
+                SDL_INIT_TIMER | SDL_INIT_EVENTS :
+                SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS;
 
             if (Platform == UltravioletPlatform.Windows)
-                SDL.SetHint(SDL_Hint.HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
+                SDLNative.SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
 
-            return SDL.Init(sdlFlags) == 0;
+            return SDLNative.SDL_Init(sdlFlags) == 0;
         }
 
         /// <summary>
@@ -103,15 +107,15 @@ namespace Ultraviolet.SDL2
         protected Boolean PumpEvents()
         {
             SDL_Event @event;
-            while (SDL.PollEvent(out @event) > 0)
+            while (SDLNative.SDL_PollEvent(out @event) > 0)
             {
                 if (Disposed)
                     return false;
 
                 switch (@event.type)
                 {
-                    case SDL_EventType.WINDOWEVENT:
-                        if (@event.window.@event == SDL_WindowEventID.CLOSE)
+                    case SDL_WINDOWEVENT:
+                        if (@event.window.@event == SDL_WINDOWEVENT_CLOSE)
                         {
                             var glWindowInfo = (SDL2UltravioletWindowInfo)GetPlatform().Windows;
                             if (glWindowInfo.DestroyByID((int)@event.window.windowID))
@@ -122,27 +126,27 @@ namespace Ultraviolet.SDL2
                         }
                         break;
 
-                    case SDL_EventType.KEYDOWN:
-                    case SDL_EventType.KEYUP:
-                    case SDL_EventType.MOUSEBUTTONDOWN:
-                    case SDL_EventType.MOUSEBUTTONUP:
-                    case SDL_EventType.MOUSEMOTION:
-                    case SDL_EventType.MOUSEWHEEL:
-                    case SDL_EventType.JOYAXISMOTION:
-                    case SDL_EventType.JOYBALLMOTION:
-                    case SDL_EventType.JOYBUTTONDOWN:
-                    case SDL_EventType.JOYBUTTONUP:
-                    case SDL_EventType.JOYHATMOTION:
-                    case SDL_EventType.CONTROLLERAXISMOTION:
-                    case SDL_EventType.CONTROLLERBUTTONDOWN:
-                    case SDL_EventType.CONTROLLERBUTTONUP:
+                    case SDL_KEYDOWN:
+                    case SDL_KEYUP:
+                    case SDL_MOUSEBUTTONDOWN:
+                    case SDL_MOUSEBUTTONUP:
+                    case SDL_MOUSEMOTION:
+                    case SDL_MOUSEWHEEL:
+                    case SDL_JOYAXISMOTION:
+                    case SDL_JOYBALLMOTION:
+                    case SDL_JOYBUTTONDOWN:
+                    case SDL_JOYBUTTONUP:
+                    case SDL_JOYHATMOTION:
+                    case SDL_CONTROLLERAXISMOTION:
+                    case SDL_CONTROLLERBUTTONDOWN:
+                    case SDL_CONTROLLERBUTTONUP:
                         if (IsHardwareInputDisabled)
                         {
                             continue;
                         }
                         break;
 
-                    case SDL_EventType.QUIT:
+                    case SDL_QUIT:
                         Messages.Publish(UltravioletMessages.Quit, null);
                         return true;
                 }
@@ -158,7 +162,7 @@ namespace Ultraviolet.SDL2
         /// <summary>
         /// Filters SDL2 events.
         /// </summary>
-        [MonoPInvokeCallback(typeof(SDL.EventFilter))]
+        [MonoPInvokeCallback(typeof(SDLNative.EventFilter))]
         private static unsafe Int32 SDLEventFilter(IntPtr userdata, SDL_Event* @event)
         {
             var uv = RequestCurrent();
@@ -167,27 +171,27 @@ namespace Ultraviolet.SDL2
 
             switch (@event->type)
             {
-                case SDL_EventType.APP_TERMINATING:
+                case SDL_APP_TERMINATING:
                     uv.Messages.PublishImmediate(UltravioletMessages.ApplicationTerminating, null);
                     return 0;
 
-                case SDL_EventType.APP_WILLENTERBACKGROUND:
+                case SDL_APP_WILLENTERBACKGROUND:
                     uv.Messages.PublishImmediate(UltravioletMessages.ApplicationSuspending, null);
                     return 0;
 
-                case SDL_EventType.APP_DIDENTERBACKGROUND:
+                case SDL_APP_DIDENTERBACKGROUND:
                     uv.Messages.PublishImmediate(UltravioletMessages.ApplicationSuspended, null);
                     return 0;
 
-                case SDL_EventType.APP_WILLENTERFOREGROUND:
+                case SDL_APP_WILLENTERFOREGROUND:
                     uv.Messages.PublishImmediate(UltravioletMessages.ApplicationResuming, null);
                     return 0;
 
-                case SDL_EventType.APP_DIDENTERFOREGROUND:
+                case SDL_APP_DIDENTERFOREGROUND:
                     uv.Messages.PublishImmediate(UltravioletMessages.ApplicationResumed, null);
                     return 0;
 
-                case SDL_EventType.APP_LOWMEMORY:
+                case SDL_APP_LOWMEMORY:
                     uv.Messages.PublishImmediate(UltravioletMessages.LowMemory, null);
                     GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                     return 0;
@@ -197,7 +201,7 @@ namespace Ultraviolet.SDL2
         }
         
         // The SDL event filter.
-        private readonly SDL.EventFilter eventFilter;
+        private readonly SDLNative.EventFilter eventFilter;
         private readonly IntPtr eventFilterPtr;
     }
 }

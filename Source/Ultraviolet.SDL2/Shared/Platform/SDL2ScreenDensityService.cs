@@ -37,7 +37,7 @@ namespace Ultraviolet.SDL2.Platform
             Single hdpi, vdpi;
             unsafe
             {
-                if (SDL.GetDisplayDPI(display.Index, null, &hdpi, &vdpi) < 0)
+                if (SDLNative.SDL_GetDisplayDPI(display.Index, null, &hdpi, &vdpi) < 0)
                     throw new SDL2Exception();                
             }
 

@@ -8,6 +8,7 @@ using Ultraviolet.Input;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -28,8 +29,8 @@ namespace Ultraviolet.SDL2.Input
             // HACK: Working around an Android emulator glitch here -- it will
             // return a touch ID of 0 even after saying that the device exists,
             // and yet not produce any kind of SDL error... I hate emulators.            
-            var id = SDL.GetTouchDevice(index);
-            if (id == 0 && !String.IsNullOrEmpty(SDL.GetError()))
+            var id = SDLNative.SDL_GetTouchDevice(index);
+            if (id == 0 && !String.IsNullOrEmpty(SDLNative.SDL_GetError()))
                 throw new SDL2Exception();
 
             this.sdlTouchID = id;
@@ -44,7 +45,7 @@ namespace Ultraviolet.SDL2.Input
             var evt = ((SDL2EventMessageData)data).Event;
             switch (evt.type)
             {
-                case SDL_EventType.FINGERDOWN:
+                case SDL_FINGERDOWN:
                     if (evt.tfinger.touchId == sdlTouchID)
                     {
                         if (!isRegistered)
@@ -54,7 +55,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.FINGERUP:
+                case SDL_FINGERUP:
                     if (evt.tfinger.touchId == sdlTouchID)
                     {
                         if (!isRegistered)
@@ -64,7 +65,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.FINGERMOTION:
+                case SDL_FINGERMOTION:
                     if (evt.tfinger.touchId == sdlTouchID)
                     {
                         if (!isRegistered)
@@ -74,7 +75,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.MULTIGESTURE:
+                case SDL_MULTIGESTURE:
                     if (evt.mgesture.touchId == sdlTouchID)
                     {
                         if (!isRegistered)
@@ -85,7 +86,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.DOLLARRECORD:
+                case SDL_DOLLARRECORD:
                     if (evt.dgesture.touchId == sdlTouchID)
                     {
                         if (!isRegistered)
@@ -103,7 +104,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.DOLLARGESTURE:
+                case SDL_DOLLARGESTURE:
                     if (evt.dgesture.touchId == sdlTouchID)
                     {
                         if (!isRegistered)
@@ -366,7 +367,7 @@ namespace Ultraviolet.SDL2.Input
 
             if (!IsRecordingDollarGesture)
             {
-                if (SDL.RecordGesture(sdlTouchID) == 0)
+                if (SDLNative.SDL_RecordGesture(sdlTouchID) == 0)
                     throw new SDL2Exception();
 
                 isRecordingDollarGesture = true;
@@ -383,7 +384,7 @@ namespace Ultraviolet.SDL2.Input
             if (IsRecordingDollarGesture)
                 return false;
 
-            if (SDL.RecordGesture(sdlTouchID) == 0)
+            if (SDLNative.SDL_RecordGesture(sdlTouchID) == 0)
                 throw new SDL2Exception();
 
             isRecordingDollarGesture = true;
@@ -398,7 +399,7 @@ namespace Ultraviolet.SDL2.Input
 
             using (var streamWrapper = new SDL2StreamWrapper(stream))
             {
-                if (SDL.LoadDollarTemplates(sdlTouchID, streamWrapper.ToIntPtr()) == 0)
+                if (SDLNative.SDL_LoadDollarTemplates(sdlTouchID, streamWrapper.ToIntPtr()) == 0)
                     throw new SDL2Exception();
             }
         }
@@ -411,7 +412,7 @@ namespace Ultraviolet.SDL2.Input
 
             using (var streamWrapper = new SDL2StreamWrapper(stream))
             {
-                if (SDL.SaveAllDollarTemplates(streamWrapper.ToIntPtr()) == 0)
+                if (SDLNative.SDL_SaveAllDollarTemplates(streamWrapper.ToIntPtr()) == 0)
                     throw new SDL2Exception();
             }
         }

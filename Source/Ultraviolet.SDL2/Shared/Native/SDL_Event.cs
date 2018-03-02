@@ -1,10 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Explicit, Size = 56)]
     public unsafe struct SDL_Event
@@ -56,4 +55,5 @@ namespace Ultraviolet.SDL2.Native
         [FieldOffset(0)]
         public SDL_DropEvent drop;
     }
+#pragma warning restore 1591
 }

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_Hint;
+using static Ultraviolet.SDL2.Native.SDL_WindowFlags;
 
 namespace Ultraviolet.SDL2.Platform
 {
     /// <summary>
     /// Represents the SDL2 implementation of the <see cref="IUltravioletWindowInfo"/> interface.
     /// </summary>
-    [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public abstract class SDL2UltravioletWindowInfo : IUltravioletWindowInfo, IUltravioletComponent
     {
         /// <summary>
@@ -70,7 +70,7 @@ namespace Ultraviolet.SDL2.Platform
             var match = default(SDL2UltravioletWindow);
             foreach (SDL2UltravioletWindow window in windows)
             {
-                if (SDL.GetWindowID((IntPtr)window) == (UInt32)id)
+                if (SDLNative.SDL_GetWindowID((IntPtr)window) == (UInt32)id)
                 {
                     match = window;
                     break;
@@ -159,25 +159,25 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The Ultraviolet window that was created.</returns>
         public IUltravioletWindow Create(String caption, Int32 x, Int32 y, Int32 width, Int32 height, WindowFlags flags = WindowFlags.None)
         {
-            var sdlflags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
+            var sdlflags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
-                sdlflags |= SDL_WindowFlags.ALLOW_HIGHDPI;
+                sdlflags |= SDL_WINDOW_ALLOW_HIGHDPI;
 
             if ((flags & WindowFlags.Resizable) == WindowFlags.Resizable)
-                sdlflags |= SDL_WindowFlags.RESIZABLE;
+                sdlflags |= SDL_WINDOW_RESIZABLE;
 
             if ((flags & WindowFlags.Borderless) == WindowFlags.Borderless)
-                sdlflags |= SDL_WindowFlags.BORDERLESS;
+                sdlflags |= SDL_WINDOW_BORDERLESS;
 
             if ((flags & WindowFlags.Hidden) == WindowFlags.Hidden)
-                sdlflags |= SDL_WindowFlags.HIDDEN;
+                sdlflags |= SDL_WINDOW_HIDDEN;
             else
-                sdlflags |= SDL_WindowFlags.SHOWN;
+                sdlflags |= SDL_WINDOW_SHOWN;
 
-            var sdlptr = SDL.CreateWindow(caption ?? String.Empty,
-                x == -1 ? (int) SDL.SDL_WINDOWPOS_CENTERED_MASK : x,
-                y == -1 ? (int) SDL.SDL_WINDOWPOS_CENTERED_MASK : y,
+            var sdlptr = SDLNative.SDL_CreateWindow(caption ?? String.Empty,
+                x == -1 ? (int) SDLNative.SDL_WINDOWPOS_CENTERED_MASK : x,
+                y == -1 ? (int) SDLNative.SDL_WINDOWPOS_CENTERED_MASK : y,
                 width, height, sdlflags);
             
             if (sdlptr == IntPtr.Zero)
@@ -200,7 +200,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <returns>The Ultraviolet window that was created.</returns>
         public IUltravioletWindow CreateFromNativePointer(IntPtr ptr)
         {
-            var sdlptr = SDL.CreateWindowFrom(ptr);
+            var sdlptr = SDLNative.SDL_CreateWindowFrom(ptr);
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
@@ -456,27 +456,27 @@ namespace Ultraviolet.SDL2.Platform
             // Initialize the hidden master window used to create the OpenGL context.
             var masterWidth = 0;
             var masterHeight = 0;
-            var masterFlags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WindowFlags.OPENGL : 0;
+            var masterFlags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
-                masterFlags |= SDL_WindowFlags.ALLOW_HIGHDPI;
+                masterFlags |= SDL_WINDOW_ALLOW_HIGHDPI;
 
             if (isRunningOnMobile)
             {
-                masterFlags |= SDL_WindowFlags.FULLSCREEN | SDL_WindowFlags.RESIZABLE;
+                masterFlags |= SDL_WINDOW_FULLSCREEN | SDL_WINDOW_RESIZABLE;
             }
             else
             {
-                masterFlags |= SDL_WindowFlags.HIDDEN;
+                masterFlags |= SDL_WINDOW_HIDDEN;
             }
 
             // Attempt to create the master window. If that fails, reduce our requirements and try again before failing.
-            var masterptr = SDL.CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+            var masterptr = SDLNative.SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
                 InitializeRenderingAPIFallback(sdlconfig);
 
-                masterptr = SDL.CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+                masterptr = SDLNative.SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
                 if (masterptr == IntPtr.Zero)
                 {
                     throw new SDL2Exception();
@@ -487,7 +487,7 @@ namespace Ultraviolet.SDL2.Platform
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
-            if (!SDL.SetHint(SDL_Hint.VIDEO_WINDOW_SHARE_PIXEL_FORMAT, masterptr.ToStringHex()))
+            if (!SDLNative.SDL_SetHint(SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT, masterptr.ToStringHex()))
                 throw new SDL2Exception();
 
             // If this is not a headless context, create the primary application window.

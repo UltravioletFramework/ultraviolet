@@ -12,6 +12,8 @@ using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using Ultraviolet.TestFramework.Graphics;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDL_Keymod;
 
 namespace Ultraviolet.TestFramework
 {
@@ -195,16 +197,16 @@ namespace Ultraviolet.TestFramework
             {
                 key = new SDL_KeyboardEvent()
                 {
-                    type = (uint)SDL_EventType.KEYDOWN,
+                    type = (uint)SDL_KEYDOWN,
                     windowID = (uint)Ultraviolet.GetPlatform().Windows.GetPrimary().ID,                     
                     keysym = new SDL_Keysym()
                     {
                         keycode = (SDL_Keycode)key,
                         scancode = (SDL_Scancode)scancode,                      
                         mod = 
-                            (ctrl ? SDL_Keymod.CTRL : SDL_Keymod.NONE) |
-                            (alt ? SDL_Keymod.ALT : SDL_Keymod.NONE) |
-                            (shift ? SDL_Keymod.SHIFT : SDL_Keymod.NONE),
+                            (ctrl ? KMOD_CTRL : KMOD_NONE) |
+                            (alt ? KMOD_ALT : KMOD_NONE) |
+                            (shift ? KMOD_SHIFT : KMOD_NONE),
                     },
                 }
             };
@@ -219,16 +221,16 @@ namespace Ultraviolet.TestFramework
             {
                 key = new SDL_KeyboardEvent()
                 {
-                    type = (uint)SDL_EventType.KEYUP,
+                    type = (uint)SDL_KEYUP,
                     windowID = (uint)Ultraviolet.GetPlatform().Windows.GetPrimary().ID,
                     keysym = new SDL_Keysym()
                     {
                         keycode = (SDL_Keycode)key,
                         scancode = (SDL_Scancode)scancode,
                         mod =
-                            (ctrl ? SDL_Keymod.CTRL : SDL_Keymod.NONE) |
-                            (alt ? SDL_Keymod.ALT : SDL_Keymod.NONE) |
-                            (shift ? SDL_Keymod.SHIFT : SDL_Keymod.NONE),
+                            (ctrl ? KMOD_CTRL : KMOD_NONE) |
+                            (alt ? KMOD_ALT : KMOD_NONE) |
+                            (shift ? KMOD_SHIFT : KMOD_NONE),
                     },
                 }
             };

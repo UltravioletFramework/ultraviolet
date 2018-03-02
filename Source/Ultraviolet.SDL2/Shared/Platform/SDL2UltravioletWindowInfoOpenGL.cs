@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Ultraviolet.Core;
-using Ultraviolet.Core.Text;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_GLattr;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -43,7 +40,7 @@ namespace Ultraviolet.SDL2.Platform
         public void Swap()
         {
             var oglwin = (SDL2UltravioletWindow)GetCurrent();
-            SDL.GL_SwapWindow((IntPtr)oglwin);
+            SDLNative.SDL_GL_SwapWindow((IntPtr)oglwin);
         }
         
         /// <summary>
@@ -74,20 +71,20 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         protected override void InitializeRenderingAPI(SDL2PlatformConfiguration sdlconfig)
         {
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, sdlconfig.MultiSampleBuffers) < 0)
+            if (SDLNative.SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, sdlconfig.MultiSampleBuffers) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, sdlconfig.MultiSampleSamples) < 0)
+            if (SDLNative.SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, sdlconfig.MultiSampleSamples) < 0)
                 throw new SDL2Exception();
         }
 
         /// <inheritdoc/>
         protected override void InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig)
         {
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLEBUFFERS, 0) < 0)
+            if (SDLNative.SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.MULTISAMPLESAMPLES, 0) < 0)
+            if (SDLNative.SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0) < 0)
                 throw new SDL2Exception();
         }
 
@@ -130,10 +127,10 @@ namespace Ultraviolet.SDL2.Platform
 
             var win = (SDL2UltravioletWindow)(window ?? GetMaster());
             var winptr = (IntPtr)win;
-            if (SDL.GL_MakeCurrent(winptr, context) < 0)
+            if (SDLNative.SDL_GL_MakeCurrent(winptr, context) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0 && Ultraviolet.Platform != UltravioletPlatform.iOS)
+            if (SDLNative.SDL_GL_SetSwapInterval(win.SynchronizeWithVerticalRetrace ? 1 : 0) < 0 && Ultraviolet.Platform != UltravioletPlatform.iOS)
             {
                 if (!shuttingDown)
                     throw new SDL2Exception();

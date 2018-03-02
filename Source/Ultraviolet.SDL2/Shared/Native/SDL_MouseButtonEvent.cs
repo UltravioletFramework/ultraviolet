@@ -2,10 +2,9 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_MouseButtonEvent
@@ -21,4 +20,5 @@ namespace Ultraviolet.SDL2.Native
         public Int32 x;
         public Int32 y;
     }
+#pragma warning restore 1591
 }

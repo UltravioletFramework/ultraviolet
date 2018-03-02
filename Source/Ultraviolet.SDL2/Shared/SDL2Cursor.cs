@@ -28,7 +28,7 @@ namespace Ultraviolet.SDL2
 
             if (uv.Platform != UltravioletPlatform.Android && uv.Platform != UltravioletPlatform.iOS)
             {
-                this.cursor = SDL.CreateColorCursor(((SDL2Surface2D)surface).NativePtr, hx, hy);
+                this.cursor = SDLNative.SDL_CreateColorCursor(((SDL2Surface2D)surface).NativePtr, hx, hy);
                 this.Width = surface.Width;
                 this.Height = surface.Height;
                 this.HotspotX = hx;
@@ -84,7 +84,7 @@ namespace Ultraviolet.SDL2
                 Ultraviolet.GetPlatform().Cursor = null;
             }
 
-            SDL.FreeCursor(cursor);
+            SDLNative.SDL_FreeCursor(cursor);
 
             base.Dispose(disposing);
         }

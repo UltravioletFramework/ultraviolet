@@ -4,10 +4,9 @@ using Ultraviolet.Core;
 using SDL_GestureID = System.Int64;
 using SDL_TouchID = System.Int64;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_DollarGestureEvent
@@ -21,4 +20,5 @@ namespace Ultraviolet.SDL2.Native
         public Single x;
         public Single y;
     }
+#pragma warning restore 1591
 }

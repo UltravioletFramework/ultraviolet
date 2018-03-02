@@ -22,7 +22,7 @@ namespace Ultraviolet.SDL2
             this.stream = stream;
             this.gchandle = GCHandle.Alloc(this, GCHandleType.Weak);
 
-            this.rwops = (SDL_RWops*)SDL.AllocRW();
+            this.rwops = (SDL_RWops*)SDLNative.SDL_AllocRW();
             this.rwops->size = Marshal.GetFunctionPointerForDelegate(new RWops_size(RWops_size_callback));
             this.rwops->seek = Marshal.GetFunctionPointerForDelegate(new RWops_seek(RWops_seek_callback));
             this.rwops->read = Marshal.GetFunctionPointerForDelegate(new RWops_read(RWops_read_callback));
@@ -174,7 +174,7 @@ namespace Ultraviolet.SDL2
             
             if (rwops != null)
             {
-                SDL.FreeRW((IntPtr)rwops);
+                SDLNative.SDL_FreeRW((IntPtr)rwops);
                 rwops = null;
             }
 

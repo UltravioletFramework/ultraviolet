@@ -1,32 +1,32 @@
-﻿#pragma warning disable 1591
-
-namespace Ultraviolet.SDL2.Native
+﻿namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     public enum SDL_GLattr
     {
-        RED_SIZE,
-        GREEN_SIZE,
-        BLUE_SIZE,
-        ALPHA_SIZE,
-        BUFFER_SIZE,
-        DOUBLEBUFFER,
-        DEPTH_SIZE,
-        STENCIL_SIZE,
-        ACCUM_RED_SIZE,
-        ACCUM_GREEN_SIZE,
-        ACCUM_BLUE_SIZE,
-        ACCUM_ALPHA_SIZE,
-        STEREO,
-        MULTISAMPLEBUFFERS,
-        MULTISAMPLESAMPLES,
-        ACCELERATED_VISUAL,
-        RETAINED_BACKING,
-        CONTEXT_MAJOR_VERSION,
-        CONTEXT_MINOR_VERSION,
-        CONTEXT_EGL,
-        CONTEXT_FLAGS,
-        CONTEXT_PROFILE_MASK,
-        SHARE_WITH_CURRENT_CONTEXT,
-        FRAMEBUFFER_SRGB_CAPABLE
+        SDL_GL_RED_SIZE,
+        SDL_GL_GREEN_SIZE,
+        SDL_GL_BLUE_SIZE,
+        SDL_GL_ALPHA_SIZE,
+        SDL_GL_BUFFER_SIZE,
+        SDL_GL_DOUBLEBUFFER,
+        SDL_GL_DEPTH_SIZE,
+        SDL_GL_STENCIL_SIZE,
+        SDL_GL_ACCUM_RED_SIZE,
+        SDL_GL_ACCUM_GREEN_SIZE,
+        SDL_GL_ACCUM_BLUE_SIZE,
+        SDL_GL_ACCUM_ALPHA_SIZE,
+        SDL_GL_STEREO,
+        SDL_GL_MULTISAMPLEBUFFERS,
+        SDL_GL_MULTISAMPLESAMPLES,
+        SDL_GL_ACCELERATED_VISUAL,
+        SDL_GL_RETAINED_BACKING,
+        SDL_GL_CONTEXT_MAJOR_VERSION,
+        SDL_GL_CONTEXT_MINOR_VERSION,
+        SDL_GL_CONTEXT_EGL,
+        SDL_GL_CONTEXT_FLAGS,
+        SDL_GL_CONTEXT_PROFILE_MASK,
+        SDL_GL_SHARE_WITH_CURRENT_CONTEXT,
+        SDL_GL_FRAMEBUFFER_SRGB_CAPABLE
     }
+#pragma warning restore 1591
 }

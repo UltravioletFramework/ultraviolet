@@ -3,10 +3,9 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using SDL_TouchID = System.Int64;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_MultiGestureEvent
@@ -21,4 +20,5 @@ namespace Ultraviolet.SDL2.Native
         public UInt16 numFingers;
         public UInt16 padding;
     }
+#pragma warning restore 1591
 }

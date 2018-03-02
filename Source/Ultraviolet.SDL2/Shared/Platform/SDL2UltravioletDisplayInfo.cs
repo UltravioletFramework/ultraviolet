@@ -21,7 +21,7 @@ namespace Ultraviolet.SDL2.Platform
         {
             Contract.Require(uv, nameof(uv));
 
-            this.displays = Enumerable.Range(0, SDL.GetNumVideoDisplays())
+            this.displays = Enumerable.Range(0, SDLNative.SDL_GetNumVideoDisplays())
                 .Select(x => new SDL2UltravioletDisplay(uv, x))
                 .ToList<IUltravioletDisplay>();
         }

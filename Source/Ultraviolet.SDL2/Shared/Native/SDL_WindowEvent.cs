@@ -2,10 +2,9 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_WindowEvent
@@ -20,4 +19,5 @@ namespace Ultraviolet.SDL2.Native
         public Int32 data1;
         public Int32 data2;
     }
+#pragma warning restore 1591
 }

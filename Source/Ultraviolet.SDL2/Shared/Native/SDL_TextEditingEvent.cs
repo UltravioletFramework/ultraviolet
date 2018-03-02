@@ -2,10 +2,9 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct SDL_TextEditingEvent
@@ -19,4 +18,5 @@ namespace Ultraviolet.SDL2.Native
         public Int32 start;
         public Int32 length;
     }
+#pragma warning restore 1591
 }

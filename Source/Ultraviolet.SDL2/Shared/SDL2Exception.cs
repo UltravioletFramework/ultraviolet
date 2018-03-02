@@ -13,7 +13,7 @@ namespace Ultraviolet.SDL2
         /// Initializes a new instance of the SDL2Exception class.
         /// </summary>
         public SDL2Exception()
-            : base(SDL.GetError())
+            : base(SDLNative.SDL_GetError())
         {
 
         }

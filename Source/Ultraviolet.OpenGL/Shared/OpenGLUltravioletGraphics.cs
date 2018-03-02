@@ -6,8 +6,10 @@ using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.OpenGL.Graphics;
 using Ultraviolet.SDL2;
-using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
+using static Ultraviolet.SDL2.Native.SDL_GLattr;
+using static Ultraviolet.SDL2.Native.SDL_GLcontextFlag;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.OpenGL
 {
@@ -32,9 +34,9 @@ namespace Ultraviolet.OpenGL
                 var attemptedVersionMajor = 0;
                 var attemptedVersionMinor = 0;
 
-                if (SDL.GL_GetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, &attemptedVersionMajor) < 0)
+                if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &attemptedVersionMajor) < 0)
                     throw new SDL2Exception();
-                if (SDL.GL_GetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, &attemptedVersionMinor) < 0)
+                if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &attemptedVersionMinor) < 0)
                     throw new SDL2Exception();
                 
                 var attemptedVersion = new Version(attemptedVersionMajor, attemptedVersionMinor, 0, 0);
@@ -42,10 +44,10 @@ namespace Ultraviolet.OpenGL
                 var isGLES = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
                 if (isGLES && attemptedVersion >= new Version(3, 0) && (configuration.MinimumOpenGLESVersion ?? new Version(2, 0)) <= new Version(2, 0))
                 {
-                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, 2) < 0)
+                    if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2) < 0)
                         throw new SDL2Exception();
 
-                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, 0) < 0)
+                    if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0) < 0)
                         throw new SDL2Exception();
 
                     if (!TryInitializeGLContext(masterptr, configuration))
@@ -54,7 +56,7 @@ namespace Ultraviolet.OpenGL
                 else throw new SDL2Exception();
             }
 
-            if (SDL.GL_SetSwapInterval(1) < 0 && uv.Platform != UltravioletPlatform.iOS)
+            if (SDL_GL_SetSwapInterval(1) < 0 && uv.Platform != UltravioletPlatform.iOS)
                 throw new SDL2Exception();
 
             if (gl.Initialized)
@@ -777,7 +779,7 @@ namespace Ultraviolet.OpenGL
             if (gl.Initialized)
                 gl.Uninitialize();
 
-            SDL.GL_DeleteContext(context);
+            SDL_GL_DeleteContext(context);
 
             base.Dispose(disposing);
         }
@@ -893,16 +895,16 @@ namespace Ultraviolet.OpenGL
         private Boolean TryInitializeGLContext(IntPtr masterptr, OpenGLUltravioletConfiguration configuration)
         {
             if (configuration.Debug)
-                SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, (int)SDL_GLcontextFlag.DEBUG);
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, (int)SDL_GL_CONTEXT_DEBUG_FLAG);
 
-            if ((this.context = SDL.GL_CreateContext(masterptr)) == IntPtr.Zero)
+            if ((this.context = SDL_GL_CreateContext(masterptr)) == IntPtr.Zero)
             {
                 if (configuration.Debug)
                 {
-                    if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_FLAGS, 0) < 0)
+                    if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0) < 0)
                         throw new SDL2Exception();
 
-                    if ((this.context = SDL.GL_CreateContext(masterptr)) != IntPtr.Zero)
+                    if ((this.context = SDL_GL_CreateContext(masterptr)) != IntPtr.Zero)
                         return true;
                 }
                 return false;

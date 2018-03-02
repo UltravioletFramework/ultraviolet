@@ -16,7 +16,7 @@ namespace Ultraviolet.SDL2.Platform
         {
             var flags = GetSDLMessageBoxFlag(type);
 
-            if (SDL.ShowSimpleMessageBox(flags, title, message, window) < 0)
+            if (SDLNative.SDL_ShowSimpleMessageBox(flags, title, message, window) < 0)
                 throw new SDL2Exception();
         }
         

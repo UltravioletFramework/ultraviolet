@@ -24,10 +24,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Input\TouchDeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SDL2EventMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\IntPtrExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLMacro.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_ArrayOrder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_BitmapOrder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Macros.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_BlendMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_CommonEvent.cs" />
@@ -63,11 +61,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_MouseWheelEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_MultiGestureEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_OSEvent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_PackedLayout.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_PackedOrder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_PixelFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_PixelFormatEnum.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_PixelType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_PowerState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_QuitEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Rect.cs" />
@@ -83,7 +78,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo_winrt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo_wl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMinfo_x11.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWMType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_SysWM_Type.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_TextEditingEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_TextInputEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_TouchFingerEvent.cs" />
