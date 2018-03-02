@@ -1,24 +1,24 @@
-﻿#pragma warning disable 1591
-
-namespace Ultraviolet.SDL2.Native
+﻿namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     public enum SDL_GameControllerButton
     {
-        INVALID = -1,
-        A,
-        B,
-        X,
-        Y,
-        BACK,
-        GUIDE,
-        START,
-        LEFTSTICK,
-        RIGHTSTICK,
-        LEFTSHOULDER,
-        RIGHTSHOULDER,
-        DPAD_UP,
-        DPAD_DOWN,
-        DPAD_LEFT,
-        DPAD_RIGHT,
+        SDL_CONTROLLER_BUTTON_INVALID = -1,
+        SDL_CONTROLLER_BUTTON_A,
+        SDL_CONTROLLER_BUTTON_B,
+        SDL_CONTROLLER_BUTTON_X,
+        SDL_CONTROLLER_BUTTON_Y,
+        SDL_CONTROLLER_BUTTON_BACK,
+        SDL_CONTROLLER_BUTTON_GUIDE,
+        SDL_CONTROLLER_BUTTON_START,
+        SDL_CONTROLLER_BUTTON_LEFTSTICK,
+        SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+        SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+        SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+        SDL_CONTROLLER_BUTTON_DPAD_UP,
+        SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+        SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+        SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
     }
+#pragma warning restore 1591
 }

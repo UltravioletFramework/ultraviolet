@@ -1,27 +1,27 @@
 ﻿using System;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Flags]
     public enum SDL_Keymod
     {
-        NONE = 0x0000,
-        LSHIFT = 0x0001,
-        RSHIFT = 0x0002,
-        LCTRL = 0x0040,
-        RCTRL = 0x0080,
-        LALT = 0x0100,
-        RALT = 0x0200,
-        LGUI = 0x0400,
-        RGUI = 0x0800,
-        NUM = 0x1000,
-        CAPS = 0x2000,
-        MODE = 0x4000,
-        CTRL = LCTRL | RCTRL,
-        SHIFT = LSHIFT | RSHIFT,
-        ALT = LALT | RALT,
-        GUI = LGUI | RGUI
+        KMOD_NONE = 0x0000,
+        KMOD_LSHIFT = 0x0001,
+        KMOD_RSHIFT = 0x0002,
+        KMOD_LCTRL = 0x0040,
+        KMOD_RCTRL = 0x0080,
+        KMOD_LALT = 0x0100,
+        KMOD_RALT = 0x0200,
+        KMOD_LGUI = 0x0400,
+        KMOD_RGUI = 0x0800,
+        KMOD_NUM = 0x1000,
+        KMOD_CAPS = 0x2000,
+        KMOD_MODE = 0x4000,
+        KMOD_CTRL = KMOD_LCTRL | KMOD_RCTRL,
+        KMOD_SHIFT = KMOD_LSHIFT | KMOD_RSHIFT,
+        KMOD_ALT = KMOD_LALT | KMOD_RALT,
+        KMOD_GUI = KMOD_LGUI | KMOD_RGUI
     }
+#pragma warning restore 1591
 }

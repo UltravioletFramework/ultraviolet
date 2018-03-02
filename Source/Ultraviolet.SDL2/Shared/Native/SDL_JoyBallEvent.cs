@@ -3,10 +3,9 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 using SDL_JoystickID = System.Int32;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_JoyBallEvent
@@ -21,4 +20,5 @@ namespace Ultraviolet.SDL2.Native
         public Int16 xrel;
         public Int16 yrel;
     }
+#pragma warning restore 1591
 }

@@ -2,10 +2,9 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_KeyboardEvent
@@ -19,4 +18,5 @@ namespace Ultraviolet.SDL2.Native
         public Byte padding3;
         public SDL_Keysym keysym;
     }
+#pragma warning restore 1591
 }

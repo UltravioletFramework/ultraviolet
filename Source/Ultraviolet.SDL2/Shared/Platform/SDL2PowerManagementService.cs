@@ -2,6 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_PowerState;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -50,24 +51,24 @@ namespace Ultraviolet.SDL2.Platform
             {
                 int sdlPct;
 
-                this.sdlPowerState = SDL.GetPowerInfo(null, &sdlPct);
+                this.sdlPowerState = SDLNative.SDL_GetPowerInfo(null, &sdlPct);
                 this.pct = sdlPct;
 
                 switch (sdlPowerState)
                 {
-                    case SDL_PowerState.UNKNOWN:
-                    case SDL_PowerState.NO_BATTERY:
+                    case SDL_POWERSTATE_UNKNOWN:
+                    case SDL_POWERSTATE_NO_BATTERY:
                         this.isBatteryPowered = false;
                         this.isPluggedIn = false;
                         break;
 
-                    case SDL_PowerState.ON_BATTERY:
+                    case SDL_POWERSTATE_ON_BATTERY:
                         this.isBatteryPowered = true;
                         this.isPluggedIn = false;
                         break;
 
-                    case SDL_PowerState.CHARGING:
-                    case SDL_PowerState.CHARGED:
+                    case SDL_POWERSTATE_CHARGING:
+                    case SDL_POWERSTATE_CHARGED:
                         this.isBatteryPowered = true;
                         this.isPluggedIn = true;
                         break;

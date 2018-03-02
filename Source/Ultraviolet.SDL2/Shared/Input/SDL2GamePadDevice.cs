@@ -4,6 +4,8 @@ using Ultraviolet.Core.Messages;
 using Ultraviolet.Input;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDL_GameControllerAxis;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -28,18 +30,18 @@ namespace Ultraviolet.SDL2.Input
             this.repeatingAxis = new Boolean[this.timeLastPressAxis.Length];
             this.repeatingButton = new Boolean[this.timeLastPressButton.Length];
 
-            if ((this.controller = SDL.GameControllerOpen(joystickIndex)) == IntPtr.Zero)
+            if ((this.controller = SDLNative.SDL_GameControllerOpen(joystickIndex)) == IntPtr.Zero)
             {
                 throw new SDL2Exception();
             }
 
-            this.name = SDL.GameControllerNameForIndex(joystickIndex);
+            this.name = SDLNative.SDL_GameControllerNameForIndex(joystickIndex);
             this.states = new InternalButtonState[Enum.GetValues(typeof(GamePadButton)).Length];
             this.playerIndex = playerIndex;
 
-            var joystick = SDL.GameControllerGetJoystick(controller);
+            var joystick = SDLNative.SDL_GameControllerGetJoystick(controller);
 
-            if ((this.instanceID = SDL.JoystickInstanceID(joystick)) < 0)
+            if ((this.instanceID = SDLNative.SDL_JoystickInstanceID(joystick)) < 0)
             {
                 throw new SDL2Exception();
             }
@@ -61,7 +63,7 @@ namespace Ultraviolet.SDL2.Input
             var evt = ((SDL2EventMessageData)data).Event;
             switch (evt.type)
             {
-                case SDL_EventType.CONTROLLERBUTTONDOWN:
+                case SDL_CONTROLLERBUTTONDOWN:
                     {
                         if (evt.cbutton.which == instanceID)
                         {
@@ -78,7 +80,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.CONTROLLERBUTTONUP:
+                case SDL_CONTROLLERBUTTONUP:
                     {
                         if (evt.cbutton.which == instanceID)
                         {
@@ -95,7 +97,7 @@ namespace Ultraviolet.SDL2.Input
                     }
                     break;
 
-                case SDL_EventType.CONTROLLERAXISMOTION:
+                case SDL_CONTROLLERAXISMOTION:
                     {
                         if (evt.caxis.which == instanceID)
                         {
@@ -659,42 +661,42 @@ namespace Ultraviolet.SDL2.Input
 
             switch ((SDL_GameControllerAxis)evt.axis)
             {
-                case SDL_GameControllerAxis.LEFTX:
+                case SDL_CONTROLLER_AXIS_LEFTX:
                     prevLeftJoystickX = leftJoystickX;
                     leftJoystickX = value;
                     OnAxisChanged(GamePadAxis.LeftJoystickX, value);
                     CheckForAxisPresses(GamePadAxis.LeftJoystickX, prevLeftJoystickX, value);
                     break;
 
-                case SDL_GameControllerAxis.LEFTY:
+                case SDL_CONTROLLER_AXIS_LEFTY:
                     prevLeftJoystickY = leftJoystickY;
                     leftJoystickY = value;
                     OnAxisChanged(GamePadAxis.LeftJoystickY, value);
                     CheckForAxisPresses(GamePadAxis.LeftJoystickY, prevLeftJoystickY, value);
                     break;
                 
-                case SDL_GameControllerAxis.RIGHTX:
+                case SDL_CONTROLLER_AXIS_RIGHTX:
                     prevRightJoystickX = rightJoystickX;
                     rightJoystickX = value;
                     OnAxisChanged(GamePadAxis.RightJoystickX, value);
                     CheckForAxisPresses(GamePadAxis.RightJoystickX, prevRightJoystickX, value);
                     break;
                 
-                case SDL_GameControllerAxis.RIGHTY:
+                case SDL_CONTROLLER_AXIS_RIGHTY:
                     prevRightJoystickY = rightJoystickX;
                     rightJoystickY = value;
                     OnAxisChanged(GamePadAxis.RightJoystickY, value);
                     CheckForAxisPresses(GamePadAxis.RightJoystickY, prevRightJoystickY, value);
                     break;
                 
-                case SDL_GameControllerAxis.TRIGGERLEFT:
+                case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
                     prevLeftTrigger = leftTrigger;
                     leftTrigger = value;
                     OnAxisChanged(GamePadAxis.LeftTrigger, value);
                     CheckForAxisPresses(GamePadAxis.LeftTrigger, prevLeftTrigger, value);
                     break;
                 
-                case SDL_GameControllerAxis.TRIGGERRIGHT:
+                case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
                     prevRightTrigger = rightTrigger;
                     rightTrigger = value;
                     OnAxisChanged(GamePadAxis.RightTrigger, value);

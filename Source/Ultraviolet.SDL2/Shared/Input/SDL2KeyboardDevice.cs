@@ -5,6 +5,8 @@ using Ultraviolet.Core.Messages;
 using Ultraviolet.Input;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDL_Keymod;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -22,7 +24,7 @@ namespace Ultraviolet.SDL2.Input
             : base(uv)
         {
             Int32 numkeys;
-            SDL.GetKeyboardState(out numkeys);
+            SDLNative.SDL_GetKeyboardState(out numkeys);
 
             this.states = new InternalButtonState[numkeys];
 
@@ -40,18 +42,18 @@ namespace Ultraviolet.SDL2.Input
         {
             if (type == UltravioletMessages.SoftwareKeyboardShown)
             {
-                SDL.StartTextInput();
+                SDLNative.SDL_StartTextInput();
             }
             else if (type == UltravioletMessages.SoftwareKeyboardHidden)
             {
-                SDL.StopTextInput();
+                SDLNative.SDL_StopTextInput();
             }
             else if (type == SDL2UltravioletMessages.SDLEvent)
             {
                 var evt = ((SDL2EventMessageData)data).Event;
                 switch (evt.type)
                 {
-                    case SDL_EventType.KEYDOWN:
+                    case SDL_KEYDOWN:
                         {
                             if (!isRegistered)
                                 Register();
@@ -60,7 +62,7 @@ namespace Ultraviolet.SDL2.Input
                         }
                         break;
 
-                    case SDL_EventType.KEYUP:
+                    case SDL_KEYUP:
                         {
                             if (!isRegistered)
                                 Register();
@@ -69,7 +71,7 @@ namespace Ultraviolet.SDL2.Input
                         }
                         break;
 
-                    case SDL_EventType.TEXTEDITING:
+                    case SDL_TEXTEDITING:
                         {
                             if (!isRegistered)
                                 Register();
@@ -78,7 +80,7 @@ namespace Ultraviolet.SDL2.Input
                         }
                         break;
 
-                    case SDL_EventType.TEXTINPUT:
+                    case SDL_TEXTINPUT:
                         {
                             if (isRegistered)
                                 Register();
@@ -162,7 +164,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Down;
         }
 
@@ -171,7 +173,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Up;
         }
 
@@ -180,7 +182,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Pressed || (!ignoreRepeats && states[scancode].Repeated);
         }
 
@@ -189,7 +191,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDL.GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Released;
         }
 
@@ -212,7 +214,7 @@ namespace Ultraviolet.SDL2.Input
         {
             get
             {
-                return (SDL.GetModState() & SDL_Keymod.NUM) == SDL_Keymod.NUM;
+                return (SDLNative.SDL_GetModState() & KMOD_NUM) == KMOD_NUM;
             }
         }
 
@@ -221,7 +223,7 @@ namespace Ultraviolet.SDL2.Input
         {
             get
             {
-                return (SDL.GetModState() & SDL_Keymod.CAPS) == SDL_Keymod.CAPS;
+                return (SDLNative.SDL_GetModState() & KMOD_CAPS) == KMOD_CAPS;
             }
         }
 
@@ -252,9 +254,9 @@ namespace Ultraviolet.SDL2.Input
         {
             var window = Ultraviolet.GetPlatform().Windows.GetByID((int)evt.windowID);
             var mods   = evt.keysym.mod;
-            var ctrl   = (mods & SDL_Keymod.CTRL) != 0;
-            var alt    = (mods & SDL_Keymod.ALT) != 0;
-            var shift  = (mods & SDL_Keymod.SHIFT) != 0;
+            var ctrl   = (mods & KMOD_CTRL) != 0;
+            var alt    = (mods & KMOD_ALT) != 0;
+            var shift  = (mods & KMOD_SHIFT) != 0;
             var repeat = evt.repeat > 0;
 
             states[(int)evt.keysym.scancode].OnDown(repeat);

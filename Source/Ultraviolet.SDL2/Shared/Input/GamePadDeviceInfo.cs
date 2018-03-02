@@ -4,6 +4,7 @@ using Ultraviolet.Core.Messages;
 using Ultraviolet.Input;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -20,11 +21,11 @@ namespace Ultraviolet.SDL2.Input
         public GamePadDeviceInfo(UltravioletContext uv)
             : base(uv)
         {
-            this.devicesByPlayer = new SDL2GamePadDevice[SDL.NumJoysticks()];
+            this.devicesByPlayer = new SDL2GamePadDevice[SDLNative.SDL_NumJoysticks()];
 
             for (int i = 0; i < this.devicesByPlayer.Length; i++)
             {
-                if (SDL.IsGameController(i))
+                if (SDLNative.SDL_IsGameController(i))
                 {
                     OnControllerDeviceAdded(i);
                 }
@@ -43,11 +44,11 @@ namespace Ultraviolet.SDL2.Input
             var evt = ((SDL2EventMessageData)data).Event;
             switch (evt.type)
             {
-                case SDL_EventType.CONTROLLERDEVICEADDED:
+                case SDL_CONTROLLERDEVICEADDED:
                     OnControllerDeviceAdded(evt.cdevice.which);
                     break;
 
-                case SDL_EventType.CONTROLLERDEVICEREMOVED:
+                case SDL_CONTROLLERDEVICEREMOVED:
                     OnControllerDeviceRemoved(evt.cdevice.which);
                     break;
             }
@@ -175,9 +176,9 @@ namespace Ultraviolet.SDL2.Input
         /// <param name="joystickIndex">The index of the device to add.</param>
         private void OnControllerDeviceAdded(Int32 joystickIndex)
         {
-            var gamecontroller = SDL.GameControllerOpen(joystickIndex);
-            var joystick       = SDL.GameControllerGetJoystick(gamecontroller);
-            var joystickID     = SDL.JoystickInstanceID(joystick);
+            var gamecontroller = SDLNative.SDL_GameControllerOpen(joystickIndex);
+            var joystick       = SDLNative.SDL_GameControllerGetJoystick(gamecontroller);
+            var joystickID     = SDLNative.SDL_JoystickInstanceID(joystick);
 
             for (int i = 0; i < devicesByPlayer.Length; i++)
             {

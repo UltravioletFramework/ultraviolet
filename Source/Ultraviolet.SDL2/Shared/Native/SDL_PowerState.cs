@@ -1,13 +1,13 @@
-﻿#pragma warning disable 1591
-
-namespace Ultraviolet.SDL2.Native
+﻿namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     public enum SDL_PowerState
     {
-        UNKNOWN,
-        ON_BATTERY,
-        NO_BATTERY,
-        CHARGING,
-        CHARGED,
+        SDL_POWERSTATE_UNKNOWN,
+        SDL_POWERSTATE_ON_BATTERY,
+        SDL_POWERSTATE_NO_BATTERY,
+        SDL_POWERSTATE_CHARGING,
+        SDL_POWERSTATE_CHARGED,
     }
+#pragma warning restore 1591
 }

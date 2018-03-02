@@ -2,10 +2,9 @@
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Explicit)]
     public struct SDL_SysWMinfoUnion
@@ -31,4 +30,5 @@ namespace Ultraviolet.SDL2.Native
         [FieldOffset(0)]
         public Int32 dummy;
     }
+#pragma warning restore 1591
 }

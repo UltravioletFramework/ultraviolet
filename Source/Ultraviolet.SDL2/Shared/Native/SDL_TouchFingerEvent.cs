@@ -4,10 +4,9 @@ using Ultraviolet.Core;
 using SDL_FingerID = System.Int64;
 using SDL_TouchID = System.Int64;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_TouchFingerEvent
@@ -22,4 +21,5 @@ namespace Ultraviolet.SDL2.Native
         public Single dy;
         public Single pressure;
     }
+#pragma warning restore 1591
 }

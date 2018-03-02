@@ -7,6 +7,12 @@ using Ultraviolet.Messages;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDL_PixelFormatEnum;
+using static Ultraviolet.SDL2.Native.SDL_SysWM_Type;
+using static Ultraviolet.SDL2.Native.SDL_WindowEventID;
+using static Ultraviolet.SDL2.Native.SDL_WindowFlags;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -27,7 +33,7 @@ namespace Ultraviolet.SDL2.Platform
             : base(uv)
         {
             this.ptr = ptr;
-            this.id = SDL.GetWindowID(ptr);
+            this.id = SDLNative.SDL_GetWindowID(ptr);
             this.native = native;
 
             SetIcon(DefaultWindowIcon.Value);
@@ -37,11 +43,11 @@ namespace Ultraviolet.SDL2.Platform
             UpdateWindowedPosition(Position);
             UpdateWindowedClientSize(ClientSize);
 
-            var flags = SDL.GetWindowFlags(ptr);
+            var flags = SDLNative.SDL_GetWindowFlags(ptr);
 
-            this.focused = (flags & SDL_WindowFlags.INPUT_FOCUS) == SDL_WindowFlags.INPUT_FOCUS;
-            this.minimized = (flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED;
-            this.opengl = (flags & SDL_WindowFlags.OPENGL) == SDL_WindowFlags.OPENGL;
+            this.focused = (flags & SDL_WINDOW_INPUT_FOCUS) == SDL_WINDOW_INPUT_FOCUS;
+            this.minimized = (flags & SDL_WINDOW_MINIMIZED) == SDL_WINDOW_MINIMIZED;
+            this.opengl = (flags & SDL_WINDOW_OPENGL) == SDL_WINDOW_OPENGL;
             this.windowScale = Display?.DensityScale ?? 1f;
 
             ChangeCompositor(DefaultCompositor.Create(this));
@@ -64,47 +70,47 @@ namespace Ultraviolet.SDL2.Platform
                 return;
 
             var msg = (SDL2.Messages.SDL2EventMessageData)data;
-            if (msg.Event.type != SDL_EventType.WINDOWEVENT || msg.Event.window.windowID != id)
+            if (msg.Event.type != SDL_WINDOWEVENT || msg.Event.window.windowID != id)
                 return;
 
             switch (msg.Event.window.@event)
             {
-                case SDL_WindowEventID.SHOWN:
+                case SDL_WINDOWEVENT_SHOWN:
                     OnShown();
                     break;
 
-                case SDL_WindowEventID.HIDDEN:
+                case SDL_WINDOWEVENT_HIDDEN:
                     OnHidden();
                     break;
 
-                case SDL_WindowEventID.MINIMIZED:
+                case SDL_WINDOWEVENT_MINIMIZED:
                     minimized = true;
                     OnMinimized();
                     break;
 
-                case SDL_WindowEventID.MAXIMIZED:
+                case SDL_WINDOWEVENT_MAXIMIZED:
                     minimized = false;
                     OnMaximized();
                     break;
 
-                case SDL_WindowEventID.RESTORED:
+                case SDL_WINDOWEVENT_RESTORED:
                     minimized = false;
                     OnRestored();
                     break;
 
-                case SDL_WindowEventID.MOVED:
+                case SDL_WINDOWEVENT_MOVED:
                     UpdateWindowedPosition(new Point2(msg.Event.window.data1, msg.Event.window.data2));
                     break;
 
-                case SDL_WindowEventID.SIZE_CHANGED:
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
                     UpdateWindowedClientSize(new Size2(msg.Event.window.data1, msg.Event.window.data2));
                     break;
 
-                case SDL_WindowEventID.FOCUS_GAINED:
+                case SDL_WINDOWEVENT_FOCUS_GAINED:
                     focused = true;
                     break;
 
-                case SDL_WindowEventID.FOCUS_LOST:
+                case SDL_WINDOWEVENT_FOCUS_LOST:
                     focused = false;
                     break;
             }
@@ -174,7 +180,7 @@ namespace Ultraviolet.SDL2.Platform
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureRange(scale >= 1f, nameof(scale));
 
-            this.WindowedPosition = new Point2((Int32)SDL.SDL_WINDOWPOS_CENTERED_MASK, (Int32)SDL.SDL_WINDOWPOS_CENTERED_MASK);
+            this.WindowedPosition = new Point2((Int32)SDLNative.SDL_WINDOWPOS_CENTERED_MASK, (Int32)SDLNative.SDL_WINDOWPOS_CENTERED_MASK);
             this.WindowedClientSize = size;
 
             this.windowScale = scale;
@@ -195,7 +201,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 case WindowMode.Windowed:
                     {
-                        if (SDL.SetWindowFullscreen(ptr, 0) < 0)
+                        if (SDLNative.SDL_SetWindowFullscreen(ptr, 0) < 0)
                             throw new SDL2Exception();
 
                         var x = windowedPosition?.X ?? UltravioletConfiguration.DefaultWindowPositionX;
@@ -204,10 +210,10 @@ namespace Ultraviolet.SDL2.Platform
                         var h = windowedClientSize?.Height ?? UltravioletConfiguration.DefaultWindowClientHeight;
 
                         if (!ApplyWin32FullscreenWindowedFix_Windowed())
-                            SDL.SetWindowBordered(ptr, true);
+                            SDLNative.SDL_SetWindowBordered(ptr, true);
 
-                        SDL.SetWindowSize(ptr, w, h);
-                        SDL.SetWindowPosition(ptr, x, y);
+                        SDLNative.SDL_SetWindowSize(ptr, w, h);
+                        SDLNative.SDL_SetWindowPosition(ptr, x, y);
 
                         if (Ultraviolet.Platform == UltravioletPlatform.Windows)
                             win32CachedStyle = IntPtr.Zero;
@@ -229,7 +235,7 @@ namespace Ultraviolet.SDL2.Platform
                             SetDesktopDisplayMode();
                         }
 
-                        if (SDL.SetWindowFullscreen(ptr, (uint)SDL_WindowFlags.FULLSCREEN) < 0)
+                        if (SDLNative.SDL_SetWindowFullscreen(ptr, (uint)SDL_WINDOW_FULLSCREEN) < 0)
                             throw new SDL2Exception();
 
                         if (Ultraviolet.Platform == UltravioletPlatform.Windows)
@@ -239,16 +245,16 @@ namespace Ultraviolet.SDL2.Platform
 
                 case WindowMode.FullscreenWindowed:
                     {
-                        if (SDL.SetWindowFullscreen(ptr, 0) < 0)
+                        if (SDLNative.SDL_SetWindowFullscreen(ptr, 0) < 0)
                             throw new SDL2Exception();
 
                         var displayBounds = Display.Bounds;
 
                         if (!ApplyWin32FullscreenWindowedFix_FullscreenWindowed())
-                            SDL.SetWindowBordered(ptr, false);
+                            SDLNative.SDL_SetWindowBordered(ptr, false);
 
-                        SDL.SetWindowSize(ptr, displayBounds.Width, displayBounds.Height);
-                        SDL.SetWindowPosition(ptr, displayBounds.X, displayBounds.Y);
+                        SDLNative.SDL_SetWindowSize(ptr, displayBounds.Width, displayBounds.Height);
+                        SDLNative.SDL_SetWindowPosition(ptr, displayBounds.X, displayBounds.Y);
                     }
                     break;
 
@@ -274,15 +280,15 @@ namespace Ultraviolet.SDL2.Platform
             switch (state)
             {
                 case WindowState.Normal:
-                    SDL.RestoreWindow(ptr);
+                    SDLNative.SDL_RestoreWindow(ptr);
                     break;
 
                 case WindowState.Minimized:
-                    SDL.MinimizeWindow(ptr);
+                    SDLNative.SDL_MinimizeWindow(ptr);
                     break;
 
                 case WindowState.Maximized:
-                    SDL.MaximizeWindow(ptr);
+                    SDLNative.SDL_MaximizeWindow(ptr);
                     break;
 
                 default:
@@ -295,12 +301,12 @@ namespace Ultraviolet.SDL2.Platform
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var flags = SDL.GetWindowFlags(ptr);
+            var flags = SDLNative.SDL_GetWindowFlags(ptr);
 
-            if ((flags & SDL_WindowFlags.MAXIMIZED) == SDL_WindowFlags.MAXIMIZED)
+            if ((flags & SDL_WINDOW_MAXIMIZED) == SDL_WINDOW_MAXIMIZED)
                 return WindowState.Maximized;
 
-            if ((flags & SDL_WindowFlags.MINIMIZED) == SDL_WindowFlags.MINIMIZED)
+            if ((flags & SDL_WINDOW_MINIMIZED) == SDL_WINDOW_MINIMIZED)
                 return WindowState.Minimized;
 
             return WindowState.Normal;
@@ -377,7 +383,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return (Int32)SDL.GetWindowID(ptr);
+                return (Int32)SDLNative.SDL_GetWindowID(ptr);
             }
         }
 
@@ -388,13 +394,13 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                return SDL.GetWindowTitle(ptr);
+                return SDLNative.SDL_GetWindowTitle(ptr);
             }
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                SDL.SetWindowTitle(ptr, value ?? String.Empty);
+                SDLNative.SDL_SetWindowTitle(ptr, value ?? String.Empty);
             }
         }
 
@@ -417,7 +423,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 x, y;
-                SDL.GetWindowPosition(ptr, out x, out y);
+                SDLNative.SDL_GetWindowPosition(ptr, out x, out y);
 
                 return new Point2(x, y);
             }
@@ -430,7 +436,7 @@ namespace Ultraviolet.SDL2.Platform
                     windowedPosition = value;
                 }
 
-                SDL.SetWindowPosition(ptr, value.X, value.Y);
+                SDLNative.SDL_SetWindowPosition(ptr, value.X, value.Y);
             }
         }
 
@@ -452,7 +458,7 @@ namespace Ultraviolet.SDL2.Platform
 
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {
-                    SDL.SetWindowPosition(ptr, value.X, value.Y);
+                    SDLNative.SDL_SetWindowPosition(ptr, value.X, value.Y);
                 }
             }
         }
@@ -467,11 +473,11 @@ namespace Ultraviolet.SDL2.Platform
                 Int32 w, h;
                 if (opengl)
                 {
-                    SDL.GL_GetDrawableSize(ptr, out w, out h);
+                    SDLNative.SDL_GL_GetDrawableSize(ptr, out w, out h);
                 }
                 else
                 {
-                    SDL.GetWindowSize(ptr, out w, out h);
+                    SDLNative.SDL_GetWindowSize(ptr, out w, out h);
                 }
 
                 return new Size2(w, h);
@@ -486,7 +492,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
-                SDL.GetWindowSize(ptr, out w, out h);
+                SDLNative.SDL_GetWindowSize(ptr, out w, out h);
 
                 return new Size2(w, h);
             }
@@ -499,7 +505,7 @@ namespace Ultraviolet.SDL2.Platform
                     windowedClientSize = value;
                 }
 
-                SDL.SetWindowSize(ptr, value.Width, value.Height);
+                SDLNative.SDL_SetWindowSize(ptr, value.Width, value.Height);
             }
         }
 
@@ -520,7 +526,7 @@ namespace Ultraviolet.SDL2.Platform
 
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {
-                    SDL.SetWindowSize(ptr, value.Width, value.Height);
+                    SDLNative.SDL_SetWindowSize(ptr, value.Width, value.Height);
                 }
             }
         }
@@ -533,7 +539,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
-                SDL.GetWindowMinimumSize(ptr, out w, out h);
+                SDLNative.SDL_GetWindowMinimumSize(ptr, out w, out h);
 
                 return new Size2(w, h);
             }
@@ -541,7 +547,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                SDL.SetWindowMinimumSize(ptr, value.Width, value.Height);
+                SDLNative.SDL_SetWindowMinimumSize(ptr, value.Width, value.Height);
             }
         }
 
@@ -553,7 +559,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
-                SDL.GetWindowMaximumSize(ptr, out w, out h);
+                SDLNative.SDL_GetWindowMaximumSize(ptr, out w, out h);
 
                 return new Size2(w, h);
             }
@@ -561,7 +567,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                SDL.SetWindowMaximumSize(ptr, value.Width, value.Height);
+                SDLNative.SDL_SetWindowMaximumSize(ptr, value.Width, value.Height);
             }
         }
 
@@ -600,8 +606,8 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                var flags = SDL.GetWindowFlags(ptr);
-                return (flags & SDL_WindowFlags.SHOWN) == SDL_WindowFlags.SHOWN;
+                var flags = SDLNative.SDL_GetWindowFlags(ptr);
+                return (flags & SDL_WINDOW_SHOWN) == SDL_WINDOW_SHOWN;
             }
             set
             {
@@ -609,11 +615,11 @@ namespace Ultraviolet.SDL2.Platform
 
                 if (value)
                 {
-                    SDL.ShowWindow(ptr);
+                    SDLNative.SDL_ShowWindow(ptr);
                 }
                 else
                 {
-                    SDL.HideWindow(ptr);
+                    SDLNative.SDL_HideWindow(ptr);
                 }
             }
         }
@@ -625,8 +631,8 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                var flags = SDL.GetWindowFlags(ptr);
-                return (flags & SDL_WindowFlags.RESIZABLE) == SDL_WindowFlags.RESIZABLE;
+                var flags = SDLNative.SDL_GetWindowFlags(ptr);
+                return (flags & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
             }
         }
 
@@ -637,8 +643,8 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                var flags = SDL.GetWindowFlags(ptr);
-                return (flags & SDL_WindowFlags.BORDERLESS) == SDL_WindowFlags.BORDERLESS;
+                var flags = SDLNative.SDL_GetWindowFlags(ptr);
+                return (flags & SDL_WINDOW_BORDERLESS) == SDL_WINDOW_BORDERLESS;
             }
         }
 
@@ -715,7 +721,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Single opacity;
-                SDL.GetWindowOpacity(ptr, &opacity);
+                SDLNative.SDL_GetWindowOpacity(ptr, &opacity);
                 return opacity;
             }
             set
@@ -723,7 +729,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 value = MathUtil.Clamp(value, 0.0f, 1.0f);
-                SDL.SetWindowOpacity(ptr, value);
+                SDLNative.SDL_SetWindowOpacity(ptr, value);
             }
         }
 
@@ -764,7 +770,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                var index = SDL.GetWindowDisplayIndex(ptr);
+                var index = SDLNative.SDL_GetWindowDisplayIndex(ptr);
                 var platform = Ultraviolet.GetPlatform();
                 if (platform != null)
                     return Ultraviolet.GetPlatform().Displays[index];
@@ -824,7 +830,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 SafeDispose.Dispose(compositor);
             }
-            SDL.DestroyWindow(ptr);
+            SDLNative.SDL_DestroyWindow(ptr);
             base.Dispose(disposing);
         }
 
@@ -856,14 +862,14 @@ namespace Ultraviolet.SDL2.Platform
         private void FixPlatformSpecificIssues()
         {
             SDL_SysWMinfo sysInfo;
-            SDLMacro.SDL_VERSION(&sysInfo.version);
+            SDL_VERSION(&sysInfo.version);
 
-            if (!SDL.GetWindowWMInfo(ptr, &sysInfo))
+            if (!SDLNative.SDL_GetWindowWMInfo(ptr, &sysInfo))
                 return;
 
             switch (sysInfo.subsystem)
             {
-                case SDL_SysWMType.WINDOWS:
+                case SDL_SYSWM_WINDOWS:
                     FixPlatformSpecificIssues_Windows(ref sysInfo);
                     break;
             }
@@ -926,15 +932,15 @@ namespace Ultraviolet.SDL2.Platform
                 switch (displayMode.BitsPerPixel)
                 {
                     case 15:
-                        sdlMode.format = SDL_PixelFormatEnum.RGB555;
+                        sdlMode.format = SDL_PIXELFORMAT_RGB555;
                         break;
 
                     case 16:
-                        sdlMode.format = SDL_PixelFormatEnum.RGB565;
+                        sdlMode.format = SDL_PIXELFORMAT_RGB565;
                         break;
 
                     default:
-                        sdlMode.format = SDL_PixelFormatEnum.RGB888;
+                        sdlMode.format = SDL_PIXELFORMAT_RGB888;
                         break;
                 }
 
@@ -942,7 +948,7 @@ namespace Ultraviolet.SDL2.Platform
                 if (wasFullscreen)
                     SetWindowMode(WindowMode.Windowed);
 
-                if (SDL.SetWindowDisplayMode(ptr, &sdlMode) < 0)
+                if (SDLNative.SDL_SetWindowDisplayMode(ptr, &sdlMode) < 0)
                     throw new SDL2Exception();
 
                 if (wasFullscreen)
@@ -954,12 +960,12 @@ namespace Ultraviolet.SDL2.Platform
                     SetWindowMode(WindowMode.Fullscreen);
                 }
 
-                if (SDL.GetWindowDisplayMode(ptr, &sdlMode) < 0)
+                if (SDLNative.SDL_GetWindowDisplayMode(ptr, &sdlMode) < 0)
                     throw new SDL2Exception();
 
                 int bpp;
                 uint Rmask, Gmask, Bmask, Amask;
-                SDL.PixelFormatEnumToMasks((uint)sdlMode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
+                SDLNative.SDL_PixelFormatEnumToMasks((uint)sdlMode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
 
                 var displayIndex = displayMode.DisplayIndex;
                 if (displayIndex.HasValue)
@@ -980,7 +986,7 @@ namespace Ultraviolet.SDL2.Platform
         private void SetIcon(Surface2D surface)
         {
             var surfptr = (surface == null) ? null : ((SDL2Surface2D)surface).NativePtr;
-            SDL.SetWindowIcon(ptr, (IntPtr)surfptr);
+            SDLNative.SDL_SetWindowIcon(ptr, (IntPtr)surfptr);
         }
 
         /// <summary>
@@ -1040,8 +1046,8 @@ namespace Ultraviolet.SDL2.Platform
             {
                 var factor = (reportedScale ?? Display.DensityScale) / windowScale;
 
-                SDL.GetWindowPosition(ptr, out var windowX, out var windowY);
-                SDL.GetWindowSize(ptr, out var windowW, out var windowH);
+                SDLNative.SDL_GetWindowPosition(ptr, out var windowX, out var windowY);
+                SDLNative.SDL_GetWindowSize(ptr, out var windowW, out var windowH);
                 
                 var size = new Size2((Int32)(windowW * factor), (Int32)(windowH * factor));
                 var bounds = new Rectangle(windowX, windowY, windowW, windowH);
@@ -1090,15 +1096,15 @@ namespace Ultraviolet.SDL2.Platform
             switch (windowMode)
             {
                 case WindowMode.Windowed:
-                    SDL.SetWindowGrab(ptr, grabsMouseWhenWindowed);
+                    SDLNative.SDL_SetWindowGrab(ptr, grabsMouseWhenWindowed);
                     break;
 
                 case WindowMode.Fullscreen:
-                    SDL.SetWindowGrab(ptr, grabsMouseWhenFullscreen);
+                    SDLNative.SDL_SetWindowGrab(ptr, grabsMouseWhenFullscreen);
                     break;
 
                 case WindowMode.FullscreenWindowed:
-                    SDL.SetWindowGrab(ptr, grabsMouseWhenFullscreenWindowed);
+                    SDLNative.SDL_SetWindowGrab(ptr, grabsMouseWhenFullscreenWindowed);
                     break;
             }
         }
@@ -1109,10 +1115,10 @@ namespace Ultraviolet.SDL2.Platform
         private void SetDesktopDisplayMode()
         {
             SDL_DisplayMode mode;
-            if (SDL.GetDesktopDisplayMode(Display.Index, &mode) < 0)
+            if (SDLNative.SDL_GetDesktopDisplayMode(Display.Index, &mode) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.SetWindowDisplayMode(ptr, &mode) < 0)
+            if (SDLNative.SDL_SetWindowDisplayMode(ptr, &mode) < 0)
                 throw new SDL2Exception();
         }
 
@@ -1125,9 +1131,9 @@ namespace Ultraviolet.SDL2.Platform
                 throw new NotSupportedException();
 
             SDL_SysWMinfo sysInfo;
-            SDLMacro.SDL_VERSION(&sysInfo.version);
+            SDL_VERSION(&sysInfo.version);
 
-            if (!SDL.GetWindowWMInfo(ptr, &sysInfo))
+            if (!SDLNative.SDL_GetWindowWMInfo(ptr, &sysInfo))
             {
                 hwnd = IntPtr.Zero;
                 return false;

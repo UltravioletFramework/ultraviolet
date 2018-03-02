@@ -53,11 +53,11 @@ namespace Ultraviolet.SDL2
                             w = region.Value.Width,
                             h = region.Value.Height,
                         };
-                        SDL.SetTextInputRect(&rect);
+                        SDLNative.SDL_SetTextInputRect(&rect);
                     }
                     else
                     {
-                        SDL.SetTextInputRect(null);
+                        SDLNative.SDL_SetTextInputRect(null);
                     }
                 }
             }
@@ -481,7 +481,7 @@ namespace Ultraviolet.SDL2
                 using (var stream = fss.OpenRead(DatabasePath))
                 using (var wrapper = new SDL2StreamWrapper(stream))
                 {
-                    if (SDL.GameControllerAddMappingsFromRW(wrapper.ToIntPtr(), 0) < 0)
+                    if (SDLNative.SDL_GameControllerAddMappingsFromRW(wrapper.ToIntPtr(), 0) < 0)
                         throw new SDL2Exception();
                 }
             }

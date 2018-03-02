@@ -9,6 +9,9 @@ using Ultraviolet.SDL2;
 using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
 using Ultraviolet.UI;
+using static Ultraviolet.SDL2.Native.SDL_GLattr;
+using static Ultraviolet.SDL2.Native.SDL_GLprofile;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.OpenGL
 {
@@ -51,7 +54,7 @@ namespace Ultraviolet.OpenGL
             if (!configuration.EnableServiceMode)
                 InitOpenGLAttributes(configuration, versionRequested, versionRequired, isGLEs);
 
-            var sdlAssembly = typeof(SDL).Assembly;
+            var sdlAssembly = typeof(SDLNative).Assembly;
             InitializeFactoryMethodsInAssembly(sdlAssembly);
 
             var sdlconfig = new SDL2PlatformConfiguration();
@@ -273,9 +276,9 @@ namespace Ultraviolet.OpenGL
         private void InitOpenGLAttributes(OpenGLUltravioletConfiguration configuration, 
             Version versionRequested, Version versionRequired, Boolean isGLES)
         {
-            var profile = isGLES ? SDL_GLprofile.ES : SDL_GLprofile.CORE;
+            var profile = isGLES ? SDL_GL_CONTEXT_PROFILE_ES : SDL_GL_CONTEXT_PROFILE_CORE;
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_PROFILE_MASK, (Int32)profile) < 0)
+            if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, (Int32)profile) < 0)
                 throw new SDL2Exception();
 
             // NOTE: Asking for an ES 3.0 context in the emulator will return a valid
@@ -284,42 +287,42 @@ namespace Ultraviolet.OpenGL
             // and trust the OS to give you the highest version it supports.
             if (Platform != UltravioletPlatform.Android)
             {
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
                     throw new SDL2Exception();
             }
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
+            if (SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
+            if (SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, configuration.BackBufferStencilSize) < 0)
                 throw new SDL2Exception();
 
-            if (SDL.GL_SetAttribute(SDL_GLattr.RETAINED_BACKING, 0) < 0)
+            if (SDL_GL_SetAttribute(SDL_GL_RETAINED_BACKING, 0) < 0)
                 throw new SDL2Exception();
 
             if (configuration.Use32BitFramebuffer)
             {
-                if (SDL.GL_SetAttribute(SDL_GLattr.RED_SIZE, 8) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.GREEN_SIZE, 8) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.BLUE_SIZE, 8) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8) < 0)
                     throw new SDL2Exception();
             }
             else
             {
-                if (SDL.GL_SetAttribute(SDL_GLattr.RED_SIZE, 5) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.GREEN_SIZE, 6) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6) < 0)
                     throw new SDL2Exception();
 
-                if (SDL.GL_SetAttribute(SDL_GLattr.BLUE_SIZE, 5) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5) < 0)
                     throw new SDL2Exception();
             }
         }

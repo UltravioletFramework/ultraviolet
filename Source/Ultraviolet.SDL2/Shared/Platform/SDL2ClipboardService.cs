@@ -14,9 +14,9 @@ namespace Ultraviolet.SDL2.Platform
         {
             get
             {
-                if (SDL.HasClipboardText())
+                if (SDLNative.SDL_HasClipboardText())
                 {
-                    var text = SDL.GetClipboardText();
+                    var text = SDLNative.SDL_GetClipboardText();
                     if (text == null)
                         throw new SDL2Exception();
 
@@ -24,7 +24,7 @@ namespace Ultraviolet.SDL2.Platform
                 }
                 return null;
             }
-            set { SDL.SetClipboardText(value); }
+            set { SDLNative.SDL_SetClipboardText(value); }
         }
     }
 }
