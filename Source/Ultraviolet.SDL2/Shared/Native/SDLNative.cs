@@ -4,10 +4,9 @@ using System.Security;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Native;
 
-#pragma warning disable 1591
-
 namespace Ultraviolet.SDL2.Native
 {
+#pragma warning disable 1591
     /// <summary>
     /// Contains bindings for native SDL2 function calls.
     /// </summary>
@@ -485,10 +484,7 @@ namespace Ultraviolet.SDL2.Native
         private static readonly SDL_LoadBMP_RWDelegate pSDL_LoadBMP_RW = lib.LoadFunction<SDL_LoadBMP_RWDelegate>("SDL_LoadBMP_RW");
         public static SDL_Surface* SDL_LoadBMP_RW(IntPtr src, Int32 freesrc) => pSDL_LoadBMP_RW(src, freesrc);
 #endif
-        public static SDL_Surface* SDL_LoadBMP(String file)
-        {
-            return SDL_LoadBMP_RW(SDL_RWFromFile(file, "r"), 1);
-        }
+        public static SDL_Surface* SDL_LoadBMP(String file) => SDL_LoadBMP_RW(SDL_RWFromFile(file, "r"), 1);
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_SaveBMP_RW", CallingConvention = CallingConvention.Cdecl)]
@@ -1291,4 +1287,5 @@ namespace Ultraviolet.SDL2.Native
         public static Int32 SDL_GetDisplayDPI(Int32 displayIndex, Single* ddpi, Single* hdpi, Single *vdpi) => pSDL_GetDisplayDPI(displayIndex, ddpi, hdpi, vdpi);
 #endif
     }
+#pragma warning restore 1591
 }
