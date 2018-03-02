@@ -1,45 +1,33 @@
 {
   "images": [
     {
-      "filename": "uv29.png",
-      "size": "29x29",
-      "scale": "1x",
+      "size": "20x20",
+      "scale": "2x",
       "idiom": "iphone"
     },
     {
-      "filename": "uv58.png",
+      "size": "20x20",
+      "scale": "3x",
+      "idiom": "iphone"
+    },
+    {
       "size": "29x29",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
-      "filename": "uv87.png",
       "size": "29x29",
       "scale": "3x",
       "idiom": "iphone"
     },
     {
-      "filename": "uv80.png",
       "size": "40x40",
       "scale": "2x",
       "idiom": "iphone"
     },
     {
-      "filename": "uv120.png",
       "size": "40x40",
       "scale": "3x",
-      "idiom": "iphone"
-    },
-    {
-      "filename": "uv57.png",
-      "size": "57x57",
-      "scale": "1x",
-      "idiom": "iphone"
-    },
-    {
-      "filename": "uv114.png",
-      "size": "57x57",
-      "scale": "2x",
       "idiom": "iphone"
     },
     {
@@ -55,13 +43,21 @@
       "idiom": "iphone"
     },
     {
-      "filename": "uv29.png",
+      "size": "20x20",
+      "scale": "1x",
+      "idiom": "ipad"
+    },
+    {
+      "size": "20x20",
+      "scale": "2x",
+      "idiom": "ipad"
+    },
+    {
       "size": "29x29",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
-      "filename": "uv58.png",
       "size": "29x29",
       "scale": "2x",
       "idiom": "ipad"
@@ -79,30 +75,8 @@
       "idiom": "ipad"
     },
     {
-      "size": "50x50",
-      "scale": "1x",
-      "idiom": "ipad"
-    },
-    {
-      "size": "50x50",
-      "scale": "2x",
-      "idiom": "ipad"
-    },
-    {
       "filename": "uv167.png",
       "size": "83.5x83.5",
-      "scale": "2x",
-      "idiom": "ipad"
-    },
-    {
-      "filename": "uv72.png",
-      "size": "72x72",
-      "scale": "1x",
-      "idiom": "ipad"
-    },
-    {
-      "filename": "uv144.png",
-      "size": "72x72",
       "scale": "2x",
       "idiom": "ipad"
     },
@@ -117,6 +91,12 @@
       "size": "76x76",
       "scale": "2x",
       "idiom": "ipad"
+    },
+    {
+      "filename": "desktop_uv1024.png",
+      "size": "1024x1024",
+      "scale": "1x",
+      "idiom": "ios-marketing"
     },
     {
       "role": "notificationCenter",
