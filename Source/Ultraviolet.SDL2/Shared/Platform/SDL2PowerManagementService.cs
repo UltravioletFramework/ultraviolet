@@ -3,6 +3,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_PowerState;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -51,7 +52,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 int sdlPct;
 
-                this.sdlPowerState = SDLNative.SDL_GetPowerInfo(null, &sdlPct);
+                this.sdlPowerState = SDL_GetPowerInfo(null, &sdlPct);
                 this.pct = sdlPct;
 
                 switch (sdlPowerState)

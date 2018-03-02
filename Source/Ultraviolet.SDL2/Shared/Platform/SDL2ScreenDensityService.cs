@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -37,7 +37,7 @@ namespace Ultraviolet.SDL2.Platform
             Single hdpi, vdpi;
             unsafe
             {
-                if (SDLNative.SDL_GetDisplayDPI(display.Index, null, &hdpi, &vdpi) < 0)
+                if (SDL_GetDisplayDPI(display.Index, null, &hdpi, &vdpi) < 0)
                     throw new SDL2Exception();                
             }
 

@@ -3,8 +3,8 @@ using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Input;
 using Ultraviolet.SDL2.Messages;
-using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -21,11 +21,11 @@ namespace Ultraviolet.SDL2.Input
         public GamePadDeviceInfo(UltravioletContext uv)
             : base(uv)
         {
-            this.devicesByPlayer = new SDL2GamePadDevice[SDLNative.SDL_NumJoysticks()];
+            this.devicesByPlayer = new SDL2GamePadDevice[SDL_NumJoysticks()];
 
             for (int i = 0; i < this.devicesByPlayer.Length; i++)
             {
-                if (SDLNative.SDL_IsGameController(i))
+                if (SDL_IsGameController(i))
                 {
                     OnControllerDeviceAdded(i);
                 }
@@ -176,9 +176,9 @@ namespace Ultraviolet.SDL2.Input
         /// <param name="joystickIndex">The index of the device to add.</param>
         private void OnControllerDeviceAdded(Int32 joystickIndex)
         {
-            var gamecontroller = SDLNative.SDL_GameControllerOpen(joystickIndex);
-            var joystick       = SDLNative.SDL_GameControllerGetJoystick(gamecontroller);
-            var joystickID     = SDLNative.SDL_JoystickInstanceID(joystick);
+            var gamecontroller = SDL_GameControllerOpen(joystickIndex);
+            var joystick       = SDL_GameControllerGetJoystick(gamecontroller);
+            var joystickID     = SDL_JoystickInstanceID(joystick);
 
             for (int i = 0; i < devicesByPlayer.Length; i++)
             {

@@ -7,6 +7,9 @@ using Ultraviolet.Core.Native;
 namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public unsafe delegate Int32 SDL_EventFilter(IntPtr userdata, SDL_Event* @event);
+
     /// <summary>
     /// Contains bindings for native SDL2 function calls.
     /// </summary>
@@ -28,10 +31,7 @@ namespace Ultraviolet.SDL2.Native
         private static readonly NativeLibrary lib = new NativeLibrary(
             UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "SDL2" : "libSDL2");
 #endif
-        
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate Int32 EventFilter(IntPtr userdata, SDL_Event* @event);
-        
+                
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_GetError", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr SDL_GetError_Impl();

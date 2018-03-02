@@ -2,8 +2,8 @@
 using System.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2.Native;
 using Ultraviolet.SDL2.Platform;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2
 {
@@ -67,8 +67,8 @@ namespace Ultraviolet.SDL2
 
                 unsafe
                 {
-                    var sdlCursor = (value == null) ? SDLNative.SDL_GetDefaultCursor() : ((SDL2Cursor)value).Native;
-                    SDLNative.SDL_SetCursor(sdlCursor);
+                    var sdlCursor = (value == null) ? SDL_GetDefaultCursor() : ((SDL2Cursor)value).Native;
+                    SDL_SetCursor(sdlCursor);
                 }
             }
         }

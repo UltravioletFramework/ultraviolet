@@ -5,6 +5,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Messages;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -25,14 +26,14 @@ namespace Ultraviolet.SDL2.Platform
             this.uv = uv;
 
             this.displayIndex = displayIndex;
-            this.displayModes = Enumerable.Range(0, SDLNative.SDL_GetNumDisplayModes(displayIndex))
+            this.displayModes = Enumerable.Range(0, SDL_GetNumDisplayModes(displayIndex))
                 .Select(modeIndex => CreateDisplayModeFromSDL(displayIndex, modeIndex))
                 .ToList();
 
-            this.name = SDLNative.SDL_GetDisplayName(displayIndex);
+            this.name = SDL_GetDisplayName(displayIndex);
 
             SDL_DisplayMode sdlDesktopDisplayMode;
-            if (SDLNative.SDL_GetDesktopDisplayMode(displayIndex, &sdlDesktopDisplayMode) < 0)
+            if (SDL_GetDesktopDisplayMode(displayIndex, &sdlDesktopDisplayMode) < 0)
                 throw new SDL2Exception();
 
             this.desktopDisplayMode = CreateDisplayModeFromSDL(sdlDesktopDisplayMode);
@@ -349,7 +350,7 @@ namespace Ultraviolet.SDL2.Platform
             get
             {
                 SDL_Rect bounds;
-                SDLNative.SDL_GetDisplayBounds(displayIndex, &bounds);
+                SDL_GetDisplayBounds(displayIndex, &bounds);
 
                 return new Rectangle(bounds.x, bounds.y, bounds.w, bounds.h);
             }
@@ -446,7 +447,7 @@ namespace Ultraviolet.SDL2.Platform
         {
             Int32 bpp;
             UInt32 Rmask, Gmask, Bmask, Amask;
-            SDLNative.SDL_PixelFormatEnumToMasks((uint)mode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
+            SDL_PixelFormatEnumToMasks((uint)mode.format, &bpp, &Rmask, &Gmask, &Bmask, &Amask);
 
             return new DisplayMode(mode.w, mode.h, bpp, mode.refresh_rate, Index);
         }
@@ -457,7 +458,7 @@ namespace Ultraviolet.SDL2.Platform
         private DisplayMode CreateDisplayModeFromSDL(Int32 displayIndex, Int32 modeIndex)
         {
             SDL_DisplayMode mode;
-            SDLNative.SDL_GetDisplayMode(displayIndex, modeIndex, &mode);
+            SDL_GetDisplayMode(displayIndex, modeIndex, &mode);
 
             return CreateDisplayModeFromSDL(mode);
         }

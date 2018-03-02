@@ -8,6 +8,7 @@ using static Ultraviolet.SDL2.Native.SDL_EventType;
 using static Ultraviolet.SDL2.Native.SDL_Hint;
 using static Ultraviolet.SDL2.Native.SDL_Init;
 using static Ultraviolet.SDL2.Native.SDL_WindowEventID;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2
 {
@@ -25,15 +26,15 @@ namespace Ultraviolet.SDL2
         protected unsafe SDL2UltravioletContext(IUltravioletHost host, UltravioletConfiguration configuration)
             : base(host, configuration)
         {
-            eventFilter = new SDLNative.EventFilter(SDLEventFilter);
+            eventFilter = new SDL_EventFilter(SDLEventFilter);
             eventFilterPtr = Marshal.GetFunctionPointerForDelegate(eventFilter);
-            SDLNative.SDL_SetEventFilter(eventFilterPtr, IntPtr.Zero);
+            SDL_SetEventFilter(eventFilterPtr, IntPtr.Zero);
         }
         
         /// <inheritdoc/>
         public override void UpdateSuspended()
         {
-            SDLNative.SDL_PumpEvents();
+            SDL_PumpEvents();
 
             base.UpdateSuspended();
         }
@@ -77,8 +78,8 @@ namespace Ultraviolet.SDL2
         /// <inheritdoc/>
         protected override void OnShutdown()
         {
-            SDLNative.SDL_SetEventFilter(IntPtr.Zero, IntPtr.Zero);
-            SDLNative.SDL_Quit();
+            SDL_SetEventFilter(IntPtr.Zero, IntPtr.Zero);
+            SDL_Quit();
 
             base.OnShutdown();
         }
@@ -95,9 +96,9 @@ namespace Ultraviolet.SDL2
                 SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS;
 
             if (Platform == UltravioletPlatform.Windows)
-                SDLNative.SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
+                SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
 
-            return SDLNative.SDL_Init(sdlFlags) == 0;
+            return SDL_Init(sdlFlags) == 0;
         }
 
         /// <summary>
@@ -107,7 +108,7 @@ namespace Ultraviolet.SDL2
         protected Boolean PumpEvents()
         {
             SDL_Event @event;
-            while (SDLNative.SDL_PollEvent(out @event) > 0)
+            while (SDL_PollEvent(out @event) > 0)
             {
                 if (Disposed)
                     return false;
@@ -162,7 +163,7 @@ namespace Ultraviolet.SDL2
         /// <summary>
         /// Filters SDL2 events.
         /// </summary>
-        [MonoPInvokeCallback(typeof(SDLNative.EventFilter))]
+        [MonoPInvokeCallback(typeof(SDL_EventFilter))]
         private static unsafe Int32 SDLEventFilter(IntPtr userdata, SDL_Event* @event)
         {
             var uv = RequestCurrent();
@@ -201,7 +202,7 @@ namespace Ultraviolet.SDL2
         }
         
         // The SDL event filter.
-        private readonly SDLNative.EventFilter eventFilter;
+        private readonly SDL_EventFilter eventFilter;
         private readonly IntPtr eventFilterPtr;
     }
 }

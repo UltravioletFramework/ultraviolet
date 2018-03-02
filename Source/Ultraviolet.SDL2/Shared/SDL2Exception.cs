@@ -1,5 +1,5 @@
 ﻿using System;
-using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2
 {
@@ -13,7 +13,7 @@ namespace Ultraviolet.SDL2
         /// Initializes a new instance of the SDL2Exception class.
         /// </summary>
         public SDL2Exception()
-            : base(SDLNative.SDL_GetError())
+            : base(SDL_GetError())
         {
 
         }

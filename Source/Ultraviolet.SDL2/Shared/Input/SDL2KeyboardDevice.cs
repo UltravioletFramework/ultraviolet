@@ -7,6 +7,7 @@ using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_EventType;
 using static Ultraviolet.SDL2.Native.SDL_Keymod;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -24,7 +25,7 @@ namespace Ultraviolet.SDL2.Input
             : base(uv)
         {
             Int32 numkeys;
-            SDLNative.SDL_GetKeyboardState(out numkeys);
+            SDL_GetKeyboardState(out numkeys);
 
             this.states = new InternalButtonState[numkeys];
 
@@ -42,11 +43,11 @@ namespace Ultraviolet.SDL2.Input
         {
             if (type == UltravioletMessages.SoftwareKeyboardShown)
             {
-                SDLNative.SDL_StartTextInput();
+                SDL_StartTextInput();
             }
             else if (type == UltravioletMessages.SoftwareKeyboardHidden)
             {
-                SDLNative.SDL_StopTextInput();
+                SDL_StopTextInput();
             }
             else if (type == SDL2UltravioletMessages.SDLEvent)
             {
@@ -164,7 +165,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Down;
         }
 
@@ -173,7 +174,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Up;
         }
 
@@ -182,7 +183,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Pressed || (!ignoreRepeats && states[scancode].Repeated);
         }
 
@@ -191,7 +192,7 @@ namespace Ultraviolet.SDL2.Input
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var scancode = (int)SDLNative.SDL_GetScancodeFromKey((SDL_Keycode)key);
+            var scancode = (int)SDL_GetScancodeFromKey((SDL_Keycode)key);
             return states[scancode].Released;
         }
 
@@ -214,7 +215,7 @@ namespace Ultraviolet.SDL2.Input
         {
             get
             {
-                return (SDLNative.SDL_GetModState() & KMOD_NUM) == KMOD_NUM;
+                return (SDL_GetModState() & KMOD_NUM) == KMOD_NUM;
             }
         }
 
@@ -223,7 +224,7 @@ namespace Ultraviolet.SDL2.Input
         {
             get
             {
-                return (SDLNative.SDL_GetModState() & KMOD_CAPS) == KMOD_CAPS;
+                return (SDL_GetModState() & KMOD_CAPS) == KMOD_CAPS;
             }
         }
 

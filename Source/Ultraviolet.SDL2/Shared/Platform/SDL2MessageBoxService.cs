@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Native;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {
@@ -16,7 +17,7 @@ namespace Ultraviolet.SDL2.Platform
         {
             var flags = GetSDLMessageBoxFlag(type);
 
-            if (SDLNative.SDL_ShowSimpleMessageBox(flags, title, message, window) < 0)
+            if (SDL_ShowSimpleMessageBox(flags, title, message, window) < 0)
                 throw new SDL2Exception();
         }
         

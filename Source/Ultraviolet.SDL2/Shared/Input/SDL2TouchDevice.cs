@@ -9,6 +9,7 @@ using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Messages;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_EventType;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Input
 {
@@ -29,8 +30,8 @@ namespace Ultraviolet.SDL2.Input
             // HACK: Working around an Android emulator glitch here -- it will
             // return a touch ID of 0 even after saying that the device exists,
             // and yet not produce any kind of SDL error... I hate emulators.            
-            var id = SDLNative.SDL_GetTouchDevice(index);
-            if (id == 0 && !String.IsNullOrEmpty(SDLNative.SDL_GetError()))
+            var id = SDL_GetTouchDevice(index);
+            if (id == 0 && !String.IsNullOrEmpty(SDL_GetError()))
                 throw new SDL2Exception();
 
             this.sdlTouchID = id;
@@ -367,7 +368,7 @@ namespace Ultraviolet.SDL2.Input
 
             if (!IsRecordingDollarGesture)
             {
-                if (SDLNative.SDL_RecordGesture(sdlTouchID) == 0)
+                if (SDL_RecordGesture(sdlTouchID) == 0)
                     throw new SDL2Exception();
 
                 isRecordingDollarGesture = true;
@@ -384,7 +385,7 @@ namespace Ultraviolet.SDL2.Input
             if (IsRecordingDollarGesture)
                 return false;
 
-            if (SDLNative.SDL_RecordGesture(sdlTouchID) == 0)
+            if (SDL_RecordGesture(sdlTouchID) == 0)
                 throw new SDL2Exception();
 
             isRecordingDollarGesture = true;
@@ -399,7 +400,7 @@ namespace Ultraviolet.SDL2.Input
 
             using (var streamWrapper = new SDL2StreamWrapper(stream))
             {
-                if (SDLNative.SDL_LoadDollarTemplates(sdlTouchID, streamWrapper.ToIntPtr()) == 0)
+                if (SDL_LoadDollarTemplates(sdlTouchID, streamWrapper.ToIntPtr()) == 0)
                     throw new SDL2Exception();
             }
         }
@@ -412,7 +413,7 @@ namespace Ultraviolet.SDL2.Input
 
             using (var streamWrapper = new SDL2StreamWrapper(stream))
             {
-                if (SDLNative.SDL_SaveAllDollarTemplates(streamWrapper.ToIntPtr()) == 0)
+                if (SDL_SaveAllDollarTemplates(streamWrapper.ToIntPtr()) == 0)
                     throw new SDL2Exception();
             }
         }

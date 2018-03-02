@@ -4,6 +4,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDL_BlendMode;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Graphics
 {
@@ -151,7 +152,7 @@ namespace Ultraviolet.SDL2.Graphics
             var srcrect = new SDL_Rect() { x = region.X, y = region.Y, w = region.Width, h = region.Height };
             var dstrect = new SDL_Rect() { x = 0, y = 0, w = region.Width, h = region.Height };
 
-            if (SDLNative.SDL_BlitSurface(nativesurf.NativePtr, &srcrect, copysurf.NativePtr, &dstrect) < 0)
+            if (SDL_BlitSurface(nativesurf.NativePtr, &srcrect, copysurf.NativePtr, &dstrect) < 0)
                 throw new SDL2Exception();
 
             return new SDL2Surface2D(Ultraviolet, copysurf);
@@ -172,7 +173,7 @@ namespace Ultraviolet.SDL2.Graphics
 
             using (var copysurf = new SDL2PlatformNativeSurface(Width, Height))
             {
-                if (SDLNative.SDL_BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
+                if (SDL_BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
                     throw new SDL2Exception();
 
                 copysurf.PrepareForTextureExport(premultiply, flip, opaque);
@@ -291,17 +292,17 @@ namespace Ultraviolet.SDL2.Graphics
             var sdlSrcRect = new SDL_Rect() { x = srcRect.X, y = srcRect.Y, w = srcRect.Width, h = srcRect.Height };
             var sdlDstRect = new SDL_Rect() { x = dstRect.X, y = dstRect.Y, w = dstRect.Width, h = dstRect.Height };
 
-            if (SDLNative.SDL_SetSurfaceBlendMode(src.nativesurf.NativePtr, SDL_BLENDMODE_NONE) < 0)
+            if (SDL_SetSurfaceBlendMode(src.nativesurf.NativePtr, SDL_BLENDMODE_NONE) < 0)
                 throw new SDL2Exception();
 
             if (srcRect.Width != dstRect.Width || srcRect.Height != dstRect.Height)
             {
-                if (SDLNative.SDL_BlitScaled(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
+                if (SDL_BlitScaled(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
                     throw new SDL2Exception();
             }
             else
             {
-                if (SDLNative.SDL_BlitSurface(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
+                if (SDL_BlitSurface(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
                     throw new SDL2Exception();
             }
         }
