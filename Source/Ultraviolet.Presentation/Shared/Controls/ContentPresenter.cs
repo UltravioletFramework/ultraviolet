@@ -208,7 +208,7 @@ namespace Ultraviolet.Presentation.Controls
         /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
-            if (textLayoutCommands != null && textLayoutCommands.Settings.Font != (SpriteFont)containingControl?.Font)
+            if (textLayoutCommands != null && textLayoutCommands.Settings.Font != (UltravioletFont)containingControl?.Font)
             {
                 InvalidateMeasure();
             }

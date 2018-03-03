@@ -141,7 +141,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to retrieve.</param>
         /// <returns>The registered font with the specified name.</returns>
-        public SpriteFont GetFont(StringSegment name)
+        public UltravioletFont GetFont(StringSegment name)
         {
             if (fontsByName == null)
                 return null;
@@ -158,7 +158,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered font to retrieve.</param>
         /// <returns>The registered font at the specified index within the command stream's internal registry.</returns>
-        public SpriteFont GetFont(Int16 index)
+        public UltravioletFont GetFont(Int16 index)
         {
             if (fonts == null)
                 throw new IndexOutOfRangeException(nameof(index));
@@ -281,12 +281,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name that identifies the font.</param>
         /// <param name="font">The font to register.</param>
         /// <returns>The index of the font within the command stream's internal registry.</returns>
-        public Int16 RegisterFont(StringSegment name, SpriteFont font)
+        public Int16 RegisterFont(StringSegment name, UltravioletFont font)
         {
             Contract.Require(font, nameof(font));
 
             if (fonts == null)
-                fonts = new List<SpriteFont>();
+                fonts = new List<UltravioletFont>();
 
             if (fontsByName == null)
                 fontsByName = new Dictionary<StringSegment, Int16>();
@@ -363,7 +363,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private Dictionary<StringSegment, Int16> iconsByName;
 
         // Font registry
-        private List<SpriteFont> fonts = new List<SpriteFont>();
+        private List<UltravioletFont> fonts = new List<UltravioletFont>();
         private Dictionary<StringSegment, Int16> fontsByName;
 
         // Glyph shader registry

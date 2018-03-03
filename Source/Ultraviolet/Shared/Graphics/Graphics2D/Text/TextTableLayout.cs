@@ -27,7 +27,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="renderer">The <see cref="TextRenderer"/> used to lay out and render the table's text.</param>
         /// <param name="font">The table's default font.</param>
         /// <returns>The <see cref="TextTable{ViewModelType}"/> that was created.</returns>
-        public TextTable<ViewModelType> Create<ViewModelType>(TextRenderer renderer, SpriteFont font)
+        public TextTable<ViewModelType> Create<ViewModelType>(TextRenderer renderer, UltravioletFont font)
         {
             Contract.Require(renderer, nameof(renderer));
             Contract.Require(font, nameof(font));

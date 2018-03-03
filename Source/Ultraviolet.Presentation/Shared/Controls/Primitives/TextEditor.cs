@@ -1862,7 +1862,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the font with which the editor draws its text.
         /// </summary>
-        protected SpriteFont TextFont
+        protected UltravioletFont TextFont
         {
             get
             {
@@ -1874,7 +1874,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <summary>
         /// Gets the font face with which the editor draws its text.
         /// </summary>
-        protected SpriteFontFace TextFontFace
+        protected UltravioletFontFace TextFontFace
         {
             get
             {

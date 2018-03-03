@@ -66,17 +66,17 @@ namespace Ultraviolet.Presentation.Controls
         ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
-        public SourcedResource<SpriteFont> Font
+        public SourcedResource<UltravioletFont> Font
         {
-            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            get { return GetValue<SourcedResource<UltravioletFont>>(FontProperty); }
             set { SetValue(FontProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the font style which is used to draw the control's text.
         /// </summary>
-        /// <value>A <see cref="SpriteFontStyle"/> value that specifies the style
-        /// with which to draw the control's text. The default value is <see cref="SpriteFontStyle.Regular"/>.</value>
+        /// <value>A <see cref="UltravioletFontStyle"/> value that specifies the style
+        /// with which to draw the control's text. The default value is <see cref="UltravioletFontStyle.Regular"/>.</value>
         /// <remarks>
         /// <dprop>
         ///     <dpropField><see cref="FontStyleProperty"/></dpropField>
@@ -84,9 +84,9 @@ namespace Ultraviolet.Presentation.Controls
         ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
-        public SpriteFontStyle FontStyle
+        public UltravioletFontStyle FontStyle
         {
-            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            get { return GetValue<UltravioletFontStyle>(FontStyleProperty); }
             set { SetValue(FontStyleProperty, value); }
         }
 
@@ -175,14 +175,14 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="Font"/> dependency property.</value>
         public static readonly DependencyProperty FontProperty = TextElement.FontProperty.AddOwner(typeof(Control),
-            new PropertyMetadata<SourcedResource<SpriteFont>>(null, PropertyMetadataOptions.AffectsArrange, HandleFontChanged));
+            new PropertyMetadata<SourcedResource<UltravioletFont>>(null, PropertyMetadataOptions.AffectsArrange, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="FontStyle"/> dependency property.</value>
         public static readonly DependencyProperty FontStyleProperty = TextElement.FontStyleProperty.AddOwner(typeof(Control),
-            new PropertyMetadata<SpriteFontStyle>(null, PropertyMetadataOptions.AffectsArrange));
+            new PropertyMetadata<UltravioletFontStyle>(null, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="Foreground"/> dependency property.
@@ -358,7 +358,7 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Occurs when the value of the <see cref="Font"/> dependency property changes.
         /// </summary>
-        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<UltravioletFont> oldValue, SourcedResource<UltravioletFont> newValue)
         {
             ((Control)dobj).ReloadFont();
         }

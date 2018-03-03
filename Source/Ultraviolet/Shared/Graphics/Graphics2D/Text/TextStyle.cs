@@ -17,7 +17,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="color">The color which is applied by this style, if any.</param>
         /// <param name="glyphShaders">The glyph shaders which are applied by this style, if any.</param>
         [Preserve]
-        public TextStyle(SpriteFont font, Boolean? bold, Boolean? italic, Color? color, params GlyphShader[] glyphShaders)
+        public TextStyle(UltravioletFont font, Boolean? bold, Boolean? italic, Color? color, params GlyphShader[] glyphShaders)
         {
             this.Font = font;
             this.Bold = bold;
@@ -29,7 +29,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the font which is applied by this style, if any.
         /// </summary>
-        public SpriteFont Font
+        public UltravioletFont Font
         {
             get;
             private set;

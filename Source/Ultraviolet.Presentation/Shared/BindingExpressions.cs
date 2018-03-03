@@ -601,8 +601,8 @@ namespace Ultraviolet.Presentation
             comparerRegistry[typeof(Viewport?)] = new DataBindingComparer<Viewport?>((v1, v2) => v1 == v2);
 
             // Ultraviolet.Graphics.Graphics2D
-            comparerRegistry[typeof(SpriteFontStyle)] = new DataBindingComparer<SpriteFontStyle>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(SpriteFontStyle?)] = new DataBindingComparer<SpriteFontStyle?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UltravioletFontStyle)] = new DataBindingComparer<UltravioletFontStyle>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(UltravioletFontStyle?)] = new DataBindingComparer<UltravioletFontStyle?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SpriteAnimationID)] = new DataBindingComparer<SpriteAnimationID>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SpriteAnimationID?)] = new DataBindingComparer<SpriteAnimationID?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SpriteAnimationName)] = new DataBindingComparer<SpriteAnimationName>((v1, v2) => v1 == v2);
@@ -643,8 +643,8 @@ namespace Ultraviolet.Presentation
             comparerRegistry[typeof(SourcedImage?)] = new DataBindingComparer<SourcedImage?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SourcedResource<Graphics.Graphics2D.Sprite>)] = new DataBindingComparer<SourcedResource<Graphics.Graphics2D.Sprite>>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SourcedResource<Graphics.Graphics2D.Sprite>?)] = new DataBindingComparer<SourcedResource<Graphics.Graphics2D.Sprite>?>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(SourcedResource<SpriteFont>)] = new DataBindingComparer<SourcedResource<SpriteFont>>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(SourcedResource<SpriteFont>?)] = new DataBindingComparer<SourcedResource<SpriteFont>?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedResource<UltravioletFont>)] = new DataBindingComparer<SourcedResource<UltravioletFont>>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(SourcedResource<UltravioletFont>?)] = new DataBindingComparer<SourcedResource<UltravioletFont>?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SourcedSpriteAnimationID)] = new DataBindingComparer<SourcedSpriteAnimationID>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(SourcedSpriteAnimationID?)] = new DataBindingComparer<SourcedSpriteAnimationID?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Thickness)] = new DataBindingComparer<Thickness>((v1, v2) => v1 == v2);

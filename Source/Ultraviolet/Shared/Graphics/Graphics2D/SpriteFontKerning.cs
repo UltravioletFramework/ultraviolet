@@ -134,7 +134,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         // Kerning values.
-        private readonly Boolean[] asciiLookup = new Boolean[SpriteFont.ExtendedAsciiCount];
+        private readonly Boolean[] asciiLookup = new Boolean[SpriteFontGlyphIndex.ExtendedAsciiCount];
         private readonly Dictionary<SpriteFontKerningPair, Int32> kerning =
             new Dictionary<SpriteFontKerningPair, Int32>();
     }

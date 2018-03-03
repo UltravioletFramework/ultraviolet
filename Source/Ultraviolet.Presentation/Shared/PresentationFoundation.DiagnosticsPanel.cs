@@ -166,7 +166,7 @@ namespace Ultraviolet.Presentation
 
                 var asm = Assembly.GetExecutingAssembly();
                 using (var stream = asm.GetManifestResourceStream("Ultraviolet.Presentation.Resources.Content.Fonts.SegoeUITexture.png"))
-                    font = content.LoadFromStream<SpriteFont>(stream, "png");
+                    font = content.LoadFromStream<UltravioletFont>(stream, "png");
 
                 blankTexture = Texture2D.Create(1, 1);
                 blankTexture.SetData(new[] { Color.White });
@@ -177,7 +177,7 @@ namespace Ultraviolet.Presentation
             private readonly StringBuilder buffer = new StringBuilder();
             private ContentManager content;
             private SpriteBatch spriteBatch;
-            private SpriteFont font;
+            private UltravioletFont font;
             private Texture2D blankTexture;
         }
     }

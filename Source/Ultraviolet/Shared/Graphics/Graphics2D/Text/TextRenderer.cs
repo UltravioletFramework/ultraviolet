@@ -624,10 +624,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var lineIsTerminatedByLineBreak = false;
 
             var settings = input.Settings;
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var bold = (settings.Style == UltravioletFontStyle.Bold || settings.Style == UltravioletFontStyle.BoldItalic);
+            var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
-            var fontFace = (UltravioletFontFace)font.GetFace(bold, italic);
+            var fontFace = font.GetFace(bold, italic);
 
             var source = (input.SourceText.SourceString != null) ?
                 new StringSource(input.SourceText.SourceString) :
@@ -776,7 +776,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (input.TotalLength == index)
             {
                 var lineDefaultHeight = (input.Settings.Font == null) ? 0 :
-                    input.Settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+                    input.Settings.Font.GetFace(UltravioletFontStyle.Regular).LineSpacing;
 
                 lineInfo = (input.TotalLength > 0) ? input.GetLineInfo(input.LineCount - 1) : 
                     new LineInfo(input, 0, 0, 0, 0, 0, 0, lineDefaultHeight, 0, 0);
@@ -834,7 +834,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to register.</param>
         /// <param name="font">The font to register.</param>
-        public void RegisterFont(String name, SpriteFont font)
+        public void RegisterFont(String name, UltravioletFont font)
         {
             layoutEngine.RegisterFont(name, font);
         }
@@ -1215,10 +1215,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 throw new ArgumentException(UltravioletStrings.InvalidLayoutSettings);
 
             var settings = input.Settings;
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var bold = (settings.Style == UltravioletFontStyle.Bold || settings.Style == UltravioletFontStyle.BoldItalic);
+            var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
-            var fontFace = (UltravioletFontFace)font.GetFace(bold, italic);
+            var fontFace = font.GetFace(bold, italic);
             var color = defaultColor;
             var lastColorOutsideLink = defaultColor;
 
@@ -1491,7 +1491,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Pushes a font onto the font stack.
         /// </summary>
-        private void PushFont(SpriteFont font)
+        private void PushFont(UltravioletFont font)
         {
             PushScopedStack(fontStack, font);
         }
@@ -1605,7 +1605,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Updates the current font by examining the state of the layout stacks.
         /// </summary>
-        private void RefreshFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out SpriteFont font, out UltravioletFontFace fontFace)
+        private void RefreshFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out UltravioletFont font, out UltravioletFontFace fontFace)
         {
             font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek().Value;
             fontFace = font.GetFace(bold, italic);
@@ -1906,10 +1906,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var glyphWasLineBreak = false;
 
             var settings = input.Settings;
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var bold = (settings.Style == UltravioletFontStyle.Bold || settings.Style == UltravioletFontStyle.BoldItalic);
+            var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
-            var fontFace = (UltravioletFontFace)font.GetFace(bold, italic);
+            var fontFace = font.GetFace(bold, italic);
 
             var source = (input.SourceText.SourceString != null) ?
                 new StringSource(input.SourceText.SourceString) :
@@ -2115,7 +2115,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
         // Layout parameter stacks.
         private readonly Stack<TextStyleInstance> styleStack = new Stack<TextStyleInstance>();
-        private readonly Stack<TextStyleScoped<SpriteFont>> fontStack = new Stack<TextStyleScoped<SpriteFont>>();
+        private readonly Stack<TextStyleScoped<UltravioletFont>> fontStack = new Stack<TextStyleScoped<UltravioletFont>>();
         private readonly Stack<TextStyleScoped<Color>> colorStack = new Stack<TextStyleScoped<Color>>();
         private readonly Stack<TextStyleScoped<GlyphShader>> glyphShaderStack = new Stack<TextStyleScoped<GlyphShader>>();
         private readonly Stack<Int16> linkStack = new Stack<Int16>();

@@ -571,7 +571,7 @@ namespace Ultraviolet.Presentation.Controls
             if (!font.IsLoaded)
                 return;
 
-            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontFace = font.Resource.Value.GetFace(UltravioletFontStyle.Regular);
             var fontLineHeight = fontFace.LineSpacing;
 
             var scrollViewer = TextEditorScrollViewer;
@@ -586,7 +586,7 @@ namespace Ultraviolet.Presentation.Controls
             if (!font.IsLoaded)
                 return;
 
-            var fontFace = font.Resource.Value.GetFace(SpriteFontStyle.Regular);
+            var fontFace = font.Resource.Value.GetFace(UltravioletFontStyle.Regular);
             var fontLineHeight = fontFace.LineSpacing;
 
             var scrollViewer = TextEditorScrollViewer;

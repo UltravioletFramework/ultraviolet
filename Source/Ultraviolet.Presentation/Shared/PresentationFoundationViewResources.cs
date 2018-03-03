@@ -244,11 +244,11 @@ namespace Ultraviolet.Presentation
             foreach (var kvp in dictionary)
             {
                 var description = kvp.Value;
-                var font = default(SpriteFont);
+                var font = default(UltravioletFont);
 
                 if (description.Font != null)
                 {
-                    font = view.LoadResource<SpriteFont>(description.Font.Value);
+                    font = view.LoadResource<UltravioletFont>(description.Font.Value);
                     if (font == null)
                         throw new InvalidOperationException(PresentationStrings.CollectionContainsInvalidResources);
                 }
@@ -278,7 +278,7 @@ namespace Ultraviolet.Presentation
                 if (!kvp.Value.AssetID.IsValid)
                     throw new InvalidOperationException(PresentationStrings.CollectionContainsInvalidResources);
 
-                var font = view.LoadResource<SpriteFont>(kvp.Value);
+                var font = view.LoadResource<UltravioletFont>(kvp.Value);
                 TextRenderer.RegisterFont(kvp.Key, font);
             }
         }
