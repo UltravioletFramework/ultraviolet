@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 15 - Render Targets and Buffers</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample15_RenderTargetsAndBuffers</string>
+	<string>net.twistedlogik.Sample15_RenderTargetsAndBuffers</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -43,6 +43,8 @@
 	<key>CFBundleName</key>
 	<string>Sample 15 - Render Targets and Buffers</string>
 	<key>XSLaunchImageAssets</key>
-	<string>Resources/Media.xcassets/LaunchImage.launchimage</string>
+	<string>Resources/Media.xcassets/LaunchImage.launchimage</string
+	><key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app requires access to add photos the photo library.</string>
 </dict>
 </plist>

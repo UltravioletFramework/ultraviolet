@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 3 - Rendering Geometry</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample3_RenderingGeometry</string>
+	<string>net.twistedlogik.Sample3_RenderingGeometry</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

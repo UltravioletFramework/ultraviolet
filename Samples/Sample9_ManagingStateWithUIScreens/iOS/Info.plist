@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 9 - Managing State with UI Screens</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample9_ManagingStateWithUIScreens</string>
+	<string>net.twistedlogik.Sample9_ManagingStateWithUIScreens</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

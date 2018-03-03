@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 2 - Handling Input</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample2_HandlingInput</string>
+	<string>net.twistedlogik.Sample2_HandlingInput</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
