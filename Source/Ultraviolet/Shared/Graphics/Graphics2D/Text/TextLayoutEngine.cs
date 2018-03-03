@@ -178,7 +178,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 PrepareInitialStyle(output, ref bold, ref italic, ref settings);
 
             var currentFont = settings.Font;
-            var currentFontFace = settings.Font.GetFace(SpriteFontStyle.Regular);
+            var currentFontFace = (UltravioletFontFace)settings.Font.GetFace(SpriteFontStyle.Regular);
 
             var index = 0;
             var processing = true;
@@ -190,7 +190,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 var token = input[index];
 
-                currentFontFace = default(SpriteFontFace);
+                currentFontFace = default(UltravioletFontFace);
                 currentFont = GetCurrentFont(ref settings, bold, italic, out currentFontFace);
 
                 switch (token.TokenType)
@@ -314,7 +314,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Processes a parser token with type <see cref="TextParserTokenType.Text"/>.
         /// </summary>
-        private Boolean ProcessTextToken(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace currentFontFace,
+        private Boolean ProcessTextToken(TextParserTokenStream input, TextLayoutCommandStream output, UltravioletFontFace currentFontFace,
             ref TextParserToken token, ref LayoutState state, ref TextLayoutSettings settings, ref Int32 index)
         {
             if (token.IsNewLine)
@@ -597,7 +597,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Accumulates sequential text tokens into a single text command.
         /// </summary>
-        private Boolean AccumulateText(TextParserTokenStream input, TextLayoutCommandStream output, SpriteFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
+        private Boolean AccumulateText(TextParserTokenStream input, TextLayoutCommandStream output, UltravioletFontFace font, ref Int32 index, ref LayoutState state, ref TextLayoutSettings settings)
         {
             var hyphenate = (settings.Options & TextLayoutOptions.Hyphenate) == TextLayoutOptions.Hyphenate;
 
@@ -637,7 +637,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
                 tokenNext = GetNextTextToken(input, index);
                 tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
-                tokenKerning = font.Kerning.Get(tokenText[tokenText.Length - 1], ' ');
+                tokenKerning = font.GetKerningInfo(tokenText[tokenText.Length - 1], ' ');
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
                 // avoid accumulating tokens larger than that just in case somebody is doing something dumb
@@ -817,7 +817,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Given a string and an available space, returns the largest substring which will fit within that space.
         /// </summary>
-        private Boolean GetFittedSubstring(SpriteFontFace font, Int32 maxLineWidth, ref StringSegment tokenText, ref Size2 tokenSize, ref LayoutState state, Boolean hyphenate)
+        private Boolean GetFittedSubstring(UltravioletFontFace font, Int32 maxLineWidth, ref StringSegment tokenText, ref Size2 tokenSize, ref LayoutState state, Boolean hyphenate)
         {
             var substringAvailableWidth = maxLineWidth - state.PositionX;
             var substringWidth = 0;
@@ -861,7 +861,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="tokenText">The text of the current token.</param>
         /// <param name="tokenNext">The next token after the current token, excluding command tokens.</param>
         /// <returns>The size of the specified token in pixels.</returns>
-        private Size2 MeasureToken(SpriteFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext = null)
+        private Size2 MeasureToken(UltravioletFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext = null)
         {
             switch (tokenType)
             {
@@ -884,7 +884,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 var charLast = tokenText[tokenText.Length - 1];
                                 var charNext = tokenNextValue.Text[0];
-                                var kerning = font.Kerning.Get(charLast, charNext);
+                                var kerning = font.GetKerningInfo(charLast, charNext);
                                 return new Size2(size.Width + kerning, size.Height);
                             }
                         }
@@ -967,7 +967,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the currently active font.
         /// </summary>
-        private SpriteFont GetCurrentFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out SpriteFontFace face)
+        private SpriteFont GetCurrentFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out UltravioletFontFace face)
         {
             var font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek().Value;
             face = font.GetFace(bold, italic);

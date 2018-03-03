@@ -627,7 +627,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
             var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
             var font = settings.Font;
-            var fontFace = font.GetFace(bold, italic);
+            var fontFace = (UltravioletFontFace)font.GetFace(bold, italic);
 
             var source = (input.SourceText.SourceString != null) ?
                 new StringSource(input.SourceText.SourceString) :
@@ -1218,7 +1218,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
             var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
             var font = settings.Font;
-            var fontFace = font.GetFace(bold, italic);
+            var fontFace = (UltravioletFontFace)font.GetFace(bold, italic);
             var color = defaultColor;
             var lastColorOutsideLink = defaultColor;
 
@@ -1319,7 +1319,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Draws a text command.
         /// </summary>
-        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, SpriteFontFace fontFace, ref StringSource source,
+        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSource source,
             Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
         {
             var wasDrawnToCompletion = true;
@@ -1372,7 +1372,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 {
                     var hyphenatedGlyph = cmdText[cmdText.Length - 1];
                     var hyphenatedTextWidth = fontFace.MeasureString(cmdText).Width;
-                    var hyphenatedTextKerning = fontFace.Kerning.Get(hyphenatedGlyph, '-');
+                    var hyphenatedTextKerning = fontFace.GetKerningInfo(hyphenatedGlyph, '-');
 
                     cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning, cmdPosition.Y);
                     cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
@@ -1605,7 +1605,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Updates the current font by examining the state of the layout stacks.
         /// </summary>
-        private void RefreshFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out SpriteFont font, out SpriteFontFace fontFace)
+        private void RefreshFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out SpriteFont font, out UltravioletFontFace fontFace)
         {
             font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek().Value;
             fontFace = font.GetFace(bold, italic);
@@ -1852,7 +1852,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the glyph within the specified text that contains the specified position.
         /// </summary>
-        private Int32? GetGlyphAtPositionWithinText(SpriteFontFace fontFace, ref StringSegment text, ref Int32 position, out Int32 glyphWidth, out Int32 glyphHeight)
+        private Int32? GetGlyphAtPositionWithinText(UltravioletFontFace fontFace, ref StringSegment text, ref Int32 position, out Int32 glyphWidth, out Int32 glyphHeight)
         {
             var glyphPosition = 0;
             var glyphCount = 0;
@@ -1909,7 +1909,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
             var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
             var font = settings.Font;
-            var fontFace = font.GetFace(bold, italic);
+            var fontFace = (UltravioletFontFace)font.GetFace(bold, italic);
 
             var source = (input.SourceText.SourceString != null) ?
                 new StringSource(input.SourceText.SourceString) :

@@ -70,7 +70,6 @@ namespace Ultraviolet
         public static readonly StringResource UnrecognizedStyle                    = new StringResource(StringDatabase, "UNRECOGNIZED_STYLE");
         public static readonly StringResource UnrecognizedLayoutCommand            = new StringResource(StringDatabase, "UNRECOGNIZED_LAYOUT_COMMAND");
         public static readonly StringResource InvalidLayoutSettings                = new StringResource(StringDatabase, "INVALID_LAYOUT_SETTINGS");
-        public static readonly StringResource InvalidFontTexture                   = new StringResource(StringDatabase, "INVALID_FONT_TEXTURE");
         public static readonly StringResource InvalidFontFaces                     = new StringResource(StringDatabase, "INVALID_FONT_FACES");
         public static readonly StringResource InvalidViewModelProperty             = new StringResource(StringDatabase, "INVALID_VIEW_MODEL_PROPERTY");
         public static readonly StringResource InvalidCursorImage                   = new StringResource(StringDatabase, "INVALID_CURSOR_IMAGE");

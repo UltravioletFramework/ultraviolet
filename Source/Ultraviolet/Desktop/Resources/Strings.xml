@@ -215,11 +215,6 @@
       <Variant>Invalid layout settings.</Variant>
     </en-US>
   </String>
-  <String Key="INVALID_FONT_TEXTURE">
-    <en-US>
-      <Variant>Invalid font texture.</Variant>
-    </en-US>
-  </String>
   <String Key="INVALID_FONT_FACES">
     <en-US>
       <Variant>A sprite font must have at least one valid face.</Variant>

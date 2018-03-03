@@ -8,7 +8,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a source of string data.
     /// </summary>
-    internal struct StringSource
+    public struct StringSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSource"/> structure.
@@ -18,10 +18,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(s, nameof(s));
 
-            this.str     = s;
+            this.str = s;
             this.builder = null;
-            this.Start   = 0;
-            this.Length  = s.Length;
+            this.Start = 0;
+            this.Length = s.Length;
         }
 
         /// <summary>
@@ -32,10 +32,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             Contract.Require(sb, nameof(sb));
 
-            this.str     = null;
+            this.str = null;
             this.builder = sb;
-            this.Start   = 0;
-            this.Length  = sb.Length;
+            this.Start = 0;
+            this.Length = sb.Length;
         }
 
         /// <summary>
@@ -44,12 +44,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="segment">The <see cref="StringSegment"/> that contains the string data.</param>
         public StringSource(StringSegment segment)
         {
-            this.str     = segment.SourceString;
+            this.str = segment.SourceString;
             this.builder = segment.SourceStringBuilder;
-            this.Start   = segment.Start;
-            this.Length  = segment.Length;
+            this.Start = segment.Start;
+            this.Length = segment.Length;
         }
-        
+
         /// <summary>
         /// Creates a <see cref="StringSegment"/> structure that represents this string source.
         /// </summary>
@@ -61,7 +61,7 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             if (builder != null)
                 return new StringSegment(builder, Start, Length);
-            
+
             return StringSegment.Empty;
         }
 
@@ -80,10 +80,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 return new StringSegment(builder, Start + start, length);
 
             if (start != 0)
-                throw new ArgumentOutOfRangeException("start");
+                throw new ArgumentOutOfRangeException(nameof(start));
 
             if (length != 0)
-                throw new ArgumentOutOfRangeException("length");
+                throw new ArgumentOutOfRangeException(nameof(length));
 
             return StringSegment.Empty;
         }
@@ -103,10 +103,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 return new StringSegment(builder, start, length);
 
             if (start != 0)
-                throw new ArgumentOutOfRangeException("start");
+                throw new ArgumentOutOfRangeException(nameof(start));
 
             if (length != 0)
-                throw new ArgumentOutOfRangeException("length");
+                throw new ArgumentOutOfRangeException(nameof(length));
 
             return StringSegment.Empty;
         }
@@ -116,26 +116,17 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="ix">The index of the character to retrieve.</param>
         /// <returns>The character at the specified index within the string source.</returns>
-        public Char this[Int32 ix]
-        {
-            get { return (str == null) ? builder[Start + ix] : str[Start + ix]; }
-        }
+        public Char this[Int32 ix] => str?[Start + ix] ?? builder?[Start + ix] ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Gets the <see cref="String"/> that this source represents.
         /// </summary>
-        public String String
-        {
-            get { return str; }
-        }
+        public String String => str;
 
         /// <summary>
         /// Gets the <see cref="StringBuilder"/> that this source represents.
         /// </summary>
-        public StringBuilder StringBuilder
-        {
-            get { return builder; }
-        }
+        public StringBuilder StringBuilder => builder;
 
         /// <summary>
         /// The starting index of the source substring.

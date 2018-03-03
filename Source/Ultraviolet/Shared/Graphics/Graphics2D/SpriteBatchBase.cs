@@ -704,11 +704,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
-        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color)
+        public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -721,11 +721,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -737,7 +737,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -746,7 +746,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -759,7 +759,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -768,7 +768,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -780,7 +780,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -789,7 +789,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -802,7 +802,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -811,7 +811,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -823,12 +823,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -841,12 +841,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -858,7 +858,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -868,7 +868,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -881,7 +881,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -891,7 +891,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -903,7 +903,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -913,7 +913,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -926,7 +926,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -936,7 +936,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -948,11 +948,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
-        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color)
+        public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -965,11 +965,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -981,7 +981,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -990,7 +990,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1003,7 +1003,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1012,7 +1012,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1024,7 +1024,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1033,7 +1033,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1046,7 +1046,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1055,7 +1055,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1067,12 +1067,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1085,12 +1085,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1102,7 +1102,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1112,7 +1112,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1125,7 +1125,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1135,7 +1135,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1147,7 +1147,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1157,7 +1157,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1170,7 +1170,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1180,7 +1180,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1192,11 +1192,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
-        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color)
+        public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1209,11 +1209,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1225,7 +1225,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1234,7 +1234,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1247,7 +1247,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1256,7 +1256,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1268,7 +1268,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1277,7 +1277,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1290,7 +1290,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1299,7 +1299,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1311,12 +1311,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1329,12 +1329,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1346,7 +1346,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1356,7 +1356,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1369,7 +1369,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1379,7 +1379,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1391,7 +1391,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Draws a string of text.
         /// </summary>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1401,7 +1401,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1414,7 +1414,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
-        /// <param name="fontFace">The <see cref="SpriteFontFace"/> with which to draw the text.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
@@ -1424,7 +1424,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        public void DrawString(GlyphShaderContext glyphShader, SpriteFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -2381,7 +2381,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        private void DrawStringInternal(GlyphShaderContext glyphShaderContext, SpriteFontFace fontFace, StringSource text, Vector2 position,
+        private void DrawStringInternal(GlyphShaderContext glyphShaderContext, UltravioletFontFace fontFace, StringSource text, Vector2 position,
             Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -2394,13 +2394,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             var flipVertical = (effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically;
             var dirX = flipHorizontal ? -1 : 1;
             var dirY = flipVertical ? -1 : 1;
-
-            // Retrieve the font's glyph data.
-            if (fontFace.Texture == null)
-            {
-                throw new InvalidOperationException(UltravioletStrings.InvalidFontTexture);
-            }
-
+            
             // Calculate the size of the area in which the text will be rendered.
             var measure = fontFace.MeasureString(ref text, 0, text.Length);
             var areaTL = new Vector2(position.X - origin.X, position.Y - origin.Y);
@@ -2419,6 +2413,8 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             // Add the text's glyphs to the sprite batch.
             var character = default(Char);
+            var glyphTexture = default(Texture2D);
+            var glyphRegion = default(Rectangle);
             var glyphData = new GlyphData();
             var glyphShaderPass = 0;
             var glyphX = 0f;
@@ -2457,10 +2453,13 @@ namespace Ultraviolet.Graphics.Graphics2D
                 }
 
                 // Calculate the glyph's parameters and run any glyph shaders.
-                var source = fontFace[character];
-                glyphX = flipHorizontal ? cx - source.Width : cx;
-                glyphY = flipVertical ? cy - source.Height : cy;
-                glyphOrigin = new Vector2(source.Width / 2, source.Height / 2);
+                fontFace.GetGlyphRenderInfo(character, out glyphTexture, out glyphRegion);
+                if (glyphTexture == null)
+                    continue;
+
+                glyphX = flipHorizontal ? cx - glyphRegion.Width : cx;
+                glyphY = flipVertical ? cy - glyphRegion.Height : cy;
+                glyphOrigin = new Vector2(glyphRegion.Width / 2, glyphRegion.Height / 2);
                 glyphScale = scale;
                 glyphColor = color;
 
@@ -2499,11 +2498,11 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 glyphShaderPass = 0;
                 glyphPosRaw = new Vector2(glyphX, glyphY);
-
+                
                 // Add the glyph to the batch.
                 Vector2.Transform(ref glyphPosRaw, ref transform, out glyphPosTransformed);
-                DrawInternal(fontFace.Texture, glyphPosTransformed + glyphOrigin,
-                    source, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
+                DrawInternal(glyphTexture, glyphPosTransformed + glyphOrigin,
+                    glyphRegion, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
 
                 cx += fontFace.MeasureGlyph(ref text, i).Width * dirX;
             }
