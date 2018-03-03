@@ -17,7 +17,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="icon">The token's icon.</param>
         /// <param name="glyphShader">The token's glyph shader.</param>
         /// <param name="color">The token's color.</param>
-        internal TextLayoutToken(StringSegment text, Rectangle bounds, SpriteFontFace fontFace, TextIconInfo? icon, GlyphShader glyphShader, Color? color)
+        internal TextLayoutToken(StringSegment text, Rectangle bounds, UltravioletFontFace fontFace, TextIconInfo? icon, GlyphShader glyphShader, Color? color)
         {
             this.text = text;
             this.bounds = bounds;
@@ -92,7 +92,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the token's font face.
         /// </summary>
-        public SpriteFontFace FontFace
+        public UltravioletFontFace FontFace
         {
             get { return fontFace; }
         }
@@ -124,7 +124,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         // Property values.
         private readonly StringSegment text;
         private Rectangle bounds;
-        private readonly SpriteFontFace fontFace;
+        private readonly UltravioletFontFace fontFace;
         private readonly TextIconInfo? icon;
         private readonly GlyphShader glyphShader;
         private readonly Color? color;

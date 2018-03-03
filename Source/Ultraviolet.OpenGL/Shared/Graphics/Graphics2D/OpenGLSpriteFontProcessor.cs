@@ -182,8 +182,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions.Add(new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight));
             }
 
-            var face = new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphPositions, substitution);
-            var kerning = new Dictionary<SpriteFontKerningPair, Int32>();
+            var kerningPairs = new Dictionary<SpriteFontKerningPair, Int32>();
             var kerningDefaultAdjustment = reader.ReadInt32();
             var kerningCount = reader.ReadInt32();
             for (int j = 0; j < kerningCount; j++)
@@ -192,16 +191,14 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 var pairSecondChar = reader.ReadChar();
                 var offset = reader.ReadInt32();
 
-                kerning[new SpriteFontKerningPair(pairFirstChar, pairSecondChar)] = offset;
+                kerningPairs[new SpriteFontKerningPair(pairFirstChar, pairSecondChar)] = offset;
             }
 
-            face.Kerning.DefaultAdjustment = kerningDefaultAdjustment;
-            foreach (var kvp in kerning)
-            {
-                face.Kerning.Set(kvp.Key, kvp.Value);
-            }
+            var kerning = new SpriteFontKerning() { DefaultAdjustment = kerningDefaultAdjustment };
+            foreach (var kvp in kerningPairs)
+                kerning.Set(kvp.Key, kvp.Value);
 
-            return face;
+            return new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphPositions, kerning, substitution);
         }
 
         /// <summary>
@@ -222,18 +219,17 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             var faceSurface = textures[textureName];
             var faceGlyphs = OpenGLSpriteFontHelper.IdentifyGlyphs(faceSurface, textureRegion);
 
-            var faceTexture = manager.Load<Texture2D>(textureName, metadata.AssetDensity);
-            var face = new SpriteFontFace(manager.Ultraviolet, 
-                faceTexture, characterRegions, faceGlyphs, description.Glyphs?.Substitution ?? '?');
-
             var kerningDefaultAdjustment = description.Kernings?["default"] ?? 0;
-            var kerning = description.Kernings?.Where(x => !String.Equals(x.Key, "default", StringComparison.InvariantCulture))
+            var kerningPairs = description.Kernings?.Where(x => !String.Equals(x.Key, "default", StringComparison.InvariantCulture))
                 .ToDictionary(x => CreateKerningPair(x.Key), x => x.Value);
 
-            face.Kerning.DefaultAdjustment = kerningDefaultAdjustment;
+            var kerning = new SpriteFontKerning() { DefaultAdjustment = kerningDefaultAdjustment };
+            foreach (var kvp in kerningPairs)
+                kerning.Set(kvp.Key, kvp.Value);
 
-            foreach (var kvp in kerning)
-                face.Kerning.Set(kvp.Key, kvp.Value);
+            var faceTexture = manager.Load<Texture2D>(textureName, metadata.AssetDensity);
+            var face = new SpriteFontFace(manager.Ultraviolet, 
+                faceTexture, characterRegions, faceGlyphs, kerning, description.Glyphs?.Substitution ?? '?');
 
             return face;
         }

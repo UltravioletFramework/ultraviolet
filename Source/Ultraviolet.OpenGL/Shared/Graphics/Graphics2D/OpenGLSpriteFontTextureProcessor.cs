@@ -62,7 +62,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 glyphPositions[i] = new Rectangle(glyphX, glyphY, glyphWidth, glyphHeight);
             }
 
-            var fontFace = new SpriteFontFace(manager.Ultraviolet, texture, null, glyphPositions, glyphSubst, true);
+            var fontFace = new SpriteFontFace(manager.Ultraviolet, texture, null, glyphPositions, null, glyphSubst, true);
             var font = new SpriteFont(manager.Ultraviolet, fontFace);
 
             return font;
@@ -73,15 +73,12 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         {
             var positions = OpenGLSpriteFontHelper.IdentifyGlyphs(input);
             var texture = manager.Process<PlatformNativeSurface, Texture2D>(input);
-            var face = new SpriteFontFace(manager.Ultraviolet, texture, null, positions, true);
+            var face = new SpriteFontFace(manager.Ultraviolet, texture, null, positions, null, true);
             return new SpriteFont(manager.Ultraviolet, face);
         }
 
         /// <inheritdoc/>
-        public override Boolean SupportsPreprocessing
-        {
-            get { return true; }
-        }
+        public override Boolean SupportsPreprocessing => true;
     }
 }
         
