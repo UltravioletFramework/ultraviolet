@@ -152,16 +152,10 @@ namespace Ultraviolet.Core.Data
         }
 
         /// <inheritdoc/>
-        public abstract String ReferenceResolutionName
-        {
-            get;
-        }
+        public virtual String ReferenceResolutionName => typeof(T).Name;
 
         /// <inheritdoc/>
-        public abstract String DataElementName
-        {
-            get;
-        }
+        public virtual String DataElementName => typeof(T).Name;
 
         /// <summary>
         /// Gets the number of registered objects.
