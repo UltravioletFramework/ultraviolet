@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,7 +35,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -73,7 +74,8 @@
     <None Include="..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
-  </ItemGroup>  
+    <None Include="app.config" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Xamarin.iOS" />
@@ -83,13 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="iOS\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
-    </Compile>    
+    </Compile>
     <Compile Include="UltravioletAppDelegate.cs" />
     <Compile Include="UltravioletApplication.iOS.cs" />
     <Compile Include="UltravioletApplicationAudioSettings.cs" />
@@ -104,7 +105,7 @@
     <Compile Include="..\Ultraviolet.Shims.Desktop\UltravioletApplication.cs">
       <Link>UltravioletApplication.cs</Link>
     </Compile>
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
