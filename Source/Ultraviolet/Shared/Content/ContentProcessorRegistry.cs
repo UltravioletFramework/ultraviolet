@@ -64,9 +64,13 @@ namespace Ultraviolet.Content
         {
             Contract.Require(input, nameof(input));
 
-            var key = new RegistryKey(input, output);
-            var instance = default(IContentProcessor);
-            registeredProcessors.TryGetValue(key, out instance);
+            if (!registeredProcessors.TryGetValue(new RegistryKey(input, output), out var instance))
+            {
+                if (fallbackTypes.TryGetValue(output.TypeHandle.Value.ToInt64(), out var fallback))
+                {
+                    registeredProcessors.TryGetValue(new RegistryKey(input, fallback), out instance);
+                }
+            }
             return instance;
         }
 
@@ -79,6 +83,62 @@ namespace Ultraviolet.Content
         public IContentProcessor FindProcessor<TInput, TOutput>()
         {
             return FindProcessor(typeof(TInput), typeof(TOutput));
+        }
+
+        /// <summary>
+        /// Gets the fallback type which has been registered for the specified asset type.
+        /// </summary>
+        /// <param name="original">The asset type to evaluate.</param>
+        /// <returns>The fallback type which has been registered for the specified asset type, 
+        /// or <see langword="null"/> if no fallback has been registered.</returns>
+        public Type GetFallbackType(Type original)
+        {
+            Contract.Require(original, nameof(original));
+
+            fallbackTypes.TryGetValue(original.TypeHandle.Value.ToInt64(), out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the fallback type which has been registered for the specified asset type.
+        /// </summary>
+        /// <typeparam name="T">The asset type to evaluate.</typeparam>
+        /// <returns>The fallback type which has been registered for the specified asset type, 
+        /// or <see langword="null"/> if no fallback has been registered.</returns>
+        public Type GetFallbackType<T>()
+        {
+            return GetFallbackType(typeof(T));
+        }
+
+        /// <summary>
+        /// Sets the fallback type for the specified asset type. If no processor can be found for
+        /// a given type, the processor for its fallback type will be returned instead.
+        /// </summary>
+        /// <param name="original">The type for which to specify a fallback type.</param>
+        /// <param name="fallback">The fallback type for the specified type, or <see langword="null"/> to clear the fallback type.</param>
+        public void SetFallbackType(Type original, Type fallback)
+        {
+            Contract.Require(original, nameof(original));
+
+            if (fallback == null)
+            {
+                fallbackTypes.Remove(original.TypeHandle.Value.ToInt64());
+            }
+            else
+            {
+                fallbackTypes[original.TypeHandle.Value.ToInt64()] = fallback;
+            }
+        }
+
+        /// <summary>
+        /// Sets the fallback type for the specified asset type. If no processor can be found for
+        /// a given type, the processor for its fallback type will be returned instead.
+        /// </summary>
+        /// <typeparam name="T">The type for which to register a fallback type.</typeparam>
+        /// <param name="fallback">The fallback type for the specified type, or <see langword="null"/> to clear the fallback type.</param>
+        public void SetFallbackType<T>(Type fallback)
+        {
+            SetFallbackType(typeof(T), fallback);
         }
 
         /// <summary>
@@ -158,5 +218,9 @@ namespace Ultraviolet.Content
         // The content processor registry.
         private readonly Dictionary<RegistryKey, IContentProcessor> registeredProcessors = 
             new Dictionary<RegistryKey, IContentProcessor>();
+
+        // The list of fallback types which have been registered.
+        private readonly Dictionary<Int64, Type> fallbackTypes =
+            new Dictionary<Int64, Type>();
     }
 }

@@ -29,33 +29,33 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Contains boxed <see cref="Ultraviolet.Graphics.Graphics2D.SpriteFontStyle"/> values.
+        /// Contains boxed <see cref="Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle"/> values.
         /// </summary>
         public static class SpriteFontStyle
         {
             /// <summary>
-            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Regular"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.Regular"/>.
             /// </summary>
             public static readonly Object Regular =
-                Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Regular;
+                Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.Regular;
 
             /// <summary>
-            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Bold"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.Bold"/>.
             /// </summary>
             public static readonly Object Bold =
-                Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Bold;
+                Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.Bold;
 
             /// <summary>
-            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Italic"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.Italic"/>.
             /// </summary>
             public static readonly Object Italic =
-                Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.Italic;
+                Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.Italic;
 
             /// <summary>
-            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.BoldItalic"/>.
+            /// The cached box for the value <see cref="Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.BoldItalic"/>.
             /// </summary>
             public static readonly Object BoldItalic =
-                Ultraviolet.Graphics.Graphics2D.SpriteFontStyle.BoldItalic;
+                Ultraviolet.Graphics.Graphics2D.UltravioletFontStyle.BoldItalic;
         }
     }
 }

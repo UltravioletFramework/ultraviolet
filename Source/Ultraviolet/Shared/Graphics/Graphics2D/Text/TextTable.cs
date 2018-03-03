@@ -18,7 +18,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The table's height in pixels.</param>
         /// <param name="font">The table's default font.</param>
         [Preserve]
-        public TextTable(TextRenderer renderer, Int32 width, Int32 height, SpriteFont font)
+        public TextTable(TextRenderer renderer, Int32 width, Int32 height, UltravioletFont font)
         {
             Contract.Require(renderer, nameof(renderer));
             Contract.EnsureRange(width >= 0, nameof(width));
@@ -180,7 +180,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the table's default font.
         /// </summary>
-        public SpriteFont Font
+        public UltravioletFont Font
         {
             get { return font; }
         }
@@ -292,7 +292,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
         // Property values.
         private readonly TextRenderer renderer;
-        private readonly SpriteFont font;
+        private readonly UltravioletFont font;
         private Int32 width;
         private Int32 height;
         private Int32 actualWidth;

@@ -14,8 +14,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="width">The width of the layout area.</param>
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags)
-            : this(font, width, height, flags, TextLayoutOptions.None, SpriteFontStyle.Regular)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags)
+            : this(font, width, height, flags, TextLayoutOptions.None, UltravioletFontStyle.Regular)
         {
 
         }
@@ -28,7 +28,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="fontStyle">The initial font style.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, SpriteFontStyle fontStyle)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, UltravioletFontStyle fontStyle)
             : this(font, width, height, flags, TextLayoutOptions.None, fontStyle, null)
         {
 
@@ -42,8 +42,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, String initialLayoutStyle)
-            : this(font, width, height, flags, TextLayoutOptions.None, SpriteFontStyle.Regular, initialLayoutStyle)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, String initialLayoutStyle)
+            : this(font, width, height, flags, TextLayoutOptions.None, UltravioletFontStyle.Regular, initialLayoutStyle)
         {
 
         }
@@ -57,7 +57,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, SpriteFontStyle fontStyle, String initialLayoutStyle)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, UltravioletFontStyle fontStyle, String initialLayoutStyle)
             : this(font, width, height, flags, TextLayoutOptions.None, fontStyle, initialLayoutStyle)
         {
 
@@ -71,8 +71,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options)
-            : this(font, width, height, flags, options, SpriteFontStyle.Regular)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options)
+            : this(font, width, height, flags, options, UltravioletFontStyle.Regular)
         {
 
         }
@@ -86,7 +86,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="fontStyle">The initial font style.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, SpriteFontStyle fontStyle)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, UltravioletFontStyle fontStyle)
             : this(font, width, height, flags, options, fontStyle, null)
         {
 
@@ -101,8 +101,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, String initialLayoutStyle)
-            : this(font, width, height, flags, options, SpriteFontStyle.Regular, initialLayoutStyle)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, String initialLayoutStyle)
+            : this(font, width, height, flags, options, UltravioletFontStyle.Regular, initialLayoutStyle)
         {
 
         }
@@ -117,7 +117,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
-        public TextLayoutSettings(SpriteFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, SpriteFontStyle fontStyle, String initialLayoutStyle)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, UltravioletFontStyle fontStyle, String initialLayoutStyle)
         {
             this.font = font;
             this.width = width;
@@ -131,7 +131,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the default font.
         /// </summary>
-        public SpriteFont Font
+        public UltravioletFont Font
         {
             get { return font; }
         }
@@ -163,7 +163,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the initial font style.
         /// </summary>
-        public SpriteFontStyle Style
+        public UltravioletFontStyle Style
         {
             get { return style; }
         }
@@ -185,12 +185,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         // Property values.
-        private readonly SpriteFont font;
+        private readonly UltravioletFont font;
         private readonly Int32? width;
         private readonly Int32? height;
         private readonly TextFlags flags;
         private readonly TextLayoutOptions options;
-        private readonly SpriteFontStyle style;
+        private readonly UltravioletFontStyle style;
         private readonly String initialLayoutStyle;
     }
 }

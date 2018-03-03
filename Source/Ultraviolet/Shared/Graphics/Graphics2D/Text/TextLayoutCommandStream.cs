@@ -320,7 +320,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="name">The name of the font to register.</param>
         /// <param name="font">The font to register under the specified name.</param>
         /// <returns>The index of the specified font within the command stream's internal registry.</returns>
-        public Int16 RegisterFont(StringSegment name, SpriteFont font) =>
+        public Int16 RegisterFont(StringSegment name, UltravioletFont font) =>
             (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterFont(name, font);
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to retrieve.</param>
         /// <returns>The registered font with the specified name.</returns>
-        public SpriteFont GetFont(StringSegment name)
+        public UltravioletFont GetFont(StringSegment name)
         {
             return resources?.GetFont(name);
         }
@@ -427,7 +427,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="index">The index of the registered font to retrieve.</param>
         /// <returns>The registered font at the specified index within the command stream's internal registry.</returns>
-        public SpriteFont GetFont(Int16 index)
+        public UltravioletFont GetFont(Int16 index)
         {
             if (resources == null)
                 throw new IndexOutOfRangeException(nameof(index));

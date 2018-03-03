@@ -132,7 +132,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public void AdvanceLayoutToNextLineWithBreak(TextLayoutCommandStream output, Int32 length, ref TextLayoutSettings settings)
             {
-                var lineSpacing = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+                var lineSpacing = settings.Font.GetFace(UltravioletFontStyle.Regular).LineSpacing;
 
                 var lineHeightCurrent = lineHeight;
                 if (lineHeightCurrent == 0)
@@ -225,7 +225,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 var newLineHeight = sizeAfterBreak.Height;
                 if (newLineHeight == 0)
-                    newLineHeight = settings.Font.GetFace(SpriteFontStyle.Regular).LineSpacing;
+                    newLineHeight = settings.Font.GetFace(UltravioletFontStyle.Regular).LineSpacing;
 
                 // Truncate the command which is being broken.
                 output.Seek(lineBreakCommand.Value);

@@ -31,17 +31,17 @@ namespace Ultraviolet.Presentation.Documents
         ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
-        public SourcedResource<SpriteFont> Font
+        public SourcedResource<UltravioletFont> Font
         {
-            get { return GetValue<SourcedResource<SpriteFont>>(FontProperty); }
+            get { return GetValue<SourcedResource<UltravioletFont>>(FontProperty); }
             set { SetValue(FontProperty, value); }
         }
 
         /// <summary>
         /// Gets or sets the font style which is used to draw the element's text.
         /// </summary>
-        /// <value>A <see cref="SpriteFontStyle"/> value that represents the style which is used
-        /// to draw the element's text. The default value is <see cref="SpriteFontStyle.Regular"/>.</value>
+        /// <value>A <see cref="UltravioletFontStyle"/> value that represents the style which is used
+        /// to draw the element's text. The default value is <see cref="UltravioletFontStyle.Regular"/>.</value>
         /// <remarks>
         /// <dprop>
         ///		<dpropField><see cref="FontStyleProperty"/></dpropField>
@@ -49,9 +49,9 @@ namespace Ultraviolet.Presentation.Documents
         ///		<dpropMetadata><see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
-        public SpriteFontStyle FontStyle
+        public UltravioletFontStyle FontStyle
         {
-            get { return GetValue<SpriteFontStyle>(FontStyleProperty); }
+            get { return GetValue<UltravioletFontStyle>(FontStyleProperty); }
             set { SetValue(FontStyleProperty, value); }
         }
 
@@ -95,15 +95,15 @@ namespace Ultraviolet.Presentation.Documents
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Font"/> dependency property.</value>
-        public static readonly DependencyProperty FontProperty = DependencyProperty.RegisterAttached("Font", typeof(SourcedResource<SpriteFont>), typeof(TextElement),
-            new PropertyMetadata<SourcedResource<SpriteFont>>(null, PropertyMetadataOptions.AffectsMeasure, HandleFontChanged));
+        public static readonly DependencyProperty FontProperty = DependencyProperty.RegisterAttached("Font", typeof(SourcedResource<UltravioletFont>), typeof(TextElement),
+            new PropertyMetadata<SourcedResource<UltravioletFont>>(null, PropertyMetadataOptions.AffectsMeasure, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="FontStyle"/> dependency property.</value>
-        public static readonly DependencyProperty FontStyleProperty = DependencyProperty.RegisterAttached("FontStyle", typeof(SpriteFontStyle), typeof(TextElement),
-           new PropertyMetadata<SpriteFontStyle>(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure));
+        public static readonly DependencyProperty FontStyleProperty = DependencyProperty.RegisterAttached("FontStyle", typeof(UltravioletFontStyle), typeof(TextElement),
+           new PropertyMetadata<UltravioletFontStyle>(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
         /// Identifies the <see cref="Background"/> dependency property.
@@ -138,7 +138,7 @@ namespace Ultraviolet.Presentation.Documents
         /// <summary>
         /// Occurs when the value of the <see cref="TextElement.Font"/> dependency property changes.
         /// </summary>
-        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<SpriteFont> oldValue, SourcedResource<SpriteFont> newValue)
+        private static void HandleFontChanged(DependencyObject dobj, SourcedResource<UltravioletFont> oldValue, SourcedResource<UltravioletFont> newValue)
         {
             var textElement = dobj as TextElement;
             if (textElement != null)

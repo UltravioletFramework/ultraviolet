@@ -4,13 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
+using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Platform;
 using Ultraviolet.UI;
 
@@ -768,6 +767,9 @@ namespace Ultraviolet
         protected void InitializeContext()
         {
             isInitialized = true;
+            
+            GetContent().Processors
+                .SetFallbackType<UltravioletFont>(typeof(SpriteFont));
 
             OnInitialized();
             OnContextInitialized();

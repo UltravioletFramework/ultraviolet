@@ -60,7 +60,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="name">The name of the font to register.</param>
         /// <param name="font">The font to register.</param>
-        public void RegisterFont(String name, SpriteFont font)
+        public void RegisterFont(String name, UltravioletFont font)
         {
             Contract.RequireNotEmpty(name, nameof(name));
             Contract.Require(font, nameof(font));
@@ -171,14 +171,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             output.WriteBlockInfo();
             output.WriteLineInfo();
 
-            var bold = (settings.Style == SpriteFontStyle.Bold || settings.Style == SpriteFontStyle.BoldItalic);
-            var italic = (settings.Style == SpriteFontStyle.Italic || settings.Style == SpriteFontStyle.BoldItalic);
+            var bold = (settings.Style == UltravioletFontStyle.Bold || settings.Style == UltravioletFontStyle.BoldItalic);
+            var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
 
             if (settings.InitialLayoutStyle != null)
                 PrepareInitialStyle(output, ref bold, ref italic, ref settings);
 
             var currentFont = settings.Font;
-            var currentFontFace = (UltravioletFontFace)settings.Font.GetFace(SpriteFontStyle.Regular);
+            var currentFontFace = settings.Font.GetFace(UltravioletFontStyle.Regular);
 
             var index = 0;
             var processing = true;
@@ -383,7 +383,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void ProcessPushFontToken(TextLayoutCommandStream output,
             ref TextParserToken token, ref LayoutState state, ref Int32 index)
         {
-            var pushedFont = default(SpriteFont);
+            var pushedFont = default(UltravioletFont);
             var pushedFontIndex = RegisterFontWithCommandStream(output, token.Text, out pushedFont);
             output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
             state.AdvanceLineToNextCommand();
@@ -537,10 +537,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Pushes a font onto the font stack.
         /// </summary>
         /// <param name="font">The font to push onto the stack.</param>
-        private void PushFont(SpriteFont font)
+        private void PushFont(UltravioletFont font)
         {
             var scope = styleStack.Count;
-            fontStack.Push(new TextStyleScoped<SpriteFont>(font, scope));
+            fontStack.Push(new TextStyleScoped<UltravioletFont>(font, scope));
         }
 
         /// <summary>
@@ -919,7 +919,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Registers the specified font with the command stream and returns its resulting index.
         /// </summary>
-        private Int16 RegisterFontWithCommandStream(TextLayoutCommandStream output, StringSegment name, out SpriteFont font)
+        private Int16 RegisterFontWithCommandStream(TextLayoutCommandStream output, StringSegment name, out UltravioletFont font)
         {
             if (!registeredFonts.TryGetValue(name, out font))
                 throw new InvalidOperationException(UltravioletStrings.UnrecognizedFont.Format(name));
@@ -967,7 +967,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the currently active font.
         /// </summary>
-        private SpriteFont GetCurrentFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out UltravioletFontFace face)
+        private UltravioletFont GetCurrentFont(ref TextLayoutSettings settings, Boolean bold, Boolean italic, out UltravioletFontFace face)
         {
             var font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek().Value;
             face = font.GetFace(bold, italic);
@@ -979,14 +979,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             new Dictionary<StringSegment, TextStyle>();
         private readonly Dictionary<StringSegment, TextIconInfo> registeredIcons =
             new Dictionary<StringSegment, TextIconInfo>();
-        private readonly Dictionary<StringSegment, SpriteFont> registeredFonts =
-            new Dictionary<StringSegment, SpriteFont>();
+        private readonly Dictionary<StringSegment, UltravioletFont> registeredFonts =
+            new Dictionary<StringSegment, UltravioletFont>();
         private readonly Dictionary<StringSegment, GlyphShader> registeredGlyphShaders =
             new Dictionary<StringSegment, GlyphShader>();
 
         // Layout parameter stacks.
         private readonly Stack<TextStyleInstance> styleStack = new Stack<TextStyleInstance>();
-        private readonly Stack<TextStyleScoped<SpriteFont>> fontStack = new Stack<TextStyleScoped<SpriteFont>>();
+        private readonly Stack<TextStyleScoped<UltravioletFont>> fontStack = new Stack<TextStyleScoped<UltravioletFont>>();
 
         // The current source string.
         private String sourceString;

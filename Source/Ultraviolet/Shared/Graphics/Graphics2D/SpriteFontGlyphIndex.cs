@@ -39,12 +39,12 @@ namespace Ultraviolet.Graphics.Graphics2D
                     if (character == '\u00A0')
                         isNonBreakingSpaceRequired = false;
 
-                    var isExtendedAscii = (character < SpriteFont.ExtendedAsciiCount);
+                    var isExtendedAscii = (character < ExtendedAsciiCount);
                     if (isExtendedAscii)
                     {
                         if (ascii == null)
                         {
-                            ascii = new Int32[SpriteFont.ExtendedAsciiCount];
+                            ascii = new Int32[ExtendedAsciiCount];
                             for (int i = 0; i < ascii.Length; i++)
                                 ascii[i] = Int32.MinValue;
                         }
@@ -76,7 +76,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             {
                 if (ascii == null)
                 {
-                    ascii = new Int32[SpriteFont.ExtendedAsciiCount];
+                    ascii = new Int32[ExtendedAsciiCount];
                     for (int i = 0; i < ascii.Length; i++)
                         ascii[i] = Int32.MinValue;
                 }
@@ -104,7 +104,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             get
             {
-                if (character < SpriteFont.ExtendedAsciiCount)
+                if (character < ExtendedAsciiCount)
                     return glyphs[ascii[character]];
 
                 Int32 index;
@@ -138,6 +138,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             get { return count; }
         }
+        
+        /// <summary>
+        /// Gets the number of characters in the Extended ASCII table, which is used to optimize sprite fonts
+        /// when using common glyphs from the Roman alphabet.
+        /// </summary>
+        internal const Int32 ExtendedAsciiCount = 256;
 
         // Property values.
         private readonly Char substitutionCharacter;

@@ -4,7 +4,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents the supported font styles.
     /// </summary>
-    public enum SpriteFontStyle
+    public enum UltravioletFontStyle
     {
         /// <summary>
         /// Regular.
