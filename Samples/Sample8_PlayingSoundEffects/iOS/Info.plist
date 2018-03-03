@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 8 - Playing Sound Effects</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample8_PlayingSoundEffects</string>
+	<string>net.twistedlogik.Sample8_PlayingSoundEffects</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

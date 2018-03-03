@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 4 - Content Management</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample4_ContentManagement</string>
+	<string>net.twistedlogik.Sample4_ContentManagement</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

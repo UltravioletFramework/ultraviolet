@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Sample 11 - Game Pads</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.Sample11_GamePads</string>
+	<string>net.twistedlogik.Sample11_GamePads</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
