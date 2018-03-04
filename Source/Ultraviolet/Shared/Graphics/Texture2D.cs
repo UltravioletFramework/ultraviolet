@@ -84,6 +84,38 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="Texture2D"/> class which is designed to be
+        /// dynamically updated from data on the CPU.
+        /// </summary>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
+        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
+        public static Texture2D CreateDynamic(Int32 width, Int32 height, Action<DynamicTexture2D> flushed)
+        {
+            return CreateDynamic(width, height, true, flushed);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Texture2D"/> class which is designed to be
+        /// dynamically updated from data on the CPU.
+        /// </summary>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
+        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
+        public static Texture2D CreateDynamic(Int32 width, Int32 height, Boolean immutable, Action<DynamicTexture2D> flushed)
+        {
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+            Contract.Require(flushed, nameof(flushed));
+
+            var uv = UltravioletContext.DemandCurrent();
+            return uv.GetFactoryMethod<DynamicTexture2DFactory>()(uv, width, height, immutable, flushed);
+        }
+
+        /// <summary>
         /// Resizes the texture.
         /// </summary>
         /// <param name="width">The texture's new width in pixels.</param>

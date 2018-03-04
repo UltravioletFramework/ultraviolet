@@ -96,6 +96,40 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="Texture3D"/> class which is designed to be
+        /// dynamically updated from data on the CPU.
+        /// </summary>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="depth">The texture's depth in pixels.</param>
+        /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
+        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
+        public static Texture3D CreateDynamic(Int32 width, Int32 height, Int32 depth, Action<DynamicTexture3D> flushed)
+        {
+            return CreateDynamic(width, height, depth, true, flushed);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Texture3D"/> class which is designed to be
+        /// dynamically updated from data on the CPU.
+        /// </summary>
+        /// <param name="width">The texture's width in pixels.</param>
+        /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="depth">The texture's depth in pixels.</param>
+        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
+        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
+        public static Texture3D CreateDynamic(Int32 width, Int32 height, Int32 depth, Boolean immutable, Action<DynamicTexture3D> flushed)
+        {
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+            Contract.Require(flushed, nameof(flushed));
+
+            var uv = UltravioletContext.DemandCurrent();
+            return uv.GetFactoryMethod<DynamicTexture3DFactory>()(uv, width, height, depth, flushed);
+        }
+
+        /// <summary>
         /// Resizes the texture.
         /// </summary>
         /// <param name="width">The texture's new width in pixels.</param>

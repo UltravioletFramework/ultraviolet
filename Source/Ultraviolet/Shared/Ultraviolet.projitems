@@ -49,6 +49,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\UltravioletFontFace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />
