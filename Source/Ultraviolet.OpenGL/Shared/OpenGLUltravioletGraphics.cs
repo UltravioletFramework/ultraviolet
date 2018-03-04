@@ -363,7 +363,12 @@ namespace Ultraviolet.OpenGL
                 this.textures[sampler] = texture;
 
                 if (this.textures[sampler] != null)
+                {
                     ((IBindableResource)this.textures[sampler]).BindRead();
+
+                    if (texture is IOpenGLDynamicTexture textdyn)
+                        textdyn.Flush();
+                }
 
                 if (!capabilities.SupportsIndependentSamplerState)
                 {
