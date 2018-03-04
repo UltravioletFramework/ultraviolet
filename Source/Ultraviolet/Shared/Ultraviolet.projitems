@@ -494,6 +494,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WorkItemOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\BoundingFrustum.json" />
