@@ -51,6 +51,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTextureAtlas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTextureAtlas.Reservation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\UltravioletFontFace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />

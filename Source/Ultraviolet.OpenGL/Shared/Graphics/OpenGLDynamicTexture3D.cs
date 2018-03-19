@@ -7,7 +7,7 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents the OpenGL implementation of the <see cref="DynamicTexture3D"/> class.
     /// </summary>
-    public class OpenGLDynamicTexture3D : DynamicTexture3D, IOpenGLDynamicTexture
+    public class OpenGLDynamicTexture3D : DynamicTexture3D, IOpenGLDynamicTexture, IOpenGLResource, IBindableResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenGLDynamicTexture2D"/> class.
@@ -17,9 +17,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="depth">The texture's depth in pixels.</param>
         /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
-        public OpenGLDynamicTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable, Action<Texture3D> flushed)
-            : base(uv, width, height, depth, immutable, flushed)
+        public OpenGLDynamicTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable, Object state, Action<Texture3D, Object> flushed)
+            : base(uv, width, height, depth, immutable, state, flushed)
         {
             this.texture = new OpenGLTexture3D(uv, width, height, depth, immutable);
         }

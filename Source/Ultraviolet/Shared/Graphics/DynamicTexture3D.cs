@@ -10,9 +10,11 @@ namespace Ultraviolet.Graphics
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
     /// <param name="depth">The texture's depth in pixels.</param>
+    /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+    /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
     /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
     /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-    public delegate DynamicTexture3D DynamicTexture3DFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Action<DynamicTexture3D> flushed);
+    public delegate DynamicTexture3D DynamicTexture3DFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable, Object state, Action<Texture3D, Object> flushed);
 
     /// <summary>
     /// Represents a 3D texture which is designed to be dynamically updated from data which resides on the CPU.
@@ -27,21 +29,24 @@ namespace Ultraviolet.Graphics
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="depth">The texture's depth in pixels.</param>
         /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
-        protected DynamicTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable, Action<Texture3D> flushed)
+        protected DynamicTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable, Object state, Action<Texture3D, Object> flushed)
             : base(uv)
         {
             Contract.Require(flushed, nameof(flushed));
 
+            this.state = state;
             this.flushed = flushed;
         }
 
         /// <summary>
         /// Flushes any pending changes and uploads the result to video memory.
         /// </summary>
-        public void Flush() => flushed(this);
+        public void Flush() => flushed(this, this.state);
 
         // The delegate to invoke when the texture is flushed.
-        private readonly Action<Texture3D> flushed;
+        private readonly Object state;
+        private readonly Action<Texture3D, Object> flushed;
     }
 }
