@@ -642,6 +642,28 @@ namespace Ultraviolet.SDL2.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_FillRect", CallingConvention = CallingConvention.Cdecl)]
+        public static extern Int32 SDL_FillRect(SDL_Surface* surface, SDL_Rect* rect, UInt32 color);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Int32 SDL_FillRectDelegate(SDL_Surface* surface, SDL_Rect* rect, UInt32 color);
+        private static readonly SDL_FillRectDelegate pSDL_FillRect = lib.LoadFunction<SDL_FillRectDelegate>("SDL_FillRect");
+        public static Int32 SDL_FillRect(SDL_Surface* surface, SDL_Rect* rect, UInt32 color) => pSDL_FillRect(surface, rect, color);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_FillRects", CallingConvention = CallingConvention.Cdecl)]
+        public static extern Int32 SDL_FillRects(SDL_Surface* dst, SDL_Rect* rects, Int32 count, UInt32 colors);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate Int32 SDL_FillRectsDelegate(SDL_Surface* dst, SDL_Rect* rects, Int32 count, UInt32 colors);
+        private static readonly SDL_FillRectsDelegate pSDL_FillRects = lib.LoadFunction<SDL_FillRectsDelegate>("SDL_FillRects");
+        public static Int32 SDL_FillRects(SDL_Surface* dst, SDL_Rect* rects, Int32 count, UInt32 colors) => pSDL_FillRects(dst, rects, count, colors);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_CreateColorCursor", CallingConvention = CallingConvention.Cdecl)]
         public static extern SDL_Cursor* SDL_CreateColorCursor(SDL_Surface* surface, Int32 hot_x, Int32 hot_y);
 #else

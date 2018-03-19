@@ -148,6 +148,32 @@ namespace Ultraviolet.Graphics
         /// <param name="startIndex">The index of the first element to set.</param>
         /// <param name="elementCount">The number of elements to set.</param>
         public abstract void SetData<T>(Int32 level, Rectangle? rect, T[] data, Int32 startIndex, Int32 elementCount) where T : struct;
+        
+        /// <summary>
+        /// Sets the texture's data.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the buffer being set as the texture's data.</typeparam>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="startIndex">The index of the first element to set.</param>
+        /// <param name="elementCount">The number of elements to set.</param>
+        public abstract void SetData<T>(IntPtr data, Int32 startIndex, Int32 elementCount) where T : struct;
+
+        /// <summary>
+        /// Sets the texture's data.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the buffer being set as the texture's data.</typeparam>
+        /// <param name="level">The mipmap level to set.</param>
+        /// <param name="rect">A bounding box that defines the position and location (in pixels) of the data.</param>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="startIndex">The index of the first element to set.</param>
+        /// <param name="elementCount">The number of elements to set.</param>
+        public abstract void SetData<T>(Int32 level, Rectangle? rect, IntPtr data, Int32 startIndex, Int32 elementCount) where T : struct;
+
+        /// <summary>
+        /// Sets the texture's data.
+        /// </summary>
+        /// <param name="surface">The <see cref="Surface2D"/> which contains the data to set.</param>
+        public abstract void SetData(Surface2D surface);
 
         /// <summary>
         /// Gets the texture's width in pixels.

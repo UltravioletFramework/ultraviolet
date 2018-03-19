@@ -54,11 +54,39 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque)
+        public override void Flip(SurfaceFlipDirection direction)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            nativesurf.PrepareForTextureExport(premultiply, flip, opaque);
+            nativesurf.Flip(direction);
+        }
+
+        /// <inheritdoc/>
+        public override void FlipAndProcessAlpha(SurfaceFlipDirection direction, Boolean premultiply, Color? keycolor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            nativesurf.FlipAndProcessAlpha(direction, premultiply, keycolor);
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessAlpha(Boolean premultiply, Color? keycolor)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            nativesurf.ProcessAlpha(premultiply, keycolor);
+        }
+
+        /// <inheritdoc/>
+        public override void Clear(Color color)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var rect = new SDL_Rect() { x = 0, y = 0, w = Width, h = Height };
+            var colorval = color.PackedValue;
+
+            if (SDL_FillRect(nativesurf.NativePtr, &rect, colorval) < 0)
+                throw new SDL2Exception();
         }
 
         /// <inheritdoc/>
@@ -159,25 +187,26 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Texture2D CreateTexture()
+        public override Texture2D CreateTexture(Boolean unprocessed)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return CreateTexture(true, Ultraviolet.GetGraphics().Capabilities.FlippedTextures, false);
-        }
-
-        /// <inheritdoc/>
-        public override Texture2D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            using (var copysurf = new SDL2PlatformNativeSurface(Width, Height))
+            if (unprocessed)
             {
-                if (SDL_BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
-                    throw new SDL2Exception();
+                return Texture2D.Create((IntPtr)NativePtr->pixels, Width, Height, BytesPerPixel);
+            }
+            else
+            {
+                using (var copysurf = new SDL2PlatformNativeSurface(Width, Height))
+                {
+                    if (SDL_BlitSurface(nativesurf.NativePtr, null, copysurf.NativePtr, null) < 0)
+                        throw new SDL2Exception();
 
-                copysurf.PrepareForTextureExport(premultiply, flip, opaque);
-                return Texture2D.Create((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
+                    copysurf.Flip(Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? 
+                        SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None);
+
+                    return Texture2D.Create((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
+                }
             }
         }
 
@@ -246,15 +275,13 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean IsReadyForTextureExport
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        public override Boolean IsFlippedHorizontally => nativesurf.IsFlippedHorizontally;
 
-                return nativesurf.IsReadyForTextureExport;
-            }
-        }
+        /// <inheritdoc/>
+        public override Boolean IsFlippedVertically => nativesurf.IsFlippedVertically;
+
+        /// <inheritdoc/>
+        public override Boolean IsAlphaPremultiplied => nativesurf.IsAlphaPremultiplied;
 
         /// <summary>
         /// Gets a pointer to the native SDL surface that is encapsulated by this object.

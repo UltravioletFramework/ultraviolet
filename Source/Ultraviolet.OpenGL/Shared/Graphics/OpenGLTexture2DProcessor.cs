@@ -21,7 +21,8 @@ namespace Ultraviolet.OpenGL.Graphics
 
             using (var surface = Surface2D.Create(input))
             {
-                surface.PrepareForTextureExport(mdat.PremultiplyAlpha, manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures, mdat.Opaque);
+                var flipdir = manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None;
+                surface.FlipAndProcessAlpha(flipdir, mdat.PremultiplyAlpha, mdat.Opaque ? null : (Color?)Color.Magenta);
 
                 using (var memstream = new MemoryStream())
                 {
@@ -60,7 +61,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
             using (var surface = Surface2D.Create(input))
             {
-                return surface.CreateTexture(mdat.PremultiplyAlpha, manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures, mdat.Opaque);
+                var flipdir = manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None;
+                surface.FlipAndProcessAlpha(flipdir, mdat.PremultiplyAlpha, mdat.Opaque ? null : (Color?)Color.Magenta);
+
+                return surface.CreateTexture(unprocessed: true);
             }
         }
 

@@ -116,6 +116,33 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override void SetData<T>(IntPtr data, Int32 startIndex, Int32 elementCount)
+        {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
+            texture.SetData<T>(data, startIndex, elementCount);
+        }
+
+        /// <inheritdoc/>
+        public override void SetData<T>(Int32 level, Rectangle? rect, IntPtr data, Int32 startIndex, Int32 elementCount)
+        {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
+            texture.SetData<T>(level, rect, data, startIndex, elementCount);
+        }
+
+        /// <inheritdoc/>
+        public override void SetData(Surface2D surface)
+        {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
+            texture.SetData(surface);
+        }
+
+        /// <inheritdoc/>
         public void BindRead()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -353,7 +380,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
             }
         }
-        
+
         // Property values.
         private readonly RenderBufferFormat format;
         private Int32 width;

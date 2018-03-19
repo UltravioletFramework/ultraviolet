@@ -60,6 +60,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\IEffectTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Surface3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceFlipDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICrossThreadUltravioletContext.cs" />
