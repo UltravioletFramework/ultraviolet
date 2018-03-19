@@ -166,6 +166,23 @@ namespace Ultraviolet.Graphics
         public abstract void Blit(Rectangle srcRect, Surface2D dst, Rectangle dstRect);
 
         /// <summary>
+        /// Blits the surface onto the specified destination surface at the given location relative
+        /// to the destination's top-left corner, optionally flipping this surface in the process.
+        /// </summary>
+        /// <param name="dst">The destination surface.</param>
+        /// <param name="position">The position at which to blit the surface.</param>
+        public abstract void Blit(Surface2D dst, Point2 position);
+
+        /// <summary>
+        /// Blits the surface onto the specified destination surface at the given location relative
+        /// to the destination's top-left corner, optionally flipping this surface in the process.
+        /// </summary>
+        /// <param name="dst">The destination surface.</param>
+        /// <param name="position">The position at which to blit the surface.</param>
+        /// <param name="direction">The direction in which to flip the surface.</param>
+        public abstract void Blit(Surface2D dst, Point2 position, SurfaceFlipDirection direction);
+
+        /// <summary>
         /// Creates a copy of the surface.
         /// </summary>
         /// <returns>A new <see cref="Surface2D"/> which is a copy of this surface.</returns>

@@ -159,6 +159,28 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
+        public override void Blit(Surface2D dst, Point2 position)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(dst, nameof(dst));
+
+            Ultraviolet.ValidateResource(dst);
+
+            BlitInternal(this, (SDL2Surface2D)dst, position, SurfaceFlipDirection.None);
+        }
+
+        /// <inheritdoc/>
+        public override void Blit(Surface2D dst, Point2 position, SurfaceFlipDirection direction)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(dst, nameof(dst));
+
+            Ultraviolet.ValidateResource(dst);
+
+            BlitInternal(this, (SDL2Surface2D)dst, position, direction);
+        }
+
+        /// <inheritdoc/>
         public override Surface2D CreateSurface()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -310,10 +332,6 @@ namespace Ultraviolet.SDL2.Graphics
         /// <summary>
         /// Blits the surface onto the specified destination surface.
         /// </summary>
-        /// <param name="src">The source surface.</param>
-        /// <param name="srcRect">The area of this surface that will be copied to the destination surface.</param>
-        /// <param name="dst">The destination surface.</param>
-        /// <param name="dstRect">The area on the destination surface to which this surface will be copied.</param>
         private static void BlitInternal(SDL2Surface2D src, Rectangle srcRect, SDL2Surface2D dst, Rectangle dstRect)
         {
             var sdlSrcRect = new SDL_Rect() { x = srcRect.X, y = srcRect.Y, w = srcRect.Width, h = srcRect.Height };
@@ -331,6 +349,107 @@ namespace Ultraviolet.SDL2.Graphics
             {
                 if (SDL_BlitSurface(src.nativesurf.NativePtr, &sdlSrcRect, dst.nativesurf.NativePtr, &sdlDstRect) < 0)
                     throw new SDL2Exception();
+            }
+        }
+
+        /// <summary>
+        /// Blits the surface onto the specified destination surface.
+        /// </summary>
+        private static void BlitInternal(SDL2Surface2D src, SDL2Surface2D dst, Point2 position, SurfaceFlipDirection direction)
+        {
+            switch (direction)
+            {
+                case SurfaceFlipDirection.None:
+                    BlitInternal(src, new Rectangle(0, 0, src.Width, src.Height), dst, new Rectangle(position.X, position.Y, src.Width, src.Height));
+                    break;
+
+                case SurfaceFlipDirection.Horizontal:
+                    BlitInternalFlipH(src, dst, position);
+                    break;
+
+                case SurfaceFlipDirection.Vertical:
+                    BlitInternalFlipV(src, dst, position);
+                    break;
+            }
+        }
+        
+        /// <summary>
+        /// Blits the surface onto the specified destination surface, flipping it horizontally.
+        /// </summary>
+        private static void BlitInternalFlipH(SDL2Surface2D src, SDL2Surface2D dst, Point2 position)
+        {
+            var srcNative = src.NativePtr;
+            var dstNative = dst.NativePtr;
+
+            var srcPitch = srcNative->pitch;
+            var dstPitch = dstNative->pitch;
+
+            var srcPtr = (UInt32*)srcNative->pixels;
+            var dstPtr = (UInt32*)dstNative->pixels;
+
+            var srcX = 0;
+            var srcY = 0;
+
+            var dstX = 0;
+            var dstY = 0;
+
+            for (var x = 0; x < srcNative->w; x++)
+            {
+                srcX = (srcNative->w - 1) - x;
+                dstX = (position.X + x);
+
+                if (dstX >= dstNative->w)
+                    break;
+
+                var pixelsRemaining = dstNative->h - position.Y;
+                var pixelsBlitted = (pixelsRemaining > srcNative->h) ? srcNative->h : pixelsRemaining;
+
+                for (var y = 0; y < pixelsBlitted; y++)
+                {
+                    srcY = y;
+                    dstY = position.Y + y;
+
+                    srcPtr = (UInt32*)((Byte*)srcNative->pixels + (srcY * srcPitch)) + srcX;
+                    dstPtr = (UInt32*)((Byte*)dstNative->pixels + (dstY * dstPitch)) + dstX;
+
+                    *dstPtr = *srcPtr;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits the surface onto the specified destination surface, flipping it vertically.
+        /// </summary>
+        private static void BlitInternalFlipV(SDL2Surface2D src, SDL2Surface2D dst, Point2 position)
+        {
+            var srcNative = src.NativePtr;
+            var dstNative = dst.NativePtr;
+
+            var srcPitch = srcNative->pitch;
+            var dstPitch = dstNative->pitch;
+
+            var srcPtr = (UInt32*)srcNative->pixels;
+            var dstPtr = (UInt32*)dstNative->pixels;
+
+            var srcY = 0;
+            var dstY = 0;
+
+            for (var y = 0; y < srcNative->h; y++)
+            {
+                srcY = (srcNative->h - 1) - y;
+                dstY = (position.Y + y);
+
+                if (dstY >= dstNative->h)
+                    break;
+
+                srcPtr = (UInt32*)((Byte*)srcNative->pixels + (srcY * srcPitch));
+                dstPtr = (UInt32*)((Byte*)dstNative->pixels + (dstY * dstPitch)) + position.X;
+
+                var pixelsRemaining = dstNative->w - position.X;
+                var pixelsBlitted = (pixelsRemaining > srcNative->w) ? srcNative->w : pixelsRemaining;
+
+                for (var x = 0; x < pixelsBlitted; x++)
+                    *dstPtr++ = *srcPtr++;
             }
         }
 
