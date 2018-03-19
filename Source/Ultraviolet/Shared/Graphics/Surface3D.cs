@@ -91,14 +91,6 @@ namespace Ultraviolet.Graphics
         public abstract void SetLayers(IEnumerable<Surface2D> surfaces, Int32 offset, Boolean transferOwnership = false);
 
         /// <summary>
-        /// Prepares the layers of this surface to be exported as texture data.
-        /// </summary>
-        /// <param name="premultiply">A value indicating whether to premultiply the layers' alpha.</param>
-        /// <param name="flip">A value indicating whether to flip the layer data upside-down.</param>
-        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
-        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque);
-
-        /// <summary>
         /// Creates a deep copy of this surface.
         /// </summary>
         /// <returns>A new instance of the <see cref="Surface3D"/> class which is a deep copy of this instance.</returns>
@@ -107,17 +99,12 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Creates a texture from the surface.
         /// </summary>
+        /// <param name="unprocessed">A value indicating whether the surface data should be passed
+        /// through to the texture without any further processing, regardless of the platform's
+        /// requirements. For example, an unprocessed texture will not be flipped vertically on
+        /// the OpenGL implementation.</param>
         /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
-        public abstract Texture3D CreateTexture();
-
-        /// <summary>
-        /// Creates a texture from the surface.
-        /// </summary>
-        /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
-        /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
-        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
-        /// <returns>The <see cref="Texture3D"/> that was created from the surface.</returns>
-        public abstract Texture3D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque);
+        public abstract Texture3D CreateTexture(Boolean unprocessed);
 
         /// <summary>
         /// Saves the surface as a JPEG image to the specified stream.
@@ -155,10 +142,5 @@ namespace Ultraviolet.Graphics
         /// Gets a value indicating whether all of this surface's layers have been specified.
         /// </summary>
         public abstract Boolean IsComplete { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this surface is ready to be exported as a texture.
-        /// </summary>
-        public abstract Boolean IsReadyForTextureExport { get; }
     }
 }

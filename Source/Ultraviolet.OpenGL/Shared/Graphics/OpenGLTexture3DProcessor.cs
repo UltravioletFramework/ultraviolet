@@ -22,7 +22,8 @@ namespace Ultraviolet.OpenGL.Graphics
             
             using (var surface = manager.Process<PlatformNativeSurface, Surface3D>(input, metadata.AssetDensity))
             {
-                surface.PrepareForTextureExport(mdat.PremultiplyAlpha, manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures, mdat.Opaque);
+                var flipdir = manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None;
+                FlipAndProcessAlpha(surface, flipdir, mdat.PremultiplyAlpha, mdat.Opaque ? null : (Color?)Color.Magenta);
 
                 writer.Write(surface.Depth);
                 for (int i = 0; i < surface.Depth; i++)
@@ -81,7 +82,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
             using (var surface = manager.Load<Surface3D>(metadata.AssetPath, false, metadata.IsLoadedFromSolution))
             {
-                return surface.CreateTexture(mdat.PremultiplyAlpha, manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures, mdat.Opaque);
+                var flipdir = manager.Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None;
+                FlipAndProcessAlpha(surface, flipdir, mdat.PremultiplyAlpha, mdat.Opaque ? null : (Color?)Color.Magenta);
+
+                return surface.CreateTexture(unprocessed: true);
             }
         }
 
@@ -89,6 +93,15 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Boolean SupportsPreprocessing
         {
             get { return true; }
+        }
+
+        /// <summary>
+        /// Flips and processes alpha for all of the layers in a 3D surface.
+        /// </summary>
+        private static void FlipAndProcessAlpha(Surface3D surface, SurfaceFlipDirection direction, Boolean premultiply, Color? keycolor)
+        {
+            for (int i = 0; i < surface.Depth; i++)
+                surface.GetLayer(i).FlipAndProcessAlpha(direction, premultiply, keycolor);
         }
     }
 }

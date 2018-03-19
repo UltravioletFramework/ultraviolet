@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.SDL2.Native;
@@ -99,128 +100,83 @@ namespace Ultraviolet.SDL2.Graphics
                 pSrcData += srcExtraBytes;
             }
         }
+        
+        /// <inheritdoc/>
+        public override void Flip(SurfaceFlipDirection direction)
+        {
+            switch (direction)
+            {
+                case SurfaceFlipDirection.Horizontal:
+                    FlipHAndProcessAlpha(premultiply: false, keycolor: null);
+                    break;
+
+                case SurfaceFlipDirection.Vertical:
+                    FlipVAndProcessAlpha(premultiply: false, keycolor: null);
+                    break;
+
+                case SurfaceFlipDirection.None:
+                    return;
+            }
+        }
 
         /// <inheritdoc/>
-        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque)
+        public override void FlipAndProcessAlpha(SurfaceFlipDirection direction, Boolean premultiply, Color? keycolor)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(isReadyForTextureExport, SDL2Strings.SurfaceAlreadyPreparedForExport);
+            switch (direction)
+            {
+                case SurfaceFlipDirection.Horizontal:
+                    FlipHAndProcessAlpha(premultiply: premultiply, keycolor: keycolor);
+                    break;
+
+                case SurfaceFlipDirection.Vertical:
+                    FlipVAndProcessAlpha(premultiply: premultiply, keycolor: keycolor);
+                    break;
+
+                case SurfaceFlipDirection.None:
+                    ProcessAlpha(premultiply, keycolor);
+                    return;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessAlpha(Boolean premultiply, Color? keycolor)
+        {
+            if (isAlphaPremultiplied && !keycolor.HasValue)
+                return;
 
             var pitch = Pitch;
-            var magenta = Color.Magenta.PackedValue;
-            var transparent = Color.Transparent.PackedValue;
 
-            uint srcValue;
-            uint dstValue;
+            var srfPtr = (UInt32*)ptr->pixels;
+            var srfColor = 0u;
 
-            byte srcR, srcG, srcB, srcA;
-            byte dstR, dstG, dstB, dstA;
+            var colorKeyEnabled = keycolor.HasValue;
+            var colorKeyValue = keycolor.GetValueOrDefault().PackedValue;
+            var colorKeyTransparent = 0u;
 
-            if (flip)
+            for (var y = 0; y < ptr->h; y++)
             {
-                var rowsToProcess = (ptr->h % 2 == 0) ? ptr->h / 2 : 1 + ptr->h / 2;
-                for (var y = 0; y < rowsToProcess; y++)
+                srfPtr = (UInt32*)((Byte*)ptr->pixels + (y * pitch));
+
+                for (var x = 0; x < ptr->w; x++)
                 {
-                    var y1 = (y);
-                    var y2 = (ptr->h - 1) - y;
+                    srfColor = *srfPtr;
 
-                    var pSrc = (UInt32*)((Byte*)ptr->pixels + (y1 * pitch));
-                    var pDst = (UInt32*)((Byte*)ptr->pixels + (y2 * pitch));
-
-                    for (var x = 0; x < ptr->w; x++)
+                    if (colorKeyEnabled && srfColor == colorKeyValue)
                     {
-                        srcValue = *pSrc;
-                        dstValue = *pDst;
-
-                        if (!opaque && srcValue == magenta)
-                        {
-                            *pDst = transparent;
-                        }
-                        else
-                        {
-                            srcA = (byte)(srcValue >> 24);
-                            srcB = (byte)(srcValue >> 16);
-                            srcG = (byte)(srcValue >> 8);
-                            srcR = (byte)(srcValue);
-
-                            if (premultiply)
-                            {
-                                var factor = srcA / 255f;
-                                srcR = (byte)(srcR * factor);
-                                srcG = (byte)(srcG * factor);
-                                srcB = (byte)(srcB * factor);
-                            }
-
-                            *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
-                        }
-
-                        if (!opaque && dstValue == magenta)
-                        {
-                            *pSrc = transparent;
-                        }
-                        else
-                        {
-                            dstA = (byte)(dstValue >> 24);
-                            dstB = (byte)(dstValue >> 16);
-                            dstG = (byte)(dstValue >> 8);
-                            dstR = (byte)(dstValue);
-
-                            if (premultiply)
-                            {
-                                var factor = dstA / 255f;
-                                dstR = (byte)(dstR * factor);
-                                dstG = (byte)(dstG * factor);
-                                dstB = (byte)(dstB * factor);
-                            }
-
-                            *pSrc = (uint)((dstR) | (dstG << 8) | (dstB << 16) | (dstA << 24));
-                        }
-
-                        pDst++;
-                        pSrc++;
+                        *srfPtr++ = colorKeyTransparent;
                     }
-                }
-            }
-            else
-            {
-                for (var y = 0; y < ptr->h; y++)
-                {
-                    var pSrc = (UInt32*)((Byte*)ptr->pixels + (y * pitch));
-                    var pDst = pSrc;
-
-                    for (var x = 0; x < ptr->w; x++)
+                    else
                     {
-                        srcValue = *pSrc;
-
-                        if (!opaque && srcValue == magenta)
+                        if (!isAlphaPremultiplied)
                         {
-                            *pDst = transparent;
+                            *srfPtr++ = Premultiply(srfColor);
                         }
-                        else
-                        {
-                            srcA = (byte)(srcValue >> 24);
-                            srcB = (byte)(srcValue >> 16);
-                            srcG = (byte)(srcValue >> 8);
-                            srcR = (byte)(srcValue);
-
-                            if (premultiply)
-                            {
-                                var factor = srcA / 255f;
-                                srcR = (byte)(srcR * factor);
-                                srcG = (byte)(srcG * factor);
-                                srcB = (byte)(srcB * factor);
-                            }
-
-                            *pDst = (uint)((srcR) | (srcG << 8) | (srcB << 16) | (srcA << 24));
-                        }
-
-                        pSrc++;
-                        pDst++;
+                        else srfPtr++;
                     }
                 }
             }
 
-            isReadyForTextureExport = true;
+            isAlphaPremultiplied = true;
         }
 
         /// <inheritdoc/>
@@ -295,19 +251,22 @@ namespace Ultraviolet.SDL2.Graphics
             if (SDL_BlitSurface(ptr, null, copy.ptr, null) < 0)
                 throw new SDL2Exception();
 
+            copy.isReadyForTextureExport = isReadyForTextureExport;
+            copy.isFlippedVertically = isFlippedVertically;
+            copy.isFlippedHorizontally = isFlippedHorizontally;
+            copy.isAlphaPremultiplied = isAlphaPremultiplied;
+
             return copy;
         }
+        
+        /// <inheritdoc/>
+        public override Boolean IsFlippedHorizontally => isFlippedHorizontally;
 
         /// <inheritdoc/>
-        public override Boolean IsReadyForTextureExport
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        public override Boolean IsFlippedVertically => isFlippedVertically;
 
-                return isReadyForTextureExport;
-            }
-        }
+        /// <inheritdoc/>
+        public override Boolean IsAlphaPremultiplied => isAlphaPremultiplied;
 
         /// <inheritdoc/>
         public override Int32 BytesPerPixel
@@ -373,6 +332,139 @@ namespace Ultraviolet.SDL2.Graphics
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Premultiplies the alpha of the specified color value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static UInt32 Premultiply(UInt32 color)
+        {
+            var a = (Byte)(color >> 24);
+            var afactor = a / 255f;
+
+            var b = (Byte)((Byte)(color >> 16) * afactor);
+            var g = (Byte)((Byte)(color >> 8) * afactor);
+            var r = (Byte)((Byte)(color) * afactor);
+
+            return (UInt32)((r) | (g << 8) | (b << 16) | (a << 24));
+        }
+
+        /// <summary>
+        /// Horizontally flips the surface and optionally premultiplies its alpha.
+        /// </summary>
+        private void FlipHAndProcessAlpha(Boolean premultiply, Color? keycolor)
+        {
+            var pitch = Pitch;
+
+            var srcPtr = (UInt32*)ptr->pixels;
+            var srcColor = 0u;
+
+            var dstPtr = (UInt32*)ptr->pixels;
+            var dstColor = 0u;
+
+            var colorKeyEnabled = keycolor.HasValue;
+            var colorKeyValue = keycolor.GetValueOrDefault().PackedValue;
+
+            var colsToProcess = (ptr->w % 2 == 0) ? ptr->w / 2 : 1 + ptr->w / 2;
+            for (var x = 0; x < colsToProcess; x++)
+            {
+                var x1 = (x);
+                var x2 = (ptr->w - 1) - x;
+
+                for (var y = 0; y < ptr->h; y++)
+                {
+                    srcPtr = (UInt32*)((Byte*)ptr->pixels + (y * pitch)) + x1;
+                    dstPtr = (UInt32*)((Byte*)ptr->pixels + (y * pitch)) + x2;
+
+                    srcColor = *srcPtr;
+                    dstColor = *dstPtr;
+
+                    // src -> dst
+                    if (colorKeyEnabled && srcColor == colorKeyValue)
+                    {
+                        *dstPtr = 0u;
+                    }
+                    else
+                    {
+                        *dstPtr = (premultiply && !isAlphaPremultiplied) ? Premultiply(srcColor) : srcColor;
+                    }
+
+                    // dst -> src
+                    if (colorKeyEnabled && dstColor == colorKeyValue)
+                    {
+                        *srcPtr = 0u;
+                    }
+                    else
+                    {
+                        *srcPtr = (premultiply && !isAlphaPremultiplied) ? Premultiply(dstColor) : dstColor;
+                    }
+                }
+            }
+
+            isFlippedHorizontally = !isFlippedHorizontally;
+
+            if (premultiply)
+                isAlphaPremultiplied = true;
+        }
+
+        /// <summary>
+        /// Vertically flips the surface and optionally premultiplies its alpha.
+        /// </summary>
+        private void FlipVAndProcessAlpha(Boolean premultiply, Color? keycolor)
+        {
+            var pitch = Pitch;
+
+            var srcPtr = (UInt32*)ptr->pixels;
+            var srcColor = 0u;
+
+            var dstPtr = (UInt32*)ptr->pixels;
+            var dstColor = 0u;
+
+            var colorKeyEnabled = premultiply && keycolor.HasValue;
+            var colorKeyValue = keycolor.GetValueOrDefault().PackedValue;
+            var colorKeyTransparent = 0u;
+
+            var rowsToProcess = (ptr->h % 2 == 0) ? ptr->h / 2 : 1 + ptr->h / 2;
+            for (var y = 0; y < rowsToProcess; y++)
+            {
+                var y1 = (y);
+                var y2 = (ptr->h - 1) - y;
+
+                srcPtr = (UInt32*)((Byte*)ptr->pixels + (y1 * pitch));
+                dstPtr = (UInt32*)((Byte*)ptr->pixels + (y2 * pitch));
+
+                for (var x = 0; x < ptr->w; x++)
+                {
+                    srcColor = *srcPtr;
+                    dstColor = *dstPtr;
+
+                    // src -> dst
+                    if (colorKeyEnabled && srcColor == colorKeyValue)
+                    {
+                        *dstPtr++ = colorKeyTransparent;
+                    }
+                    else
+                    {
+                        *dstPtr++ = (premultiply && !isAlphaPremultiplied) ? Premultiply(srcColor) : srcColor;
+                    }
+
+                    // dst -> src
+                    if (colorKeyEnabled && dstColor == colorKeyValue)
+                    {
+                        *srcPtr++ = colorKeyTransparent;
+                    }
+                    else
+                    {
+                        *srcPtr++ = (premultiply && !isAlphaPremultiplied) ? Premultiply(dstColor) : dstColor;
+                    }
+                }
+            }
+
+            isFlippedVertically = !isFlippedVertically;
+
+            if (premultiply)
+                isAlphaPremultiplied = true;
+        }
+
         // The mask values for each color channel.
         private static readonly UInt32 rmask = 0x000000ffu;
         private static readonly UInt32 gmask = 0x0000ff00u;
@@ -382,5 +474,8 @@ namespace Ultraviolet.SDL2.Graphics
         // State values.
         private SDL_Surface* ptr;
         private Boolean isReadyForTextureExport;
+        private Boolean isFlippedHorizontally;
+        private Boolean isFlippedVertically;
+        private Boolean isAlphaPremultiplied;
     }
 }

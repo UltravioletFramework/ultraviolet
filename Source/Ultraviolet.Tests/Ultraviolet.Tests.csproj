@@ -246,6 +246,7 @@
     <Compile Include="BoundingSphereTests.cs" />
     <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
+    <Compile Include="Graphics\Surface2DTests.cs" />
     <Compile Include="Graphics\ViewportTests.cs" />
     <Compile Include="PlaneTests.cs" />
     <Compile Include="CursorCollectionTests.cs" />
@@ -784,6 +785,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Surface2D_RendersCorrectly_WhenFlipped.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRender3DTextures_FromPreprocessedAsset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1186,6 +1190,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Textures\ColorGradingPosterize.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Surfaces\Test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\View.xml">

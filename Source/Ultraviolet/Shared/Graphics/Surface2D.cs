@@ -86,14 +86,37 @@ namespace Ultraviolet.Graphics
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<Surface2DFromNativeSurfaceFactory>()(uv, surface);
         }
+        
+        /// <summary>
+        /// Flips the surface in the specified direction.
+        /// </summary>
+        /// <param name="direction">A <see cref="SurfaceFlipDirection"/> value which specifies the 
+        /// direction in which to flip the surface.</param>
+        public abstract void Flip(SurfaceFlipDirection direction);
 
         /// <summary>
-        /// Prepares the surface to be exported as texture data.
+        /// Flips the surface in the specified direction and processes its alpha, optionally premultiplying it
+        /// and performing color keying. If the surface is already premultiplied, it will not be premultiplied again.
+        /// </summary>
+        /// <param name="direction">A <see cref="SurfaceFlipDirection"/> value which specifies the 
+        /// direction in which to flip the surface.</param>
+        /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
+        /// <param name="keycolor">A key color to substitute with a transparent color.</param>
+        public abstract void FlipAndProcessAlpha(SurfaceFlipDirection direction, Boolean premultiply, Color? keycolor = null);
+
+        /// <summary>
+        /// Processes the surface's alpha, optionally premultiplying it and performing color keying.
+        /// If the surface is already premultiplied, it will not be premultiplied again.
         /// </summary>
         /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
-        /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
-        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
-        public abstract void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque);
+        /// <param name="keycolor">A key color to substitute with a transparent color.</param>
+        public abstract void ProcessAlpha(Boolean premultiply, Color? keycolor = null);
+
+        /// <summary>
+        /// Clears the surface to the specified color.
+        /// </summary>
+        /// <param name="color">The color to which the surface will be cleared.</param>
+        public abstract void Clear(Color color);
 
         /// <summary>
         /// Gets the surface's data.
@@ -158,17 +181,12 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Creates a texture from the surface.
         /// </summary>
+        /// <param name="unprocessed">A value indicating whether the surface data should be passed
+        /// through to the texture without any further processing, regardless of the platform's
+        /// requirements. For example, an unprocessed texture will not be flipped vertically on
+        /// the OpenGL implementation.</param>
         /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
-        public abstract Texture2D CreateTexture();
-
-        /// <summary>
-        /// Creates a texture from the surface.
-        /// </summary>
-        /// <param name="premultiply">A value indicating whether to premultiply the surface's alpha.</param>
-        /// <param name="flip">A value indicating whether to flip the surface data upside-down.</param>
-        /// <param name="opaque">A value indicating whether the texture is opaque and color keying should be disabled.</param>
-        /// <returns>The <see cref="Texture2D"/> that was created from the surface.</returns>
-        public abstract Texture2D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque);
+        public abstract Texture2D CreateTexture(Boolean unprocessed = false);
 
         /// <summary>
         /// Saves the surface as a JPEG image to the specified stream.
@@ -213,10 +231,20 @@ namespace Ultraviolet.Graphics
         {
             get;
         }
+        
+        /// <summary>
+        /// Gets a value indicating whether the surface has been flipped horizontally.
+        /// </summary>
+        public abstract Boolean IsFlippedHorizontally { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this surface is ready to be exported as a texture.
+        /// Gets a value indicating whether the surface has been flipped vertically.
         /// </summary>
-        public abstract Boolean IsReadyForTextureExport { get; }
+        public abstract Boolean IsFlippedVertically { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the surface's alpha has been premultiplied.
+        /// </summary>
+        public abstract Boolean IsAlphaPremultiplied { get; }
     }
 }

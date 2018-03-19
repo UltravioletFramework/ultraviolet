@@ -64,7 +64,6 @@ namespace Ultraviolet.SDL2.Graphics
             this.layers[layer] = surface;
             this.layerOwnership[layer] = transferOwnership;
             this.isComplete = !this.layers.Contains(null);
-            this.isReadyForTextureExport = this.isComplete && this.layers.All(x => x.IsReadyForTextureExport);
         }
 
         /// <inheritdoc/>
@@ -91,20 +90,6 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override void PrepareForTextureExport(Boolean premultiply, Boolean flip, Boolean opaque)
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            foreach (var layer in layers)
-            {
-                if (layer != null && !layer.IsReadyForTextureExport)
-                    layer.PrepareForTextureExport(premultiply, flip, opaque);
-            }
-
-            this.isReadyForTextureExport = this.isComplete;
-        }
-
-        /// <inheritdoc/>
         public override Surface3D CreateSurface()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -119,15 +104,7 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Texture3D CreateTexture()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return CreateTexture(true, Ultraviolet.GetGraphics().Capabilities.FlippedTextures, true);
-        }
-
-        /// <inheritdoc/>
-        public override Texture3D CreateTexture(Boolean premultiply, Boolean flip, Boolean opaque)
+        public override Texture3D CreateTexture(Boolean unprocessed)
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
@@ -136,15 +113,17 @@ namespace Ultraviolet.SDL2.Graphics
             var surfsdata = new IntPtr[Depth];
             try
             {
+                var flipdir = unprocessed ? SurfaceFlipDirection.None :
+                    (Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None);
+
                 for (int i = 0; i < copysurfs.Length; i++)
                 {
                     copysurfs[i] = layers[i].CreateSurface();
-                    copysurfs[i].PrepareForTextureExport(premultiply, flip, opaque);
+                    copysurfs[i].FlipAndProcessAlpha(flipdir, false, Color.Magenta);
                     surfsdata[i] = (IntPtr)((SDL2Surface2D)copysurfs[i]).NativePtr->pixels;
                 }
 
-                var texture = Texture3D.Create(surfsdata, Width, Height, BytesPerPixel);
-                return texture;
+                return Texture3D.Create(surfsdata, Width, Height, BytesPerPixel);
             }
             finally
             {
@@ -251,17 +230,6 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean IsReadyForTextureExport
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isReadyForTextureExport;
-            }
-        }
-
-        /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -288,6 +256,5 @@ namespace Ultraviolet.SDL2.Graphics
         private Int32 height;
         private Int32 bytesPerPixel;
         private Boolean isComplete;
-        private Boolean isReadyForTextureExport;
     }
 }
