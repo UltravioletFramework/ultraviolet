@@ -10,7 +10,7 @@ namespace Ultraviolet.Tests.Graphics
     {
         [Test]
         [Category("Rendering")]
-        [Description("Ensures that Surface2D produces the correct texture data when the surface is flipped..")]
+        [Description("Ensures that Surface2D produces the correct texture data when the surface is flipped.")]
         public void Surface2D_RendersCorrectly_WhenFlipped()
         {
             var sbatch = default(SpriteBatch);
@@ -62,6 +62,47 @@ namespace Ultraviolet.Tests.Graphics
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Surface2D_RendersCorrectly_WhenFlipped.png");
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that Surface2D produces the correct texture data when the surface is flipped during a blit operation.")]
+        public void Surface2D_RendersCorrectly_WhenFlippedDuringBlit()
+        {
+            var sbatch = default(SpriteBatch);
+            var surfaceOutput = default(Surface2D);
+            var surfaceInput = default(Surface2D);
+            var texture = default(Texture2D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    sbatch = SpriteBatch.Create();
+
+                    surfaceOutput = Surface2D.Create(128, 128);
+                    surfaceOutput.Clear(Color.Lime);
+
+                    surfaceInput = content.Load<Surface2D>("Surfaces/Test");
+                    surfaceInput.ProcessAlpha(true, null);
+                    surfaceInput.Blit(surfaceOutput, new Point2(0, 0), SurfaceFlipDirection.None);
+                    surfaceInput.Blit(surfaceOutput, new Point2(64, 0), SurfaceFlipDirection.Horizontal);
+                    surfaceInput.Blit(surfaceOutput, new Point2(0, 64), SurfaceFlipDirection.Vertical);
+
+                    texture = surfaceOutput.CreateTexture();
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    sbatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+                    sbatch.Draw(texture, new RectangleF(0, 0, 128, 128), Color.White);
+
+                    sbatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Surface2D_RendersCorrectly_WhenFlippedDuringBlit.png");
         }
     }
 }

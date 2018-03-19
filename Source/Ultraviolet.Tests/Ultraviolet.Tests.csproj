@@ -785,6 +785,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Surface2D_RendersCorrectly_WhenFlippedDuringBlit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Surface2D_RendersCorrectly_WhenFlipped.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
