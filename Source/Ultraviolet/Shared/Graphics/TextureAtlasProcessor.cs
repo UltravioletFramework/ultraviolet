@@ -422,7 +422,7 @@ namespace Ultraviolet.Graphics
             {
                 var flipdir = content.Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None;
                 output.FlipAndProcessAlpha(flipdir, true, Color.Magenta);
-                return output.CreateTexture();
+                return output.CreateTexture(unprocessed: true);
             }
         }
 
