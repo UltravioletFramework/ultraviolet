@@ -30,6 +30,8 @@ namespace Ultraviolet.OpenGL
             factory.SetFactoryMethod<Texture3DFactory>((uv, width, height, depth, immutable) => new OpenGLTexture3D(uv, width, height, depth, immutable));
             factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height, usage) => new OpenGLRenderTarget2D(uv, width, height, usage));
             factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height, options) => new OpenGLRenderBuffer2D(uv, format, width, height, options));
+            factory.SetFactoryMethod<DynamicTexture2DFactory>((uv, width, height, immutable, state, flushed) => new OpenGLDynamicTexture2D(uv, width, height, immutable, state, flushed));
+            factory.SetFactoryMethod<DynamicTexture3DFactory>((uv, width, height, depth, immutable, state, flushed) => new OpenGLDynamicTexture3D(uv, width, height, depth, immutable, state, flushed));
 
             // Core effects
             factory.SetFactoryMethod<BasicEffectFactory>((uv) => new OpenGLBasicEffect(uv));

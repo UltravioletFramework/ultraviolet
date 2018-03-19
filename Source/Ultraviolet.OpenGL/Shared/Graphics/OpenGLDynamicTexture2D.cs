@@ -7,7 +7,7 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents the OpenGL implementation of the <see cref="DynamicTexture2D"/> class.
     /// </summary>
-    public class OpenGLDynamicTexture2D : DynamicTexture2D, IOpenGLDynamicTexture
+    public class OpenGLDynamicTexture2D : DynamicTexture2D, IOpenGLDynamicTexture, IOpenGLResource, IBindableResource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenGLDynamicTexture2D"/> class.
@@ -16,9 +16,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
-        public OpenGLDynamicTexture2D(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable, Action<Texture2D> flushed)
-            : base(uv, width, height, immutable, flushed)
+        public OpenGLDynamicTexture2D(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable, Object state, Action<Texture2D, Object> flushed)
+            : base(uv, width, height, immutable, state, flushed)
         {
             this.texture = new OpenGLTexture2D(uv, width, height, immutable);
         }

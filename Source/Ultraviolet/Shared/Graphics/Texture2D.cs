@@ -89,11 +89,12 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D CreateDynamic(Int32 width, Int32 height, Action<DynamicTexture2D> flushed)
+        public static Texture2D CreateDynamic(Int32 width, Int32 height, Object state, Action<Texture2D, Object> flushed)
         {
-            return CreateDynamic(width, height, true, flushed);
+            return CreateDynamic(width, height, true, state, flushed);
         }
 
         /// <summary>
@@ -103,16 +104,17 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D CreateDynamic(Int32 width, Int32 height, Boolean immutable, Action<DynamicTexture2D> flushed)
+        public static Texture2D CreateDynamic(Int32 width, Int32 height, Boolean immutable, Object state, Action<Texture2D, Object> flushed)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.Require(flushed, nameof(flushed));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<DynamicTexture2DFactory>()(uv, width, height, immutable, flushed);
+            return uv.GetFactoryMethod<DynamicTexture2DFactory>()(uv, width, height, immutable, state, flushed);
         }
 
         /// <summary>
