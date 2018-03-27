@@ -135,8 +135,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Int32 GetAlignmentUnit()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             return Math.Max(1, ((OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities).MinMapBufferAlignment);
         }
 
@@ -144,7 +142,6 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Int32 GetAlignedSize(Int32 count)
         {
             Contract.EnsureRange(count >= 0, nameof(count));
-            Contract.EnsureNotDisposed(this, Disposed);
             
             var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
             if (caps.MinMapBufferAlignment == 0 || count == VertexCount)
@@ -168,10 +165,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean IsContentLost
-        {
-            get { return false; }
-        }
+        public override Boolean IsContentLost => false;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

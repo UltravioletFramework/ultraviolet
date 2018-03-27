@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Ultraviolet.Audio;
 using Ultraviolet.BASS.Audio;
+using Ultraviolet.BASS.Messages;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using static Ultraviolet.BASS.Native.BASSNative;
-using Ultraviolet.BASS.Messages;
 
 namespace Ultraviolet.BASS
 {

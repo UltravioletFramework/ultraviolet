@@ -11,7 +11,7 @@ namespace Ultraviolet.OpenGL.Graphics
     public sealed class OpenGLEffectPass : EffectPass
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLEffectPass class.
+        /// Initializes a new instance of the <see cref="OpenGLEffectPass"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The effect pass' name.</param>
@@ -21,17 +21,13 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             Contract.RequireNotEmpty(programs, nameof(programs));
 
-            this.name = name ?? String.Empty;
+            this.Name = name ?? String.Empty;
             this.programs = new OpenGLShaderProgramCollection(programs);
         }
 
-        /// <summary>
-        /// Applies the effect pass state to the device.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Apply()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             var program = programs[programIndex];
             OpenGLState.UseProgram(program);
 
@@ -41,33 +37,17 @@ namespace Ultraviolet.OpenGL.Graphics
             }
         }
 
-        /// <summary>
-        /// Gets the effect pass's name.
-        /// </summary>
-        public override String Name
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return name;
-            }
-        }
+        /// <inheritdoc/>
+        public override String Name { get; }
 
         /// <summary>
         /// Gets or sets the effect pass' current program index.
         /// </summary>
         public Int32 ProgramIndex
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return programIndex;
-            }
+            get { return programIndex; }
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureRange(value >= 0 && value < ProgramCount, nameof(value));
 
                 programIndex = value;
@@ -77,31 +57,14 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets or sets the effect pass' program count.
         /// </summary>
-        public Int32 ProgramCount
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return programs.Count;
-            }
-        }
+        public Int32 ProgramCount => programs.Count;
 
         /// <summary>
         /// Gets the effect pass' collection of shader programs.
         /// </summary>
-        public OpenGLShaderProgramCollection Programs
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return programs;
-            }
-        }
+        public OpenGLShaderProgramCollection Programs => programs;
 
         // Property values.
-        private readonly String name;
         private readonly OpenGLShaderProgramCollection programs;
         private Int32 programIndex;
     }

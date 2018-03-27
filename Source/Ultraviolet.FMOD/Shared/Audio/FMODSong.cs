@@ -45,15 +45,7 @@ namespace Ultraviolet.FMOD.Audio
         }
 
         /// <inheritdoc/>
-        public override SongTagCollection Tags
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return tags;
-            }
-        }
+        public override SongTagCollection Tags => tags;
 
         /// <inheritdoc/>
         public override String Name => name;
@@ -65,15 +57,7 @@ namespace Ultraviolet.FMOD.Audio
         public override String Album => album;
 
         /// <inheritdoc/>
-        public override TimeSpan Duration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return duration;
-            }
-        }
+        public override TimeSpan Duration => duration;
 
         /// <summary>
         /// Gets the FMOD sound pointer for this object.

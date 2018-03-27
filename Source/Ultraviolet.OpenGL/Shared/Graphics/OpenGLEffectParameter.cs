@@ -28,7 +28,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Boolean GetValueBoolean()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_BOOL);
 
             return data.GetBoolean();
@@ -37,7 +36,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Boolean value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_BOOL);
 
             data.Set(value);
@@ -46,7 +44,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Int32 GetValueInt32()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_INT);
 
             return data.GetInt32();
@@ -55,7 +52,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Int32 value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_INT);
             
             data.Set(value);
@@ -64,7 +60,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Int32[] GetValueInt32Array()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_INT);
 
             return data.GetInt32Array();
@@ -73,7 +68,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Int32[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_INT);
 
             data.Set(value);
@@ -82,7 +76,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override UInt32 GetValueUInt32()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_UNSIGNED_INT);
 
             return data.GetUInt32();
@@ -91,7 +84,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(UInt32 value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_UNSIGNED_INT);
 
             data.Set(value);
@@ -100,7 +92,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override UInt32[] GetValueUInt32Array()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_UNSIGNED_INT);
 
             return data.GetUInt32Array();
@@ -109,7 +100,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(UInt32[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_UNSIGNED_INT);
 
             data.Set(value);
@@ -118,7 +108,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Single GetValueSingle()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT);
 
             return data.GetSingle();
@@ -127,7 +116,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Single value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT);
 
             data.Set(value);
@@ -136,7 +124,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Single[] GetValueSingleArray()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT);
 
             return data.GetSingleArray();
@@ -145,7 +132,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Single[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT);
 
             data.Set(value);
@@ -154,7 +140,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Double GetValueDouble()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_DOUBLE);
 
             return data.GetDouble();
@@ -163,7 +148,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Double value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_DOUBLE);
 
             data.Set(value);
@@ -172,7 +156,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Double[] GetValueDoubleArray()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_DOUBLE);
 
             return data.GetDoubleArray();
@@ -181,7 +164,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Double[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_DOUBLE);
 
             data.Set(value);
@@ -190,7 +172,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Vector2 GetValueVector2()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC2);
 
             return data.GetVector2();
@@ -199,7 +180,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Vector2 value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC2);
 
             data.Set(value);
@@ -208,7 +188,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Vector2[] GetValueVector2Array()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC2);
 
             return data.GetVector2Array();
@@ -217,7 +196,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Vector2[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC2);
 
             data.Set(value);
@@ -226,7 +204,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Vector3 GetValueVector3()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3);
 
             return data.GetVector3();
@@ -235,7 +212,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Vector3 value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3);
 
             data.Set(value);
@@ -244,7 +220,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Vector3[] GetValueVector3Array()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3);
 
             return data.GetVector3Array();
@@ -253,7 +228,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Vector3[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3);
 
             data.Set(value);
@@ -262,7 +236,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Vector4 GetValueVector4()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC4);
 
             return data.GetVector4();
@@ -271,7 +244,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Vector4 value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC4);
 
             data.Set(value);
@@ -280,7 +252,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Vector4[] GetValueVector4Array()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC4);
 
             return data.GetVector4Array();
@@ -289,7 +260,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Vector4[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC4);
 
             data.Set(value);
@@ -298,7 +268,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Color GetValueColor()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3 || type == gl.GL_FLOAT_VEC4);
 
             return data.GetColor();
@@ -307,7 +276,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Color value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3 || type == gl.GL_FLOAT_VEC4);
 
             data.Set(value);
@@ -316,7 +284,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Color[] GetValueColorArray()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3 || type == gl.GL_FLOAT_VEC4);
 
             return data.GetColorArray();
@@ -325,7 +292,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Color[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_VEC3 || type == gl.GL_FLOAT_VEC4);
 
             data.Set(value);
@@ -334,7 +300,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Matrix GetValueMatrix()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
 
             return data.GetMatrix();
@@ -343,7 +308,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Matrix value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
 
             data.Set(value);
@@ -352,7 +316,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Matrix[] GetValueMatrixArray()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
 
             return data.GetMatrixArray();
@@ -361,7 +324,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Matrix[] value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_FLOAT_MAT4);
 
             data.Set(value);
@@ -370,7 +332,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Texture2D GetValueTexture2D()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_SAMPLER_2D);
 
             return data.GetTexture2D();
@@ -379,7 +340,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Texture2D value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_SAMPLER_2D);
 
             data.Set(value);
@@ -388,7 +348,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Texture3D GetValueTexture3D()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_SAMPLER_3D);
 
             return data.GetTexture3D();
@@ -397,35 +356,18 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override void SetValue(Texture3D value)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure<InvalidCastException>(type == gl.GL_SAMPLER_3D);
 
             data.Set(value);
         }
 
         /// <inheritdoc/>
-        public override String Name
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return name; 
-            }
-        }
+        public override String Name => name;
 
         /// <summary>
         /// Gets the parameter's data container.
         /// </summary>
-        public OpenGLEffectParameterData Data
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return data;
-            }
-        }
+        public OpenGLEffectParameterData Data => data;
 
         // Property values.
         private readonly String name;

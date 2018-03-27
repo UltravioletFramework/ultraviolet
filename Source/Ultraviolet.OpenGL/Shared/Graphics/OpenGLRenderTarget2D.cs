@@ -236,45 +236,19 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Size2 Size
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return new Size2(width, height);
-            }
-        }
+        public override Size2 Size => new Size2(width, height);
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return width;
-            }
-        }
+        public override Int32 Width => width;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return height;
-            }
-        }
+        public override Int32 Height => height;
 
         /// <inheritdoc/>
         public override Boolean BoundForReading
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 foreach (var buffer in buffers)
                 {
                     if (buffer.BoundForReading)
@@ -289,8 +263,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 foreach (var buffer in buffers)
                 {
                     if (buffer.BoundForWriting)
@@ -301,48 +273,16 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean HasColorBuffer
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return colorAttachments > 0;
-            }
-        }
+        public override Boolean HasColorBuffer => colorAttachments > 0;
 
         /// <inheritdoc/>
-        public override Boolean HasDepthBuffer
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depthAttachments > 0;
-            }
-        }
+        public override Boolean HasDepthBuffer => depthAttachments > 0;
 
         /// <inheritdoc/>
-        public override Boolean HasStencilBuffer
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilAttachments > 0;
-            }
-        }
+        public override Boolean HasStencilBuffer => stencilAttachments > 0;
 
         /// <inheritdoc/>
-        public override RenderTargetUsage RenderTargetUsage
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return renderTargetUsage;
-            }
-        }
+        public override RenderTargetUsage RenderTargetUsage => renderTargetUsage;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -358,7 +298,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     {
                         gl.DeleteFramebuffer(((OpenGLRenderTarget2D)state).framebuffer);
                         gl.ThrowIfError();
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
                 buffers.Clear();
             }

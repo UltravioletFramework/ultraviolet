@@ -47,7 +47,7 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override void Update(UltravioletTime time)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
+
         }
 
         /// <inheritdoc/>

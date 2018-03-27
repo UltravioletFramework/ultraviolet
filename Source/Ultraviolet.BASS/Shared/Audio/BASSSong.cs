@@ -60,59 +60,19 @@ namespace Ultraviolet.BASS.Audio
         }
 
         /// <inheritdoc/>
-        public override SongTagCollection Tags
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return tags;
-            }
-        }
+        public override SongTagCollection Tags => tags;
 
         /// <inheritdoc/>
-        public override String Name
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return name;
-            }
-        }
+        public override String Name => name;
 
         /// <inheritdoc/>
-        public override String Artist
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return artist;
-            }
-        }
+        public override String Artist => artist;
 
         /// <inheritdoc/>
-        public override String Album
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return album;
-            }
-        }
+        public override String Album => album;
 
         /// <inheritdoc/>
-        public override TimeSpan Duration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return duration;
-            }
-        }
+        public override TimeSpan Duration => duration;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

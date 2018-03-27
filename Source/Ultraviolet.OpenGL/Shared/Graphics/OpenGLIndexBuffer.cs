@@ -136,8 +136,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <inheritdoc/>
         public override Int32 GetAlignmentUnit()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             return Math.Max(1, ((OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities).MinMapBufferAlignment);
         }
 
@@ -145,7 +143,6 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Int32 GetAlignedSize(Int32 count)
         {
             Contract.EnsureRange(count >= 0, nameof(count));
-            Contract.EnsureNotDisposed(this, Disposed);
 
             var indexStride = GetElementSize();
 
@@ -194,7 +191,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     {
                         gl.DeleteBuffer(((OpenGLIndexBuffer)state).buffer);
                         gl.ThrowIfError();                        
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
             }
 

@@ -128,49 +128,22 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the dialog's result value.
         /// </summary>
-        public Boolean? DialogResult
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        public Boolean? DialogResult => dialogResult;
 
-                return dialogResult;
-            }
-        }
-        
         /// <summary>
         /// Gets a value indicating whether the modal is currently open.
         /// </summary>
-        public Boolean IsOpen
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return open;
-            }
-        }
+        public Boolean IsOpen => open;
 
         /// <summary>
         /// Gets a value indicating whether the modal is currently closed.
         /// </summary>
-        public Boolean IsClosed
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return !open;
-            }
-        }
+        public Boolean IsClosed => !open;
 
         /// <summary>
         /// Gets a value indicating whether the object has been disposed.
         /// </summary>
-        public Boolean Disposed
-        {
-            get { return disposed; }
-        }
+        public Boolean Disposed => disposed;
 
         /// <summary>
         /// Releases resources associated with the object.

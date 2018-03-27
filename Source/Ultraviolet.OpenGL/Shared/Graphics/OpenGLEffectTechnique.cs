@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet.OpenGL.Graphics
@@ -11,7 +10,7 @@ namespace Ultraviolet.OpenGL.Graphics
     public sealed class OpenGLEffectTechnique : EffectTechnique
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLEffectTechnique class.
+        /// Initializes a new instance of the <see cref="OpenGLEffectTechnique"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="name">The technique's name.</param>
@@ -19,38 +18,14 @@ namespace Ultraviolet.OpenGL.Graphics
         public OpenGLEffectTechnique(UltravioletContext uv, String name, IEnumerable<OpenGLEffectPass> passes)
             : base(uv)
         {
-            this.name = name ?? String.Empty;
-            this.passes = new OpenGLEffectPassCollection(passes);
-        }
-        
-        /// <summary>
-        /// Gets the effect pass's name.
-        /// </summary>
-        public override String Name
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return name;
-            }
+            this.Name = name ?? String.Empty;
+            this.Passes = new OpenGLEffectPassCollection(passes);
         }
 
-        /// <summary>
-        /// Gets the effect technique's collection of passes.
-        /// </summary>
-        public override EffectPassCollection Passes
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        /// <inheritdoc/>
+        public override String Name { get; }
 
-                return passes;
-            }
-        }
-
-        // Property values.
-        private readonly String name;
-        private readonly EffectPassCollection passes;
+        /// <inheritdoc/>
+        public override EffectPassCollection Passes { get; }
     }
 }

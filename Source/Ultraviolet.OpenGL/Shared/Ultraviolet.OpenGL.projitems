@@ -9,7 +9,6 @@
     <Import_RootNamespace>Ultraviolet.OpenGL</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendEquation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedBlendFunction.cs" />

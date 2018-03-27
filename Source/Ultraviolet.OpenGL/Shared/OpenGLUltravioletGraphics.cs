@@ -718,15 +718,7 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public Single FrameRate
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
-                return (Single)frameRate; 
-            }
-        }
+        public Single FrameRate => (Single)frameRate;
 
         /// <inheritdoc/>
         public GraphicsCapabilities Capabilities

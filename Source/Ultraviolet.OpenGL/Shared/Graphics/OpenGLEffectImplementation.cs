@@ -33,28 +33,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the effect's collection of parameters.
         /// </summary>
-        public override EffectParameterCollection Parameters
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return parameters;
-            }
-        }
+        public override EffectParameterCollection Parameters => parameters;
 
         /// <summary>
         /// Gets the effect's collection of techniques.
         /// </summary>
-        public override EffectTechniqueCollection Techniques
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return techniques;
-            }
-        }
+        public override EffectTechniqueCollection Techniques => techniques;
 
         /// <summary>
         /// Gets the effect's current technique.
