@@ -175,59 +175,19 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return width;
-            }
-        }
+        public override Int32 Width => width;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return height;
-            }
-        }
+        public override Int32 Height => height;
 
         /// <inheritdoc/>
-        public override Int32 Depth
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return layers.Length;
-            }
-        }
+        public override Int32 Depth => layers.Length;
 
         /// <inheritdoc/>
-        public override Int32 BytesPerPixel
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return bytesPerPixel;
-            }
-        }
+        public override Int32 BytesPerPixel => bytesPerPixel;
 
         /// <inheritdoc/>
-        public override Boolean IsComplete
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isComplete;
-            }
-        }
+        public override Boolean IsComplete => isComplete;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

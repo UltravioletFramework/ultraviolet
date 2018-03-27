@@ -253,48 +253,16 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return nativesurf.Width;
-            }
-        }
+        public override Int32 Width => nativesurf.Width;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return nativesurf.Height;
-            }
-        }
+        public override Int32 Height => nativesurf.Height;
 
         /// <inheritdoc/>
-        public override Int32 Pitch
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return nativesurf.Pitch;
-            }
-        }
+        public override Int32 Pitch => nativesurf.Pitch;
 
         /// <inheritdoc/>
-        public override Int32 BytesPerPixel
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return nativesurf.BytesPerPixel;
-            }
-        }
+        public override Int32 BytesPerPixel => nativesurf.BytesPerPixel;
 
         /// <inheritdoc/>
         public override Boolean IsFlippedHorizontally => nativesurf.IsFlippedHorizontally;

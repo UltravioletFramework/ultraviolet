@@ -35,17 +35,9 @@ namespace Ultraviolet.Presentation
             if (screen == null)
                 throw new InvalidOperationException(PresentationStrings.FactoryMethodInvalidResult.Format(typeof(MessageBoxScreenFactory).Name));
         }
-        
-        /// <inheritdoc/>
-        public override UIScreen Screen
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
 
-                return screen;
-            }
-        }
+        /// <inheritdoc/>
+        public override UIScreen Screen => screen;
 
         /// <summary>
         /// Prepares the message box to be displayed.

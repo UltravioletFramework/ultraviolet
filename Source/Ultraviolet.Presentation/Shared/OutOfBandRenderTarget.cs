@@ -97,29 +97,12 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets or sets a value indicating whether the render target is ready to be rendered.
         /// </summary>
-        public Boolean IsReady
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        public Boolean IsReady { get; set; }
 
-                return isReady;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                isReady = value;
-            }
-        }
-        
         /// <summary>
         /// Gets a value indicating whether the render target has a dedicated stencil buffer.
         /// </summary>
-        public Boolean HasDedicatedStencilBuffer
-        {
-            get { return stencilBuffer != null; }
-        }
+        public Boolean HasDedicatedStencilBuffer => stencilBuffer != null;
 
         /// <summary>
         /// Gets the cumulative transform of all ancestors of the rendered element.
@@ -133,28 +116,12 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the width of the render target in pixels.
         /// </summary>
-        public Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return renderTarget.Width;
-            }
-        }
+        public Int32 Width => renderTarget.Width;
 
         /// <summary>
         /// Gets the height of the render target in pixels.
         /// </summary>
-        public Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return renderTarget.Height;
-            }
-        }
+        public Int32 Height => renderTarget.Height;
 
         /// <summary>
         /// Gets the transformed visual bounds of the elements contained by this buffer in absolute screen space.
@@ -168,60 +135,27 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the <see cref="RenderTarget2D"/> used to render this out-of-band element.
         /// </summary>
-        public RenderTarget2D RenderTarget
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return renderTarget;
-            }
-        }
+        public RenderTarget2D RenderTarget => renderTarget;
 
         /// <summary>
         /// Gets the <see cref="RenderBuffer2D"/> that represents this element's color buffer.
         /// </summary>
-        public RenderBuffer2D ColorBuffer
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return colorBuffer;
-            }
-        }
+        public RenderBuffer2D ColorBuffer => colorBuffer;
 
         /// <summary>
         /// Gets the <see cref="RenderBuffer2D"/> that represents this element's depth buffer (which may have stencil components).
         /// </summary>
-        public RenderBuffer2D DepthBuffer
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depthBuffer;
-            }
-        }
+        public RenderBuffer2D DepthBuffer => depthBuffer;
 
         /// <summary>
         /// Gets the <see cref="RenderBuffer2D"/> that represents thie element's dedicated stencil buffer, if it has one.
         /// </summary>
-        public RenderBuffer2D StencilBuffer
-        {
-            get
-            {
-                return stencilBuffer;
-            }
-        }
+        public RenderBuffer2D StencilBuffer => stencilBuffer;
 
         /// <summary>
         /// Gets the next target in the render target chain.
         /// </summary>
-        public OutOfBandRenderTarget Next
-        {
-            get { return NextInternal == null ? null : NextInternal.Value; }
-        }
+        public OutOfBandRenderTarget Next => NextInternal?.Value;
 
         /// <summary>
         /// Gets the next target in the render target chain.
@@ -246,7 +180,6 @@ namespace Ultraviolet.Presentation
         }
 
         // Property values.
-        private Boolean isReady;
         private readonly RenderTarget2D renderTarget;
         private readonly RenderBuffer2D colorBuffer;
         private readonly RenderBuffer2D depthBuffer;

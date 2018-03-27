@@ -70,48 +70,16 @@ namespace Ultraviolet.Shims.NETCore.Graphics
         }
 
         /// <inheritdoc/>
-        public override IntPtr Data
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return bmpData.Scan0;
-            }
-        }
+        public override IntPtr Data => bmpData.Scan0;
 
         /// <inheritdoc/>
-        public override Int32 Stride
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return bmpData.Stride;
-            }
-        }
+        public override Int32 Stride => bmpData.Stride;
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return bmp.Width;
-            }
-        }
+        public override Int32 Width => bmp.Width;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return bmp.Height;
-            }
-        }
+        public override Int32 Height => bmp.Height;
 
         /// <inheritdoc/>
         public override SurfaceSourceDataFormat DataFormat => SurfaceSourceDataFormat.BGRA;

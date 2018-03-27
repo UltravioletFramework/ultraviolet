@@ -81,7 +81,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     {
                         gl.DeleteShader(((OpenGLFragmentShader)state).shader);
                         gl.ThrowIfError();
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
             }
 

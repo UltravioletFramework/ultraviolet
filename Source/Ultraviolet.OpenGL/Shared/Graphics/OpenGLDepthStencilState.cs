@@ -68,8 +68,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         internal void Apply()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             OpenGLState.DepthTestEnabled = DepthBufferEnable;
             OpenGLState.DepthMask = DepthBufferWriteEnable;
             OpenGLState.DepthFunc = GetCompareFunctionGL(DepthBufferFunction);

@@ -222,81 +222,25 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return width;
-            }
-        }
+        public override Int32 Width => width;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return height;
-            }
-        }
-        
-        /// <inheritdoc/>
-        public override Int32 Depth
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depth;
-            }
-        }
+        public override Int32 Height => height;
 
         /// <inheritdoc/>
-        public override Boolean BoundForReading
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return boundRead > 0;
-            }
-        }
+        public override Int32 Depth => depth;
 
         /// <inheritdoc/>
-        public override Boolean BoundForWriting
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return boundWrite > 0;
-            }
-        }
+        public override Boolean BoundForReading => boundRead > 0;
 
         /// <inheritdoc/>
-        public override Boolean ImmutableStorage
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return immutable;
-            }
-        }
+        public override Boolean BoundForWriting => boundWrite > 0;
 
         /// <inheritdoc/>
-        public override Boolean WillNotBeSampled
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        public override Boolean ImmutableStorage => immutable;
 
-                return false;
-            }
-        }
+        /// <inheritdoc/>
+        public override Boolean WillNotBeSampled => false;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

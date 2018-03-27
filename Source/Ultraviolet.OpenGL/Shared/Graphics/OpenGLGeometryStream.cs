@@ -227,7 +227,7 @@ namespace Ultraviolet.OpenGL.Graphics
                             gl.ThrowIfError();
 
                             OpenGLState.DeleteVertexArrayObject(vaoName, glElementArrayBufferBinding ?? 0);
-                        }, this);
+                        }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                     }
                 }
                 vbuffers.Clear();

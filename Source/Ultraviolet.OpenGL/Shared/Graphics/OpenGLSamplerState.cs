@@ -123,8 +123,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="target">GL_TEXTURE_2D or GL_TEXTURE_3D, as appropriate.</param>
         internal void Apply(Int32 sampler, UInt32 target)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             if (Ultraviolet.GetGraphics().Capabilities.SupportsIndependentSamplerState)
                 throw new InvalidOperationException(UltravioletStrings.GenericError);
 

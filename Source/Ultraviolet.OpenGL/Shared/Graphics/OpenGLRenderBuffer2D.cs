@@ -201,87 +201,28 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public override RenderBufferFormat Format
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return format;
-            }
-        }
+        public override RenderBufferFormat Format => format;
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return width;
-            }
-        }
+        public override Int32 Width => width;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return height;
-            }
-        }
-        
-        /// <inheritdoc/>
-        public override Boolean BoundForReading
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return boundRead > 0;
-            }
-        }
+        public override Int32 Height => height;
 
         /// <inheritdoc/>
-        public override Boolean BoundForWriting
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return boundWrite > 0;
-            }
-        }
+        public override Boolean BoundForReading => boundRead > 0;
 
         /// <inheritdoc/>
-        public override Boolean ImmutableStorage
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
-                return immutable;
-            }
-        }
-        
-        /// <inheritdoc/>
-        public override Boolean WillNotBeSampled
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return willNotBeSampled;
-            }
-        }
+        public override Boolean BoundForWriting => boundWrite > 0;
 
         /// <inheritdoc/>
-        public override Boolean Attached
-        {
-            get { return attached; }
-        }
+        public override Boolean ImmutableStorage => immutable;
+
+        /// <inheritdoc/>
+        public override Boolean WillNotBeSampled => willNotBeSampled;
+
+        /// <inheritdoc/>
+        public override Boolean Attached => attached;
 
         /// <summary>
         /// Resizes the render buffer. This method should only be called by the render target

@@ -132,65 +132,27 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
-        public override IUltravioletPlatform GetPlatform()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return platform;
-        }
+        public override IUltravioletPlatform GetPlatform() => platform;
 
         /// <inheritdoc/>
-        public override IUltravioletContent GetContent()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return content;
-        }
+        public override IUltravioletContent GetContent() => content;
 
         /// <inheritdoc/>
-        public override IUltravioletGraphics GetGraphics()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return graphics;
-        }
+        public override IUltravioletGraphics GetGraphics() => graphics;
 
         /// <inheritdoc/>
-        public override IUltravioletAudio GetAudio()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return audio;
-        }
+        public override IUltravioletAudio GetAudio() => audio;
 
         /// <inheritdoc/>
-        public override IUltravioletInput GetInput()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return input;
-        }
+        public override IUltravioletInput GetInput() => input;
 
         /// <inheritdoc/>
-        public override IUltravioletUI GetUI()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            return ui;
-        }
+        public override IUltravioletUI GetUI() => ui;
 
         /// <summary>
         /// Gets the assembly that implements the audio subsystem.
         /// </summary>
-        public Assembly AudioSubsystemAssembly
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return audioSubsystemAssembly;
-            }
-        }
+        public Assembly AudioSubsystemAssembly => audioSubsystemAssembly;
 
         /// <summary>
         /// Initializes the context's audio subsystem.

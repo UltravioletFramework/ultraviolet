@@ -65,8 +65,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         internal void Apply()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             OpenGLState.CullingEnabled = (CullMode != CullMode.None);
             OpenGLState.CulledFace = gl.GL_BACK;
             OpenGLState.FrontFace = GetFrontFaceGL(CullMode);

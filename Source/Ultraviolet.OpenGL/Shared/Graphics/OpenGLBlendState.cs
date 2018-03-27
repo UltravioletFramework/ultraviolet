@@ -104,8 +104,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         internal void Apply()
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             OpenGLState.BlendEnabled = true;
             OpenGLState.BlendColor = BlendFactor;
             OpenGLState.BlendEquation = new CachedBlendEquation(

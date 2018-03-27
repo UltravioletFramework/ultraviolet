@@ -158,41 +158,17 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the program's vertex shader.
         /// </summary>
-        public IOpenGLResource VertexShader
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return vertexShader;
-            }
-        }
+        public IOpenGLResource VertexShader => vertexShader;
 
         /// <summary>
         /// Gets the program's fragment shader.
         /// </summary>
-        public IOpenGLResource FragmentShader
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return fragmentShader;
-            }
-        }
+        public IOpenGLResource FragmentShader => fragmentShader;
 
         /// <summary>
         /// Gets the program's collection of uniforms.
         /// </summary>
-        public OpenGLShaderUniformCollection Uniforms
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return uniforms;
-            }
-        }
+        public OpenGLShaderUniformCollection Uniforms => uniforms;
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -211,7 +187,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     {
                         gl.DeleteProgram(((OpenGLShaderProgram)state).program);
                         gl.ThrowIfError();
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
 
                 if (programOwnsShaders)

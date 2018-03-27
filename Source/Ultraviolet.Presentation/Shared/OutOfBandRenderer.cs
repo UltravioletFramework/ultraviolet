@@ -305,44 +305,22 @@ namespace Ultraviolet.Presentation
         /// Gets a value indicating whether the out-of-band renderer is currently in use (that is,
         /// whether it currently has any registered elements).
         /// </summary>
-        public Boolean IsCurrentlyInUse
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return registeredElements.Count > 0;
-            }
-        }
+        public Boolean IsCurrentlyInUse => registeredElements.Count > 0;
 
         /// <summary>
         /// Gets a value indicating whether the out-of-band renderer is in the process of drawing its render targets.
         /// </summary>
-        public Boolean IsDrawingRenderTargets
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isDrawingRenderTargets;
-            }
-        }
+        public Boolean IsDrawingRenderTargets => isDrawingRenderTargets;
 
         /// <summary>
         /// Gets the number of active out-of-band render targets which have been allocated from the internal pool.
         /// </summary>
-        public Int32 ActiveRenderTargets
-        {
-            get { return (renderTargetPool == null) ? 0 : renderTargetPool.Active; }
-        }
+        public Int32 ActiveRenderTargets => (renderTargetPool == null) ? 0 : renderTargetPool.Active;
 
         /// <summary>
         /// Gets the number of available out-of-band render targets in the internal pool.
         /// </summary>
-        public Int32 AvailableRenderTargets
-        {
-            get { return (renderTargetPool == null) ? 0 : renderTargetPool.Available; }
-        }        
+        public Int32 AvailableRenderTargets => (renderTargetPool == null) ? 0 : renderTargetPool.Available;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

@@ -57,41 +57,17 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the identifier of the current digest cycle.
         /// </summary>
-        internal Int64 DigestCycleID
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return digestCycleID;
-            }
-        }
+        internal Int64 DigestCycleID => digestCycleID;
 
         /// <summary>
         /// Gets the identifier of the last digest cycle during which a layout occurred.
         /// </summary>
-        internal Int64 DigestCycleIDOfLastLayout
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return digestCycleIDOfLastLayout;
-            }
-        }
+        internal Int64 DigestCycleIDOfLastLayout => digestCycleIDOfLastLayout;
 
         /// <summary>
         /// Gets the renderer which is used to draw elements out-of-band.
         /// </summary>
-        internal OutOfBandRenderer OutOfBandRenderer
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return outOfBandRenderer;
-            }
-        }
+        internal OutOfBandRenderer OutOfBandRenderer => outOfBandRenderer;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
