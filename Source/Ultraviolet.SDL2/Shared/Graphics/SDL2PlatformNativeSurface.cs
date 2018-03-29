@@ -313,10 +313,7 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override IntPtr Native
-        {
-            get { return (IntPtr)ptr; }
-        }
+        public override IntPtr Native => (IntPtr)ptr;
 
         /// <summary> 
         /// Gets a pointer to the surface's underlying <see cref="SDL_Surface"/> structure.
