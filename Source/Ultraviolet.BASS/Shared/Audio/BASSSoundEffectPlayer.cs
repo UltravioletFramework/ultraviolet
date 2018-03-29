@@ -138,8 +138,6 @@ namespace Ultraviolet.BASS.Audio
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (BASSUtil.IsValidHandle(channel))
                 {
                     switch (BASS_ChannelIsActive(channel))
@@ -157,7 +155,6 @@ namespace Ultraviolet.BASS.Audio
                             return PlaybackState.Stopped;
                     }
                 }
-
                 return PlaybackState.Stopped;
             }
         }
@@ -165,30 +162,15 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Boolean IsPlaying
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return State == PlaybackState.Playing;
-            }
+            get => State == PlaybackState.Playing;
         }
 
         /// <inheritdoc/>
         public override Boolean IsLooping
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!ValidateHandle())
-                    return false;
-
-                return BASSUtil.GetIsLooping(channel);
-            }
+            get => IsHandleValid() ? BASSUtil.GetIsLooping(channel) : false;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
@@ -201,9 +183,7 @@ namespace Ultraviolet.BASS.Audio
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!ValidateHandle())
+                if (!IsHandleValid())
                     return TimeSpan.Zero;
 
                 if (!BASSUtil.IsValidHandle(stream))
@@ -222,8 +202,6 @@ namespace Ultraviolet.BASS.Audio
             }
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
@@ -248,34 +226,15 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override TimeSpan Duration
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!ValidateHandle())
-                    return TimeSpan.Zero;
-
-                var duration = BASSUtil.GetDurationInSeconds(channel);
-                return TimeSpan.FromSeconds(duration);
-            }
+            get => IsHandleValid() ? BASSUtil.GetDurationAsTimeSpan(channel) : TimeSpan.Zero;
         }
 
         /// <inheritdoc/>
         public override Single Volume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!ValidateHandle())
-                    return 1f;
-
-                return BASSUtil.GetVolume(channel);
-            }
+            get => IsHandleValid() ? BASSUtil.GetVolume(channel) : 1f;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
@@ -288,17 +247,13 @@ namespace Ultraviolet.BASS.Audio
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!ValidateHandle() || !promoted)
+                if (!IsHandleValid() || !promoted)
                     return 0f;
 
                 return BASSUtil.GetPitch(channel);
             }
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(BASSStrings.NotCurrentlyValid); ;
 
@@ -313,19 +268,9 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Single Pan
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!ValidateHandle())
-                    return 0f;
-
-                return BASSUtil.GetPan(channel);
-            }
+            get => IsHandleValid() ? BASSUtil.GetPan(channel) : 0f;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
                 if (State == PlaybackState.Stopped)
                     throw new InvalidOperationException(BASSStrings.NotCurrentlyValid);
 
@@ -346,7 +291,7 @@ namespace Ultraviolet.BASS.Audio
         /// Gets a value indicating whether the channel is in a valid state.
         /// </summary>
         /// <returns>true if the channel is in a valid state; otherwise, false.</returns>
-        private Boolean ValidateHandle()
+        private Boolean IsHandleValid()
         {
             if (playing != null && playing.Disposed)
             {

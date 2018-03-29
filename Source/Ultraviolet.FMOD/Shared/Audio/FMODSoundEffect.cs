@@ -95,15 +95,7 @@ namespace Ultraviolet.FMOD.Audio
         }
 
         /// <inheritdoc/>
-        public override TimeSpan Duration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return duration;
-            }
-        }
+        public override TimeSpan Duration => duration;
         
         /// <summary>
         /// Gets the FMOD sound pointer for this object.
@@ -118,6 +110,9 @@ namespace Ultraviolet.FMOD.Audio
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
+            if (Disposed)
+                return;
+
             var result = FMOD_Sound_Release(sound);
             if (result != FMOD_OK)
                 throw new FMODException(result);

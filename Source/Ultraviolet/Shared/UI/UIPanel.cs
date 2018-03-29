@@ -587,97 +587,47 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Gets a value indicating whether the panel is on the primary window.
         /// </summary>
-        protected Boolean IsOnPrimaryWindow
-        {
-            get
-            {
-                return window == Ultraviolet.GetPlatform().Windows.GetPrimary();
-            }
-        }
+        protected Boolean IsOnPrimaryWindow => window == Ultraviolet.GetPlatform().Windows.GetPrimary();
 
         /// <summary>
         /// Gets a value indicating whether the panel is on the current window.
         /// </summary>
-        protected Boolean IsOnCurrentWindow
-        {
-            get
-            {
-                return window == Ultraviolet.GetPlatform().Windows.GetCurrent();
-            }
-        }
+        protected Boolean IsOnCurrentWindow => window == Ultraviolet.GetPlatform().Windows.GetCurrent();
 
         /// <summary>
         /// Gets a value indicating whether the panel is in the <see cref="UIPanelState.Open"/> state.
         /// </summary>
-        protected Boolean IsOpen
-        {
-            get { return state == UIPanelState.Open; }
-        }
+        protected Boolean IsOpen => state == UIPanelState.Open;
 
         /// <summary>
         /// Gets a value indicating whether the panel is in the <see cref="UIPanelState.Closed"/> state.
         /// </summary>
-        protected Boolean IsClosed
-        {
-            get { return state == UIPanelState.Closed; }
-        }
+        protected Boolean IsClosed => state == UIPanelState.Closed;
 
         /// <summary>
         /// Gets a value indicating whether the panel has loaded its view.
         /// </summary>
-        protected Boolean IsViewLoaded
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isViewLoaded;
-            }
-        }
+        protected Boolean IsViewLoaded => isViewLoaded;
 
         /// <summary>
         /// Gets the size of the panel's current window.
         /// </summary>
-        protected Size2 WindowSize
-        {
-            get
-            {
-                return window?.Compositor.Size ?? Size2.Zero;
-            }
-        }
+        protected Size2 WindowSize => window?.Compositor.Size ?? Size2.Zero;
 
         /// <summary>
         /// Gets the width of the panel's current window.
         /// </summary>
-        protected Int32 WindowWidth
-        {
-            get
-            {
-                return window?.Compositor.Width ?? 0;
-            }
-        }
+        protected Int32 WindowWidth => window?.Compositor.Width ?? 0;
 
         /// <summary>
         /// Gets the height of the panel's current window.
         /// </summary>
-        protected Int32 WindowHeight
-        {
-            get
-            {
-                return window?.Compositor.Height ?? 0;
-            }
-        }
+        protected Int32 WindowHeight => window?.Compositor.Height ?? 0;
 
         /// <summary>
         /// Gets the screen stack for the panel's current window.
         /// </summary>
-        protected UIScreenStack WindowScreens
-        {
-            get
-            {
-                return window == null ? null : Ultraviolet.GetUI().GetScreens(window);
-            }
-        }
+        protected UIScreenStack WindowScreens => window == null ? null : Ultraviolet.GetUI().GetScreens(window);
 
         /// <summary>
         /// Raises the <see cref="Opening"/> event.

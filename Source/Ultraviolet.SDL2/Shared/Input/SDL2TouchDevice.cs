@@ -419,48 +419,16 @@ namespace Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override IUltravioletWindow BoundWindow
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return boundWindow ?? Ultraviolet.GetPlatform().Windows.GetPrimary();
-            }
-        }
+        public override IUltravioletWindow BoundWindow => boundWindow ?? Ultraviolet.GetPlatform().Windows.GetPrimary();
 
         /// <inheritdoc/>
-        public override Boolean IsRecordingDollarGesture
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isRecordingDollarGesture;
-            }
-        }
+        public override Boolean IsRecordingDollarGesture => isRecordingDollarGesture;
 
         /// <inheritdoc/>
-        public override Int32 TouchCount
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return touches.Count;
-            }
-        }
+        public override Int32 TouchCount => touches.Count;
 
         /// <inheritdoc/>
-        public override Int32 TapCount
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return taps.Count;
-            }
-        }
+        public override Int32 TapCount => taps.Count;
 
         /// <inheritdoc/>
         public override Boolean IsRegistered => isRegistered;
@@ -468,6 +436,9 @@ namespace Ultraviolet.SDL2.Input
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
+            if (Disposed)
+                return;
+
             if (disposing)
             {
                 if (!Ultraviolet.Disposed)
@@ -475,6 +446,7 @@ namespace Ultraviolet.SDL2.Input
                     Ultraviolet.Messages.Unsubscribe(this);
                 }
             }
+
             base.Dispose(disposing);
         }
 

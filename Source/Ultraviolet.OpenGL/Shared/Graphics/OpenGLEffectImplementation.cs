@@ -45,12 +45,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         public override EffectTechnique CurrentTechnique
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return this.currentTechnique;
-            }
+            get => this.currentTechnique;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);

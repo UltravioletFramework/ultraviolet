@@ -62,28 +62,12 @@ namespace Ultraviolet.Core.Collections
             /// <summary>
             /// Gets the element in the collection at the current position of the enumerator.
             /// </summary>
-            Object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            Object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Gets the element in the collection at the current position of the enumerator.
             /// </summary>
-            public T Current
-            {
-                get 
-                {
-                    Contract.EnsureNotDisposed(this, disposed);
-
-                    if (position < 0 || position >= heap.data.Length)
-                    {
-                        return default(T);
-                    }
-
-                    return heap.data[position];
-                }
-            }
+            public T Current => (position >= 0 && position < heap.data.Length) ? heap.data[position] : default(T);
 
             // Enumeration state.
             private readonly BinaryHeap<T> heap;

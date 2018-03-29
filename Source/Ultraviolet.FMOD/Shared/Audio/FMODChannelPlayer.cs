@@ -189,13 +189,7 @@ namespace Ultraviolet.FMOD.Audio
         }
 
         /// <inheritdoc cref="SongPlayer.IsPlaying"/>
-        public Boolean IsPlaying
-        {
-            get
-            {
-                return State == PlaybackState.Playing;
-            }
-        }
+        public Boolean IsPlaying => State == PlaybackState.Playing;
 
         /// <inheritdoc cref="SongPlayer.IsLooping"/>
         public Boolean IsLooping
@@ -281,10 +275,7 @@ namespace Ultraviolet.FMOD.Audio
         /// <inheritdoc cref="SongPlayer.Volume"/>
         public Single Volume
         {
-            get
-            {
-                return (State == PlaybackState.Stopped) ? 1f : volume;
-            }
+            get => (State == PlaybackState.Stopped) ? 1f : volume;
             set
             {
                 if (State == PlaybackState.Stopped)
@@ -306,10 +297,7 @@ namespace Ultraviolet.FMOD.Audio
         /// <inheritdoc cref="SongPlayer.Pitch"/>
         public Single Pitch
         {
-            get
-            {
-                return (State == PlaybackState.Stopped) ? 0f : pitch;
-            }
+            get => (State == PlaybackState.Stopped) ? 0f : pitch;
             set
             {
                 if (State == PlaybackState.Stopped)
@@ -331,10 +319,7 @@ namespace Ultraviolet.FMOD.Audio
         /// <inheritdoc cref="SongPlayer.Pan"/>
         public Single Pan
         {
-            get
-            {
-                return (State == PlaybackState.Stopped) ? 0f : pan;
-            }
+            get => (State == PlaybackState.Stopped) ? 0f : pan;
             set
             {
                 if (State == PlaybackState.Stopped)
@@ -356,6 +341,9 @@ namespace Ultraviolet.FMOD.Audio
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
+            if (Disposed)
+                return;
+
             if (Ultraviolet != null && !Ultraviolet.Disposed)
                 Stop();
 

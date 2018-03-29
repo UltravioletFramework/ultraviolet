@@ -102,121 +102,47 @@ namespace Ultraviolet.FMOD.Audio
         }
 
         /// <inheritdoc/>
-        public override PlaybackState State
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.State;
-            }
-        }
+        public override PlaybackState State => channelPlayer.State;
 
         /// <inheritdoc/>
-        public override Boolean IsPlaying
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.IsPlaying;
-            }
-        }
+        public override Boolean IsPlaying => channelPlayer.IsPlaying;
 
         /// <inheritdoc/>
         public override Boolean IsLooping
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.IsLooping;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                channelPlayer.IsLooping = value;
-            }
+            get => channelPlayer.IsLooping;
+            set => channelPlayer.IsLooping = value;
         }
 
         /// <inheritdoc/>
         public override TimeSpan Position
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.Position;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                channelPlayer.Position = value;
-            }
+            get => channelPlayer.Position;
+            set => channelPlayer.Position = value;
         }
 
         /// <inheritdoc/>
-        public override TimeSpan Duration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.Duration;
-            }
-        }
+        public override TimeSpan Duration => channelPlayer.Duration;
 
         /// <inheritdoc/>
         public override Single Volume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.Volume;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                channelPlayer.Volume = value;
-            }
+            get => channelPlayer.Volume;
+            set => channelPlayer.Volume = value;
         }
 
         /// <inheritdoc/>
         public override Single Pitch
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.Pitch;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                channelPlayer.Pitch = value;
-            }
+            get => channelPlayer.Pitch;
+            set => channelPlayer.Pitch = value;
         }
 
         /// <inheritdoc/>
         public override Single Pan
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return channelPlayer.Pan;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                channelPlayer.Pan = value;
-            }
+            get => channelPlayer.Pan;
+            set => channelPlayer.Pan = value;
         }
 
         /// <inheritdoc/>
