@@ -141,12 +141,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         internal MessageBoxResult MessageBoxResult
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return messageBoxResult;
-            }
+            get => messageBoxResult;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);

@@ -841,58 +841,37 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the style sheet that is currently applied to this view.
         /// </summary>
-        public UvssDocument StyleSheet
-        {
-            get { return combinedStyleSheet; }
-        }
+        public UvssDocument StyleSheet => combinedStyleSheet;
 
         /// <summary>
         /// Gets the element that is currently under the mouse cursor.
         /// </summary>
-        public IInputElement ElementUnderMouse
-        {
-            get { return mouseCursorTracker.ElementUnderCursor; }
-        }
+        public IInputElement ElementUnderMouse => mouseCursorTracker.ElementUnderCursor;
 
         /// <summary>
         /// Gets the element that currently has mouse capture.
         /// </summary>
-        public IInputElement ElementWithMouseCapture
-        {
-            get { return mouseCursorTracker.ElementWithCapture; }
-        }
+        public IInputElement ElementWithMouseCapture => mouseCursorTracker.ElementWithCapture;
 
         /// <summary>
         /// Gets the element that currently has new touch capture.
         /// </summary>
-        public IInputElement ElementWithNewTouchCapture
-        {
-            get { return elementWithNewTouchCapture; }
-        }
+        public IInputElement ElementWithNewTouchCapture => elementWithNewTouchCapture;
 
         /// <summary>
         /// Gets the element that currently has focus.
         /// </summary>
-        public IInputElement ElementWithFocus
-        {
-            get { return elementWithFocus; }
-        }
+        public IInputElement ElementWithFocus => elementWithFocus;
 
         /// <summary>
         /// Gets the root element of the view's layout.
         /// </summary>
-        public PresentationFoundationViewRoot LayoutRoot
-        {
-            get { return layoutRoot; }
-        }
+        public PresentationFoundationViewRoot LayoutRoot => layoutRoot;
 
         /// <summary>
         /// Gets the view's global resource collection.
         /// </summary>
-        public PresentationFoundationViewResources Resources
-        {
-            get { return resources; }
-        }
+        public PresentationFoundationViewResources Resources => resources;
         
         /// <summary>
         /// Performs a hit test against the layout root and any active popup windows.
