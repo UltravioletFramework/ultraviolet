@@ -36,8 +36,8 @@ namespace Ultraviolet.Content
         private ContentManager(UltravioletContext uv, String rootDirectory)
             : base(uv)
         {
-            this.rootDirectory = rootDirectory;
-            this.fullRootDirectory = (rootDirectory == null) ? Directory.GetCurrentDirectory() : Path.GetFullPath(rootDirectory);
+            this.RootDirectory = rootDirectory;
+            this.FullRootDirectory = (rootDirectory == null) ? Directory.GetCurrentDirectory() : Path.GetFullPath(rootDirectory);
             this.fileSystemService = FileSystemService.Create();
             this.overrideDirectories = new ContentOverrideDirectoryCollection(this);
 
@@ -1430,21 +1430,7 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <remarks>Setting this property to <see langword="true"/> will not purge any existing dependency tracking caches,
         /// so if you turn this on, be sure to do it before loading any content assets.</remarks>
-        public Boolean SuppressDependencyTracking
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return suppressDependencyTracking;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                suppressDependencyTracking = value;
-            }
-        }
+        public Boolean SuppressDependencyTracking { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the content manager should batch file deletions.
@@ -1455,12 +1441,7 @@ namespace Ultraviolet.Content
         /// those raw resources remain on disk until all of the assets are preprocessed.</remarks>
         public Boolean BatchDeletedFiles
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return batchDeletedFiles;
-            }
+            get => batchDeletedFiles;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -1477,18 +1458,12 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets the content manager's root directory.
         /// </summary>
-        public String RootDirectory
-        {
-            get { return rootDirectory; }
-        }
+        public String RootDirectory { get; }
 
         /// <summary>
         /// Gets the full path to the content manager's root directory.
         /// </summary>
-        public String FullRootDirectory
-        {
-            get { return fullRootDirectory; }
-        }
+        public String FullRootDirectory { get; }
 
         /// <summary>
         /// Gets the content manager's collection of override directories.
@@ -2531,7 +2506,7 @@ namespace Ultraviolet.Content
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
 
                 var directory = Path.GetDirectoryName(filename);
-                var relative = fileSystemService.GetRelativePath(rootDirectory, Path.Combine(directory, wrappedFilename));
+                var relative = fileSystemService.GetRelativePath(RootDirectory, Path.Combine(directory, wrappedFilename));
 
                 var wrappedAssetDirectory = String.Empty;
                 var wrappedAssetOverridden = false;
@@ -2676,13 +2651,9 @@ namespace Ultraviolet.Content
             get
             {
                 return (Ultraviolet.Platform == UltravioletPlatform.Android || Ultraviolet.Platform == UltravioletPlatform.iOS) ||
-                    GloballySuppressDependencyTracking || suppressDependencyTracking;
+                    GloballySuppressDependencyTracking || SuppressDependencyTracking;
             }
         }
-
-        // Property values.
-        private readonly String rootDirectory;
-        private readonly String fullRootDirectory;
 
         // State values.
         private readonly ContentOverrideDirectoryCollection overrideDirectories;
@@ -2690,7 +2661,6 @@ namespace Ultraviolet.Content
         private readonly Dictionary<String, AssetFlags> assetFlags = new Dictionary<String, AssetFlags>();
         private readonly FileSystemService fileSystemService;
         private readonly Object cacheSyncObject = new Object();
-        private Boolean suppressDependencyTracking;
 
         // File watching.
         private FileSystemWatcher rootFileSystemWatcher;

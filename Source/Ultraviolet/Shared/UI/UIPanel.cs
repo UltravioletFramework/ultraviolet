@@ -260,12 +260,7 @@ namespace Ultraviolet.UI
         /// </summary>
         public IUltravioletWindow Window
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return this.window;
-            }
+            get => this.window;
             internal set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -278,13 +273,8 @@ namespace Ultraviolet.UI
         /// <summary>
         /// The screen stack for the panel's current window.
         /// </summary>
-        public UIScreenStack Screens
-        {
-            get
-            {
-                return this.window == null ? null : Ultraviolet.GetUI().GetScreens(this.window);
-            }
-        }
+        public UIScreenStack Screens => 
+            this.window == null ? null : Ultraviolet.GetUI().GetScreens(this.window);
 
         /// <summary>
         /// Occurs when the panel is being updated.
