@@ -405,15 +405,7 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Single WindowScale
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return windowScale;
-            }
-        }
+        public Single WindowScale => windowScale;
 
         /// <inheritdoc/>
         public Point2 Position
@@ -422,9 +414,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                Int32 x, y;
-                SDL_GetWindowPosition(ptr, out x, out y);
-
+                SDL_GetWindowPosition(ptr, out var x, out var y);
                 return new Point2(x, y);
             }
             set
@@ -432,9 +422,7 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
-                {
                     windowedPosition = value;
-                }
 
                 SDL_SetWindowPosition(ptr, value.X, value.Y);
             }
@@ -443,19 +431,12 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public Point2 WindowedPosition
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return windowedPosition.GetValueOrDefault();
-            }
+            get => windowedPosition.GetValueOrDefault();
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 windowedPosition = value;
-                
-
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {
                     SDL_SetWindowPosition(ptr, value.X, value.Y);
@@ -491,9 +472,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                Int32 w, h;
-                SDL_GetWindowSize(ptr, out w, out h);
-
+                SDL_GetWindowSize(ptr, out var w, out var h);
                 return new Size2(w, h);
             }
             set
@@ -512,18 +491,12 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public Size2 WindowedClientSize
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return windowedClientSize.GetValueOrDefault();
-            }
+            get => windowedClientSize.GetValueOrDefault();
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 windowedClientSize = value;
-
                 if (GetWindowMode() == WindowMode.Windowed && GetWindowState() == WindowState.Normal)
                 {
                     SDL_SetWindowSize(ptr, value.Width, value.Height);
@@ -538,9 +511,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                Int32 w, h;
-                SDL_GetWindowMinimumSize(ptr, out w, out h);
-
+                SDL_GetWindowMinimumSize(ptr, out var w, out var h);
                 return new Size2(w, h);
             }
             set
@@ -558,9 +529,7 @@ namespace Ultraviolet.SDL2.Platform
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
-                Int32 w, h;
-                SDL_GetWindowMaximumSize(ptr, out w, out h);
-
+                SDL_GetWindowMaximumSize(ptr, out var w, out var h);
                 return new Size2(w, h);
             }
             set
@@ -574,30 +543,12 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public Boolean SynchronizeWithVerticalRetrace
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return synchronizeWithVerticalRetrace;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                synchronizeWithVerticalRetrace = value;
-            }
+            get => synchronizeWithVerticalRetrace;
+            set => synchronizeWithVerticalRetrace = value;
         }
 
         /// <inheritdoc/>
-        public Boolean Active
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return focused && !minimized;
-            }
-        }
+        public Boolean Active => focused && !minimized;
 
         /// <inheritdoc/>
         public Boolean Visible
@@ -649,25 +600,12 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Boolean Native
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return native;
-            }
-        }
+        public Boolean Native => native;
 
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenWindowed
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return grabsMouseWhenWindowed;
-            }
+            get => grabsMouseWhenWindowed;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -680,12 +618,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenFullscreenWindowed
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return grabsMouseWhenFullscreenWindowed;
-            }
+            get => grabsMouseWhenFullscreenWindowed;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -698,12 +631,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenFullscreen
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return grabsMouseWhenFullscreen;
-            }
+            get => grabsMouseWhenFullscreen;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -736,32 +664,18 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         public Surface2D Icon
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return this.icon;
-            }
+            get => icon;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 SetIcon(value ?? DefaultWindowIcon);
-
-                this.icon = value;
+                icon = value;
             }
         }
 
         /// <inheritdoc/>
-        public Compositor Compositor
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return compositor;
-            }
-        }
+        public Compositor Compositor => compositor;
 
         /// <inheritdoc/>
         public IUltravioletDisplay Display

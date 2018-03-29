@@ -340,30 +340,12 @@ namespace Ultraviolet.SDL2
         /// <inheritdoc/>
         public Boolean EmulateMouseWithTouchInput
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return this.emulateMouseWithTouchInput;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                this.emulateMouseWithTouchInput = value;
-            }
+            get => emulateMouseWithTouchInput;
+            set => emulateMouseWithTouchInput = value;
         }
 
         /// <inheritdoc/>
-        public Boolean IsMouseCursorAvailable
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return mouse.IsRegistered || (EmulateMouseWithTouchInput && IsTouchDeviceRegistered());
-            }
-        }
+        public Boolean IsMouseCursorAvailable => mouse.IsRegistered || (EmulateMouseWithTouchInput && IsTouchDeviceRegistered());
 
         /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;

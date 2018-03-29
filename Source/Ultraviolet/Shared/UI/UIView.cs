@@ -279,115 +279,63 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Gets the panel that owns the view.
         /// </summary>
-        public UIPanel Panel
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return panel;
-            }
-        }
+        public UIPanel Panel => panel;
 
         /// <summary>
         /// Gets the content manager used to load globally-sourced assets.
         /// </summary>
-        public ContentManager GlobalContent
-        {
-            get { return globalContent; }
-        }
+        public ContentManager GlobalContent => globalContent;
 
         /// <summary>
         /// Gets the content manager used to load locally-sourced assets.
         /// </summary>
-        public ContentManager LocalContent
-        {
-            get { return localContent; }
-        }
+        public ContentManager LocalContent => localContent;
 
         /// <summary>
         /// Gets the type of view model expected by this view.
         /// </summary>
-        public Type ViewModelType
-        {
-            get { return viewModelType; }
-        }
+        public Type ViewModelType => viewModelType;
 
         /// <summary>
         /// Gets the actual type of the view's current view model.
         /// </summary>
-        public Type ViewModelActualType
-        {
-            get { return (ViewModel == null) ? null : ViewModel.GetType(); }
-        }
+        public Type ViewModelActualType => ViewModel?.GetType();
 
         /// <summary>
         /// Gets the view's view model.
         /// </summary>
-        public Object ViewModel
-        {
-            get { return viewModel; }
-        }
+        public Object ViewModel => viewModel;
 
         /// <summary>
         /// Gets the area on the screen that the UI view occupies.
         /// </summary>
-        public Rectangle Area
-        {
-            get { return area; }
-        }
+        public Rectangle Area => area;
 
         /// <summary>
         /// Gets the x-coordinate of the view's top left corner.
         /// </summary>
-        public Int32 X
-        {
-            get { return area.X; }
-        }
+        public Int32 X => area.X;
 
         /// <summary>
         /// Gets the y-coordinate of the view's top left corner.
         /// </summary>
-        public Int32 Y
-        {
-            get { return area.Y; }
-        }
+        public Int32 Y => area.Y;
 
         /// <summary>
         /// Gets the view's width on the screen.
         /// </summary>
-        public Int32 Width
-        {
-            get { return area.Width; }
-        }
+        public Int32 Width => area.Width;
 
         /// <summary>
         /// Gets the view's height on the screen.
         /// </summary>
-        public Int32 Height
-        {
-            get { return area.Height; }
-        }
-        
+        public Int32 Height => area.Height;
+
         /// <summary>
         /// Gets or sets a value indicating whether input is enabled for this view.
         /// If <see langword="false"/>, then the view will not receive any input events.
         /// </summary>
-        public Boolean IsInputEnabled
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isInputEnabled;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                this.isInputEnabled = value;
-            }
-        }
+        public Boolean IsInputEnabled { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether input is allowed for this view.
@@ -395,39 +343,22 @@ namespace Ultraviolet.UI
         /// </summary>
         /// <remarks>While <see cref="IsInputEnabled"/> may be changed at any time, the value of <see cref="IsInputAllowed"/> is managed
         /// by Ultraviolet itself and corresponds to the <see cref="UIPanel.IsReadyForInput"/> property on the panel that owns the view.</remarks>
-        public Boolean IsInputAllowed
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return panel.IsReadyForInput;
-            }
-        }
+        public Boolean IsInputAllowed => panel.IsReadyForInput;
 
         /// <summary>
         /// Gets a value indicating whether input is currently both enabled and allowed on this view.
         /// </summary>
-        public Boolean IsInputEnabledAndAllowed
-        {
-            get { return IsInputEnabled && IsInputAllowed; }
-        }
-        
+        public Boolean IsInputEnabledAndAllowed => IsInputEnabled && IsInputAllowed;
+
         /// <summary>
         /// Gets the window in which the view is being rendered.
         /// </summary>
-        public IUltravioletWindow Window
-        {
-            get { return window; }
-        }
+        public IUltravioletWindow Window => window;
 
         /// <summary>
         /// Gets the display on which the view is being rendered.
         /// </summary>
-        public IUltravioletDisplay Display
-        {
-            get { return window?.Display; }
-        }
+        public IUltravioletDisplay Display => window?.Display;
 
         /// <summary>
         /// Occurs when the view is about to be opened.
@@ -512,7 +443,6 @@ namespace Ultraviolet.UI
         private ContentManager localContent;
         private Object viewModel;
         private Rectangle area;
-        private Boolean isInputEnabled = true;
         private IUltravioletWindow window;
     }
 }

@@ -215,6 +215,8 @@ namespace Ultraviolet.SDL2.Input
         {
             get
             {
+                Contract.EnsureNotDisposed(this, Disposed);
+
                 return (SDL_GetModState() & KMOD_NUM) == KMOD_NUM;
             }
         }
@@ -224,6 +226,8 @@ namespace Ultraviolet.SDL2.Input
         {
             get
             {
+                Contract.EnsureNotDisposed(this, Disposed);
+
                 return (SDL_GetModState() & KMOD_CAPS) == KMOD_CAPS;
             }
         }

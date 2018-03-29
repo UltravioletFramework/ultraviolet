@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Ultraviolet.Audio;
+using Ultraviolet.BASS.Messages;
 using Ultraviolet.BASS.Native;
 using Ultraviolet.Core;
+using Ultraviolet.Core.Messages;
 using static Ultraviolet.BASS.Native.BASSFXNative;
 using static Ultraviolet.BASS.Native.BASSNative;
-using Ultraviolet.Messages;
-using Ultraviolet.Core.Messages;
-using Ultraviolet.BASS.Messages;
 
 namespace Ultraviolet.BASS.Audio
 {
@@ -163,8 +162,6 @@ namespace Ultraviolet.BASS.Audio
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (BASSUtil.IsValidHandle(stream))
                 {
                     switch (BASS_ChannelIsActive(stream))
@@ -187,30 +184,15 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Boolean IsPlaying
         {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return State == PlaybackState.Playing; 
-            }
+            get => State == PlaybackState.Playing;
         }
 
         /// <inheritdoc/>
         public override Boolean IsLooping
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!IsChannelValid())
-                    return false;
-
-                return syncLoop != 0 || BASSUtil.GetIsLooping(stream);
-            }
+            get => IsChannelValid() ? (syncLoop != 0 || BASSUtil.GetIsLooping(stream)) : false;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 EnsureChannelIsValid();
 
                 if (syncLoop != 0)
@@ -231,20 +213,9 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override TimeSpan Position
         {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!IsChannelValid())
-                    return TimeSpan.Zero;
-
-                var position = BASSUtil.GetPositionInSeconds(stream);
-                return TimeSpan.FromSeconds(position);
-            }
+            get => IsChannelValid() ? BASSUtil.GetPositionAsTimeSpan(stream) : TimeSpan.Zero;
             set 
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 EnsureChannelIsValid();
 
                 if (value.TotalSeconds < 0 || value > Duration)
@@ -257,36 +228,16 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override TimeSpan Duration
         {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!IsChannelValid())
-                    return TimeSpan.Zero;
-
-                var duration = BASSUtil.GetDurationInSeconds(stream);
-                return TimeSpan.FromSeconds(duration);
-            }
+            get => IsChannelValid() ? BASSUtil.GetDurationAsTimeSpan(stream) : TimeSpan.Zero;
         }
 
         /// <inheritdoc/>
         public override Single Volume
         {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!IsChannelValid())
-                    return 1f;
-
-                return BASSUtil.GetVolume(stream);
-            }
+            get => IsChannelValid() ? BASSUtil.GetVolume(stream) : 1f;
             set 
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 EnsureChannelIsValid();
-
                 BASSUtil.SetVolume(stream, MathUtil.Clamp(value, -1f, 1f));
             }
         }
@@ -294,21 +245,10 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Single Pitch
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!IsChannelValid())
-                    return 0f;
-
-                return BASSUtil.GetPitch(stream);
-            }
+            get => IsChannelValid() ? BASSUtil.GetPitch(stream) : 0f;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 EnsureChannelIsValid();
-
                 BASSUtil.SetPitch(stream, MathUtil.Clamp(value, -1f, 1f));
             }
         }
@@ -316,21 +256,10 @@ namespace Ultraviolet.BASS.Audio
         /// <inheritdoc/>
         public override Single Pan
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (!IsChannelValid())
-                    return 0f;
-
-                return BASSUtil.GetPan(stream);
-            }
+            get => IsChannelValid() ? BASSUtil.GetPan(stream) : 0f;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 EnsureChannelIsValid();
-
                 BASSUtil.SetPan(stream, MathUtil.Clamp(value, -1f, 1f));
             }
         }
@@ -343,6 +272,8 @@ namespace Ultraviolet.BASS.Audio
                 StopInternal();
                 Ultraviolet.Messages.Unsubscribe(this);
             }
+
+            stream = 0;
 
             if (gcHandle.IsAllocated)
                 gcHandle.Free();

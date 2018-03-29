@@ -66,6 +66,26 @@ namespace Ultraviolet.BASS.Audio
         }
 
         /// <summary>
+        /// Gets the duration of the specified channel as a <see cref="TimeSpan"/> value.
+        /// </summary>
+        /// <param name="handle">The handle of the channel to evaluate.</param>
+        /// <returns>The duration of the specified channel.</returns>
+        public static TimeSpan GetDurationAsTimeSpan(UInt32 handle)
+        {
+            return TimeSpan.FromSeconds(GetDurationInSeconds(handle));
+        }
+
+        /// <summary>
+        /// Gets the position of the specified channel as a <see cref="TimeSpan"/> value.
+        /// </summary>
+        /// <param name="handle">The handle of the channel to evaluate.</param>
+        /// <returns>The current position of the channel.</returns>
+        public static TimeSpan GetPositionAsTimeSpan(UInt32 handle)
+        {
+            return TimeSpan.FromSeconds(GetPositionInSeconds(handle));
+        }
+
+        /// <summary>
         /// Sets the position of the specified channel.
         /// </summary>
         /// <param name="handle">The handle of the channel to modify.</param>

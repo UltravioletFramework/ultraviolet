@@ -178,65 +178,22 @@ namespace Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override IUltravioletWindow Window
-        {
-            get { return window; }
-        }
+        public override IUltravioletWindow Window => window;
 
         /// <inheritdoc/>
-        public override Point2 Position
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return new Point2(x, y);
-            }
-        }
+        public override Point2 Position => new Point2(x, y);
 
         /// <inheritdoc/>
-        public override Int32 X
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return x;
-            }
-        }
+        public override Int32 X => x;
 
         /// <inheritdoc/>
-        public override Int32 Y
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return y;
-            }
-        }
+        public override Int32 Y => y;
 
         /// <inheritdoc/>
-        public override Int32 WheelDeltaX
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return wheelDeltaX;
-            }
-        }
+        public override Int32 WheelDeltaX => wheelDeltaX;
 
         /// <inheritdoc/>
-        public override Int32 WheelDeltaY
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return wheelDeltaY;
-            }
-        }
+        public override Int32 WheelDeltaY => wheelDeltaY;
 
         /// <inheritdoc/>
         public override Boolean IsRegistered => isRegistered;

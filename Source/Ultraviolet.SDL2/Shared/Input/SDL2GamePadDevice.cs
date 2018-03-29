@@ -467,131 +467,37 @@ namespace Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override String Name
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return name;
-            }
-        }
+        public override String Name => name;
 
         /// <inheritdoc/>
-        public override Int32 PlayerIndex
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return playerIndex;
-            }
-        }
+        public override Int32 PlayerIndex => playerIndex;
 
         /// <inheritdoc/>
-        public override Single AxisDownThreshold
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return axisPressThreshold;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                axisPressThreshold = value;
-            }
-        }
+        public override Single AxisDownThreshold { get; set; }
 
         /// <inheritdoc/>
-        public override Single LeftTrigger
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return leftTrigger;
-            }
-        }
+        public override Single LeftTrigger => leftTrigger;
 
         /// <inheritdoc/>
-        public override Single RightTrigger
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return rightTrigger;
-            }
-        }
+        public override Single RightTrigger => rightTrigger;
 
         /// <inheritdoc/>
-        public override Single LeftJoystickX
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return leftJoystickX;
-            }
-        }
+        public override Single LeftJoystickX => leftJoystickX;
 
         /// <inheritdoc/>
-        public override Single LeftJoystickY
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return leftJoystickY;
-            }
-        }
+        public override Single LeftJoystickY => leftJoystickY;
 
         /// <inheritdoc/>
-        public override Vector2 LeftJoystickVector
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return new Vector2(leftJoystickX, leftJoystickY);
-            }
-        }
+        public override Vector2 LeftJoystickVector => new Vector2(leftJoystickX, leftJoystickY);
 
         /// <inheritdoc/>
-        public override Single RightJoystickX
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return rightJoystickX;
-            }
-        }
+        public override Single RightJoystickX => rightJoystickX;
 
         /// <inheritdoc/>
-        public override Single RightJoystickY
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return rightJoystickY;
-            }
-        }
+        public override Single RightJoystickY => rightJoystickY;
 
         /// <inheritdoc/>
-        public override Vector2 RightJoystickVector
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return new Vector2(rightJoystickX, rightJoystickY);
-            }
-        }
+        public override Vector2 RightJoystickVector => new Vector2(rightJoystickX, rightJoystickY);
 
         /// <inheritdoc/>
         public override Boolean IsRegistered => isRegistered;
@@ -599,26 +505,24 @@ namespace Ultraviolet.SDL2.Input
         /// <summary>
         /// Gets the SDL2 instance identifier of the game pad device.
         /// </summary>
-        internal Int32 InstanceID
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return instanceID;
-            }
-        }
+        internal Int32 InstanceID => instanceID;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
+            if (Disposed)
+                return;
+
             if (disposing)
             {
                 if (!Ultraviolet.Disposed)
                 {
                     Ultraviolet.Messages.Unsubscribe(this);
                 }
+
+                instanceID = 0;
             }
+
             base.Dispose(disposing);
         }
 
@@ -879,7 +783,7 @@ namespace Ultraviolet.SDL2.Input
         }    
 
         // State values.
-        private readonly Int32 instanceID;
+        private Int32 instanceID;
         private readonly Int32 playerIndex;
         private readonly IntPtr controller;
         private readonly InternalButtonState[] states;
@@ -887,7 +791,6 @@ namespace Ultraviolet.SDL2.Input
 
         // Property values.
         private readonly String name;
-        private Single axisPressThreshold;
         private Single leftTrigger;
         private Single prevLeftTrigger;
         private Single rightTrigger;

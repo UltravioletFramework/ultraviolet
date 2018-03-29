@@ -129,12 +129,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public IUltravioletAudioDevice PlaybackDevice
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return playbackDevice;
-            }
+            get => playbackDevice;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -196,13 +191,8 @@ namespace Ultraviolet.BASS
 
         /// <inheritdoc/>
         public Single AudioMasterVolume 
-        { 
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return audioMasterVolume;
-            }
+        {
+            get => audioMasterVolume;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -221,12 +211,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public Single SongsMasterVolume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return songsMasterVolume;
-            }
+            get => songsMasterVolume;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -244,12 +229,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public Single SoundEffectsMasterVolume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return soundEffectsMasterVolume;
-            }
+            get => soundEffectsMasterVolume;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -267,12 +247,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public Boolean AudioMuted 
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return audioMuted;
-            }
+            get => audioMuted;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -290,12 +265,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public Boolean SongsMuted
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return songsMuted;
-            }
+            get => songsMuted;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);
@@ -312,12 +282,7 @@ namespace Ultraviolet.BASS
         /// <inheritdoc/>
         public Boolean SoundEffectsMuted
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return soundEffectsMuted;
-            }
+            get => soundEffectsMuted;
             set
             {
                 Contract.EnsureNotDisposed(this, Disposed);

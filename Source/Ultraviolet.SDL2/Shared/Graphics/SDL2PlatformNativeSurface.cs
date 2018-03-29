@@ -324,10 +324,13 @@ namespace Ultraviolet.SDL2.Graphics
         public SDL_Surface* NativePtr => ptr;
 
         /// <inheritdoc/>
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(Boolean disposing)
         {
-            if (!Disposed)
-                SDL_FreeSurface(ptr);
+            if (Disposed)
+                return;
+
+            SDL_FreeSurface(ptr);
+            ptr = null;
 
             base.Dispose(disposing);
         }

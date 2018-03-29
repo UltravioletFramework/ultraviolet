@@ -455,8 +455,6 @@ namespace Ultraviolet
         [Conditional("DEBUG")]
         public void ValidateResource(UltravioletResource resource)
         {
-            Contract.EnsureNotDisposed(this, Disposed);
-
             if (resource != null && resource.Ultraviolet != this)
                 throw new InvalidOperationException(UltravioletStrings.InvalidResource);
         }

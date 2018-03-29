@@ -109,16 +109,7 @@ namespace Ultraviolet.BASS.Audio
         }
 
         /// <inheritdoc/>
-        public override TimeSpan Duration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                var duration = BASSUtil.GetDurationInSeconds(sample);
-                return TimeSpan.FromSeconds(duration);
-            }
-        }
+        public override TimeSpan Duration => BASSUtil.IsValidHandle(sample) ? BASSUtil.GetDurationAsTimeSpan(sample) : TimeSpan.Zero;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
