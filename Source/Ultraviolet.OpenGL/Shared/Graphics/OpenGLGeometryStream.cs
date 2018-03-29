@@ -153,59 +153,19 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return vao;
-            }
-        }
+        public UInt32 OpenGLName => vao;
 
         /// <inheritdoc/>
-        public override Boolean HasMultipleSources
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return vbuffers != null && vbuffers.Count > 0;
-            }
-        }
+        public override Boolean HasMultipleSources => (vbuffers?.Count ?? 0) > 0;
 
         /// <inheritdoc/>
-        public override Boolean HasVertices
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return vbuffers != null;
-            }
-        }
+        public override Boolean HasVertices => vbuffers != null;
 
         /// <inheritdoc/>
-        public override Boolean HasIndices
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return ibuffer != null;
-            }
-        }
+        public override Boolean HasIndices => ibuffer != null;
 
         /// <inheritdoc/>
-        public override IndexBufferElementType IndexBufferElementType
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return indexBufferElementType;
-            }
-        }
+        public override IndexBufferElementType IndexBufferElementType => indexBufferElementType;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -217,18 +177,19 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 if (!Ultraviolet.Disposed)
                 {
-                    if (vao != 0)
+                    var glname = vao;
+                    if (glname != 0)
                     {
                         Ultraviolet.QueueWorkItem((state) =>
                         {
-                            var vaoName = ((OpenGLGeometryStream)state).vao;
-
-                            gl.DeleteVertexArray(vaoName);
+                            gl.DeleteVertexArray(glname);
                             gl.ThrowIfError();
 
-                            OpenGLState.DeleteVertexArrayObject(vaoName, glElementArrayBufferBinding ?? 0);
-                        }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
+                            OpenGLState.DeleteVertexArrayObject(glname, glElementArrayBufferBinding ?? 0);
+                        }, null, WorkItemOptions.ReturnNullOnSynchronousExecution);
                     }
+
+                    vao = 0;
                 }
                 vbuffers.Clear();
                 ibuffer = null;
@@ -604,7 +565,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private IndexBufferElementType indexBufferElementType = IndexBufferElementType.Int16;
 
         // The Vertex Array Object (VAO) that this buffer represents.
-        private readonly UInt32 vao;
+        private UInt32 vao;
         private UInt32 program;
         private UInt32 offset;
 

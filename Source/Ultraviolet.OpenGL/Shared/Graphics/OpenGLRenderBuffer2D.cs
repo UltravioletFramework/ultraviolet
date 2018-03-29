@@ -190,15 +190,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return willNotBeSampled ? renderbuffer : texture.OpenGLName;
-            }
-        }
+        public UInt32 OpenGLName => willNotBeSampled ? renderbuffer : texture.OpenGLName;
 
         /// <inheritdoc/>
         public override RenderBufferFormat Format => format;
@@ -263,14 +255,18 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 if (willNotBeSampled)
                 {
-                    if (!Ultraviolet.Disposed && renderbuffer != 0)
+                    var glname = renderbuffer;
+
+                    if (!Ultraviolet.Disposed && glname != 0)
                     {
                         Ultraviolet.QueueWorkItem((state) =>
                         {
-                            gl.DeleteRenderBuffers(((OpenGLRenderBuffer2D)state).renderbuffer);
+                            gl.DeleteRenderBuffers(glname);
                             gl.ThrowIfError();
-                        }, this);
+                        }, null, WorkItemOptions.ReturnNullOnSynchronousExecution);
                     }
+
+                    renderbuffer = 0;
                 }
                 else
                 {
@@ -334,6 +330,6 @@ namespace Ultraviolet.OpenGL.Graphics
 
         // State values.
         private readonly OpenGLTexture2D texture;
-        private readonly UInt32 renderbuffer;
+        private UInt32 renderbuffer;
     }
 }

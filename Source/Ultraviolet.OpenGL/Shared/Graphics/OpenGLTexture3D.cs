@@ -123,7 +123,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Int32 CompareTo(Texture other)
         {
             var id1 = texture;
-            var id2 = (other == null) ? 0 : ((IOpenGLResource)other).OpenGLName;
+            var id2 = (other is IOpenGLResource glother) ? glother.OpenGLName : 0;
             return id1.CompareTo(id2);
         }
 
@@ -222,6 +222,9 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public UInt32 OpenGLName => texture;
+
+        /// <inheritdoc/>
         public override Int32 Width => width;
 
         /// <inheritdoc/>
@@ -250,29 +253,21 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                if (!Ultraviolet.Disposed)
+                var glname = texture;
+                if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     ((OpenGLUltravioletGraphics)Ultraviolet.GetGraphics()).UnbindTexture(this);
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteTexture(((OpenGLTexture3D)state).texture);
+                        gl.DeleteTexture(glname);
                         gl.ThrowIfError();
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
+
+                texture = 0;
             }
 
             base.Dispose(disposing);
-        }
-
-        /// <inheritdoc/>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return texture;
-            }
         }
 
         /// <summary>

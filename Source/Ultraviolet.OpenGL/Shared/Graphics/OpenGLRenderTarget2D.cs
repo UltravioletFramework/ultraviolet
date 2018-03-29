@@ -222,18 +222,8 @@ namespace Ultraviolet.OpenGL.Graphics
                 buffer.UnbindWrite();
         }
 
-        /// <summary>
-        /// Gets the resource's OpenGL name.
-        /// </summary>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return framebuffer; 
-            }
-        }
+        /// <inheritdoc/>
+        public UInt32 OpenGLName => framebuffer;
 
         /// <inheritdoc/>
         public override Size2 Size => new Size2(width, height);
@@ -292,15 +282,18 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                if (!Ultraviolet.Disposed)
+                var glname = framebuffer;
+                if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteFramebuffer(((OpenGLRenderTarget2D)state).framebuffer);
+                        gl.DeleteFramebuffer(glname);
                         gl.ThrowIfError();
-                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
+                    }, null, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
                 buffers.Clear();
+
+                framebuffer = 0;
             }
 
             base.Dispose(disposing);
@@ -570,7 +563,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private readonly Boolean glFramebufferTextureIsSupported;
         private readonly Boolean glDrawBufferIsSupported;
         private readonly Boolean glDrawBuffersIsSupported;
-        private readonly UInt32 framebuffer;
+        private UInt32 framebuffer;
         private Int32 colorAttachments;
         private Int32 depthAttachments;
         private Int32 stencilAttachments;

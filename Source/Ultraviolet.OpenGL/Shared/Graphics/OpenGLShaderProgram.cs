@@ -145,15 +145,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the resource's OpenGL name.
         /// </summary>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return program;
-            }
-        }
+        public UInt32 OpenGLName => program;
 
         /// <summary>
         /// Gets the program's vertex shader.
@@ -181,11 +173,12 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                if (!Ultraviolet.Disposed)
+                var glname = program;
+                if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteProgram(((OpenGLShaderProgram)state).program);
+                        gl.DeleteProgram(glname);
                         gl.ThrowIfError();
                     }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
@@ -195,6 +188,8 @@ namespace Ultraviolet.OpenGL.Graphics
                     SafeDispose.Dispose(vertexShader);
                     SafeDispose.Dispose(fragmentShader);
                 }
+
+                program = 0;
             }
 
             base.Dispose(disposing);
@@ -271,7 +266,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         // Property values.
-        private readonly UInt32 program;
+        private UInt32 program;
         private readonly OpenGLVertexShader vertexShader;
         private readonly OpenGLFragmentShader fragmentShader;
         private readonly OpenGLShaderUniformCollection uniforms;

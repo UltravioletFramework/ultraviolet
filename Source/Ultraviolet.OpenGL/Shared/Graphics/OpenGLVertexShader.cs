@@ -49,15 +49,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the OpenGL shader handle.
         /// </summary>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
-                return shader;
-            }
-        }
+        public UInt32 OpenGLName => shader;
 
         /// <summary>
         /// Gets the shader source metadata for this shader.
@@ -75,20 +67,23 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                if (!Ultraviolet.Disposed)
+                var glname = shader;
+                if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteShader(((OpenGLVertexShader)state).shader);
+                        gl.DeleteShader(glname);
                         gl.ThrowIfError();
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
+
+                shader = 0;
             }
 
             base.Dispose(disposing);
         }
 
         // Property values.
-        private readonly UInt32 shader;
+        private UInt32 shader;
     }
 }
