@@ -54,7 +54,7 @@ namespace Ultraviolet
     /// <summary>
     /// Represents the Ultraviolet Framework and all of its subsystems.
     /// </summary>
-    public abstract class UltravioletContext : 
+    public abstract class UltravioletContext :
         IMessageSubscriber<UltravioletMessageID>,
         ICrossThreadUltravioletContext,
         IDisposable
@@ -70,7 +70,7 @@ namespace Ultraviolet
             Contract.Require(configuration, nameof(configuration));
 
             AcquireContext();
-            
+
             this.isRunningInServiceMode = configuration.EnableServiceMode;
             this.supportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
 
@@ -121,7 +121,7 @@ namespace Ultraviolet
         /// <param name="data">The data for the message that was received.</param>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             OnReceivedMessage(type, data);
         }
@@ -148,7 +148,7 @@ namespace Ultraviolet
         /// </summary>
         public void ProcessSingleWorkItem()
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(thread == Thread.CurrentThread, UltravioletStrings.WorkItemsMustBeProcessedOnMainThread);
 
             var syncContext = SynchronizationContext.Current as UltravioletSynchronizationContext;
@@ -161,14 +161,14 @@ namespace Ultraviolet
         /// </summary>
         public void ProcessWorkItems()
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(thread == Thread.CurrentThread, UltravioletStrings.WorkItemsMustBeProcessedOnMainThread);
 
             var syncContext = SynchronizationContext.Current as UltravioletSynchronizationContext;
             if (syncContext != null)
                 syncContext.ProcessWorkItems();
         }
-        
+
         /// <summary>
         /// Called when a new frame is started.
         /// </summary>
@@ -256,7 +256,7 @@ namespace Ultraviolet
         /// <returns>The default factory method of the specified delegate type, or <see langword="null"/> if no such factory method is registered.</returns>
         public T TryGetFactoryMethod<T>() where T : class
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return factory.TryGetFactoryMethod<T>();
         }
@@ -269,7 +269,7 @@ namespace Ultraviolet
         /// <returns>The specified named factory method, or <see langword="null"/> if no such factory method is registered.</returns>
         public T TryGetFactoryMethod<T>(String name) where T : class
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return factory.TryGetFactoryMethod<T>(name);
         }
@@ -281,7 +281,7 @@ namespace Ultraviolet
         /// <returns>The default factory method of the specified delegate type.</returns>
         public T GetFactoryMethod<T>() where T : class
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return factory.GetFactoryMethod<T>();
         }
@@ -294,7 +294,7 @@ namespace Ultraviolet
         /// <returns>The specified named factory method.</returns>
         public T GetFactoryMethod<T>(String name) where T : class
         {
-            Contract.EnsureNotDisposed(this, disposed);
+            Contract.EnsureNotDisposed(this, Disposed);
             Contract.RequireNotEmpty(name, nameof(name));
 
             return factory.GetFactoryMethod<T>(name);
@@ -356,7 +356,7 @@ namespace Ultraviolet
 
             return task;
         }
-                
+
         /// <summary>
         /// Queues a work item for execution on Ultraviolet's main thread.
         /// </summary>
@@ -373,7 +373,7 @@ namespace Ultraviolet
             if (IsExecutingOnCurrentThread && (options & WorkItemOptions.ForceAsynchronousExecution) != WorkItemOptions.ForceAsynchronousExecution)
             {
                 workItem(state);
-                return (options & WorkItemOptions.ReturnNullOnSynchronousExecution) == WorkItemOptions.ReturnNullOnSynchronousExecution ? 
+                return (options & WorkItemOptions.ReturnNullOnSynchronousExecution) == WorkItemOptions.ReturnNullOnSynchronousExecution ?
                     null : Task.FromResult(true);
             }
             return taskFactory.StartNew(workItem, state);
@@ -437,7 +437,7 @@ namespace Ultraviolet
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
-            
+
             if (IsExecutingOnCurrentThread && (options & WorkItemOptions.ForceAsynchronousExecution) != WorkItemOptions.ForceAsynchronousExecution)
             {
                 var result = workItem(state);
@@ -445,8 +445,8 @@ namespace Ultraviolet
                     null : Task.FromResult(result).Unwrap();
             }
             return taskFactory.StartNew(workItem, state).Unwrap();
-       }
-        
+        }
+
         /// <summary>
         /// Ensures that the specified resource was created by this context.
         /// This method is compiled out if the <c>DEBUG</c> compilation symbol is not specified.
@@ -464,123 +464,50 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the runtime on which this context is running.
         /// </summary>
-        public UltravioletRuntime Runtime
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return UltravioletPlatformInfo.CurrentRuntime;
-            }
-        }
+        public UltravioletRuntime Runtime => UltravioletPlatformInfo.CurrentRuntime;
 
         /// <summary>
         /// Gets the platform on which this context is running.
         /// </summary>
-        public UltravioletPlatform Platform
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return UltravioletPlatformInfo.CurrentPlatform;
-            }
-        }
+        public UltravioletPlatform Platform => UltravioletPlatformInfo.CurrentPlatform;
 
         /// <summary>
         /// Gets the object that is hosting the Ultraviolet context.
         /// </summary>
-        public IUltravioletHost Host
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
+        public IUltravioletHost Host => host;
 
-                return host;
-            }
-        }
-        
         /// <summary>
         /// Gets the context's message queue.
         /// </summary>
-        public IMessageQueue<UltravioletMessageID> Messages
-        {
-            get { return messages; }
-        }
+        public IMessageQueue<UltravioletMessageID> Messages => messages;
 
         /// <summary>
         /// Gets the assembly which provides compatibility services for the current platform.
         /// </summary>
-        public Assembly PlatformCompatibilityShimAssembly
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return platformCompatibilityShimAssembly;
-            }
-        }
+        public Assembly PlatformCompatibilityShimAssembly => platformCompatibilityShimAssembly;
 
         /// <summary>
         /// Gets the assembly which implements views for the user interface subsystem.
         /// </summary>
-        public Assembly ViewProviderAssembly
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return viewProviderAssembly;
-            }
-        }
+        public Assembly ViewProviderAssembly => viewProviderAssembly;
 
         /// <summary>
         /// Gets a value indicating whether the context supports high-density display modes
         /// such as Retina and Retina HD. This allows the application to make use of every physical pixel 
         /// on the screen, rather than being scaled to use logical pixels.
         /// </summary>
-        public Boolean SupportsHighDensityDisplayModes
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return supportsHighDensityDisplayModes;
-            }
-        }
+        public Boolean SupportsHighDensityDisplayModes => supportsHighDensityDisplayModes;
 
         /// <summary>
         /// Gets or sets a value indicating whether the context is currently processing messages
         /// from the physical input devices.
         /// </summary>
-        public Boolean IsHardwareInputDisabled
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isHardwareInputDisabled;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                isHardwareInputDisabled = value;
-            }
-        }
+        public Boolean IsHardwareInputDisabled { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the context is running in service mode.
         /// </summary>
-        public Boolean IsRunningInServiceMode
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return isRunningInServiceMode;
-            }
-        }
+        public Boolean IsRunningInServiceMode => isRunningInServiceMode;
 
         /// <summary>
         /// Gets a value indicating whether the current thread is the thread which
@@ -589,31 +516,17 @@ namespace Ultraviolet
         /// <remarks>Many tasks, such as content loading, must take place on the Ultraviolet
         /// context's main thread.  Such tasks can be queued using the <see cref="QueueWorkItem(Action{Object}, Object, WorkItemOptions)"/> method
         /// or one of its overloads, which will run the task at the start of the next update.</remarks>
-        public Boolean IsExecutingOnCurrentThread
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return Thread.CurrentThread == thread;
-            }
-        }
+        public Boolean IsExecutingOnCurrentThread => Thread.CurrentThread == thread;
 
         /// <summary>
         /// Gets a value indicating whether the context has been initialized.
         /// </summary>
-        public Boolean IsInitialized
-        {
-            get { return isInitialized; }
-        }
+        public Boolean IsInitialized { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the object has been disposed.
         /// </summary>
-        public Boolean Disposed
-        {
-            get { return disposed; }
-        }
+        public Boolean Disposed { get; private set; }
 
         /// <summary>
         /// Occurs when the current context is invalidated.
@@ -761,7 +674,7 @@ namespace Ultraviolet
         /// </summary>
         protected void InitializeContext()
         {
-            isInitialized = true;
+            IsInitialized = true;
             
             GetContent().Processors
                 .SetFallbackType<UltravioletFont>(typeof(SpriteFont));
@@ -820,7 +733,7 @@ namespace Ultraviolet
         /// <see langword="false"/> if the object is being finalized.</param>
         protected virtual void Dispose(Boolean disposing)
         {
-            if (disposed)
+            if (Disposed)
                 return;
 
             if (disposing)
@@ -842,7 +755,7 @@ namespace Ultraviolet
 
             ChangeSynchronizationContext(null);
 
-            this.disposed = true;
+            this.Disposed = true;
             this.disposing = false;
 
             ReleaseContext();
@@ -1095,10 +1008,7 @@ namespace Ultraviolet
         private Assembly platformCompatibilityShimAssembly;
         private Assembly viewProviderAssembly;
         private Boolean supportsHighDensityDisplayModes;
-        private Boolean isHardwareInputDisabled;
         private Boolean isRunningInServiceMode;
-        private Boolean isInitialized;
-        private Boolean disposed;
         private Boolean disposing;
 
         // The context's list of pending tasks.

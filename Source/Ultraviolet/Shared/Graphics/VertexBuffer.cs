@@ -111,41 +111,17 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the buffer's vertex declaration.
         /// </summary>
-        public VertexDeclaration VertexDeclaration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
- 
-                return vertexDeclaration; 
-            }
-        }
+        public VertexDeclaration VertexDeclaration => vertexDeclaration;
 
         /// <summary>
         /// Gets the buffer's vertex count.
         /// </summary>
-        public Int32 VertexCount
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
- 
-                return vertexCount; 
-            }
-        }
+        public Int32 VertexCount => vertexCount;
 
         /// <summary>
         /// Gets the buffer's size in bytes.
         /// </summary>
-        public Int32 SizeInBytes
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return vertexCount * vertexDeclaration.VertexStride;
-            }
-        }
+        public Int32 SizeInBytes => vertexCount * vertexDeclaration.VertexStride;
 
         // Property values.
         private readonly VertexDeclaration vertexDeclaration;

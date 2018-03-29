@@ -113,61 +113,23 @@ namespace Ultraviolet.Content
         }
 
         /// <inheritdoc/>
-        public override Boolean CanRead
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return source.CanRead;
-            }
-        }
+        public override Boolean CanRead => source.CanRead;
 
         /// <inheritdoc/>
-        public override Boolean CanSeek
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return source.CanSeek;
-            }
-        }
+        public override Boolean CanSeek => source.CanSeek;
 
         /// <inheritdoc/>
-        public override Boolean CanWrite
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return false;
-            }
-        }
+        public override Boolean CanWrite => false;
 
         /// <inheritdoc/>
-        public override Int64 Length
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return length;
-            }
-        }
+        public override Int64 Length => length;        
 
         /// <inheritdoc/>
         public override Int64 Position
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, disposed);
-
-                return source.Position - start;
-            }
+            get => source.Position - start;
             set
             {
-                Contract.EnsureNotDisposed(this, disposed);
                 Contract.EnsureRange(value >= 0 && value < Length, nameof(value));
 
                 source.Position = start + value;

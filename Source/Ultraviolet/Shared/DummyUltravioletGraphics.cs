@@ -286,26 +286,10 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
-        public Single FrameRate
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return 60f;
-            }
-        }
+        public Single FrameRate => 60f;
 
         /// <inheritdoc/>
-        public GraphicsCapabilities Capabilities
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return capabilities;
-            }
-        }
+        public GraphicsCapabilities Capabilities => capabilities;
 
         /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;

@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
 {
@@ -45,34 +44,16 @@ namespace Ultraviolet.Graphics
         /// <inheritdoc/>
         public Texture2D Texture
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epTexture.GetValueTexture2D();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epTexture.SetValue(value);
-            }
+            get => epTexture.GetValueTexture2D();
+            set => epTexture.SetValue(value);
         }
 
         /// <inheritdoc/>
         public Size2 TextureSize
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return textureSize;
-            }
+            get => textureSize;
             set
             {
-
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (textureSize != value)
                 {
                     textureSize = value;
@@ -85,52 +66,22 @@ namespace Ultraviolet.Graphics
         /// <inheritdoc/>
         public Matrix World
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epWorld.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epWorld.SetValue(value);
-            }
+            get => epWorld.GetValueMatrix();
+            set => epWorld.SetValue(value);
         }
 
         /// <inheritdoc/>
         public Matrix View
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epView.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epView.SetValue(value);
-            }
+            get => epView.GetValueMatrix();
+            set => epView.SetValue(value);
         }
 
         /// <inheritdoc/>
         public Matrix Projection
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epProjection.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epProjection.SetValue(value);
-            }
+            get => epProjection.GetValueMatrix();
+            set => epProjection.SetValue(value);
         }
 
         /// <summary>
@@ -139,18 +90,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Single Mix
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epMix.GetValueSingle();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epMix.SetValue(value);
-            }
+            get => epMix.GetValueSingle();
+            set => epMix.SetValue(value);
         }
 
         /// <summary>
@@ -158,16 +99,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Single Radius
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return radius;
-            }
+            get => radius;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (radius != value)
                 {
                     radius = value;
@@ -181,16 +115,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public BlurDirection Direction
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return direction;
-            }
+            get => direction;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (direction != value)
                 {
                     direction = value;
