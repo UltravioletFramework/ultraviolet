@@ -18,18 +18,9 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the performance statistics which have been collected by the Ultraviolet Presentation Foundation.
         /// </summary>
-        public PresentationFoundationPerformanceStats PerformanceStats
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return performanceStats;
-            }
-        }
+        public PresentationFoundationPerformanceStats PerformanceStats { get; } = new PresentationFoundationPerformanceStats();
 
         // Diagnostics values.
-        private readonly PresentationFoundationPerformanceStats performanceStats = new PresentationFoundationPerformanceStats();
         private DiagnosticsPanel diagnosticsPanel;
     }
 }
