@@ -25,6 +25,7 @@ namespace Ultraviolet.Content
         public void RegisterImportersAndProcessors(Assembly asm)
         {
             Contract.Require(asm, nameof(asm));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             importers.RegisterAssembly(asm);
             processors.RegisterAssembly(asm);
@@ -34,6 +35,7 @@ namespace Ultraviolet.Content
         public void RegisterImportersAndProcessors(IEnumerable<Assembly> additionalAssemblies = null)
         {
             Contract.EnsureNot(registered, UltravioletStrings.ContentHandlersAlreadyRegistered);
+            Contract.EnsureNotDisposed(this, Disposed);
 
             var asmCore = typeof(UltravioletContext).Assembly;
             var asmImpl = Ultraviolet.GetType().Assembly;
@@ -62,37 +64,13 @@ namespace Ultraviolet.Content
         }
 
         /// <inheritdoc/>
-        public ContentManifestRegistry Manifests
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return manifests;
-            }
-        }
+        public ContentManifestRegistry Manifests => manifests;
 
         /// <inheritdoc/>
-        public ContentImporterRegistry Importers
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            
-                return importers; 
-            }
-        }
+        public ContentImporterRegistry Importers => importers;
 
         /// <inheritdoc/>
-        public ContentProcessorRegistry Processors
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
-                return processors;
-            }
-        }
+        public ContentProcessorRegistry Processors => processors;
 
         /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;

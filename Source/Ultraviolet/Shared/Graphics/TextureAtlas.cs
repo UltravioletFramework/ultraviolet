@@ -85,54 +85,22 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="cell">The name of the cell for which to retrieve a location.</param>
         /// <returns>The location of the cell with the specified name.</returns>
-        public Rectangle this[String cell]
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed); 
-                
-                return cells[cell];
-            }
-        }
+        public Rectangle this[String cell] => cells[cell];
 
         /// <summary>
         /// Gets the texture atlas' width in pixels.
         /// </summary>
-        public Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed); 
-                
-                return texture.Width;
-            }
-        }
+        public Int32 Width => texture.Width;
 
         /// <summary>
         /// Gets the texture atlas' height in pixels.
         /// </summary>
-        public Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed); 
-                
-                return texture.Height;
-            }
-        }
-        
+        public Int32 Height => texture.Height;
+
         /// <summary>
         /// Gets the number of cells on the texture atlas.
         /// </summary>
-        public Int32 CellCount
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed); 
-                
-                return cells.Count;
-            }
-        }
+        public Int32 CellCount => cells.Count;
 
         /// <summary>
         /// Releases resources associated with the object.

@@ -57,13 +57,13 @@ namespace Ultraviolet.UI
             if (View != null)
             {
                 var newDensityScale = Window?.Display?.DensityScale ?? 0f;
-                if (newDensityScale != scale)
+                if (newDensityScale != Scale)
                 {
-                    if (scale > 0)
+                    if (Scale > 0)
                     {
                         RecreateView(LoadPanelDefinition(definitionAsset));
                     }
-                    scale = newDensityScale;
+                    Scale = newDensityScale;
                 }
             }
 
@@ -104,57 +104,25 @@ namespace Ultraviolet.UI
         }
 
         /// <inheritdoc/>
-        public override Int32 X
-        {
-            get { return 0; }
-        }
+        public override Int32 X => 0;
 
         /// <inheritdoc/>
-        public override Int32 Y
-        {
-            get { return 0; }
-        }
+        public override Int32 Y => 0;
 
         /// <inheritdoc/>
-        public override Size2 Size
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return WindowSize;
-            }
-        }
+        public override Size2 Size => WindowSize;
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return WindowWidth;
-            }
-        }
+        public override Int32 Width => WindowWidth;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return WindowHeight;
-            }
-        }
+        public override Int32 Height => WindowHeight;
 
         /// <inheritdoc/>
         public override Boolean IsReadyForInput
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (!IsOpen)
                     return false;
 
@@ -167,66 +135,24 @@ namespace Ultraviolet.UI
         }
 
         /// <inheritdoc/>
-        public override Boolean IsReadyForBackgroundInput
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return IsOpen;
-            }
-        }
+        public override Boolean IsReadyForBackgroundInput => IsOpen;
 
         /// <summary>
         /// Gets or sets a value indicating whether this screen is opaque.
         /// </summary>
         /// <remarks>Marking a screen as opaque is a performance optimization. If a screen is opaque, then Ultraviolet
         /// will not render any screens below it in the screen stack.</remarks>
-        public Boolean IsOpaque
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return this.isOpaque;
-            }
-            protected set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                this.isOpaque = value;
-            }
-        }
+        public Boolean IsOpaque { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether this screen is the topmost screen on its current window.
         /// </summary>
-        public Boolean IsTopmost
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                var screens = WindowScreens;
-                if (screens == null)
-                    return false;
-
-                return screens.Peek() == this;
-            }
-        }
+        public Boolean IsTopmost => WindowScreens?.Peek() == this;
 
         /// <summary>
         /// Gets the scale at which the screen is currently being rendered.
         /// </summary>
-        public Single Scale
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return scale;
-            }
-        }
+        public Single Scale { get; private set; }
 
         /// <inheritdoc/>
         internal override void HandleOpening()
@@ -306,7 +232,7 @@ namespace Ultraviolet.UI
 
             var display = Window?.Display ?? Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var density = display.DensityBucket;
-            scale = display.DensityScale;
+            Scale = display.DensityScale;
 
             var watch = Ultraviolet.GetUI().WatchingViewFilesForChanges;
             if (watch)
@@ -384,10 +310,6 @@ namespace Ultraviolet.UI
                 pendingView = null;
             }
         }
-
-        // Property values.
-        private Boolean isOpaque;
-        private Single scale;
 
         // State values.
         private UIView pendingView;

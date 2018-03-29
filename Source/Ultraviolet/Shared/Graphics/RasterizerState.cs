@@ -96,15 +96,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public CullMode CullMode
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return cullMode;
-            }
+            get => cullMode;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 cullMode = value;
@@ -116,15 +110,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public FillMode FillMode
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return fillMode;
-            }
+            get => fillMode;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 fillMode = value;
@@ -136,15 +124,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Single DepthBias
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depthBias;
-            }
+            get => depthBias;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 depthBias = value;
@@ -156,15 +138,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Single SlopeScaleDepthBias
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return slopeScaleDepthBias;
-            }
+            get => slopeScaleDepthBias;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 slopeScaleDepthBias = value;
@@ -176,15 +152,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean ScissorTestEnable
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return scissorTestEnable;
-            }
+            get => scissorTestEnable;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 scissorTestEnable = value;

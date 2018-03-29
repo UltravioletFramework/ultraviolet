@@ -106,56 +106,31 @@ namespace Ultraviolet.Graphics
         {
 
         }
-        
+
         /// <summary>
         /// Gets the window with which this compositor is associated.
         /// </summary>
-        public IUltravioletWindow Window
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return window;
-            }
-        }
+        public IUltravioletWindow Window => window;
 
         /// <summary>
         /// Gets the current composition context.
         /// </summary>
-        public CompositionContext CurrentContext
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return currentContext;
-            }
-        }
+        public CompositionContext CurrentContext => currentContext;
 
         /// <summary>
         /// Gets the current size of the composition buffer.
         /// </summary>
-        public abstract Size2 Size
-        {
-            get;
-        }
+        public abstract Size2 Size { get; }
 
         /// <summary>
         /// Gets the current width of the composition buffer.
         /// </summary>
-        public Int32 Width
-        {
-            get { return Size.Width; }
-        }
+        public Int32 Width => Size.Width;
 
         /// <summary>
         /// Gets the current height of the composition buffer.
         /// </summary>
-        public Int32 Height
-        {
-            get { return Size.Height; }
-        }
+        public Int32 Height => Size.Height;
 
         // Property values.
         private readonly IUltravioletWindow window;

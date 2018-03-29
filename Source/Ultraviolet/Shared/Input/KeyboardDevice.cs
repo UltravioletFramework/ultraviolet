@@ -103,41 +103,17 @@ namespace Ultraviolet.Input
         /// <summary>
         /// Gets a value indicating whether one of the Control modifier keys is currently down.
         /// </summary>
-        public Boolean IsControlDown
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return IsKeyDown(Key.LeftControl) || IsKeyDown(Key.RightControl);
-            }
-        }
+        public Boolean IsControlDown => IsKeyDown(Key.LeftControl) || IsKeyDown(Key.RightControl);
 
         /// <summary>
         /// Gets a value indicating whether one of the Alt modifier keys is currently down.
         /// </summary>
-        public Boolean IsAltDown
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return IsKeyDown(Key.LeftAlt) || IsKeyDown(Key.RightAlt);
-            }
-        }
+        public Boolean IsAltDown => IsKeyDown(Key.LeftAlt) || IsKeyDown(Key.RightAlt);
 
         /// <summary>
         /// Gets a value indicating whether one of the Shift modifier keys is currently down.
         /// </summary>
-        public Boolean IsShiftDown
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return IsKeyDown(Key.LeftShift) || IsKeyDown(Key.RightShift);
-            }
-        }
+        public Boolean IsShiftDown => IsKeyDown(Key.LeftShift) || IsKeyDown(Key.RightShift);
 
         /// <summary>
         /// Gets a value indicating whether the Num Lock modifier is currently down.

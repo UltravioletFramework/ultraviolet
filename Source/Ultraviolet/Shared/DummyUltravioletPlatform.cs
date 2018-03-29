@@ -38,50 +38,18 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public Cursor Cursor
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return default(Cursor);
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return null; }
+            set { }
         }
 
         /// <inheritdoc/>
-        public ClipboardService Clipboard
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return clipboard;
-            }
-        }
+        public ClipboardService Clipboard => clipboard;
 
         /// <inheritdoc/>
-        public IUltravioletWindowInfo Windows
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return windows;
-            }
-        }
+        public IUltravioletWindowInfo Windows => windows;
 
         /// <inheritdoc/>
-        public IUltravioletDisplayInfo Displays
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return displays;
-            }
-        }
+        public IUltravioletDisplayInfo Displays => displays;
 
         /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;

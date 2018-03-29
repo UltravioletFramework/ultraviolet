@@ -52,14 +52,6 @@ namespace Ultraviolet.Graphics
         }
 
         /// <inheritdoc/>
-        public override Size2 Size
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return Window.DrawableSize;
-            }
-        }
+        public override Size2 Size => Window.DrawableSize;
     }
 }

@@ -248,27 +248,14 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public Boolean EmulateMouseWithTouchInput
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return true;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);                
-            }
-        }
+            get { return true; }
+            set { }
+       }
 
         /// <inheritdoc/>
         public Boolean IsMouseCursorAvailable
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return false;
-            }
+            get { return false; }
         }
 
         /// <inheritdoc/>

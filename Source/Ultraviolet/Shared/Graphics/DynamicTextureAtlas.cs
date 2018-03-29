@@ -72,6 +72,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public void Invalidate()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             this.IsDirty = true;
         }
 
@@ -80,6 +82,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public void Flush()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             this.IsDirty = false;
             this.Texture.SetData(this.Surface);
         }
@@ -110,6 +114,8 @@ namespace Ultraviolet.Graphics
         /// <returns><see langword="true"/> if the cell was reserved successfully; otherwise, <see langword="false"/>.</returns>
         public Boolean TryReserveCell(Int32 width, Int32 height, out Reservation result)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             var paddedWidth = width + Spacing;
 
             if (x + paddedWidth > Width)

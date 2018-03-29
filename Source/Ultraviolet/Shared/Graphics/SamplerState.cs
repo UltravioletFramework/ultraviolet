@@ -144,15 +144,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public TextureAddressMode AddressU
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return addressU;
-            }
+            get => addressU;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 addressU = value;
@@ -164,15 +158,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public TextureAddressMode AddressV
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return addressV;
-            }
+            get => addressV;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 addressV = value;
@@ -184,15 +172,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public TextureAddressMode AddressW
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return addressW;
-            }
+            get => addressW;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 addressW = value;
@@ -204,15 +186,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public TextureFilter Filter
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return filter;
-            }
+            get => filter;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 filter = value;
@@ -224,15 +200,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Int32 MaxAnisotropy
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return maxAnisotropy;
-            }
+            get => maxAnisotropy;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 maxAnisotropy = value;
@@ -244,15 +214,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Single MipMapLevelOfDetailBias
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return mipMapLevelOfDetailBias;
-            }
+            get => mipMapLevelOfDetailBias;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 mipMapLevelOfDetailBias = value;

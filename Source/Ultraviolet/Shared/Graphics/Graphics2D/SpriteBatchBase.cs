@@ -3,6 +3,7 @@ using System.Security;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
+using System.Runtime.CompilerServices;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
@@ -59,6 +60,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Begins a sprite batch operation using deferred sort and default state objects.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Begin()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -72,6 +74,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="sortMode">The batch's sprite drawing order.</param>
         /// <param name="blendState">The batch's blend state.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Begin(SpriteSortMode sortMode, BlendState blendState)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -88,6 +91,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="samplerState">The batch's sampler state.</param>
         /// <param name="depthStencilState">The batch's depth/stencil state.</param>
         /// <param name="rasterizerState">The batch's rasterizer state.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -105,6 +109,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="depthStencilState">The batch's depth/stencil state.</param>
         /// <param name="rasterizerState">The batch's rasterizer state.</param>
         /// <param name="effect">The batch's custom effect.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -123,6 +128,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="rasterizerState">The batch's rasterizer state.</param>
         /// <param name="effect">The batch's custom effect.</param>
         /// <param name="transformMatrix">The batch's transformation matrix.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix transformMatrix)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -135,6 +141,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Begins a sprite batch operation using the specified state values.
         /// </summary>
         /// <param name="state">A <see cref="SpriteBatchState"/> value representing the batch's state.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Begin(SpriteBatchState state)
         {
             Begin(state.SortMode, state.BlendState, state.SamplerState, state.DepthStencilState, state.RasterizerState, state.Effect, state.TransformMatrix);
@@ -143,6 +150,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Finishes a sprite batch operation.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void End()
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -157,6 +165,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Color color)
         {
             Draw(texture, destinationRectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
@@ -169,6 +178,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color)
         {
             Draw(texture, destinationRectangle, sourceRectangle, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
@@ -185,6 +195,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="origin">The sprite's origin point.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
         {
             Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth, default(SpriteData));
@@ -196,6 +207,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="texture">The sprite's texture.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="color">The sprite's tint color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Color color)
         {
             Draw(texture, position, null, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
@@ -208,6 +220,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color)
         {
             Draw(texture, position, sourceRectangle, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
@@ -225,6 +238,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
@@ -242,6 +256,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
@@ -254,6 +269,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Color color, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -271,6 +287,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -292,6 +309,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -308,6 +326,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -325,6 +344,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="sourceRectangle">The sprite's position on its texture, or <see langword="null"/> to draw the entire texture.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -347,6 +367,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -369,6 +390,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(texture, nameof(texture));
@@ -383,6 +405,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position)
         {
             DrawSprite(animation, position, null, null, null, null, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
@@ -395,6 +418,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height)
         {
             DrawSprite(animation, position, width, height, null, null, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
@@ -409,6 +433,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation)
         {
             DrawSprite(animation, position, width, height, null, null, color, rotation, SpriteEffects.None, 0f, default(SpriteData));
@@ -425,6 +450,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
         {
             DrawSprite(animation, position, width, height, null, null, color, rotation, effects, layerDepth, default(SpriteData));
@@ -445,6 +471,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Single? originX, Single? originY, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
         {
             DrawSprite(animation, position, width, height, originX, originY, color, rotation, effects, layerDepth, default(SpriteData));
@@ -456,6 +483,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, SpriteData data)
         {
             DrawSprite(animation, position, null, null, null, null, Color.White, 0f, SpriteEffects.None, 0f, data);
@@ -469,6 +497,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="width">The width in pixels of the destination rectangle, or <see langword="null"/> to use the width of the sprite.</param>
         /// <param name="height">The height in pixels of the destination rectangle, or <see langword="null"/> to use the height of the sprite.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, SpriteData data)
         {
             DrawSprite(animation, position, width, height, null, null, Color.White, 0f, SpriteEffects.None, 0f, data);
@@ -484,6 +513,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawSprite(SpriteAnimationController animation, Vector2 position, Single? width, Single? height, Color color, Single rotation, SpriteData data)
         {
             DrawSprite(animation, position, width, height, null, null, color, rotation, SpriteEffects.None, 0f, data);
@@ -531,11 +561,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="animation">A <see cref="SpriteAnimationController"/> representing the sprite animation to draw.</param>
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale)
         {
             DrawScaledSprite(animation, position, scale, null, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
         }
-        
+
         /// <summary>
         /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
@@ -544,11 +575,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="origin">The distance in pixels between the top-left edge of the sprite and its rotational origin, or <see langword="null"/> to 
         /// use the sprite's predefined origin position.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Vector2? origin)
         {
             DrawScaledSprite(animation, position, scale, origin, Color.White, 0f, SpriteEffects.None, 0f, default(SpriteData));
         }
-        
+
         /// <summary>
         /// Draws a sprite animation with the specified scaling factor.
         /// </summary>
@@ -557,6 +589,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Color color, Single rotation)
         {
             DrawScaledSprite(animation, position, scale, null, color, rotation, SpriteEffects.None, 0f, default(SpriteData));
@@ -572,6 +605,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
         {
             DrawScaledSprite(animation, position, scale, null, color, rotation, effects, layerDepth, default(SpriteData));
@@ -589,6 +623,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Vector2? origin, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
         {
             DrawScaledSprite(animation, position, scale, origin, color, rotation, effects, layerDepth, default(SpriteData));
@@ -601,6 +636,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The sprite's position in screen coordinates.</param>
         /// <param name="scale">The sprite's scale factor.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, SpriteData data)
         {
             DrawScaledSprite(animation, position, scale, null, Color.White, 0f, SpriteEffects.None, 0f, data);
@@ -615,6 +651,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawScaledSprite(SpriteAnimationController animation, Vector2 position, Vector2 scale, Color color, Single rotation, SpriteData data)
         {
             DrawScaledSprite(animation, position, scale, null, color, rotation, SpriteEffects.None, 0f, data);
@@ -654,6 +691,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="destinationRectangle">A rectangle which indicates where on the screen the sprite will be drawn.</param>
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation)
         {
             DrawFrame(frame, destinationRectangle, color, rotation, SpriteEffects.None, 0f, default(SpriteData));
@@ -668,6 +706,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation, SpriteEffects effects, Single layerDepth)
         {
             DrawFrame(frame, destinationRectangle, color, rotation, effects, layerDepth, default(SpriteData));
@@ -681,6 +720,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="color">The sprite's tint color.</param>
         /// <param name="rotation">The sprite's rotation in radians.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation, SpriteData data)
         {
             DrawFrame(frame, destinationRectangle, color, rotation, SpriteEffects.None, 0f, data);
@@ -696,6 +736,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The sprite's rendering effects.</param>
         /// <param name="layerDepth">The sprite's layer depth.</param>
         /// <param name="data">The sprite's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawFrame(SpriteFrame frame, Rectangle destinationRectangle, Color color, Single rotation, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Draw(frame.TextureResource, destinationRectangle, frame.Area, color, rotation, frame.Origin, SpriteEffects.None, 0f, data);
@@ -708,6 +749,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -725,6 +767,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -746,6 +789,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -768,6 +812,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -789,6 +834,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -811,6 +857,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -828,6 +875,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -846,6 +894,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -868,6 +917,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -891,6 +941,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -913,6 +964,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -936,6 +988,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, String text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -952,6 +1005,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -969,6 +1023,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -990,6 +1045,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1012,6 +1068,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1033,6 +1090,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1055,6 +1113,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1072,6 +1131,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1090,6 +1150,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1112,6 +1173,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1135,6 +1197,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1157,6 +1220,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1180,6 +1244,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1196,6 +1261,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1213,6 +1279,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text to draw.</param>
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1234,6 +1301,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1256,6 +1324,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1277,6 +1346,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1299,6 +1369,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="scale">The text's scale factor.</param>
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1316,6 +1387,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1334,6 +1406,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="position">The text's position.</param>
         /// <param name="color">The text's color.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1356,6 +1429,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1379,6 +1453,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1401,6 +1476,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1424,6 +1500,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, StringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
@@ -1441,6 +1518,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="color">The image's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color)
         {
             DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, default(SpriteData));
@@ -1458,6 +1536,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="origin">The image's point of origin.</param>
         /// <param name="effects">The image's rendering effects.</param>
         /// <param name="layerDepth">The image's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, Single rotation, Vector2 origin, SpriteEffects effects, Single layerDepth)
         {
             DrawImage(image, position, width, height, color, rotation, origin, effects, layerDepth, default(SpriteData));
@@ -1472,6 +1551,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="height">The height of the image in pixels.</param>
         /// <param name="color">The image's color.</param>
         /// <param name="data">The image's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawImage(TextureImage image, Vector2 position, Single width, Single height, Color color, SpriteData data)
         {
             DrawImage(image, position, width, height, color, 0f, Vector2.Zero, SpriteEffects.None, 0f, data);
@@ -1517,108 +1597,49 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets the maximum number of sprites that can drawn in a single batch by this <see cref="SpriteBatchBase{VertexType, SpriteData}"/>.
         /// </summary>
-        public Int32 BatchSize
-        {
-            get { return batchSize; }
-        }
+        public Int32 BatchSize => batchSize;
 
         /// <summary>
         /// Gets the <see cref="SpriteSortMode"/> which is in effect for the current batch.
         /// </summary>
-        public SpriteSortMode CurrentSortMode
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return sortMode;
-            }
-        }
+        public SpriteSortMode CurrentSortMode =>
+            begun ? sortMode : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Gets the <see cref="BlendState"/> which is in effect for the current batch.
         /// </summary>
-        public BlendState CurrentBlendState
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return blendState;
-            }
-        }
+        public BlendState CurrentBlendState =>
+            begun ? blendState : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Gets the <see cref="SamplerState"/> which is in effect for the current batch.
         /// </summary>
         public SamplerState CurrentSamplerState
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return samplerState;
-            }
-        }
+            => begun ? samplerState : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Gets the <see cref="RasterizerState"/> which is in effect for the current batch.
         /// </summary>
         public RasterizerState CurrentRasterizerState
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return rasterizerState;
-            }
-        }
+            => begun ? rasterizerState : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Gets the <see cref="DepthStencilState"/> which is in effect for the current batch.
         /// </summary>
         public DepthStencilState CurrentDepthStencilState
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return depthStencilState;
-            }
-        }
+            => begun ? depthStencilState : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Gets the <see cref="Effect"/> which is in effect for the current batch.
         /// </summary>
         public Effect CurrentEffect
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return customEffect;
-            }
-        }
+            => begun ? customEffect : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Gets the transformation matrix which is in effect for the current batch.
         /// </summary>
         public Matrix CurrentTransformMatrix
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
-
-                return transformMatrix;
-            }
-        }
+            => begun ? transformMatrix : throw new InvalidOperationException(UltravioletStrings.BeginMustBeCalledBeforeStateQuery);
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -1628,6 +1649,19 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             if (Disposed)
                 return;
+
+            if (begun)
+            {
+                if (sortMode == SpriteSortMode.Deferred)
+                {
+                    SpriteBatchCoordinator.Instance.RelinquishDeferred();
+                }
+                else
+                {
+                    SpriteBatchCoordinator.Instance.RelinquishImmediate();
+                }
+                begun = false;
+            }
 
             if (disposing)
             {

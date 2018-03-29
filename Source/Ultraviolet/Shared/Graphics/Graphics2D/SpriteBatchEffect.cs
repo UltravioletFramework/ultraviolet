@@ -1,6 +1,4 @@
-﻿using Ultraviolet.Core;
-
-namespace Ultraviolet.Graphics.Graphics2D
+﻿namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="SpriteBatchEffect"/> class.
@@ -39,22 +37,8 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public Texture2D Texture
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (epTexture != null)
-                    return epTexture.GetValueTexture2D();
-
-                return null;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (epTexture != null)
-                    epTexture.SetValue(value);
-            }
+            get => epTexture?.GetValueTexture2D();
+            set => epTexture?.SetValue(value);
         }
 
         /// <inheritdoc/>
@@ -63,39 +47,15 @@ namespace Ultraviolet.Graphics.Graphics2D
             // NOTE: On OpenGL ES 2.0 we don't support integer vertex attributes and therefore
             // we don't do the normalization in the GLSL, which means that TextureSize gets
             // optimized out. So we can just ignore it.
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (epTextureSize != null)
-                    return (Size2)epTextureSize.GetValueVector2();
-
-                return Size2.Zero;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                if (epTextureSize != null)
-                    epTextureSize.SetValue((Vector2)value);
-            }
+            get => (Size2)(epTextureSize?.GetValueVector2() ?? Vector2.Zero);
+            set => epTextureSize?.SetValue((Vector2)value);
         }
 
         /// <inheritdoc/>
         public Matrix MatrixTransform
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epMatrixTransform.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epMatrixTransform.SetValue(value);
-            }
+            get => epMatrixTransform.GetValueMatrix();
+            set => epMatrixTransform.SetValue(value);
         }
 
         // Cached effect parameters.

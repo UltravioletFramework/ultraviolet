@@ -58,106 +58,50 @@ namespace Ultraviolet
         /// <inheritdoc/>
         public IUltravioletAudioDevice PlaybackDevice
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return null;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return null; }
+            set { }
         }
 
         /// <inheritdoc/>
         public Single AudioMasterVolume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return 1f;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return 1f; }
+            set { }
         }
 
         /// <inheritdoc/>
         public Single SongsMasterVolume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return 1f;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return 1f; }
+            set { }
         }
 
         /// <inheritdoc/>
         public Single SoundEffectsMasterVolume
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return 1f;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return 1f; }
+            set { }
         }
 
         /// <inheritdoc/>
         public Boolean AudioMuted
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return false;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return false; }
+            set { }
         }
 
         /// <inheritdoc/>
         public Boolean SongsMuted
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return false;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return false; }
+            set { }
         }
 
         /// <inheritdoc/>
         public Boolean SoundEffectsMuted
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return false;
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-            }
+            get { return false; }
+            set { }
         }
 
         /// <inheritdoc/>

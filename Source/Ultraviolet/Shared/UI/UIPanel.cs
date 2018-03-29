@@ -69,6 +69,8 @@ namespace Ultraviolet.UI
         /// <param name="viewToLoad">The view to load, or <see langword="null"/> to load the view from the current panel definition.</param>
         public void FinishLoadingView(UIView viewToLoad = null)
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (IsViewLoaded)
                 return;
 
@@ -95,6 +97,8 @@ namespace Ultraviolet.UI
         /// </summary>
         public void UnloadView()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             if (!IsViewLoaded)
                 return;
 
@@ -123,28 +127,12 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Gets the content manager which is used to load globally-available assets.
         /// </summary>
-        public ContentManager GlobalContent
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return globalContent;
-            }
-        }
+        public ContentManager GlobalContent => globalContent;
 
         /// <summary>
         /// Gets the content manager which is used to load assets which are local to this screen.
         /// </summary>
-        public ContentManager LocalContent
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return localContent;
-            }
-        }
+        public ContentManager LocalContent => localContent;
 
         /// <summary>
         /// Gets the screen's view, if it has one.
@@ -153,10 +141,7 @@ namespace Ultraviolet.UI
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 FinishLoadingView();
-
                 return view;
             }
         }
@@ -221,56 +206,24 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Gets the <see cref="UIPanelState"/> value that represents the panel's current transition state.
         /// </summary>
-        public UIPanelState State
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return state;
-            }
-        }
+        public UIPanelState State => state;
 
         /// <summary>
         /// Gets a value indicating whether the screen is in a transition state.
         /// </summary>
-        public Boolean IsTransitioning
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return state != UIPanelState.Open && state != UIPanelState.Closed;
-            }
-        }
+        public Boolean IsTransitioning => state != UIPanelState.Open && state != UIPanelState.Closed;
 
         /// <summary>
         /// Gets the panel's position within its current transition, if it is transitioning.
         /// A value of 0.0 indicates that the panel is closed, while a value of 1.0 indicates
         /// that the panel is open.
         /// </summary>
-        public Single TransitionPosition
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return (Single)transitionPosition;
-            }
-        }
+        public Single TransitionPosition => (Single)transitionPosition;
 
         /// <summary>
         /// Gets the duration in milliseconds of the panel's current transition, if it is transitioning.
         /// </summary>
-        public Single TransitionDuration
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return (Single)transitionDuration;
-            }
-        }
+        public Single TransitionDuration => (Single)transitionDuration;
 
         /// <summary>
         /// Gets or sets the amount of time over which the panel will transition to
@@ -278,15 +231,9 @@ namespace Ultraviolet.UI
         /// </summary>
         public TimeSpan DefaultOpenTransitionDuration
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return defaultOpenTransitionDuration;
-            }
+            get => defaultOpenTransitionDuration;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.Ensure<ArgumentException>(value.TotalMilliseconds >= 0, nameof(value));
 
                 defaultOpenTransitionDuration = value;
@@ -299,15 +246,9 @@ namespace Ultraviolet.UI
         /// </summary>
         public TimeSpan DefaultCloseTransitionDuration
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return defaultCloseTransitionDuration;
-            }
+            get => defaultCloseTransitionDuration;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.Ensure<ArgumentException>(value.TotalMilliseconds >= 0, nameof(value));
 
                 defaultCloseTransitionDuration = value;
@@ -341,8 +282,6 @@ namespace Ultraviolet.UI
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 return this.window == null ? null : Ultraviolet.GetUI().GetScreens(this.window);
             }
         }

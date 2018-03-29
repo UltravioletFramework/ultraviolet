@@ -112,15 +112,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public BlendFunction AlphaBlendFunction
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return alphaBlendFunction;
-            }
+            get => alphaBlendFunction;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
                 
                 alphaBlendFunction = value;
@@ -132,15 +126,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Blend AlphaSourceBlend
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return alphaSourceBlend;
-            }
+            get => alphaSourceBlend;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
                 
                 alphaSourceBlend = value;
@@ -152,15 +140,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Blend AlphaDestinationBlend
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return alphaDestinationBlend;
-            }
+            get => alphaDestinationBlend;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 alphaDestinationBlend = value;
@@ -172,15 +154,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public BlendFunction ColorBlendFunction
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return colorBlendFunction;
-            }
+            get => colorBlendFunction;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 colorBlendFunction = value;
@@ -192,15 +168,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Blend ColorSourceBlend
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return colorSourceBlend;
-            }
+            get => colorSourceBlend;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 colorSourceBlend = value;
@@ -212,15 +182,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Blend ColorDestinationBlend
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return colorDestinationBlend;
-            }
+            get => colorDestinationBlend;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 colorDestinationBlend = value;
@@ -232,15 +196,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Color BlendFactor
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return blendFactor;
-            }
+            get => blendFactor;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 blendFactor = value;
@@ -252,15 +210,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public ColorWriteChannels ColorWriteChannels
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return colorWriteChannels;
-            }
+            get => colorWriteChannels;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 colorWriteChannels = value;

@@ -93,41 +93,17 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the buffer's element type.
         /// </summary>
-        public IndexBufferElementType IndexElementType
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return itype; 
-            }
-        }
+        public IndexBufferElementType IndexElementType => itype;
 
         /// <summary>
         /// Gets the buffer's index count.
         /// </summary>
-        public Int32 IndexCount
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return icount; 
-            }
-        }
+        public Int32 IndexCount => icount;
         
         /// <summary>
         /// Gets the buffer's size in bytes.
         /// </summary>
-        public Int32 SizeInBytes
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return icount * ((IndexElementType == IndexBufferElementType.Int16) ? sizeof(short) : sizeof(int));
-            }
-        }
+        public Int32 SizeInBytes => icount * ((IndexElementType == IndexBufferElementType.Int16) ? sizeof(UInt16) : sizeof(UInt32));
 
         // Property values.
         private readonly IndexBufferElementType itype;

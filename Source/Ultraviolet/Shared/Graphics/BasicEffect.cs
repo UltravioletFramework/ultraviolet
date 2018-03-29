@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
 {
@@ -45,18 +44,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Matrix World
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epWorld.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epWorld.SetValue(value);
-            }
+            get => epWorld.GetValueMatrix();
+            set => epWorld.SetValue(value);
         }
 
         /// <summary>
@@ -64,18 +53,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Matrix View
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epView.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epView.SetValue(value);
-            }
+            get => epView.GetValueMatrix();
+            set => epView.SetValue(value);
         }
 
         /// <summary>
@@ -83,18 +62,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Matrix Projection
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epProjection.GetValueMatrix();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epProjection.SetValue(value);
-            }
+            get => epProjection.GetValueMatrix();
+            set => epProjection.SetValue(value);
         }
 
         /// <summary>
@@ -102,16 +71,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean VertexColorEnabled
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return vertexColorEnabled;
-            }
+            get => vertexColorEnabled;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (vertexColorEnabled != value)
                 {
                     vertexColorEnabled = value;
@@ -125,18 +87,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Color DiffuseColor
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epDiffuseColor.GetValueColor();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epDiffuseColor.SetValue(value);
-            }
+            get => epDiffuseColor.GetValueColor();
+            set => epDiffuseColor.SetValue(value);
         }
 
         /// <summary>
@@ -144,16 +96,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean TextureEnabled
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return textureEnabled;
-            }
+            get => textureEnabled;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 if (textureEnabled != value)
                 {
                     textureEnabled = value;
@@ -167,18 +112,8 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Texture2D Texture
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return epTexture.GetValueTexture2D();
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                epTexture.SetValue(value);
-            }
+            get => epTexture.GetValueTexture2D();
+            set => epTexture.SetValue(value);
         }
 
         /// <summary>

@@ -126,9 +126,8 @@ namespace Ultraviolet.Input
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 var input = Ultraviolet.GetInput();
+
                 if (!input.IsKeyboardSupported())
                     return false;
 
@@ -143,9 +142,8 @@ namespace Ultraviolet.Input
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 var input = Ultraviolet.GetInput();
+
                 if (!input.IsKeyboardSupported())
                     return false;
 
@@ -160,9 +158,8 @@ namespace Ultraviolet.Input
         {
             get
             {
-                Contract.EnsureNotDisposed(this, Disposed);
-
                 var input = Ultraviolet.GetInput();
+
                 if (!input.IsKeyboardSupported())
                     return false;
 

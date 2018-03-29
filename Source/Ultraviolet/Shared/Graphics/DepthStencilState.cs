@@ -96,15 +96,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean DepthBufferEnable
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depthBufferEnable;
-            }
+            get => depthBufferEnable;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 depthBufferEnable = value;
@@ -116,15 +110,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean DepthBufferWriteEnable
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depthBufferWriteEnable;
-            }
+            get => depthBufferWriteEnable;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 depthBufferWriteEnable = value;
@@ -136,15 +124,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public CompareFunction DepthBufferFunction
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return depthBufferFunction;
-            }
+            get => depthBufferFunction;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 depthBufferFunction = value;
@@ -156,15 +138,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean StencilEnable
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilEnable;
-            }
+            get => stencilEnable;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilEnable = value;
@@ -176,15 +152,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public CompareFunction StencilFunction
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilFunction;
-            }
+            get => stencilFunction;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilFunction = value;
@@ -196,15 +166,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public StencilOperation StencilPass
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilPass;
-            }
+            get => stencilPass;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilPass = value;
@@ -216,15 +180,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public StencilOperation StencilFail
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilFail;
-            }
+            get => stencilFail;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilFail = value;
@@ -236,15 +194,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public StencilOperation StencilDepthBufferFail
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilDepthBufferFail;
-            }
+            get => stencilDepthBufferFail;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilDepthBufferFail = value;
@@ -257,15 +209,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public CompareFunction CounterClockwiseStencilFunction
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return counterClockwiseStencilFunction;
-            }
+            get => counterClockwiseStencilFunction;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 counterClockwiseStencilFunction = value;
@@ -278,15 +224,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public StencilOperation CounterClockwiseStencilPass
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return counterClockwiseStencilPass;
-            }
+            get => counterClockwiseStencilPass;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 counterClockwiseStencilPass = value;
@@ -299,15 +239,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public StencilOperation CounterClockwiseStencilFail
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return counterClockwiseStencilFail;
-            }
+            get => counterClockwiseStencilFail;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 counterClockwiseStencilFail = value;
@@ -320,15 +254,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public StencilOperation CounterClockwiseStencilDepthBufferFail
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return counterClockwiseStencilDepthBufferFail;
-            }
+            get => counterClockwiseStencilDepthBufferFail;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 counterClockwiseStencilDepthBufferFail = value;
@@ -340,15 +268,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Int32 StencilMask
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilMask;
-            }
+            get => stencilMask;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilMask = value;
@@ -360,15 +282,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Int32 StencilWriteMask
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return stencilWriteMask;
-            }
+            get => stencilWriteMask;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 stencilWriteMask = value;
@@ -380,15 +296,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Int32 ReferenceStencil
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return referenceStencil;
-            }
+            get => referenceStencil;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 referenceStencil = value;
@@ -400,15 +310,9 @@ namespace Ultraviolet.Graphics
         /// </summary>
         public Boolean TwoSidedStencilMode
         {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return twoSidedStencilMode;
-            }
+            get => twoSidedStencilMode;
             set
             {
-                Contract.EnsureNotDisposed(this, Disposed);
                 Contract.EnsureNot(immutable, UltravioletStrings.StateIsImmutableAfterBind);
 
                 twoSidedStencilMode = value;

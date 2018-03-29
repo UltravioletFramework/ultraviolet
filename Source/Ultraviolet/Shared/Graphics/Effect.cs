@@ -35,46 +35,20 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets the effect's collection of parameters.
         /// </summary>
-        public EffectParameterCollection Parameters
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
- 
-                return impl.Parameters; 
-            }
-        }
+        public EffectParameterCollection Parameters => impl.Parameters;
 
         /// <summary>
         /// Gets the effect's collection of techniques.
         /// </summary>
-        public EffectTechniqueCollection Techniques
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
- 
-                return impl.Techniques; 
-            }
-        }
+        public EffectTechniqueCollection Techniques => impl.Techniques;
 
         /// <summary>
         /// Gets or sets the effect's current technique.
         /// </summary>
         public EffectTechnique CurrentTechnique
         {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return impl.CurrentTechnique; 
-            }
-            set
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                impl.CurrentTechnique = value; 
-            }
+            get => impl.CurrentTechnique; 
+            set => impl.CurrentTechnique = value; 
         }
 
         /// <summary>
