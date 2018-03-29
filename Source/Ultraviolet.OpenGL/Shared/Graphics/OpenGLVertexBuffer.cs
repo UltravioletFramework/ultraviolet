@@ -154,15 +154,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the resource's OpenGL name.
         /// </summary>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return buffer;
-            }
-        }
+        public UInt32 OpenGLName => buffer;
 
         /// <inheritdoc/>
         public override Boolean IsContentLost => false;
@@ -175,14 +167,17 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                if (!Ultraviolet.Disposed)
+                var glname = buffer;
+                if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteBuffer(((OpenGLVertexBuffer)state).buffer);
+                        gl.DeleteBuffer(glname);
                         gl.ThrowIfError();
-                    }, this);
+                    }, this, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
+
+                buffer = 0;
             }
 
             base.Dispose(disposing);

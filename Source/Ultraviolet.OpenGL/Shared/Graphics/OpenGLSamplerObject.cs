@@ -171,15 +171,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheridoc/>
-        public UInt32 OpenGLName
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return sampler;
-            }
-        }
+        public UInt32 OpenGLName => sampler;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -189,14 +181,17 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
-                if (!Ultraviolet.Disposed)
+                var glname = sampler;
+                if (glname != 0 && !Ultraviolet.Disposed)
                 {
                     Ultraviolet.QueueWorkItem((state) =>
                     {
-                        gl.DeleteSampler(((OpenGLSamplerObject)state).sampler);
+                        gl.DeleteSampler(glname);
                         gl.ThrowIfError();
-                    }, this);
+                    }, null, WorkItemOptions.ReturnNullOnSynchronousExecution);
                 }
+
+                sampler = 0;
             }
 
             base.Dispose(disposing);
