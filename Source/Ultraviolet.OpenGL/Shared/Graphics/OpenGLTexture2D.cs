@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
@@ -406,30 +407,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (pixelSizeInBytes * width * height != elementSizeInBytes * elementCount)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
-            // TODO: Allocations????
-
-            void Upload(Int32 llevel, Rectangle lregion, IntPtr ldata, Int32 lstartIndex, Int32 lelementSizeInBytes)
-            {
-                using (OpenGLState.ScopedBindTexture2D(OpenGLName))
-                {
-                    var pData = ldata + (lstartIndex * lelementSizeInBytes);
-                    gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, llevel, lregion.X, lregion.Y,
-                        lregion.Width, lregion.Height, format, type, (void*)pData);
-                    gl.ThrowIfError();
-                }
-            }
-
-            if (Ultraviolet.IsExecutingOnCurrentThread)
-            {
-                Upload(level, region, data, startIndex, elementSizeInBytes);
-            }
-            else
-            {
-                Ultraviolet.QueueWorkItem(state =>
-                {
-                    Upload(level, region, data, startIndex, elementSizeInBytes);
-                }).Wait();
-            }
+            Upload(level, region, data, startIndex, elementSizeInBytes)?.Wait();
         }
 
         /// <summary>
@@ -462,6 +440,32 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
                 finally { dataHandle.Free(); }
             }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
+        }
+
+        /// <summary>
+        /// Uploads texture data to the graphics device.
+        /// </summary>
+        private unsafe Task Upload(Int32 level, Rectangle region, IntPtr ldata, Int32 startIndex, Int32 elementSizeInBytes)
+        {
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+            {
+                using (OpenGLState.ScopedBindTexture2D(OpenGLName))
+                {
+                    var pData = ldata + (startIndex * elementSizeInBytes);
+                    gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
+                        region.Width, region.Height, format, type, (void*)pData);
+                    gl.ThrowIfError();
+                }
+
+                return null;
+            }
+            else
+            {
+                return Ultraviolet.QueueWorkItem(state => 
+                {
+                    Upload(level, region, ldata, startIndex, elementSizeInBytes);
+                });
+            }
         }
 
         // Property values.
