@@ -89,8 +89,7 @@ namespace UvDebug
             if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
                 UsePlatformSpecificFileSource();
 
-            // TODO: Should probably encapsulate setup of this library somehow
-            Ultraviolet.GetContent().RegisterImportersAndProcessors(typeof(FreeTypeFont).Assembly);
+            FreeTypeFontPlugin.Initialize(Ultraviolet);
 
             base.OnInitialized();
         }

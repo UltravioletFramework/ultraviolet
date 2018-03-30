@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontFace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontImporter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
