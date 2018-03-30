@@ -276,15 +276,7 @@ namespace Ultraviolet.SDL2.Graphics
         /// <summary>
         /// Gets a pointer to the native SDL surface that is encapsulated by this object.
         /// </summary>
-        public SDL_Surface* NativePtr
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return nativesurf.NativePtr;
-            }
-        }
+        public SDL_Surface* NativePtr => nativesurf.NativePtr;
 
         /// <inheritdoc/>
         protected override void Dispose(bool disposing)

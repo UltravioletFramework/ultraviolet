@@ -66,10 +66,8 @@ namespace Ultraviolet.SDL2
         /// <summary>
         /// Gets a pointer to the native SDL2 cursor.
         /// </summary>
-        public SDL_Cursor* Native
-        {
-            get { return cursor; }
-        }
+        public SDL_Cursor* Native =>
+            Disposed ? throw new ObjectDisposedException(GetType().Name) : cursor;
 
         /// <summary>
         /// Releases resources associated with the object.
@@ -81,16 +79,15 @@ namespace Ultraviolet.SDL2
                 return;
 
             if (!Ultraviolet.Disposed && Ultraviolet.GetPlatform().Cursor == this)
-            {
                 Ultraviolet.GetPlatform().Cursor = null;
-            }
 
             SDL_FreeCursor(cursor);
+            cursor = null;
 
             base.Dispose(disposing);
         }
 
         // The native SDL2 cursor.
-        private readonly SDL_Cursor* cursor;
+        private SDL_Cursor* cursor;
     }
 }

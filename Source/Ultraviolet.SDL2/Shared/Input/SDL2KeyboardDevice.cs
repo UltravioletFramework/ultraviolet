@@ -211,26 +211,12 @@ namespace Ultraviolet.SDL2.Input
         }
 
         /// <inheritdoc/>
-        public override Boolean IsNumLockDown
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return (SDL_GetModState() & KMOD_NUM) == KMOD_NUM;
-            }
-        }
+        public override Boolean IsNumLockDown =>
+            Disposed ? throw new ObjectDisposedException(GetType().Name) : (SDL_GetModState() & KMOD_NUM) == KMOD_NUM;
 
         /// <inheritdoc/>
-        public override Boolean IsCapsLockDown
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return (SDL_GetModState() & KMOD_CAPS) == KMOD_CAPS;
-            }
-        }
+        public override Boolean IsCapsLockDown =>
+            Disposed ? throw new ObjectDisposedException(GetType().Name) : (SDL_GetModState() & KMOD_CAPS) == KMOD_CAPS;
 
         /// <inheritdoc/>
         public override Boolean IsRegistered => isRegistered;

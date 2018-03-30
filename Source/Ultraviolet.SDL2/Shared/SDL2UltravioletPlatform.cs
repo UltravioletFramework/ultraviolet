@@ -62,7 +62,10 @@ namespace Ultraviolet.SDL2
 
                 unsafe
                 {
-                    var sdlCursor = (value == null) ? SDL_GetDefaultCursor() : ((SDL2Cursor)value).Native;
+                    var sdlCursor = (value is SDL2Cursor sdl2cursor) ? sdl2cursor.Native : null;
+                    if (sdlCursor == null)
+                        sdlCursor = SDL_GetDefaultCursor();
+
                     SDL_SetCursor(sdlCursor);
                 }
             }

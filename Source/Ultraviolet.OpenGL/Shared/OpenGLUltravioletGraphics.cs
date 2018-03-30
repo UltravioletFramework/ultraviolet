@@ -777,6 +777,7 @@ namespace Ultraviolet.OpenGL
                 gl.Uninitialize();
 
             SDL_GL_DeleteContext(context);
+            context = IntPtr.Zero;
 
             base.Dispose(disposing);
         }

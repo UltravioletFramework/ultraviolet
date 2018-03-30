@@ -95,6 +95,7 @@ namespace Ultraviolet.SDL2.Input
         public SDL2GamePadDevice GetGamePadForPlayer(Int32 playerIndex)
         {
             Contract.EnsureRange(playerIndex >= 0, nameof(playerIndex));
+            Contract.EnsureNotDisposed(this, Disposed);
 
             return (playerIndex >= devicesByPlayer.Length) ? null : devicesByPlayer[playerIndex];
         }
@@ -105,6 +106,8 @@ namespace Ultraviolet.SDL2.Input
         /// <returns>The first connected game pad device, or <see langword="null"/> if no game pads are connected.</returns>
         public SDL2GamePadDevice GetFirstConnectedGamePad()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             for (int i = 0; i < devicesByPlayer.Length; i++)
             {
                 if (devicesByPlayer[i] != null)
@@ -121,6 +124,8 @@ namespace Ultraviolet.SDL2.Input
         /// <returns>The first registered game pad device, or <see langword="null"/> if no game pads are registered.</returns>
         public SDL2GamePadDevice GetFirstRegisteredGamePad()
         {
+            Contract.EnsureNotDisposed(this, Disposed);
+
             for (int i = 0; i < devicesByPlayer.Length; i++)
             {
                 if (devicesByPlayer[i]?.IsRegistered ?? false)
@@ -134,15 +139,7 @@ namespace Ultraviolet.SDL2.Input
         /// <summary>
         /// Gets the number of attached game pads.
         /// </summary>
-        public Int32 Count
-        {
-            get 
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-                
-                return count; 
-            }
-        }
+        public Int32 Count => count;
 
         /// <inheritdoc/>
         public event GamePadConnectionEventHandler GamePadConnected;
