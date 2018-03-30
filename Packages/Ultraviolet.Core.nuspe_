@@ -12,7 +12,7 @@
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet core library, which implements basic data structures, collections, and algorithms used throughout the Framework.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="Newtonsoft.Json" version="10.0.3"/>        
+    <dependency id="Newtonsoft.Json" version="11.0.1"/>        
     <dependency id="Microsoft.Extensions.DependencyModel" version="2.0.4"/>   
     <dependency id="Microsoft.DotNet.PlatformAbstractions" version="2.0.4"/>           
   </dependencies>
