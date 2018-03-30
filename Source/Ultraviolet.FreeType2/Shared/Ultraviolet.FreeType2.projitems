@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9c6d1468-b7a7-4fb9-b7ef-088803a62b89</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Ultraviolet.FreeType2</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFont.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontFace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromXDocument.cs" />
+  </ItemGroup>
+</Project>

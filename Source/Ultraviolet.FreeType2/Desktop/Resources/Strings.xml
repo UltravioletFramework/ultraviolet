@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="CONTENT_REDIRECTION_ERROR">
+    <en-US>
+      <Variant>Failed to retrieve a registered content processor for converting from {0} to {1}.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

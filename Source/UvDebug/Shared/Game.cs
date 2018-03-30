@@ -6,6 +6,7 @@ using Ultraviolet;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
+using Ultraviolet.FreeType2;
 using Ultraviolet.OpenGL;
 using Ultraviolet.Platform;
 using Ultraviolet.Presentation;
@@ -87,6 +88,9 @@ namespace UvDebug
         {
             if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
                 UsePlatformSpecificFileSource();
+
+            // TODO: Should probably encapsulate setup of this library somehow
+            Ultraviolet.GetContent().RegisterImportersAndProcessors(typeof(FreeTypeFont).Assembly);
 
             base.OnInitialized();
         }
