@@ -19,6 +19,9 @@
     <None Include="..\Desktop\Content\Cursors\CursorsImage.png" Link="Content\Cursors\CursorsImage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf" Link="Content\Fonts\Inconsolata-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\Desktop\Content\Fonts\SegoeUI.xml" Link="Content\Fonts\SegoeUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -115,6 +118,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj" />
