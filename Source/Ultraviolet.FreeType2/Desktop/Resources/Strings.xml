@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizedStrings>
+  <String Key="PLUGIN_ALREADY_INITIALIZED">
+    <en-US>
+      <Variant>The FreeType2 Font Plugin for Ultraviolet has already been initialized for the specified Ultraviolet context.</Variant>
+    </en-US>
+  </String>
+  <String Key="CONTENT_REDIRECTION_ERROR">
+    <en-US>
+      <Variant>A different font plugin has already been initialized for the specified Ultraviolet context.</Variant>
+    </en-US>
+  </String>
   <String Key="CONTENT_REDIRECTION_ERROR">
     <en-US>
       <Variant>Failed to retrieve a registered content processor for converting from {0} to {1}.</Variant>

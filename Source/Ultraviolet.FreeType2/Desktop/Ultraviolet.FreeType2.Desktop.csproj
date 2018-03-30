@@ -82,7 +82,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Strings.xml" />
+    <EmbeddedResource Include="Resources\Strings.xml" />
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.FreeType2.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
