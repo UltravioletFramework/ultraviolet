@@ -338,11 +338,7 @@ namespace Ultraviolet.SDL2
         }
 
         /// <inheritdoc/>
-        public Boolean EmulateMouseWithTouchInput
-        {
-            get => emulateMouseWithTouchInput;
-            set => emulateMouseWithTouchInput = value;
-        }
+        public Boolean EmulateMouseWithTouchInput { get; set; } = true;
 
         /// <inheritdoc/>
         public Boolean IsMouseCursorAvailable => mouse.IsRegistered || (EmulateMouseWithTouchInput && IsTouchDeviceRegistered());
@@ -501,9 +497,6 @@ namespace Ultraviolet.SDL2
         private GamePadDeviceInfo gamePadInfo;
         private SDL2GamePadDevice primaryGamePad;
         private TouchDeviceInfo touchInfo;
-        private SDL2TouchDevice primaryTouchDevice;
-        
-        // Property values.
-        private Boolean emulateMouseWithTouchInput = true;
+        private SDL2TouchDevice primaryTouchDevice;        
     }
 }

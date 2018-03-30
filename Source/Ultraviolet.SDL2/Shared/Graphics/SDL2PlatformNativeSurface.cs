@@ -269,48 +269,16 @@ namespace Ultraviolet.SDL2.Graphics
         public override Boolean IsAlphaPremultiplied => isAlphaPremultiplied;
 
         /// <inheritdoc/>
-        public override Int32 BytesPerPixel
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return ptr->format->BytesPerPixel;
-            }
-        }
+        public override Int32 BytesPerPixel => NativePtr->format->BytesPerPixel;
 
         /// <inheritdoc/>
-        public override Int32 Width
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return ptr->w;
-            }
-        }
+        public override Int32 Width => NativePtr->w;
 
         /// <inheritdoc/>
-        public override Int32 Height
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return ptr->h;
-            }
-        }
+        public override Int32 Height => NativePtr->h;
 
         /// <inheritdoc/>
-        public override Int32 Pitch
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return ptr->pitch;
-            }
-        }
+        public override Int32 Pitch => NativePtr->pitch;
 
         /// <inheritdoc/>
         public override IntPtr Native => (IntPtr)ptr;
@@ -318,7 +286,8 @@ namespace Ultraviolet.SDL2.Graphics
         /// <summary> 
         /// Gets a pointer to the surface's underlying <see cref="SDL_Surface"/> structure.
         /// </summary>
-        public SDL_Surface* NativePtr => ptr;
+        public SDL_Surface* NativePtr => 
+            Disposed ? throw new ObjectDisposedException(GetType().Name) : ptr;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
