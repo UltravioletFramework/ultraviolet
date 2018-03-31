@@ -67,6 +67,54 @@ namespace Ultraviolet.Platform
         }
 
         /// <summary>
+        /// Returns a probable DPI value which matches the specified density scale.
+        /// </summary>
+        /// <param name="scale">The density scale to evaluate.</param>
+        /// <returns>A probable DPI value which matches the specified density scale.</returns>
+        public static Single GuessDensityFromDensityScale(Single scale)
+        {
+            return GuessDensityFromBucket(GuessBucketFromDensityScale(scale));
+        }
+
+        /// <summary>
+        /// Returns a probable DPI value which matches the specified density bucket.
+        /// </summary>
+        /// <param name="bucket">The density bucket to evaluate.</param>
+        /// <returns>A probable DPI value which matches the specified density bucket.</returns>
+        public static Single GuessDensityFromBucket(ScreenDensityBucket bucket)
+        {
+            switch (bucket)
+            {
+                case ScreenDensityBucket.Low:
+                    return 120f;
+
+                case ScreenDensityBucket.Retina:
+                    return 220f;
+
+                case ScreenDensityBucket.Medium:
+                    return 144f;
+
+                case ScreenDensityBucket.RetinaHD:
+                    return 330f;
+
+                case ScreenDensityBucket.High:
+                    return 240f;
+
+                case ScreenDensityBucket.ExtraHigh:
+                    return 288f;
+
+                case ScreenDensityBucket.ExtraExtraHigh:
+                    return 480f;
+
+                case ScreenDensityBucket.ExtraExtraExtraHigh:
+                    return 576f;
+
+                default:
+                    return 96f;
+            }
+        }
+
+        /// <summary>
         /// Directs the service to refresh any cached values.
         /// </summary>
         /// <returns><see langword="true"/> if the display's density information changed; otherwise, <see langword="false"/>.</returns>

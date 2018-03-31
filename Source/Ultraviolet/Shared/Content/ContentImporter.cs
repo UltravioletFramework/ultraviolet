@@ -49,5 +49,24 @@ namespace Ultraviolet.Content
 
             return ContentManager.NormalizeAssetPath(Path.Combine(Path.GetDirectoryName(metadata.AssetPath), dependency));
         }
+
+        /// <summary>
+        /// Resolves the asset file path of the specified dependency.
+        /// </summary>
+        /// <param name="metadata">The content processor metadata.</param>
+        /// <param name="dependency">The relative path of the dependency to resolve.</param>
+        /// <returns>The asset path of the specified dependency.</returns>
+        protected static String ResolveDependencyAssetFilePath(IContentImporterMetadata metadata, String dependency)
+        {
+            Contract.Require(metadata, nameof(metadata));
+
+            if (dependency == null)
+                return null;
+
+            if (metadata.AssetPath == null)
+                return dependency;
+
+            return ContentManager.NormalizeAssetPath(Path.Combine(Path.GetDirectoryName(metadata.AssetFilePath), dependency));
+        }
     }
 }

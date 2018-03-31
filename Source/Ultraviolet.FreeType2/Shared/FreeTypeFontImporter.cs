@@ -2,6 +2,7 @@
 using System.IO;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.FreeType2
 {
@@ -16,24 +17,49 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override FreeTypeFontInfo Import(IContentImporterMetadata metadata, Stream stream)
         {
-            var fontPath = metadata.AssetFilePath;
-            var fontType = default(FreeTypeFontType);
+            var fontMetadata = metadata.As<FreeTypeFontImporterMetadata>();
 
-            switch (Path.GetExtension(fontPath))
+            var faceRegularAsset = metadata.AssetFilePath;
+            var faceBoldAsset = String.IsNullOrEmpty(fontMetadata.BoldFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldFace);
+            var faceItalicAsset = String.IsNullOrEmpty(fontMetadata.ItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.ItalicFace);
+            var faceBoldItalicAsset = String.IsNullOrEmpty(fontMetadata.BoldItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldItalicFace);
+
+            var faceDataRegular = new Byte[stream.Length];
+            stream.Read(faceDataRegular, 0, faceDataRegular.Length);
+
+            var fileSystemService = new FileSystemService();
+
+            var faceBoldData = default(Byte[]);
+            if (faceBoldAsset != null)
             {
-                case ".ttf":
-                    fontType = FreeTypeFontType.TrueType;
-                    break;
-
-                case ".otf":
-                    fontType = FreeTypeFontType.OpenType;
-                    break;
-
-                default:
-                    throw new NotSupportedException();
+                using (var faceBoldStream = fileSystemService.OpenRead(faceBoldAsset))
+                {
+                    faceBoldData = new Byte[faceBoldStream.Length];
+                    faceBoldStream.Read(faceBoldData, 0, faceBoldData.Length);
+                }
             }
 
-            return new FreeTypeFontInfo(fontPath, fontType);
+            var faceItalicData = default(Byte[]);
+            if (faceItalicAsset != null)
+            {
+                using (var faceItalicStream = fileSystemService.OpenRead(faceItalicAsset))
+                {
+                    faceItalicData = new Byte[faceItalicStream.Length];
+                    faceItalicStream.Read(faceItalicData, 0, faceItalicData.Length);
+                }
+            }
+
+            var faceBoldItalicData = default(Byte[]);
+            if (faceBoldItalicAsset != null)
+            {
+                using (var faceBoldItalicStream = fileSystemService.OpenRead(faceBoldItalicAsset))
+                {
+                    faceBoldItalicData = new Byte[faceBoldItalicStream.Length];
+                    faceBoldItalicStream.Read(faceBoldItalicData, 0, faceBoldItalicData.Length);
+                }
+            }
+
+            return new FreeTypeFontInfo(fontMetadata.SizeInPoints, faceDataRegular, faceBoldData, faceItalicData, faceBoldItalicData);
         }
     }
 }

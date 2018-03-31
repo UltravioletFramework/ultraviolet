@@ -96,7 +96,13 @@
     </None>
     <None Include="App.config" />
     <None Include="app.manifest" />
+    <None Include="Content\Fonts\Inconsolata-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Fonts\Inconsolata-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\Inconsolata.uvmeta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Manifests\Global.manifest">
@@ -314,6 +320,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Textures\test_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\freetype.dll">
+      <Link>x64\win32nt\freetype.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll">
+      <Link>x64\win32nt\harfbuzz.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\libpng16.dll">
+      <Link>x64\win32nt\libpng16.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\freetype.dll">
+      <Link>x86\win32nt\freetype.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll">
+      <Link>x86\win32nt\harfbuzz.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll">
+      <Link>x86\win32nt\libpng16.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="uv.ico" />
