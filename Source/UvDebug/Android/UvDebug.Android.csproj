@@ -134,15 +134,6 @@
     <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Effects\Test.frag">
-      <Link>Content\Effects\Test.frag</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Effects\Test.vert">
-      <Link>Content\Effects\Test.vert</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Effects\TestEffect.json">
-      <Link>Content\Effects\TestEffect.json</Link>
-    </AndroidAsset>
     <None Include="app.config" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
@@ -298,7 +289,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
