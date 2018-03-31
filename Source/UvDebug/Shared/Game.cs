@@ -6,7 +6,6 @@ using Ultraviolet;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using Ultraviolet.FreeType2;
 using Ultraviolet.OpenGL;
 using Ultraviolet.Platform;
 using Ultraviolet.Presentation;
@@ -89,7 +88,9 @@ namespace UvDebug
             if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
                 UsePlatformSpecificFileSource();
 
-            FreeTypeFontPlugin.Initialize(Ultraviolet);
+#if !ANDROID && !IOS
+            global::Ultraviolet.FreeType2.FreeTypeFontPlugin.Initialize(Ultraviolet);
+#endif
 
             base.OnInitialized();
         }
