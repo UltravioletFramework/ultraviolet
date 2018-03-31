@@ -9,14 +9,19 @@
     <Import_RootNamespace>Ultraviolet.FreeType2</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFont.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontFace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontImporterMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Err.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_FaceRec_.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_LibraryRec_.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromXDocument.cs" />

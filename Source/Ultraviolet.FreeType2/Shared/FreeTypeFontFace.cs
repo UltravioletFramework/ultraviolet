@@ -1,24 +1,31 @@
 ﻿using System;
 using System.Text;
+using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
+using Ultraviolet.FreeType2.Native;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
+using static Ultraviolet.FreeType2.Native.FreeTypeNative;
+using static Ultraviolet.FreeType2.Native.FT_Err;
 
 namespace Ultraviolet.FreeType2
 {
     /// <summary>
     /// Represents one of a FreeType font's font faces.
     /// </summary>
-    public class FreeTypeFontFace : UltravioletFontFace
+    public unsafe class FreeTypeFontFace : UltravioletFontFace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeTypeFontFace"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        public FreeTypeFontFace(UltravioletContext uv)
+        /// <param name="face">The FreeType2 face which this instance represents.</param>
+        internal FreeTypeFontFace(UltravioletContext uv, FT_FaceRec_* face)
             : base(uv)
         {
+            Contract.Require((IntPtr)face, nameof(face));
 
+            this.face = face;
         }
 
         /// <inheritdoc/>
@@ -124,6 +131,27 @@ namespace Ultraviolet.FreeType2
         public override Int32 LineSpacing => throw new NotImplementedException();
 
         /// <inheritdoc/>
-        public override Char SubstitutionCharacter => throw new NotImplementedException();        
+        public override Char SubstitutionCharacter => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        protected override void Dispose(Boolean disposing)
+        {
+            if (Disposed)
+                return;
+
+            if (disposing)
+            {
+                var err = FT_Done_Face(face);
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                face = null;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        // The FreeType2 face which this instance represents.
+        private FT_FaceRec_* face;
     }
 }
