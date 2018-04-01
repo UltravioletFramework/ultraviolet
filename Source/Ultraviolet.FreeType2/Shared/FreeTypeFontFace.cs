@@ -9,6 +9,7 @@ using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.FT_Error;
+using static Ultraviolet.FreeType2.Native.FT_Pixel_Mode;
 
 namespace Ultraviolet.FreeType2
 {
@@ -327,18 +328,18 @@ namespace Ultraviolet.FreeType2
                 }
 
                 // Update the atlas surface.
-                for (int y = 0; y < bmpHeight; y++)
+                switch ((FT_Pixel_Mode)bmp.pixel_mode)
                 {
-                    var atlas = reservation.Atlas;
-                    var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
-                    var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
-                    var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
-                    for (int x = 0; x < bmpWidth; x++)
-                    {
-                        var value = *pSrc++;
-                        var color = new Color(value, value, value, value);
-                        *pDst++ = color;
-                    }
+                    case FT_PIXEL_MODE_MONO:
+                        BlitGlyphBitmapMono(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
+                        break;
+
+                    case FT_PIXEL_MODE_GRAY:
+                        BlitGlyphBitmapGray(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
+                        break;
+
+                    default:
+                        throw new NotSupportedException(FreeTypeStrings.PixelFormatNotSupported);
                 }
                 reservation.Atlas.Invalidate();
             }
@@ -368,6 +369,50 @@ namespace Ultraviolet.FreeType2
                     new Rectangle(reservation.X, reservation.Y, reservation.Width, reservation.Height),
             };
             glyphInfoCache[c] = info;
+        }
+
+        /// <summary>
+        /// Blits a mono glyph bitmap to the specified atlas' surface.
+        /// </summary>
+        private void BlitGlyphBitmapMono(ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            for (int y = 0; y < bmpHeight; y++)
+            {
+                var atlas = reservation.Atlas;
+                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
+                var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
+                for (int x = 0; x < bmpWidth; x += 8)
+                {
+                    var bits = *pSrc++;
+
+                    for (int b = 0; b < 8; b++)
+                    {
+                        var color = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : Color.White;
+                        *pDst++ = color;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits a grayscale glyph bitmap to the specified atlas' surface.
+        /// </summary>
+        private void BlitGlyphBitmapGray(ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            for (int y = 0; y < bmpHeight; y++)
+            {
+                var atlas = reservation.Atlas;
+                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
+                var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
+                for (int x = 0; x < bmpWidth; x++)
+                {
+                    var value = *pSrc++;
+                    var color = new Color(value, value, value, value);
+                    *pDst++ = color;
+                }
+            }
         }
 
         // The FreeType2 face which this instance represents.

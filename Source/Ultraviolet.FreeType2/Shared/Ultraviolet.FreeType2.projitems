@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeCalc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Pixel_Mode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_ListNodeRec.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_ListRec.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Render_Mode.cs" />
