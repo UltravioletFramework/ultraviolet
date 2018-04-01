@@ -2488,8 +2488,6 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 // Calculate the glyph's parameters and run any glyph shaders.
                 fontFace.GetGlyphRenderInfo(character, out glyphTexture, out glyphRegion);
-                if (glyphTexture == null)
-                    continue;
 
                 glyphX = flipHorizontal ? cx - glyphRegion.Width : cx;
                 glyphY = flipVertical ? cy - glyphRegion.Height : cy;
@@ -2513,6 +2511,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                     if (glyphData.DirtyGlyph)
                     {
                         character = glyphData.Glyph;
+                        fontFace.GetGlyphRenderInfo(character, out glyphTexture, out glyphRegion);
                         i--;
                         continue;
                     }
@@ -2532,12 +2531,14 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 glyphShaderPass = 0;
                 glyphPosRaw = new Vector2(glyphX, glyphY);
-                
-                // Add the glyph to the batch.
-                Vector2.Transform(ref glyphPosRaw, ref transform, out glyphPosTransformed);
-                DrawInternal(glyphTexture, glyphPosTransformed + glyphOrigin,
-                    glyphRegion, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
 
+                // Add the glyph to the batch.
+                if (glyphTexture != null)
+                {
+                    Vector2.Transform(ref glyphPosRaw, ref transform, out glyphPosTransformed);
+                    DrawInternal(glyphTexture, glyphPosTransformed + glyphOrigin,
+                        glyphRegion, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
+                }
                 cx += fontFace.MeasureGlyph(ref text, i).Width * dirX;
             }
         }
