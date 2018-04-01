@@ -66,9 +66,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureString(String text, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
-            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
-
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
         }
@@ -83,9 +80,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
-            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
-
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
         }
@@ -100,9 +94,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
         {
-            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
-            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
-
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
         }
@@ -110,6 +101,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
         {
+            if (count == 0)
+                return Size2.Zero;
+
+            Contract.EnsureRange(start >= 0 && start < source.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= source.Length, nameof(count));
+
             var cx = 0;
             var cy = 0;
             for (int i = 0; i < count; i++)
