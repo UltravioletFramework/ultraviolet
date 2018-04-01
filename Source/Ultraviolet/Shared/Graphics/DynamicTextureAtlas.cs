@@ -65,7 +65,7 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="atlas">The <see cref="DynamicTextureAtlas"/> to convert.</param>
         /// <returns>The underlying <see cref="Texture2D"/> represented by <paramref name="atlas"/>.</returns>
-        public static implicit operator Texture2D(DynamicTextureAtlas atlas) => atlas.Texture;
+        public static implicit operator Texture2D(DynamicTextureAtlas atlas) => atlas?.Texture;
 
         /// <summary>
         /// Invalidates the texture atlas, forcing its contents to be re-uploaded to the GPU.
