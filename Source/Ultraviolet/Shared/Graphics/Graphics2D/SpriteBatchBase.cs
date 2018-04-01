@@ -2487,11 +2487,14 @@ namespace Ultraviolet.Graphics.Graphics2D
                 }
 
                 // Calculate the glyph's parameters and run any glyph shaders.
-                fontFace.GetGlyphRenderInfo(character, out glyphTexture, out glyphRegion);
+                fontFace.GetGlyphRenderInfo(character, out var glyphRenderInfo);
 
-                glyphX = flipHorizontal ? cx - glyphRegion.Width : cx;
-                glyphY = flipVertical ? cy - glyphRegion.Height : cy;
+                glyphTexture = glyphRenderInfo.Texture;
+                glyphRegion = glyphRenderInfo.TextureRegion;
+                glyphX = flipHorizontal ? (cx + glyphRenderInfo.OffsetX) - glyphRegion.Width : cx + glyphRenderInfo.OffsetX;
+                glyphY = flipVertical ? (cy + glyphRenderInfo.OffsetY) - glyphRegion.Height : cy + glyphRenderInfo.OffsetY;
                 glyphOrigin = new Vector2(glyphRegion.Width / 2, glyphRegion.Height / 2);
+
                 glyphScale = scale;
                 glyphColor = color;
 
@@ -2511,7 +2514,15 @@ namespace Ultraviolet.Graphics.Graphics2D
                     if (glyphData.DirtyGlyph)
                     {
                         character = glyphData.Glyph;
-                        fontFace.GetGlyphRenderInfo(character, out glyphTexture, out glyphRegion);
+
+                        fontFace.GetGlyphRenderInfo(character, out glyphRenderInfo);
+
+                        glyphTexture = glyphRenderInfo.Texture;
+                        glyphRegion = glyphRenderInfo.TextureRegion;
+                        glyphX = flipHorizontal ? (cx + glyphRenderInfo.OffsetX) - glyphRegion.Width : cx + glyphRenderInfo.OffsetX;
+                        glyphY = flipVertical ? (cy + glyphRenderInfo.OffsetY) - glyphRegion.Height : cy + glyphRenderInfo.OffsetY;
+                        glyphOrigin = new Vector2(glyphRegion.Width / 2, glyphRegion.Height / 2);
+
                         i--;
                         continue;
                     }
@@ -2539,7 +2550,9 @@ namespace Ultraviolet.Graphics.Graphics2D
                     DrawInternal(glyphTexture, glyphPosTransformed + glyphOrigin,
                         glyphRegion, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
                 }
-                cx += fontFace.MeasureGlyph(ref text, i).Width * dirX;
+
+                var kerning = (i == text.Length - 1) ? 0 : fontFace.GetKerningInfo(text[i], text[i + 1]);
+                cx += (glyphRenderInfo.Advance + kerning) * dirX;
             }
         }
 

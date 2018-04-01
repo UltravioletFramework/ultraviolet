@@ -10,16 +10,30 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeTypeFontInfo"/> class.
         /// </summary>
-        /// <param name="fontPath">The path to the font to load.</param>
-        /// <param name="fontType">The type of font represented by the specified path.</param>
-        /// <param name="fontData">The font data loaded from the file.</param>
-        public FreeTypeFontInfo(Single sizeInPoints, Byte[] faceDataRegular, Byte[] faceDataBold, Byte[] faceDataItalic, Byte[] faceDataBoldItalic)
+        /// <param name="sizeInPoints">The size of the font in points.</param>
+        /// <param name="faceDataRegular">A pointer to the native memory buffer which contains the regular face data.</param>
+        /// <param name="faceDataRegularLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataRegular"/>.</param>
+        /// <param name="faceDataBold">A pointer to the native memory buffer which contains the bold face data.</param>
+        /// <param name="faceDataBoldLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataBold"/>.</param>
+        /// <param name="faceDataItalic">A pointer to the native memory buffer which contains the italic face data.</param>
+        /// <param name="faceDataItalicLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataItalic"/>.</param>
+        /// <param name="faceDataBoldItalic">A pointer to the native memory buffer which contains the bold italic face data.</param>
+        /// <param name="faceDataBoldItalicLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataBoldItalic"/>.</param>
+        public FreeTypeFontInfo(Single sizeInPoints, 
+            IntPtr faceDataRegular, Int32 faceDataRegularLength, 
+            IntPtr faceDataBold, Int32 faceDataBoldLength,
+            IntPtr faceDataItalic, Int32 faceDataItalicLength,
+            IntPtr faceDataBoldItalic, Int32 faceDataBoldItalicLength)
         {
             this.SizeInPoints = sizeInPoints;
             this.FaceDataRegular = faceDataRegular;
+            this.FaceDataRegularLength = faceDataRegularLength;
             this.FaceDataBold = faceDataBold;
+            this.FaceDataBoldLength = faceDataBoldLength;
             this.FaceDataItalic = faceDataItalic;
+            this.FaceDataItalicLength = faceDataItalicLength;
             this.FaceDataBoldItalic = faceDataBoldItalic;
+            this.FaceDataBoldItalicLength = faceDataBoldItalicLength;
         }
 
         /// <summary>
@@ -28,23 +42,43 @@ namespace Ultraviolet.FreeType2
         public Single SizeInPoints { get; }
 
         /// <summary>
-        /// Gets the raw data for the font's regular face.
+        /// Gets a pointer to the the raw data for the font's regular face.
         /// </summary>
-        public Byte[] FaceDataRegular { get; }
+        public IntPtr FaceDataRegular { get; }
 
         /// <summary>
-        /// Gets the raw data for the font's bold face.
+        /// Gets the length, in bytes, of the raw data for the font's regular face.
         /// </summary>
-        public Byte[] FaceDataBold { get; }
+        public Int32 FaceDataRegularLength { get; }
 
         /// <summary>
-        /// Gets the raw data for the font's italic face.
+        /// Gets a pointer to the raw data for the font's bold face.
         /// </summary>
-        public Byte[] FaceDataItalic { get; }
+        public IntPtr FaceDataBold { get; }
 
         /// <summary>
-        /// Gets the raw data for the font's bold italic face.
+        /// Gets the length, in bytes, of the raw data for the font's bold face.
         /// </summary>
-        public Byte[] FaceDataBoldItalic { get; }
+        public Int32 FaceDataBoldLength { get; }
+
+        /// <summary>
+        /// Gets a pointer to the raw data for the font's italic face.
+        /// </summary>
+        public IntPtr FaceDataItalic { get; }
+
+        /// <summary>
+        /// Gets the length, in bytes, of the raw data for the font's italic face.
+        /// </summary>
+        public Int32 FaceDataItalicLength { get; }
+
+        /// <summary>
+        /// Gets a pointer to the raw data for the font's bold italic face.
+        /// </summary>
+        public IntPtr FaceDataBoldItalic { get; }
+
+        /// <summary>
+        /// Gets the length, in bytes, of the raw data for the font's bold italic face.
+        /// </summary>
+        public Int32 FaceDataBoldItalicLength { get; }
     }
 }

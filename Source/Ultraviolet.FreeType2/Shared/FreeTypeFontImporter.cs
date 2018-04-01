@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
@@ -17,6 +18,8 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override FreeTypeFontInfo Import(IContentImporterMetadata metadata, Stream stream)
         {
+            var fileSystemService = new FileSystemService();
+
             var fontMetadata = metadata.As<FreeTypeFontImporterMetadata>();
 
             var faceRegularAsset = metadata.AssetFilePath;
@@ -24,42 +27,60 @@ namespace Ultraviolet.FreeType2
             var faceItalicAsset = String.IsNullOrEmpty(fontMetadata.ItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.ItalicFace);
             var faceBoldItalicAsset = String.IsNullOrEmpty(fontMetadata.BoldItalicFace) ? null : ResolveDependencyAssetFilePath(metadata, fontMetadata.BoldItalicFace);
 
-            var faceDataRegular = new Byte[stream.Length];
-            stream.Read(faceDataRegular, 0, faceDataRegular.Length);
+            var faceRegularData = ReadStreamIntoNativeMemory(stream, out var faceRegularDataLength);
 
-            var fileSystemService = new FileSystemService();
-
-            var faceBoldData = default(Byte[]);
+            var faceBoldDataLength = 0;
+            var faceBoldData = IntPtr.Zero;
             if (faceBoldAsset != null)
             {
                 using (var faceBoldStream = fileSystemService.OpenRead(faceBoldAsset))
-                {
-                    faceBoldData = new Byte[faceBoldStream.Length];
-                    faceBoldStream.Read(faceBoldData, 0, faceBoldData.Length);
-                }
+                    faceBoldData = ReadStreamIntoNativeMemory(faceBoldStream, out faceBoldDataLength);
             }
 
-            var faceItalicData = default(Byte[]);
+            var faceItalicDataLength = 0;
+            var faceItalicData = IntPtr.Zero;
             if (faceItalicAsset != null)
             {
                 using (var faceItalicStream = fileSystemService.OpenRead(faceItalicAsset))
-                {
-                    faceItalicData = new Byte[faceItalicStream.Length];
-                    faceItalicStream.Read(faceItalicData, 0, faceItalicData.Length);
-                }
+                    faceItalicData = ReadStreamIntoNativeMemory(faceItalicStream, out faceItalicDataLength);
             }
 
-            var faceBoldItalicData = default(Byte[]);
+            var faceBoldItalicDataLength = 0;
+            var faceBoldItalicData = IntPtr.Zero;
             if (faceBoldItalicAsset != null)
             {
                 using (var faceBoldItalicStream = fileSystemService.OpenRead(faceBoldItalicAsset))
+                    faceBoldItalicData = ReadStreamIntoNativeMemory(faceBoldItalicStream, out faceBoldItalicDataLength);
+            }
+
+            return new FreeTypeFontInfo(fontMetadata.SizeInPoints, 
+                faceRegularData, faceRegularDataLength,
+                faceBoldData, faceBoldDataLength,
+                faceItalicData, faceItalicDataLength,
+                faceBoldItalicData, faceBoldItalicDataLength);
+        }
+
+        /// <summary>
+        /// Reads the contents of the specified stream into a native memory buffer.
+        /// </summary>
+        private static IntPtr ReadStreamIntoNativeMemory(Stream stream, out Int32 length)
+        {
+            var buffer = Marshal.AllocHGlobal((Int32)stream.Length);
+            var temp = new Byte[1024];
+
+            length = 0;
+
+            unsafe
+            {
+                while (stream.Position < stream.Length)
                 {
-                    faceBoldItalicData = new Byte[faceBoldItalicStream.Length];
-                    faceBoldItalicStream.Read(faceBoldItalicData, 0, faceBoldItalicData.Length);
+                    var bytes = stream.Read(temp, 0, temp.Length);
+                    Marshal.Copy(temp, 0, (IntPtr)((Byte*)buffer + length), bytes);
+                    length += bytes;
                 }
             }
 
-            return new FreeTypeFontInfo(fontMetadata.SizeInPoints, faceDataRegular, faceBoldData, faceItalicData, faceBoldItalicData);
+            return buffer;
         }
     }
 }

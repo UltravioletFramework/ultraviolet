@@ -1,7 +1,7 @@
 ﻿namespace Ultraviolet.FreeType2.Native
 {
 #pragma warning disable 1591
-    public enum FT_Err
+    public enum FT_Error
     {
         /* generic errors */
         FT_Err_Ok                               = 0x00,

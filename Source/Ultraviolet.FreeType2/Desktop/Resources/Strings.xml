@@ -15,4 +15,9 @@
       <Variant>Failed to retrieve a registered content processor for converting from {0} to {1}.</Variant>
     </en-US>
   </String>
+  <String Key="GLYPH_TOO_BIG_FOR_ATLAS">
+    <en-US>
+      <Variant>The glyph for '{0}' is too big to fit on a font atlas.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
