@@ -12,6 +12,7 @@ namespace Ultraviolet.FreeType2
     /// </summary>
     [Preserve(AllMembers = true)]
     [ContentImporter(".ttf")]
+    [ContentImporter(".ttc")]
     [ContentImporter(".otf")]
     public sealed class FreeTypeFontImporter : ContentImporter<FreeTypeFontInfo>
     {

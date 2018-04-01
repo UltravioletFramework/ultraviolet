@@ -20,4 +20,9 @@
       <Variant>The glyph for '{0}' is too big to fit on a font atlas.</Variant>
     </en-US>
   </String>
+  <String Key="PIXEL_FORMAT_NOT_SUPPORTED">
+    <en-US>
+      <Variant>Font pixel format is not supported.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
