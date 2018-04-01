@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
@@ -6,7 +8,7 @@ using Ultraviolet.FreeType2.Native;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
-using static Ultraviolet.FreeType2.Native.FT_Err;
+using static Ultraviolet.FreeType2.Native.FT_Error;
 
 namespace Ultraviolet.FreeType2
 {
@@ -20,118 +22,219 @@ namespace Ultraviolet.FreeType2
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="face">The FreeType2 face which this instance represents.</param>
-        internal FreeTypeFontFace(UltravioletContext uv, FT_FaceRec_* face)
+        /// <param name="sizeInPoints">The size of the font face in points.</param>
+        internal FreeTypeFontFace(UltravioletContext uv, FT_FaceRec* face, Single sizeInPoints)
             : base(uv)
         {
             Contract.Require((IntPtr)face, nameof(face));
 
             this.face = face;
+            this.FamilyName = Marshal.PtrToStringAnsi(face->family_name);
+            this.StyleName = Marshal.PtrToStringAnsi(face->style_name);
+
+            if (GetGlyphInfo(' ', out var spaceGlyphInfo))
+                this.SpaceWidth = spaceGlyphInfo.Width;
+
+            this.SizeInPoints = sizeInPoints;
+            this.TabWidth = SpaceWidth * 4;
+            this.LineSpacing = (Int32)(face->size->metrics.height / 64f);
+            this.SubstitutionCharacter = '?';
         }
 
         /// <inheritdoc/>
-        public override void GetGlyphRenderInfo(Char c, out Texture2D texture, out Rectangle region)
+        public override String ToString() => String.Format("{0} {1} {2}pt", FamilyName, StyleName, SizeInPoints);
+
+        /// <inheritdoc/>
+        public override void GetGlyphRenderInfo(Char c, out GlyphRenderInfo info)
         {
-            throw new NotImplementedException();
+            if (GetGlyphInfo(c, out var ginfo))
+            {
+                info = new GlyphRenderInfo
+                {
+                    Texture = ginfo.Texture,
+                    TextureRegion = ginfo.TextureRegion,
+                    OffsetX = ginfo.OffsetX,
+                    OffsetY = ginfo.OffsetY,
+                    Advance = ginfo.Advance,
+                };
+            }
+            else
+            {
+                info = default(GlyphRenderInfo);
+            }
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(String text)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(String text, Int32 start, Int32 count)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(StringSegment text)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
         {
-            throw new NotImplementedException();
+            if (count == 0)
+                return Size2.Zero;
+
+            Contract.EnsureRange(start >= 0 && start < source.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= source.Length, nameof(count));
+
+            var cx = 0;
+            var cy = 0;
+            for (var i = 0; i < count; i++)
+            {
+                var character = source[start + i];
+                switch (character)
+                {
+                    case '\r':
+                        continue;
+
+                    case '\n':
+                        cx = 0;
+                        cy = cy + LineSpacing;
+                        continue;
+
+                    case '\t':
+                        cx = cx + TabWidth;
+                        continue;
+                }
+                cx += MeasureGlyph(ref source, start + i).Width;
+            }
+
+            return new Size2(cx, cy + LineSpacing);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(String text, Int32 ix)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(StringBuilder text, Int32 ix)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(StringSegment text, Int32 ix)
         {
-            throw new NotImplementedException();
+            var source = new StringSource(text);
+            return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(ref StringSource source, Int32 ix)
         {
-            throw new NotImplementedException();
+            if (!GetGlyphInfo(source[ix], out var cinfo))
+                return Size2.Zero;
+            
+            return new Size2(cinfo.Advance, LineSpacing);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(Char c1, Char? c2 = null)
         {
-            throw new NotImplementedException();
+            if (!GetGlyphInfo(c1, out var c1Info))
+                return Size2.Zero;
+
+            return new Size2(c1Info.Advance, LineSpacing);
         }
 
         /// <inheritdoc/>
         public override Int32 GetKerningInfo(Char c1, Char c2)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         /// <inheritdoc/>
         public override Int32 GetKerningInfo(SpriteFontKerningPair pair)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
-        /// <inheritdoc/>
-        public override Int32 Characters => throw new NotImplementedException();
+        /// <summary>
+        /// Gets the font's family name.
+        /// </summary>
+        public String FamilyName { get; }
+
+        /// <summary>
+        /// Gets the font's style name.
+        /// </summary>
+        public String StyleName { get; }
+
+        /// <summary>
+        /// Gets the font's size in points.
+        /// </summary>
+        public Single SizeInPoints { get; }
 
         /// <inheritdoc/>
-        public override Int32 SpaceWidth => throw new NotImplementedException();
+        public override Int32 Characters => glyphInfoCache.Count;
 
         /// <inheritdoc/>
-        public override Int32 TabWidth => throw new NotImplementedException();
+        public override Int32 SpaceWidth { get; }
 
         /// <inheritdoc/>
-        public override Int32 LineSpacing => throw new NotImplementedException();
+        public override Int32 TabWidth { get; }
 
         /// <inheritdoc/>
-        public override Char SubstitutionCharacter => throw new NotImplementedException();
+        public override Int32 LineSpacing { get; }
+
+        /// <inheritdoc/>
+        public override Char SubstitutionCharacter { get; }
+
+        /// <summary>
+        /// The width of the texture atlases used by FreeType2 font faces.
+        /// </summary>
+        public const Int32 AtlasWidth = 1024;
+
+        /// <summary>
+        /// The height of the texture atlases used by FreeType2 font faces.
+        /// </summary>
+        public const Int32 AtlasHeight = 1024;
+
+        /// <summary>
+        /// The spacing between cells on the atlases used by FreeType2 font faces.
+        /// </summary>
+        public const Int32 AtlasSpacing = 4;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -151,7 +254,131 @@ namespace Ultraviolet.FreeType2
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Gets the font face's metadata for the specified glyph.
+        /// </summary>
+        private Boolean GetGlyphInfo(Char c, out FreeTypeGlyphInfo info)
+        {
+            if (glyphInfoCache.TryGetValue(c, out var cached))
+            {
+                info = cached;
+            }
+            else
+            {
+                var index = FT_Get_Char_Index(face, c);
+                if (index == 0)
+                {
+                    info = default(FreeTypeGlyphInfo);
+                    return false;
+                }
+
+                LoadGlyphMetadata(index);
+                LoadGlyphTexture(c, out info);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the metadata for the specified glyph into the face's glyph slot.
+        /// </summary>
+        private void LoadGlyphMetadata(UInt32 glyphIndex)
+        {
+            var flags = FT_LOAD_RENDER;
+            var err = FT_Load_Glyph(face, glyphIndex, flags);
+            if (err != FT_Err_Ok)
+                throw new FreeTypeException(err);
+        }
+
+        /// <summary>
+        /// Loads the texture data for the specified glyph.
+        /// </summary>
+        private void LoadGlyphTexture(Char c, out FreeTypeGlyphInfo info)
+        {
+            var reservation = default(DynamicTextureAtlas.Reservation);
+            var reservationFound = false;
+
+            var bmp = face->glyph->bitmap;
+            var bmpWidth = (Int32)bmp.width;
+            var bmpHeight = (Int32)bmp.rows;
+            var bmpPitch = bmp.pitch;
+
+            // If the glyph is not whitespace, we need to add it to one of our atlases.
+            if (!Char.IsWhiteSpace(c))
+            {
+                // Attempt to reserve space on one of the font's existing atlases.
+                foreach (var atlas in atlases)
+                {
+                    if (atlas.TryReserveCell(bmpWidth, bmpHeight, out reservation))
+                    {
+                        reservationFound = true;
+                        break;
+                    }
+                }
+
+                // Attempt to create a new atlas if we weren't able to make a reservation.
+                if (!reservationFound)
+                {
+                    var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing);
+                    atlas.Surface.Clear(Color.Transparent);
+                    atlases.Add(atlas);
+
+                    if (!atlas.TryReserveCell(bmpWidth, bmpHeight, out reservation))
+                        throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format(c));
+                }
+
+                // Update the atlas surface.
+                for (int y = 0; y < bmpHeight; y++)
+                {
+                    var atlas = reservation.Atlas;
+                    var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                    var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
+                    var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
+                    for (int x = 0; x < bmpWidth; x++)
+                    {
+                        var value = *pSrc++;
+                        var color = new Color(value, value, value, value);
+                        *pDst++ = color;
+                    }
+                }
+                reservation.Atlas.Invalidate();
+            }
+
+            // Calculate the glyph's metrics.
+            var ascender = FreeTypeCalc.F26Dot6ToInt32(face->size->metrics.ascender);
+            var metrics = face->glyph->metrics;
+            var width = FreeTypeCalc.F26Dot6ToInt32(metrics.width);
+            var height = FreeTypeCalc.F26Dot6ToInt32(metrics.height);
+            var offsetX = face->glyph->bitmap_left;
+            var offsetY = ascender - face->glyph->bitmap_top;
+            var advance = FreeTypeCalc.F26Dot6ToInt32(metrics.horiAdvance);
+            if (c == '\t')
+                advance *= 4;
+
+            info = new FreeTypeGlyphInfo
+            {
+                Character = c,
+                Advance = advance,
+                Width = width,
+                Height = height,
+                OffsetX = offsetX,
+                OffsetY = offsetY,
+                Texture = reservation.Atlas,
+                TextureRegion = reservation.Atlas == null ? Rectangle.Empty : reservation.Atlas.IsFlipped ?
+                    new Rectangle(reservation.X, reservation.Atlas.Height - (reservation.Y + reservation.Height), reservation.Width, reservation.Height) :
+                    new Rectangle(reservation.X, reservation.Y, reservation.Width, reservation.Height),
+            };
+            glyphInfoCache[c] = info;
+        }
+
         // The FreeType2 face which this instance represents.
-        private FT_FaceRec_* face;
+        private FT_FaceRec* face;
+
+        // Cache of atlases used to store glyph images.
+        private readonly List<DynamicTextureAtlas> atlases = 
+            new List<DynamicTextureAtlas>();
+
+        // Cache of metadata for loaded glyphs.
+        private readonly Dictionary<Char, FreeTypeGlyphInfo> glyphInfoCache =
+            new Dictionary<Char, FreeTypeGlyphInfo>();
     }
 }

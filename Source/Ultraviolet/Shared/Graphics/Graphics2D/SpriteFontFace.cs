@@ -50,10 +50,18 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override void GetGlyphRenderInfo(Char c, out Texture2D texture, out Rectangle region)
+        public override void GetGlyphRenderInfo(Char c, out GlyphRenderInfo info)
         {
-            texture = this.texture;
-            region = glyphs[c];
+            var texture = this.texture;
+            var textureRegion = glyphs[c];
+            var advance = textureRegion.Width;
+
+            info = new GlyphRenderInfo
+            {
+                Texture = texture,
+                TextureRegion = textureRegion,
+                Advance = advance,
+            };
         }
 
         /// <inheritdoc/>

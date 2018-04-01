@@ -21,9 +21,8 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Gets the information required to draw the specified glyph.
         /// </summary>
         /// <param name="c">The character to draw.</param>
-        /// <param name="texture">The texture that contains the character's glyph.</param>
-        /// <param name="region">The region of the texture which contains the character's glyph.</param>
-        public abstract void GetGlyphRenderInfo(Char c, out Texture2D texture, out Rectangle region);
+        /// <param name="info">The rendering information for the specified glyph.</param>
+        public abstract void GetGlyphRenderInfo(Char c, out GlyphRenderInfo info);
 
         /// <summary>
         /// Measures the size of the specified string of text when rendered using this font.
