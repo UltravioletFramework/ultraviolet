@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Ultraviolet.Content;
 using Ultraviolet.FreeType2.Native;
 using Ultraviolet.Platform;
@@ -11,12 +13,16 @@ namespace Ultraviolet.FreeType2
     /// Loads FreeType fonts.
     /// </summary>
     [ContentProcessor]
-    public unsafe class FreeTypeFontProcessor : ContentProcessor<FreeTypeFontInfo, FreeTypeFont>
+    public unsafe partial class FreeTypeFontProcessor : ContentProcessor<FreeTypeFontInfo, FreeTypeFont>
     {
         /// <inheritdoc/>
         public override FreeTypeFont Process(ContentManager manager, IContentProcessorMetadata metadata, FreeTypeFontInfo input)
         {
+            var mdata = metadata.As<FreeTypeFontProcessorMetadata>();
+            var prepopGlyphRanges = new List<PrepopulatedGlyphRange>();
+
             GetBestScreenDensityMatch(manager.Ultraviolet, metadata.AssetDensity, out var dpiX, out var dpiY);
+            GetPrepopulatedGlyphList(mdata.PrepopulatedGlyphs, prepopGlyphRanges);
 
             var sizeInPoints = (Int32)input.SizeInPoints;
 
@@ -29,6 +35,18 @@ namespace Ultraviolet.FreeType2
             var uvFaceBold = (ftFaceBold == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, input.SizeInPoints);
             var uvFaceItalic = (ftFaceItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, input.SizeInPoints);
             var uvFaceBoldItalic = (ftFaceBoldItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, input.SizeInPoints);
+
+            if (uvFaceRegular != null)
+                PrepopulateGlyphs(uvFaceRegular, prepopGlyphRanges);
+
+            if (uvFaceBold != null)
+                PrepopulateGlyphs(uvFaceBold, prepopGlyphRanges);
+
+            if (uvFaceItalic != null)
+                PrepopulateGlyphs(uvFaceItalic, prepopGlyphRanges);
+
+            if (uvFaceBoldItalic != null)
+                PrepopulateGlyphs(uvFaceBoldItalic, prepopGlyphRanges);
 
             return new FreeTypeFont(manager.Ultraviolet, uvFaceRegular, uvFaceBold, uvFaceItalic, uvFaceBoldItalic);
         }
@@ -53,6 +71,26 @@ namespace Ultraviolet.FreeType2
                 throw new FreeTypeException(err);
 
             return face;
+        }
+
+        /// <summary>
+        /// Parses a value which starts or ends a prepopulated glyph range.
+        /// </summary>
+        private static Char ParsePrepopulatedGlyphRangeValue(String value)
+        {
+            if (value.Length == 1)
+                return value[0];
+
+            if (value.StartsWith("\\u", StringComparison.OrdinalIgnoreCase))
+            {
+                if (value.Length == 6)
+                {
+                    value = value.Substring(2);
+                    return (Char)UInt32.Parse(value, NumberStyles.HexNumber);
+                }
+                else throw new FormatException();
+            }
+            else throw new FormatException();
         }
 
         /// <summary>
@@ -84,6 +122,65 @@ namespace Ultraviolet.FreeType2
                 return;
 
             dpiX = dpiY = ScreenDensityService.GuessDensityFromBucket(bucket);
+        }
+
+        /// <summary>
+        /// Populates the specified collection with the list of glyph ranges which should be prepopulated.
+        /// </summary>
+        private static void GetPrepopulatedGlyphList(String input, IList<PrepopulatedGlyphRange> ranges)
+        {
+            ranges.Clear();
+
+            if (String.IsNullOrWhiteSpace(input))
+                return;
+            
+            var splitRanges = input.Split(',');
+            foreach (var splitRange in splitRanges)
+            {
+                var splitRangeParts = splitRange.Split('-');
+                if (splitRangeParts.Length == 1)
+                {
+                    if (String.Equals("ASCII", splitRangeParts[0], StringComparison.OrdinalIgnoreCase))
+                    {
+                        ranges.Add(new PrepopulatedGlyphRange { Start = (Char)0, End = (Char)127 });
+                    }
+                    else
+                    {
+                        var value = ParsePrepopulatedGlyphRangeValue(splitRangeParts[0]);
+                        ranges.Add(new PrepopulatedGlyphRange { Start = value, End = value });
+                    }
+                }
+                else
+                {
+                    if (splitRangeParts.Length == 2)
+                    {
+                        var start = ParsePrepopulatedGlyphRangeValue(splitRangeParts[0]);
+                        var end = ParsePrepopulatedGlyphRangeValue(splitRangeParts[1]);
+                        if (end < start)
+                        {
+                            var tmp = end;
+                            end = start;
+                            start = tmp;
+                        }
+                        ranges.Add(new PrepopulatedGlyphRange { Start = start, End = end });
+                    }
+                    else throw new FormatException();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prepopulates the specified face's atlases with the specified list of glyphs.
+        /// </summary>
+        private static void PrepopulateGlyphs(FreeTypeFontFace face, IList<PrepopulatedGlyphRange> ranges)
+        {
+            foreach (var range in ranges)
+            {
+                for (var g = range.Start; g <= range.End; g++)
+                {
+                    face.PopulateGlyph(g);
+                }
+            }
         }
     }
 }

@@ -193,6 +193,15 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
+        /// Ensures that the specified character's associated glyph has been added to the font's texture atlases.
+        /// </summary>
+        /// <param name="c">The character for which to ensure that a glyph has been populated.</param>
+        public void PopulateGlyph(Char c)
+        {
+            GetGlyphInfo(c, out var info);
+        }
+
+        /// <summary>
         /// Gets the font's family name.
         /// </summary>
         public String FamilyName { get; }
