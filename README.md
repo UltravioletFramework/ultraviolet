@@ -41,10 +41,19 @@ Some core features of the Ultraviolet Framework:
 
 The Ultraviolet Framework's source code is [available on GitHub](https://github.com/tlgkccampbell/ultraviolet). If you're developing on Windows, and you just want to get started making games, you can use the installer provided as part of the [latest release](https://github.com/tlgkccampbell/ultraviolet/releases). It will ensure that you have the necessary DLLs and install Visual Studio templates for developing Ultraviolet applications. 
 
+Getting Started
+===============
+
+If you don't want to build Ultraviolet yourself, official packages are available through [NuGet](https://www.nuget.org/packages?q=ultraviolet). There are packages for each of Ultraviolet's individual libraries, as well as several packages which aggregate all of the packages required by a particular target platform.
+
+The wiki contains a quick start guide for development on both [Windows](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-on-Windows) and [macOS](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-on-macOS).
+
 Requirements
 ============
 
-Building Ultraviolet requires Visual Studio 2017 or later, or an equivalent version of Mono.
+Using Ultraviolet requires that your project is targeted against .NET Framework 4.7 or later, or an equivalent Mono or Xamarin runtime.
+
+Building Ultraviolet requires Visual Studio 2017 or later, or an equivalent version of the Mono development tools.
 
 Building the mobile projects requires the appropriate Xamarin tools to be installed.
 
