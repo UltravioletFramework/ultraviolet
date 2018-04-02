@@ -24,17 +24,17 @@ namespace Ultraviolet.FreeType2
             GetBestScreenDensityMatch(manager.Ultraviolet, metadata.AssetDensity, out var dpiX, out var dpiY);
             GetPrepopulatedGlyphList(mdata.PrepopulatedGlyphs, prepopGlyphRanges);
 
-            var sizeInPoints = (Int32)input.SizeInPoints;
+            var sizeInPoints = (Int32)mdata.SizeInPoints;
 
             var ftFaceRegular = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataRegular, input.FaceDataRegularLength);
             var ftFaceBold = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataBold, input.FaceDataBoldLength);
             var ftFaceItalic = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataItalic, input.FaceDataItalicLength);
             var ftFaceBoldItalic = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataBoldItalic, input.FaceDataBoldItalicLength);
 
-            var uvFaceRegular = (ftFaceRegular == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, input.SizeInPoints);
-            var uvFaceBold = (ftFaceBold == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, input.SizeInPoints);
-            var uvFaceItalic = (ftFaceItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, input.SizeInPoints);
-            var uvFaceBoldItalic = (ftFaceBoldItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, input.SizeInPoints);
+            var uvFaceRegular = (ftFaceRegular == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, mdata.Substitution);
+            var uvFaceBold = (ftFaceBold == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, mdata.Substitution);
+            var uvFaceItalic = (ftFaceItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, sizeInPoints, mdata.Substitution);
+            var uvFaceBoldItalic = (ftFaceBoldItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, sizeInPoints, mdata.Substitution);
 
             if (uvFaceRegular != null)
                 PrepopulateGlyphs(uvFaceRegular, prepopGlyphRanges);

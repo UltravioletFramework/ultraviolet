@@ -54,7 +54,7 @@ namespace Ultraviolet.FreeType2
                     faceBoldItalicData = ReadStreamIntoNativeMemory(faceBoldItalicStream, out faceBoldItalicDataLength);
             }
 
-            return new FreeTypeFontInfo(fontMetadata.SizeInPoints, 
+            return new FreeTypeFontInfo(
                 faceRegularData, faceRegularDataLength,
                 faceBoldData, faceBoldDataLength,
                 faceItalicData, faceItalicDataLength,

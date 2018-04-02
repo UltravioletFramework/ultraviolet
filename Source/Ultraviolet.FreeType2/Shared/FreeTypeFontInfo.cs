@@ -10,7 +10,6 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Initializes a new instance of the <see cref="FreeTypeFontInfo"/> class.
         /// </summary>
-        /// <param name="sizeInPoints">The size of the font in points.</param>
         /// <param name="faceDataRegular">A pointer to the native memory buffer which contains the regular face data.</param>
         /// <param name="faceDataRegularLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataRegular"/>.</param>
         /// <param name="faceDataBold">A pointer to the native memory buffer which contains the bold face data.</param>
@@ -19,13 +18,12 @@ namespace Ultraviolet.FreeType2
         /// <param name="faceDataItalicLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataItalic"/>.</param>
         /// <param name="faceDataBoldItalic">A pointer to the native memory buffer which contains the bold italic face data.</param>
         /// <param name="faceDataBoldItalicLength">The length, in bytes, of the memory buffer pointed to by <paramref name="faceDataBoldItalic"/>.</param>
-        public FreeTypeFontInfo(Single sizeInPoints, 
+        public FreeTypeFontInfo(
             IntPtr faceDataRegular, Int32 faceDataRegularLength, 
             IntPtr faceDataBold, Int32 faceDataBoldLength,
             IntPtr faceDataItalic, Int32 faceDataItalicLength,
             IntPtr faceDataBoldItalic, Int32 faceDataBoldItalicLength)
         {
-            this.SizeInPoints = sizeInPoints;
             this.FaceDataRegular = faceDataRegular;
             this.FaceDataRegularLength = faceDataRegularLength;
             this.FaceDataBold = faceDataBold;
@@ -35,12 +33,7 @@ namespace Ultraviolet.FreeType2
             this.FaceDataBoldItalic = faceDataBoldItalic;
             this.FaceDataBoldItalicLength = faceDataBoldItalicLength;
         }
-
-        /// <summary>
-        /// Gets the size of the font in points.
-        /// </summary>
-        public Single SizeInPoints { get; }
-
+        
         /// <summary>
         /// Gets a pointer to the the raw data for the font's regular face.
         /// </summary>
