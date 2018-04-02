@@ -84,8 +84,11 @@ namespace Ultraviolet.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            this.IsDirty = false;
-            this.Texture.SetData(this.Surface);
+            if (this.IsDirty)
+            {
+                this.IsDirty = false;
+                this.Texture.SetData(this.Surface);
+            }
         }
 
         /// <summary>
