@@ -17,6 +17,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessor.PrepopulatedGlyphRange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessorMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeGlyphInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeCalc.cs" />
