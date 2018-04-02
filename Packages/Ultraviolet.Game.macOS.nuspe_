@@ -10,7 +10,10 @@
     <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet Framework Game (macOS)</title>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the macOS platform.</description>
+    <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the macOS platform.</summary>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains all of the components needed to create a simple game for the macOS platform.
+
+Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
     <dependencies>
         <dependency id="Ultraviolet.OpenGL.Bindings" version="UV_VERSION" />	
