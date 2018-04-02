@@ -24,12 +24,15 @@ namespace Ultraviolet.FreeType2
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="face">The FreeType2 face which this instance represents.</param>
         /// <param name="sizeInPoints">The size of the font face in points.</param>
-        internal FreeTypeFontFace(UltravioletContext uv, FT_FaceRec* face, Single sizeInPoints)
+        /// <param name="substitutionCharacter">The substitution character for this font face, 
+        /// or <see langword="null"/> to use a default character.</param>
+        internal FreeTypeFontFace(UltravioletContext uv, FT_FaceRec* face, Single sizeInPoints, Char? substitutionCharacter = null)
             : base(uv)
         {
             Contract.Require((IntPtr)face, nameof(face));
 
             this.face = face;
+
             this.FamilyName = Marshal.PtrToStringAnsi(face->family_name);
             this.StyleName = Marshal.PtrToStringAnsi(face->style_name);
 
@@ -38,8 +41,14 @@ namespace Ultraviolet.FreeType2
 
             this.SizeInPoints = sizeInPoints;
             this.TabWidth = SpaceWidth * 4;
-            this.LineSpacing = (Int32)(face->size->metrics.height / 64f);
-            this.SubstitutionCharacter = '?';
+            this.LineSpacing = FreeTypeCalc.F26Dot6ToInt32(face->size->metrics.height);
+
+            Char? GetCharacterIfDefined(FT_FaceRec* f, Char c) => FT_Get_Char_Index(f, c) > 0 ? c : (Char?)null;
+
+            this.SubstitutionCharacter = substitutionCharacter ??
+                GetCharacterIfDefined(face, '�') ?? GetCharacterIfDefined(face, '□') ?? '?';
+
+            PopulateGlyph(SubstitutionCharacter);
         }
 
         /// <inheritdoc/>
@@ -278,12 +287,18 @@ namespace Ultraviolet.FreeType2
                 var index = FT_Get_Char_Index(face, c);
                 if (index == 0)
                 {
+                    if (c != SubstitutionCharacter)
+                        return GetGlyphInfo(SubstitutionCharacter, out info);
+
                     info = default(FreeTypeGlyphInfo);
                     return false;
                 }
-
-                LoadGlyphMetadata(index);
-                LoadGlyphTexture(c, out info);
+                else
+                {
+                    LoadGlyphMetadata(index);
+                    LoadGlyphTexture(c, out info);
+                    glyphInfoCache[c] = info;
+                }
             }
             return true;
         }
@@ -377,7 +392,6 @@ namespace Ultraviolet.FreeType2
                     new Rectangle(reservation.X, reservation.Atlas.Height - (reservation.Y + reservation.Height), reservation.Width, reservation.Height) :
                     new Rectangle(reservation.X, reservation.Y, reservation.Width, reservation.Height),
             };
-            glyphInfoCache[c] = info;
         }
 
         /// <summary>

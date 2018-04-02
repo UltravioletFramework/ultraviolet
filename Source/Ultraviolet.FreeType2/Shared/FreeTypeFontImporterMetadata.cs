@@ -9,12 +9,6 @@ namespace Ultraviolet.FreeType2
     public sealed class FreeTypeFontImporterMetadata
     {
         /// <summary>
-        /// Gets the size of the font in points.
-        /// </summary>
-        [JsonProperty(PropertyName = "sizeInPoints")]
-        public Single SizeInPoints { get; private set; } = 16f;
-
-        /// <summary>
         /// Gets the name of the file that contains the font's bold face.
         /// </summary>
         [JsonProperty(PropertyName = "boldFace")]
