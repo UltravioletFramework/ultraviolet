@@ -10,7 +10,12 @@
     <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet.SDL2 Native Dependencies</title>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the SDL2 implementation of the Framework's platform and input subsystems.</description>
+    <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the SDL2 implementation of the Framework's platform and input subsystems.</summary>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the SDL2 implementation of the Framework's platform and input subsystems.
+
+This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the appropriate Ultraviolet.Game.* package for your target platform.
+
+Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <dependency id="Ultraviolet.SDL2" version="UV_VERSION" />

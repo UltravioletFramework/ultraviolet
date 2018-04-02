@@ -9,7 +9,12 @@
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
     <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for macOS.</description>
+    <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for macOS.</summary>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for macOS.
+
+This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the appropriate Ultraviolet.Game.* package for your target platform.
+
+Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
