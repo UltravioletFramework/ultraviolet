@@ -7,16 +7,15 @@ namespace Ultraviolet.FreeType2.Native
 #pragma warning disable 1591
     [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct FT_Outline
+    public unsafe struct FT_Bitmap_Size32
     {
-        public Int16 n_contour;
-        public Int16 n_points;
+        public Int16 height;
+        public Int16 width;
 
-        public FT_Vector* points;
-        public Byte* tags;
-        public UInt16* contours;
+        public Int32 size;
 
-        public Int32 flags;
+        public Int32 x_ppem;
+        public Int32 y_ppem;
     }
 #pragma warning restore 1591
 }
