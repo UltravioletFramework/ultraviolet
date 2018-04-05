@@ -46,6 +46,18 @@
           <type>AfterBuild</type>
           <command>ln -sf "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libfreetype.6.dylib" "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libfreetype.dylib"</command>
         </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>ln -sf "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libharfbuzz.0.dylib" "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libharfbuzz.dylib"</command>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>ln -sf "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libpng16.16.dylib" "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libpng16.dylib"</command>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>ln -sf "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libpng16.dylib" "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libpng.dylib"</command>
+        </Command>
       </CustomCommands>
     </CustomCommands>
     <AOTMode>None</AOTMode>
