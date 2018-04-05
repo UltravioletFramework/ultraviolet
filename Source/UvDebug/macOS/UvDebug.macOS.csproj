@@ -40,6 +40,15 @@
     <XamMacArch></XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>ln -sf "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libfreetype.6.dylib" "${TargetDir}/UvDebug.app/Contents/Resources/x64/osx/libfreetype.dylib"</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -61,6 +70,7 @@
     <XamMacArch></XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -81,6 +91,7 @@
     <TlsProvider>Default</TlsProvider>
     <XamMacArch></XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -142,6 +153,10 @@
       <Project>{8F3C2DA1-8930-493B-854B-A053BDBF9071}</Project>
       <Name>Ultraviolet.Presentation.Compiler.Desktop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj">
+      <Project>{1213F9AF-5E16-46E9-A7D0-80B9564E6345}</Project>
+      <Name>Ultraviolet.FreeType2.Desktop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
@@ -152,9 +167,11 @@
     </BundleResource>
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
       <Link>x64\osx\libbass.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
       <Link>x64\osx\libbass_fx.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Textures\test_2.png">
       <Link>Content\Textures\test_2.png</Link>
@@ -165,13 +182,35 @@
     <BundleResource Include="..\Desktop\Content\Textures\test_0.png">
       <Link>Content\Textures\test_0.png</Link>
     </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
+      <Link>x64\osx\libSDL2.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib">
+      <Link>x64\osx\libfreetype.6.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib">
+      <Link>x64\osx\libharfbuzz.0.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib">
+      <Link>x64\osx\libpng16.16.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata-Bold.ttf">
+      <Link>Content\Fonts\Inconsolata-Bold.ttf</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf">
+      <Link>Content\Fonts\Inconsolata-Regular.ttf</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
+      <Link>Content\Fonts\Inconsolata.uvmeta</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>    
     <BundleResource Include="..\Desktop\Content\Cursors\CursorsImage.png">
       <Link>Content\Cursors\CursorsImage.png</Link>
-    </BundleResource>
-    <BundleResource Include="..\Desktop\Content\Effects\TestEffect.json">
-      <Link>Content\Effects\TestEffect.json</Link>
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Fonts\SegoeUITexture.png">
       <Link>Content\Fonts\SegoeUITexture.png</Link>
@@ -224,12 +263,6 @@
     <BundleResource Include="..\Desktop\Content\Cursors\Cursors.xml">
       <Link>Content\Cursors\Cursors.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\Desktop\Content\Effects\Test.frag">
-      <Link>Content\Effects\Test.frag</Link>
-    </BundleResource>
-    <BundleResource Include="..\Desktop\Content\Effects\Test.vert">
-      <Link>Content\Effects\Test.vert</Link>
-    </BundleResource>
     <BundleResource Include="..\Desktop\Content\Fonts\SegoeUI.xml">
       <Link>Content\Fonts\SegoeUI.xml</Link>
     </BundleResource>
@@ -269,11 +302,6 @@
     <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
       <Link>UI\Controls\Templates\TriangleColorSelector.xml</Link>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-    </Content>
   </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" Condition="Exists('..\Shared\UvDebug.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />  
