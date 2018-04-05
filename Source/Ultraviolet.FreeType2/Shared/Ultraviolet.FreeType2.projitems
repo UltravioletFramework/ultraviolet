@@ -22,6 +22,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeGlyphInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeCalc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_FACE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_LOAD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Pixel_Mode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_ListNodeRec.cs" />
