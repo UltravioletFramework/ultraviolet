@@ -14,7 +14,8 @@ namespace Ultraviolet.Core.Native
         /// <param name="path">The path to add.</param>
         protected void AddPathToLibraryPath(String path)
         {
-            var existing = Environment.GetEnvironmentVariable("LD_LIBRARY_PATH", EnvironmentVariableTarget.Process).Split(':').ToList();
+            var existing = (Environment.GetEnvironmentVariable("LD_LIBRARY_PATH", EnvironmentVariableTarget.Process) ?? String.Empty)
+                .Split(new [] { ':' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (existing.Contains(path))
                 return;
 
