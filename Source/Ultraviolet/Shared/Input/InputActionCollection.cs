@@ -39,9 +39,13 @@ namespace Ultraviolet.Input
 
             return new UltravioletSingleton<T>(uv =>
             {
+                var input = uv.GetInput();
+                if (input.Disposed)
+                    return default(T);
+
                 var instance = (T)ctor.Invoke(new object[] { uv });
                 instance.CreateActions();
-                uv.GetInput().Updating += (s, t) => 
+                input.Updating += (s, t) => 
                 { 
                     instance.Update(); 
                 };
