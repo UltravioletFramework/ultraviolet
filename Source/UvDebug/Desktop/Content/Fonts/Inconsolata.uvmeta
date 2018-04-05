@@ -2,7 +2,9 @@
 <AssetMetadata>
   <Asset>Inconsolata-Regular.ttf</Asset>
   <ImporterMetadata>
-    <SizeInPoints>12</SizeInPoints>
     <BoldFace>Inconsolata-Bold.ttf</BoldFace>
   </ImporterMetadata>
+  <ProcessorMetadata>
+    <SizeInPoints>12</SizeInPoints>
+  </ProcessorMetadata>
 </AssetMetadata>
