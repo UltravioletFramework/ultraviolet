@@ -30,10 +30,12 @@ namespace Ultraviolet.Core.Native
         /// <inheritdoc/>
         protected override IntPtr CoreLoadNativeLibrary(String libraryName)
         {
-            var dirname = Path.GetDirectoryName(Path.GetFullPath(libraryName));
-            if (Directory.Exists(dirname))
-                AddPathToLibraryPath(dirname);
-
+            if (!String.IsNullOrWhiteSpace(libraryName))
+            {
+                var dirname = Path.GetDirectoryName(Path.GetFullPath(libraryName));
+                if (Directory.Exists(dirname))
+                    AddPathToLibraryPath(dirname);
+            }
             return Native.dlopen(libraryName, Native.RTLD_NOW);
         }
 
