@@ -346,7 +346,7 @@ namespace Ultraviolet
         {
             Contract.Require(action, nameof(action));
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotSpawnTasks);
+            Contract.EnsureNot(Disposing, UltravioletStrings.CannotSpawnTasks);
 
             var token = cancellationTokenSource.Token;
             var task = taskFactory.StartNew(() => action(token), token, TaskCreationOptions.None, TaskScheduler.Default);
@@ -368,7 +368,7 @@ namespace Ultraviolet
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
+            Contract.EnsureNot(Disposing, UltravioletStrings.CannotQueueWorkItems);
 
             if (IsExecutingOnCurrentThread && (options & WorkItemOptions.ForceAsynchronousExecution) != WorkItemOptions.ForceAsynchronousExecution)
             {
@@ -390,7 +390,7 @@ namespace Ultraviolet
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
+            Contract.EnsureNot(Disposing, UltravioletStrings.CannotQueueWorkItems);
 
             if (IsExecutingOnCurrentThread && (options & WorkItemOptions.ForceAsynchronousExecution) != WorkItemOptions.ForceAsynchronousExecution)
             {
@@ -413,7 +413,7 @@ namespace Ultraviolet
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
+            Contract.EnsureNot(Disposing, UltravioletStrings.CannotQueueWorkItems);
 
             if (IsExecutingOnCurrentThread && (options & WorkItemOptions.ForceAsynchronousExecution) != WorkItemOptions.ForceAsynchronousExecution)
             {
@@ -436,7 +436,7 @@ namespace Ultraviolet
         {
             Contract.Require(workItem, nameof(workItem));
             Contract.EnsureNotDisposed(this, Disposed);
-            Contract.EnsureNot(disposing, UltravioletStrings.CannotQueueWorkItems);
+            Contract.EnsureNot(Disposing, UltravioletStrings.CannotQueueWorkItems);
 
             if (IsExecutingOnCurrentThread && (options & WorkItemOptions.ForceAsynchronousExecution) != WorkItemOptions.ForceAsynchronousExecution)
             {
@@ -520,6 +520,11 @@ namespace Ultraviolet
         /// Gets a value indicating whether the context has been initialized.
         /// </summary>
         public Boolean IsInitialized { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the object is in the process of being disposed.
+        /// </summary>
+        public Boolean Disposing { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the object has been disposed.
@@ -746,7 +751,7 @@ namespace Ultraviolet
 
             WaitForPendingTasks(true);
 
-            this.disposing = true;
+            this.Disposing = true;
 
             ProcessWorkItems();
             OnShutdown();
@@ -754,7 +759,7 @@ namespace Ultraviolet
             ChangeSynchronizationContext(null);
 
             this.Disposed = true;
-            this.disposing = false;
+            this.Disposing = false;
 
             ReleaseContext();
         }
@@ -1007,7 +1012,6 @@ namespace Ultraviolet
         private Assembly viewProviderAssembly;
         private Boolean supportsHighDensityDisplayModes;
         private Boolean isRunningInServiceMode;
-        private Boolean disposing;
 
         // The context's list of pending tasks.
         private readonly TaskScheduler taskScheduler;

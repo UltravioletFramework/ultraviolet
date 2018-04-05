@@ -34,7 +34,7 @@ namespace Ultraviolet
             this.initializer = initializer;
 
             var uv = UltravioletContext.RequestCurrent();
-            if (uv != null && uv.IsInitialized && ShouldInitializeResource(uv))
+            if (uv != null && uv.IsInitialized && !uv.Disposing && !uv.Disposed && ShouldInitializeResource(uv))
             {
                 resource = initializer(uv);
             }
