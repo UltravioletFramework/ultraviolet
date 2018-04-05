@@ -1,17 +1,16 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using Ultraviolet.Core;
-
-using FT_Pos = System.Int32;
 
 namespace Ultraviolet.FreeType2.Native
 {
 #pragma warning disable 1591
     [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct FT_Vector
+    public unsafe struct FT_Vector64
     {
-        public FT_Pos x;
-        public FT_Pos y;
+        public Int64 x;
+        public Int64 y;
     }
 #pragma warning restore 1591
 }

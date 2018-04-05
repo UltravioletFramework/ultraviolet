@@ -1,6 +1,5 @@
 ﻿using System;
 using Ultraviolet.Core;
-using Ultraviolet.FreeType2.Native;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.FT_Error;
 
@@ -19,7 +18,7 @@ namespace Ultraviolet.FreeType2
         {
             Contract.Require(uv, nameof(uv));
 
-            if (Library != null)
+            if (Library != IntPtr.Zero)
                 throw new InvalidOperationException(FreeTypeStrings.PluginAlreadyInitialized);
 
             var content = uv.GetContent();
@@ -45,15 +44,15 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Gets the pointer to the FreeType2 library handle.
         /// </summary>
-        internal static FT_LibraryRec* Library { get; private set; }
+        internal static IntPtr Library { get; private set; }
 
         /// <summary>
         /// Initializes the FreeType2 API.
         /// </summary>
         private static void FT_Init(UltravioletContext uv)
         {
-            var lib = default(FT_LibraryRec*);
-            var err = FT_Init_FreeType(&lib);
+            var lib = default(IntPtr);
+            var err = FT_Init_FreeType((IntPtr)(&lib));
             if (err != FT_Err_Ok)
                 throw new FreeTypeException(err);
 
@@ -69,7 +68,7 @@ namespace Ultraviolet.FreeType2
             if (err != FT_Err_Ok)
                 throw new FreeTypeException(err);
 
-            Library = null;
+            Library = IntPtr.Zero;
         }
     }
 }

@@ -31,10 +31,10 @@ namespace Ultraviolet.FreeType2
             var ftFaceItalic = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataItalic, input.FaceDataItalicLength);
             var ftFaceBoldItalic = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataBoldItalic, input.FaceDataBoldItalicLength);
 
-            var uvFaceRegular = (ftFaceRegular == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, mdata.Substitution);
-            var uvFaceBold = (ftFaceBold == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, mdata.Substitution);
-            var uvFaceItalic = (ftFaceItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, sizeInPoints, mdata.Substitution);
-            var uvFaceBoldItalic = (ftFaceBoldItalic == null) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, sizeInPoints, mdata.Substitution);
+            var uvFaceRegular = (ftFaceRegular == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, mdata.Substitution);
+            var uvFaceBold = (ftFaceBold == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, mdata.Substitution);
+            var uvFaceItalic = (ftFaceItalic == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, sizeInPoints, mdata.Substitution);
+            var uvFaceBoldItalic = (ftFaceBoldItalic == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, sizeInPoints, mdata.Substitution);
 
             if (uvFaceRegular != null)
                 PrepopulateGlyphs(uvFaceRegular, prepopGlyphRanges);
@@ -54,21 +54,34 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Loads the specified FreeType2 font face.
         /// </summary>
-        private static FT_FaceRec* LoadFontFace(Int32 sizeInPoints, UInt32 dpiX, UInt32 dpiY, IntPtr faceData, Int32 faceDataLength)
+        private static IntPtr LoadFontFace(Int32 sizeInPoints, UInt32 dpiX, UInt32 dpiY, IntPtr faceData, Int32 faceDataLength)
         {
-            if(faceData == IntPtr.Zero)
-                return null;
+            if (faceData == IntPtr.Zero)
+                return IntPtr.Zero;
 
-            var face = default(FT_FaceRec*);
+            var face = default(IntPtr);
             var err = default(FT_Error);
 
-            err = FT_New_Memory_Face(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, &face);
-            if (err != FT_Err_Ok)
-                throw new FreeTypeException(err);
+            if (Use64BitInterface)
+            {
+                err = FT_New_Memory_Face64(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
 
-            err = FT_Set_Char_Size(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
-            if (err != FT_Err_Ok)
-                throw new FreeTypeException(err);
+                err = FT_Set_Char_Size64(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+            }
+            else
+            {
+                err = FT_New_Memory_Face32(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                err = FT_Set_Char_Size32(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+            }
 
             return face;
         }
