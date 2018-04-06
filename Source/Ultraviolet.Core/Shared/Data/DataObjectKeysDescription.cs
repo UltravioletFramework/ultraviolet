@@ -11,13 +11,13 @@ namespace Ultraviolet.Core.Data
         /// <summary>
         /// Gets or sets the object's identifying key.
         /// </summary>
-        [JsonProperty(PropertyName = "key", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Key { get; set; }
 
         /// <summary>
         /// Gets or sets the object's globally-unique identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "id", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Guid ID { get; set; }
     }
 }

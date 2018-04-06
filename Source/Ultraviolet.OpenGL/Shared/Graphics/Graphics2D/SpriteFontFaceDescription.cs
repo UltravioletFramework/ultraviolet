@@ -15,25 +15,23 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <summary>
         /// Gets or sets the asset path of the font face's texture.
         /// </summary>
-        [JsonProperty(PropertyName = "texture", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Texture { get; set; }
 
         /// <summary>
         /// Gets or sets the region on the texture that contains the font face's glyph.
         /// </summary>
-        [JsonProperty(PropertyName = "textureRegion", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Rectangle? TextureRegion { get; set; }
 
         /// <summary>
         /// Gets or sets the face's glyph metadata.
         /// </summary>
-        [JsonProperty(PropertyName = "glyphs")]
         public SpriteFontFaceGlyphDescription Glyphs { get; set; }
 
         /// <summary>
         /// Gets or sets the face's collection of kerning values.
         /// </summary>
-        [JsonProperty(PropertyName = "kernings")]
         public Dictionary<String, Int32> Kernings { get; set; }
     }
 }

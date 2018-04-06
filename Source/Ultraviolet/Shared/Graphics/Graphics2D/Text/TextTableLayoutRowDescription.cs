@@ -13,7 +13,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets or sets the row's collection of cells.
         /// </summary>
-        [JsonProperty(PropertyName = "cells", Required = Required.Default)]
         public IEnumerable<TextTableLayoutCellDescription> Cells { get; set; }
     }
 }

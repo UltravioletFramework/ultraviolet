@@ -115,7 +115,8 @@ namespace Ultraviolet.Tests
         public void Circle_SerializesToJson()
         {
             var circle = new Circle(1, 2, 3);
-            var json = JsonConvert.SerializeObject(circle);
+            var json = JsonConvert.SerializeObject(circle,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2,""radius"":3}");
         }
@@ -124,7 +125,8 @@ namespace Ultraviolet.Tests
         public void Circle_SerializesToJson_WhenNullable()
         {
             var circle = new Circle(1, 2, 3);
-            var json = JsonConvert.SerializeObject((Circle?)circle);
+            var json = JsonConvert.SerializeObject((Circle?)circle, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2,""radius"":3}");
         }
@@ -134,7 +136,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{ ""x"":1,""y"":2,""radius"":3 }";
             
-            var circle = JsonConvert.DeserializeObject<Circle>(json);
+            var circle = JsonConvert.DeserializeObject<Circle>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(circle)
                 .ShouldHavePosition(1, 2)
@@ -146,7 +149,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{ ""x"":1,""y"":2,""radius"":3 }";
 
-            var circle1 = JsonConvert.DeserializeObject<Circle?>(json1);
+            var circle1 = JsonConvert.DeserializeObject<Circle?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(circle1.Value)
                 .ShouldHavePosition(1, 2)
@@ -154,7 +158,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var circle2 = JsonConvert.DeserializeObject<Circle?>(json2);
+            var circle2 = JsonConvert.DeserializeObject<Circle?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(circle2.HasValue)
                 .ShouldBe(false);

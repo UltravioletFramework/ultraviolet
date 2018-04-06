@@ -119,7 +119,8 @@ namespace Ultraviolet.Tests
         public void Size2F_SerializesToJson()
         {
             var size = new Size2F(1.2f, 2.3f);
-            var json = JsonConvert.SerializeObject(size);
+            var json = JsonConvert.SerializeObject(size,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""width"":1.2,""height"":2.3}");
         }
@@ -128,7 +129,8 @@ namespace Ultraviolet.Tests
         public void Size2F_SerializesToJson_WhenNullable()
         {
             var size = new Size2F(1.2f, 2.3f);
-            var json = JsonConvert.SerializeObject((Size2F?)size);
+            var json = JsonConvert.SerializeObject((Size2F?)size,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""width"":1.2,""height"":2.3}");
         }
@@ -138,7 +140,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""width"":1.2,""height"":2.3}";
             
-            var size = JsonConvert.DeserializeObject<Size2F>(json);
+            var size = JsonConvert.DeserializeObject<Size2F>(json,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(size)
                 .ShouldBe(1.2f, 2.3f);
@@ -149,14 +152,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""width"":1.2,""height"":2.3}";
 
-            var size1 = JsonConvert.DeserializeObject<Size2F?>(json1);
+            var size1 = JsonConvert.DeserializeObject<Size2F?>(json1,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(size1.Value)
                 .ShouldBe(1.2f, 2.3f);
 
             const String json2 = @"null";
 
-            var size2 = JsonConvert.DeserializeObject<Size2F?>(json2);
+            var size2 = JsonConvert.DeserializeObject<Size2F?>(json2,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(size2.HasValue)
                 .ShouldBe(false);

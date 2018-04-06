@@ -14,13 +14,13 @@ namespace Ultraviolet
         /// <summary>
         /// Gets or sets the asset path of the cursor's texture.
         /// </summary>
-        [JsonProperty(PropertyName = "texture", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Texture { get; set; }
 
         /// <summary>
         /// Gets or sets the collection's cursors.
         /// </summary>
-        [JsonProperty(PropertyName = "cursors", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public IEnumerable<CursorDescription> Cursors { get; set; }
     }
 }

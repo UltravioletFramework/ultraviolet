@@ -26,43 +26,43 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets or sets the texture atlas' root directory.
         /// </summary>
-        [JsonProperty(PropertyName = "rootDirectory", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public String RootDirectory { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the atlas' texture must had dimensions which are a power of two.
         /// </summary>
-        [JsonProperty(PropertyName = "requirePowerOfTwo", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public Boolean RequirePowerOfTwo { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the atlas' texture must be square.
         /// </summary>
-        [JsonProperty(PropertyName = "requireSquare", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public Boolean RequireSquare { get; set; }
 
         /// <summary>
         /// Gets or sets the atlas' maximum width in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "width", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public Int32 MaximumWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the atlas' maximum height in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "height", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public Int32 MaximumHeight { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of padding between atlas cells in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "padding", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public Int32 Padding { get; set; }
         
         /// <summary>
         /// Gets or sets a value indicating whether the cell names should be flattened.
         /// </summary>
-        [JsonProperty(PropertyName = "flattenCellName", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         public Boolean FlattenCellName { get; set; }
     }
 }

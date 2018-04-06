@@ -12,7 +12,7 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Gets or sets the database's collection of localizable strings.
         /// </summary>
-        [JsonProperty(PropertyName = "strings", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public IEnumerable<LocalizedStringDescription> Strings { get; set; }
     }
 }

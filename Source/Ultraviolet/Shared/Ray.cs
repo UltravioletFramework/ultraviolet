@@ -275,14 +275,12 @@ namespace Ultraviolet
         /// The ray's position in space.
         /// </summary>
         [Preserve]
-        [JsonProperty("position")]
         public Vector3 Position;
 
         /// <summary>
         /// The ray's direction vector.
         /// </summary>
         [Preserve]
-        [JsonProperty("direction")]
         public Vector3 Direction;
     }
 }

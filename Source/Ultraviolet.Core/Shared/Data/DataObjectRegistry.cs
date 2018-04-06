@@ -354,7 +354,7 @@ namespace Ultraviolet.Core.Data
             Contract.Require(data, nameof(data));
             Contract.Require(keys, nameof(keys));
 
-            var serializer = new JsonSerializer();
+            var serializer = JsonSerializer.CreateDefault(CoreJsonSerializerSettings.Instance);
             var description = data.ToObject<DataObjectRegistryKeysDescription>(serializer);
 
             if (description.Items != null)

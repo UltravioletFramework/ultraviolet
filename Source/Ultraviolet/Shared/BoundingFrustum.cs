@@ -511,7 +511,7 @@ namespace Ultraviolet
         /// <summary>
         /// The matrix which describes the frustum.
         /// </summary>
-        [JsonProperty(PropertyName = "matrix", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Matrix Matrix
         {
             get { return matrix; }

@@ -14,7 +14,6 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <summary>
         /// Gets or sets the face's substitution glyph.
         /// </summary>
-        [JsonProperty(PropertyName = "substitution")]
         public Char? Substitution { get; set; }
     }
 }

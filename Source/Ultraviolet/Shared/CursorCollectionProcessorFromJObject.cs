@@ -15,9 +15,7 @@ namespace Ultraviolet.SDL2
         /// <inheritdoc/>
         public override CursorCollection Process(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
-            var serializer = new JsonSerializer();
-            serializer.Converters.Add(new UltravioletJsonConverter());
-
+            var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
             var desc = input.ToObject<CursorCollectionDescription>(serializer);
             return innerProcessor.Process(manager, metadata, desc);
         }

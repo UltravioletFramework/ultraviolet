@@ -414,14 +414,14 @@ namespace Ultraviolet
         /// The plane's normal vector.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "normal", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Vector3 Normal;
 
         /// <summary>
         /// The plane's distance along its normal from the origin.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "d", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single D;
     }
 }

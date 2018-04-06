@@ -262,21 +262,21 @@ namespace Ultraviolet
         /// The size's width.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 Width;
 
         /// <summary>
         /// The size's height.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 Height;
 
         /// <summary>
         /// The size's depth.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "depth", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 Depth;
     }
 }

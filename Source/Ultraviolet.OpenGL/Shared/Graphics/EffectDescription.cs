@@ -14,13 +14,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the list of parameters exposed by the effect.
         /// </summary>
-        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "parameters")]
+        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public IEnumerable<String> Parameters { get; set; }
 
         /// <summary>
         /// Gets the list of techniques exposed by the effect.
         /// </summary>
-        [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "techniques")]
+        [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include)]
         public IEnumerable<EffectTechniqueDescription> Techniques { get; set; }
     }
 
@@ -33,13 +33,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the effect technique's name.
         /// </summary>
-        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "name")]
+        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public String Name { get; set; }
 
         /// <summary>
         /// Gets the list of passes exposed by the technique.
         /// </summary>
-        [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "passes")]
+        [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include)]
         public IEnumerable<EffectPassDescription> Passes { get; set; }
     }
 
@@ -52,13 +52,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the effect pass' name.
         /// </summary>
-        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore, PropertyName = "name")]
+        [JsonProperty(Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public String Name { get; set; }
 
         /// <summary>
         /// Gets the effect stages included in this pass.
         /// </summary>
-        [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include, PropertyName = "stages")]
+        [JsonProperty(Required = Required.Always, NullValueHandling = NullValueHandling.Include)]
         public EffectStagesDescription Stages { get; set; }
     }
 
