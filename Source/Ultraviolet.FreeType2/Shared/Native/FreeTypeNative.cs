@@ -43,7 +43,7 @@ namespace Ultraviolet.FreeType2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FT_New_Face", CallingConvention = CallingConvention.Cdecl)]
-        public static extern FT_Error FT_New_Face32(IntPtr library, [MarshalAs(UnmanagedType.LPStr)] String filepathname, Int32 face_index, FT_FaceRec* aface);
+        public static extern FT_Error FT_New_Face32(IntPtr library, [MarshalAs(UnmanagedType.LPStr)] String filepathname, Int32 face_index, IntPtr aface);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -54,7 +54,7 @@ namespace Ultraviolet.FreeType2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FT_New_Face", CallingConvention = CallingConvention.Cdecl)]
-        public static extern FT_Error FT_New_Face64(IntPtr library, [MarshalAs(UnmanagedType.LPStr)] String filepathname, Int64 face_index, FT_FaceRec* aface);
+        public static extern FT_Error FT_New_Face64(IntPtr library, [MarshalAs(UnmanagedType.LPStr)] String filepathname, Int64 face_index, IntPtr aface);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -65,7 +65,7 @@ namespace Ultraviolet.FreeType2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FT_New_Memory_Face", CallingConvention = CallingConvention.Cdecl)]
-        public static extern FT_Error FT_New_Memory_Face32(IntPtr library, IntPtr file_base, Int32 file_size, Int32 face_index, FT_FaceRec* aface);
+        public static extern FT_Error FT_New_Memory_Face32(IntPtr library, IntPtr file_base, Int32 file_size, Int32 face_index, IntPtr aface);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -76,7 +76,7 @@ namespace Ultraviolet.FreeType2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="FT_New_Memory_Face", CallingConvention = CallingConvention.Cdecl)]
-        public static extern FT_Error FT_New_Memory_Face64(IntPtr library, IntPtr file_base, Int64 file_size, Int64 face_index, FT_FaceRec* aface);
+        public static extern FT_Error FT_New_Memory_Face64(IntPtr library, IntPtr file_base, Int64 file_size, Int64 face_index, IntPtr aface);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
