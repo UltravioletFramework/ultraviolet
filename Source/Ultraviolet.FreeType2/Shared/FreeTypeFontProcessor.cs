@@ -25,11 +25,13 @@ namespace Ultraviolet.FreeType2
             GetPrepopulatedGlyphList(mdata.PrepopulatedGlyphs, prepopGlyphRanges);
 
             var sizeInPoints = (Int32)mdata.SizeInPoints;
+            var iDpiX = (UInt32)dpiX;
+            var iDpiY = (UInt32)dpiY;
 
-            var ftFaceRegular = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataRegular, input.FaceDataRegularLength);
-            var ftFaceBold = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataBold, input.FaceDataBoldLength);
-            var ftFaceItalic = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataItalic, input.FaceDataItalicLength);
-            var ftFaceBoldItalic = LoadFontFace(sizeInPoints, (UInt32)dpiX, (UInt32)dpiY, input.FaceDataBoldItalic, input.FaceDataBoldItalicLength);
+            var ftFaceRegular = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataRegular, input.FaceDataRegularLength);
+            var ftFaceBold = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataBold, input.FaceDataBoldLength);
+            var ftFaceItalic = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataItalic, input.FaceDataItalicLength);
+            var ftFaceBoldItalic = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataBoldItalic, input.FaceDataBoldItalicLength);
 
             var uvFaceRegular = (ftFaceRegular == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, mdata.Substitution);
             var uvFaceBold = (ftFaceBold == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, mdata.Substitution);
@@ -68,6 +70,10 @@ namespace Ultraviolet.FreeType2
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
 
+                var face64 = (FT_FaceRec64*)face;
+                if ((face64->face_flags & FT_FACE_FLAG_SCALABLE) == 0)
+                    throw new NotImplementedException("TODO: Support non-scalable fonts");
+
                 err = FT_Set_Char_Size64(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
@@ -77,6 +83,10 @@ namespace Ultraviolet.FreeType2
                 err = FT_New_Memory_Face32(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
+
+                var face32 = (FT_FaceRec32*)face;
+                if ((face32->face_flags & FT_FACE_FLAG_SCALABLE) == 0)
+                    throw new NotImplementedException("TODO: Support non-scalable fonts");
 
                 err = FT_Set_Char_Size32(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
                 if (err != FT_Err_Ok)
