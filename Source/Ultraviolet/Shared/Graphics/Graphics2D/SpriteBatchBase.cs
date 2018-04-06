@@ -2453,6 +2453,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             var glyphShaderPass = 0;
             var glyphX = 0f;
             var glyphY = 0f;
+            var glyphKerningY = 0f;
             var glyphOrigin = Vector2.Zero;
             var glyphScale = Vector2.One;
             var glyphColor = color;
@@ -2492,7 +2493,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 glyphTexture = glyphRenderInfo.Texture;
                 glyphRegion = glyphRenderInfo.TextureRegion;
                 glyphX = flipHorizontal ? (cx + glyphRenderInfo.OffsetX) - glyphRegion.Width : cx + glyphRenderInfo.OffsetX;
-                glyphY = flipVertical ? (cy + glyphRenderInfo.OffsetY) - glyphRegion.Height : cy + glyphRenderInfo.OffsetY;
+                glyphY = flipVertical ? (cy + glyphRenderInfo.OffsetY + glyphKerningY) - glyphRegion.Height : cy + glyphRenderInfo.OffsetY + glyphKerningY;
                 glyphOrigin = new Vector2(glyphRegion.Width / 2, glyphRegion.Height / 2);
 
                 glyphScale = scale;
@@ -2551,8 +2552,9 @@ namespace Ultraviolet.Graphics.Graphics2D
                         glyphRegion, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
                 }
 
-                var kerning = (i == text.Length - 1) ? 0 : fontFace.GetKerningInfo(text[i], text[i + 1]);
-                cx += (glyphRenderInfo.Advance + kerning) * dirX;
+                var kerning = (i == text.Length - 1) ? Size2.Zero : fontFace.GetKerningInfo(text[i], text[i + 1]);
+                glyphKerningY = kerning.Height;
+                cx += (glyphRenderInfo.Advance + kerning.Width) * dirX;
             }
         }
 
