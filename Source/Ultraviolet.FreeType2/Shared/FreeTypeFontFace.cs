@@ -10,6 +10,7 @@ using Ultraviolet.Graphics.Graphics2D;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.FT_Error;
 using static Ultraviolet.FreeType2.Native.FT_Pixel_Mode;
+using static Ultraviolet.FreeType2.Native.FT_Kerning_Mode;
 
 namespace Ultraviolet.FreeType2
 {
@@ -36,6 +37,7 @@ namespace Ultraviolet.FreeType2
             if (Use64BitInterface)
             {
                 var face64 = (FT_FaceRec64*)face;
+                this.hasKerningInfo = (face64->face_flags & FT_FACE_FLAG_KERNING) != 0;
                 this.IsColorFont = (face64->face_flags & FT_FACE_FLAG_COLOR) != 0;
                 this.FamilyName = Marshal.PtrToStringAnsi(face64->family_name);
                 this.StyleName = Marshal.PtrToStringAnsi(face64->style_name);
@@ -44,6 +46,7 @@ namespace Ultraviolet.FreeType2
             else
             {
                 var face32 = (FT_FaceRec32*)face;
+                this.hasKerningInfo = (face32->face_flags & FT_FACE_FLAG_KERNING) != 0;
                 this.IsColorFont = (face32->face_flags & FT_FACE_FLAG_COLOR) != 0;
                 this.FamilyName = Marshal.PtrToStringAnsi(face32->family_name);
                 this.StyleName = Marshal.PtrToStringAnsi(face32->style_name);
@@ -206,13 +209,41 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Int32 GetKerningInfo(Char c1, Char c2)
         {
-            return 0;
+            if (face == IntPtr.Zero || !hasKerningInfo)
+                return 0;
+
+            var c1Index = Use64BitInterface ? FT_Get_Char_Index64(face, c1) : FT_Get_Char_Index32(face, c1);
+            if (c1Index == 0)
+                return 0;
+
+            var c2Index = Use64BitInterface ? FT_Get_Char_Index64(face, c2) : FT_Get_Char_Index32(face, c2);
+            if (c2Index == 0)
+                return 0;
+
+            if (Use64BitInterface)
+            {
+                var kerning = default(FT_Vector64);
+                var err = FT_Get_Kerning(face, c1Index, c2Index, (UInt32)FT_KERNING_DEFAULT, (IntPtr)(&kerning));
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                return FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+            }
+            else
+            {
+                var kerning = default(FT_Vector32);
+                var err = FT_Get_Kerning(face, c1Index, c2Index, (UInt32)FT_KERNING_DEFAULT, (IntPtr)(&kerning));
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                return FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+            }
         }
 
         /// <inheritdoc/>
         public override Int32 GetKerningInfo(SpriteFontKerningPair pair)
         {
-            return 0;
+            return GetKerningInfo(pair.FirstCharacter, pair.SecondCharacter);
         }
 
         /// <summary>
@@ -504,6 +535,7 @@ namespace Ultraviolet.FreeType2
         }
 
         // The FreeType2 face which this instance represents.
+        private readonly Boolean hasKerningInfo;
         private IntPtr face;
 
         // Cache of atlases used to store glyph images.
