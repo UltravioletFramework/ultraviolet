@@ -14,6 +14,8 @@ namespace Ultraviolet.FreeType2
     [ContentImporter(".ttf")]
     [ContentImporter(".ttc")]
     [ContentImporter(".otf")]
+    [ContentImporter(".otc")]
+    [ContentImporter(".fnt")]
     public sealed class FreeTypeFontImporter : ContentImporter<FreeTypeFontInfo>
     {
         /// <inheritdoc/>

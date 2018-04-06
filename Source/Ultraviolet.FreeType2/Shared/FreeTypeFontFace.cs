@@ -33,11 +33,10 @@ namespace Ultraviolet.FreeType2
 
             this.face = face;
 
-            this.IsColorFont = GetIsColorFont();
-
             if (Use64BitInterface)
             {
                 var face64 = (FT_FaceRec64*)face;
+                this.IsColorFont = (face64->face_flags & FT_FACE_FLAG_COLOR) != 0;
                 this.FamilyName = Marshal.PtrToStringAnsi(face64->family_name);
                 this.StyleName = Marshal.PtrToStringAnsi(face64->style_name);
                 this.LineSpacing = FreeTypeCalc.F26Dot6ToInt32(face64->size->metrics.height);
@@ -45,6 +44,7 @@ namespace Ultraviolet.FreeType2
             else
             {
                 var face32 = (FT_FaceRec32*)face;
+                this.IsColorFont = (face32->face_flags & FT_FACE_FLAG_COLOR) != 0;
                 this.FamilyName = Marshal.PtrToStringAnsi(face32->family_name);
                 this.StyleName = Marshal.PtrToStringAnsi(face32->style_name);
                 this.LineSpacing = FreeTypeCalc.F26Dot6ToInt32(face32->size->metrics.height);
@@ -293,49 +293,6 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Determines whether this is a color font.
-        /// </summary>
-        private Boolean GetIsColorFont()
-        {
-            var err = default(FT_Error);
-            var colr = ((UInt32)'C' << 24) | ((UInt32)'O' << 16) | ((UInt32)'L' << 8) | 'R';
-            var cbdt = ((UInt32)'C' << 24) | ((UInt32)'B' << 16) | ((UInt32)'D' << 8) | 'T';
-
-            if (Use64BitInterface)
-            {
-                var length = 0L;
-
-                err = FT_Load_Sfnt_Table64(face, cbdt, 0, IntPtr.Zero, (IntPtr)(&length));
-                if (err == FT_Err_Table_Missing)
-                    err = FT_Load_Sfnt_Table64(face, colr, 0, IntPtr.Zero, (IntPtr)(&length));
-
-                if (err == FT_Err_Table_Missing)
-                    return false;
-
-                if (err != FT_Err_Ok)
-                    throw new FreeTypeException(err);
-
-                return length > 0;
-            }
-            else
-            {
-                var length = 0;
-
-                err = FT_Load_Sfnt_Table32(face, cbdt, 0, IntPtr.Zero, (IntPtr)(&length));
-                if (err == FT_Err_Table_Missing)
-                    err = FT_Load_Sfnt_Table32(face, colr, 0, IntPtr.Zero, (IntPtr)(&length));
-
-                if (err == FT_Err_Table_Missing)
-                    return false;
-
-                if (err != FT_Err_Ok)
-                    throw new FreeTypeException(err);
-
-                return length > 0;
-            }
-        }
-
-        /// <summary>
         /// Gets the font face's metadata for the specified glyph.
         /// </summary>
         private Boolean GetGlyphInfo(Char c, out FreeTypeGlyphInfo info)
@@ -370,7 +327,7 @@ namespace Ultraviolet.FreeType2
         /// </summary>
         private void LoadGlyphMetadata(UInt32 glyphIndex)
         {
-            var flags = FT_LOAD_RENDER;
+            var flags = FT_LOAD_RENDER | FT_LOAD_COLOR;
             var err = FT_Load_Glyph(face, glyphIndex, flags);
             if (err != FT_Err_Ok)
                 throw new FreeTypeException(err);
@@ -422,6 +379,10 @@ namespace Ultraviolet.FreeType2
 
                     case FT_PIXEL_MODE_GRAY:
                         BlitGlyphBitmapGray(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
+                        break;
+
+                    case FT_PIXEL_MODE_BGRA:
+                        BlitGlyphBitmapBgra(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
                         break;
 
                     default:
@@ -518,6 +479,26 @@ namespace Ultraviolet.FreeType2
                     var value = *pSrc++;
                     var color = new Color(value, value, value, value);
                     *pDst++ = color;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits a BGRA color glyph bitmap to the specified atlas' surface.
+        /// </summary>
+        private void BlitGlyphBitmapBgra(ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            for (int y = 0; y < bmpHeight; y++)
+            {
+                var atlas = reservation.Atlas;
+                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrc = (Color*)((Byte*)bmp.buffer + (pSrcY * bmpPitch));
+                var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
+                for (int x = 0; x < bmpWidth; x++)
+                {
+                    var cSrc = *pSrc++;
+                    var cDst = new Color(cSrc.B, cSrc.G, cSrc.R, cSrc.A);
+                    *pDst++ = cDst;
                 }
             }
         }
