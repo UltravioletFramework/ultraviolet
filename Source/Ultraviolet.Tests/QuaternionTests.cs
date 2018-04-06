@@ -556,7 +556,8 @@ namespace Ultraviolet.Tests
         public void Quaternion_SerializesToJson()
         {
             var quaternion = new Quaternion(1.2f, 2.3f, 3.4f, 4.5f);
-            var json = JsonConvert.SerializeObject(quaternion);
+            var json = JsonConvert.SerializeObject(quaternion,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""z"":3.4,""w"":4.5}");
         }
@@ -565,7 +566,8 @@ namespace Ultraviolet.Tests
         public void Quaternion_SerializesToJson_WhenNullable()
         {
             var quaternion = new Quaternion(1.2f, 2.3f, 3.4f, 4.5f);
-            var json = JsonConvert.SerializeObject((Quaternion?)quaternion);
+            var json = JsonConvert.SerializeObject((Quaternion?)quaternion, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""z"":3.4,""w"":4.5}");
         }
@@ -575,7 +577,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{ ""x"": 1.2, ""y"": 2.3, ""z"": 3.4, ""w"": 4.5 }";
 
-            var quaternion = JsonConvert.DeserializeObject<Quaternion>(json);
+            var quaternion = JsonConvert.DeserializeObject<Quaternion>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(quaternion)
                 .ShouldBe(1.2f, 2.3f, 3.4f, 4.5f);
@@ -586,14 +589,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{ ""x"": 1.2, ""y"": 2.3, ""z"": 3.4, ""w"": 4.5 }";
 
-            var quaternion1 = JsonConvert.DeserializeObject<Quaternion?>(json1);
+            var quaternion1 = JsonConvert.DeserializeObject<Quaternion?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(quaternion1.Value)
                 .ShouldBe(1.2f, 2.3f, 3.4f, 4.5f);
 
             const String json2 = @"null";
 
-            var quaternion2 = JsonConvert.DeserializeObject<Quaternion?>(json2);
+            var quaternion2 = JsonConvert.DeserializeObject<Quaternion?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(quaternion2.HasValue)
                 .ShouldBe(false);

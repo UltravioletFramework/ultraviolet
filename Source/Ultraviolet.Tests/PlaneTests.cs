@@ -133,7 +133,8 @@ namespace Ultraviolet.Tests
         public void Plane_SerializesToJson()
         {
             var plane = new Plane(1.2f, 2.3f, 3.4f, 4.5f);
-            var json = JsonConvert.SerializeObject(plane);
+            var json = JsonConvert.SerializeObject(plane, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""normal"":{""x"":1.2,""y"":2.3,""z"":3.4},""d"":4.5}");
         }
@@ -142,7 +143,8 @@ namespace Ultraviolet.Tests
         public void Plane_SerializesToJson_WhenNullable()
         {
             var plane = new Plane(1.2f, 2.3f, 3.4f, 4.5f);
-            var json = JsonConvert.SerializeObject((Plane?)plane);
+            var json = JsonConvert.SerializeObject((Plane?)plane, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""normal"":{""x"":1.2,""y"":2.3,""z"":3.4},""d"":4.5}");
         }
@@ -152,7 +154,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{ ""normal"": { ""x"":1.2, ""y"":2.3, ""z"":3.4 },""d"":4.5 }";
 
-            var plane = JsonConvert.DeserializeObject<Plane>(json);
+            var plane = JsonConvert.DeserializeObject<Plane>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(plane)
                 .ShouldHaveNormal(1.2f, 2.3f, 3.4f)
@@ -164,7 +167,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{ ""normal"": { ""x"":1.2, ""y"":2.3, ""z"":3.4 },""d"":4.5 }";
 
-            var plane1 = JsonConvert.DeserializeObject<Plane?>(json1);
+            var plane1 = JsonConvert.DeserializeObject<Plane?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(plane1.Value)
                 .ShouldHaveNormal(1.2f, 2.3f, 3.4f)
@@ -172,7 +176,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var plane2 = JsonConvert.DeserializeObject<Plane?>(json2);
+            var plane2 = JsonConvert.DeserializeObject<Plane?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(plane2.HasValue)
                 .ShouldBe(false);

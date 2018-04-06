@@ -280,7 +280,8 @@ namespace Ultraviolet.Core.Tests.Text
             UsingCulture("fr-FR", () =>
             {
                 var resource = new StringResource("LOCALIZED_RESOURCE");
-                var json = JsonConvert.SerializeObject(resource);
+                var json = JsonConvert.SerializeObject(resource, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingString(json).ShouldBe($"\"{resource.Key}\"");
             });
@@ -295,7 +296,8 @@ namespace Ultraviolet.Core.Tests.Text
             {
                 const String json = "\"LOCALIZED_RESOURCE\"";
 
-                var resource = JsonConvert.DeserializeObject<StringResource>(json);
+                var resource = JsonConvert.DeserializeObject<StringResource>(json, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingString(resource.Value).ShouldBe("C'est un test");
             });

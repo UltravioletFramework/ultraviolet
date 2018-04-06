@@ -473,14 +473,14 @@ namespace Ultraviolet
         /// The point's x-coordinate.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "x", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Double X;
 
         /// <summary>
         /// The point's y-coordinate.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "y", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Double Y;
     }
 }

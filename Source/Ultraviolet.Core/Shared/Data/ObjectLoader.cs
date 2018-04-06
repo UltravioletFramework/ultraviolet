@@ -108,7 +108,7 @@ namespace Ultraviolet.Core.Data
         {
             Contract.Require(json, nameof(json));
 
-            var serializer = new JsonSerializer();
+            var serializer = JsonSerializer.CreateDefault(CoreJsonSerializerSettings.Instance);
             var description = json.ToObject<DataObjectRegistryDescription<T>>(serializer);
 
             return description.Items;
@@ -255,7 +255,7 @@ namespace Ultraviolet.Core.Data
             Contract.Require(json, nameof(json));
             Contract.Require(culture, nameof(culture));
 
-            var serializer = new JsonSerializer();
+            var serializer = JsonSerializer.CreateDefault(CoreJsonSerializerSettings.Instance);
             serializer.Culture = culture;
             
             return json.ToObject(type, serializer);

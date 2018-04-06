@@ -812,7 +812,8 @@ namespace Ultraviolet.Tests
         public void Vector3_SerializesToJson()
         {
             var vector = new Vector3(1.2f, 2.3f, 3.4f);
-            var json = JsonConvert.SerializeObject(vector);
+            var json = JsonConvert.SerializeObject(vector,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""z"":3.4}");
         }
@@ -821,7 +822,8 @@ namespace Ultraviolet.Tests
         public void Vector3_SerializesToJson_WhenNullable()
         {
             var vector = new Vector3(1.2f, 2.3f, 3.4f);
-            var json = JsonConvert.SerializeObject((Vector3?)vector);
+            var json = JsonConvert.SerializeObject((Vector3?)vector,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""z"":3.4}");
         }
@@ -831,7 +833,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""x"":1.2,""y"":2.3,""z"":3.4}";
             
-            var vector = JsonConvert.DeserializeObject<Vector3>(json);
+            var vector = JsonConvert.DeserializeObject<Vector3>(json,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(vector)
                 .ShouldBe(1.2f, 2.3f, 3.4f);
@@ -842,14 +845,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""x"":1.2,""y"":2.3,""z"":3.4}";
 
-            var vector1 = JsonConvert.DeserializeObject<Vector3?>(json1);
+            var vector1 = JsonConvert.DeserializeObject<Vector3?>(json1,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(vector1.Value)
                 .ShouldBe(1.2f, 2.3f, 3.4f);
 
             const String json2 = @"null";
 
-            var vector2 = JsonConvert.DeserializeObject<Vector3?>(json2);
+            var vector2 = JsonConvert.DeserializeObject<Vector3?>(json2,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(vector2.HasValue)
                 .ShouldBe(false);

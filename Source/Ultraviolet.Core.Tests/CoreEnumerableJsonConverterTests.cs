@@ -11,7 +11,6 @@ namespace Ultraviolet.Core.Tests
     {
         private class Foo
         {
-            [JsonProperty(PropertyName = "values")]
             [JsonConverter(typeof(CoreEnumerableJsonConverter<String>))]
             public IEnumerable<String> Values { get; set; }
         }
@@ -21,7 +20,8 @@ namespace Ultraviolet.Core.Tests
         {
             const String json = @"{ ""values"": [ ""hello"", ""world"" ] }";
 
-            var value = JsonConvert.DeserializeObject<Foo>(json);
+            var value = JsonConvert.DeserializeObject<Foo>(json, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingCollection(value.Values)
                 .ShouldBe("hello", "world");
@@ -32,7 +32,8 @@ namespace Ultraviolet.Core.Tests
         {
             const String json = @"{ ""values"": ""hello"" }";
 
-            var value = JsonConvert.DeserializeObject<Foo>(json);
+            var value = JsonConvert.DeserializeObject<Foo>(json, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingCollection(value.Values)
                 .ShouldBe("hello");
@@ -43,7 +44,8 @@ namespace Ultraviolet.Core.Tests
         {
             var value = new Foo() { Values = new[] { "hello", "world" } };
 
-            var json = JsonConvert.SerializeObject(value);
+            var json = JsonConvert.SerializeObject(value,
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingString(json)
                 .ShouldBe(@"{""values"":[""hello"",""world""]}");
@@ -54,7 +56,8 @@ namespace Ultraviolet.Core.Tests
         {
             var value = new Foo() { Values = new[] { "hello" } };
 
-            var json = JsonConvert.SerializeObject(value);
+            var json = JsonConvert.SerializeObject(value,
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingString(json)
                 .ShouldBe(@"{""values"":""hello""}");

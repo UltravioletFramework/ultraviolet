@@ -510,7 +510,8 @@ namespace Ultraviolet.Presentation
             if (definition == null)
                 return default(T);
 
-            var serializer = new JsonSerializer() { TypeNameHandling = TypeNameHandling.Auto };
+            var settings = new UltravioletJsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto };
+            var serializer = JsonSerializer.CreateDefault(settings);
             var resource = definition.ToObject<T>(serializer);
 
             return resource;

@@ -35,9 +35,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         private static SpriteDescription CreateSpriteDescription(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
-            var serializer = new JsonSerializer();
-            serializer.Converters.Add(new UltravioletJsonConverter());
-
+            var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
             var spriteDesc = input.ToObject<SpriteDescription>();
             var spriteFrameDefaults = spriteDesc.FrameDefaults;
             var spriteFrameGroupDefaults = spriteDesc.FrameGroupDefaults;

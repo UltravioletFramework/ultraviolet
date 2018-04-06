@@ -118,7 +118,8 @@ namespace Ultraviolet.Tests
         public void Size2_SerializesToJson()
         {
             var size = new Size2(1, 2);
-            var json = JsonConvert.SerializeObject(size);
+            var json = JsonConvert.SerializeObject(size,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""width"":1,""height"":2}");
         }
@@ -127,7 +128,8 @@ namespace Ultraviolet.Tests
         public void Size2_SerializesToJson_WhenNullable()
         {
             var size = new Size2(1, 2);
-            var json = JsonConvert.SerializeObject((Size2?)size);
+            var json = JsonConvert.SerializeObject((Size2?)size,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""width"":1,""height"":2}");
         }
@@ -137,7 +139,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""width"":1,""height"":2}";
             
-            var size = JsonConvert.DeserializeObject<Size2>(json);
+            var size = JsonConvert.DeserializeObject<Size2>(json,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(size)
                 .ShouldBe(1, 2);
@@ -148,14 +151,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""width"":1,""height"":2}";
 
-            var size1 = JsonConvert.DeserializeObject<Size2?>(json1);
+            var size1 = JsonConvert.DeserializeObject<Size2?>(json1,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(size1.Value)
                 .ShouldBe(1, 2);
 
             const String json2 = @"null";
 
-            var size2 = JsonConvert.DeserializeObject<Size2?>(json2);
+            var size2 = JsonConvert.DeserializeObject<Size2?>(json2,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(size2.HasValue)
                 .ShouldBe(false);

@@ -13,13 +13,13 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets or sets the name of the manifest asset.
         /// </summary>
-        [JsonProperty(PropertyName = "name", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the path of the manifest asset.
         /// </summary>
-        [JsonProperty(PropertyName = "path", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Path { get; set; }
     }
 }

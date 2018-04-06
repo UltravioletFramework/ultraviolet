@@ -620,13 +620,13 @@ namespace Ultraviolet
         /// <summary>
         /// The sphere's center position.
         /// </summary>
-        [JsonProperty(PropertyName = "center", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Vector3 Center;
 
         /// <summary>
         /// The sphere's radius.
         /// </summary>
-        [JsonProperty(PropertyName = "radius", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single Radius;        
     }
 }

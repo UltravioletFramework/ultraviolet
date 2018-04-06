@@ -1204,21 +1204,21 @@ namespace Ultraviolet
         /// The vector's x-coordinate.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "x", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single X;
 
         /// <summary>
         /// The vector's y-coordinate.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "y", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single Y;
 
         /// <summary>
         /// The vector's z-coordinate.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "z", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single Z;
     }
 }

@@ -159,7 +159,8 @@ namespace Ultraviolet.Tests
         public void Point2_SerializesToJson()
         {
             var point = new Point2(1, 2);
-            var json = JsonConvert.SerializeObject(point);
+            var json = JsonConvert.SerializeObject(point, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2}");
         }
@@ -168,7 +169,8 @@ namespace Ultraviolet.Tests
         public void Point2_SerializesToJson_WhenNullable()
         {
             var point = new Point2(1, 2);
-            var json = JsonConvert.SerializeObject((Point2?)point);
+            var json = JsonConvert.SerializeObject((Point2?)point, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1,""y"":2}");
         }
@@ -178,7 +180,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""x"":1,""y"":2}";
             
-            var point = JsonConvert.DeserializeObject<Point2>(json);
+            var point = JsonConvert.DeserializeObject<Point2>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point)
                 .ShouldBe(1, 2);
@@ -189,14 +192,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""x"":1,""y"":2}";
 
-            var point1 = JsonConvert.DeserializeObject<Point2?>(json1);
+            var point1 = JsonConvert.DeserializeObject<Point2?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point1.Value)
                 .ShouldBe(1, 2);
 
             const String Json2 = @"null";
 
-            var point2 = JsonConvert.DeserializeObject<Point2?>(Json2);
+            var point2 = JsonConvert.DeserializeObject<Point2?>(Json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point2.HasValue)
                 .ShouldBe(false);

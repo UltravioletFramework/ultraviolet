@@ -87,9 +87,7 @@ namespace Ultraviolet.Content
             {
                 if (IsJson)
                 {
-                    var serializer = new JsonSerializer();
-                    serializer.Converters.Add(new UltravioletJsonConverter());
-
+                    var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);                    
                     return ((JObject)ImporterMetadata).ToObject<T>(serializer);
                 }
                 else
@@ -111,9 +109,7 @@ namespace Ultraviolet.Content
             {
                 if (IsJson)
                 {
-                    var serializer = new JsonSerializer();
-                    serializer.Converters.Add(new UltravioletJsonConverter());
-
+                    var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
                     return ((JObject)ProcessorMetadata).ToObject<T>(serializer);
                 }
                 else

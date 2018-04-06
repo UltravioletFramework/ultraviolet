@@ -160,7 +160,8 @@ namespace Ultraviolet.Tests
         public void Point2D_SerializesToJson()
         {
             var point = new Point2D(1.2, 2.3);
-            var json = JsonConvert.SerializeObject(point);
+            var json = JsonConvert.SerializeObject(point,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
         }
@@ -169,7 +170,8 @@ namespace Ultraviolet.Tests
         public void Point2D_SerializesToJson_WhenNullable()
         {
             var point = new Point2D(1.2, 2.3);
-            var json = JsonConvert.SerializeObject((Point2D?)point);
+            var json = JsonConvert.SerializeObject((Point2D?)point, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
         }
@@ -179,7 +181,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""x"":1.2,""y"":2.3}";
             
-            var point = JsonConvert.DeserializeObject<Point2D>(json);
+            var point = JsonConvert.DeserializeObject<Point2D>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point)
                 .ShouldBe(1.2, 2.3);
@@ -190,14 +193,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""x"":1.2,""y"":2.3}";
 
-            var point1 = JsonConvert.DeserializeObject<Point2D?>(json1);
+            var point1 = JsonConvert.DeserializeObject<Point2D?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point1.Value)
                 .ShouldBe(1.2, 2.3);
 
             const String json2 = @"null";
 
-            var point2 = JsonConvert.DeserializeObject<Point2D?>(json2);
+            var point2 = JsonConvert.DeserializeObject<Point2D?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point2.HasValue)
                 .ShouldBe(false);

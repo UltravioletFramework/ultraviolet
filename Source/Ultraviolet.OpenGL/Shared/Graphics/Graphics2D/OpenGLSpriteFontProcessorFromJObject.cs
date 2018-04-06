@@ -34,7 +34,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// </summary>
         private static SpriteFontDescription CreateSpriteFontDescription(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
-            var serializer = new JsonSerializer();
+            var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
             return input.ToObject<SpriteFontDescription>(serializer);
         }
         

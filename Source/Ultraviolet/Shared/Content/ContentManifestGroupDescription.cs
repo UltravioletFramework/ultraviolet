@@ -14,25 +14,25 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets or sets the name of the manifest group.
         /// </summary>
-        [JsonProperty(PropertyName = "name", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the full name of the type of asset which is contained by the manifest group.
         /// </summary>
-        [JsonProperty(PropertyName = "type", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Type { get; set; }
 
         /// <summary>
         /// Gets or sets the directory which contains the manifest group's assets.
         /// </summary>
-        [JsonProperty(PropertyName = "directory", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Directory { get; set; }
 
         /// <summary>
         /// Gets or sets the manifest group's assets.
         /// </summary>
-        [JsonProperty(PropertyName = "assets", Required = Required.Default)]
+        [JsonProperty(Required = Required.Default)]
         public IEnumerable<ContentManifestAssetDescription> Assets { get; set; }
     }
 }

@@ -15,9 +15,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <inheritdoc/>
         public override TextTableLayout Process(ContentManager manager, IContentProcessorMetadata metadata, JObject input)
         {
-            var serializer = new JsonSerializer();
-            serializer.Converters.Add(new UltravioletJsonConverter());
-
+            var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
             var layoutDesc = input.ToObject<TextTableLayoutDescription>(serializer);
             return new TextTableLayout(layoutDesc);
         }

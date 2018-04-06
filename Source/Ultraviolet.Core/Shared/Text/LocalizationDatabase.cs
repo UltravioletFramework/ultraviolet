@@ -97,7 +97,7 @@ namespace Ultraviolet.Core.Text
             using (var sreader = new StreamReader(stream))
             using (var jreader = new JsonTextReader(sreader))
             {
-                var serializer = new JsonSerializer();
+                var serializer = JsonSerializer.CreateDefault(CoreJsonSerializerSettings.Instance);
                 var description = serializer.Deserialize<LocalizationDatabaseDescription>(jreader);
 
                 var results = new Dictionary<String, LocalizedString>();
