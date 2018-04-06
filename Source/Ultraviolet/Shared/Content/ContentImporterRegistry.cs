@@ -153,6 +153,6 @@ namespace Ultraviolet.Content
 
         // The content importer registry.
         private readonly Dictionary<String, RegistryEntry> registeredImporters = 
-            new Dictionary<String, RegistryEntry>();
+            new Dictionary<String, RegistryEntry>(StringComparer.OrdinalIgnoreCase);
     }
 }
