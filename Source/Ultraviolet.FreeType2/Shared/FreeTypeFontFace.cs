@@ -33,6 +33,8 @@ namespace Ultraviolet.FreeType2
 
             this.face = face;
 
+            this.IsColorFont = GetIsColorFont();
+
             if (Use64BitInterface)
             {
                 var face64 = (FT_FaceRec64*)face;
@@ -223,6 +225,11 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
+        /// Gets a value indicating whether this is a color font.
+        /// </summary>
+        public Boolean IsColorFont { get; }
+
+        /// <summary>
         /// Gets the font's family name.
         /// </summary>
         public String FamilyName { get; }
@@ -283,6 +290,49 @@ namespace Ultraviolet.FreeType2
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Determines whether this is a color font.
+        /// </summary>
+        private Boolean GetIsColorFont()
+        {
+            var err = default(FT_Error);
+            var colr = ((UInt32)'C' << 24) | ((UInt32)'O' << 16) | ((UInt32)'L' << 8) | 'R';
+            var cbdt = ((UInt32)'C' << 24) | ((UInt32)'B' << 16) | ((UInt32)'D' << 8) | 'T';
+
+            if (Use64BitInterface)
+            {
+                var length = 0L;
+
+                err = FT_Load_Sfnt_Table64(face, cbdt, 0, IntPtr.Zero, (IntPtr)(&length));
+                if (err == FT_Err_Table_Missing)
+                    err = FT_Load_Sfnt_Table64(face, colr, 0, IntPtr.Zero, (IntPtr)(&length));
+
+                if (err == FT_Err_Table_Missing)
+                    return false;
+
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                return length > 0;
+            }
+            else
+            {
+                var length = 0;
+
+                err = FT_Load_Sfnt_Table32(face, cbdt, 0, IntPtr.Zero, (IntPtr)(&length));
+                if (err == FT_Err_Table_Missing)
+                    err = FT_Load_Sfnt_Table32(face, colr, 0, IntPtr.Zero, (IntPtr)(&length));
+
+                if (err == FT_Err_Table_Missing)
+                    return false;
+
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                return length > 0;
+            }
         }
 
         /// <summary>

@@ -150,6 +150,28 @@ namespace Ultraviolet.FreeType2.Native
         private static readonly FT_Load_GlyphDelegate pFT_Load_Glyph = lib.LoadFunction<FT_Load_GlyphDelegate>("FT_Load_Glyph");
         public static FT_Error FT_Load_Glyph(IntPtr face, UInt32 glyph_index, Int32 load_flags) => pFT_Load_Glyph(face, glyph_index, load_flags);
 #endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Load_Sfnt_Table", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Load_Sfnt_Table32(IntPtr face, UInt32 tag, Int32 offset, IntPtr buffer, IntPtr length);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Load_Sfnt_Table32Delegate(IntPtr face, UInt32 tag, Int32 offset, IntPtr buffer, IntPtr length);
+        private static readonly FT_Load_Sfnt_Table32Delegate pFT_Load_Sfnt_Table32 = lib.LoadFunction<FT_Load_Sfnt_Table32Delegate>("FT_Load_Sfnt_Table");
+        public static FT_Error FT_Load_Sfnt_Table32(IntPtr face, UInt32 tag, Int32 offset, IntPtr buffer, IntPtr length) => pFT_Load_Sfnt_Table32(face, tag, offset, buffer, length);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Load_Sfnt_Table", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Load_Sfnt_Table64(IntPtr face, UInt64 tag, Int64 offset, IntPtr buffer, IntPtr length);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Load_Sfnt_Table64Delegate(IntPtr face, UInt64 tag, Int64 offset, IntPtr buffer, IntPtr length);
+        private static readonly FT_Load_Sfnt_Table64Delegate pFT_Load_Sfnt_Table64 = lib.LoadFunction<FT_Load_Sfnt_Table64Delegate>("FT_Load_Sfnt_Table");
+        public static FT_Error FT_Load_Sfnt_Table64(IntPtr face, UInt64 tag, Int64 offset, IntPtr buffer, IntPtr length) => pFT_Load_Sfnt_Table64(face, tag, offset, buffer, length);
+#endif
     }
 #pragma warning restore 1591
 }
