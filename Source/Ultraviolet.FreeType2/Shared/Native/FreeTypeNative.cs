@@ -161,6 +161,17 @@ namespace Ultraviolet.FreeType2.Native
         private static readonly FT_Load_GlyphDelegate pFT_Load_Glyph = lib.LoadFunction<FT_Load_GlyphDelegate>("FT_Load_Glyph");
         public static FT_Error FT_Load_Glyph(IntPtr face, UInt32 glyph_index, Int32 load_flags) => pFT_Load_Glyph(face, glyph_index, load_flags);
 #endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Get_Kerning", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Get_Kerning(IntPtr face, UInt32 left_glyph, UInt32 right_glyph, UInt32 kern_mode, IntPtr akerning);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Get_KerningDelegate(IntPtr face, UInt32 left_glyph, UInt32 right_glyph, UInt32 kern_mode, IntPtr akerning);
+        private static readonly FT_Get_KerningDelegate pFT_Get_Kerning = lib.LoadFunction<FT_Get_KerningDelegate>("FT_Get_Kerning");
+        public static FT_Error FT_Get_Kerning(IntPtr face, UInt32 left_glyph, UInt32 right_glyph, UInt32 kern_mode, IntPtr akerning) => pFT_Get_Kerning(face, left_glyph, right_glyph, kern_mode, akerning);
+#endif
     }
 #pragma warning restore 1591
 }
