@@ -24,19 +24,34 @@ namespace Ultraviolet.FreeType2
             GetBestScreenDensityMatch(manager.Ultraviolet, metadata.AssetDensity, out var dpiX, out var dpiY);
             GetPrepopulatedGlyphList(mdata.PrepopulatedGlyphs, prepopGlyphRanges);
 
-            var sizeInPoints = (Int32)mdata.SizeInPoints;
+            var sizeInPoints = mdata.SizeInPoints;
+            var sizeInPixels = mdata.SizeInPixels;
+            if (sizeInPixels != 0 && sizeInPoints != 0)
+                throw new InvalidOperationException(FreeTypeStrings.CannotSpecifyPointAndPixelSize);
+
             var iDpiX = (UInt32)dpiX;
             var iDpiY = (UInt32)dpiY;
 
-            var ftFaceRegular = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataRegular, input.FaceDataRegularLength);
-            var ftFaceBold = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataBold, input.FaceDataBoldLength);
-            var ftFaceItalic = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataItalic, input.FaceDataItalicLength);
-            var ftFaceBoldItalic = LoadFontFace(sizeInPoints, iDpiX, iDpiY, input.FaceDataBoldItalic, input.FaceDataBoldItalicLength);
+            var pxSizeRegular = mdata.SizeInPixels;
+            var ftFaceRegular = LoadFontFace(input.FaceDataRegular, input.FaceDataRegularLength, sizeInPoints, ref pxSizeRegular, iDpiX, iDpiY, !mdata.UseClosestPixelSize);
 
-            var uvFaceRegular = (ftFaceRegular == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, mdata.Substitution);
-            var uvFaceBold = (ftFaceBold == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, mdata.Substitution);
-            var uvFaceItalic = (ftFaceItalic == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, sizeInPoints, mdata.Substitution);
-            var uvFaceBoldItalic = (ftFaceBoldItalic == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, sizeInPoints, mdata.Substitution);
+            var pxSizeBold = mdata.SizeInPixels;
+            var ftFaceBold = LoadFontFace(input.FaceDataBold, input.FaceDataBoldLength, sizeInPoints, ref pxSizeBold, iDpiX, iDpiY, !mdata.UseClosestPixelSize);
+
+            var pxSizeItalic = mdata.SizeInPixels;
+            var ftFaceItalic = LoadFontFace(input.FaceDataItalic, input.FaceDataItalicLength, sizeInPoints, ref pxSizeItalic, iDpiX, iDpiY, !mdata.UseClosestPixelSize);
+
+            var pxSizeBoldItalic = mdata.SizeInPixels;
+            var ftFaceBoldItalic = LoadFontFace(input.FaceDataBoldItalic, input.FaceDataBoldItalicLength, sizeInPoints, ref pxSizeBoldItalic, iDpiX, iDpiY, !mdata.UseClosestPixelSize);
+
+            var uvFaceRegular = (ftFaceRegular == IntPtr.Zero) ? null : 
+                new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, pxSizeRegular, mdata.Substitution);
+            var uvFaceBold = (ftFaceBold == IntPtr.Zero) ? null : 
+                new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, pxSizeBold, mdata.Substitution);
+            var uvFaceItalic = (ftFaceItalic == IntPtr.Zero) ? null :
+                new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, sizeInPoints, pxSizeItalic, mdata.Substitution);
+            var uvFaceBoldItalic = (ftFaceBoldItalic == IntPtr.Zero) ? null :
+                new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, sizeInPoints, pxSizeBoldItalic, mdata.Substitution);
 
             if (uvFaceRegular != null)
                 PrepopulateGlyphs(uvFaceRegular, prepopGlyphRanges);
@@ -56,42 +71,43 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Loads the specified FreeType2 font face.
         /// </summary>
-        private static IntPtr LoadFontFace(Int32 sizeInPoints, UInt32 dpiX, UInt32 dpiY, IntPtr faceData, Int32 faceDataLength)
+        private static IntPtr LoadFontFace(IntPtr faceData, Int32 faceDataLength, Int32 sizeInPoints, ref Int32 sizeInPixels, UInt32 dpiX, UInt32 dpiY, Boolean exactPixelSizeMatching)
         {
             if (faceData == IntPtr.Zero)
                 return IntPtr.Zero;
 
             var face = default(IntPtr);
-            var err = default(FT_Error);
+            var facade = default(FT_FaceRecFacade);
 
             if (Use64BitInterface)
             {
-                err = FT_New_Memory_Face64(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
+                var err = FT_New_Memory_Face64(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
 
-                var face64 = (FT_FaceRec64*)face;
-                if ((face64->face_flags & FT_FACE_FLAG_SCALABLE) == 0)
-                    throw new NotImplementedException("TODO: Support non-scalable fonts");
-
-                err = FT_Set_Char_Size64(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
-                if (err != FT_Err_Ok)
-                    throw new FreeTypeException(err);
+                facade = new FT_FaceRecFacade(face);
             }
             else
             {
-                err = FT_New_Memory_Face32(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
+                var err = FT_New_Memory_Face32(FreeTypeFontPlugin.Library, faceData, faceDataLength, 0, (IntPtr)(&face));
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
 
-                var face32 = (FT_FaceRec32*)face;
-                if ((face32->face_flags & FT_FACE_FLAG_SCALABLE) == 0)
-                    throw new NotImplementedException("TODO: Support non-scalable fonts");
-
-                err = FT_Set_Char_Size32(face, 0, FreeTypeCalc.Int32ToF26Dot6(sizeInPoints), dpiX, dpiY);
-                if (err != FT_Err_Ok)
-                    throw new FreeTypeException(err);
+                facade = new FT_FaceRecFacade(face);
             }
+
+            if (sizeInPixels == 0)
+            {
+                if (!facade.HasScalableFlag)
+                    throw new InvalidOperationException(FreeTypeStrings.NonScalableFontFaceRequiresPixelSize);
+
+                facade.SelectCharSize(sizeInPoints, dpiX, dpiY);
+            }
+            else
+            {
+                var nearestMatchIx = facade.FindNearestMatchingPixelSize(sizeInPixels, exactPixelSizeMatching);
+                facade.SelectFixedSize(nearestMatchIx);
+            }            
 
             return face;
         }

@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Bitmap_Size64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_CharMapRec32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_CharMapRec64.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_FaceRecFacade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Kerning_Mode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_FaceRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphLoaderRec64.cs" />

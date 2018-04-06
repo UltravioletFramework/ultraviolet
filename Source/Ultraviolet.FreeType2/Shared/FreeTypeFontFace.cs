@@ -25,45 +25,32 @@ namespace Ultraviolet.FreeType2
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="face">The FreeType2 face which this instance represents.</param>
         /// <param name="sizeInPoints">The size of the font face in points.</param>
+        /// <param name="sizeInPixels">The size of the font face in pixels.</param>
         /// <param name="substitutionCharacter">The substitution character for this font face, 
         /// or <see langword="null"/> to use a default character.</param>
-        internal FreeTypeFontFace(UltravioletContext uv, IntPtr face, Single sizeInPoints, Char? substitutionCharacter = null)
+        internal FreeTypeFontFace(UltravioletContext uv, IntPtr face, Int32 sizeInPoints, Int32 sizeInPixels, Char? substitutionCharacter = null)
             : base(uv)
         {
-            Contract.Require((IntPtr)face, nameof(face));
+            Contract.Require(face, nameof(face));
 
             this.face = face;
+            this.facade = new FT_FaceRecFacade(face);
 
-            if (Use64BitInterface)
-            {
-                var face64 = (FT_FaceRec64*)face;
-                this.hasKerningInfo = (face64->face_flags & FT_FACE_FLAG_KERNING) != 0;
-                this.IsColorFont = (face64->face_flags & FT_FACE_FLAG_COLOR) != 0;
-                this.FamilyName = Marshal.PtrToStringAnsi(face64->family_name);
-                this.StyleName = Marshal.PtrToStringAnsi(face64->style_name);
-                this.LineSpacing = FreeTypeCalc.F26Dot6ToInt32(face64->size->metrics.height);
-            }
-            else
-            {
-                var face32 = (FT_FaceRec32*)face;
-                this.hasKerningInfo = (face32->face_flags & FT_FACE_FLAG_KERNING) != 0;
-                this.IsColorFont = (face32->face_flags & FT_FACE_FLAG_COLOR) != 0;
-                this.FamilyName = Marshal.PtrToStringAnsi(face32->family_name);
-                this.StyleName = Marshal.PtrToStringAnsi(face32->style_name);
-                this.LineSpacing = FreeTypeCalc.F26Dot6ToInt32(face32->size->metrics.height);
-            }
+            this.IsColorFont = facade.HasColorFlag;
+            this.HasKerningInfo = facade.HasKerningFlag;
+            this.FamilyName = facade.MarshalFamilyName();
+            this.StyleName = facade.MarshalStyleName();
+            this.LineSpacing = facade.LineSpacing;
 
             if (GetGlyphInfo(' ', out var spaceGlyphInfo))
                 this.SpaceWidth = spaceGlyphInfo.Width;
 
             this.SizeInPoints = sizeInPoints;
+            this.SizeInPixels = SizeInPixels;
             this.TabWidth = SpaceWidth * 4;
 
-            Char? GetCharacterIfDefined(IntPtr f, Char c) =>
-                (Use64BitInterface ? FT_Get_Char_Index64(f, c) : FT_Get_Char_Index32(f, c)) > 0 ? c : (Char?)null;
-
             this.SubstitutionCharacter = substitutionCharacter ??
-                GetCharacterIfDefined(face, '�') ?? GetCharacterIfDefined(face, '□') ?? '?';
+                facade.GetCharIfDefined('�') ?? facade.GetCharIfDefined('□') ?? '?';
 
             PopulateGlyph(SubstitutionCharacter);
         }
@@ -209,14 +196,14 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Size2 GetKerningInfo(Char c1, Char c2)
         {
-            if (face == IntPtr.Zero || !hasKerningInfo)
+            if (face == IntPtr.Zero || !HasKerningInfo)
                 return Size2.Zero;
 
-            var c1Index = Use64BitInterface ? FT_Get_Char_Index64(face, c1) : FT_Get_Char_Index32(face, c1);
+            var c1Index = facade.GetCharIndex(c1);
             if (c1Index == 0)
                 return Size2.Zero;
 
-            var c2Index = Use64BitInterface ? FT_Get_Char_Index64(face, c2) : FT_Get_Char_Index32(face, c2);
+            var c2Index = facade.GetCharIndex(c2);
             if (c2Index == 0)
                 return Size2.Zero;
 
@@ -260,11 +247,6 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Gets a value indicating whether this is a color font.
-        /// </summary>
-        public Boolean IsColorFont { get; }
-
-        /// <summary>
         /// Gets the font's family name.
         /// </summary>
         public String FamilyName { get; }
@@ -277,7 +259,22 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Gets the font's size in points.
         /// </summary>
-        public Single SizeInPoints { get; }
+        public Int32 SizeInPoints { get; }
+
+        /// <summary>
+        /// Gets the font's size in pixels.
+        /// </summary>
+        public Int32 SizeInPixels { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this is a color font.
+        /// </summary>
+        public Boolean IsColorFont { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this font has kerning information.
+        /// </summary>
+        public Boolean HasKerningInfo { get; }
 
         /// <inheritdoc/>
         public override Int32 Characters => glyphInfoCache.Count;
@@ -338,7 +335,7 @@ namespace Ultraviolet.FreeType2
             }
             else
             {
-                var index = Use64BitInterface ? FT_Get_Char_Index64(face, c) : FT_Get_Char_Index32(face, c);
+                var index = facade.GetCharIndex(c);
                 if (index == 0)
                 {
                     if (c != SubstitutionCharacter)
@@ -376,7 +373,7 @@ namespace Ultraviolet.FreeType2
             var reservation = default(DynamicTextureAtlas.Reservation);
             var reservationFound = false;
 
-            var bmp = Use64BitInterface ? ((FT_FaceRec64*)face)->glyph->bitmap : ((FT_FaceRec32*)face)->glyph->bitmap;
+            var bmp = facade.GlyphBitmap;
             var bmpWidth = (Int32)bmp.width;
             var bmpHeight = (Int32)bmp.rows;
             var bmpPitch = bmp.pitch;
@@ -427,35 +424,11 @@ namespace Ultraviolet.FreeType2
             }
 
             // Calculate the glyph's metrics.
-            var glyphWidth = 0;
-            var glyphHeight = 0;
-            var glyphOffsetX = 0;
-            var glyphOffsetY = 0;
-            var glyphAdvance = 0;
-
-            if (Use64BitInterface)
-            {
-                var face64 = (FT_FaceRec64*)face;
-                var metrics = face64->glyph->metrics;
-                var ascender = FreeTypeCalc.F26Dot6ToInt32(face64->size->metrics.ascender);
-                glyphWidth = FreeTypeCalc.F26Dot6ToInt32(metrics.width);
-                glyphHeight = FreeTypeCalc.F26Dot6ToInt32(metrics.height);
-                glyphOffsetX = face64->glyph->bitmap_left;
-                glyphOffsetY = ascender - face64->glyph->bitmap_top;
-                glyphAdvance = FreeTypeCalc.F26Dot6ToInt32(metrics.horiAdvance);
-            }
-            else
-            {
-                var face32 = (FT_FaceRec32*)face;
-                var metrics = face32->glyph->metrics;
-                var ascender = FreeTypeCalc.F26Dot6ToInt32(face32->size->metrics.ascender);
-                glyphWidth = FreeTypeCalc.F26Dot6ToInt32(metrics.width);
-                glyphHeight = FreeTypeCalc.F26Dot6ToInt32(metrics.height);
-                glyphOffsetX = face32->glyph->bitmap_left;
-                glyphOffsetY = ascender - face32->glyph->bitmap_top;
-                glyphAdvance = FreeTypeCalc.F26Dot6ToInt32(metrics.horiAdvance);
-            }
-
+            var glyphWidth = facade.GlyphMetricWidth;
+            var glyphHeight = facade.GlyphMetricHeight;
+            var glyphOffsetX = facade.GlyphBitmapLeft;
+            var glyphOffsetY = facade.Ascender - facade.GlyphBitmapTop;
+            var glyphAdvance = facade.GlyphMetricHorizontalAdvance;
             if (c == '\t')
                 glyphAdvance *= 4;
 
@@ -539,7 +512,7 @@ namespace Ultraviolet.FreeType2
         }
 
         // The FreeType2 face which this instance represents.
-        private readonly Boolean hasKerningInfo;
+        private readonly FT_FaceRecFacade facade;
         private IntPtr face;
 
         // Cache of atlases used to store glyph images.

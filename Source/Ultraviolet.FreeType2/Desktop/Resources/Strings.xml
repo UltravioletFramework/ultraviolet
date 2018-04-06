@@ -25,4 +25,24 @@
       <Variant>Font pixel format is not supported.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_SPECIFY_POINT_AND_PIXEL_SIZE">
+    <en-US>
+      <Variant>A font cannot specify both a SizeInPoints and a SizeInPixels.</Variant>
+    </en-US>
+  </String>
+  <String Key="NON_SCALABLE_FONT_FACE_REQUIRES_PIXEL_SIZE">
+    <en-US>
+      <Variant>This font face does not contain scalable glyphs; specify an exact pixel size.</Variant>
+    </en-US>
+  </String>
+  <String Key="FONT_DOES_NOT_HAVE_BITMAP_STRIKES">
+    <en-US>
+      <Variant>A pixel size was requested for this font, but the font does not contain fixed-size strikes.</Variant>
+    </en-US>
+  </String>
+  <String Key="NO_MATCHING_PIXEL_SIZE">
+    <en-US>
+      <Variant>An exact pixel of size of {0} was requested, but the font does not contain matching fixed-size strikes.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

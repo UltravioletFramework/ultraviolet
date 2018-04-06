@@ -28,6 +28,10 @@ namespace Ultraviolet.FreeType2
         public static readonly StringResource ContentRedirectionError               = new StringResource(StringDatabase, "CONTENT_REDIRECTION_ERROR");
         public static readonly StringResource GlyphTooBigForAtlas                   = new StringResource(StringDatabase, "GLYPH_TOO_BIG_FOR_ATLAS");
         public static readonly StringResource PixelFormatNotSupported               = new StringResource(StringDatabase, "PIXEL_FORMAT_NOT_SUPPORTED");
+        public static readonly StringResource CannotSpecifyPointAndPixelSize        = new StringResource(StringDatabase, "CANNOT_SPECIFY_POINT_AND_PIXEL_SIZE");
+        public static readonly StringResource NonScalableFontFaceRequiresPixelSize  = new StringResource(StringDatabase, "NON_SCALABLE_FONT_FACE_REQUIRES_PIXEL_SIZE");
+        public static readonly StringResource FontDoesNotHaveBitmapStrikes          = new StringResource(StringDatabase, "FONT_DOES_NOT_HAVE_BITMAP_STRIKES");
+        public static readonly StringResource NoMatchingPixelSize                   = new StringResource(StringDatabase, "NO_MATCHING_PIXEL_SIZE");
 #pragma warning restore 1591
     }
 }
