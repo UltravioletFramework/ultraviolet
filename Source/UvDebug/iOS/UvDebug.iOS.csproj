@@ -184,6 +184,15 @@
     <BundleResource Include="..\Desktop\Content\Textures\test_0.png">
       <Link>Content\Textures\test_0.png</Link>
     </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata-Bold.ttf">
+      <Link>Content\Fonts\Inconsolata-Bold.ttf</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf">
+      <Link>Content\Fonts\Inconsolata-Regular.ttf</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
+      <Link>Content\Fonts\Inconsolata.uvmeta</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -234,6 +243,10 @@
     <ProjectReference Include="..\..\Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj">
       <Project>{F7D661D7-101B-417F-BBF7-8170CC04AB55}</Project>
       <Name>Ultraviolet.Shims.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\iOS\Ultraviolet.FreeType2.iOS.csproj">
+      <Project>{215DE724-06CC-46AF-A2A8-F124782AC0EB}</Project>
+      <Name>Ultraviolet.FreeType2.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
