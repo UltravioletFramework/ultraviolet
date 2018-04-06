@@ -207,18 +207,18 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Int32 GetKerningInfo(Char c1, Char c2)
+        public override Size2 GetKerningInfo(Char c1, Char c2)
         {
             if (face == IntPtr.Zero || !hasKerningInfo)
-                return 0;
+                return Size2.Zero;
 
             var c1Index = Use64BitInterface ? FT_Get_Char_Index64(face, c1) : FT_Get_Char_Index32(face, c1);
             if (c1Index == 0)
-                return 0;
+                return Size2.Zero;
 
             var c2Index = Use64BitInterface ? FT_Get_Char_Index64(face, c2) : FT_Get_Char_Index32(face, c2);
             if (c2Index == 0)
-                return 0;
+                return Size2.Zero;
 
             if (Use64BitInterface)
             {
@@ -227,7 +227,9 @@ namespace Ultraviolet.FreeType2
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
 
-                return FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+                var x = FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+                var y = FreeTypeCalc.F26Dot6ToInt32(kerning.y);
+                return new Size2(x, y);
             }
             else
             {
@@ -236,12 +238,14 @@ namespace Ultraviolet.FreeType2
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
 
-                return FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+                var x = FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+                var y = FreeTypeCalc.F26Dot6ToInt32(kerning.y);
+                return new Size2(x, y);
             }
         }
 
         /// <inheritdoc/>
-        public override Int32 GetKerningInfo(SpriteFontKerningPair pair)
+        public override Size2 GetKerningInfo(SpriteFontKerningPair pair)
         {
             return GetKerningInfo(pair.FirstCharacter, pair.SecondCharacter);
         }

@@ -190,15 +190,15 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Int32 GetKerningInfo(Char c1, Char c2)
+        public override Size2 GetKerningInfo(Char c1, Char c2)
         {
-            return kerning.Get(c1, c2);
+            return new Size2(kerning.Get(c1, c2), 0);
         }
 
         /// <inheritdoc/>
-        public override Int32 GetKerningInfo(SpriteFontKerningPair pair)
+        public override Size2 GetKerningInfo(SpriteFontKerningPair pair)
         {
-            return kerning.Get(pair);
+            return new Size2(kerning.Get(pair), 0);
         }
         
         /// <inheritdoc/>

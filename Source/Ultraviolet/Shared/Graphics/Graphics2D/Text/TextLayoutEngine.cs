@@ -617,7 +617,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var tokenText = default(StringSegment);
             var tokenNext = default(TextParserToken?);
             var tokenSize = default(Size2);
-            var tokenKerning = 0;
+            var tokenKerning = default(Size2);
             var tokenIsBreakingSpace = false;
 
             while (index < input.Count)
@@ -659,7 +659,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 // For most tokens we need to bail out here if there's a line overflow, but
                 // if it's a breaking space we need to be sure that it's part of the command stream
                 // so that we can go back and replace it in the line break phase!
-                var overflowsLine = state.PositionX + tokenSize.Width - tokenKerning > availableWidth;
+                var overflowsLine = state.PositionX + tokenSize.Width - tokenKerning.Width > availableWidth;
                 if (overflowsLine && !tokenIsBreakingSpace)
                 {
                     lineOverflow = true;
@@ -885,7 +885,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var charLast = tokenText[tokenText.Length - 1];
                                 var charNext = tokenNextValue.Text[0];
                                 var kerning = font.GetKerningInfo(charLast, charNext);
-                                return new Size2(size.Width + kerning, size.Height);
+                                return new Size2(size.Width + kerning.Width, size.Height);
                             }
                         }
                         return size;

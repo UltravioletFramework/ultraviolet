@@ -127,14 +127,14 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="c1">The first character in the pair to evaluate.</param>
         /// <param name="c2">The second character in the pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Int32 GetKerningInfo(Char c1, Char c2);
+        public abstract Size2 GetKerningInfo(Char c1, Char c2);
 
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
         /// </summary>
         /// <param name="pair">The character pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Int32 GetKerningInfo(SpriteFontKerningPair pair);
+        public abstract Size2 GetKerningInfo(SpriteFontKerningPair pair);
 
         /// <summary>
         /// Gets the number of characters in the font face.

@@ -1374,7 +1374,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     var hyphenatedTextWidth = fontFace.MeasureString(cmdText).Width;
                     var hyphenatedTextKerning = fontFace.GetKerningInfo(hyphenatedGlyph, '-');
 
-                    cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning, cmdPosition.Y);
+                    cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning.Width, cmdPosition.Y + hyphenatedTextKerning.Height);
                     cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
 
                     spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, "-", cmdPosition, color);
