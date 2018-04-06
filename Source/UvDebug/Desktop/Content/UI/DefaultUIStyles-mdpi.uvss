@@ -16,7 +16,7 @@ View
  
 *
 {
-    font: #Global:Fonts:DefaultUI;
+    font: #Global:FreeTypeFonts:Inconsolata;
     foreground: #ffffffff;
 }
 
