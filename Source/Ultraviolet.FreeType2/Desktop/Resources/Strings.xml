@@ -45,4 +45,9 @@
       <Variant>An exact pixel of size of {0} was requested, but the font does not contain matching fixed-size strikes.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_ATLAS_PARAMETERS">
+    <en-US>
+      <Variant>The texture atlas parameters specified for this font face are invalid.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
