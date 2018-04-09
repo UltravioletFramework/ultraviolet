@@ -152,6 +152,16 @@ namespace Ultraviolet.Graphics.Graphics2D
         public abstract Int32 TabWidth { get; }
 
         /// <summary>
+        /// Gets the size of the font face's ascender metric in pixels.
+        /// </summary>
+        public abstract Int32 Ascender { get; }
+
+        /// <summary>
+        /// Gets the size of the font face's descender metric in pixels.
+        /// </summary>
+        public abstract Int32 Descender { get; }
+
+        /// <summary>
         /// Gets the height of a line written with this font face.
         /// </summary>
         public abstract Int32 LineSpacing { get; }

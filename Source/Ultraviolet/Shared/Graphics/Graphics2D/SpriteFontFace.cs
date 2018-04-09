@@ -20,8 +20,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="glyphs">A collection containing the positions of the font's glyphs.</param>
         /// <param name="kerning">The font's kerning information.</param>
         /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
-        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, SpriteFontKerning kerning, Boolean ownsTexture = false)
-            : this(uv, texture, regions, glyphs, kerning, '?', ownsTexture)
+        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs,
+            SpriteFontKerning kerning, Boolean ownsTexture = false)
+            : this(uv, texture, regions, glyphs, kerning, 0, 0, '?', ownsTexture)
         {
 
         }
@@ -36,7 +37,27 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="kerning">The font's kerning information.</param>
         /// <param name="substitutionCharacter">The character that corresponds to the font face's substitution glyph.</param>
         /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
-        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, SpriteFontKerning kerning, Char substitutionCharacter, Boolean ownsTexture = false)
+        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, 
+            SpriteFontKerning kerning, Char substitutionCharacter, Boolean ownsTexture = false)
+            : this(uv, texture, regions, glyphs, kerning, 0, 0, substitutionCharacter, ownsTexture)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteFontFace"/> class.
+        /// </summary>
+        /// <param name="uv">The Ultraviolet context.</param>
+        /// <param name="texture">The texture that contains the font face's glyphs.</param>
+        /// <param name="regions">A collection containing the font face's character regions.</param>
+        /// <param name="glyphs">A collection containing the positions of the font face's glyphs on its texture.</param>
+        /// <param name="kerning">The font's kerning information.</param>
+        /// <param name="ascender">The height of the font's ascender in pixels.</param>
+        /// <param name="descender">The height of the font's descender in pixels.</param>
+        /// <param name="substitutionCharacter">The character that corresponds to the font face's substitution glyph.</param>
+        /// <param name="ownsTexture">A value indicating whether this font face is responsible for disposing of its texture.</param>
+        public SpriteFontFace(UltravioletContext uv, Texture2D texture, IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, 
+            SpriteFontKerning kerning, Int32 ascender, Int32 descender, Char substitutionCharacter, Boolean ownsTexture = false)
             : base(uv)
         {
             Contract.Require(texture, nameof(texture));
@@ -46,7 +67,10 @@ namespace Ultraviolet.Graphics.Graphics2D
             this.ownsTexture = ownsTexture;
 
             this.glyphs = new SpriteFontGlyphIndex(regions ?? new[] { CharacterRegion.Default }, glyphs, substitutionCharacter);
-            this.kerning = kerning ?? new SpriteFontKerning();           
+            this.kerning = kerning ?? new SpriteFontKerning();
+
+            this.Ascender = ascender;
+            this.Descender = descender;
         }
 
         /// <inheritdoc/>
@@ -184,7 +208,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(Char c1, Char? c2 = null)
         {
-            var glyph  = glyphs[c1];
+            var glyph = glyphs[c1];
             var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
             return new Size2(glyph.Width + offset, glyph.Height);
         }
@@ -200,7 +224,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             return new Size2(kerning.Get(pair), 0);
         }
-        
+
         /// <inheritdoc/>
         public override Int32 Characters => glyphs.Count;
 
@@ -209,6 +233,12 @@ namespace Ultraviolet.Graphics.Graphics2D
 
         /// <inheritdoc/>
         public override Int32 TabWidth => SpaceWidth * 4;
+
+        /// <inheritdoc/>
+        public override Int32 Ascender { get; }
+
+        /// <inheritdoc/>
+        public override Int32 Descender { get; }
 
         /// <inheritdoc/>
         public override Int32 LineSpacing => glyphs.LineSpacing;
