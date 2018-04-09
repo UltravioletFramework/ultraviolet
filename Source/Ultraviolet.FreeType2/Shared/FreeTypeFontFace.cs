@@ -37,6 +37,13 @@ namespace Ultraviolet.FreeType2
             this.facade = new FT_FaceRecFacade(face);
             this.stroker = CreateStroker(face, metadata);
 
+            if (metadata.AtlasWidth < 1 || metadata.AtlasHeight < 1 || metadata.AtlasSpacing < 0)
+                throw new InvalidOperationException(FreeTypeStrings.InvalidAtlasParameters);
+
+            this.AtlasWidth = metadata.AtlasWidth;
+            this.AtlasHeight = metadata.AtlasHeight;
+            this.AtlasSpacing = metadata.AtlasSpacing;
+
             this.hAdvanceAdjustment = metadata.AdjustHorizontalAdvance;
             this.vAdvanceAdjustment = metadata.AdjustVerticalAdvance;
             this.glyphWidthAdjustment = (metadata.StrokeRadius * 2);
@@ -263,6 +270,21 @@ namespace Ultraviolet.FreeType2
         public String StyleName { get; }
 
         /// <summary>
+        /// Gets the width of the texture atlases used by FreeType2 font faces.
+        /// </summary>
+        public Int32 AtlasWidth { get; } = 1024;
+
+        /// <summary>
+        /// Gets the height of the texture atlases used by FreeType2 font faces.
+        /// </summary>
+        public Int32 AtlasHeight { get; } = 1024;
+
+        /// <summary>
+        /// Gets the spacing between cells on the atlases used by FreeType2 font faces.
+        /// </summary>
+        public Int32 AtlasSpacing { get; } = 4;
+
+        /// <summary>
         /// Gets the font's size in points.
         /// </summary>
         public Int32 SizeInPoints { get; }
@@ -296,21 +318,6 @@ namespace Ultraviolet.FreeType2
 
         /// <inheritdoc/>
         public override Char SubstitutionCharacter { get; }
-
-        /// <summary>
-        /// The width of the texture atlases used by FreeType2 font faces.
-        /// </summary>
-        public const Int32 AtlasWidth = 1024;
-
-        /// <summary>
-        /// The height of the texture atlases used by FreeType2 font faces.
-        /// </summary>
-        public const Int32 AtlasHeight = 1024;
-
-        /// <summary>
-        /// The spacing between cells on the atlases used by FreeType2 font faces.
-        /// </summary>
-        public const Int32 AtlasSpacing = 4;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

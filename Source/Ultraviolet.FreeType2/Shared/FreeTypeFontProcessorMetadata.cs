@@ -15,6 +15,21 @@ namespace Ultraviolet.FreeType2
         public Boolean UseClosestPixelSize { get; private set; } = false;
 
         /// <summary>
+        /// Gets the width, in pixels, of the texture atlases which contain the font's glyphs.
+        /// </summary>
+        public Int32 AtlasWidth { get; private set; } = 1024;
+
+        /// <summary>
+        /// Gets the height, in pixels, of the texture atlases which contain the font's glyphs.
+        /// </summary>
+        public Int32 AtlasHeight { get; private set; } = 1024;
+
+        /// <summary>
+        /// Gets the spacing, in pixels, between glyphs on the font's texture atlases.
+        /// </summary>
+        public Int32 AtlasSpacing { get; private set; } = 4;
+
+        /// <summary>
         /// Gets the size of the font in points. If <see cref="SizeInPixels"/> has a non-zero value, this value must be zero.
         /// </summary>
         public Int32 SizeInPoints { get; private set; } = 16;
