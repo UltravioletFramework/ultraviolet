@@ -53,6 +53,8 @@ namespace Ultraviolet.FreeType2
             this.HasKerningInfo = facade.HasKerningFlag;
             this.FamilyName = facade.MarshalFamilyName();
             this.StyleName = facade.MarshalStyleName();
+            this.Ascender = facade.Ascender;
+            this.Descender = facade.Descender;
             this.LineSpacing = facade.LineSpacing;
 
             if (GetGlyphInfo(' ', out var spaceGlyphInfo))
@@ -312,6 +314,12 @@ namespace Ultraviolet.FreeType2
 
         /// <inheritdoc/>
         public override Int32 TabWidth { get; }
+
+        /// <inheritdoc/>
+        public override Int32 Ascender { get; }
+
+        /// <inheritdoc/>
+        public override Int32 Descender { get; }
 
         /// <inheritdoc/>
         public override Int32 LineSpacing { get; }

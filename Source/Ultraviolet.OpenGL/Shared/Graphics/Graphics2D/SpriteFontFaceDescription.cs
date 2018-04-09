@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
 
@@ -33,5 +33,15 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// Gets or sets the face's collection of kerning values.
         /// </summary>
         public Dictionary<String, Int32> Kernings { get; set; }
+
+        /// <summary>
+        /// Gets the height of the font's ascender in pixels.
+        /// </summary>
+        public Int32 Ascender { get; set; }
+
+        /// <summary>
+        /// Gets the height of the font's descender in pixels.
+        /// </summary>
+        public Int32 Descender { get; set; }
     }
 }

@@ -16,6 +16,8 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, SpriteFontDescription input, Boolean delete)
         {
+            writer.Write(Int32.MaxValue);
+            writer.Write(1);
             writer.Write(input.CharacterRegions?.Count() ?? 0);
             if (input.CharacterRegions != null)
             {
@@ -35,7 +37,15 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <inheritdoc/>
         public override SpriteFont ImportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryReader reader)
         {
+            var fileVersion = 0;
+
             var characterRegionCount = reader.ReadInt32();
+            if (characterRegionCount == Int32.MaxValue)
+            {
+                fileVersion = reader.ReadInt32();
+                characterRegionCount = reader.ReadInt32();
+            }
+
             var characterRegions = characterRegionCount > 0 ? new CharacterRegion[characterRegionCount] : null;
             for (int i = 0; i < characterRegionCount; i++)
             {
@@ -44,10 +54,10 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                     reader.ReadChar());
             }
 
-            var faceRegular = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
-            var faceBold = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
-            var faceItalic = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
-            var faceBoldItalic = ImportPreprocessedFace(manager, metadata, reader, characterRegions);
+            var faceRegular = ImportPreprocessedFace(manager, metadata, reader, characterRegions, fileVersion);
+            var faceBold = ImportPreprocessedFace(manager, metadata, reader, characterRegions, fileVersion);
+            var faceItalic = ImportPreprocessedFace(manager, metadata, reader, characterRegions, fileVersion);
+            var faceBoldItalic = ImportPreprocessedFace(manager, metadata, reader, characterRegions, fileVersion);
 
             return new SpriteFont(manager.Ultraviolet, faceRegular, faceBold, faceItalic, faceBoldItalic);
         }
@@ -143,13 +153,16 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
                 writer.Write(kvp.Key.SecondCharacter);
                 writer.Write(kvp.Value);
             }
+
+            writer.Write(description.Ascender);
+            writer.Write(description.Descender);
         }
 
         /// <summary>
         /// Imports a font face from the specified preprocessed asset stream.
         /// </summary>
         private static SpriteFontFace ImportPreprocessedFace(ContentManager manager, 
-            IContentProcessorMetadata metadata, BinaryReader reader, IEnumerable<CharacterRegion> characterRegions)
+            IContentProcessorMetadata metadata, BinaryReader reader, IEnumerable<CharacterRegion> characterRegions, Int32 fileVersion)
         {
             var faceExists = reader.ReadBoolean();
             if (!faceExists)
@@ -198,7 +211,11 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             foreach (var kvp in kerningPairs)
                 kerning.Set(kvp.Key, kvp.Value);
 
-            return new SpriteFontFace(manager.Ultraviolet, texture, characterRegions, glyphPositions, kerning, substitution);
+            var ascender = (fileVersion > 0) ? reader.ReadInt32() : 0;
+            var descender = (fileVersion > 0) ? reader.ReadInt32() : 0;
+
+            return new SpriteFontFace(manager.Ultraviolet, 
+                texture, characterRegions, glyphPositions, kerning, ascender, descender, substitution);
         }
 
         /// <summary>
@@ -227,9 +244,12 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             foreach (var kvp in kerningPairs)
                 kerning.Set(kvp.Key, kvp.Value);
 
+            var ascender = description.Ascender;
+            var descender = description.Descender;
+
             var faceTexture = manager.Load<Texture2D>(textureName, metadata.AssetDensity);
             var face = new SpriteFontFace(manager.Ultraviolet, 
-                faceTexture, characterRegions, faceGlyphs, kerning, description.Glyphs?.Substitution ?? '?');
+                faceTexture, characterRegions, faceGlyphs, kerning, ascender, descender, description.Glyphs?.Substitution ?? '?');
 
             return face;
         }
