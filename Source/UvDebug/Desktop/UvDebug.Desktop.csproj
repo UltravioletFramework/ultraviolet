@@ -117,7 +117,7 @@
     <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0">
       <Link>x64\unix\libpng16.so.16.34.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>    
+    </None>
     <None Include="App.config" />
     <None Include="app.manifest" />
     <None Include="Content\Fonts\Inconsolata-Bold.ttf">

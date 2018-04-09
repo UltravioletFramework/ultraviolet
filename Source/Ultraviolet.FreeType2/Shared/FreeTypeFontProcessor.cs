@@ -44,14 +44,10 @@ namespace Ultraviolet.FreeType2
             var pxSizeBoldItalic = mdata.SizeInPixels;
             var ftFaceBoldItalic = LoadFontFace(input.FaceDataBoldItalic, input.FaceDataBoldItalicLength, sizeInPoints, ref pxSizeBoldItalic, iDpiX, iDpiY, !mdata.UseClosestPixelSize);
 
-            var uvFaceRegular = (ftFaceRegular == IntPtr.Zero) ? null : 
-                new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, sizeInPoints, pxSizeRegular, mdata.Substitution);
-            var uvFaceBold = (ftFaceBold == IntPtr.Zero) ? null : 
-                new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, sizeInPoints, pxSizeBold, mdata.Substitution);
-            var uvFaceItalic = (ftFaceItalic == IntPtr.Zero) ? null :
-                new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, sizeInPoints, pxSizeItalic, mdata.Substitution);
-            var uvFaceBoldItalic = (ftFaceBoldItalic == IntPtr.Zero) ? null :
-                new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, sizeInPoints, pxSizeBoldItalic, mdata.Substitution);
+            var uvFaceRegular = (ftFaceRegular == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceRegular, mdata);
+            var uvFaceBold = (ftFaceBold == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBold, mdata);
+            var uvFaceItalic = (ftFaceItalic == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceItalic, mdata);
+            var uvFaceBoldItalic = (ftFaceBoldItalic == IntPtr.Zero) ? null : new FreeTypeFontFace(manager.Ultraviolet, ftFaceBoldItalic, mdata);
 
             if (uvFaceRegular != null)
                 PrepopulateGlyphs(uvFaceRegular, prepopGlyphRanges);

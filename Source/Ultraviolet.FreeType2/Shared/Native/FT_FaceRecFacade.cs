@@ -117,7 +117,7 @@ namespace Ultraviolet.FreeType2.Native
         {
             return new Size2(GlyphMetricWidth, GlyphMetricHeight);
         }
-
+        
         /// <summary>
         /// Returns the index of the fixed size which is the closest match to the specified pixel size.
         /// </summary>
@@ -232,6 +232,11 @@ namespace Ultraviolet.FreeType2.Native
         /// Gets the face's line spacing in pixels.
         /// </summary>
         public Int32 LineSpacing => FreeTypeCalc.F26Dot6ToInt32(Use64BitInterface ? ((FT_FaceRec64*)face)->size->metrics.height : ((FT_FaceRec32*)face)->size->metrics.height);
+
+        /// <summary>
+        /// Gets a pointer to the face's glyph slot.
+        /// </summary>
+        public IntPtr GlyphSlot => Use64BitInterface ? (IntPtr)((FT_FaceRec64*)face)->glyph : (IntPtr)((FT_FaceRec32*)face)->glyph;
 
         // A pointer to the wrapped FreeType2 face object.
         private readonly IntPtr face;

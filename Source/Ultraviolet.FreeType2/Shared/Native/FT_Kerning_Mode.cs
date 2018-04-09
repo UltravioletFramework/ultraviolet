@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ultraviolet.FreeType2.Native
+﻿namespace Ultraviolet.FreeType2.Native
 {
 #pragma warning disable 1591
     public enum FT_Kerning_Mode

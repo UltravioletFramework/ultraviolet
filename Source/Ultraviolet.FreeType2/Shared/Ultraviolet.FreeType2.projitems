@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.FreeType2</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeBlendMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFont.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontFace.cs" />
@@ -20,17 +21,26 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessor.PrepopulatedGlyphRange.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeFontProcessorMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeGlyphInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeLineJoinMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FreeTypeLineCapMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeCalc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_FACE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_LOAD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BBox32.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BitmapGlyphRec64.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BitmapGlyphRec32.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphRec64.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphRec32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Bitmap_Size32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Bitmap_Size64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_CharMapRec32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_CharMapRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_FaceRecFacade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Stroker_LineJoin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Stroker_LineCap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Render_Mode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Kerning_Mode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_FaceRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphLoaderRec64.cs" />
