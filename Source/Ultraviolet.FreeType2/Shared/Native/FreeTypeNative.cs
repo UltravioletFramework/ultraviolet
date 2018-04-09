@@ -172,6 +172,105 @@ namespace Ultraviolet.FreeType2.Native
         private static readonly FT_Get_KerningDelegate pFT_Get_Kerning = lib.LoadFunction<FT_Get_KerningDelegate>("FT_Get_Kerning");
         public static FT_Error FT_Get_Kerning(IntPtr face, UInt32 left_glyph, UInt32 right_glyph, UInt32 kern_mode, IntPtr akerning) => pFT_Get_Kerning(face, left_glyph, right_glyph, kern_mode, akerning);
 #endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Get_Glyph", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Get_Glyph(IntPtr slot, IntPtr aglyph);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Get_GlyphDelegate(IntPtr slot, IntPtr aglyph);
+        private static readonly FT_Get_GlyphDelegate pFT_Get_Glyph = lib.LoadFunction<FT_Get_GlyphDelegate>("FT_Get_Glyph");
+        public static FT_Error FT_Get_Glyph(IntPtr slot, IntPtr aglyph) => pFT_Get_Glyph(slot, aglyph);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Done_Glyph", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FT_Done_Glyph(IntPtr glyph);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FT_Done_GlyphDelegate(IntPtr glyph);
+        private static readonly FT_Done_GlyphDelegate pFT_Done_Glyph = lib.LoadFunction<FT_Done_GlyphDelegate>("FT_Done_Glyph");
+        public static void FT_Done_Glyph(IntPtr glyph) => pFT_Done_Glyph(glyph);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Render_Glyph", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Render_Glyph(IntPtr slot, FT_Render_Mode render_mode);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Render_GlyphDelegate(IntPtr slot, FT_Render_Mode render_mode);
+        private static readonly FT_Render_GlyphDelegate pFT_Render_Glyph = lib.LoadFunction<FT_Render_GlyphDelegate>("FT_Render_Glyph");
+        public static FT_Error FT_Render_Glyph(IntPtr slot, FT_Render_Mode render_mode) => pFT_Render_Glyph(slot, render_mode);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Stroker_New", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Stroker_New(IntPtr library, IntPtr astroker);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Stroker_NewDelegate(IntPtr library, IntPtr astroker);
+        private static readonly FT_Stroker_NewDelegate pFT_Stroker_New = lib.LoadFunction<FT_Stroker_NewDelegate>("FT_Stroker_New");
+        public static FT_Error FT_Stroker_New(IntPtr library, IntPtr astroker) => pFT_Stroker_New(library, astroker);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Stroker_Done", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FT_Stroker_Done(IntPtr stroker);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FT_Stroker_DoneDelegate(IntPtr stroker);
+        private static readonly FT_Stroker_DoneDelegate pFT_Stroker_Done = lib.LoadFunction<FT_Stroker_DoneDelegate>("FT_Stroker_Done");
+        public static void FT_Stroker_Done(IntPtr stroker) => pFT_Stroker_Done(stroker);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Stroker_Set", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FT_Stroker_Set32(IntPtr stroker, Int32 radius, FT_Stroker_LineCap line_cap, FT_Stroker_LineJoin line_join, Int32 miter_limit);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FT_Stroker_Set32Delegate(IntPtr stroker, Int32 radius, FT_Stroker_LineCap line_cap, FT_Stroker_LineJoin line_join, Int32 miter_limit);
+        private static readonly FT_Stroker_Set32Delegate pFT_Stroker_Set32 = lib.LoadFunction<FT_Stroker_Set32Delegate>("FT_Stroker_Set");
+        public static void FT_Stroker_Set32(IntPtr stroker, Int32 radius, FT_Stroker_LineCap line_cap, FT_Stroker_LineJoin line_join, Int32 miter_limit) => pFT_Stroker_Set32(stroker, radius, line_cap, line_join, miter_limit);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Stroker_Set", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FT_Stroker_Set64(IntPtr stroker, Int64 radius, FT_Stroker_LineCap line_cap, FT_Stroker_LineJoin line_join, Int64 miter_limit);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FT_Stroker_Set64Delegate(IntPtr stroker, Int64 radius, FT_Stroker_LineCap line_cap, FT_Stroker_LineJoin line_join, Int64 miter_limit);
+        private static readonly FT_Stroker_Set64Delegate pFT_Stroker_Set64 = lib.LoadFunction<FT_Stroker_Set64Delegate>("FT_Stroker_Set");
+        public static void FT_Stroker_Set64(IntPtr stroker, Int64 radius, FT_Stroker_LineCap line_cap, FT_Stroker_LineJoin line_join, Int64 miter_limit) => pFT_Stroker_Set64(stroker, radius, line_cap, line_join, miter_limit);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Glyph_StrokeBorder", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Glyph_StrokeBorder(IntPtr pglyph, IntPtr stroker, Boolean inside, Boolean destroy);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Glyph_StrokeBorderDelegate(IntPtr pglyph, IntPtr stroker, Boolean inside, Boolean destroy);
+        private static readonly FT_Glyph_StrokeBorderDelegate pFT_Glyph_StrokeBorder = lib.LoadFunction<FT_Glyph_StrokeBorderDelegate>("FT_Glyph_StrokeBorder");
+        public static FT_Error FT_Glyph_StrokeBorder(IntPtr pglyph, IntPtr stroker, Boolean inside, Boolean destroy) => pFT_Glyph_StrokeBorder(pglyph, stroker, inside, destroy);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="FT_Glyph_To_Bitmap", CallingConvention = CallingConvention.Cdecl)]
+        public static extern FT_Error FT_Glyph_To_Bitmap(IntPtr the_glyph, FT_Render_Mode render_mode, IntPtr origin, Boolean destroy);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate FT_Error FT_Glyph_To_BitmapDelegate(IntPtr the_glyph, FT_Render_Mode render_mode, IntPtr origin, Boolean destroy);
+        private static readonly FT_Glyph_To_BitmapDelegate pFT_Glyph_To_Bitmap = lib.LoadFunction<FT_Glyph_To_BitmapDelegate>("FT_Glyph_To_Bitmap");
+        public static FT_Error FT_Glyph_To_Bitmap(IntPtr the_glyph, FT_Render_Mode render_mode, IntPtr origin, Boolean destroy) => pFT_Glyph_To_Bitmap(the_glyph, render_mode, origin, destroy);
+#endif
     }
 #pragma warning restore 1591
 }

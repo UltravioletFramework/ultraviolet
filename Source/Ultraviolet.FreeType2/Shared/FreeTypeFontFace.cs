@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
@@ -9,8 +9,11 @@ using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.FT_Error;
-using static Ultraviolet.FreeType2.Native.FT_Pixel_Mode;
 using static Ultraviolet.FreeType2.Native.FT_Kerning_Mode;
+using static Ultraviolet.FreeType2.Native.FT_Pixel_Mode;
+using static Ultraviolet.FreeType2.Native.FT_Render_Mode;
+using static Ultraviolet.FreeType2.Native.FT_Stroker_LineCap;
+using static Ultraviolet.FreeType2.Native.FT_Stroker_LineJoin;
 
 namespace Ultraviolet.FreeType2
 {
@@ -24,19 +27,22 @@ namespace Ultraviolet.FreeType2
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="face">The FreeType2 face which this instance represents.</param>
-        /// <param name="sizeInPoints">The size of the font face in points.</param>
-        /// <param name="sizeInPixels">The size of the font face in pixels.</param>
-        /// <param name="substitutionCharacter">The substitution character for this font face, 
-        /// or <see langword="null"/> to use a default character.</param>
-        internal FreeTypeFontFace(UltravioletContext uv, IntPtr face, Int32 sizeInPoints, Int32 sizeInPixels, Char? substitutionCharacter = null)
+        /// <param name="metadata">The processor metadata with which this font face was loaded.</param>
+        internal FreeTypeFontFace(UltravioletContext uv, IntPtr face, FreeTypeFontProcessorMetadata metadata)
             : base(uv)
         {
             Contract.Require(face, nameof(face));
 
             this.face = face;
             this.facade = new FT_FaceRecFacade(face);
+            this.stroker = CreateStroker(face, metadata);
 
-            this.IsColorFont = facade.HasColorFlag;
+            this.hAdvanceAdjustment = metadata.AdjustHorizontalAdvance;
+            this.vAdvanceAdjustment = metadata.AdjustVerticalAdvance;
+            this.glyphWidthAdjustment = (metadata.StrokeRadius * 2);
+            this.glyphHeightAdjustment = (metadata.StrokeRadius * 2);
+
+            this.HasColorStrikes = facade.HasColorFlag;
             this.HasKerningInfo = facade.HasKerningFlag;
             this.FamilyName = facade.MarshalFamilyName();
             this.StyleName = facade.MarshalStyleName();
@@ -45,11 +51,11 @@ namespace Ultraviolet.FreeType2
             if (GetGlyphInfo(' ', out var spaceGlyphInfo))
                 this.SpaceWidth = spaceGlyphInfo.Width;
 
-            this.SizeInPoints = sizeInPoints;
+            this.SizeInPoints = metadata.SizeInPoints;
             this.SizeInPixels = SizeInPixels;
             this.TabWidth = SpaceWidth * 4;
 
-            this.SubstitutionCharacter = substitutionCharacter ??
+            this.SubstitutionCharacter = metadata.Substitution ??
                 facade.GetCharIfDefined('�') ?? facade.GetCharIfDefined('□') ?? '?';
 
             PopulateGlyph(SubstitutionCharacter);
@@ -267,9 +273,9 @@ namespace Ultraviolet.FreeType2
         public Int32 SizeInPixels { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this is a color font.
+        /// Gets a value indicating whether this font has colored strikes.
         /// </summary>
-        public Boolean IsColorFont { get; }
+        public Boolean HasColorStrikes { get; }
 
         /// <summary>
         /// Gets a value indicating whether this font has kerning information.
@@ -314,6 +320,12 @@ namespace Ultraviolet.FreeType2
 
             if (disposing)
             {
+                if (stroker != IntPtr.Zero)
+                {
+                    FT_Stroker_Done(stroker);
+                    stroker = IntPtr.Zero;
+                }
+
                 var err = FT_Done_Face(face);
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
@@ -322,6 +334,234 @@ namespace Ultraviolet.FreeType2
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Creates a stroker if this font face requires one.
+        /// </summary>
+        private static IntPtr CreateStroker(IntPtr face, FreeTypeFontProcessorMetadata metadata)
+        {
+            var err = default(FT_Error);
+            var pstroker = IntPtr.Zero;
+
+            if (metadata.StrokeRadius <= 0)
+                return pstroker;
+
+            err = FT_Stroker_New(FreeTypeFontPlugin.Library, (IntPtr)(&pstroker));
+            if (err != FT_Err_Ok)
+                throw new FreeTypeException(err);
+
+            var lineCapMode = FT_STROKER_LINECAP_BUTT;
+            switch (metadata.StrokeLineCap)
+            {
+                case FreeTypeLineCapMode.Round:
+                    lineCapMode = FT_STROKER_LINECAP_ROUND;
+                    break;
+
+                case FreeTypeLineCapMode.Square:
+                    lineCapMode = FT_STROKER_LINECAP_SQUARE;
+                    break;
+            }
+
+            var lineJoinMode = FT_STROKER_LINEJOIN_ROUND;
+            switch (metadata.StrokeLineJoin)
+            {
+                case FreeTypeLineJoinMode.Bevel:
+                    lineJoinMode = FT_STROKER_LINEJOIN_BEVEL;
+                    break;
+
+                case FreeTypeLineJoinMode.Miter:
+                    lineJoinMode = FT_STROKER_LINEJOIN_MITER;
+                    break;
+
+                case FreeTypeLineJoinMode.MiterFixed:
+                    lineJoinMode = FT_STROKER_LINEJOIN_MITER_FIXED;
+                    break;
+            }
+
+            var fixedRadius = FreeTypeCalc.Int32ToF26Dot6(metadata.StrokeRadius);
+            var fixedMiterLimit = FreeTypeCalc.Int32ToF26Dot6(metadata.StrokeMiterLimit);
+
+            if (Use64BitInterface)
+                FT_Stroker_Set64(pstroker, fixedRadius, lineCapMode, lineJoinMode, fixedMiterLimit);
+            else
+                FT_Stroker_Set32(pstroker, fixedRadius, lineCapMode, lineJoinMode, fixedMiterLimit);
+
+            return pstroker;
+        }
+
+        /// <summary>
+        /// Performs gamma-corrected alpha blending between two colors.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void GammaCorrectedAlphaBlend(ref Color src, ref Color dst, out Color result)
+        {
+            const Double Gamma = 2.2;
+            const Double InverseGamma = 1.0 / Gamma;
+
+            var srcA = src.A / 255.0;
+            var srcR = Math.Pow((src.R / 255.0), Gamma);
+            var srcG = Math.Pow((src.G / 255.0), Gamma);
+            var srcB = Math.Pow((src.B / 255.0), Gamma);
+
+            var dstA = dst.A / 255.0;
+            var dstR = Math.Pow((dst.R / 255.0), Gamma);
+            var dstG = Math.Pow((dst.G / 255.0), Gamma);
+            var dstB = Math.Pow((dst.B / 255.0), Gamma);
+
+            var invSrcA = (1f - srcA);
+            var outR = (Single)Math.Pow(srcR + (dstR * invSrcA), InverseGamma);
+            var outG = (Single)Math.Pow(srcG + (dstG * invSrcA), InverseGamma);
+            var outB = (Single)Math.Pow(srcB + (dstB * invSrcA), InverseGamma);
+            var outA = (Single)(srcA + (dstA * invSrcA));
+
+            result = new Color(outR, outG, outB, 1f) * outA;
+        }
+
+        /// <summary>
+        /// Blits the specified bitmap onto a texture atlas.
+        /// </summary>
+        private static void BlitBitmap(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY, 
+            Color color, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            switch ((FT_Pixel_Mode)bmp.pixel_mode)
+            {
+                case FT_PIXEL_MODE_MONO:
+                    BlitGlyphBitmapMono(ref bmp, adjustX, adjustY,
+                        (Int32)bmp.width, (Int32)bmp.rows, bmp.pitch, color, blendMode, ref reservation);
+                    break;
+
+                case FT_PIXEL_MODE_GRAY:
+                    BlitGlyphBitmapGray(ref bmp, adjustX, adjustY,
+                        (Int32)bmp.width, (Int32)bmp.rows, bmp.pitch, color, blendMode, ref reservation);
+                    break;
+
+                case FT_PIXEL_MODE_BGRA:
+                    BlitGlyphBitmapBgra(ref bmp, adjustX, adjustY,
+                        (Int32)bmp.width, (Int32)bmp.rows, bmp.pitch, blendMode, ref reservation);
+                    break;
+
+                default:
+                    throw new NotSupportedException(FreeTypeStrings.PixelFormatNotSupported);
+            }
+            reservation.Atlas.Invalidate();
+        }
+
+        /// <summary>
+        /// Blits a mono glyph bitmap to the specified atlas' surface.
+        /// </summary>
+        private static void BlitGlyphBitmapMono(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY,
+            Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            var resX = reservation.X + adjustX;
+            var resY = reservation.Y + adjustY;
+
+            for (int y = 0; y < bmpHeight; y++)
+            {
+                var atlas = reservation.Atlas;
+                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
+                var pDst = (Color*)atlas.Surface.Pixels + ((resY + y) * atlas.Width) + resX;
+                if (blendMode == FreeTypeBlendMode.Opaque)
+                {
+                    for (int x = 0; x < bmpWidth; x += 8)
+                    {
+                        var bits = *pSrc++;
+                        for (int b = 0; b < 8; b++)
+                        {
+                            var srcColor = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : color;
+                            *pDst++ = srcColor;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < bmpWidth; x += 8)
+                    {
+                        var bits = *pSrc++;
+                        for (int b = 0; b < 8; b++)
+                        {
+                            var srcColor = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : color;
+                            var dstColor = *pDst;
+
+                            GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
+                            *pDst++ = result;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits a grayscale glyph bitmap to the specified atlas' surface.
+        /// </summary>
+        private static void BlitGlyphBitmapGray(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY,
+            Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            var resX = reservation.X + adjustX;
+            var resY = reservation.Y + adjustY;
+
+            for (int y = 0; y < bmpHeight; y++)
+            {
+                var atlas = reservation.Atlas;
+                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
+                var pDst = (Color*)atlas.Surface.Pixels + ((resY + y) * atlas.Width) + resX;
+                if (blendMode == FreeTypeBlendMode.Opaque)
+                {
+                    for (int x = 0; x < bmpWidth; x++)
+                        *pDst++ = color * (*pSrc++ / 255f);
+                }
+                else
+                {
+                    for (int x = 0; x < bmpWidth; x++)
+                    {
+                        var srcColor = color * (*pSrc++ / 255f);
+                        var dstColor = *pDst;
+
+                        GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
+                        *pDst++ = result;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits a BGRA color glyph bitmap to the specified atlas' surface.
+        /// </summary>
+        private static void BlitGlyphBitmapBgra(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY,
+            Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        {
+            var resX = reservation.X + adjustX;
+            var resY = reservation.Y + adjustY;
+
+            for (int y = 0; y < bmpHeight; y++)
+            {
+                var atlas = reservation.Atlas;
+                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrc = (Color*)((Byte*)bmp.buffer + (pSrcY * bmpPitch));
+                var pDst = (Color*)atlas.Surface.Pixels + ((resY + y) * atlas.Width) + resX;
+                if (blendMode == FreeTypeBlendMode.Opaque)
+                {
+                    for (int x = 0; x < bmpWidth; x++)
+                    {
+                        var srcColor = *pSrc++;
+                        var dstColor = new Color(srcColor.B, srcColor.G, srcColor.R, srcColor.A);
+                        *pDst++ = dstColor;
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < bmpWidth; x++)
+                    {
+                        var srcColor = *pSrc++;
+                        var dstColor = *pDst;
+
+                        GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
+                        *pDst++ = result;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -346,8 +586,7 @@ namespace Ultraviolet.FreeType2
                 }
                 else
                 {
-                    LoadGlyphMetadata(index);
-                    LoadGlyphTexture(c, out info);
+                    LoadGlyphTexture(c, index, out info);
                     glyphInfoCache[c] = info;
                 }
             }
@@ -355,36 +594,66 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Loads the metadata for the specified glyph into the face's glyph slot.
-        /// </summary>
-        private void LoadGlyphMetadata(UInt32 glyphIndex)
-        {
-            var flags = FT_LOAD_RENDER | FT_LOAD_COLOR;
-            var err = FT_Load_Glyph(face, glyphIndex, flags);
-            if (err != FT_Err_Ok)
-                throw new FreeTypeException(err);
-        }
-
-        /// <summary>
         /// Loads the texture data for the specified glyph.
         /// </summary>
-        private void LoadGlyphTexture(Char c, out FreeTypeGlyphInfo info)
+        private void LoadGlyphTexture(Char c, UInt32 glyphIndex, out FreeTypeGlyphInfo info)
         {
-            var reservation = default(DynamicTextureAtlas.Reservation);
-            var reservationFound = false;
+            var err = default(FT_Error);
 
-            var bmp = facade.GlyphBitmap;
-            var bmpWidth = (Int32)bmp.width;
-            var bmpHeight = (Int32)bmp.rows;
-            var bmpPitch = bmp.pitch;
+            // Load the glyph into the face's glyph slot.
+            var flags = (stroker == IntPtr.Zero) ? FT_LOAD_COLOR : FT_LOAD_NO_BITMAP;
+            err = FT_Load_Glyph(face, glyphIndex, flags);
+            if (err != FT_Err_Ok)
+                throw new FreeTypeException(err);
+
+            var glyphOffsetX = 0;
+            var glyphOffsetY = 0;
+            var glyphAscent = 0;
+            var glyphAdvance = (c == '\t') ? 
+                (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment) * 4 : 
+                (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment);
 
             // If the glyph is not whitespace, we need to add it to one of our atlases.
+            var reservation = default(DynamicTextureAtlas.Reservation);
+            var reservationFound = false;
             if (!Char.IsWhiteSpace(c))
             {
+                // Stroke the glyph.   
+                StrokeGlyph(out var strokeGlyph, out var strokeBmp, 
+                    out var strokeOffsetX, out var strokeOffsetY);
+                
+                // Render the glyph.
+                err = FT_Render_Glyph(facade.GlyphSlot, FT_RENDER_MODE_NORMAL);
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                var glyphBmp = facade.GlyphBitmap;
+                var glyphAdjustX = 0;
+                var glyphAdjustY = 0;
+
+                var reservationWidth = 0;
+                var reservationHeight = 0;
+                if (strokeGlyph == IntPtr.Zero)
+                {
+                    reservationWidth = (Int32)glyphBmp.width;
+                    reservationHeight = (Int32)glyphBmp.rows;
+
+                    glyphAscent = facade.GlyphBitmapTop;
+                }
+                else
+                {
+                    reservationWidth = Math.Max((Int32)strokeBmp.width, (Int32)glyphBmp.width);
+                    reservationHeight = Math.Max((Int32)strokeBmp.rows, (Int32)glyphBmp.rows);
+
+                    glyphAscent = Math.Max(facade.GlyphBitmapTop, strokeOffsetY);
+                    glyphAdjustX = -(strokeOffsetX - facade.GlyphBitmapLeft);
+                    glyphAdjustY = strokeOffsetY - facade.GlyphBitmapTop;
+                }
+
                 // Attempt to reserve space on one of the font's existing atlases.
                 foreach (var atlas in atlases)
                 {
-                    if (atlas.TryReserveCell(bmpWidth, bmpHeight, out reservation))
+                    if (atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
                     {
                         reservationFound = true;
                         break;
@@ -398,46 +667,32 @@ namespace Ultraviolet.FreeType2
                     atlas.Surface.Clear(Color.Transparent);
                     atlases.Add(atlas);
 
-                    if (!atlas.TryReserveCell(bmpWidth, bmpHeight, out reservation))
+                    if (!atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
                         throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format(c));
                 }
 
                 // Update the atlas surface.
-                switch ((FT_Pixel_Mode)bmp.pixel_mode)
+                var blendMode = FreeTypeBlendMode.Opaque;
+                if (strokeGlyph != IntPtr.Zero)
                 {
-                    case FT_PIXEL_MODE_MONO:
-                        BlitGlyphBitmapMono(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
-                        break;
+                    BlitBitmap(ref strokeBmp, 0, 0, Color.Black, blendMode, ref reservation);
+                    blendMode = FreeTypeBlendMode.Blend;
 
-                    case FT_PIXEL_MODE_GRAY:
-                        BlitGlyphBitmapGray(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
-                        break;
-
-                    case FT_PIXEL_MODE_BGRA:
-                        BlitGlyphBitmapBgra(ref bmp, bmpWidth, bmpHeight, bmpPitch, ref reservation);
-                        break;
-
-                    default:
-                        throw new NotSupportedException(FreeTypeStrings.PixelFormatNotSupported);
+                    FT_Done_Glyph(strokeGlyph);
                 }
-                reservation.Atlas.Invalidate();
+                BlitBitmap(ref glyphBmp, glyphAdjustX, glyphAdjustY, Color.White, blendMode, ref reservation);
             }
 
             // Calculate the glyph's metrics.
-            var glyphWidth = facade.GlyphMetricWidth;
-            var glyphHeight = facade.GlyphMetricHeight;
-            var glyphOffsetX = facade.GlyphBitmapLeft;
-            var glyphOffsetY = facade.Ascender - facade.GlyphBitmapTop;
-            var glyphAdvance = facade.GlyphMetricHorizontalAdvance;
-            if (c == '\t')
-                glyphAdvance *= 4;
+            glyphOffsetX = facade.GlyphBitmapLeft;
+            glyphOffsetY = facade.Ascender - glyphAscent;
 
             info = new FreeTypeGlyphInfo
             {
                 Character = c,
                 Advance = glyphAdvance,
-                Width = glyphWidth,
-                Height = glyphHeight,
+                Width = facade.GlyphMetricWidth + glyphWidthAdjustment,
+                Height = facade.GlyphMetricHeight + glyphHeightAdjustment,
                 OffsetX = glyphOffsetX,
                 OffsetY = glyphOffsetY,
                 Texture = reservation.Atlas,
@@ -448,72 +703,68 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Blits a mono glyph bitmap to the specified atlas' surface.
+        /// Strokes the currently loaded glyph, if a stroker exists.
         /// </summary>
-        private void BlitGlyphBitmapMono(ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, ref DynamicTextureAtlas.Reservation reservation)
+        private void StrokeGlyph(out IntPtr glyph, out FT_Bitmap strokeBmp, out Int32 strokeOffsetX, out Int32 strokeOffsetY)
         {
-            for (int y = 0; y < bmpHeight; y++)
-            {
-                var atlas = reservation.Atlas;
-                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
-                var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
-                var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
-                for (int x = 0; x < bmpWidth; x += 8)
-                {
-                    var bits = *pSrc++;
+            var err = default(FT_Error);
+            var strokeGlyph = IntPtr.Zero;
 
-                    for (int b = 0; b < 8; b++)
-                    {
-                        var color = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : Color.White;
-                        *pDst++ = color;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Blits a grayscale glyph bitmap to the specified atlas' surface.
-        /// </summary>
-        private void BlitGlyphBitmapGray(ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, ref DynamicTextureAtlas.Reservation reservation)
-        {
-            for (int y = 0; y < bmpHeight; y++)
+            if (stroker == IntPtr.Zero)
             {
-                var atlas = reservation.Atlas;
-                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
-                var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
-                var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
-                for (int x = 0; x < bmpWidth; x++)
-                {
-                    var value = *pSrc++;
-                    var color = new Color(value, value, value, value);
-                    *pDst++ = color;
-                }
+                glyph = IntPtr.Zero;
+                strokeBmp = default(FT_Bitmap);
+                strokeOffsetX = 0;
+                strokeOffsetY = 0;
+                return;
             }
-        }
 
-        /// <summary>
-        /// Blits a BGRA color glyph bitmap to the specified atlas' surface.
-        /// </summary>
-        private void BlitGlyphBitmapBgra(ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, ref DynamicTextureAtlas.Reservation reservation)
-        {
-            for (int y = 0; y < bmpHeight; y++)
+            err = FT_Get_Glyph(facade.GlyphSlot, (IntPtr)(&strokeGlyph));
+            if (err != FT_Err_Ok)
+                throw new FreeTypeException(err);
+
+            err = FT_Glyph_StrokeBorder((IntPtr)(&strokeGlyph), stroker, false, true);
+            if (err != FT_Err_Ok)
             {
-                var atlas = reservation.Atlas;
-                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
-                var pSrc = (Color*)((Byte*)bmp.buffer + (pSrcY * bmpPitch));
-                var pDst = (Color*)atlas.Surface.Pixels + ((reservation.Y + y) * atlas.Width) + reservation.X;
-                for (int x = 0; x < bmpWidth; x++)
-                {
-                    var cSrc = *pSrc++;
-                    var cDst = new Color(cSrc.B, cSrc.G, cSrc.R, cSrc.A);
-                    *pDst++ = cDst;
-                }
+                FT_Done_Glyph(strokeGlyph);
+                throw new FreeTypeException(err);
             }
+
+            err = FT_Glyph_To_Bitmap((IntPtr)(&strokeGlyph), FT_RENDER_MODE_NORMAL, IntPtr.Zero, true);
+            if (err != FT_Err_Ok)
+            {
+                FT_Done_Glyph(strokeGlyph);
+                throw new FreeTypeException(err);
+            }
+
+            if (Use64BitInterface)
+            {
+                var bmp64 = (FT_BitmapGlyphRec64*)strokeGlyph;
+                strokeBmp = bmp64->bitmap;
+                strokeOffsetX = bmp64->left;
+                strokeOffsetY = bmp64->top;
+            }
+            else
+            {
+                var bmp32 = (FT_BitmapGlyphRec32*)strokeGlyph;
+                strokeBmp = bmp32->bitmap;
+                strokeOffsetX = bmp32->left;
+                strokeOffsetY = bmp32->top;
+            }
+
+            glyph = strokeGlyph;
         }
 
         // The FreeType2 face which this instance represents.
         private readonly FT_FaceRecFacade facade;
         private IntPtr face;
+        private IntPtr stroker;
+
+        // Metric adjustments.
+        private readonly Int32 hAdvanceAdjustment;
+        private readonly Int32 vAdvanceAdjustment;
+        private readonly Int32 glyphWidthAdjustment;
+        private readonly Int32 glyphHeightAdjustment;
 
         // Cache of atlases used to store glyph images.
         private readonly List<DynamicTextureAtlas> atlases = 
