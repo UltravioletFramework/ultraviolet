@@ -246,6 +246,7 @@
     <Compile Include="BoundingSphereTests.cs" />
     <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
+    <Compile Include="Graphics\Graphics2D\FontKind.cs" />
     <Compile Include="Graphics\Surface2DTests.cs" />
     <Compile Include="Graphics\DynamicTextureAtlasTests.cs" />
     <Compile Include="Graphics\ViewportTests.cs" />
@@ -416,6 +417,10 @@
       <Project>{ce4b6f6f-6542-4ca6-b21c-da4b053b585f}</Project>
       <Name>Ultraviolet.FMOD.Desktop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj">
+      <Project>{1213f9af-5e16-46e9-a7d0-80b9564e6345}</Project>
+      <Name>Ultraviolet.FreeType2.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
       <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
       <Name>Ultraviolet.OpenGL.Desktop</Name>
@@ -454,6 +459,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0">
+      <Link>x64\unix\libfreetype.so.6.16.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0">
+      <Link>x64\unix\libharfbuzz.so.0.10706.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0">
+      <Link>x64\unix\libpng16.so.16.34.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0">
+      <Link>x86\unix\libfreetype.so.6.16.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0">
+      <Link>x86\unix\libharfbuzz.so.0.10706.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0">
+      <Link>x86\unix\libpng16.so.16.34.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="Content\Data\TextShaders.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -500,7 +529,25 @@
     <None Include="Content\Fonts\Arial16Json.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\FiraSans-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\FiraSans-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\FiraSans-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\FiraSans-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\FiraSans.uvmeta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Fonts\MSGothic16.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\NotoSansCJKjp-Regular.otf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Fonts\SegoeUI.xml">
@@ -786,6 +833,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\DynamicTextureAtlas_FailsToReserveSpace_WhenAtlasIsFull.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1025,6 +1090,30 @@
       <Link>x86\win32nt\fmod.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\Dependencies\FreeType2\x86\win32nt\freetype.dll">
+      <Link>x86\win32nt\freetype.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll">
+      <Link>x86\win32nt\harfbuzz.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll">
+      <Link>x86\win32nt\libpng16.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x64\win32nt\freetype.dll">
+      <Link>x64\win32nt\freetype.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll">
+      <Link>x64\win32nt\harfbuzz.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Dependencies\FreeType2\x64\win32nt\libpng16.dll">
+      <Link>x64\win32nt\libpng16.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -1223,6 +1312,7 @@
     <None Include="Content\Surfaces\walrus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Fonts\FiraSans-LICENSE.txt" />
     <Content Include="Content\UI\Screens\UPF_LoadsTextFormattingParameters_AsViewResources\View.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1333,4 +1423,15 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
+    <PostBuildEvent>
+ln -sf "$(TargetDir)/x64/unix/libfreetype.so.6.16.0" "$(TargetDir)/x64/unix/libfreetype.so.6"
+ln -sf "$(TargetDir)/x64/unix/libfreetype.so.6" "$(TargetDir)/x64/unix/libfreetype.so"
+ln -sf "$(TargetDir)/x64/unix/libharfbuzz.so.0.10706.0" "$(TargetDir)/x64/unix/libharfbuzz.so.0"
+ln -sf "$(TargetDir)/x64/unix/libharfbuzz.so.0" "$(TargetDir)/x64/unix/libharfbuzz.so"
+ln -sf "$(TargetDir)/x64/unix/libpng16.so.16.34.0" "$(TargetDir)/x64/unix/libpng16.so.16"
+ln -sf "$(TargetDir)/x64/unix/libpng16.so.16" "$(TargetDir)/x64/unix/libpng16.so"
+ln -sf "$(TargetDir)/x64/unix/libpng16.so" "$(TargetDir)/x64/unix/libpng.so"
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
