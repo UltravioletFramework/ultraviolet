@@ -17,12 +17,29 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             this.TextParserOptions = parserOptions;
         }
 
+        public void Load(ContentManager content, FontKind kind)
+        {
+            switch (kind)
+            {
+                case FontKind.SpriteFont:
+                    Load(content);
+                    break;
+
+                case FontKind.FreeType2:
+                    LoadFreeType(content);
+                    break;
+
+                default:
+                    throw new ArgumentException(nameof(kind));
+            }
+        }
+
         public void Load(ContentManager content)
         {
             Contract.Require(content, nameof(content));
 
             this.SpriteBatch = SpriteBatch.Create();
-            this.SpriteFont = content.Load<SpriteFont>(FontPath ?? "Fonts/Garamond");
+            this.Font = content.Load<UltravioletFont>(FontPath ?? "Fonts/Garamond");
 
             this.TextIcons = content.Load<Sprite>(IconPath ?? "Sprites/InterfaceIcons");
 
@@ -41,8 +58,32 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             this.BlankTexture.SetData(new[] { Color.White });
         }
 
+        public void LoadFreeType(ContentManager content)
+        {
+            Contract.Require(content, nameof(content));
+
+            this.SpriteBatch = SpriteBatch.Create();
+            this.Font = content.Load<UltravioletFont>(FontPath ?? "Fonts/FiraSans");
+
+            this.TextIcons = content.Load<Sprite>(IconPath ?? "Sprites/InterfaceIcons");
+
+            this.TextParserResult = new TextParserTokenStream();
+            this.TextParser = new TextParser();
+            this.TextParser.Parse(this.Text, this.TextParserResult, this.TextParserOptions);
+
+            this.TextLayoutResult = new TextLayoutCommandStream();
+            this.TextLayoutEngine = new TextLayoutEngine();
+            this.TextLayoutEngine.RegisterIcon("test", this.TextIcons["test"], descender: -3);
+
+            this.TextRenderer = new TextRenderer();
+            this.TextRenderer.RegisterIcon("test", this.TextIcons["test"]);
+
+            this.BlankTexture = Texture2D.Create(1, 1);
+            this.BlankTexture.SetData(new[] { Color.White });
+        }
+
         public SpriteBatch SpriteBatch { get; private set; }
-        public SpriteFont SpriteFont { get; private set; }
+        public UltravioletFont Font { get; private set; }
         public String FontPath { get; set; }
         public String IconPath { get; set; }
         public String Text { get; private set; }
