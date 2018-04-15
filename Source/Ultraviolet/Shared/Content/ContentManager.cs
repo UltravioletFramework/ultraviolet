@@ -2515,7 +2515,7 @@ namespace Ultraviolet.Content
                 var wrappedAssetOverridden = false;
                 wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory, out wrappedAssetOverridden);
 
-                if (!fileSystemService.FileExists(wrappedAssetPath))
+                if (String.IsNullOrEmpty(wrappedAssetPath) || !fileSystemService.FileExists(wrappedAssetPath))
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
 
                 return new AssetMetadata(wrappedAssetOverridden ? wrappedAssetDirectory : null,
