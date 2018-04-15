@@ -64,6 +64,8 @@ namespace Ultraviolet.FreeType2
             this.SizeInPixels = SizeInPixels;
             this.TabWidth = SpaceWidth * 4;
 
+            this.totalDesignHeight = Ascender - Descender;
+
             this.SubstitutionCharacter = metadata.Substitution ??
                 facade.GetCharIfDefined('�') ?? facade.GetCharIfDefined('□') ?? '?';
 
@@ -166,7 +168,7 @@ namespace Ultraviolet.FreeType2
                 cx += MeasureGlyph(ref source, start + i).Width;
             }
 
-            return new Size2(cx, cy + LineSpacing);
+            return new Size2(cx, cy + totalDesignHeight);
         }
 
         /// <inheritdoc/>
@@ -196,7 +198,7 @@ namespace Ultraviolet.FreeType2
             if (!GetGlyphInfo(source[ix], out var cinfo))
                 return Size2.Zero;
             
-            return new Size2(cinfo.Advance, LineSpacing);
+            return new Size2(cinfo.Advance, totalDesignHeight);
         }
 
         /// <inheritdoc/>
@@ -205,7 +207,7 @@ namespace Ultraviolet.FreeType2
             if (!GetGlyphInfo(c1, out var c1Info))
                 return Size2.Zero;
 
-            return new Size2(c1Info.Advance, LineSpacing);
+            return new Size2(c1Info.Advance, totalDesignHeight);
         }
 
         /// <inheritdoc/>
@@ -776,6 +778,7 @@ namespace Ultraviolet.FreeType2
         private IntPtr stroker;
 
         // Metric adjustments.
+        private readonly Int32 totalDesignHeight;
         private readonly Int32 hAdvanceAdjustment;
         private readonly Int32 vAdvanceAdjustment;
         private readonly Int32 glyphWidthAdjustment;

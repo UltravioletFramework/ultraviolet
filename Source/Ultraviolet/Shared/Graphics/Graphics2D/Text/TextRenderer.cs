@@ -685,7 +685,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(text, 0, glyphIndexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(text, glyphIndexWithinText);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX + glyphOffset, cmd->Bounds.Location.Y) :
-                                    cmd->GetAbsolutePosition(offsetLineX + glyphOffset, blockOffset, lineHeight);
+                                    cmd->GetAbsolutePosition(fontFace, offsetLineX + glyphOffset, blockOffset, lineHeight);
 
                                 bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
@@ -1356,7 +1356,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     cmdText = cmdText.Substring(subStart, subLength);
                 }
 
-                cmdPosition = cmd->GetAbsolutePositionVector(x + cmdOffset, y, lineHeight);
+                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineHeight);
                 cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
 
                 spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
@@ -2024,7 +2024,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var tokenBounds = cmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
+                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineHeight);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
                                     var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
