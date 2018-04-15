@@ -157,7 +157,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         public abstract Int32 Ascender { get; }
 
         /// <summary>
-        /// Gets the size of the font face's descender metric in pixels.
+        /// Gets the size of the font face's descender metric in pixels. Values below the baseline are negative.
         /// </summary>
         public abstract Int32 Descender { get; }
 
