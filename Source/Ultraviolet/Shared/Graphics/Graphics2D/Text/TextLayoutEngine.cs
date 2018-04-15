@@ -75,12 +75,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="icon">The icon to register.</param>
         /// <param name="height">The width to which to scale the icon, or null to preserve the sprite's original width.</param>
         /// <param name="width">The height to which to scale the icon, or null to preserve the sprite's original height.</param>
-        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null)
+        /// <param name="ascender">The ascender value, in pixels, for this icon.</param>
+        /// <param name="descender">The descender value, in pixels, for this icon. Values below the baseline are negative.</param>
+        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null, Int32? ascender = null, Int32? descender = null)
         {
             Contract.RequireNotEmpty(name, nameof(name));
             Contract.Require(icon, nameof(icon));
 
-            registeredIcons.Add(name, new TextIconInfo(icon, width, height));
+            registeredIcons.Add(name, new TextIconInfo(icon, width, height, ascender, descender));
         }
 
         /// <summary>
@@ -346,7 +348,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
                 return false;
 
-            output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY, (Int16)iconSize.Width, (Int16)iconSize.Height));
+            output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY,
+                (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender));
             state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
             index++;
 
@@ -867,11 +870,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             {
                 case TextParserTokenType.Icon:
                     {
-                        TextIconInfo icon;
-                        if (!registeredIcons.TryGetValue(tokenText, out icon))
+                        if (!registeredIcons.TryGetValue(tokenText, out var icon))
                             throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(tokenText));
 
-                        return new Size2(icon.Width ?? icon.Icon.Controller.Width, icon.Height ?? icon.Icon.Controller.Height);
+                        var iconWidth = icon.Width ?? icon.Icon.Controller.Width;
+                        var iconHeight = icon.Height ?? icon.Icon.Controller.Height;
+                        return new Size2(iconWidth, iconHeight);
                     }
 
                 case TextParserTokenType.Text:

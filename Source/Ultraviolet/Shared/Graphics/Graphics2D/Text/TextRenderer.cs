@@ -700,7 +700,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutIconCommand*)input.Data;
                             if (++glyphCountSeen > index)
                             {
-                                var glyphSize = cmd->Bounds.Size;
+                                var glyphSize = new Size2(cmd->IconWidth, cmd->IconHeight);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX, cmd->Bounds.Location.Y) :
                                     cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineHeight);
 
