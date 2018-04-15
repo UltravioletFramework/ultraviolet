@@ -877,6 +877,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextParserTokenType.Text:
                     {
                         var size = font.MeasureString(tokenText);
+                        size.Height -= font.Descender;
+
                         if (tokenNext.HasValue)
                         {
                             var tokenNextValue = tokenNext.GetValueOrDefault();
@@ -888,6 +890,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 return new Size2(size.Width + kerning.Width, size.Height);
                             }
                         }
+
                         return size;
                     }
             }

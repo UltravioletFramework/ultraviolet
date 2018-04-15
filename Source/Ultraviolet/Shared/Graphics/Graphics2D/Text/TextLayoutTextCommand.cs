@@ -31,37 +31,46 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the absolute position of the text when rendered.
         /// </summary>
+        /// <param name="font">The font with which the command is being rendered.</param>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
         /// <returns>A <see cref="Point2"/> that describes the absolute position of the text.</returns>
-        public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineHeight)
+        public Point2 GetAbsolutePosition(UltravioletFontFace font, Int32 x, Int32 y, Int32 lineHeight)
         {
-            return new Point2(x + textX, y + textY + ((lineHeight - textHeight) / 2));
+            var lineHeightSansDescender = lineHeight + font.Descender;
+            var textHeightSansDescender = textHeight + font.Descender;
+            return new Point2(x + textX, (y - font.Descender) + textY + ((lineHeightSansDescender - textHeightSansDescender) / 2));
         }
 
         /// <summary>
         /// Gets the absolute position of the text when rendered.
         /// </summary>
+        /// <param name="font">The font with which the command is being rendered.</param>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
         /// <returns>A <see cref="Vector2"/> that describes the absolute position of the text.</returns>
-        public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineHeight)
+        public Vector2 GetAbsolutePositionVector(UltravioletFontFace font, Single x, Single y, Int32 lineHeight)
         {
-            return new Vector2(x + textX, y + textY + ((lineHeight - textHeight) / 2));
+            var lineHeightSansDescender = lineHeight + font.Descender;
+            var textHeightSansDescender = textHeight + font.Descender;
+            return new Vector2(x + textX, (y - font.Descender) + textY + ((lineHeightSansDescender - textHeightSansDescender) / 2));
         }
 
         /// <summary>
         /// Gets the absolute bounds of the text when rendered.
         /// </summary>
+        /// <param name="font">The font with which the command is being rendered.</param>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
         /// <returns>A <see cref="Rectangle"/> that describes the absolute bounds of the text.</returns>
-        public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineHeight)
+        public Rectangle GetAbsoluteBounds(UltravioletFontFace font, Int32 x, Int32 y, Int32 lineHeight)
         {
-            return new Rectangle(x + textX, y + textY + ((lineHeight - textHeight) / 2), textWidth, textHeight);
+            var lineHeightSansDescender = lineHeight + font.Descender;
+            var textHeightSansDescender = textHeight + font.Descender;
+            return new Rectangle(x + textX, (y - font.Descender) + textY + ((lineHeightSansDescender - textHeightSansDescender) / 2), textWidth, textHeight);
         }
 
         /// <summary>
