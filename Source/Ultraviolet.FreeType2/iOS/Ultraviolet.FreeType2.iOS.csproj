@@ -50,7 +50,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <DelaySign>true</DelaySign>
-    <DocumentationFile>bin\Debug\Ultraviolet.FMOD.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
