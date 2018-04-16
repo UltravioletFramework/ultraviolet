@@ -1162,15 +1162,14 @@ namespace Ultraviolet.SDL2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_GetClipboardText", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr SDL_GetClipboardText_Impl();
+        public static extern IntPtr SDL_GetClipboardText();
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr SDL_GetClipboardTextDelegate();
         private static readonly SDL_GetClipboardTextDelegate pSDL_GetClipboardText = lib.LoadFunction<SDL_GetClipboardTextDelegate>("SDL_GetClipboardText");
-        private static IntPtr SDL_GetClipboardText_Impl() => pSDL_GetClipboardText();
+        public static IntPtr SDL_GetClipboardText() => pSDL_GetClipboardText();
 #endif
-        public static String SDL_GetClipboardText() => Marshal.PtrToStringAnsi(SDL_GetClipboardText_Impl());
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_SetClipboardText", CallingConvention = CallingConvention.Cdecl)]
@@ -1307,6 +1306,17 @@ namespace Ultraviolet.SDL2.Native
         private delegate Int32 SDL_GetDisplayDPIDelegate(Int32 displayIndex, Single* ddpi, Single* hdpi, Single *vdpi);
         private static readonly SDL_GetDisplayDPIDelegate pSDL_GetDisplayDPI = lib.LoadFunction<SDL_GetDisplayDPIDelegate>("SDL_GetDisplayDPI");
         public static Int32 SDL_GetDisplayDPI(Int32 displayIndex, Single* ddpi, Single* hdpi, Single *vdpi) => pSDL_GetDisplayDPI(displayIndex, ddpi, hdpi, vdpi);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="SDL_free", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SDL_free(IntPtr mem);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void SDL_freeDelegate(IntPtr mem);
+        private static readonly SDL_freeDelegate pSDL_free = lib.LoadFunction<SDL_freeDelegate>("SDL_free");
+        public static void SDL_free(IntPtr mem) => pSDL_free(mem);
 #endif
     }
 #pragma warning restore 1591
