@@ -2,6 +2,9 @@
 
 namespace Ultraviolet.FreeType2
 {
+    /// <summary>
+    /// Represents an implementation of the <see cref="UltravioletFont"/> class using the FreeType2 library.
+    /// </summary>
     public sealed class FreeTypeFont : UltravioletFont<FreeTypeFontFace>
     {
         /// <summary>

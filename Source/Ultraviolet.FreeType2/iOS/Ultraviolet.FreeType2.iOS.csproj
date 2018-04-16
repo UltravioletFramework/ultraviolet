@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -22,23 +22,28 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DelaySign>false</DelaySign>
+    <DocumentationFile>bin\Debug\Ultraviolet.FreeType2.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DelaySign>false</DelaySign>
+    <DocumentationFile>bin\Release\Ultraviolet.FreeType2.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Signed\Ultraviolet.FreeType2.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
@@ -65,7 +70,7 @@
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Xamarin.iOS" />
@@ -106,7 +111,8 @@
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
       <ForceLoad>True</ForceLoad>
-      <Frameworks></Frameworks>
+      <Frameworks>
+      </Frameworks>
       <LinkerFlags>-lbz2</LinkerFlags>
     </NativeReference>
     <NativeReference Include="..\..\..\Dependencies\FreeType2\iOS\libharfbuzz.a">
