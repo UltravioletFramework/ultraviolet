@@ -52,6 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.iOS",
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{215de724-06cc-46af-a2a8-f124782ac0eb}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{356ec667-7f8b-4dbe-a854-c70b7bb9adb3}*SharedItemsImports = 4
 		Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
@@ -68,6 +69,7 @@ Global
 		Ultraviolet\Shared\Ultraviolet.projitems*{8f9f44fb-e63c-48de-8752-19b745111559}*SharedItemsImports = 4
 		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
 		Ultraviolet\Shared\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
+		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{9c6d1468-b7a7-4fb9-b7ef-088803a62b89}*SharedItemsImports = 13
 		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{c8eae381-8d8d-43f9-ac87-4a4f64095794}*SharedItemsImports = 4
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
