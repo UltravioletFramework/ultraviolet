@@ -640,7 +640,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
                 tokenNext = GetNextTextToken(input, index);
                 tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
-                tokenKerning = font.GetKerningInfo(tokenText[tokenText.Length - 1], ' ');
+                tokenKerning = tokenText.IsEmpty ? Size2.Zero : font.GetHypotheticalKerningInfo(ref tokenText, tokenText.Length - 1, ' ');
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
                 // avoid accumulating tokens larger than that just in case somebody is doing something dumb
@@ -828,26 +828,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             for (int glyphIndex = 0; glyphIndex < tokenText.Length - 1; glyphIndex++)
             {
-                var glyph1 = tokenText[glyphIndex];
-                var glyph2 = tokenText[glyphIndex + 1];
-                var glyphWidth = 0;
-
-                if (hyphenate)
-                {
-                    glyphWidth = font.MeasureGlyph(glyph1, '-').Width + font.MeasureGlyph('-').Width;
-                }
-                else
-                {
-                    glyphWidth = font.MeasureGlyph(glyph1).Width;
-                }
+                var glyphWidth = hyphenate ?
+                    font.MeasureGlyphWithHypotheticalKerning(ref tokenText, glyphIndex, '-').Width + font.MeasureGlyph('-').Width :
+                    font.MeasureGlyphWithoutKerning(ref tokenText, glyphIndex).Width;
 
                 if (substringAvailableWidth - glyphWidth < 0)
                     break;
 
-                var glyphSize = font.MeasureGlyph(glyph1, glyph2);
+                var glyphSize = font.MeasureGlyph(ref tokenText, glyphIndex);
                 substringAvailableWidth -= glyphSize.Width;
                 substringWidth += glyphSize.Width;
                 substringLength++;
+
+                if (Char.IsHighSurrogate(tokenText[glyphIndex]))
+                    glyphIndex++;
             }
 
             tokenText = substringLength > 0 ? tokenText.Substring(0, substringLength) : StringSegment.Empty;
@@ -880,7 +874,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 case TextParserTokenType.Text:
                     {
-                        var size = font.MeasureString(tokenText);
+                        var size = font.MeasureString(ref tokenText);
                         size.Height -= font.Descender;
 
                         if (tokenNext.HasValue)
@@ -888,9 +882,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var tokenNextValue = tokenNext.GetValueOrDefault();
                             if (tokenNextValue.TokenType == TextParserTokenType.Text && !tokenNextValue.Text.IsEmpty && !tokenNextValue.IsNewLine)
                             {
-                                var charLast = tokenText[tokenText.Length - 1];
-                                var charNext = tokenNextValue.Text[0];
-                                var kerning = font.GetKerningInfo(charLast, charNext);
+                                var textNext = tokenNextValue.Text;
+                                var textPrevIndex = tokenText.Length - 1;
+                                if (Char.IsLowSurrogate(tokenText[textPrevIndex]))
+                                    textPrevIndex--;
+
+                                var kerning = tokenText.IsEmpty || textNext.IsEmpty ? Size2.Zero:
+                                    font.GetKerningInfo(ref tokenText, textPrevIndex, ref textNext, 0);
                                 return new Size2(size.Width + kerning.Width, size.Height);
                             }
                         }

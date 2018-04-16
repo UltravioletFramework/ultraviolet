@@ -9,9 +9,9 @@ namespace Ultraviolet.FreeType2
     internal struct FreeTypeGlyphInfo
     {
         /// <summary>
-        /// Gets or sets the character which the glyph represents.
+        /// Gets or sets the Unicode character which the glyph represents.
         /// </summary>
-        public Char Character { get; set; }
+        public UInt32 UnicodeCharacter { get; set; }
 
         /// <summary>
         /// Gets or sets the glyph's advance in pixels.

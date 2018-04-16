@@ -8,17 +8,17 @@ namespace Ultraviolet.Graphics.Graphics2D
     public struct GlyphData
     {
         /// <summary>
-        /// Gets or sets the glyph which is being drawn.
+        /// Gets or sets the unicode code point which is being drawn.
         /// </summary>
-        public Char Glyph
+        public Int32 UnicodeCodePoint
         {
-            get { return glyph; }
+            get { return unicodeCodePoint; }
             set
             {
-                if (glyph != value)
+                if (unicodeCodePoint != value)
                 {
-                    glyph = value;
-                    dirtyGlyph = true;
+                    unicodeCodePoint = value;
+                    DirtyUnicodeCodePoint = true;
                 }
             }
         }
@@ -28,8 +28,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Int32 Pass
         {
-            get { return pass; }
-            internal set { pass = value; }
+            get; internal set;
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (x != value)
                 {
                     x = value;
-                    dirtyPosition = true;
+                    DirtyPosition = true;
                 }
             }
         }
@@ -59,7 +58,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (y != value)
                 {
                     y = value;
-                    dirtyPosition = true;
+                    DirtyPosition = true;
                 }
             }
         }
@@ -75,7 +74,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (scaleX != value)
                 {
                     scaleX = value;
-                    dirtyScale = true;
+                    DirtyScale = true;
                 }
             }
         }
@@ -91,7 +90,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (scaleY != value)
                 {
                     scaleY = value;
-                    dirtyScale = true;
+                    DirtyScale = true;
                 }
             }
         }
@@ -107,7 +106,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (color != value)
                 {
                     color = value;
-                    dirtyColor = true;
+                    DirtyColor = true;
                 }
             }
         }
@@ -115,17 +114,14 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets a value indicating whether any of the data's properties have been changed.
         /// </summary>
-        public Boolean Dirty
-        {
-            get { return dirtyGlyph || dirtyPosition || dirtyScale || dirtyColor; }
-        }
+        public Boolean Dirty => DirtyUnicodeCodePoint || DirtyPosition || DirtyScale || DirtyColor;
 
         /// <summary>
-        /// Gets a value indicating whether the data's <see cref="Glyph"/> property has been changed.
+        /// Gets a value indicating whether the data's <see cref="UnicodeCodePoint"/> property has been changed.
         /// </summary>
-        public Boolean DirtyGlyph
+        public Boolean DirtyUnicodeCodePoint
         {
-            get { return dirtyGlyph; }
+            get; private set;
         }
 
         /// <summary>
@@ -133,7 +129,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Boolean DirtyPosition
         {
-            get { return dirtyPosition; }
+            get; private set;
         }
 
         /// <summary>
@@ -141,7 +137,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Boolean DirtyScale
         {
-            get { return dirtyScale; }
+            get; private set;
         }
         
         /// <summary>
@@ -149,7 +145,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         public Boolean DirtyColor
         {
-            get { return dirtyColor; }
+            get; private set;
         }
 
         /// <summary>
@@ -157,25 +153,18 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         internal void ClearDirtyFlags()
         {
-            dirtyGlyph = false;
-            dirtyPosition = false;
-            dirtyScale = false;
-            dirtyColor = false;
+            DirtyUnicodeCodePoint = false;
+            DirtyPosition = false;
+            DirtyScale = false;
+            DirtyColor = false;
         }
 
         // Property values.
-        private Char glyph;
-        private Int32 pass;
+        private Int32 unicodeCodePoint;
         private Single x;
         private Single y;
         private Single scaleX;
         private Single scaleY;
         private Color color;
-
-        // State values.
-        private Boolean dirtyGlyph;
-        private Boolean dirtyPosition;
-        private Boolean dirtyScale;
-        private Boolean dirtyColor;
     }
 }

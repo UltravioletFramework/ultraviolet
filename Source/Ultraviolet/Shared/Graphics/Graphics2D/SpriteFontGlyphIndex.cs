@@ -107,8 +107,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (character < ExtendedAsciiCount)
                     return glyphs[ascii[character]];
 
-                Int32 index;
-                if (unicode != null && unicode.TryGetValue(character, out index))
+                if (unicode != null && unicode.TryGetValue(character, out var index))
                     return glyphs[index];
 
                 return glyphs[substitutionCharacterIndex];

@@ -126,6 +126,14 @@ namespace UltravioletSample.Sample16_CustomTextLayoutCommands
             if (fullCharsRevealed == 0)
                 return;
 
+            // This isn't actually used in this sample, but if your text contains any surrogate pairs you
+            // should be sure to take that into account while scrolling.
+            if (Char.IsHighSurrogate(Text, (fullCharsVisible + fullCharsRevealed) - 1))
+            {
+                charsVisible += 1.0;
+                fullCharsVisible++;
+            }
+
             textLayoutCommands.GetCustomCommands(fullCharsVisible, fullCharsRevealed, this, (state, position, command) =>
             {
                 if (command.ID == DelayCommandID)

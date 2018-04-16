@@ -74,10 +74,13 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override void GetGlyphRenderInfo(Char c, out GlyphRenderInfo info)
+        public override void GetGlyphRenderInfo(Int32 c, out GlyphRenderInfo info)
         {
+            if (c < 0 || c > Char.MaxValue)
+                c = SubstitutionCharacter;
+
             var texture = this.texture;
-            var textureRegion = glyphs[c];
+            var textureRegion = glyphs[(Char)c];
             var advance = textureRegion.Width;
 
             info = new GlyphRenderInfo
@@ -117,17 +120,23 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureString(StringSegment text)
+        public override Size2 MeasureString(ref StringSegment text)
         {
             var source = new StringSource(text);
             return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureString(StringSegment text, Int32 start, Int32 count)
+        public override Size2 MeasureString(ref StringSegment text, Int32 start, Int32 count)
         {
             var source = new StringSource(text);
             return MeasureString(ref source, start, count);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureString(ref StringSource source)
+        {
+            return MeasureString(ref source, 0, source.Length);
         }
 
         /// <inheritdoc/>
@@ -144,6 +153,9 @@ namespace Ultraviolet.Graphics.Graphics2D
             for (int i = 0; i < count; i++)
             {
                 var character = source[start + i];
+                if (Char.IsLowSurrogate(character))
+                    continue;
+
                 switch (character)
                 {
                     case '\r':
@@ -158,6 +170,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                         cx = cx + TabWidth;
                         continue;
                 }
+
                 cx += MeasureGlyph(ref source, start + i).Width;
             }
 
@@ -179,16 +192,38 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyph(StringSegment text, Int32 ix)
+        public override Size2 MeasureGlyph(ref StringSegment text, Int32 ix)
         {
             var source = new StringSource(text);
             return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyph(ref StringSource source, Int32 ix)
+        public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSegment text, Int32 ix, Int32 c2)
         {
-            var c1 = source[ix];
+            var source = new StringSource(text);
+            return MeasureGlyphWithHypotheticalKerning(ref source, ix, c2);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyphWithoutKerning(ref StringSegment text, Int32 ix)
+        {
+            var source = new StringSource(text);
+            return MeasureGlyphWithoutKerning(ref source, ix);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyph(ref StringSource text, Int32 ix)
+        {
+            var ixNext = ix + 1;
+
+            var c1 = text[ix];
+            if (Char.IsHighSurrogate(c1))
+            {
+                c1 = SubstitutionCharacter;
+                ixNext++;
+            }
+            
             switch (c1)
             {
                 case '\n':
@@ -198,7 +233,14 @@ namespace Ultraviolet.Graphics.Graphics2D
                     return new Size2(TabWidth, LineSpacing);
 
                 default:
-                    var c2 = (ix + 1 < source.Length) ? source[ix + 1] : (Char?)null;
+                    var c2 = (ixNext < text.Length) ? text[ixNext] : (Char?)null;
+                    if (c2.HasValue)
+                    {
+                        var c2Value = c2.GetValueOrDefault();
+                        if (Char.IsHighSurrogate(c2Value))
+                            c2 = SubstitutionCharacter;
+                    }
+
                     var glyph = glyphs[c1];
                     var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
                     return new Size2(glyph.Width + offset, glyph.Height);
@@ -206,23 +248,171 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyph(Char c1, Char? c2 = null)
+        public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSource text, Int32 ix, Int32 c2)
         {
-            var glyph = glyphs[c1];
-            var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
+            if (c2 < 0 || c2 > Char.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(c2));
+
+            var c1 = text[ix];
+
+            if (Char.IsHighSurrogate(c1))
+                c1 = SubstitutionCharacter;
+            
+            if (Char.IsHighSurrogate((Char)c2))
+                c2 = SubstitutionCharacter;
+
+            switch (c1)
+            {
+                case '\n':
+                    return new Size2(0, LineSpacing);
+
+                case '\t':
+                    return new Size2(TabWidth, LineSpacing);
+
+                default:
+                    var glyph = glyphs[c1];
+                    var offset = kerning.Get(c1, (Char)c2);
+                    return new Size2(glyph.Width + offset, glyph.Height);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyphWithoutKerning(ref StringSource text, Int32 ix)
+        {
+            var c1 = text[ix];
+
+            if (Char.IsHighSurrogate(c1))
+                c1 = SubstitutionCharacter;
+
+            switch (c1)
+            {
+                case '\n':
+                    return new Size2(0, LineSpacing);
+
+                case '\t':
+                    return new Size2(TabWidth, LineSpacing);
+
+                default:
+                    return glyphs[c1].Size;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyph(Int32 c1, Int32? c2 = null)
+        {
+            if (c1 < 0 || c1 > Char.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(c1));
+            if (c2.HasValue)
+            {
+                var c2Value = c2.GetValueOrDefault();
+                if (c2Value < 0 || c2Value > Char.MaxValue)
+                    throw new ArgumentOutOfRangeException(nameof(c2));
+            }
+
+            var char1 = (Char)c1;
+            if (Char.IsHighSurrogate(char1))
+                char1 = SubstitutionCharacter;
+
+            var char2 = (Char)c2.GetValueOrDefault();
+            if (Char.IsHighSurrogate(char2))
+                char2 = SubstitutionCharacter;
+
+            var glyph = glyphs[char1];
+            var offset = c2.HasValue ? kerning.Get(char1, char2) : 0;
             return new Size2(glyph.Width + offset, glyph.Height);
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(Char c1, Char c2)
+        public override Size2 GetKerningInfo(Int32 c1, Int32 c2)
         {
-            return new Size2(kerning.Get(c1, c2), 0);
+            if (c1 < 0 || c1 > Char.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(c1));
+            if (c2 < 0 || c2 > Char.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(c2));
+
+            var char1 = (Char)c1;
+            if (Char.IsHighSurrogate(char1))
+                char1 = SubstitutionCharacter;
+
+            var char2 = (Char)c2;
+            if (Char.IsHighSurrogate(char2))
+                char2 = SubstitutionCharacter;
+
+            return new Size2(kerning.Get(char1, char2), 0);
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(SpriteFontKerningPair pair)
+        public override Size2 GetKerningInfo(ref StringSource text, Int32 ix)
         {
-            return new Size2(kerning.Get(pair), 0);
+            var ixNext = ix + 1;
+
+            var c1 = text[ix];
+            if (Char.IsHighSurrogate(c1))
+            {
+                c1 = SubstitutionCharacter;
+                ixNext++;
+            }
+
+            if (ixNext >= text.Length)
+                return Size2.Zero;
+
+            var c2 = text[ixNext];
+            if (Char.IsHighSurrogate(c2))
+                c2 = SubstitutionCharacter;
+
+            return GetKerningInfo(c1, c2);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetHypotheticalKerningInfo(ref StringSource text, Int32 ix, Int32 c2)
+        {
+            if (c2 < 0 || c2 > Char.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(c2));
+
+            var c1 = text[ix];
+            if (Char.IsHighSurrogate(c1))
+                c1 = SubstitutionCharacter;
+
+            if (Char.IsHighSurrogate((Char)c2))
+                c2 = SubstitutionCharacter;
+
+            return GetKerningInfo(c1, c2);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2)
+        {
+            var c1 = text1[ix1];
+            if (Char.IsHighSurrogate(c1))
+                c1 = SubstitutionCharacter;
+
+            var c2 = text2[ix2];
+            if (Char.IsHighSurrogate(c2))
+                c2 = SubstitutionCharacter;
+
+            return GetKerningInfo(c1, c2);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetKerningInfo(ref StringSegment text, Int32 ix)
+        {
+            var source = new StringSource(text);
+            return GetKerningInfo(ref source, ix);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetHypotheticalKerningInfo(ref StringSegment text, Int32 ix, Int32 c2)
+        {
+            var source = new StringSource(text);
+            return GetHypotheticalKerningInfo(ref source, ix, c2);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetKerningInfo(ref StringSegment text1, Int32 ix1, ref StringSegment text2, Int32 ix2)
+        {
+            var source1 = new StringSource(text1);
+            var source2 = new StringSource(text2);
+            return GetKerningInfo(ref source1, ix1, ref source2, ix2);
         }
 
         /// <inheritdoc/>
