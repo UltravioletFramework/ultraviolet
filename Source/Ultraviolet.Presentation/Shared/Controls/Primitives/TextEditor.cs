@@ -1947,10 +1947,12 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (position == 0 || position == bufferText.Length)
                 return position;
 
-            if (bufferText[position] == '\n' && bufferText[position - 1] == '\r')
+            var isCRLF = bufferText[position] == '\n' && bufferText[position - 1] == '\r';
+            if (isCRLF)
                 return position + (moveForward ? 1 : -1);
 
-            if (Char.IsLowSurrogate(bufferText[position]))
+            var isSurrogatePair = Char.IsSurrogatePair(bufferText[position - 1], bufferText[position]);
+            if (isSurrogatePair)
                 return position + (moveForward ? 1 : -1);
 
             return position;
@@ -2925,7 +2927,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (position + 2 > bufferText.Length)
                 return false;
 
-            var isSurrogate = Char.IsHighSurrogate(bufferText[position]);
+            var isSurrogate = Char.IsSurrogatePair(bufferText[position], bufferText[position + 1]);
             if (isSurrogate)
                 return true;
 
@@ -2945,7 +2947,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (position - 2 < 0)
                 return false;
 
-            var isSurrogate = Char.IsLowSurrogate(bufferText[position - 1]);
+            var isSurrogate = Char.IsSurrogatePair(bufferText[position - 2], bufferText[position - 1]);
             if (isSurrogate)
                 return true;
 

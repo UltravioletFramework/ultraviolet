@@ -682,7 +682,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
 
                                 var glyphIndexWithinText = index - glyphCountSeen;
-                                if (Char.IsLowSurrogate(text[glyphIndexWithinText]))
+                                if (glyphIndexWithinText > 0 && Char.IsSurrogatePair(text[glyphIndexWithinText - 1], text[glyphIndexWithinText]))
                                     glyphIndexWithinText--;
 
                                 var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(ref text, 0, glyphIndexWithinText).Width;
@@ -1871,7 +1871,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 glyphPosition += glyphSize.Width;
                 glyphCount++;
 
-                if (Char.IsHighSurrogate(text[i]))
+                var iNext = i + 1;
+                if (iNext < text.Length && Char.IsSurrogatePair(text[i], text[iNext]))
                     i++;
             }
             position = 0;
