@@ -2446,13 +2446,15 @@ namespace Ultraviolet.Graphics.Graphics2D
             Vector2.Transform(ref areaBR, ref transform, out transformedBR);
 
             // Add the text's glyphs to the sprite batch.
-            var character = default(Char);
+            var character = default(Int32);
+            var characterIsHighSurrogate = false;
             var glyphTexture = default(Texture2D);
             var glyphRegion = default(Rectangle);
             var glyphData = new GlyphData();
             var glyphShaderPass = 0;
             var glyphX = 0f;
             var glyphY = 0f;
+            var glyphKerningX = 0f;
             var glyphKerningY = 0f;
             var glyphOrigin = Vector2.Zero;
             var glyphScale = Vector2.One;
@@ -2467,6 +2469,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                 // If this is not the first shader pass, it means a shader changed our glyph.
                 if (glyphShaderPass == 0)
                     character = text[i];
+
+                characterIsHighSurrogate = Char.IsHighSurrogate(text[i]);
 
                 // Handle special characters.
                 switch (character)
@@ -2487,6 +2491,16 @@ namespace Ultraviolet.Graphics.Graphics2D
                         continue;
                 }
 
+                // Parse surrogate pairs into UTF-32 code points.
+                if (characterIsHighSurrogate)
+                {
+                    var iNext = i + 1;
+                    if (iNext >= text.Length)
+                        character = fontFace.SubstitutionCharacter;
+                    else
+                        character = Char.ConvertToUtf32(text[i], text[iNext]);
+                }
+
                 // Calculate the glyph's parameters and run any glyph shaders.
                 fontFace.GetGlyphRenderInfo(character, out var glyphRenderInfo);
 
@@ -2501,7 +2515,7 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 if (glyphShaderContext.IsValid)
                 {
-                    glyphData.Glyph = character;
+                    glyphData.UnicodeCodePoint = character;
                     glyphData.Pass = glyphShaderPass++;
                     glyphData.X = glyphX;
                     glyphData.Y = glyphY;
@@ -2512,9 +2526,9 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                     glyphShaderContext.Execute(ref glyphData, glyphShaderContext.SourceOffset + i);
 
-                    if (glyphData.DirtyGlyph)
+                    if (glyphData.DirtyUnicodeCodePoint)
                     {
-                        character = glyphData.Glyph;
+                        character = glyphData.UnicodeCodePoint;
 
                         fontFace.GetGlyphRenderInfo(character, out glyphRenderInfo);
 
@@ -2550,11 +2564,21 @@ namespace Ultraviolet.Graphics.Graphics2D
                     Vector2.Transform(ref glyphPosRaw, ref transform, out glyphPosTransformed);
                     DrawInternal(glyphTexture, glyphPosTransformed + glyphOrigin,
                         glyphRegion, glyphColor, rotation, glyphOrigin, glyphScale, effects, layerDepth, data);
+
+                    var kerning = (i == text.Length - 1) ? Size2.Zero : fontFace.GetKerningInfo(ref text, i);
+                    glyphKerningX = kerning.Width;
+                    glyphKerningY = kerning.Height;
+                }
+                else
+                {
+                    glyphKerningX = 0;
+                    glyphKerningY = 0;
                 }
 
-                var kerning = (i == text.Length - 1) ? Size2.Zero : fontFace.GetKerningInfo(text[i], text[i + 1]);
-                glyphKerningY = kerning.Height;
-                cx += (glyphRenderInfo.Advance + kerning.Width) * dirX;
+                cx += (glyphRenderInfo.Advance + glyphKerningX) * dirX;
+
+                if (characterIsHighSurrogate)
+                    i++;
             }
         }
 

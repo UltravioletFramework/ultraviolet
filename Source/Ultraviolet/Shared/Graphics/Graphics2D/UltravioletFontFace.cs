@@ -20,9 +20,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets the information required to draw the specified glyph.
         /// </summary>
-        /// <param name="c">The character to draw.</param>
+        /// <param name="c">The 32-bit Unicode value of the glyph to draw.</param>
         /// <param name="info">The rendering information for the specified glyph.</param>
-        public abstract void GetGlyphRenderInfo(Char c, out GlyphRenderInfo info);
+        public abstract void GetGlyphRenderInfo(Int32 c, out GlyphRenderInfo info);
 
         /// <summary>
         /// Measures the size of the specified string of text when rendered using this font.
@@ -61,7 +61,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="text">The text to measure.</param>
         /// <returns>The size of the specified string of text when rendered using this font.</returns>
-        public abstract Size2 MeasureString(StringSegment text);
+        public abstract Size2 MeasureString(ref StringSegment text);
 
         /// <summary>
         /// Measures the size of the specified substring of text when rendered using this font.
@@ -70,16 +70,23 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="start">The index of the first character of the substring to measure.</param>
         /// <param name="count">The number of characters in the substring to measure.</param>
         /// <returns>The size of the specified substring of text when rendered using this font.</returns>
-        public abstract Size2 MeasureString(StringSegment text, Int32 start, Int32 count);
+        public abstract Size2 MeasureString(ref StringSegment text, Int32 start, Int32 count);
+
+        /// <summary>
+        /// Measures the size of the specified string of text when rendered using this font.
+        /// </summary>
+        /// <param name="text">The text to measure.</param>
+        /// <returns>The size of the specified string of text when rendered using this font.</returns>
+        public abstract Size2 MeasureString(ref StringSource text);
 
         /// <summary>
         /// Measures the size of the specified substring of text when rendered using this font.
         /// </summary>
-        /// <param name="source">The text to measure.</param>
+        /// <param name="text">The text to measure.</param>
         /// <param name="start">The index of the first character of the substring to measure.</param>
         /// <param name="count">The number of characters in the substring to measure.</param>
         /// <returns>The size of the specified substring of text when rendered using this font.</returns>
-        public abstract Size2 MeasureString(ref StringSource source, Int32 start, Int32 count);
+        public abstract Size2 MeasureString(ref StringSource text, Int32 start, Int32 count);
 
         /// <summary>
         /// Measures the specified glyph in a string, taking kerning into account.
@@ -103,7 +110,24 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureGlyph(StringSegment text, Int32 ix);
+        public abstract Size2 MeasureGlyph(ref StringSegment text, Int32 ix);
+
+        /// <summary>
+        /// Measures the specified glyph in a string, taking kerning with a hypothetical second character into account.
+        /// </summary>
+        /// <param name="text">The text that contains the glyph to measure.</param>
+        /// <param name="ix">The index of the glyph to measure.</param>
+        /// <param name="c2">The glyph that comes immediately after the glyph being measured.</param>
+        /// <returns>The size of the specified glyph.</returns>
+        public abstract Size2 MeasureGlyphWithHypotheticalKerning(ref StringSegment text, Int32 ix, Int32 c2);
+
+        /// <summary>
+        /// Measures the specified glyph in a string, ignoring kerning.
+        /// </summary>
+        /// <param name="text">The text that contains the glyph to measure.</param>
+        /// <param name="ix">The index of the glyph to measure.</param>
+        /// <returns>The size of the specified glyph.</returns>
+        public abstract Size2 MeasureGlyphWithoutKerning(ref StringSegment text, Int32 ix);
 
         /// <summary>
         /// Measures the specified glyph in a string, taking kerning into account.
@@ -114,27 +138,91 @@ namespace Ultraviolet.Graphics.Graphics2D
         public abstract Size2 MeasureGlyph(ref StringSource source, Int32 ix);
 
         /// <summary>
+        /// Measures the specified glyph in a string, taking kerning with a hypothetical second character into account.
+        /// </summary>
+        /// <param name="text">The text that contains the glyph to measure.</param>
+        /// <param name="ix">The index of the glyph to measure.</param>
+        /// <param name="c2">The glyph that comes immediately after the glyph being measured.</param>
+        /// <returns>The size of the specified glyph.</returns>
+        public abstract Size2 MeasureGlyphWithHypotheticalKerning(ref StringSource text, Int32 ix, Int32 c2);
+
+        /// <summary>
+        /// Measures the specified glyph in a string, ignoring kerning.
+        /// </summary>
+        /// <param name="text">The text that contains the glyph to measure.</param>
+        /// <param name="ix">The index of the glyph to measure.</param>
+        /// <returns>The size of the specified glyph.</returns>
+        public abstract Size2 MeasureGlyphWithoutKerning(ref StringSource text, Int32 ix);
+
+        /// <summary>
         /// Measures the specified glyph, taking kerning into account.
         /// </summary>
         /// <param name="c1">The glyph to measure.</param>
         /// <param name="c2">The glyph that comes immediately after the glyph being measured.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureGlyph(Char c1, Char? c2 = null);
+        public abstract Size2 MeasureGlyph(Int32 c1, Int32? c2 = null);
 
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
         /// </summary>
-        /// <param name="c1">The first character in the pair to evaluate.</param>
+        /// <param name="c1">The first Unicode code point in the pair to evaluate.</param>
+        /// <param name="c2">The second Unicode code point in the pair to evaluate.</param>
+        /// <returns>The kerning offset for the specified character pair.</returns>
+        public abstract Size2 GetKerningInfo(Int32 c1, Int32 c2);
+
+        /// <summary>
+        /// Gets this font's kerning offset for the specified character pair.
+        /// </summary>
+        /// <param name="text">The string segment that contains the character pair.</param>
+        /// <param name="ix">The index of the first character in the pair to evaluate.</param>
+        /// <returns>The kerning offset for the specified character pair.</returns>
+        public abstract Size2 GetKerningInfo(ref StringSource text, Int32 ix);
+
+        /// <summary>
+        /// Gets this font's kerning offset for the specified character pair.
+        /// </summary>
+        /// <param name="text">The string segment that contains the character pair.</param>
+        /// <param name="ix">The index of the first character in the pair to evaluate.</param>
         /// <param name="c2">The second character in the pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Size2 GetKerningInfo(Char c1, Char c2);
+        public abstract Size2 GetHypotheticalKerningInfo(ref StringSource text, Int32 ix, Int32 c2);
 
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
         /// </summary>
-        /// <param name="pair">The character pair to evaluate.</param>
+        /// <param name="text1">The string segment that contains the first character in the pair.</param>
+        /// <param name="ix1">The index of the first character in the pair to evaluate.</param>
+        /// <param name="text2">The string segment that contains the second character in the pair.</param>
+        /// <param name="ix2">The index of the second character in the pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Size2 GetKerningInfo(SpriteFontKerningPair pair);
+        public abstract Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2);
+
+        /// <summary>
+        /// Gets this font's kerning offset for the specified character pair.
+        /// </summary>
+        /// <param name="text">The string segment that contains the character pair.</param>
+        /// <param name="ix">The index of the first character in the pair to evaluate.</param>
+        /// <returns>The kerning offset for the specified character pair.</returns>
+        public abstract Size2 GetKerningInfo(ref StringSegment text, Int32 ix);
+
+        /// <summary>
+        /// Gets this font's kerning offset for the specified character pair.
+        /// </summary>
+        /// <param name="text">The string segment that contains the character pair.</param>
+        /// <param name="ix">The index of the first character in the pair to evaluate.</param>
+        /// <param name="c2">The second character in the pair to evaluate.</param>
+        /// <returns>The kerning offset for the specified character pair.</returns>
+        public abstract Size2 GetHypotheticalKerningInfo(ref StringSegment text, Int32 ix, Int32 c2);
+
+        /// <summary>
+        /// Gets this font's kerning offset for the specified character pair.
+        /// </summary>
+        /// <param name="text1">The string segment that contains the first character in the pair.</param>
+        /// <param name="ix1">The index of the first character in the pair to evaluate.</param>
+        /// <param name="text2">The string segment that contains the second character in the pair.</param>
+        /// <param name="ix2">The index of the second character in the pair to evaluate.</param>
+        /// <returns>The kerning offset for the specified character pair.</returns>
+        public abstract Size2 GetKerningInfo(ref StringSegment text1, Int32 ix1, ref StringSegment text2, Int32 ix2);
 
         /// <summary>
         /// Gets the number of characters in the font face.

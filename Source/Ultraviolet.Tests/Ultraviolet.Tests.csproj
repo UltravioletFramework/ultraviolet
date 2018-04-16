@@ -833,6 +833,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28FreeType2%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Samples\Sample16_CustomTextLayoutCommands\Desktop\Content\Fonts\SegoeUI12.xml">
+      <Link>Content\Fonts\SegoeUI12.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Samples\Sample16_CustomTextLayoutCommands\Desktop\Content\Fonts\SegoeUI12Texture.png">
+      <Link>Content\Fonts\SegoeUI12Texture.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

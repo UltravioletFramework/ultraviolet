@@ -16,6 +16,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <returns>The kerning offset for the specified pair of characters.</returns>
         public Int32 Get(Char c1, Char c2)
         {
+            if (Char.IsSurrogate(c1) || Char.IsSurrogate(c2))
+                return 0;
+
             if (c1 < asciiLookup.Length && !asciiLookup[c1])
                 return DefaultAdjustment;
 
@@ -34,6 +37,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <returns>The kerning offset for the specified pair of characters.</returns>
         public Int32 Get(SpriteFontKerningPair pair)
         {
+            if (Char.IsSurrogate(pair.FirstCharacter) || Char.IsSurrogate(pair.SecondCharacter))
+                return 0;
+
             var c1 = pair.FirstCharacter;
             if (c1 < asciiLookup.Length && !asciiLookup[c1])
                 return DefaultAdjustment;

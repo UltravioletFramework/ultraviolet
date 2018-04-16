@@ -682,8 +682,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
 
                                 var glyphIndexWithinText = index - glyphCountSeen;
-                                var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(text, 0, glyphIndexWithinText).Width;
-                                var glyphSize = fontFace.MeasureGlyph(text, glyphIndexWithinText);
+                                if (Char.IsLowSurrogate(text[glyphIndexWithinText]))
+                                    glyphIndexWithinText--;
+
+                                var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(ref text, 0, glyphIndexWithinText).Width;
+                                var glyphSize = fontFace.MeasureGlyph(ref text, glyphIndexWithinText);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX + glyphOffset, cmd->Bounds.Location.Y) :
                                     cmd->GetAbsolutePosition(fontFace, offsetLineX + glyphOffset, blockOffset, lineHeight);
 
@@ -1352,7 +1355,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     var subStart = (charsSeen > start) ? 0 : start - charsSeen;
                     var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
                     var subLength = 1 + (subEnd - subStart);
-                    cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureString(cmdText, 0, subStart).Width;
+                    cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureString(ref cmdText, 0, subStart).Width;
                     cmdText = cmdText.Substring(subStart, subLength);
                 }
 
@@ -1370,9 +1373,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             {
                 if (wasDrawnToCompletion)
                 {
-                    var hyphenatedGlyph = cmdText[cmdText.Length - 1];
-                    var hyphenatedTextWidth = fontFace.MeasureString(cmdText).Width;
-                    var hyphenatedTextKerning = fontFace.GetKerningInfo(hyphenatedGlyph, '-');
+                    var hyphenatedTextWidth = fontFace.MeasureString(ref cmdText).Width;
+                    var hyphenatedTextKerning = fontFace.GetHypotheticalKerningInfo(ref cmdText, cmdText.Length - 1, '-');
 
                     cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning.Width, cmdPosition.Y + hyphenatedTextKerning.Height);
                     cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
@@ -1405,7 +1407,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 if (cmdGlyphShaderContext.IsValid)
                 {
                     var glyphData = new GlyphData();
-                    glyphData.Glyph = '\x0000';
+                    glyphData.UnicodeCodePoint = '\x0000';
                     glyphData.Pass = 0;
                     glyphData.X = iconPosition.X;
                     glyphData.Y = iconPosition.Y;
@@ -1858,7 +1860,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var glyphCount = 0;
             for (int i = 0; i < text.Length; i++)
             {
-                var glyphSize = fontFace.MeasureGlyph(text, i);
+                var glyphSize = fontFace.MeasureGlyph(ref text, i);
                 if (position >= glyphPosition && position < glyphPosition + glyphSize.Width)
                 {
                     position = glyphPosition;
@@ -1868,6 +1870,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 }
                 glyphPosition += glyphSize.Width;
                 glyphCount++;
+
+                if (Char.IsHighSurrogate(text[i]))
+                    i++;
             }
             position = 0;
             glyphWidth = 0;
