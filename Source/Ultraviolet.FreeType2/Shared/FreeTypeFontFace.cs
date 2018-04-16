@@ -156,7 +156,13 @@ namespace Ultraviolet.FreeType2
             var cy = 0;
             for (var i = 0; i < count; i++)
             {
-                var character = source[start + i];
+                var ix = start + i;
+                var ixNext = ix + 1;
+
+                var character = source[ix];
+                if (ixNext < count && Char.IsSurrogatePair(source[ix], source[ixNext]))
+                    i++;
+
                 switch (character)
                 {
                     case '\r':
@@ -171,10 +177,8 @@ namespace Ultraviolet.FreeType2
                         cx = cx + TabWidth;
                         continue;
                 }
-                cx += MeasureGlyph(ref source, start + i).Width;
 
-                if (Char.IsHighSurrogate(character))
-                    i++;
+                cx += MeasureGlyph(ref source, ix).Width;
             }
 
             return new Size2(cx, cy + totalDesignHeight);
@@ -530,50 +534,6 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Converts the specified index of a string to a UTF-32 codepoint.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean GetUtf32CodePointFromString(ref StringSegment text, Int32 ix, out UInt32 utf32)
-        {
-            var c = text[ix];
-            if (Char.IsLowSurrogate(c))
-                throw new ArgumentException(nameof(ix));
-            if (Char.IsHighSurrogate(c))
-            {
-                var ixNext = ix + 1;
-                if (ixNext >= text.Length)
-                    throw new ArgumentException(nameof(ix));
-
-                utf32 = (UInt32)Char.ConvertToUtf32(c, text[ixNext]);
-                return true;
-            }
-            utf32 = c;
-            return false; 
-        }
-
-        /// <summary>
-        /// Converts the specified index of a string to a UTF-32 codepoint.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean GetUtf32CodePointFromString(ref StringSource text, Int32 ix, out UInt32 utf32)
-        {
-            var c = text[ix];
-            if (Char.IsLowSurrogate(c))
-                throw new ArgumentException(nameof(ix));
-            if (Char.IsHighSurrogate(c))
-            {
-                var ixNext = ix + 1;
-                if (ixNext >= text.Length)
-                    throw new ArgumentException(nameof(ix));
-
-                utf32 = (UInt32)Char.ConvertToUtf32(c, text[ixNext]);
-                return true;
-            }
-            utf32 = c;
-            return false;
-        }
-
-        /// <summary>
         /// Blits the specified bitmap onto a texture atlas.
         /// </summary>
         private static void BlitBitmap(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY, 
@@ -600,6 +560,62 @@ namespace Ultraviolet.FreeType2
                     throw new NotSupportedException(FreeTypeStrings.PixelFormatNotSupported);
             }
             reservation.Atlas.Invalidate();
+        }
+
+        /// <summary>
+        /// Converts the specified index of a string to a UTF-32 codepoint.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetUtf32CodePointFromString(ref StringSegment text, Int32 ix, out UInt32 utf32)
+        {
+            var ixNext = ix + 1;
+            if (ixNext < text.Length)
+            {
+                var c1 = text[ix];
+                var c2 = text[ixNext];
+                if (Char.IsSurrogatePair(c1, c2))
+                {
+                    utf32 = (UInt32)Char.ConvertToUtf32(c1, c2);
+                    return true;
+                }
+            }
+
+            if (Char.IsSurrogate(text[ix]))
+            {
+                utf32 = SubstitutionCharacter;
+                return false;
+            }
+
+            utf32 = text[ix];
+            return false;
+        }
+
+        /// <summary>
+        /// Converts the specified index of a string to a UTF-32 codepoint.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetUtf32CodePointFromString(ref StringSource text, Int32 ix, out UInt32 utf32)
+        {
+            var ixNext = ix + 1;
+            if (ixNext < text.Length)
+            {
+                var c1 = text[ix];
+                var c2 = text[ixNext];
+                if (Char.IsSurrogatePair(c1, c2))
+                {
+                    utf32 = (UInt32)Char.ConvertToUtf32(c1, c2);
+                    return true;
+                }
+            }
+
+            if (Char.IsSurrogate(text[ix]))
+            {
+                utf32 = SubstitutionCharacter;
+                return false;
+            }
+
+            utf32 = text[ix];
+            return false;
         }
 
         /// <summary>

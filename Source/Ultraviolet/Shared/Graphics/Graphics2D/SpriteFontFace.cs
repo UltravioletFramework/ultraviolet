@@ -152,9 +152,12 @@ namespace Ultraviolet.Graphics.Graphics2D
             var cy = 0;
             for (int i = 0; i < count; i++)
             {
-                var character = source[start + i];
-                if (Char.IsLowSurrogate(character))
-                    continue;
+                var ix = start + i;
+                var ixNext = ix + 1;
+
+                var character = source[ix];
+                if (ixNext < count && Char.IsSurrogatePair(source[ix], source[ixNext]))
+                    i++;
 
                 switch (character)
                 {
@@ -171,7 +174,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                         continue;
                 }
 
-                cx += MeasureGlyph(ref source, start + i).Width;
+                cx += MeasureGlyph(ref source, ix).Width;
             }
 
             return new Size2(cx, cy + LineSpacing);
@@ -215,10 +218,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(ref StringSource text, Int32 ix)
         {
-            var ixNext = ix + 1;
-
             var c1 = text[ix];
-            if (Char.IsHighSurrogate(c1))
+
+            var ixNext = ix + 1;
+            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
             {
                 c1 = SubstitutionCharacter;
                 ixNext++;
@@ -233,14 +236,13 @@ namespace Ultraviolet.Graphics.Graphics2D
                     return new Size2(TabWidth, LineSpacing);
 
                 default:
-                    var c2 = (ixNext < text.Length) ? text[ixNext] : (Char?)null;
+                    var c2 = (ixNext < text.Length) ? text[ixNext++] : (Char?)null;
                     if (c2.HasValue)
                     {
                         var c2Value = c2.GetValueOrDefault();
-                        if (Char.IsHighSurrogate(c2Value))
+                        if (ixNext < text.Length && Char.IsSurrogatePair(c2Value, text[ixNext]))
                             c2 = SubstitutionCharacter;
                     }
-
                     var glyph = glyphs[c1];
                     var offset = c2.HasValue ? kerning.Get(c1, c2.GetValueOrDefault()) : 0;
                     return new Size2(glyph.Width + offset, glyph.Height);
@@ -255,11 +257,9 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             var c1 = text[ix];
 
-            if (Char.IsHighSurrogate(c1))
+            var ixNext = ix + 1;
+            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
                 c1 = SubstitutionCharacter;
-            
-            if (Char.IsHighSurrogate((Char)c2))
-                c2 = SubstitutionCharacter;
 
             switch (c1)
             {
@@ -281,7 +281,8 @@ namespace Ultraviolet.Graphics.Graphics2D
         {
             var c1 = text[ix];
 
-            if (Char.IsHighSurrogate(c1))
+            var ixNext = ix + 1;
+            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
                 c1 = SubstitutionCharacter;
 
             switch (c1)
@@ -310,12 +311,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             }
 
             var char1 = (Char)c1;
-            if (Char.IsHighSurrogate(char1))
-                char1 = SubstitutionCharacter;
-
             var char2 = (Char)c2.GetValueOrDefault();
-            if (Char.IsHighSurrogate(char2))
-                char2 = SubstitutionCharacter;
 
             var glyph = glyphs[char1];
             var offset = c2.HasValue ? kerning.Get(char1, char2) : 0;
@@ -331,12 +327,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 throw new ArgumentOutOfRangeException(nameof(c2));
 
             var char1 = (Char)c1;
-            if (Char.IsHighSurrogate(char1))
-                char1 = SubstitutionCharacter;
-
             var char2 = (Char)c2;
-            if (Char.IsHighSurrogate(char2))
-                char2 = SubstitutionCharacter;
 
             return new Size2(kerning.Get(char1, char2), 0);
         }
@@ -344,10 +335,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 GetKerningInfo(ref StringSource text, Int32 ix)
         {
-            var ixNext = ix + 1;
-
             var c1 = text[ix];
-            if (Char.IsHighSurrogate(c1))
+
+            var ixNext = ix + 1;
+            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
             {
                 c1 = SubstitutionCharacter;
                 ixNext++;
@@ -357,7 +348,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                 return Size2.Zero;
 
             var c2 = text[ixNext];
-            if (Char.IsHighSurrogate(c2))
+
+            if (ixNext < text.Length && Char.IsSurrogatePair(c2, text[ixNext]))
                 c2 = SubstitutionCharacter;
 
             return GetKerningInfo(c1, c2);
@@ -370,11 +362,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 throw new ArgumentOutOfRangeException(nameof(c2));
 
             var c1 = text[ix];
-            if (Char.IsHighSurrogate(c1))
-                c1 = SubstitutionCharacter;
 
-            if (Char.IsHighSurrogate((Char)c2))
-                c2 = SubstitutionCharacter;
+            var ixNext = ix + 1;
+            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
+                c1 = SubstitutionCharacter;
 
             return GetKerningInfo(c1, c2);
         }
@@ -383,11 +374,15 @@ namespace Ultraviolet.Graphics.Graphics2D
         public override Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2)
         {
             var c1 = text1[ix1];
-            if (Char.IsHighSurrogate(c1))
+
+            var ix1Next = ix1 + 1;
+            if (ix1Next < text1.Length && Char.IsSurrogatePair(c1, text1[ix1Next]))
                 c1 = SubstitutionCharacter;
 
             var c2 = text2[ix2];
-            if (Char.IsHighSurrogate(c2))
+
+            var ix2Next = ix2 + 1;
+            if (ix2Next < text2.Length && Char.IsSurrogatePair(c2, text2[ix2Next]))
                 c2 = SubstitutionCharacter;
 
             return GetKerningInfo(c1, c2);

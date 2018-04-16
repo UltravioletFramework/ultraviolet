@@ -840,7 +840,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 substringWidth += glyphSize.Width;
                 substringLength++;
 
-                if (Char.IsHighSurrogate(tokenText[glyphIndex]))
+                var glyphIndexNext = glyphIndex + 1;
+                if (glyphIndexNext < tokenText.Length && Char.IsSurrogatePair(tokenText[glyphIndex], tokenText[glyphIndexNext]))
                     glyphIndex++;
             }
 
@@ -884,7 +885,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 var textNext = tokenNextValue.Text;
                                 var textPrevIndex = tokenText.Length - 1;
-                                if (Char.IsLowSurrogate(tokenText[textPrevIndex]))
+                                var textPrevPrevIndex = textPrevIndex - 1;
+                                if (textPrevPrevIndex >= 0 && Char.IsSurrogatePair(tokenText[textPrevPrevIndex], tokenText[textPrevIndex]))
                                     textPrevIndex--;
 
                                 var kerning = tokenText.IsEmpty || textNext.IsEmpty ? Size2.Zero:

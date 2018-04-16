@@ -2447,7 +2447,7 @@ namespace Ultraviolet.Graphics.Graphics2D
 
             // Add the text's glyphs to the sprite batch.
             var character = default(Int32);
-            var characterIsHighSurrogate = false;
+            var characterIsSurrogatePair = false;
             var glyphTexture = default(Texture2D);
             var glyphRegion = default(Rectangle);
             var glyphData = new GlyphData();
@@ -2470,7 +2470,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (glyphShaderPass == 0)
                     character = text[i];
 
-                characterIsHighSurrogate = Char.IsHighSurrogate(text[i]);
+                characterIsSurrogatePair = (i + 1) < text.Length && Char.IsSurrogatePair(text[i], text[i + 1]);
 
                 // Handle special characters.
                 switch (character)
@@ -2492,7 +2492,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 }
 
                 // Parse surrogate pairs into UTF-32 code points.
-                if (characterIsHighSurrogate)
+                if (characterIsSurrogatePair)
                 {
                     var iNext = i + 1;
                     if (iNext >= text.Length)
@@ -2577,7 +2577,7 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 cx += (glyphRenderInfo.Advance + glyphKerningX) * dirX;
 
-                if (characterIsHighSurrogate)
+                if (characterIsSurrogatePair)
                     i++;
             }
         }
