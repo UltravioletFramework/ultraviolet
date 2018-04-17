@@ -226,6 +226,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 c1 = SubstitutionCharacter;
                 ixNext++;
             }
+            else if (Char.IsSurrogate(c1))
+            {
+                c1 = SubstitutionCharacter;
+            }
             
             switch (c1)
             {
@@ -240,7 +244,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                     if (c2.HasValue)
                     {
                         var c2Value = c2.GetValueOrDefault();
-                        if (ixNext < text.Length && Char.IsSurrogatePair(c2Value, text[ixNext]))
+                        if (Char.IsSurrogate(c2Value))
                             c2 = SubstitutionCharacter;
                     }
                     var glyph = glyphs[c1];
@@ -256,9 +260,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 throw new ArgumentOutOfRangeException(nameof(c2));
 
             var c1 = text[ix];
-
-            var ixNext = ix + 1;
-            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
+            if (Char.IsSurrogate(c1))
                 c1 = SubstitutionCharacter;
 
             switch (c1)
@@ -280,9 +282,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         public override Size2 MeasureGlyphWithoutKerning(ref StringSource text, Int32 ix)
         {
             var c1 = text[ix];
-
-            var ixNext = ix + 1;
-            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
+            if (Char.IsSurrogate(c1))
                 c1 = SubstitutionCharacter;
 
             switch (c1)
@@ -343,13 +343,16 @@ namespace Ultraviolet.Graphics.Graphics2D
                 c1 = SubstitutionCharacter;
                 ixNext++;
             }
+            else if (Char.IsSurrogate(c1))
+            {
+                c1 = SubstitutionCharacter;
+            }
 
             if (ixNext >= text.Length)
                 return Size2.Zero;
 
             var c2 = text[ixNext];
-
-            if (ixNext < text.Length && Char.IsSurrogatePair(c2, text[ixNext]))
+            if (Char.IsSurrogate(c2))
                 c2 = SubstitutionCharacter;
 
             return GetKerningInfo(c1, c2);
@@ -362,9 +365,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 throw new ArgumentOutOfRangeException(nameof(c2));
 
             var c1 = text[ix];
-
-            var ixNext = ix + 1;
-            if (ixNext < text.Length && Char.IsSurrogatePair(c1, text[ixNext]))
+            if (Char.IsSurrogate(c1))
                 c1 = SubstitutionCharacter;
 
             return GetKerningInfo(c1, c2);
@@ -374,15 +375,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         public override Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2)
         {
             var c1 = text1[ix1];
-
-            var ix1Next = ix1 + 1;
-            if (ix1Next < text1.Length && Char.IsSurrogatePair(c1, text1[ix1Next]))
+            if (Char.IsSurrogate(c1))
                 c1 = SubstitutionCharacter;
 
             var c2 = text2[ix2];
-
-            var ix2Next = ix2 + 1;
-            if (ix2Next < text2.Length && Char.IsSurrogatePair(c2, text2[ix2Next]))
+            if (Char.IsSurrogate(c2))
                 c2 = SubstitutionCharacter;
 
             return GetKerningInfo(c1, c2);
