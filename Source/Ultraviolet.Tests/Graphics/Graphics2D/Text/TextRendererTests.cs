@@ -1311,6 +1311,56 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             }
         }
 
+        [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders text which contains surrogate pairs.")]
+        public void TextRenderer_CorrectlyRendersIncompleteSurrogatePairs(FontKind fontKind)
+        {
+            var content = new TextRendererTestContent(
+                "Lorem ipsum \uD800 dolor \uDC00 sit amet, consectetur adipiscing elit.", TextParserOptions.IgnoreCommandCodes);
+
+            if (fontKind == FontKind.SpriteFont)
+                content.FontPath = "Fonts/SegoeUI12";
+
+            var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, 256, 256, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+
+                    content.SpriteBatch.Begin();
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var offset = new Vector2(
+                        (Int32)((window.Compositor.Width - 256f) / 2.0f),
+                        (Int32)((window.Compositor.Height - 256f) / 2.0f));
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, offset, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersIncompleteSurrogatePairs.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersIncompleteSurrogatePairs(FreeType2).png");
+            }
+        }
+
         protected static LineInfoResult TheResultingValue(LineInfo obj)
         {
             return new LineInfoResult(obj);
