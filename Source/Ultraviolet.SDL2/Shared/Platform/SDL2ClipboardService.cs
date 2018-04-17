@@ -40,7 +40,23 @@ namespace Ultraviolet.SDL2.Platform
                 }
                 return null;
             }
-            set { SDL_SetClipboardText(value); }
+            set
+            {
+                var utf8ByteCount = Encoding.UTF8.GetByteCount(value);
+                var utf8BufManaged = new Byte[utf8ByteCount];
+                var utf8BufNative = Marshal.AllocHGlobal(utf8BufManaged.Length);
+                try
+                {
+                    Encoding.UTF8.GetBytes(value, 0, value.Length, utf8BufManaged, 0);
+                    Marshal.Copy(utf8BufManaged, 0, utf8BufNative, utf8BufManaged.Length);
+                    SDL_SetClipboardText(utf8BufNative);
+                }
+                finally
+                {
+                    if (utf8BufNative != IntPtr.Zero)
+                        Marshal.FreeHGlobal(utf8BufNative);
+                }
+            }
         }
     }
 }
