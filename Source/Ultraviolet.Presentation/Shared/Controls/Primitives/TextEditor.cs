@@ -352,7 +352,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             BeginTrackingSelectionChanges();
 
             var text = Ultraviolet.GetPlatform().Clipboard.Text;
-            InsertTextAtCaret(text, false);
+            if (!String.IsNullOrEmpty(text))
+                InsertTextAtCaret(text, false);
 
             EndTrackingSelectionChanges();
         }
@@ -2580,6 +2581,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             
             caretBlinkTimer = 0;
             caretPosition = (position <= caretPosition) ? caretPosition + characterCount : caretPosition;
+            caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition, true);
 
             pendingScrollToCaret = true;
             pendingScrollState = PendingScrollState.None;
