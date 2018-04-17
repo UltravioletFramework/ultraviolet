@@ -14,6 +14,7 @@
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
     <dependency id="Ultraviolet" version="UV_VERSION" />
+    <dependency id="Ultraviolet.SDL2.Native" version="UV_VERSION" />  
   </dependencies>
   </metadata>
   <files>

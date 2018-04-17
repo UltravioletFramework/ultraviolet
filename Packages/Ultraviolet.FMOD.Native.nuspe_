@@ -12,9 +12,6 @@
     <title>Ultraviolet.FMOD Native Dependencies</title>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the FMOD implementation of the Framework's audio subsystem.</description>
     <tags>ultraviolet gamedev</tags>	
-    <dependencies>
-        <dependency id="Ultraviolet.FMOD" version="UV_VERSION" />
-    </dependencies>
   </metadata>
   <files>
     <file src="Ultraviolet.FMOD.Native\build\net47\Ultraviolet.FMOD.Native.targets" target="build\net47\Ultraviolet.FMOD.Native.targets"/>
