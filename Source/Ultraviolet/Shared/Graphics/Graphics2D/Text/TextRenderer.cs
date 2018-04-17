@@ -1857,7 +1857,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private Int32? GetGlyphAtPositionWithinText(UltravioletFontFace fontFace, ref StringSegment text, ref Int32 position, out Int32 glyphWidth, out Int32 glyphHeight)
         {
             var glyphPosition = 0;
-            var glyphCount = 0;
             for (int i = 0; i < text.Length; i++)
             {
                 var glyphSize = fontFace.MeasureGlyph(ref text, i);
@@ -1866,10 +1865,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     position = glyphPosition;
                     glyphWidth = glyphSize.Width;
                     glyphHeight = glyphSize.Height;
-                    return glyphCount;
+                    return i;
                 }
                 glyphPosition += glyphSize.Width;
-                glyphCount++;
 
                 var iNext = i + 1;
                 if (iNext < text.Length && Char.IsSurrogatePair(text[i], text[iNext]))
@@ -1905,6 +1903,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     return null;
             }
 
+            var isSurrogatePair = false;
             var glyphCountSeen = 0;
             var glyphFound = false;
             var glyph = default(Int32?);
@@ -2040,6 +2039,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                     glyph = glyphCountSeen + GetGlyphAtPositionWithinText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight);
                                     glyphBounds = new Rectangle(tokenBounds.X + glyphPos, tokenBounds.Y, glyphWidth, glyphHeight);
                                     glyphFound = true;
+
+                                    var glyphIx = glyph.GetValueOrDefault();
+                                    var glyphIxNext = glyphIx + 1;
+                                    isSurrogatePair = (glyphIxNext < text.Length) && Char.IsSurrogatePair(text[glyphIx], text[glyphIxNext]);
                                 }
                             }
                             glyphCountSeen += cmd->TextLength;
@@ -2102,7 +2105,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 if (glyph.HasValue)
                 {
                     var max = (lineStartInGlyphs + lineLengthInGlyphs - (lineIsTerminatedByLineBreak ? 1 : 0));
-                    return Math.Min(max, (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + 1);
+                    return Math.Min(max, (x - glyphBounds.Center.X < 0) ? glyph.Value : glyph.Value + (isSurrogatePair ? 2 : 1));
                 }
                 lineAtPosition = input.LineCount - 1;
                 return input.TotalLength;
