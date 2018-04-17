@@ -1173,13 +1173,13 @@ namespace Ultraviolet.SDL2.Native
 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_SetClipboardText", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void SDL_SetClipboardText([MarshalAs(UnmanagedType.LPStr)] String text);
+        public static extern void SDL_SetClipboardText(IntPtr text);
 #else
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void SDL_SetClipboardTextDelegate([MarshalAs(UnmanagedType.LPStr)] String text);
+        private delegate void SDL_SetClipboardTextDelegate(IntPtr text);
         private static readonly SDL_SetClipboardTextDelegate pSDL_SetClipboardText = lib.LoadFunction<SDL_SetClipboardTextDelegate>("SDL_SetClipboardText");
-        public static void SDL_SetClipboardText(String text) => pSDL_SetClipboardText(text);
+        public static void SDL_SetClipboardText(IntPtr text) => pSDL_SetClipboardText(text);
 #endif
 
 #if ANDROID || IOS
