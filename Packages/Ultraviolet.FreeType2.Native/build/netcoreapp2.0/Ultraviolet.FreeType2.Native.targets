@@ -61,5 +61,26 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>  
   </ItemGroup>
-  <!-- TODO: symlinks -->
+  <PropertyGroup>
+    <RunCreateSymbolicLinksToFreeType2Dependencies>false</RunCreateSymbolicLinksToFreeType2Dependencies>
+    <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And Not Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
+  </PropertyGroup>
+  <Target Name="CreateSymbolicLinksToDependencies_x86" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies)' == 'true' " AfterTargets="AfterBuild">
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0.10706.0&quot; &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0&quot; &quot;$(TargetDir)/x86/unix/libharfbuzz.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x86/unix/libpng16.so.16&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x86/unix/libpng16.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so&quot; &quot;$(TargetDir)/x86/unix/libpng.so&quot;"/>
+  </Target>
+  <Target Name="CreateSymbolicLinksToDependencies_x64" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies)' == 'true' " AfterTargets="CreateSymbolicLinksToDependencies_x86">
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x64/unix/libfreetype.so.6&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libfreetype.so.6&quot; &quot;$(TargetDir)/x64/unix/libfreetype.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0.10706.0&quot; &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0&quot; &quot;$(TargetDir)/x64/unix/libharfbuzz.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x64/unix/libpng16.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so&quot; &quot;$(TargetDir)/x64/unix/libpng.so&quot;"/>
+  </Target>
 </Project>

@@ -16,10 +16,10 @@
   <files>
     <file src="Ultraviolet.FreeType2.Native\build\net47\Ultraviolet.FreeType2.Native.targets" target="build\net47\Ultraviolet.FreeType2.Native.targets"/>
     <file src="..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" target="build\net47\x86\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.10706.0" target="build\net47\x86\unix\libharfbuzz.so.10706.0"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" target="build\net47\x86\unix\libharfbuzz.so.0.10706.0"/>
     <file src="..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" target="build\net47\x86\unix\libpng16.so.16.34.0"/>
     <file src="..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" target="build\net47\x64\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.10706.0.so" target="build\net47\x64\unix\libharfbuzz.so.10706.0.so"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" target="build\net47\x64\unix\libharfbuzz.so.0.10706.0"/>
     <file src="..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" target="build\net47\x64\unix\libpng16.so.16.34.0"/>
     <file src="..\Dependencies\FreeType2\x86\win32nt\freetype.dll" target="build\net47\x86\win32nt\freetype.dll"/>
     <file src="..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" target="build\net47\x86\win32nt\harfbuzz.dll"/>
@@ -33,10 +33,10 @@
   
     <file src="Ultraviolet.FreeType2.Native\build\netcoreapp2.0\Ultraviolet.FreeType2.Native.targets" target="build\netcoreapp2.0\Ultraviolet.FreeType2.Native.targets"/>
     <file src="..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" target="build\netcoreapp2.0\x86\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.10706.0" target="build\netcoreapp2.0\x86\unix\libharfbuzz.so.10706.0"/>
+    <file src="..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp2.0\x86\unix\libharfbuzz.so.0.10706.0"/>
     <file src="..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" target="build\netcoreapp2.0\x86\unix\libpng16.so.16.34.0"/>
     <file src="..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" target="build\netcoreapp2.0\x64\unix\libfreetype.so.6.16.0"/>
-    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.10706.0.so" target="build\netcoreapp2.0\x64\unix\libharfbuzz.so.10706.0.so"/>
+    <file src="..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" target="build\netcoreapp2.0\x64\unix\libharfbuzz.so.0.10706.0"/>
     <file src="..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" target="build\netcoreapp2.0\x64\unix\libpng16.so.16.34.0"/>
     <file src="..\Dependencies\FreeType2\x86\win32nt\freetype.dll" target="build\netcoreapp2.0\x86\win32nt\freetype.dll"/>
     <file src="..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" target="build\netcoreapp2.0\x86\win32nt\harfbuzz.dll"/>
