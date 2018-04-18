@@ -28,6 +28,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes all registered fallback fonts.
+        /// </summary>
+        public void ClearFallbackFonts()
+        {
+            registeredFallbackFonts.Clear();
+        }
+
+        /// <summary>
         /// Removes all registered icons.
         /// </summary>
         public void ClearIcons()
@@ -66,6 +74,23 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(font, nameof(font));
 
             registeredFonts.Add(name, font);
+        }
+
+        /// <summary>
+        /// Registers a fallback font with the layout engine.
+        /// </summary>
+        /// <param name="name">The name of the fallback font to register.</param>
+        /// <param name="start">The first UTF-32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
+        /// <param name="end">The last UTF32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
+        /// <param name="font">The name of the registered font to register as a fallback for the specified range.</param>
+        public void RegisterFallbackFont(String name, Int32 start, Int32 end, String font)
+        {
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.RequireNotEmpty(font, nameof(font));
+            Contract.EnsureRange(start >= 0, nameof(start));
+            Contract.EnsureRange(end >= start, nameof(end));
+
+            registeredFallbackFonts.Add(name, new FallbackFontInfo(start, end, font));
         }
 
         /// <summary>
@@ -120,6 +145,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.RequireNotEmpty(name, nameof(name));
 
             return registeredFonts.Remove(name);
+        }
+
+        /// <summary>
+        /// Unregisters the fallback font with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the fallback font to unregister.</param>
+        /// <returns><see langword="true"/> if the fallback font was unregistered; otherwise, <see langword="false"/>.</returns>
+        public Boolean UnregisterFallbackFont(String name)
+        {
+            Contract.RequireNotEmpty(name, nameof(name));
+
+            return registeredFallbackFonts.Remove(name);
         }
 
         /// <summary>
@@ -269,6 +306,74 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 output.ReleasePointers();
 
             ClearLayoutStacks();
+        }
+
+        /// <summary>
+        /// Scans the specified token for glyphs which cannot be represented by the specified font and returns the length of the text
+        /// up to the point where the first such glyph occurs.
+        /// </summary>
+        private Int32 ScanForUnrepresentableGlyphs(UltravioletFontFace primaryFont, UltravioletFontFace activeFont,
+            ref TextParserToken token, Int32 start, ref FallbackFontInfo? fallback)
+        {
+            var c = 0;
+            var tokenText = token.Text;
+            var tokenLength = tokenText.Length;
+            var isSurrogatePair = false;
+
+            for (int i = start; i < tokenLength; i++)
+            {
+                // Handle surrogate pairs.
+                isSurrogatePair = false;
+                var iNext = i + 1;
+                if (iNext < tokenLength)
+                {
+                    var c1 = tokenText[i];
+                    var c2 = tokenText[iNext];
+                    if (Char.IsSurrogatePair(c1, c2))
+                    {
+                        c = Char.ConvertToUtf32(c1, c2);
+                        isSurrogatePair = true;
+                    }
+                    else
+                    {
+                        c = c1;
+                    }
+                }
+                else
+                {
+                    c = tokenText[i];
+                }
+
+                // If we're currently falling back, and we find a glyph that the original
+                // font can represent, leave fallback mode.
+                if (fallback.HasValue && primaryFont.ContainsGlyph(c))
+                {
+                    fallback = null;
+                    return i - start;
+                }
+
+                // Bail out if we reach an unrepresentable glyph.
+                if (!activeFont.ContainsGlyph(c))
+                {
+                    foreach (var kvp in registeredFallbackFonts)
+                    {
+                        var info = kvp.Value;
+                        if (c >= info.RangeStart && c <= info.RangeEnd && fallback?.Font != info.Font)
+                        {
+                            fallback = info;
+                            return i - start;
+                        }
+                    }
+                    break;
+                }
+
+                // Skip low surrogates.
+                if (isSurrogatePair)
+                    i++;
+            }
+
+            fallback = null;
+            return tokenLength - start;
         }
 
         /// <summary>
@@ -516,6 +621,27 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Processes an implicit command token which pushes a fallback font onto the font stack.
+        /// </summary>
+        private void ProcessImplicitPushFallbackFontToken(TextLayoutCommandStream output, ref LayoutState state)
+        {
+            var pushedFontIndex = RegisterFontWithCommandStream(output, state.FallbackFontInfo.GetValueOrDefault().Font, out var pushedFont);
+            output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
+            state.AdvanceLineToNextCommand();
+            state.FallbackFont = output.GetFont(pushedFontIndex);
+        }
+
+        /// <summary>
+        /// Processes an implicit command token which pops a fallback font off of the font stack.
+        /// </summary>
+        private void ProcessImplicitPopFallbackFontToken(TextLayoutCommandStream output, ref LayoutState state)
+        {
+            output.WritePopFont();
+            state.AdvanceLineToNextCommand();
+            state.FallbackFont = null;
+        }
+
+        /// <summary>
         /// Pushes a style onto the style stack.
         /// </summary>
         /// <param name="style">The style to push onto the stack.</param>
@@ -627,6 +753,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var tokenKerning = default(Size2);
             var tokenIsBreakingSpace = false;
 
+            var fallbackFontInfoPrev = state.FallbackFontInfo;
+            var fallbackFontInfo = state.FallbackFontInfo;
+            var fallbackFont = state.FallbackFont;
+            var fallbackPush = false;
+            var fallbackPop = false;
+            var activeFont = fallbackFont ?? font;
+
             while (index < input.Count)
             {
                 var token = input[index];
@@ -642,8 +775,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 }
 
                 tokenStart = state.ParserTokenOffset ?? 0;
-                tokenLength = token.Text.Length - tokenStart;
+                tokenLength = registeredFallbackFonts.Count == 0 ? (token.Text.Length - tokenStart) :
+                    ScanForUnrepresentableGlyphs(font, activeFont, ref token, tokenStart, ref fallbackFontInfo);
                 tokenIsComplete = (tokenStart + tokenLength) == token.Text.Length;
+
+                state.FallbackFontInfo = fallbackFontInfo;
+
+                if (tokenLength == 0)
+                    break;
+
+                if (fallbackFontInfo.HasValue)
+                    fallbackPush = true;
+
+                if (fallbackFontInfoPrev.HasValue)
+                    fallbackPop = true;
 
                 tokenText = token.Text.Substring(tokenStart, tokenLength);
                 if (tokenIsComplete)
@@ -656,8 +801,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     tokenNext = input[index];
                     tokenNextIx = tokenStart + tokenLength;
                 }
-                tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext, tokenNextIx);
-                tokenKerning = tokenText.IsEmpty ? Size2.Zero : font.GetHypotheticalKerningInfo(ref tokenText, tokenText.Length - 1, ' ');
+                tokenSize = MeasureToken(activeFont, token.TokenType, tokenText, tokenNext, tokenNextIx);
+                tokenKerning = tokenText.IsEmpty ? Size2.Zero : activeFont.GetHypotheticalKerningInfo(ref tokenText, tokenText.Length - 1, ' ');
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
                 // avoid accumulating tokens larger than that just in case somebody is doing something dumb
@@ -717,14 +862,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var preLineBreakTextLength = state.LineBreakOffset.Value;
                 var preLineBreakText = CreateStringSegmentFromCurrentSource(preLineBreakTextStart, preLineBreakTextLength);
                 var preLineBreakSize = (preLineBreakText.Length == 0) ? Size2.Zero :
-                    MeasureToken(font, TextParserTokenType.Text, preLineBreakText, null, 0);
+                    MeasureToken(activeFont, TextParserTokenType.Text, preLineBreakText, null, 0);
                 state.BrokenTextSizeBeforeBreak = preLineBreakSize;
 
                 var postLineBreakStart = accumulatedStart + (state.LineBreakOffset.Value + 1);
                 var postLineBreakLength = accumulatedLength - (state.LineBreakOffset.Value + 1);
                 var postLineBreakText = CreateStringSegmentFromCurrentSource(postLineBreakStart, postLineBreakLength);
                 var postLineBreakSize = (postLineBreakText.Length == 0) ? Size2.Zero :
-                    MeasureToken(font, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1), 0);
+                    MeasureToken(activeFont, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1), 0);
                 state.BrokenTextSizeAfterBreak = postLineBreakSize;
             }
 
@@ -748,29 +893,36 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     {
                         index++;
                     }
-                    return true;
                 }
-
-                if (!GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate) && state.LineWidth == 0)
-                    return false;
-
-                var overflowingTokenBounds = (tokenText.Length == 0) ? Rectangle.Empty :
-                    new Rectangle(state.PositionX, state.PositionY, tokenSize.Width, tokenSize.Height);
-
-                var overflowingTextEmitted = EmitTextIfNecessary(output, tokenText.Start, tokenText.Length, ref overflowingTokenBounds, ref state);
-                if (overflowingTextEmitted)
+                else
                 {
-                    state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenText.Length);
-                    if (hyphenate)
-                    {
-                        output.WriteHyphen();
-                        state.AdvanceLineToNextCommand(0, 0, 1, 0);
-                    }
-                }
+                    if (!GetFittedSubstring(activeFont, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate) && state.LineWidth == 0)
+                        return false;
 
-                state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + tokenText.Length;
-                state.AdvanceLayoutToNextLine(output, ref settings);
+                    var overflowingTokenBounds = (tokenText.Length == 0) ? Rectangle.Empty :
+                        new Rectangle(state.PositionX, state.PositionY, tokenSize.Width, tokenSize.Height);
+
+                    var overflowingTextEmitted = EmitTextIfNecessary(output, tokenText.Start, tokenText.Length, ref overflowingTokenBounds, ref state);
+                    if (overflowingTextEmitted)
+                    {
+                        state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenText.Length);
+                        if (hyphenate)
+                        {
+                            output.WriteHyphen();
+                            state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                        }
+                    }
+
+                    state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + tokenText.Length;
+                    state.AdvanceLayoutToNextLine(output, ref settings);
+                }
             }
+
+            // If our fallback font changed, insert implicit font commands into the output stream.
+            if (fallbackPop)
+                ProcessImplicitPopFallbackFontToken(output, ref state);
+            if (fallbackPush)
+                ProcessImplicitPushFallbackFontToken(output, ref state);
 
             return true;
         }
@@ -1003,6 +1155,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             new Dictionary<StringSegment, TextIconInfo>();
         private readonly Dictionary<StringSegment, UltravioletFont> registeredFonts =
             new Dictionary<StringSegment, UltravioletFont>();
+        private readonly Dictionary<StringSegment, FallbackFontInfo> registeredFallbackFonts =
+            new Dictionary<StringSegment, FallbackFontInfo>();
         private readonly Dictionary<StringSegment, GlyphShader> registeredGlyphShaders =
             new Dictionary<StringSegment, GlyphShader>();
 
