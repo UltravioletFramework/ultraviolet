@@ -1361,6 +1361,45 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             }
         }
 
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders text which makes use of fallback fonts.")]
+        public void TextRenderer_CorrectlyRendersFallbackFonts()
+        {
+            var emojiFont = default(UltravioletFont);
+            var content = new TextRendererTestContent(
+                "😀Lorem ipsum😀 dolor sit 😀🤣😀 amet 🤣 😀", TextParserOptions.IgnoreCommandCodes);
+
+            var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager =>
+                {
+                    content.LoadFreeType(manager);
+                    emojiFont = manager.Load<UltravioletFont>("Fonts/NotoEmoji-Regular");
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    content.TextLayoutEngine.RegisterFont("emoji", emojiFont);
+                    content.TextLayoutEngine.RegisterFallbackFont("emoji", 126976, 129519, "emoji");
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);                
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts.png");
+        }
+
         protected static LineInfoResult TheResultingValue(LineInfo obj)
         {
             return new LineInfoResult(obj);
