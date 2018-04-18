@@ -408,6 +408,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
+        public override Boolean ContainsGlyph(Int32 c) => glyphs.ContainsGlyph(c);
+
+        /// <inheritdoc/>
         public override Int32 Characters => glyphs.Count;
 
         /// <inheritdoc/>
