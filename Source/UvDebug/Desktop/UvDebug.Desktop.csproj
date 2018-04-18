@@ -373,15 +373,22 @@
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
-  <PropertyGroup Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
-    <PostBuildEvent>
-ln -sf "$(TargetDir)/x64/unix/libfreetype.so.6.16.0" "$(TargetDir)/x64/unix/libfreetype.so.6"
-ln -sf "$(TargetDir)/x64/unix/libfreetype.so.6" "$(TargetDir)/x64/unix/libfreetype.so"
-ln -sf "$(TargetDir)/x64/unix/libharfbuzz.so.0.10706.0" "$(TargetDir)/x64/unix/libharfbuzz.so.0"
-ln -sf "$(TargetDir)/x64/unix/libharfbuzz.so.0" "$(TargetDir)/x64/unix/libharfbuzz.so"
-ln -sf "$(TargetDir)/x64/unix/libpng16.so.16.34.0" "$(TargetDir)/x64/unix/libpng16.so.16"
-ln -sf "$(TargetDir)/x64/unix/libpng16.so.16" "$(TargetDir)/x64/unix/libpng16.so"
-ln -sf "$(TargetDir)/x64/unix/libpng16.so" "$(TargetDir)/x64/unix/libpng.so"
-    </PostBuildEvent>
-  </PropertyGroup>
+  <Target Name="CreateSymbolicLinksToDependencies_x86" Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'false' " AfterTargets="AfterBuild">
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0.10706.0&quot; &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0&quot; &quot;$(TargetDir)/x86/unix/libharfbuzz.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x86/unix/libpng16.so.16&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x86/unix/libpng16.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so&quot; &quot;$(TargetDir)/x86/unix/libpng.so&quot;"/>
+  </Target>
+  <Target Name="CreateSymbolicLinksToDependencies_x64" Condition=" '$(OS)' == 'Unix' And '$(IsMac)' == 'false' " AfterTargets="CreateSymbolicLinksToDependencies_x86">
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x64/unix/libfreetype.so.6&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libfreetype.so.6&quot; &quot;$(TargetDir)/x64/unix/libfreetype.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0.10706.0&quot; &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0&quot; &quot;$(TargetDir)/x64/unix/libharfbuzz.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x64/unix/libpng16.so&quot;"/>
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so&quot; &quot;$(TargetDir)/x64/unix/libpng.so&quot;"/>
+  </Target>
 </Project>
