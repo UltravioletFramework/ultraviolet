@@ -63,7 +63,7 @@
   </ItemGroup>
   <PropertyGroup>
     <RunCreateSymbolicLinksToFreeType2Dependencies>false</RunCreateSymbolicLinksToFreeType2Dependencies>
-    <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And Not Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
+    <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And !Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
   </PropertyGroup>
   <Target Name="CreateSymbolicLinksToDependencies_x86" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies)' == 'true' " AfterTargets="AfterBuild">
     <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot;"/>
