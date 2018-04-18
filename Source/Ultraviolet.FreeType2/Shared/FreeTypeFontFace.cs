@@ -352,6 +352,12 @@ namespace Ultraviolet.FreeType2
             return GetKerningInfo(ref source1, ix1, ref source2, ix2);
         }
 
+        /// <inheritdoc/>
+        public override Boolean ContainsGlyph(Int32 c)
+        {
+            return facade.GetCharIndex((UInt32)c) > 0;
+        }
+
         /// <summary>
         /// Ensures that the specified character's associated glyph has been added to the font's texture atlases.
         /// </summary>

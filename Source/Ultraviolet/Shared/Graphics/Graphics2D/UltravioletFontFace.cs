@@ -225,6 +225,13 @@ namespace Ultraviolet.Graphics.Graphics2D
         public abstract Size2 GetKerningInfo(ref StringSegment text1, Int32 ix1, ref StringSegment text2, Int32 ix2);
 
         /// <summary>
+        /// Gets a value indicating whether this font face contains the specified glyph.
+        /// </summary>
+        /// <param name="c">The UTF-32 Unicode code point to evaluate.</param>
+        /// <returns><see langword="true"/> if the font face contains the specified glyph; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean ContainsGlyph(Int32 c);
+
+        /// <summary>
         /// Gets the number of characters in the font face.
         /// </summary>
         public abstract Int32 Characters { get; }
