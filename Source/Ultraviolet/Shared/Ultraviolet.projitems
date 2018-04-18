@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\PassthroughContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutEngine.FallbackFontInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonContractResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture3D.cs" />

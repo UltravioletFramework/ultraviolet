@@ -853,6 +853,26 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes all registered fallback fonts.
+        /// </summary>
+        public void ClearFallbackFonts()
+        {
+            layoutEngine.ClearFallbackFonts();
+        }
+
+        /// <summary>
+        /// Registers a fallback font with the layout engine.
+        /// </summary>
+        /// <param name="name">The name of the fallback font to register.</param>
+        /// <param name="start">The first UTF-32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
+        /// <param name="end">The last UTF32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
+        /// <param name="font">The name of the font to register as a fallback for the specified range.</param>
+        public void RegisterFallbackFont(String name, Int32 start, Int32 end, String font)
+        {
+            layoutEngine.RegisterFallbackFont(name, start, end, font);
+        }
+
+        /// <summary>
         /// Removes all registered icons.
         /// </summary>
         public void ClearIcons()
