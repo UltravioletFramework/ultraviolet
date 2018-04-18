@@ -522,8 +522,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition - 1, false);
 
                 UpdateSelectionAndCaret();
-                ScrollToCaret(false, true, false);
             }
+            ScrollToCaret(false, true, false);
 
             EndTrackingSelectionChanges();
         }
@@ -543,8 +543,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition + 1, true);
 
                 UpdateSelectionAndCaret();
-                ScrollToCaret(false, false, true);
             }
+            ScrollToCaret(false, false, true);
 
             EndTrackingSelectionChanges();
         }
