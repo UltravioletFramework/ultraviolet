@@ -313,7 +313,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// up to the point where the first such glyph occurs.
         /// </summary>
         private Int32 ScanForUnrepresentableGlyphs(UltravioletFontFace primaryFont, UltravioletFontFace activeFont,
-            ref TextParserToken token, Int32 start, ref FallbackFontInfo? fallback)
+            ref TextParserToken token, Int32 start, ref FallbackFontInfo? fallback, out Boolean changed)
         {
             var c = 0;
             var tokenText = token.Text;
@@ -348,6 +348,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 // font can represent, leave fallback mode.
                 if (fallback.HasValue && primaryFont.ContainsGlyph(c))
                 {
+                    changed = true;
                     fallback = null;
                     return i - start;
                 }
@@ -360,6 +361,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         var info = kvp.Value;
                         if (c >= info.RangeStart && c <= info.RangeEnd && fallback?.Font != info.Font)
                         {
+                            changed = true;
                             fallback = info;
                             return i - start;
                         }
@@ -372,7 +374,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     i++;
             }
 
-            fallback = null;
+            changed = false;
             return tokenLength - start;
         }
 
@@ -756,6 +758,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var fallbackFontInfoPrev = state.FallbackFontInfo;
             var fallbackFontInfo = state.FallbackFontInfo;
             var fallbackFont = state.FallbackFont;
+            var fallbackFontChanged = false;
             var fallbackPush = false;
             var fallbackPop = false;
             var activeFont = fallbackFont ?? font;
@@ -776,19 +779,22 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 tokenStart = state.ParserTokenOffset ?? 0;
                 tokenLength = registeredFallbackFonts.Count == 0 ? (token.Text.Length - tokenStart) :
-                    ScanForUnrepresentableGlyphs(font, activeFont, ref token, tokenStart, ref fallbackFontInfo);
+                    ScanForUnrepresentableGlyphs(font, activeFont, ref token, tokenStart, ref fallbackFontInfo, out fallbackFontChanged);
                 tokenIsComplete = (tokenStart + tokenLength) == token.Text.Length;
 
                 state.FallbackFontInfo = fallbackFontInfo;
 
+                if (fallbackFontChanged)
+                {
+                    if (fallbackFontInfoPrev.HasValue)
+                        fallbackPop = true;
+
+                    if (fallbackFontInfo.HasValue)
+                        fallbackPush = true;
+                }
+
                 if (tokenLength == 0)
                     break;
-
-                if (fallbackFontInfo.HasValue)
-                    fallbackPush = true;
-
-                if (fallbackFontInfoPrev.HasValue)
-                    fallbackPop = true;
 
                 tokenText = token.Text.Substring(tokenStart, tokenLength);
                 if (tokenIsComplete)
