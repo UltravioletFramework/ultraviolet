@@ -344,29 +344,33 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     c = tokenText[i];
                 }
 
-                // If we're currently falling back, and we find a glyph that the original
-                // font can represent, leave fallback mode.
-                if (fallback.HasValue && primaryFont.ContainsGlyph(c))
-                {
-                    changed = true;
-                    fallback = null;
-                    return i - start;
-                }
-
-                // Bail out if we reach an unrepresentable glyph.
-                if (!activeFont.ContainsGlyph(c))
+                // Bail out if we reach an unrepresentable glyph or if a fallback 
+                // font is active and we leave our fallback range.
+                if (!activeFont.ContainsGlyph(c) || c < fallback?.RangeStart || c > fallback?.RangeEnd)
                 {
                     foreach (var kvp in registeredFallbackFonts)
                     {
                         var info = kvp.Value;
                         if (c >= info.RangeStart && c <= info.RangeEnd && fallback?.Font != info.Font)
                         {
-                            changed = true;
-                            fallback = info;
-                            return i - start;
+                            var fallbackFontFace = GetFallbackFontFace(info.Font);
+                            if (fallbackFontFace?.ContainsGlyph(c) ?? false)
+                            {
+                                changed = true;
+                                fallback = info;
+                                return i - start;
+                            }
                         }
                     }
-                    break;
+
+                    // If we failed to find a fallback font for the glyph, return
+                    // to the real font and display a substitution character.
+                    if (fallback.HasValue)
+                    {
+                        changed = true;
+                        fallback = null;
+                        return i - start;
+                    }
                 }
 
                 // Skip low surrogates.
@@ -1152,6 +1156,19 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var font = (fontStack.Count == 0) ? settings.Font : fontStack.Peek().Value;
             face = font.GetFace(bold, italic);
             return font;
+        }
+
+        /// <summary>
+        /// Gets the fallback font face with the specified name that matches the current font style.
+        /// </summary>
+        private UltravioletFontFace GetFallbackFontFace(StringSegment name)
+        {
+            if (!registeredFonts.TryGetValue(name, out var font))
+                return null;
+
+            var faceStyle = (styleStack.Count > 0) ? styleStack.Peek() : default(TextStyleInstance);
+            var face = font.GetFace(faceStyle.Bold, faceStyle.Italic);
+            return face;
         }
 
         // Registered styles, icons, fonts, and glyph shaders.
