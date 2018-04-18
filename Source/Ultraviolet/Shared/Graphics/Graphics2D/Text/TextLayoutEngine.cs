@@ -340,7 +340,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         {
             var icon = default(TextIconInfo);
             var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
-            var iconSize = MeasureToken(null, token.TokenType, token.Text);
+            var iconSize = MeasureToken(null, token.TokenType, token.Text, null, 0);
 
             if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
                 state.AdvanceLayoutToNextLine(output, ref settings);
@@ -619,6 +619,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var tokenText = default(StringSegment);
             var tokenNext = default(TextParserToken?);
+            var tokenNextIx = 0;
+            var tokenStart = 0;
+            var tokenLength = 0;
+            var tokenIsComplete = false;
             var tokenSize = default(Size2);
             var tokenKerning = default(Size2);
             var tokenIsBreakingSpace = false;
@@ -637,9 +641,22 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     EmitChangeSourceIfNecessary(input, output, ref token);
                 }
 
-                tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
-                tokenNext = GetNextTextToken(input, index);
-                tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
+                tokenStart = state.ParserTokenOffset ?? 0;
+                tokenLength = token.Text.Length - tokenStart;
+                tokenIsComplete = (tokenStart + tokenLength) == token.Text.Length;
+
+                tokenText = token.Text.Substring(tokenStart, tokenLength);
+                if (tokenIsComplete)
+                {
+                    tokenNext = GetNextTextToken(input, index);
+                    tokenNextIx = 0;
+                }
+                else
+                {
+                    tokenNext = input[index];
+                    tokenNextIx = tokenStart + tokenLength;
+                }
+                tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext, tokenNextIx);
                 tokenKerning = tokenText.IsEmpty ? Size2.Zero : font.GetHypotheticalKerningInfo(ref tokenText, tokenText.Length - 1, ' ');
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
@@ -678,8 +695,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 accumulatedCount++;
 
                 state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length);
-                state.ParserTokenOffset = 0;
+                state.ParserTokenOffset = tokenIsComplete ? 0 : tokenStart + tokenLength;
                 state.LineLengthInCommands--;
+
+                if (!tokenIsComplete)
+                    break;
 
                 index++;
 
@@ -697,14 +717,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var preLineBreakTextLength = state.LineBreakOffset.Value;
                 var preLineBreakText = CreateStringSegmentFromCurrentSource(preLineBreakTextStart, preLineBreakTextLength);
                 var preLineBreakSize = (preLineBreakText.Length == 0) ? Size2.Zero :
-                    MeasureToken(font, TextParserTokenType.Text, preLineBreakText);
+                    MeasureToken(font, TextParserTokenType.Text, preLineBreakText, null, 0);
                 state.BrokenTextSizeBeforeBreak = preLineBreakSize;
 
                 var postLineBreakStart = accumulatedStart + (state.LineBreakOffset.Value + 1);
                 var postLineBreakLength = accumulatedLength - (state.LineBreakOffset.Value + 1);
                 var postLineBreakText = CreateStringSegmentFromCurrentSource(postLineBreakStart, postLineBreakLength);
                 var postLineBreakSize = (postLineBreakText.Length == 0) ? Size2.Zero :
-                    MeasureToken(font, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1));
+                    MeasureToken(font, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1), 0);
                 state.BrokenTextSizeAfterBreak = postLineBreakSize;
             }
 
@@ -854,12 +874,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Calculates the size of the specified parser token when rendered according to the current layout state.
         /// </summary>
-        /// <param name="font">The current font face.</param>
-        /// <param name="tokenType">The type of the current token.</param>
-        /// <param name="tokenText">The text of the current token.</param>
-        /// <param name="tokenNext">The next token after the current token, excluding command tokens.</param>
-        /// <returns>The size of the specified token in pixels.</returns>
-        private Size2 MeasureToken(UltravioletFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext = null)
+        private Size2 MeasureToken(UltravioletFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext, Int32 tokenNextIx)
         {
             switch (tokenType)
             {
@@ -889,8 +904,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 if (textPrevPrevIndex >= 0 && Char.IsSurrogatePair(tokenText[textPrevPrevIndex], tokenText[textPrevIndex]))
                                     textPrevIndex--;
 
-                                var kerning = tokenText.IsEmpty || textNext.IsEmpty ? Size2.Zero:
-                                    font.GetKerningInfo(ref tokenText, textPrevIndex, ref textNext, 0);
+                                var kerning = tokenText.IsEmpty || textNext.IsEmpty ? Size2.Zero :
+                                    font.GetKerningInfo(ref tokenText, textPrevIndex, ref textNext, tokenNextIx);
                                 return new Size2(size.Width + kerning.Width, size.Height);
                             }
                         }
