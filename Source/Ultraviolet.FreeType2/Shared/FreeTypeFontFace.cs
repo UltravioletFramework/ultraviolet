@@ -747,10 +747,6 @@ namespace Ultraviolet.FreeType2
             else
             {
                 var cu16 = (value <= Char.MaxValue) ? (Char?)value : null;
-
-                if (value > 0xFFFF)
-                    Console.WriteLine();
-
                 var index = facade.GetCharIndex(value);
                 if (index == 0)
                 {
