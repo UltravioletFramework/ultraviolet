@@ -4,8 +4,8 @@
       <Link>x86\unix\libfreetype.so.6.16.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)x86\unix\libharfbuzz.so.10706.0">
-      <Link>x86\unix\libharfbuzz.so.10706.0</Link>
+    <None Include="$(MSBuildThisFileDirectory)x86\unix\libharfbuzz.so.0.10706.0">
+      <Link>x86\unix\libharfbuzz.so.0.10706.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)x86\unix\libpng16.so.16.34.0">
@@ -28,8 +28,8 @@
       <Link>x64\unix\libfreetype.so.6.16.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)x64\unix\libharfbuzz.so.10706.0">
-      <Link>x64\unix\libharfbuzz.so.10706.0</Link>
+    <None Include="$(MSBuildThisFileDirectory)x64\unix\libharfbuzz.so.0.10706.0">
+      <Link>x64\unix\libharfbuzz.so.0.10706.0</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)x64\unix\libpng16.so.16.34.0">
