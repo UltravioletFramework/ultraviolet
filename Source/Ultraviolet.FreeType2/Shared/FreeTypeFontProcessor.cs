@@ -94,10 +94,24 @@ namespace Ultraviolet.FreeType2
 
             if (sizeInPixels == 0)
             {
-                if (!facade.HasScalableFlag)
-                    throw new InvalidOperationException(FreeTypeStrings.NonScalableFontFaceRequiresPixelSize);
+                // If no size was given, default to 16 points for scalable fonts.
+                if (facade.HasScalableFlag && sizeInPoints == 0)
+                    sizeInPoints = 16;
 
-                facade.SelectCharSize(sizeInPoints, dpiX, dpiY);
+                // If we're loading a bitmap font but haven't specified any sizes, use the smallest one available.
+                // Otherwise, load scalable fonts according to the specified point size.
+                if (sizeInPoints == 0)
+                {
+                    var nearestMatchIx = facade.FindNearestMatchingPixelSize(0, false);
+                    facade.SelectFixedSize(nearestMatchIx);
+                }
+                else
+                { 
+                    if (!facade.HasScalableFlag)
+                        throw new InvalidOperationException(FreeTypeStrings.NonScalableFontFaceRequiresPixelSize);
+
+                    facade.SelectCharSize(sizeInPoints, dpiX, dpiY);
+                }
             }
             else
             {
