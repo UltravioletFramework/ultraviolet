@@ -167,6 +167,12 @@ namespace Ultraviolet.FreeType2.Native
         public Boolean HasScalableFlag => HasFaceFlag(FT_FACE_FLAG_SCALABLE);
 
         /// <summary>
+        /// Gets a value indicating whether the face has the FT_FACE_FLAG_FIXED_SIZES flag set.
+        /// </summary>
+        /// <returns><see langword="true"/> if the face has the FT_FACE_FLAG_FIXED_SIZES flag defined; otherwise, <see langword="false"/>.</returns>
+        public Boolean HasFixedSizes => HasFaceFlag(FT_FACE_FLAG_FIXED_SIZES);
+
+        /// <summary>
         /// Gets a value indicating whether the face has the FT_FACE_FLAG_COLOR flag set.
         /// </summary>
         /// <returns><see langword="true"/> if the face has the FT_FACE_FLAG_COLOR flag defined; otherwise, <see langword="false"/>.</returns>

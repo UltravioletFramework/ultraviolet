@@ -32,7 +32,7 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Gets the size of the font in points. If <see cref="SizeInPixels"/> has a non-zero value, this value must be zero.
         /// </summary>
-        public Int32 SizeInPoints { get; private set; } = 16;
+        public Int32 SizeInPoints { get; private set; } = 0;
 
         /// <summary>
         /// Gets the size of the font in pixels. If <see cref="SizeInPoints"/> has a non-zero value, this value must be zero.
