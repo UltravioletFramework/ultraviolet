@@ -2060,7 +2060,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                     glyphBounds = new Rectangle(tokenBounds.X + glyphPos, tokenBounds.Y, glyphWidth, glyphHeight);
                                     glyphFound = true;
 
-                                    var glyphIx = glyph.GetValueOrDefault();
+                                    var glyphIx = glyph.GetValueOrDefault() - cmd->TextOffset;
                                     var glyphIxNext = glyphIx + 1;
                                     isSurrogatePair = (glyphIxNext < text.Length) && Char.IsSurrogatePair(text[glyphIx], text[glyphIxNext]);
                                 }
