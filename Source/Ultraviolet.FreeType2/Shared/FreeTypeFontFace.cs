@@ -44,6 +44,10 @@ namespace Ultraviolet.FreeType2
             this.AtlasHeight = metadata.AtlasHeight;
             this.AtlasSpacing = metadata.AtlasSpacing;
 
+            this.offsetXAdjustment = metadata.AdjustOffsetX;
+            this.offsetYAdjustment = metadata.AdjustOffsetY;
+            this.ascenderAdjustment = metadata.AdjustAscender;
+            this.descenderAdjustment = metadata.AdjustDescender;
             this.hAdvanceAdjustment = metadata.AdjustHorizontalAdvance;
             this.vAdvanceAdjustment = metadata.AdjustVerticalAdvance;
             this.glyphWidthAdjustment = (metadata.StrokeRadius * 2);
@@ -53,8 +57,8 @@ namespace Ultraviolet.FreeType2
             this.HasKerningInfo = facade.HasKerningFlag;
             this.FamilyName = facade.MarshalFamilyName();
             this.StyleName = facade.MarshalStyleName();
-            this.Ascender = facade.Ascender;
-            this.Descender = facade.Descender;
+            this.Ascender = facade.Ascender + ascenderAdjustment;
+            this.Descender = facade.Descender + descenderAdjustment;
             this.LineSpacing = facade.LineSpacing;
 
             if (GetGlyphInfo(' ', out var spaceGlyphInfo))
@@ -862,8 +866,8 @@ namespace Ultraviolet.FreeType2
             }
 
             // Calculate the glyph's metrics.
-            glyphOffsetX = facade.GlyphBitmapLeft;
-            glyphOffsetY = facade.Ascender - glyphAscent;
+            glyphOffsetX = facade.GlyphBitmapLeft + offsetXAdjustment;
+            glyphOffsetY = (Ascender - glyphAscent) + offsetYAdjustment;
 
             info = new FreeTypeGlyphInfo
             {
@@ -940,6 +944,10 @@ namespace Ultraviolet.FreeType2
 
         // Metric adjustments.
         private readonly Int32 totalDesignHeight;
+        private readonly Int32 offsetXAdjustment;
+        private readonly Int32 offsetYAdjustment;
+        private readonly Int32 ascenderAdjustment;
+        private readonly Int32 descenderAdjustment;
         private readonly Int32 hAdvanceAdjustment;
         private readonly Int32 vAdvanceAdjustment;
         private readonly Int32 glyphWidthAdjustment;
