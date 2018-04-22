@@ -1131,28 +1131,24 @@ namespace Ultraviolet
         /// The x-coordinate of the quaternion's vector component.
         /// </summary>
         [Preserve]
-        [JsonProperty("x")]
         public Single X;
 
         /// <summary>
         /// The y-coordinate of the quaternion's vector component.
         /// </summary>
         [Preserve]
-        [JsonProperty("y")]
         public Single Y;
 
         /// <summary>
         /// The z-coordinate of the quaternion's vector component.
         /// </summary>
         [Preserve]
-        [JsonProperty("z")]
         public Single Z;
 
         /// <summary>
         /// The quaternion's scalar rotation component.
         /// </summary>
         [Preserve]
-        [JsonProperty("w")]
         public Single W;
     }
 }

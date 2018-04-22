@@ -78,6 +78,16 @@ namespace Ultraviolet.Presentation
 
         /// <summary>
         /// Gets or sets the asset identifier of the file which defines the
+        /// named fallback fonts available to the view's text renderer.
+        /// </summary>
+        public SourcedAssetID TextFallbackFonts
+        {
+            get { return GetValue<SourcedAssetID>(TextFallbackFontsProperty); }
+            internal set { SetValue(TextFallbackFontsProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the asset identifier of the file which defines the
         /// named icons available to the view's text renderer.
         /// </summary>
         public SourcedAssetID TextIcons
@@ -172,6 +182,12 @@ namespace Ultraviolet.Presentation
             new PropertyMetadata<SourcedAssetID>(HandleTextFontsChanged));
 
         /// <summary>
+        /// Identifies the <see cref="TextFonts"/> dependency property.
+        /// </summary>
+        internal static readonly DependencyProperty TextFallbackFontsProperty = DependencyProperty.Register("TextFallbackFonts", typeof(SourcedAssetID), typeof(PresentationFoundationViewResources),
+            new PropertyMetadata<SourcedAssetID>(HandleTextFallbackFontsChanged));
+
+        /// <summary>
         /// Identifies the <see cref="TextIcons"/> dependency property.
         /// </summary>
         internal static readonly DependencyProperty TextIconsProperty = DependencyProperty.Register("TextIcons", typeof(SourcedAssetID), typeof(PresentationFoundationViewResources),
@@ -210,6 +226,7 @@ namespace Ultraviolet.Presentation
             ReloadCursor();
             ReloadTextStyles();
             ReloadTextFonts();
+            ReloadTextFallbackFonts();
             ReloadTextIcons();
             ReloadTextShaders();
         }
@@ -263,7 +280,7 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
-        /// Reloads the named fonts exposed by the <see cref="TextShaders"/> property.
+        /// Reloads the named fonts exposed by the <see cref="TextFonts"/> property.
         /// </summary>
         internal void ReloadTextFonts()
         {
@@ -282,6 +299,23 @@ namespace Ultraviolet.Presentation
                 TextRenderer.RegisterFont(kvp.Key, font);
             }
         }
+
+        /// <summary>
+        /// Reloads the named fonts exposed by the <see cref="TextFallbackFonts"/> property.
+        /// </summary>
+        internal void ReloadTextFallbackFonts()
+        {
+            TextRenderer.ClearFallbackFonts();
+
+            var dictionary = LoadJsonResource<IDictionary<String, FallbackFontInfo>>(TextFallbackFonts);
+            if (dictionary == null)
+                return;
+
+            foreach (var kvp in dictionary)
+            {
+                TextRenderer.RegisterFallbackFont(kvp.Key, kvp.Value.RangeStart, kvp.Value.RangeEnd, kvp.Value.Font.ToString());
+            }
+        }    
 
         /// <summary>
         /// Reloads the named glyph icons exposed by the <see cref="TextShaders"/> property.
@@ -383,6 +417,15 @@ namespace Ultraviolet.Presentation
         {
             var resources = (PresentationFoundationViewResources)dobj;
             resources.ReloadTextFonts();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="TextFallbackFonts"/> dependency property changes.
+        /// </summary>
+        private static void HandleTextFallbackFontsChanged(DependencyObject dobj, SourcedAssetID oldValue, SourcedAssetID newValue)
+        {
+            var resources = (PresentationFoundationViewResources)dobj;
+            resources.ReloadTextFallbackFonts();
         }
 
         /// <summary>
@@ -510,7 +553,8 @@ namespace Ultraviolet.Presentation
             if (definition == null)
                 return default(T);
 
-            var serializer = new JsonSerializer() { TypeNameHandling = TypeNameHandling.Auto };
+            var settings = new UltravioletJsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto };
+            var serializer = JsonSerializer.CreateDefault(settings);
             var resource = definition.ToObject<T>(serializer);
 
             return resource;

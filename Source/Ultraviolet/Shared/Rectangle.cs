@@ -604,28 +604,28 @@ namespace Ultraviolet
         /// The x-coordinate of the rectangle's top-left corner.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "x", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 X;
 
         /// <summary>
         /// The y-coordinate of the rectangle's top-left corner.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "y", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 Y;
 
         /// <summary>
         /// The rectangle's width.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 Width;
 
         /// <summary>
         /// The rectangle's height.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Int32 Height;
     }
 }

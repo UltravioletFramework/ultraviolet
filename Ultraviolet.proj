@@ -157,6 +157,9 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.RoslynCompiler.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler_Desktop"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FreeType2/Desktop/bin/$(Configuration)/Ultraviolet.FreeType2.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_Desktop"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/Ultraviolet.Tooling.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
     </CreateItem>
@@ -182,6 +185,7 @@
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Compiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_RoslynCompiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_RoslynCompiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FreeType2_Desktop)" DestinationFiles="@(Ultraviolet_FreeType2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -229,6 +233,9 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_NETStandard"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FreeType2/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.FreeType2.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_NETStandard"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Tooling/bin/$(Configuration)/netstandard2.0/Ultraviolet.Tooling.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
     </CreateItem>
@@ -246,6 +253,7 @@
     <Copy SourceFiles="@(Ultraviolet_SDL2_NETStandard)" DestinationFiles="@(Ultraviolet_SDL2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FreeType2_NETStandard)" DestinationFiles="@(Ultraviolet_FreeType2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
   <Target Name="CopyWindowsBinaries">
@@ -333,6 +341,9 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/Android/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_Android"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FreeType2/Android/bin/$(Configuration)/Ultraviolet.FreeType2.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_Android"/>
+    </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Android)" DestinationFiles="@(Newtonsoft_Json_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_Android)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_Android)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -348,6 +359,7 @@
     <Copy SourceFiles="@(Ultraviolet_SDL2_Android)" DestinationFiles="@(Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Android)" DestinationFiles="@(Ultraviolet_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Android)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FreeType2_Android)" DestinationFiles="@(Ultraviolet_FreeType2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
   
   <!-- IOS -->	
@@ -422,6 +434,9 @@
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/iOS/bin/$(Configuration)/Ultraviolet.Presentation.Uvss.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss_iOS"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.FreeType2/iOS/bin/$(Configuration)/Ultraviolet.FreeType2.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2_iOS"/>
+    </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_iOS)" DestinationFiles="@(Newtonsoft_Json_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_iOS)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_iOS)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -438,5 +453,6 @@
     <Copy SourceFiles="@(Ultraviolet_SDL2_UIKit_iOS)" DestinationFiles="@(Ultraviolet_SDL2_UIKit_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_iOS)" DestinationFiles="@(Ultraviolet_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_iOS)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_FreeType2_iOS)" DestinationFiles="@(Ultraviolet_FreeType2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>
 </Project>

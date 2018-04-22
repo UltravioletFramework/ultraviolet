@@ -103,9 +103,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.Desktop", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.shproj", "{9C6D1468-B7A7-4FB9-B7EF-088803A62B89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Desktop", "Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj", "{1213F9AF-5E16-46E9-A7D0-80B9564E6345}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{9A019AAC-83C1-4550-8364-E5C84411CD55}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
+		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{1213f9af-5e16-46e9-a7d0-80b9564e6345}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		Ultraviolet.Profiler.dotTrace\Shared\Ultraviolet.Profiler.dotTrace.projitems*{4062c348-1341-4a91-8354-fbb227ad7def}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
@@ -120,6 +127,7 @@ Global
 		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
 		Ultraviolet\Shared\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
 		UvStress\Shared\UvStress.projitems*{97cd0bfb-4bdb-4862-ac0d-153e81a2a9a1}*SharedItemsImports = 13
+		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{9c6d1468-b7a7-4fb9-b7ef-088803a62b89}*SharedItemsImports = 13
 		UvDebug\Shared\UvDebug.projitems*{a8c85c23-03c2-41c6-8331-48835d257634}*SharedItemsImports = 4
 		UvStress\Shared\UvStress.projitems*{ab20567c-1d12-4b38-ab86-ad7dc9d769f6}*SharedItemsImports = 4
 		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{ce4b6f6f-6542-4ca6-b21c-da4b053b585f}*SharedItemsImports = 4
@@ -750,8 +758,8 @@ Global
 		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x64.Build.0 = Release|Any CPU
 		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x86.ActiveCfg = Release|Any CPU
 		{7975D912-A507-432B-B029-D18AFBDEC851}.Release|x86.Build.0 = Release|Any CPU
-		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
-		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|Any CPU.Build.0 = Signed|Any CPU
 		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x64.ActiveCfg = Debug|Any CPU
 		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x64.Build.0 = Debug|Any CPU
 		{7975D912-A507-432B-B029-D18AFBDEC851}.Signed|x86.ActiveCfg = Debug|Any CPU
@@ -810,6 +818,42 @@ Global
 		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x64.Build.0 = Signed|Any CPU
 		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{47CE1C5D-EB09-45F6-9B11-282A7D953B0D}.Signed|x86.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x64.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x86.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x64.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x64.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x86.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x86.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x64.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x64.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x86.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x86.Build.0 = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Debug|x64.Build.0 = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Debug|x86.Build.0 = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Release|x64.ActiveCfg = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Release|x64.Build.0 = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Release|x86.Build.0 = Release|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x64.ActiveCfg = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x64.Build.0 = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x86.ActiveCfg = Debug|Any CPU
+		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

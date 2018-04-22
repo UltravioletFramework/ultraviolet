@@ -146,9 +146,7 @@ namespace Ultraviolet.Content
             {
                 using (var jreader = new JsonTextReader(sreader))
                 {
-                    var serializer = new JsonSerializer();
-                    serializer.Converters.Add(new UltravioletJsonConverter());
-
+                    var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
                     var desc = serializer.Deserialize<ContentManifestDescription>(jreader);
                     return new ContentManifest(desc);
                 }

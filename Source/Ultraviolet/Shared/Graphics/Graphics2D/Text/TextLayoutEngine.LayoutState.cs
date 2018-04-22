@@ -379,6 +379,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             }
 
             /// <summary>
+            /// Gets or sets the metadata for the fallback font which is currently active.
+            /// </summary>
+            public FallbackFontInfo? FallbackFontInfo { get; set; }
+
+            /// <summary>
+            /// Gets or sets the fallback font which is currently active.
+            /// </summary>
+            public UltravioletFont FallbackFont { get; set; }
+
+            /// <summary>
             /// Gets or sets the x-coordinate at which the next token will be placed.
             /// </summary>
             public Int32 PositionX

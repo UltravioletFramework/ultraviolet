@@ -13,13 +13,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets the frame batch's default values for frames.
         /// </summary>
-        [JsonProperty(PropertyName = "frameDefaults")]
         public SpriteFrameDefaultsDescription FrameDefaults { get; set; }
         
         /// <summary>
         /// Gets the frame batch's items.
         /// </summary>
-        [JsonProperty(PropertyName = "items", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public IEnumerable<SpriteFrameDescription> Items { get; set; }
     }
 }

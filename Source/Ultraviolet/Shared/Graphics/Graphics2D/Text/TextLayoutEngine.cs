@@ -28,6 +28,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes all registered fallback fonts.
+        /// </summary>
+        public void ClearFallbackFonts()
+        {
+            registeredFallbackFonts.Clear();
+        }
+
+        /// <summary>
         /// Removes all registered icons.
         /// </summary>
         public void ClearIcons()
@@ -69,18 +77,37 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Registers a fallback font with the layout engine.
+        /// </summary>
+        /// <param name="name">The name of the fallback font to register.</param>
+        /// <param name="start">The first UTF-32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
+        /// <param name="end">The last UTF32 Unicode code point, inclusive, in the range for which this font should be employed.</param>
+        /// <param name="font">The name of the registered font to register as a fallback for the specified range.</param>
+        public void RegisterFallbackFont(String name, Int32 start, Int32 end, String font)
+        {
+            Contract.RequireNotEmpty(name, nameof(name));
+            Contract.RequireNotEmpty(font, nameof(font));
+            Contract.EnsureRange(start >= 0, nameof(start));
+            Contract.EnsureRange(end >= start, nameof(end));
+
+            registeredFallbackFonts.Add(name, new FallbackFontInfo(start, end, font));
+        }
+
+        /// <summary>
         /// Registers the icon with the specified name.
         /// </summary>
         /// <param name="name">The name of the icon to register.</param>
         /// <param name="icon">The icon to register.</param>
         /// <param name="height">The width to which to scale the icon, or null to preserve the sprite's original width.</param>
         /// <param name="width">The height to which to scale the icon, or null to preserve the sprite's original height.</param>
-        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null)
+        /// <param name="ascender">The ascender value, in pixels, for this icon.</param>
+        /// <param name="descender">The descender value, in pixels, for this icon. Values below the baseline are negative.</param>
+        public void RegisterIcon(String name, SpriteAnimation icon, Int32? width = null, Int32? height = null, Int32? ascender = null, Int32? descender = null)
         {
             Contract.RequireNotEmpty(name, nameof(name));
             Contract.Require(icon, nameof(icon));
 
-            registeredIcons.Add(name, new TextIconInfo(icon, width, height));
+            registeredIcons.Add(name, new TextIconInfo(icon, width, height, ascender, descender));
         }
 
         /// <summary>
@@ -118,6 +145,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.RequireNotEmpty(name, nameof(name));
 
             return registeredFonts.Remove(name);
+        }
+
+        /// <summary>
+        /// Unregisters the fallback font with the specified name.
+        /// </summary>
+        /// <param name="name">The name of the fallback font to unregister.</param>
+        /// <returns><see langword="true"/> if the fallback font was unregistered; otherwise, <see langword="false"/>.</returns>
+        public Boolean UnregisterFallbackFont(String name)
+        {
+            Contract.RequireNotEmpty(name, nameof(name));
+
+            return registeredFallbackFonts.Remove(name);
         }
 
         /// <summary>
@@ -270,6 +309,80 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Scans the specified token for glyphs which cannot be represented by the specified font and returns the length of the text
+        /// up to the point where the first such glyph occurs.
+        /// </summary>
+        private Int32 ScanForUnrepresentableGlyphs(UltravioletFontFace primaryFont, UltravioletFontFace activeFont,
+            ref TextParserToken token, Int32 start, ref FallbackFontInfo? fallback, out Boolean changed)
+        {
+            var c = 0;
+            var tokenText = token.Text;
+            var tokenLength = tokenText.Length;
+            var isSurrogatePair = false;
+
+            for (int i = start; i < tokenLength; i++)
+            {
+                // Handle surrogate pairs.
+                isSurrogatePair = false;
+                var iNext = i + 1;
+                if (iNext < tokenLength)
+                {
+                    var c1 = tokenText[i];
+                    var c2 = tokenText[iNext];
+                    if (Char.IsSurrogatePair(c1, c2))
+                    {
+                        c = Char.ConvertToUtf32(c1, c2);
+                        isSurrogatePair = true;
+                    }
+                    else
+                    {
+                        c = c1;
+                    }
+                }
+                else
+                {
+                    c = tokenText[i];
+                }
+
+                // Bail out if we reach an unrepresentable glyph or if a fallback 
+                // font is active and we leave our fallback range.
+                if (!activeFont.ContainsGlyph(c) || c < fallback?.RangeStart || c > fallback?.RangeEnd)
+                {
+                    foreach (var kvp in registeredFallbackFonts)
+                    {
+                        var info = kvp.Value;
+                        if (c >= info.RangeStart && c <= info.RangeEnd && fallback?.Font != info.Font)
+                        {
+                            var fallbackFontFace = GetFallbackFontFace(info.Font);
+                            if (fallbackFontFace?.ContainsGlyph(c) ?? false)
+                            {
+                                changed = true;
+                                fallback = info;
+                                return i - start;
+                            }
+                        }
+                    }
+
+                    // If we failed to find a fallback font for the glyph, return
+                    // to the real font and display a substitution character.
+                    if (fallback.HasValue)
+                    {
+                        changed = true;
+                        fallback = null;
+                        return i - start;
+                    }
+                }
+
+                // Skip low surrogates.
+                if (isSurrogatePair)
+                    i++;
+            }
+
+            changed = false;
+            return tokenLength - start;
+        }
+
+        /// <summary>
         /// Parses a <see cref="Color"/> value from the specified string segment.
         /// </summary>
         private static Color ParseColor(StringSegment text)
@@ -338,7 +451,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         {
             var icon = default(TextIconInfo);
             var iconIndex = RegisterIconWithCommandStream(output, token.Text, out icon);
-            var iconSize = MeasureToken(null, token.TokenType, token.Text);
+            var iconSize = MeasureToken(null, token.TokenType, token.Text, null, 0);
 
             if (state.PositionX + iconSize.Width > (settings.Width ?? Int32.MaxValue))
                 state.AdvanceLayoutToNextLine(output, ref settings);
@@ -346,7 +459,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
                 return false;
 
-            output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY, (Int16)iconSize.Width, (Int16)iconSize.Height));
+            output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY,
+                (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender));
             state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
             index++;
 
@@ -513,6 +627,27 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Processes an implicit command token which pushes a fallback font onto the font stack.
+        /// </summary>
+        private void ProcessImplicitPushFallbackFontToken(TextLayoutCommandStream output, ref LayoutState state)
+        {
+            var pushedFontIndex = RegisterFontWithCommandStream(output, state.FallbackFontInfo.GetValueOrDefault().Font, out var pushedFont);
+            output.WritePushFont(new TextLayoutFontCommand(pushedFontIndex));
+            state.AdvanceLineToNextCommand();
+            state.FallbackFont = output.GetFont(pushedFontIndex);
+        }
+
+        /// <summary>
+        /// Processes an implicit command token which pops a fallback font off of the font stack.
+        /// </summary>
+        private void ProcessImplicitPopFallbackFontToken(TextLayoutCommandStream output, ref LayoutState state)
+        {
+            output.WritePopFont();
+            state.AdvanceLineToNextCommand();
+            state.FallbackFont = null;
+        }
+
+        /// <summary>
         /// Pushes a style onto the style stack.
         /// </summary>
         /// <param name="style">The style to push onto the stack.</param>
@@ -616,9 +751,21 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var tokenText = default(StringSegment);
             var tokenNext = default(TextParserToken?);
+            var tokenNextIx = 0;
+            var tokenStart = 0;
+            var tokenLength = 0;
+            var tokenIsComplete = false;
             var tokenSize = default(Size2);
-            var tokenKerning = 0;
+            var tokenKerning = default(Size2);
             var tokenIsBreakingSpace = false;
+
+            var fallbackFontInfoPrev = state.FallbackFontInfo;
+            var fallbackFontInfo = state.FallbackFontInfo;
+            var fallbackFont = state.FallbackFont;
+            var fallbackFontChanged = false;
+            var fallbackPush = false;
+            var fallbackPop = false;
+            var activeFont = fallbackFont ?? font;
 
             while (index < input.Count)
             {
@@ -634,10 +781,38 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     EmitChangeSourceIfNecessary(input, output, ref token);
                 }
 
-                tokenText = token.Text.Substring(state.ParserTokenOffset ?? 0);
-                tokenNext = GetNextTextToken(input, index);
-                tokenSize = MeasureToken(font, token.TokenType, tokenText, tokenNext);
-                tokenKerning = font.GetKerningInfo(tokenText[tokenText.Length - 1], ' ');
+                tokenStart = state.ParserTokenOffset ?? 0;
+                tokenLength = registeredFallbackFonts.Count == 0 ? (token.Text.Length - tokenStart) :
+                    ScanForUnrepresentableGlyphs(font, activeFont, ref token, tokenStart, ref fallbackFontInfo, out fallbackFontChanged);
+                tokenIsComplete = (tokenStart + tokenLength) == token.Text.Length;
+
+                state.FallbackFontInfo = fallbackFontInfo;
+
+                if (fallbackFontChanged)
+                {
+                    if (fallbackFontInfoPrev.HasValue)
+                        fallbackPop = true;
+
+                    if (fallbackFontInfo.HasValue)
+                        fallbackPush = true;
+                }
+
+                if (tokenLength == 0)
+                    break;
+
+                tokenText = token.Text.Substring(tokenStart, tokenLength);
+                if (tokenIsComplete)
+                {
+                    tokenNext = GetNextTextToken(input, index);
+                    tokenNextIx = 0;
+                }
+                else
+                {
+                    tokenNext = input[index];
+                    tokenNextIx = tokenStart + tokenLength;
+                }
+                tokenSize = MeasureToken(activeFont, token.TokenType, tokenText, tokenNext, tokenNextIx);
+                tokenKerning = tokenText.IsEmpty ? Size2.Zero : activeFont.GetHypotheticalKerningInfo(ref tokenText, tokenText.Length - 1, ' ');
 
                 // NOTE: We assume in a couple of places that tokens sizes don't exceed Int16.MaxValue, so try to
                 // avoid accumulating tokens larger than that just in case somebody is doing something dumb
@@ -659,7 +834,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 // For most tokens we need to bail out here if there's a line overflow, but
                 // if it's a breaking space we need to be sure that it's part of the command stream
                 // so that we can go back and replace it in the line break phase!
-                var overflowsLine = state.PositionX + tokenSize.Width - tokenKerning > availableWidth;
+                var overflowsLine = state.PositionX + tokenSize.Width - tokenKerning.Width > availableWidth;
                 if (overflowsLine && !tokenIsBreakingSpace)
                 {
                     lineOverflow = true;
@@ -675,8 +850,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 accumulatedCount++;
 
                 state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenText.Length);
-                state.ParserTokenOffset = 0;
+                state.ParserTokenOffset = tokenIsComplete ? 0 : tokenStart + tokenLength;
                 state.LineLengthInCommands--;
+
+                if (!tokenIsComplete)
+                    break;
 
                 index++;
 
@@ -694,14 +872,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var preLineBreakTextLength = state.LineBreakOffset.Value;
                 var preLineBreakText = CreateStringSegmentFromCurrentSource(preLineBreakTextStart, preLineBreakTextLength);
                 var preLineBreakSize = (preLineBreakText.Length == 0) ? Size2.Zero :
-                    MeasureToken(font, TextParserTokenType.Text, preLineBreakText);
+                    MeasureToken(activeFont, TextParserTokenType.Text, preLineBreakText, null, 0);
                 state.BrokenTextSizeBeforeBreak = preLineBreakSize;
 
                 var postLineBreakStart = accumulatedStart + (state.LineBreakOffset.Value + 1);
                 var postLineBreakLength = accumulatedLength - (state.LineBreakOffset.Value + 1);
                 var postLineBreakText = CreateStringSegmentFromCurrentSource(postLineBreakStart, postLineBreakLength);
                 var postLineBreakSize = (postLineBreakText.Length == 0) ? Size2.Zero :
-                    MeasureToken(font, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1));
+                    MeasureToken(activeFont, TextParserTokenType.Text, postLineBreakText, GetNextTextToken(input, index - 1), 0);
                 state.BrokenTextSizeAfterBreak = postLineBreakSize;
             }
 
@@ -725,29 +903,36 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     {
                         index++;
                     }
-                    return true;
                 }
-
-                if (!GetFittedSubstring(font, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate) && state.LineWidth == 0)
-                    return false;
-
-                var overflowingTokenBounds = (tokenText.Length == 0) ? Rectangle.Empty :
-                    new Rectangle(state.PositionX, state.PositionY, tokenSize.Width, tokenSize.Height);
-
-                var overflowingTextEmitted = EmitTextIfNecessary(output, tokenText.Start, tokenText.Length, ref overflowingTokenBounds, ref state);
-                if (overflowingTextEmitted)
+                else
                 {
-                    state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenText.Length);
-                    if (hyphenate)
-                    {
-                        output.WriteHyphen();
-                        state.AdvanceLineToNextCommand(0, 0, 1, 0);
-                    }
-                }
+                    if (!GetFittedSubstring(activeFont, availableWidth, ref tokenText, ref tokenSize, ref state, hyphenate) && state.LineWidth == 0)
+                        return false;
 
-                state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + tokenText.Length;
-                state.AdvanceLayoutToNextLine(output, ref settings);
+                    var overflowingTokenBounds = (tokenText.Length == 0) ? Rectangle.Empty :
+                        new Rectangle(state.PositionX, state.PositionY, tokenSize.Width, tokenSize.Height);
+
+                    var overflowingTextEmitted = EmitTextIfNecessary(output, tokenText.Start, tokenText.Length, ref overflowingTokenBounds, ref state);
+                    if (overflowingTextEmitted)
+                    {
+                        state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenText.Length);
+                        if (hyphenate)
+                        {
+                            output.WriteHyphen();
+                            state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                        }
+                    }
+
+                    state.ParserTokenOffset = (state.ParserTokenOffset ?? 0) + tokenText.Length;
+                    state.AdvanceLayoutToNextLine(output, ref settings);
+                }
             }
+
+            // If our fallback font changed, insert implicit font commands into the output stream.
+            if (fallbackPop)
+                ProcessImplicitPopFallbackFontToken(output, ref state);
+            if (fallbackPush)
+                ProcessImplicitPushFallbackFontToken(output, ref state);
 
             return true;
         }
@@ -825,26 +1010,21 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             for (int glyphIndex = 0; glyphIndex < tokenText.Length - 1; glyphIndex++)
             {
-                var glyph1 = tokenText[glyphIndex];
-                var glyph2 = tokenText[glyphIndex + 1];
-                var glyphWidth = 0;
-
-                if (hyphenate)
-                {
-                    glyphWidth = font.MeasureGlyph(glyph1, '-').Width + font.MeasureGlyph('-').Width;
-                }
-                else
-                {
-                    glyphWidth = font.MeasureGlyph(glyph1).Width;
-                }
+                var glyphWidth = hyphenate ?
+                    font.MeasureGlyphWithHypotheticalKerning(ref tokenText, glyphIndex, '-').Width + font.MeasureGlyph('-').Width :
+                    font.MeasureGlyphWithoutKerning(ref tokenText, glyphIndex).Width;
 
                 if (substringAvailableWidth - glyphWidth < 0)
                     break;
 
-                var glyphSize = font.MeasureGlyph(glyph1, glyph2);
+                var glyphSize = font.MeasureGlyph(ref tokenText, glyphIndex);
                 substringAvailableWidth -= glyphSize.Width;
                 substringWidth += glyphSize.Width;
                 substringLength++;
+
+                var glyphIndexNext = glyphIndex + 1;
+                if (glyphIndexNext < tokenText.Length && Char.IsSurrogatePair(tokenText[glyphIndex], tokenText[glyphIndexNext]))
+                    glyphIndex++;
             }
 
             tokenText = substringLength > 0 ? tokenText.Substring(0, substringLength) : StringSegment.Empty;
@@ -856,38 +1036,42 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Calculates the size of the specified parser token when rendered according to the current layout state.
         /// </summary>
-        /// <param name="font">The current font face.</param>
-        /// <param name="tokenType">The type of the current token.</param>
-        /// <param name="tokenText">The text of the current token.</param>
-        /// <param name="tokenNext">The next token after the current token, excluding command tokens.</param>
-        /// <returns>The size of the specified token in pixels.</returns>
-        private Size2 MeasureToken(UltravioletFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext = null)
+        private Size2 MeasureToken(UltravioletFontFace font, TextParserTokenType tokenType, StringSegment tokenText, TextParserToken? tokenNext, Int32 tokenNextIx)
         {
             switch (tokenType)
             {
                 case TextParserTokenType.Icon:
                     {
-                        TextIconInfo icon;
-                        if (!registeredIcons.TryGetValue(tokenText, out icon))
+                        if (!registeredIcons.TryGetValue(tokenText, out var icon))
                             throw new InvalidOperationException(UltravioletStrings.UnrecognizedIcon.Format(tokenText));
 
-                        return new Size2(icon.Width ?? icon.Icon.Controller.Width, icon.Height ?? icon.Icon.Controller.Height);
+                        var iconWidth = icon.Width ?? icon.Icon.Controller.Width;
+                        var iconHeight = icon.Height ?? icon.Icon.Controller.Height;
+                        return new Size2(iconWidth, iconHeight);
                     }
 
                 case TextParserTokenType.Text:
                     {
-                        var size = font.MeasureString(tokenText);
+                        var size = font.MeasureString(ref tokenText);
+                        size.Height -= font.Descender;
+
                         if (tokenNext.HasValue)
                         {
                             var tokenNextValue = tokenNext.GetValueOrDefault();
                             if (tokenNextValue.TokenType == TextParserTokenType.Text && !tokenNextValue.Text.IsEmpty && !tokenNextValue.IsNewLine)
                             {
-                                var charLast = tokenText[tokenText.Length - 1];
-                                var charNext = tokenNextValue.Text[0];
-                                var kerning = font.GetKerningInfo(charLast, charNext);
-                                return new Size2(size.Width + kerning, size.Height);
+                                var textNext = tokenNextValue.Text;
+                                var textPrevIndex = tokenText.Length - 1;
+                                var textPrevPrevIndex = textPrevIndex - 1;
+                                if (textPrevPrevIndex >= 0 && Char.IsSurrogatePair(tokenText[textPrevPrevIndex], tokenText[textPrevIndex]))
+                                    textPrevIndex--;
+
+                                var kerning = tokenText.IsEmpty || textNext.IsEmpty ? Size2.Zero :
+                                    font.GetKerningInfo(ref tokenText, textPrevIndex, ref textNext, tokenNextIx);
+                                return new Size2(size.Width + kerning.Width, size.Height);
                             }
                         }
+
                         return size;
                     }
             }
@@ -974,6 +1158,19 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             return font;
         }
 
+        /// <summary>
+        /// Gets the fallback font face with the specified name that matches the current font style.
+        /// </summary>
+        private UltravioletFontFace GetFallbackFontFace(StringSegment name)
+        {
+            if (!registeredFonts.TryGetValue(name, out var font))
+                return null;
+
+            var faceStyle = (styleStack.Count > 0) ? styleStack.Peek() : default(TextStyleInstance);
+            var face = font.GetFace(faceStyle.Bold, faceStyle.Italic);
+            return face;
+        }
+
         // Registered styles, icons, fonts, and glyph shaders.
         private readonly Dictionary<StringSegment, TextStyle> registeredStyles =
             new Dictionary<StringSegment, TextStyle>();
@@ -981,6 +1178,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             new Dictionary<StringSegment, TextIconInfo>();
         private readonly Dictionary<StringSegment, UltravioletFont> registeredFonts =
             new Dictionary<StringSegment, UltravioletFont>();
+        private readonly Dictionary<StringSegment, FallbackFontInfo> registeredFallbackFonts =
+            new Dictionary<StringSegment, FallbackFontInfo>();
         private readonly Dictionary<StringSegment, GlyphShader> registeredGlyphShaders =
             new Dictionary<StringSegment, GlyphShader>();
 

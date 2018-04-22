@@ -48,11 +48,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\PassthroughContentProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\FallbackFontInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonContractResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTexture2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTextureAtlas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\DynamicTextureAtlas.Reservation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\GlyphRenderInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\UltravioletFontFace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StaticImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.Parsing.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\WindowDensityChangedMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaneIntersectionType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenStack.IEnumerable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonSerializerSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletMessageID.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color.Parsing.cs" />

@@ -13,19 +13,17 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets or sets the sprite animation identifier of the icon image.
         /// </summary>
-        [JsonProperty(PropertyName = "icon", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public SourcedSpriteAnimationID Icon { get; set; }
 
         /// <summary>
         /// Gets or sets the icon's width in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "width", Required = Required.Default)]
         public Int32? Width { get; set; }
 
         /// <summary>
         /// Gets or sets the icon's height in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "height", Required = Required.Default)]
         public Int32? Height { get; set; }
     }
 }

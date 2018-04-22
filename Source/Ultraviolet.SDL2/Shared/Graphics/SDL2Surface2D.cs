@@ -273,6 +273,9 @@ namespace Ultraviolet.SDL2.Graphics
         /// <inheritdoc/>
         public override Boolean IsAlphaPremultiplied => nativesurf.IsAlphaPremultiplied;
 
+        /// <inheritdoc/>
+        public override IntPtr Pixels => (IntPtr)nativesurf.NativePtr->pixels;
+
         /// <summary>
         /// Gets a pointer to the native SDL surface that is encapsulated by this object.
         /// </summary>

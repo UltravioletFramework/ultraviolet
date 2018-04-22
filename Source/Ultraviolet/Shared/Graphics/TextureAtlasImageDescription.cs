@@ -13,13 +13,12 @@ namespace Ultraviolet.Graphics
         /// <summary>
         /// Gets or sets the image's name.
         /// </summary>
-        [JsonProperty(PropertyName = "name", Required = Required.Default)]
         public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the image's path.
         /// </summary>
-        [JsonProperty(PropertyName = "path", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Path { get; set; }
     }
 }

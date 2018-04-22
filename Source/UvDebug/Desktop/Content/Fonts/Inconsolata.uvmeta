@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AssetMetadata>
+  <Asset>Inconsolata-Regular.ttf</Asset>
+  <ImporterMetadata>
+    <BoldFace>Inconsolata-Bold.ttf</BoldFace>
+  </ImporterMetadata>
+  <ProcessorMetadata>
+    <SizeInPoints>12</SizeInPoints>
+  </ProcessorMetadata>
+</AssetMetadata>

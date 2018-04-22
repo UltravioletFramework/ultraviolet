@@ -15,7 +15,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="iconY">The y-coordinate of the icon's origin relative to its layout area.</param>
         /// <param name="iconWidth">The icon's width in pixels.</param>
         /// <param name="iconHeight">The icon's height in pixels.</param>
-        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight)
+        /// <param name="iconAscender">The icon's ascender value in pixels.</param>
+        /// <param name="iconDescender">The icon's descender value in pixels. Negative values are below the baseline.</param>
+        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight, Int16 iconAscender, Int16 iconDescender)
         {
             this.commandType = TextLayoutCommandType.Icon;
             this.iconIndex = iconIndex;
@@ -23,6 +25,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             this.iconY = iconY;
             this.iconWidth = iconWidth;
             this.iconHeight = iconHeight;
+            this.iconAscender = iconAscender;
+            this.iconDescender = iconDescender;
         }
 
         /// <summary>
@@ -34,7 +38,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="Point2"/> that describes the absolute position of the icon.</returns>
         public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineHeight)
         {
-            return new Point2(x + iconX, y + iconY + ((lineHeight - iconHeight) / 2));
+            var lineHeightSansDescender = lineHeight + iconDescender;
+            var iconHeightSansDescender = iconHeight + iconDescender;
+            return new Point2(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2));
         }
 
         /// <summary>
@@ -46,7 +52,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="Vector2"/> that describes the absolute position of the icon.</returns>
         public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineHeight)
         {
-            return new Vector2(x + iconX, y + iconY + ((lineHeight - iconHeight) / 2));
+            var lineHeightSansDescender = lineHeight + iconDescender;
+            var iconHeightSansDescender = iconHeight + iconDescender;
+            return new Vector2(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2));
         }
 
         /// <summary>
@@ -58,7 +66,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="Rectangle"/> that describes the absolute bounds of the icon.</returns>
         public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineHeight)
         {
-            return new Rectangle(x + iconX, y + iconY + ((lineHeight - iconHeight) / 2), iconWidth, iconHeight);
+            var lineHeightSansDescender = lineHeight + iconDescender;
+            var iconHeightSansDescender = iconHeight + iconDescender;
+            return new Rectangle(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2), iconWidth, iconHeight);
         }
 
         /// <summary>
@@ -114,6 +124,24 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets the icon's ascender value in pixels.
+        /// </summary>
+        public Int16 IconAscender
+        {
+            get { return iconAscender; }
+            internal set { iconAscender = value; }
+        }
+
+        /// <summary>
+        /// Gets the icon's descender value in pixels. Negative values are below the baseline.
+        /// </summary>
+        public Int16 IconDescender
+        {
+            get { return iconDescender; }
+            internal set { iconDescender = value; }
+        }
+
+        /// <summary>
         /// Gets the bounds of the icon drawn by this command relative to the layout area.
         /// </summary>
         public Rectangle Bounds
@@ -128,5 +156,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private Int32 iconY;
         private Int16 iconWidth;
         private Int16 iconHeight;
+        private Int16 iconAscender;
+        private Int16 iconDescender;
     }
 }

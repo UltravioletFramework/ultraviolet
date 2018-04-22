@@ -1224,7 +1224,8 @@ namespace Ultraviolet.Tests
         public void Matrix_SerializesToJson()
         {
             var matrix = Matrix.Identity;
-            var json = JsonConvert.SerializeObject(matrix);
+            var json = JsonConvert.SerializeObject(matrix, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"[1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]");
         }
@@ -1233,7 +1234,8 @@ namespace Ultraviolet.Tests
         public void Matrix_SerializesToJson_WhenNullable()
         {
             var matrix = Matrix.Identity;
-            var json = JsonConvert.SerializeObject((Matrix?)matrix);
+            var json = JsonConvert.SerializeObject((Matrix?)matrix, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"[1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0]");
         }
@@ -1243,14 +1245,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]";
             
-            var matrix1 = JsonConvert.DeserializeObject<Matrix?>(json1);
+            var matrix1 = JsonConvert.DeserializeObject<Matrix?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(matrix1.Value)
                 .ShouldBe(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
             const String json2 = @"null";
 
-            var matrix2 = JsonConvert.DeserializeObject<Matrix?>(json2);
+            var matrix2 = JsonConvert.DeserializeObject<Matrix?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(matrix2.HasValue)
                 .ShouldBe(false);

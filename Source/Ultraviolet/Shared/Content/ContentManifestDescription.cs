@@ -14,13 +14,13 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Gets or sets the name of the content manifest.
         /// </summary>
-        [JsonProperty(PropertyName = "name", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public String Name { get; set; }
 
         /// <summary>
         /// Gets or sets the content manifest's groups.
         /// </summary>
-        [JsonProperty(PropertyName = "groups", Required = Required.Default)]
+        [JsonProperty(Required = Required.Default)]
         public IEnumerable<ContentManifestGroupDescription> Groups { get; set; }
     }
 }

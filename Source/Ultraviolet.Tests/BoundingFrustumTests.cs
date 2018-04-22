@@ -451,7 +451,8 @@ namespace Ultraviolet.Tests
             var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
             var frustum = new BoundingFrustum(view * proj);
 
-            var json = JsonConvert.SerializeObject(frustum);
+            var json = JsonConvert.SerializeObject(frustum, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""matrix"":[1.81066,0.0,0.0,0.0,0.0,2.41421342,0.0,0.0,0.0,0.0,-1.001001,-1.0,0.0,0.0,4.004004,5.0]}");
         }
@@ -461,7 +462,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""matrix"":[1.81066,0.0,0.0,0.0,0.0,2.41421342,0.0,0.0,0.0,0.0,-1.001001,-1.0,0.0,0.0,4.004004,5.0]}";
 
-            var frustum1 = JsonConvert.DeserializeObject<BoundingFrustum>(json);
+            var frustum1 = JsonConvert.DeserializeObject<BoundingFrustum>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(frustum1.Near).WithinDelta(0.0001f)
                 .ShouldHaveNormal(0f, 0f, 1f).ShouldHaveDistance(-4f);
@@ -478,7 +480,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var frustum2 = JsonConvert.DeserializeObject<BoundingFrustum>(json2);
+            var frustum2 = JsonConvert.DeserializeObject<BoundingFrustum>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingObject(frustum2)
                 .ShouldBeNull();

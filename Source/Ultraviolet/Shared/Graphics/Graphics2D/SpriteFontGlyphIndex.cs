@@ -17,6 +17,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="substitutionCharacter">The character that corresponds to the font face's substitution glyph.</param>
         public SpriteFontGlyphIndex(IEnumerable<CharacterRegion> regions, IEnumerable<Rectangle> glyphs, Char substitutionCharacter)
         {
+            this.regions = regions.ToArray();
             this.glyphs = glyphs.ToArray();
 
             var expectedGlyphs = regions.Sum(x => x.Count);
@@ -96,6 +97,22 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Gets a value indicating whether this font face contains the specified glyph.
+        /// </summary>
+        /// <param name="c">The UTF-32 Unicode code point to evaluate.</param>
+        /// <returns><see langword="true"/> if the font face contains the specified glyph; otherwise, <see langword="false"/>.</returns>
+        public Boolean ContainsGlyph(Int32 c)
+        {
+            for (int i = 0; i < regions.Length; i++)
+            {
+                var region = regions[i];
+                if (c >= region.Start && c <= region.End)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Gets the position of the specified glyph on the font face's texture.
         /// </summary>
         /// <param name="character">The character for which to retrieve glyph position information.</param>
@@ -107,8 +124,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (character < ExtendedAsciiCount)
                     return glyphs[ascii[character]];
 
-                Int32 index;
-                if (unicode != null && unicode.TryGetValue(character, out index))
+                if (unicode != null && unicode.TryGetValue(character, out var index))
                     return glyphs[index];
 
                 return glyphs[substitutionCharacterIndex];
@@ -152,6 +168,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         private readonly Int32 count;
 
         // State values.
+        private readonly CharacterRegion[] regions;
         private readonly Rectangle[] glyphs;
         private readonly Int32[] ascii;
         private readonly Dictionary<Char, Int32> unicode;

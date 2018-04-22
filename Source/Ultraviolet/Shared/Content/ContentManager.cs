@@ -2482,7 +2482,9 @@ namespace Ultraviolet.Content
 
                 if (extension == MetadataFileExtensionXml)
                 {
-                    var xml = XDocument.Load(filename);
+                    var xml = default(XDocument);
+                    using (var stream = fileSystemService.OpenRead(filename))
+                        xml = XDocument.Load(stream);
 
                     wrappedFilename = xml.Root.ElementValueString("Asset");
                     importerMetadata = xml.Root.Element("ImporterMetadata");
@@ -2490,7 +2492,8 @@ namespace Ultraviolet.Content
                 }
                 else
                 {
-                    using (var sreader = File.OpenText(filename))
+                    using (var stream = fileSystemService.OpenRead(filename))
+                    using (var sreader = new StreamReader(stream))
                     using (var jreader = new JsonTextReader(sreader))
                     {
                         var json = (JObject)JToken.ReadFrom(jreader);
@@ -2512,7 +2515,7 @@ namespace Ultraviolet.Content
                 var wrappedAssetOverridden = false;
                 wrappedAssetPath = GetAssetPath(relative, Path.GetExtension(relative), out wrappedAssetDirectory, out wrappedAssetOverridden);
 
-                if (!fileSystemService.FileExists(wrappedAssetPath))
+                if (String.IsNullOrEmpty(wrappedAssetPath) || !fileSystemService.FileExists(wrappedAssetPath))
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
 
                 return new AssetMetadata(wrappedAssetOverridden ? wrappedAssetDirectory : null,

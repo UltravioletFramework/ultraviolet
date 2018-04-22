@@ -296,14 +296,14 @@ namespace Ultraviolet
         /// The area's width.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "width", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single Width;
 
         /// <summary>
         /// The area's height.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "height", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Single Height;
     }
 }

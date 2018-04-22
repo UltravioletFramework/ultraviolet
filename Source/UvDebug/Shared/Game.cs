@@ -87,6 +87,8 @@ namespace UvDebug
         {
             if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
                 UsePlatformSpecificFileSource();
+            
+            global::Ultraviolet.FreeType2.FreeTypeFontPlugin.Initialize(Ultraviolet);
 
             base.OnInitialized();
         }

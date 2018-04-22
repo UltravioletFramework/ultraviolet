@@ -69,9 +69,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.Desktop", "Ultraviolet.FMOD\Desktop\Ultraviolet.FMOD.Desktop.csproj", "{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.shproj", "{9C6D1468-B7A7-4FB9-B7EF-088803A62B89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Desktop", "Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj", "{1213F9AF-5E16-46E9-A7D0-80B9564E6345}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
+		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{1213f9af-5e16-46e9-a7d0-80b9564e6345}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{40d272db-90e1-4332-a32f-6effeb44fe87}*SharedItemsImports = 4
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
@@ -83,6 +90,7 @@ Global
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{8f3c2da1-8930-493b-854b-a053bdbf9071}*SharedItemsImports = 4
 		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
 		Ultraviolet\Shared\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
+		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{9c6d1468-b7a7-4fb9-b7ef-088803a62b89}*SharedItemsImports = 13
 		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{ce4b6f6f-6542-4ca6-b21c-da4b053b585f}*SharedItemsImports = 4
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{ea948cf3-ad34-480a-b8ce-e7ec5caa4d77}*SharedItemsImports = 4
@@ -518,6 +526,42 @@ Global
 		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x64.Build.0 = Signed|x64
 		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x86.ActiveCfg = Signed|x86
 		{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}.Signed|x86.Build.0 = Signed|x86
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Debug|x64.Build.0 = Debug|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Debug|x86.Build.0 = Debug|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Release|x64.ActiveCfg = Release|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Release|x64.Build.0 = Release|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Release|x86.Build.0 = Release|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Signed|x64.Build.0 = Signed|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}.Signed|x86.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x64.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x86.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x64.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x64.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x86.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x86.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x64.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x86.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

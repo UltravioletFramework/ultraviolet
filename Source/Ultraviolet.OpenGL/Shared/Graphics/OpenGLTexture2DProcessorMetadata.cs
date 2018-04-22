@@ -32,13 +32,11 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets or sets a value indicating whether to premultiply the texture's alpha.
         /// </summary>
-        [JsonProperty(PropertyName = "premultiplyAlpha")]
         public Boolean PremultiplyAlpha { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the texture is opaque and color keying should be disabled.
         /// </summary>
-        [JsonProperty(PropertyName = "opaque")]
         public Boolean Opaque { get; private set; }
     }
 }

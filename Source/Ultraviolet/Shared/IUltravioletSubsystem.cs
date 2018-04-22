@@ -21,6 +21,11 @@ namespace Ultraviolet
         void Update(UltravioletTime time);
 
         /// <summary>
+        /// Gets a value indicating whether the object has been disposed.
+        /// </summary>
+        Boolean Disposed { get; }
+
+        /// <summary>
         /// Occurs when the subsystem is updating its state.
         /// </summary>
         event UltravioletSubsystemUpdateEventHandler Updating;

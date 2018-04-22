@@ -566,7 +566,8 @@ namespace Ultraviolet.Tests
         public void BoundingSphere_SerializesToJson()
         {
             var sphere = new BoundingSphere(new Vector3(1.2f, 2.3f, 3.4f), 4.5f);
-            var json = JsonConvert.SerializeObject(sphere);
+            var json = JsonConvert.SerializeObject(sphere, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}");
         }
@@ -575,7 +576,8 @@ namespace Ultraviolet.Tests
         public void BoundingSphere_SerializesToJson_WhenNullable()
         {
             var sphere = new BoundingSphere(new Vector3(1.2f, 2.3f, 3.4f), 4.5f);
-            var json = JsonConvert.SerializeObject((BoundingSphere?)sphere);
+            var json = JsonConvert.SerializeObject((BoundingSphere?)sphere, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}");
         }
@@ -585,7 +587,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}";
 
-            var sphere = JsonConvert.DeserializeObject<BoundingSphere>(json);
+            var sphere = JsonConvert.DeserializeObject<BoundingSphere>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(sphere)
                 .ShouldHaveCenter(1.2f, 2.3f, 3.4f)
@@ -597,7 +600,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""center"":{""x"":1.2,""y"":2.3,""z"":3.4},""radius"":4.5}";
 
-            var sphere1 = JsonConvert.DeserializeObject<BoundingSphere?>(json1);
+            var sphere1 = JsonConvert.DeserializeObject<BoundingSphere?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(sphere1.Value)
                 .ShouldHaveCenter(1.2f, 2.3f, 3.4f)
@@ -605,7 +609,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var sphere2 = JsonConvert.DeserializeObject<BoundingSphere?>(json2);
+            var sphere2 = JsonConvert.DeserializeObject<BoundingSphere?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(sphere2.HasValue)
                 .ShouldBe(false);

@@ -169,7 +169,8 @@ namespace Ultraviolet.Tests
         {
             var color = Color.CornflowerBlue;
             
-            var json = JsonConvert.SerializeObject(color);
+            var json = JsonConvert.SerializeObject(color,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe($"[{color.R},{color.G},{color.B},{color.A}]");
         }
@@ -179,7 +180,8 @@ namespace Ultraviolet.Tests
         {
             var color = Color.CornflowerBlue;
 
-            var json = JsonConvert.SerializeObject((Color?)color);
+            var json = JsonConvert.SerializeObject((Color?)color, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe($"[{color.R},{color.G},{color.B},{color.A}]");
         }
@@ -189,7 +191,8 @@ namespace Ultraviolet.Tests
         {
             const String json = "[255,0,255,255]";
             
-            var color = JsonConvert.DeserializeObject<Color>(json);
+            var color = JsonConvert.DeserializeObject<Color>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(color).ShouldHavePackedValue(Color.Magenta.PackedValue);
         }
@@ -199,14 +202,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = "[255,0,255,255]";
 
-            var color1 = JsonConvert.DeserializeObject<Color?>(json1);
+            var color1 = JsonConvert.DeserializeObject<Color?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(color1.Value)
                 .ShouldHavePackedValue(Color.Magenta.PackedValue);
 
             const String json2 = "null";
 
-            var color2 = JsonConvert.DeserializeObject<Color?>(json2);
+            var color2 = JsonConvert.DeserializeObject<Color?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(color2.HasValue)
                 .ShouldBe(false);
