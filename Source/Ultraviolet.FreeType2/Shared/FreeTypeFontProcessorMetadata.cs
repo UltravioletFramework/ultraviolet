@@ -40,12 +40,32 @@ namespace Ultraviolet.FreeType2
         public Int32 SizeInPixels { get; private set; } = 0;
 
         /// <summary>
-        /// An adjustment, in pixels, which is applied to the horizontal advance of the face's glyphs.
+        /// Gets an adjustment, in pixels, which is aadded to the x-offset of the face's glyphs.
+        /// </summary>
+        public Int32 AdjustOffsetX { get; private set; } = 0;
+
+        /// <summary>
+        /// Gets an adjustment, in pixels, which is aadded to the y-offset of the face's glyphs.
+        /// </summary>
+        public Int32 AdjustOffsetY { get; private set; } = 0;
+
+        /// <summary>
+        /// Gets an adjustment, in pixels, which is added to the face's ascender.
+        /// </summary>
+        public Int32 AdjustAscender { get; private set; } = 0;
+
+        /// <summary>
+        /// Gets an adjustment, in pixels, which is added to the face's descender.
+        /// </summary>
+        public Int32 AdjustDescender { get; private set; } = 0;
+
+        /// <summary>
+        /// Gets an adjustment, in pixels, which is applied to the horizontal advance of the face's glyphs.
         /// </summary>
         public Int32 AdjustHorizontalAdvance { get; private set; } = 0;
 
         /// <summary>
-        /// An adjustment, in pixels, which is applied to the vertical advance of the face's glyphs.
+        /// Gets an adjustment, in pixels, which is applied to the vertical advance of the face's glyphs.
         /// </summary>
         public Int32 AdjustVerticalAdvance { get; private set; } = 0;
 
