@@ -13,38 +13,33 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets or sets the set of <see cref="TextFlags"/> values used to draw the cell's text.
         /// </summary>
-        [JsonProperty(PropertyName = "textFlags", Required = Required.DisallowNull)]
+        [JsonProperty(Required = Required.DisallowNull)]
         [JsonConverter(typeof(CoreEnumJsonConverter))]
         public TextFlags TextFlags { get; set; }
 
         /// <summary>
         /// Gets or sets the cell's text.
         /// </summary>
-        [JsonProperty(PropertyName = "text", Required = Required.Default)]
         public String Text { get; set; }
 
         /// <summary>
         /// Gets or sets the cell's format string.
         /// </summary>
-        [JsonProperty(PropertyName = "format", Required = Required.Default)]
         public String Format { get; set; }
 
         /// <summary>
         /// Gets or sets the cell's view model binding string.
         /// </summary>
-        [JsonProperty(PropertyName = "binding", Required = Required.Default)]
         public String Binding { get; set; }
 
         /// <summary>
         /// Gets or sets the cell's width in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "width", Required = Required.Default)]
         public Int32? Width { get; set; }
 
         /// <summary>
         /// Gets or sets the cell's height in pixels.
         /// </summary>
-        [JsonProperty(PropertyName = "height", Required = Required.Default)]
         public Int32? Height { get; set; }
     }
 }

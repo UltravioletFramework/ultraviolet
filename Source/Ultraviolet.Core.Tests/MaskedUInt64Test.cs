@@ -45,7 +45,8 @@ namespace Ultraviolet.Core.Tests
         {
             var value = (MaskedUInt64)987654;
             
-            var json = JsonConvert.SerializeObject(value);
+            var json = JsonConvert.SerializeObject(value, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingString(json)
                 .ShouldBe(@"987654");
@@ -56,7 +57,8 @@ namespace Ultraviolet.Core.Tests
         {
             var value = (MaskedUInt64?)987654;
 
-            var json = JsonConvert.SerializeObject(value);
+            var json = JsonConvert.SerializeObject(value, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingString(json)
                 .ShouldBe(@"987654");
@@ -67,7 +69,8 @@ namespace Ultraviolet.Core.Tests
         {
             const String json = @"123456";
             
-            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
+            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingValue(value.Value)
                 .ShouldBe(123456);
@@ -78,14 +81,16 @@ namespace Ultraviolet.Core.Tests
         {
             const String json1 = @"123456";
 
-            var value1 = JsonConvert.DeserializeObject<MaskedUInt64?>(json1);
+            var value1 = JsonConvert.DeserializeObject<MaskedUInt64?>(json1, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingValue(value1.Value.Value)
                 .ShouldBe(123456);
 
             const String json2 = @"null";
 
-            var value2 = JsonConvert.DeserializeObject<MaskedUInt64?>(json2);
+            var value2 = JsonConvert.DeserializeObject<MaskedUInt64?>(json2, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingValue(value2.HasValue)
                 .ShouldBe(false);
@@ -96,7 +101,8 @@ namespace Ultraviolet.Core.Tests
         {
             const String json = @"""18446744073709551615""";
             
-            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json);
+            var value = JsonConvert.DeserializeObject<MaskedUInt64>(json, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingValue(value.Value)
                 .ShouldBe(18446744073709551615u);
@@ -107,14 +113,16 @@ namespace Ultraviolet.Core.Tests
         {
             const String json1 = @"""18446744073709551615""";
 
-            var value1 = JsonConvert.DeserializeObject<MaskedUInt64?>(json1);
+            var value1 = JsonConvert.DeserializeObject<MaskedUInt64?>(json1, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingValue(value1.Value.Value)
                 .ShouldBe(18446744073709551615u);
 
             const String json2 = @"null";
 
-            var value2 = JsonConvert.DeserializeObject<MaskedUInt64?>(json2);
+            var value2 = JsonConvert.DeserializeObject<MaskedUInt64?>(json2, 
+                CoreJsonSerializerSettings.Instance);
 
             TheResultingValue(value2.HasValue)
                 .ShouldBe(false);

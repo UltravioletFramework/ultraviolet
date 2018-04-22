@@ -84,7 +84,8 @@ namespace Ultraviolet.Core.Tests.Data
                 DataObjectRegistries.Load();
 
                 var reference = DataObjectRegistries.ResolveReference("@test:TEST_OBJECT_1");
-                var json = JsonConvert.SerializeObject(reference);
+                var json = JsonConvert.SerializeObject(reference,
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingString(json)
                     .ShouldBe(@"""@test:TEST_OBJECT_1""");
@@ -107,7 +108,8 @@ namespace Ultraviolet.Core.Tests.Data
                 DataObjectRegistries.Load();
 
                 var reference = DataObjectRegistries.ResolveReference("@test:TEST_OBJECT_1");
-                var json1 = JsonConvert.SerializeObject((ResolvedDataObjectReference?)reference);
+                var json1 = JsonConvert.SerializeObject((ResolvedDataObjectReference?)reference,
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingString(json1)
                     .ShouldBe(@"""@test:TEST_OBJECT_1""");
@@ -130,7 +132,8 @@ namespace Ultraviolet.Core.Tests.Data
                 DataObjectRegistries.Load();
 
                 var reference = new ResolvedDataObjectReference(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f"));
-                var json = JsonConvert.SerializeObject(reference);
+                var json = JsonConvert.SerializeObject(reference,
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingString(json)
                     .ShouldBe(@"""3bd956ab-24cc-49e7-a178-99111c69d24f""");
@@ -153,7 +156,8 @@ namespace Ultraviolet.Core.Tests.Data
                 DataObjectRegistries.Load();
 
                 var reference = new ResolvedDataObjectReference(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f"));
-                var json = JsonConvert.SerializeObject((ResolvedDataObjectReference?)reference);
+                var json = JsonConvert.SerializeObject((ResolvedDataObjectReference?)reference,
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingString(json)
                     .ShouldBe(@"""3bd956ab-24cc-49e7-a178-99111c69d24f""");
@@ -177,7 +181,8 @@ namespace Ultraviolet.Core.Tests.Data
 
                 const String json = @"""@test:TEST_OBJECT_1""";
  
-                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json);
+                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingValue(reference)
                     .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f")));
@@ -202,12 +207,14 @@ namespace Ultraviolet.Core.Tests.Data
                 const String json1 = @"""@test:TEST_OBJECT_1""";
                 const String json2 = @"null";
 
-                var reference1 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json1);
+                var reference1 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json1,
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingValue(reference1.Value)
                     .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f")));
 
-                var reference2 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json2);
+                var reference2 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json2, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingValue(reference2.HasValue)
                     .ShouldBe(false);
@@ -231,7 +238,8 @@ namespace Ultraviolet.Core.Tests.Data
 
                 const String json = @"""3bd956ab-24cc-49e7-a178-99111c69d24f""";
                 
-                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json);
+                var reference = JsonConvert.DeserializeObject<ResolvedDataObjectReference>(json, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingValue(reference)
                     .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f")));
@@ -256,12 +264,14 @@ namespace Ultraviolet.Core.Tests.Data
                 const String json1 = @"""3bd956ab-24cc-49e7-a178-99111c69d24f""";
                 const String json2 = @"null";
 
-                var reference1 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json1);
+                var reference1 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json1, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingValue(reference1.Value)
                     .ShouldSatisfyTheCondition(x => x.Value.Equals(Guid.Parse("3bd956ab-24cc-49e7-a178-99111c69d24f")));
 
-                var reference2 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json2);
+                var reference2 = JsonConvert.DeserializeObject<ResolvedDataObjectReference?>(json2, 
+                    CoreJsonSerializerSettings.Instance);
 
                 TheResultingValue(reference2.HasValue)
                     .ShouldBe(false);

@@ -367,7 +367,7 @@ namespace Ultraviolet.SDL2.Input
 
             if (Ultraviolet.SupportsHighDensityDisplayModes)
             {
-                var scale = window.Display.DeviceScale;
+                var scale = window?.Display.DeviceScale ?? 1f;
                 this.x = (Int32)(x * scale);
                 this.y = (Int32)(y * scale);
             }

@@ -160,7 +160,8 @@ namespace Ultraviolet.Tests
         public void Point2F_SerializesToJson()
         {
             var point = new Point2F(1.2f, 2.3f);
-            var json = JsonConvert.SerializeObject(point);
+            var json = JsonConvert.SerializeObject(point,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
         }
@@ -169,7 +170,8 @@ namespace Ultraviolet.Tests
         public void Point2F_SerializesToJson_WhenNullable()
         {
             var point = new Point2F(1.2f, 2.3f);
-            var json = JsonConvert.SerializeObject((Point2F?)point);
+            var json = JsonConvert.SerializeObject((Point2F?)point,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3}");
         }
@@ -179,7 +181,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""x"":1.2,""y"":2.3}";
             
-            var point = JsonConvert.DeserializeObject<Point2F>(json);
+            var point = JsonConvert.DeserializeObject<Point2F>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point)
                 .ShouldBe(1.2f, 2.3f);
@@ -190,14 +193,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""x"":1.2,""y"":2.3}";
 
-            var point1 = JsonConvert.DeserializeObject<Point2F?>(json1);
+            var point1 = JsonConvert.DeserializeObject<Point2F?>(json1,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point1.Value)
                 .ShouldBe(1.2f, 2.3f);
 
             const String json2 = @"null";
 
-            var point2 = JsonConvert.DeserializeObject<Point2F?>(json2);
+            var point2 = JsonConvert.DeserializeObject<Point2F?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(point2.HasValue)
                 .ShouldBe(false);

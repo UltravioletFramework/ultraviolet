@@ -319,7 +319,8 @@ namespace Ultraviolet.Tests
         public void Ray_SerializesToJson()
         {
             var ray = new Ray(new Vector3(1.2f, 2.3f, 3.4f), new Vector3(4.5f, 5.6f, 6.7f));
-            var json = JsonConvert.SerializeObject(ray);
+            var json = JsonConvert.SerializeObject(ray,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""position"":{""x"":1.2,""y"":2.3,""z"":3.4},""direction"":{""x"":4.5,""y"":5.6,""z"":6.7}}");
         }
@@ -328,7 +329,8 @@ namespace Ultraviolet.Tests
         public void Ray_SerializesToJson_WhenNullable()
         {
             var ray = new Ray(new Vector3(1.2f, 2.3f, 3.4f), new Vector3(4.5f, 5.6f, 6.7f));
-            var json = JsonConvert.SerializeObject((Ray?)ray);
+            var json = JsonConvert.SerializeObject((Ray?)ray,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""position"":{""x"":1.2,""y"":2.3,""z"":3.4},""direction"":{""x"":4.5,""y"":5.6,""z"":6.7}}");
         }
@@ -338,7 +340,8 @@ namespace Ultraviolet.Tests
         {
             const String json = (@"{""position"":{""x"":1.2,""y"":2.3,""z"":3.4},""direction"":{""x"":4.5,""y"":5.6,""z"":6.7}}");
 
-            var ray = JsonConvert.DeserializeObject<Ray>(json);
+            var ray = JsonConvert.DeserializeObject<Ray>(json,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(ray)
                 .ShouldHavePosition(1.2f, 2.3f, 3.4f)
@@ -350,7 +353,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = (@"{""position"":{""x"":1.2,""y"":2.3,""z"":3.4},""direction"":{""x"":4.5,""y"":5.6,""z"":6.7}}");
 
-            var ray1 = JsonConvert.DeserializeObject<Ray?>(json1);
+            var ray1 = JsonConvert.DeserializeObject<Ray?>(json1,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(ray1.Value)
                 .ShouldHavePosition(1.2f, 2.3f, 3.4f)
@@ -358,7 +362,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var ray2 = JsonConvert.DeserializeObject<Ray?>(json2);
+            var ray2 = JsonConvert.DeserializeObject<Ray?>(json2,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(ray2.HasValue)
                 .ShouldBe(false);

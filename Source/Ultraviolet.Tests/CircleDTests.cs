@@ -115,7 +115,8 @@ namespace Ultraviolet.Tests
         public void CircleD_SerializesToJson()
         {
             var circle = new CircleD(1.2, 2.3, 3.4);
-            var json = JsonConvert.SerializeObject(circle);
+            var json = JsonConvert.SerializeObject(circle, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""radius"":3.4}");
         }
@@ -124,7 +125,8 @@ namespace Ultraviolet.Tests
         public void CircleD_SerializesToJson_WhenNullable()
         {
             var circle = new CircleD(1.2, 2.3, 3.4);
-            var json = JsonConvert.SerializeObject((CircleD?)circle);
+            var json = JsonConvert.SerializeObject((CircleD?)circle, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""radius"":3.4}");
         }
@@ -134,7 +136,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{ ""x"":1.2,""y"":2.3,""radius"":3.4 }";
             
-            var circle = JsonConvert.DeserializeObject<CircleD>(json);
+            var circle = JsonConvert.DeserializeObject<CircleD>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(circle)
                 .ShouldHavePosition(1.2, 2.3)
@@ -146,7 +149,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{ ""x"":1.2,""y"":2.3,""radius"":3.4 }";
 
-            var circle1 = JsonConvert.DeserializeObject<CircleD?>(json1);
+            var circle1 = JsonConvert.DeserializeObject<CircleD?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(circle1.Value)
                 .ShouldHavePosition(1.2, 2.3)
@@ -154,7 +158,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var circle2 = JsonConvert.DeserializeObject<CircleD?>(json2);
+            var circle2 = JsonConvert.DeserializeObject<CircleD?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(circle2.HasValue)
                 .ShouldBe(false);

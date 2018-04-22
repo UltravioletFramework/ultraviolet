@@ -1,5 +1,6 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
+using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
@@ -31,7 +32,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height / 2;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
                     content.SpriteBatch.Draw(content.BlankTexture,
@@ -61,7 +62,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, null, null, TextFlags.Standard));
+                        new TextLayoutSettings(content.Font, null, null, TextFlags.Standard));
 
                     content.SpriteBatch.Begin();
 
@@ -121,7 +122,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
                     content.SpriteBatch.Draw(content.BlankTexture,
@@ -153,7 +154,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
                     content.SpriteBatch.Draw(content.BlankTexture,
@@ -188,7 +189,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.Standard));
 
                     content.SpriteBatch.Begin();
 
@@ -224,7 +225,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.Standard, TextLayoutOptions.Hyphenate));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.Standard, TextLayoutOptions.Hyphenate));
 
                     content.SpriteBatch.Begin();
 
@@ -261,7 +262,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.AlignLeft, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
                     content.SpriteBatch.Draw(content.BlankTexture,
@@ -315,7 +316,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignRight, TextLayoutOptions.None));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.AlignRight, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
                     content.SpriteBatch.Draw(content.BlankTexture,
@@ -369,7 +370,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var width = window.Compositor.Width / 2;
                     var height = window.Compositor.Height;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, width, height, TextFlags.AlignCenter, TextLayoutOptions.None));
+                        new TextLayoutSettings(content.Font, width, height, TextFlags.AlignCenter, TextLayoutOptions.None));
 
                     content.SpriteBatch.Begin();
                     content.SpriteBatch.Draw(content.BlankTexture,
@@ -421,7 +422,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new[]
@@ -443,8 +444,8 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                         var line = lines[i];
                         if (line.HasValue)
                         {
-                            var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
-                                window.DrawableSize.Width, content.SpriteFont.Regular.LineSpacing);
+                            var bounds = new Rectangle(0, line.Value * content.Font.Regular.LineSpacing,
+                                window.DrawableSize.Width, content.Font.Regular.LineSpacing);
                             content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
                         }
                     }
@@ -473,7 +474,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new[]
@@ -496,8 +497,8 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                         var line = lines[i];
                         if (line.HasValue)
                         {
-                            var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
-                                window.DrawableSize.Width, content.SpriteFont.Regular.LineSpacing);
+                            var bounds = new Rectangle(0, line.Value * content.Font.Regular.LineSpacing,
+                                window.DrawableSize.Width, content.Font.Regular.LineSpacing);
                             content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
                         }
                     }
@@ -526,7 +527,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new[]
@@ -549,8 +550,8 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                         var line = lines[i];
                         if (line.HasValue)
                         {
-                            var bounds = new Rectangle(0, line.Value * content.SpriteFont.Regular.LineSpacing,
-                                window.DrawableSize.Width, content.SpriteFont.Regular.LineSpacing);
+                            var bounds = new Rectangle(0, line.Value * content.Font.Regular.LineSpacing,
+                                window.DrawableSize.Width, content.Font.Regular.LineSpacing);
                             content.SpriteBatch.Draw(content.BlankTexture, bounds, colors[i] * 0.5f);
                         }
                     }
@@ -582,7 +583,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     lines = new Int32?[5];
@@ -638,7 +639,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
 
                     content.TextLayoutResult.AcquirePointers();
                     var lines = new Int32?[5];
@@ -678,23 +679,30 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds().")]
-        public void TextRenderer_CalculatesCorrectLineBounds()
+        public void TextRenderer_CalculatesCorrectLineBounds(FontKind fontKind)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content.Load)
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var line0Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 0);
@@ -715,28 +723,43 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds.png");
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds(FreeType2).png");
+            }
         }
 
         [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetLineBounds() when layout commands are disabled.")]
-        public void TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled()
+        public void TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled(FontKind fontKind)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content.Load)
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var line0Bounds = content.TextRenderer.GetLineBounds(content.TextLayoutResult, 0);
@@ -757,28 +780,43 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled(FreeType2).png");
+            }
         }
 
         [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds().")]
-        public void TextRenderer_CalculatesCorrectGlyphBounds()
+        public void TextRenderer_CalculatesCorrectGlyphBounds(FontKind fontKind)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content.Load)
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
@@ -792,10 +830,20 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.TextLayoutResult.ReleasePointers();
 
                     // Glyph 26 is a line break and therefore invisible, so check it manually
-                    TheResultingValue(glyph26Bounds.X).ShouldBe(369);
-                    TheResultingValue(glyph26Bounds.Y).ShouldBe(136);
-                    TheResultingValue(glyph26Bounds.Width).ShouldBe(0);
-                    TheResultingValue(glyph26Bounds.Height).ShouldBe(22);
+                    if (fontKind == FontKind.SpriteFont)
+                    {
+                        TheResultingValue(glyph26Bounds.X).ShouldBe(369);
+                        TheResultingValue(glyph26Bounds.Y).ShouldBe(136);
+                        TheResultingValue(glyph26Bounds.Width).ShouldBe(0);
+                        TheResultingValue(glyph26Bounds.Height).ShouldBe(22);
+                    }
+                    else
+                    {
+                        TheResultingValue(glyph26Bounds.X).ShouldBe(345);
+                        TheResultingValue(glyph26Bounds.Y).ShouldBe(130);
+                        TheResultingValue(glyph26Bounds.Width).ShouldBe(0);
+                        TheResultingValue(glyph26Bounds.Height).ShouldBe(25);
+                    }
 
                     content.SpriteBatch.Begin();
 
@@ -813,28 +861,43 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds.png");
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds(FreeType2).png");
+            }
         }
 
         [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds() when layout commands are disabled.")]
-        public void TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled()
+        public void TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FontKind fontKind)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content.Load)
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.SpriteFont, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
 
                     content.TextLayoutResult.AcquirePointers();
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
@@ -861,8 +924,16 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FreeType2).png");
+            }
         }
 
         [Test]
@@ -1186,6 +1257,147 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersLinks_WithColorizer.png");
+        }
+
+        [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders text which contains surrogate pairs.")]
+        public void TextRenderer_CorrectlyRendersSurrogatePairs(FontKind fontKind)
+        {
+            var content = new TextRendererTestContent(
+                "Lorem ipsum 𪘁 dolor sit amet, consectetur adipiscing elit.", TextParserOptions.IgnoreCommandCodes);
+
+            if (fontKind == FontKind.SpriteFont)
+                content.FontPath = "Fonts/SegoeUI12";
+            else
+                content.FontPath = "Fonts/NotoSansCJKjp-Regular";
+
+            var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, 256, 256, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+
+                    content.SpriteBatch.Begin();
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var offset = new Vector2(
+                        (Int32)((window.Compositor.Width - 256f) / 2.0f),
+                        (Int32)((window.Compositor.Height - 256f) / 2.0f));
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, offset, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersSurrogatePairs.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersSurrogatePairs(FreeType2).png");
+            }
+        }
+
+        [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders text which contains surrogate pairs.")]
+        public void TextRenderer_CorrectlyRendersIncompleteSurrogatePairs(FontKind fontKind)
+        {
+            var content = new TextRendererTestContent(
+                "Lorem ipsum \uD800 dolor \uDC00 sit amet, consectetur adipiscing elit.", TextParserOptions.IgnoreCommandCodes);
+
+            if (fontKind == FontKind.SpriteFont)
+                content.FontPath = "Fonts/SegoeUI12";
+
+            var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager => content.Load(manager, fontKind))
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, 256, 256, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+
+                    content.SpriteBatch.Begin();
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var offset = new Vector2(
+                        (Int32)((window.Compositor.Width - 256f) / 2.0f),
+                        (Int32)((window.Compositor.Height - 256f) / 2.0f));
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, offset, Color.White);
+
+                    content.SpriteBatch.End();
+                });
+
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersIncompleteSurrogatePairs.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersIncompleteSurrogatePairs(FreeType2).png");
+            }
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders text which makes use of fallback fonts.")]
+        public void TextRenderer_CorrectlyRendersFallbackFonts()
+        {
+            var emojiFont = default(UltravioletFont);
+            var content = new TextRendererTestContent(
+                "😀Lorem ipsum😀 dolor sit 😀🤣😀 amet 🤣 😀", TextParserOptions.IgnoreCommandCodes);
+
+            var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    FreeTypeFontPlugin.Initialize(uv);
+                })
+                .WithContent(manager =>
+                {
+                    content.LoadFreeType(manager);
+                    emojiFont = manager.Load<UltravioletFont>("Fonts/NotoEmoji-Regular");
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    content.TextLayoutEngine.RegisterFont("emoji", emojiFont);
+                    content.TextLayoutEngine.RegisterFallbackFont("emoji", 126976, 129519, "emoji");
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle, TextLayoutOptions.None));
+
+                    content.SpriteBatch.Begin();
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);                
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts.png");
         }
 
         protected static LineInfoResult TheResultingValue(LineInfo obj)

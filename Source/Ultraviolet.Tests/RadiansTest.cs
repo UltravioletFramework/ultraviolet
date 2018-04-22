@@ -117,7 +117,8 @@ namespace Ultraviolet.Tests
         public void Radians_SerializesToJson_WhenNullable()
         {
             var radians = 1.234f;
-            var json = JsonConvert.SerializeObject((Radians?)radians);
+            var json = JsonConvert.SerializeObject((Radians?)radians, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"1.234");
         }
@@ -127,7 +128,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"1.234";
             
-            var radians = JsonConvert.DeserializeObject<Radians>(json);
+            var radians = JsonConvert.DeserializeObject<Radians>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(radians)
                 .ShouldBe(1.234f);
@@ -138,14 +140,16 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"1.234";
 
-            var radians1 = JsonConvert.DeserializeObject<Radians?>(json1);
+            var radians1 = JsonConvert.DeserializeObject<Radians?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(radians1.Value)
                 .ShouldBe(1.234f);
 
             const String json2 = @"null";
 
-            var radians2 = JsonConvert.DeserializeObject<Radians?>(json2);
+            var radians2 = JsonConvert.DeserializeObject<Radians?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(radians2.HasValue)
                 .ShouldBe(false);

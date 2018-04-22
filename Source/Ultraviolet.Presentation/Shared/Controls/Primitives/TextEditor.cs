@@ -240,8 +240,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             BeginTrackingSelectionChanges();
             
-            selectionPosition = AdjustCaretPositionToAvoidCRLF(start, false);
-            caretPosition = AdjustCaretPositionToAvoidCRLF(start + length, true);
+            selectionPosition = AdjustCaretToAvoidInvalidPositions(start, false);
+            caretPosition = AdjustCaretToAvoidInvalidPositions(start + length, true);
 
             if (selectionPosition == caretPosition)
                 selectionPosition = null;
@@ -352,7 +352,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             BeginTrackingSelectionChanges();
 
             var text = Ultraviolet.GetPlatform().Clipboard.Text;
-            InsertTextAtCaret(text, false);
+            if (!String.IsNullOrEmpty(text))
+                InsertTextAtCaret(text, false);
 
             EndTrackingSelectionChanges();
         }
@@ -518,11 +519,11 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Left, moveSelection))
             {
                 caretBlinkTimer = 0;
-                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
+                caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition - 1, false);
 
                 UpdateSelectionAndCaret();
-                ScrollToCaret(false, true, false);
             }
+            ScrollToCaret(false, true, false);
 
             EndTrackingSelectionChanges();
         }
@@ -539,11 +540,11 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Right, moveSelection))
             {
                 caretBlinkTimer = 0;
-                caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition + 1, true);
+                caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition + 1, true);
 
                 UpdateSelectionAndCaret();
-                ScrollToCaret(false, false, true);
             }
+            ScrollToCaret(false, false, true);
 
             EndTrackingSelectionChanges();
         }
@@ -703,7 +704,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                     caretPosition = lineInfo.OffsetInGlyphs + lineInfo.LengthInGlyphs;
 
                     if (IsLineBreak(caretPosition - 1, false))
-                        caretPosition = AdjustCaretPositionToAvoidCRLF(caretPosition - 1, false);
+                        caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition - 1, false);
                 }
 
                 UpdateSelectionAndCaret();
@@ -984,7 +985,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
                 selectionPosition = null;
 
-                caretPosition = AdjustCaretPositionToAvoidCRLF(value);
+                caretPosition = AdjustCaretToAvoidInvalidPositions(value);
                 caretBlinkTimer = 0;
 
                 UpdateSelectionAndCaret();
@@ -1939,14 +1940,20 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         }
 
         /// <summary>
-        /// Adjusts the specified caret position so that it does not lie in the middle of a carriage return, line feed sequence.
+        /// Adjusts the specified caret position so that it does not lie at an invalid position such as the
+        /// middle of a CRLF sequence or in the middle of a surrogate pair.
         /// </summary>
-        private Int32 AdjustCaretPositionToAvoidCRLF(Int32 position, Boolean moveForward = false)
+        private Int32 AdjustCaretToAvoidInvalidPositions(Int32 position, Boolean moveForward = false)
         {
             if (position == 0 || position == bufferText.Length)
                 return position;
 
-            if (bufferText[position] == '\n' && bufferText[position - 1] == '\r')
+            var isCRLF = bufferText[position] == '\n' && bufferText[position - 1] == '\r';
+            if (isCRLF)
+                return position + (moveForward ? 1 : -1);
+
+            var isSurrogatePair = Char.IsSurrogatePair(bufferText[position - 1], bufferText[position]);
+            if (isSurrogatePair)
                 return position + (moveForward ? 1 : -1);
 
             return position;
@@ -2275,7 +2282,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             if (!DeleteSelection(true) && caretPosition < textLayoutStream.TotalLength)
             {
-                var isCRLF = IsStartOfCRLF(caretPosition);
+                var isCRLF = IsStartOfCRLFOrSurrogatePair(caretPosition);
 
                 var length = isCRLF ? 2 : 1;
                 for (int i = 0; i < length; i++)
@@ -2308,7 +2315,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             if (!DeleteSelection(true) && caretPosition > 0)
             {
-                var isCRLF = IsEndOfCRLF(caretPosition);
+                var isCRLF = IsEndOfCRLFOrSurrogatePair(caretPosition);
 
                 var length = isCRLF ? 2 : 1;
                 for (int i = 0; i < length; i++)
@@ -2574,6 +2581,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             
             caretBlinkTimer = 0;
             caretPosition = (position <= caretPosition) ? caretPosition + characterCount : caretPosition;
+            caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition, true);
 
             pendingScrollToCaret = true;
             pendingScrollState = PendingScrollState.None;
@@ -2914,22 +2922,42 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
         /// <summary>
         /// Gets a value indicating whether the specified position in the text buffer is the 
-        /// start of a carriage return, line feed (CRLF) sequence.
+        /// start of a carriage return - line feed (CRLF) sequence, or a surrogate pair.
         /// </summary>
-        private Boolean IsStartOfCRLF(Int32 position)
+        private Boolean IsStartOfCRLFOrSurrogatePair(Int32 position)
         {
-            return position + 2 <= bufferText.Length && 
-                bufferText[position] == '\r' && bufferText[position + 1] == '\n';
+            if (position + 2 > bufferText.Length)
+                return false;
+
+            var isSurrogate = Char.IsSurrogatePair(bufferText[position], bufferText[position + 1]);
+            if (isSurrogate)
+                return true;
+
+            var isCRLF = bufferText[position] == '\r' && bufferText[position + 1] == '\n';
+            if (isCRLF)
+                return true;
+
+            return false;
         }
 
         /// <summary>
         /// Gets a value indicating whether the specified position in the text buffer is the 
-        /// end of a carriage return, line feed (CRLF) sequence.
+        /// end of a carriage return - line feed (CRLF) sequence, or a surrogate pair.
         /// </summary>
-        private Boolean IsEndOfCRLF(Int32 position)
+        private Boolean IsEndOfCRLFOrSurrogatePair(Int32 position)
         {
-            return position - 2 >= 0 &&
-                bufferText[position - 1] == '\n' && bufferText[position - 2] == '\r';
+            if (position - 2 < 0)
+                return false;
+
+            var isSurrogate = Char.IsSurrogatePair(bufferText[position - 2], bufferText[position - 1]);
+            if (isSurrogate)
+                return true;
+
+            var isCRLF = bufferText[position - 1] == '\n' && bufferText[position - 2] == '\r';
+            if (isCRLF)
+                return true;
+
+            return false;
         }
 
         // State values.

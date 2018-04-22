@@ -35,9 +35,7 @@ namespace Ultraviolet.Graphics
         /// </summary>
         private TextureAtlasDescription CreateTextureAtlasDescription(JObject input)
         {
-            var serializer = new JsonSerializer();
-            serializer.Converters.Add(new UltravioletJsonConverter());
-
+            var serializer = JsonSerializer.CreateDefault(UltravioletJsonSerializerSettings.Instance);
             var desc = input.ToObject<TextureAtlasDescription>(serializer);
             desc.Metadata = desc.Metadata ?? new TextureAtlasMetadataDescription();
 

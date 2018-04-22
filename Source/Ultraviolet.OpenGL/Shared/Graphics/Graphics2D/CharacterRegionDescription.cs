@@ -14,13 +14,11 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <summary>
         /// Gets or sets the first character in the region.
         /// </summary>
-        [JsonProperty(PropertyName = "start")]
         public Char Start { get; set; }
 
         /// <summary>
         /// Gets or sets the last character in the region.
         /// </summary>
-        [JsonProperty(PropertyName = "end")]
         public Char End { get; set; }
     }
 }

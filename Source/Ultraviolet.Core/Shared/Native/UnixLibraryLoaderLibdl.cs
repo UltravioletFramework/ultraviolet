@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Ultraviolet.Core.Native
@@ -6,7 +7,7 @@ namespace Ultraviolet.Core.Native
     /// <summary>
     /// Contains methods for loading shared libraries on Unix-based platforms.
     /// </summary>
-    internal sealed class UnixLibraryLoaderLibdl : LibraryLoader
+    internal sealed class UnixLibraryLoaderLibdl : UnixLibraryLoader
     {
         /// <summary>
         /// Contains native methods used by the <see cref="UnixLibraryLoaderLibdl"/> class.
@@ -27,8 +28,16 @@ namespace Ultraviolet.Core.Native
         }
 
         /// <inheritdoc/>
-        protected override IntPtr CoreLoadNativeLibrary(String libraryName) => 
-            Native.dlopen(libraryName, Native.RTLD_NOW);
+        protected override IntPtr CoreLoadNativeLibrary(String libraryName)
+        {
+            if (!String.IsNullOrWhiteSpace(libraryName))
+            {
+                var dirname = Path.GetDirectoryName(Path.GetFullPath(libraryName));
+                if (Directory.Exists(dirname))
+                    AddPathToLibraryPath(dirname);
+            }
+            return Native.dlopen(libraryName, Native.RTLD_NOW);
+        }
 
         /// <inheritdoc/>
         protected override IntPtr CoreLoadNativeFunctionPointer(IntPtr handle, String functionName) => 

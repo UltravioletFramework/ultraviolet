@@ -632,7 +632,8 @@ namespace Ultraviolet.Tests
         public void BoundingBox_SerializesToJson()
         {
             var box = new BoundingBox(new Vector3(1.2f, 2.3f, 3.4f), new Vector3(4.5f, 5.6f, 6.7f));
-            var json = JsonConvert.SerializeObject(box);
+            var json = JsonConvert.SerializeObject(box,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""min"":{""x"":1.2,""y"":2.3,""z"":3.4},""max"":{""x"":4.5,""y"":5.6,""z"":6.7}}");
         }
@@ -641,7 +642,8 @@ namespace Ultraviolet.Tests
         public void BoundingBox_SerializesToJson_WhenNullable()
         {
             var box = new BoundingBox(new Vector3(1.2f, 2.3f, 3.4f), new Vector3(4.5f, 5.6f, 6.7f));
-            var json = JsonConvert.SerializeObject((BoundingBox?)box);
+            var json = JsonConvert.SerializeObject((BoundingBox?)box, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""min"":{""x"":1.2,""y"":2.3,""z"":3.4},""max"":{""x"":4.5,""y"":5.6,""z"":6.7}}");
         }
@@ -651,7 +653,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""min"":{""x"":1.2,""y"":2.3,""z"":3.4},""max"":{""x"":4.5,""y"":5.6,""z"":6.7}}";
 
-            var box = JsonConvert.DeserializeObject<BoundingBox>(json);
+            var box = JsonConvert.DeserializeObject<BoundingBox>(json, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(box)
                 .ShouldHaveMin(1.2f, 2.3f, 3.4f)
@@ -663,7 +666,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""min"":{""x"":1.2,""y"":2.3,""z"":3.4},""max"":{""x"":4.5,""y"":5.6,""z"":6.7}}";
 
-            var box1 = JsonConvert.DeserializeObject<BoundingBox?>(json1);
+            var box1 = JsonConvert.DeserializeObject<BoundingBox?>(json1, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(box1.Value)
                 .ShouldHaveMin(1.2f, 2.3f, 3.4f)
@@ -671,7 +675,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var box2 = JsonConvert.DeserializeObject<BoundingBox?>(json2);
+            var box2 = JsonConvert.DeserializeObject<BoundingBox?>(json2, 
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(box2.HasValue)
                 .ShouldBe(false);

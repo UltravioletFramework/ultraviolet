@@ -221,21 +221,21 @@ namespace Ultraviolet
         /// The x-coordinate of the circle's center.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "x", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Double X;
 
         /// <summary>
         /// The y-coordinate of the circle's center.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "y", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Double Y;
 
         /// <summary>
         /// The circle's radius.
         /// </summary>
         [Preserve]
-        [JsonProperty(PropertyName = "radius", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Double Radius;
     }
 }

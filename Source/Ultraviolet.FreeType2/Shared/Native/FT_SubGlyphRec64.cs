@@ -1,0 +1,19 @@
+﻿using System;
+using System.Runtime.InteropServices;
+using Ultraviolet.Core;
+
+namespace Ultraviolet.FreeType2.Native
+{
+#pragma warning disable 1591
+    [Preserve(AllMembers = true)]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct FT_SubGlyphRec64
+    {
+        public Int32 index;
+        public UInt16 flags;
+        public Int32 arg1;
+        public Int32 arg2;
+        public FT_Matrix64 transform;
+    }
+#pragma warning restore 1591
+}

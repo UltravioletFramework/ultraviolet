@@ -19,7 +19,8 @@ namespace Ultraviolet.Tests.Content
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Test.manifest"));
                     
                     var id = content.Ultraviolet.GetContent().Manifests["Test"]["Textures"]["Triangle"].CreateAssetID();
-                    var json = JsonConvert.SerializeObject(id);
+                    var json = JsonConvert.SerializeObject(id, 
+                        UltravioletJsonSerializerSettings.Instance);
 
                     TheResultingString(json)
                         .ShouldBe(@"""#Test:Textures:Triangle""");
@@ -36,7 +37,8 @@ namespace Ultraviolet.Tests.Content
                 {
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "Test.manifest"));
                     
-                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""");
+                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""", 
+                        UltravioletJsonSerializerSettings.Instance);
 
                     TheResultingValue(id)
                         .ShouldBe(AssetID.Parse("#Test:Textures:Triangle"));
@@ -53,7 +55,8 @@ namespace Ultraviolet.Tests.Content
                 {
                     content.Ultraviolet.GetContent().Manifests.Load(Path.Combine("Content", "Manifests", "TestJson.jsmanifest"));
 
-                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""");
+                    var id = JsonConvert.DeserializeObject<AssetID>(@"""#Test:Textures:Triangle""",
+                        UltravioletJsonSerializerSettings.Instance);
 
                     TheResultingValue(id)
                         .ShouldBe(AssetID.Parse("#Test:Textures:Triangle"));

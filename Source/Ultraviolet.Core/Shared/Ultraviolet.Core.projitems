@@ -33,6 +33,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\Specialized\WeakKeyReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommonBoxedValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contract.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreJsonContractResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CoreJsonSerializerSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\PrimitiveUnion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataObjectRegistries.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\MessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SubscriberCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoaderLibdl2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoaderLibdl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\UnixLibraryLoaderLibc.cs" />

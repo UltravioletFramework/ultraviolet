@@ -123,7 +123,8 @@ namespace Ultraviolet.Tests
         public void RectangleF_SerializesToJson()
         {
             var rect = new RectangleF(1.2f, 2.3f, 3.4f, 4.5f);
-            var json = JsonConvert.SerializeObject(rect);
+            var json = JsonConvert.SerializeObject(rect,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}");
         }
@@ -132,7 +133,8 @@ namespace Ultraviolet.Tests
         public void RectangleF_SerializesToJson_WhenNullable()
         {
             var rect = new RectangleF(1.2f, 2.3f, 3.4f, 4.5f);
-            var json = JsonConvert.SerializeObject((RectangleF?)rect);
+            var json = JsonConvert.SerializeObject((RectangleF?)rect,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingString(json).ShouldBe(@"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}");
         }
@@ -142,7 +144,8 @@ namespace Ultraviolet.Tests
         {
             const String json = @"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}";
             
-            var rect = JsonConvert.DeserializeObject<RectangleF>(json);
+            var rect = JsonConvert.DeserializeObject<RectangleF>(json,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(rect)
                 .ShouldHavePosition(1.2f, 2.3f)
@@ -154,7 +157,8 @@ namespace Ultraviolet.Tests
         {
             const String json1 = @"{""x"":1.2,""y"":2.3,""width"":3.4,""height"":4.5}";
 
-            var rect1 = JsonConvert.DeserializeObject<RectangleF?>(json1);
+            var rect1 = JsonConvert.DeserializeObject<RectangleF?>(json1,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(rect1.Value)
                 .ShouldHavePosition(1.2f, 2.3f)
@@ -162,7 +166,8 @@ namespace Ultraviolet.Tests
 
             const String json2 = @"null";
 
-            var rect2 = JsonConvert.DeserializeObject<RectangleF?>(json2);
+            var rect2 = JsonConvert.DeserializeObject<RectangleF?>(json2,
+                UltravioletJsonSerializerSettings.Instance);
 
             TheResultingValue(rect2.HasValue)
                 .ShouldBe(false);

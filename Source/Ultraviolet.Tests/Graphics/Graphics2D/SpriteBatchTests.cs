@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.TestFramework;
@@ -9,18 +10,26 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
     public class SpriteBatchTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
         [Description("Ensures that the SpriteBatch class can render text using the DrawString() method.")]
-        public void SpriteBatch_CanRenderSimpleStrings()
+        public void SpriteBatch_CanRenderSimpleStrings(FontKind fontKind)
         {
             var spriteBatch = default(SpriteBatch);
-            var spriteFont  = default(SpriteFont);
+            var spriteFont  = default(UltravioletFont);
 
             var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
                 .WithContent(content =>
                 {
                     spriteBatch = SpriteBatch.Create();
-                    spriteFont  = content.Load<SpriteFont>("Fonts/SegoeUI");
+                    spriteFont  = content.Load<UltravioletFont>(fontKind == FontKind.SpriteFont ?
+                        "Fonts/SegoeUI" : "Fonts/FiraSans");
                 })
                 .Render(uv =>
                 {
@@ -29,22 +38,39 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result).ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings.png");
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2).png");
+            }
         }
 
         [Test]
+        [TestCase(FontKind.SpriteFont)]
+        [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
         [Description("Ensures that SpriteBatch can be used to draw East Asian characters.")]
-        public void SpriteBatch_CorrectlyRendersEastAsianCharacters()
+        public void SpriteBatch_CorrectlyRendersEastAsianCharacters(FontKind fontKind)
         {
             var spriteBatch = default(SpriteBatch);
-            var spriteFont = default(SpriteFont);
+            var spriteFont = default(UltravioletFont);
 
             var result = GivenAnUltravioletApplication()
+                .WithInitialization(uv =>
+                {
+                    if (fontKind == FontKind.FreeType2)
+                        FreeTypeFontPlugin.Initialize(uv);
+                })
                 .WithContent(content =>
                 {
                     spriteBatch = SpriteBatch.Create();
-                    spriteFont = content.Load<SpriteFont>("Fonts/MSGothic16");
+                    spriteFont = content.Load<UltravioletFont>(fontKind == FontKind.SpriteFont ?
+                        "Fonts/MSGothic16" : "Fonts/NotoSansCJKjp-Regular");
                 })
                 .Render(uv =>
                 {
@@ -63,8 +89,16 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                     spriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters.png");
+            if (fontKind == FontKind.SpriteFont)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters(FreeType2).png");
+            }
         }
 
         [Test]

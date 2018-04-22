@@ -11,7 +11,7 @@ namespace Ultraviolet.Core.Data
         /// <summary>
         /// Gets or sets the registry's collection of items.
         /// </summary>
-        [JsonProperty(PropertyName = "items", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public IEnumerable<DataObjectKeysDescription> Items { get; set; }
     }
 }

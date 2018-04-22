@@ -5,6 +5,8 @@
     <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AssemblyName>UvDebug</AssemblyName>
+    <RootNamespace>UvDebug</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -134,14 +136,32 @@
     <AndroidAsset Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Effects\Test.frag">
-      <Link>Content\Effects\Test.frag</Link>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so">
+      <Link>lib\armeabi-v7a\libfreetype.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so">
+      <Link>lib\armeabi-v7a\libharfbuzz.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so">
+      <Link>lib\armeabi-v7a\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libfreetype.so">
+      <Link>lib\x86\libfreetype.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libharfbuzz.so">
+      <Link>lib\x86\libharfbuzz.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libpng16.so">
+      <Link>lib\x86\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata-Bold.ttf">
+      <Link>Content\Fonts\Inconsolata-Bold.ttf</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Effects\Test.vert">
-      <Link>Content\Effects\Test.vert</Link>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf">
+      <Link>Content\Fonts\Inconsolata-Regular.ttf</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\Desktop\Content\Effects\TestEffect.json">
-      <Link>Content\Effects\TestEffect.json</Link>
+    <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
+      <Link>Content\Fonts\Inconsolata.uvmeta</Link>
     </AndroidAsset>
     <None Include="app.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -150,6 +170,10 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\Android\Ultraviolet.FreeType2.Android.csproj">
+      <Project>{39f2c819-57d5-419e-aa90-bc92d55f0749}</Project>
+      <Name>Ultraviolet.FreeType2.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Android\Ultraviolet.OpenGL.Bindings.Android.csproj">
       <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
       <Name>Ultraviolet.OpenGL.Bindings.Android</Name>

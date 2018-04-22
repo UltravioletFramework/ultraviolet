@@ -611,13 +611,13 @@ namespace Ultraviolet
         /// <summary>
         /// The minimum point included within the bounding box.
         /// </summary>
-        [JsonProperty("min", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Vector3 Min;
 
         /// <summary>
         /// The maximum point included within the bounding box.
         /// </summary>
-        [JsonProperty("max", Required = Required.Always)]
+        [JsonProperty(Required = Required.Always)]
         public Vector3 Max;
     }
 }

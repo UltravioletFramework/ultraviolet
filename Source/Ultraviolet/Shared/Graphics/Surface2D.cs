@@ -263,5 +263,10 @@ namespace Ultraviolet.Graphics
         /// Gets a value indicating whether the surface's alpha has been premultiplied.
         /// </summary>
         public abstract Boolean IsAlphaPremultiplied { get; }
+
+        /// <summary>
+        /// Gets a pointer to the surface's pixel data.
+        /// </summary>
+        public abstract IntPtr Pixels { get; }
     }
 }

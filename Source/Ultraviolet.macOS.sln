@@ -81,6 +81,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.Desktop", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{41B70FED-EE2B-4863-BA69-8C9FA8744295}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.shproj", "{9C6D1468-B7A7-4FB9-B7EF-088803A62B89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{61F167A4-EA96-4087-9495-89565FD5E137}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Desktop", "Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj", "{1213F9AF-5E16-46E9-A7D0-80B9564E6345}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -586,6 +592,42 @@ Global
 		{41B70FED-EE2B-4863-BA69-8C9FA8744295}.Signed|x64.Build.0 = Signed|Any CPU
 		{41B70FED-EE2B-4863-BA69-8C9FA8744295}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{41B70FED-EE2B-4863-BA69-8C9FA8744295}.Signed|x86.Build.0 = Signed|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Debug|x64.Build.0 = Debug|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Release|x64.ActiveCfg = Release|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Release|x64.Build.0 = Release|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Debug|x86.Build.0 = Debug|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Release|x86.ActiveCfg = Release|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Release|x86.Build.0 = Release|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Signed|x64.Build.0 = Signed|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{61F167A4-EA96-4087-9495-89565FD5E137}.Signed|x86.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x64.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x64.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x64.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Debug|x86.Build.0 = Debug|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x86.ActiveCfg = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Release|x86.Build.0 = Release|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x64.Build.0 = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{1213F9AF-5E16-46E9-A7D0-80B9564E6345}.Signed|x86.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
