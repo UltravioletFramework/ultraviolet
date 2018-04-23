@@ -44,10 +44,9 @@ namespace Ultraviolet.FreeType2
             this.AtlasHeight = metadata.AtlasHeight;
             this.AtlasSpacing = metadata.AtlasSpacing;
 
+            this.scale = metadata.Scale;
             this.offsetXAdjustment = metadata.AdjustOffsetX;
             this.offsetYAdjustment = metadata.AdjustOffsetY;
-            this.ascenderAdjustment = metadata.AdjustAscender;
-            this.descenderAdjustment = metadata.AdjustDescender;
             this.hAdvanceAdjustment = metadata.AdjustHorizontalAdvance;
             this.vAdvanceAdjustment = metadata.AdjustVerticalAdvance;
             this.glyphWidthAdjustment = (metadata.StrokeRadius * 2);
@@ -57,9 +56,18 @@ namespace Ultraviolet.FreeType2
             this.HasKerningInfo = facade.HasKerningFlag;
             this.FamilyName = facade.MarshalFamilyName();
             this.StyleName = facade.MarshalStyleName();
-            this.Ascender = facade.Ascender + ascenderAdjustment;
-            this.Descender = facade.Descender + descenderAdjustment;
-            this.LineSpacing = facade.LineSpacing;
+            if (scale != 1f)
+            {
+                this.Ascender = (Int32)Math.Floor(scale * facade.Ascender) + metadata.AdjustAscender;
+                this.Descender = (Int32)Math.Floor(scale * facade.Descender) + metadata.AdjustDescender;
+                this.LineSpacing = (Int32)Math.Floor(scale * facade.LineSpacing) + metadata.AdjustLineSpacing;
+            }
+            else
+            {
+                this.Ascender = facade.Ascender + metadata.AdjustAscender;
+                this.Descender = facade.Descender + metadata.AdjustDescender;
+                this.LineSpacing = facade.LineSpacing + metadata.AdjustLineSpacing;
+            }
 
             if (GetGlyphInfo(' ', out var spaceGlyphInfo))
                 this.SpaceWidth = spaceGlyphInfo.Width;
@@ -445,6 +453,9 @@ namespace Ultraviolet.FreeType2
 
             if (disposing)
             {
+                SafeDispose.DisposeRef(ref resamplingSurface1);
+                SafeDispose.DisposeRef(ref resamplingSurface2);
+
                 if (stroker != IntPtr.Zero)
                 {
                     FT_Stroker_Done(stroker);
@@ -544,31 +555,158 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
+        /// Ensures that the specified scratch surface exists and has at least the specified size.
+        /// </summary>
+        private static void CreateResamplingSurface(ref Surface2D srf, Int32 w, Int32 h)
+        {
+            if (srf == null)
+            {
+                srf?.Dispose();
+                srf = Surface2D.Create(w, h);
+            }
+            srf.Clear(Color.Transparent);
+        }
+
+        /// <summary>
+        /// Calculates the weights used during a resampling operation.
+        /// </summary>
+        private static void CreateResamplingWeights(ref Single[] weights, Int32 srcSize, Int32 dstSize, Single ratio, Single radius)
+        {
+            Single TriangleKernel(Single x)
+            {
+                if (x < 0f) x = -x;
+                if (x < 1f) return 1f - x;
+                return 0f;
+            };
+
+            var scale = ratio;
+            if (scale < 1.0f)
+                scale = 1.0f;
+
+            var weightCountPerPixel = (Int32)Math.Floor(radius) - (Int32)Math.Ceiling(-radius);
+            var weightOffset = 0;
+
+            var resultSize = dstSize * weightCountPerPixel;
+            if (weights == null || weights.Length < resultSize)
+                weights = new Single[resultSize];
+
+            for (int i = 0; i < dstSize; i++)
+            {
+                var pos = ((i + 0.5f) * ratio) - 0.5f;
+                var min = (Int32)Math.Ceiling(pos - radius);
+                var max = (Int32)Math.Floor(pos + radius);
+                var sum = 0.0f;
+
+                for (var j = min; j <= max; j++)
+                {
+                    var weight = TriangleKernel((j - pos) / scale);
+                    sum += weight;
+                    weights[weightOffset + (j - min)] = weight;
+                }
+
+                if (sum > 0)
+                {
+                    for (var j = 0; j < weightCountPerPixel; j++)
+                        weights[weightOffset + j] /= sum;
+                }
+
+                weightOffset += weightCountPerPixel;
+            }
+        }
+
+        /// <summary>
         /// Blits the specified bitmap onto a texture atlas.
         /// </summary>
-        private static void BlitBitmap(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY, 
+        private void BlitBitmap(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY, 
             Color color, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
         {
+            var width = (Int32)bmp.width;
+            if (width == 0)
+                return;
+
+            var height = (Int32)bmp.rows;
+            if (height == 0)
+                return;
+
+            var resampleRatio = 0f;
+            var resampleRadius = 0f;
+            var scaledWidth = width;
+            var scaledHeight = height;
+
+            // Prepare for scaling the glyph if required.
+            var scaled = (scale != 1f);
+            if (scaled)
+            {
+                // Calculate resampling parameters.
+                scaledWidth = (Int32)Math.Floor(width * scale);
+                scaledHeight = (Int32)Math.Floor(height * scale);
+
+                resampleRatio = 1f / scale;
+                resampleRadius = resampleRatio;
+                if (resampleRadius < 1f)
+                    resampleRadius = 1f;
+
+                // Ensure that our scratch surfaces exist with enough space.
+                CreateResamplingSurface(ref resamplingSurface1, width, height);
+                CreateResamplingSurface(ref resamplingSurface2, scaledWidth, height);
+
+                // Precalculate pixel weights.
+                CreateResamplingWeights(ref resamplingWeightsX, width, reservation.Width, resampleRatio, resampleRadius);
+                CreateResamplingWeights(ref resamplingWeightsY, height, reservation.Height, resampleRatio, resampleRadius);
+            }
+
+            // Blit the glyph to the specified reservation.
             switch ((FT_Pixel_Mode)bmp.pixel_mode)
             {
                 case FT_PIXEL_MODE_MONO:
-                    BlitGlyphBitmapMono(ref bmp, adjustX, adjustY,
-                        (Int32)bmp.width, (Int32)bmp.rows, bmp.pitch, color, blendMode, ref reservation);
+                    if (scaled)
+                    {
+                        BlitGlyphBitmapMono(resamplingSurface1, 0, 0, ref bmp, width, height, bmp.pitch, color, blendMode, reservation.Atlas.IsFlipped);
+                        BlitResampledX(resamplingSurface1, new Rectangle(0, 0, width, height), resamplingSurface2, new Rectangle(0, 0, scaledWidth, height), resamplingWeightsX);
+                        BlitResampledY(resamplingSurface2, new Rectangle(0, 0, scaledWidth, height), reservation.Atlas.Surface,
+                            new Rectangle(reservation.X + adjustX, reservation.Y + adjustY, scaledWidth, scaledHeight), resamplingWeightsY);
+                    }
+                    else
+                    {
+                        BlitGlyphBitmapMono(reservation.Atlas.Surface, reservation.X + adjustX, reservation.Y + adjustY,
+                            ref bmp, width, height, bmp.pitch, color, blendMode, reservation.Atlas.IsFlipped);
+                    }
                     break;
 
                 case FT_PIXEL_MODE_GRAY:
-                    BlitGlyphBitmapGray(ref bmp, adjustX, adjustY,
-                        (Int32)bmp.width, (Int32)bmp.rows, bmp.pitch, color, blendMode, ref reservation);
+                    if (scaled)
+                    {
+                        BlitGlyphBitmapGray(resamplingSurface1, 0, 0, ref bmp, width, height, bmp.pitch, color, blendMode, reservation.Atlas.IsFlipped);
+                        BlitResampledX(resamplingSurface1, new Rectangle(0, 0, width, height), resamplingSurface2, new Rectangle(0, 0, scaledWidth, height), resamplingWeightsX);
+                        BlitResampledY(resamplingSurface2, new Rectangle(0, 0, scaledWidth, height), reservation.Atlas.Surface,
+                            new Rectangle(reservation.X + adjustX, reservation.Y + adjustY, scaledWidth, scaledHeight), resamplingWeightsY);
+                    }
+                    else
+                    {
+                        BlitGlyphBitmapGray(reservation.Atlas.Surface, reservation.X + adjustX, reservation.Y + adjustY,
+                            ref bmp, width, height, bmp.pitch, color, blendMode, reservation.Atlas.IsFlipped);
+                    }
                     break;
 
                 case FT_PIXEL_MODE_BGRA:
-                    BlitGlyphBitmapBgra(ref bmp, adjustX, adjustY,
-                        (Int32)bmp.width, (Int32)bmp.rows, bmp.pitch, blendMode, ref reservation);
+                    if (scaled)
+                    {
+                        BlitGlyphBitmapBgra(resamplingSurface1, 0, 0, ref bmp, width, height, bmp.pitch, blendMode, reservation.Atlas.IsFlipped);
+                        BlitResampledX(resamplingSurface1, new Rectangle(0, 0, width, height), resamplingSurface2, new Rectangle(0, 0, scaledWidth, height), resamplingWeightsX);
+                        BlitResampledY(resamplingSurface2, new Rectangle(0, 0, scaledWidth, height), reservation.Atlas.Surface,
+                            new Rectangle(reservation.X + adjustX, reservation.Y + adjustY, scaledWidth, scaledHeight), resamplingWeightsY);
+                    }
+                    else
+                    {
+                        BlitGlyphBitmapBgra(reservation.Atlas.Surface, reservation.X + adjustX, reservation.Y + adjustY,
+                            ref bmp, width, height, bmp.pitch, blendMode, reservation.Atlas.IsFlipped);
+                    }
                     break;
 
                 default:
                     throw new NotSupportedException(FreeTypeStrings.PixelFormatNotSupported);
             }
+
             reservation.Atlas.Invalidate();
         }
 
@@ -631,18 +769,14 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Blits a mono glyph bitmap to the specified atlas' surface.
         /// </summary>
-        private static void BlitGlyphBitmapMono(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY,
-            Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        private static void BlitGlyphBitmapMono(Surface2D dstSurface, Int32 dstX, Int32 dstY,
+            ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, Boolean flip)
         {
-            var resX = reservation.X + adjustX;
-            var resY = reservation.Y + adjustY;
-
             for (int y = 0; y < bmpHeight; y++)
             {
-                var atlas = reservation.Atlas;
-                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrcY = flip ? (bmpHeight - 1) - y : y;
                 var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
-                var pDst = (Color*)atlas.Surface.Pixels + ((resY + y) * atlas.Width) + resX;
+                var pDst = (Color*)dstSurface.Pixels + ((dstY + y) * dstSurface.Width) + dstX;
                 if (blendMode == FreeTypeBlendMode.Opaque)
                 {
                     for (int x = 0; x < bmpWidth; x += 8)
@@ -676,18 +810,14 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Blits a grayscale glyph bitmap to the specified atlas' surface.
         /// </summary>
-        private static void BlitGlyphBitmapGray(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY,
-            Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        private static void BlitGlyphBitmapGray(Surface2D dstSurface, Int32 dstX, Int32 dstY,
+            ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, Boolean flip)
         {
-            var resX = reservation.X + adjustX;
-            var resY = reservation.Y + adjustY;
-
             for (int y = 0; y < bmpHeight; y++)
             {
-                var atlas = reservation.Atlas;
-                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrcY = flip ? (bmpHeight - 1) - y : y;
                 var pSrc = (Byte*)bmp.buffer + (pSrcY * bmpPitch);
-                var pDst = (Color*)atlas.Surface.Pixels + ((resY + y) * atlas.Width) + resX;
+                var pDst = (Color*)dstSurface.Pixels + ((dstY + y) * dstSurface.Width) + dstX;
                 if (blendMode == FreeTypeBlendMode.Opaque)
                 {
                     for (int x = 0; x < bmpWidth; x++)
@@ -710,18 +840,14 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Blits a BGRA color glyph bitmap to the specified atlas' surface.
         /// </summary>
-        private static void BlitGlyphBitmapBgra(ref FT_Bitmap bmp, Int32 adjustX, Int32 adjustY,
-            Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, FreeTypeBlendMode blendMode, ref DynamicTextureAtlas.Reservation reservation)
+        private static void BlitGlyphBitmapBgra(Surface2D dstSurface, Int32 dstX, Int32 dstY, 
+            ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, FreeTypeBlendMode blendMode, Boolean flip)
         {
-            var resX = reservation.X + adjustX;
-            var resY = reservation.Y + adjustY;
-
             for (int y = 0; y < bmpHeight; y++)
             {
-                var atlas = reservation.Atlas;
-                var pSrcY = atlas.IsFlipped ? (bmpHeight - 1) - y : y;
+                var pSrcY = flip ? (bmpHeight - 1) - y : y;
                 var pSrc = (Color*)((Byte*)bmp.buffer + (pSrcY * bmpPitch));
-                var pDst = (Color*)atlas.Surface.Pixels + ((resY + y) * atlas.Width) + resX;
+                var pDst = (Color*)dstSurface.Pixels + ((dstY + y) * dstSurface.Width) + dstX;
                 if (blendMode == FreeTypeBlendMode.Opaque)
                 {
                     for (int x = 0; x < bmpWidth; x++)
@@ -741,6 +867,122 @@ namespace Ultraviolet.FreeType2
                         GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
                         *pDst++ = result;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits from one surface to another surface, performing bilinear resampling along the x-axis.
+        /// </summary>
+        private static void BlitResampledX(Surface2D srcSurface, Rectangle srcRect, Surface2D dstSurface, Rectangle dstRect, Single[] weights)
+        {
+            var scale = dstRect.Width / (Single)srcRect.Width;
+            var ratio = 1f / scale;
+            var radius = ratio;
+            if (radius < 1f)
+                radius = 1f;
+            
+            var weightCount = (Int32)Math.Floor(radius) - (Int32)Math.Ceiling(-radius);
+            var weightOffset = 0;
+
+            for (var y = 0; y < srcRect.Height; y++)
+            {
+                weightOffset = 0;
+
+                var pSrc = (Color*)((Byte*)srcSurface.Pixels + ((srcRect.Y + y) * srcSurface.Pitch)) + srcRect.X;
+                var pDst = (Color*)((Byte*)dstSurface.Pixels + ((dstRect.Y + y) * dstSurface.Pitch)) + dstRect.X;
+
+                for (var x = 0; x < dstRect.Width; x++)
+                {
+                    var pos = ((x + 0.5f) * ratio) - 0.5f;
+                    var min = (Int32)Math.Ceiling(pos - radius);
+
+                    var totalR = 0f;
+                    var totalG = 0f;
+                    var totalB = 0f;
+                    var totalA = 0f;
+
+                    for (int i = 0; i < weightCount; i++)
+                    {
+                        var pixOffset = min + i;
+                        if (pixOffset < 0)
+                            pixOffset = 0;
+                        else if (pixOffset >= srcRect.Width)
+                            pixOffset = srcRect.Width - 1;
+
+                        var pixWeight = weights[weightOffset + i];
+                        var pixColor = pSrc[srcRect.X + pixOffset];
+
+                        var weight = weights[weightOffset + i];
+                        totalR += weight * pixColor.R;
+                        totalG += weight * pixColor.G;
+                        totalB += weight * pixColor.B;
+                        totalA += weight * pixColor.A;
+                    }
+
+                    *pDst++ = new Color((Byte)totalR, (Byte)totalG, (Byte)totalB, (Byte)totalA);
+
+                    weightOffset += weightCount;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Blits from one surface to another surface, performing bilinear resampling along the y-axis.
+        /// </summary>
+        private static void BlitResampledY(Surface2D srcSurface, Rectangle srcRect, Surface2D dstSurface, Rectangle dstRect, Single[] weights)
+        {
+            var scale = dstRect.Height / (Single)srcRect.Height;
+            var ratio = 1f / scale;
+            var radius = ratio;
+            if (radius < 1f)
+                radius = 1f;
+
+            var weightCount = (Int32)Math.Floor(radius) - (Int32)Math.Ceiling(-radius);
+            var weightOffset = 0;
+
+            var bytesPerPixel = sizeof(Color);
+            for (var x = 0; x < dstRect.Width; x++)
+            {
+                var pSrc = (Byte*)srcSurface.Pixels + (srcRect.Y * srcSurface.Pitch) + ((srcRect.X + x) * bytesPerPixel);
+                var pDst = (Byte*)dstSurface.Pixels + (dstRect.Y * dstSurface.Pitch) + ((dstRect.X + x) * bytesPerPixel);
+
+                weightOffset = 0;
+
+                for (var y = 0; y < dstRect.Height; y++)
+                {
+                    var pos = ((y + 0.5f) * ratio) - 0.5f;
+                    var min = (Int32)Math.Ceiling(pos - radius);
+
+                    var totalR = 0f;
+                    var totalG = 0f;
+                    var totalB = 0f;
+                    var totalA = 0f;
+
+                    var pPix = pSrc + (min * srcSurface.Pitch);
+
+                    for (int i = 0; i < weightCount; i++)
+                    {
+                        var pixOffset = min + i;
+                        if (pixOffset < 0)
+                            pixOffset = 0;
+                        else if (pixOffset >= srcRect.Height)
+                            pixOffset = srcRect.Height - 1;
+
+                        var pixWeight = weights[weightOffset + i];
+                        var pixColor = *(Color*)(pSrc + (pixOffset * srcSurface.Pitch));
+
+                        var weight = weights[weightOffset + i];
+                        totalR += weight * pixColor.R;
+                        totalG += weight * pixColor.G;
+                        totalB += weight * pixColor.B;
+                        totalA += weight * pixColor.A;
+                    }
+
+                    *(Color*)pDst = new Color((Byte)totalR, (Byte)totalG, (Byte)totalB, (Byte)totalA);                    
+                    pDst += dstSurface.Pitch;
+
+                    weightOffset += weightCount;
                 }
             }
         }
@@ -791,8 +1033,8 @@ namespace Ultraviolet.FreeType2
             var glyphOffsetX = 0;
             var glyphOffsetY = 0;
             var glyphAscent = 0;
-            var glyphAdvance = (cu16 == '\t') ? 
-                (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment) * 4 : 
+            var glyphAdvance = (cu16 == '\t') ?
+                (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment) * 4 :
                 (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment);
 
             // If the glyph is not whitespace, we need to add it to one of our atlases.
@@ -832,6 +1074,15 @@ namespace Ultraviolet.FreeType2
                     glyphAdjustY = strokeOffsetY - facade.GlyphBitmapTop;
                 }
 
+                // Apply scaling to metrics.
+                if (scale != 1f)
+                {
+                    glyphAdvance = (Int32)Math.Floor(glyphAdvance * scale);
+                    glyphAscent = (Int32)Math.Floor(glyphAscent * scale);
+                    reservationWidth = (Int32)Math.Floor(reservationWidth * scale);
+                    reservationHeight = (Int32)Math.Floor(reservationHeight * scale);
+                }
+
                 // Attempt to reserve space on one of the font's existing atlases.
                 foreach (var atlas in atlases)
                 {
@@ -865,16 +1116,29 @@ namespace Ultraviolet.FreeType2
                 BlitBitmap(ref glyphBmp, glyphAdjustX, glyphAdjustY, Color.White, blendMode, ref reservation);
             }
 
-            // Calculate the glyph's metrics.
-            glyphOffsetX = facade.GlyphBitmapLeft + offsetXAdjustment;
-            glyphOffsetY = (Ascender - glyphAscent) + offsetYAdjustment;
+            // Calculate the glyph's metrics and apply scaling.
+            var glyphWidth = facade.GlyphMetricWidth + glyphWidthAdjustment;
+            var glyphHeight = facade.GlyphMetricHeight + glyphHeightAdjustment;
+            if (scale != 1f)
+            {
+                glyphWidth = (Int32)Math.Floor(glyphWidth * scale);
+                glyphHeight = (Int32)Math.Floor(glyphHeight * scale);
+                glyphOffsetX = (Int32)Math.Floor(facade.GlyphBitmapLeft * scale) + offsetXAdjustment;
+                glyphOffsetY = (Ascender - glyphAscent) + offsetYAdjustment;
+            }
+            else
+            {
+                glyphOffsetX = facade.GlyphBitmapLeft + offsetXAdjustment;
+                glyphOffsetY = (Ascender - glyphAscent) + offsetYAdjustment;
+            }
 
+            // Create the glyph info structure for the glyph cache.
             info = new FreeTypeGlyphInfo
             {
                 UnicodeCharacter = cu32,
                 Advance = glyphAdvance,
-                Width = facade.GlyphMetricWidth + glyphWidthAdjustment,
-                Height = facade.GlyphMetricHeight + glyphHeightAdjustment,
+                Width = glyphWidth,
+                Height = glyphHeight,
                 OffsetX = glyphOffsetX,
                 OffsetY = glyphOffsetY,
                 Texture = reservation.Atlas,
@@ -943,15 +1207,20 @@ namespace Ultraviolet.FreeType2
         private IntPtr stroker;
 
         // Metric adjustments.
+        private readonly Single scale;
         private readonly Int32 totalDesignHeight;
         private readonly Int32 offsetXAdjustment;
         private readonly Int32 offsetYAdjustment;
-        private readonly Int32 ascenderAdjustment;
-        private readonly Int32 descenderAdjustment;
         private readonly Int32 hAdvanceAdjustment;
         private readonly Int32 vAdvanceAdjustment;
         private readonly Int32 glyphWidthAdjustment;
         private readonly Int32 glyphHeightAdjustment;
+
+        // Surfaces and buffers used for resizing glyphs.
+        private Single[] resamplingWeightsX;
+        private Single[] resamplingWeightsY;
+        private Surface2D resamplingSurface1;
+        private Surface2D resamplingSurface2;
 
         // Cache of atlases used to store glyph images.
         private readonly List<DynamicTextureAtlas> atlases = 
