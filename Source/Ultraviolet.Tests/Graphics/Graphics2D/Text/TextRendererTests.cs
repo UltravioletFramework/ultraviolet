@@ -690,11 +690,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
@@ -747,11 +743,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
@@ -804,11 +796,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
@@ -885,11 +873,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
@@ -1275,11 +1259,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 content.FontPath = "Fonts/NotoSansCJKjp-Regular";
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
@@ -1325,11 +1305,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 content.FontPath = "Fonts/SegoeUI12";
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(manager => content.Load(manager, fontKind))
                 .Render(uv =>
                 {
@@ -1371,10 +1347,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 "😀Lorem ipsum😀 dolor sit 😀🤣😀 amet 🤣 😀", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(new FreeTypeFontPlugin())
                 .WithContent(manager =>
                 {
                     content.LoadFreeType(manager);

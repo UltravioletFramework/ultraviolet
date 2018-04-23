@@ -64,6 +64,7 @@ namespace UvDebug
             configuration.SupportsHighDensityDisplayModes = true;
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
+            configuration.Plugins.Add(new global::Ultraviolet.FreeType2.FreeTypeFontPlugin());
             PopulateConfiguration(configuration);
 
             PresentationFoundation.Configure(configuration);
@@ -88,8 +89,6 @@ namespace UvDebug
             if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
                 UsePlatformSpecificFileSource();
             
-            global::Ultraviolet.FreeType2.FreeTypeFontPlugin.Initialize(Ultraviolet);
-
             base.OnInitialized();
         }
 

@@ -71,6 +71,8 @@ namespace Ultraviolet
 
             AcquireContext();
 
+            ConfigurePlugins(configuration);
+
             this.isRunningInServiceMode = configuration.EnableServiceMode;
             this.supportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
 
@@ -673,6 +675,25 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Configures the context's plugins.
+        /// </summary>
+        private void ConfigurePlugins(UltravioletConfiguration configuration)
+        {
+            while (configuration.Plugins.Any(x => !x.Configured))
+            {
+                var plugins = configuration.Plugins.ToList();
+                foreach (var plugin in plugins)
+                {
+                    if (plugin.Configured)
+                        continue;
+
+                    plugin.Configure(configuration);
+                    plugin.Configured = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes the context and marks it ready for use.
         /// </summary>
         protected void InitializeContext()
@@ -716,6 +737,19 @@ namespace Ultraviolet
             {
                 var initializer = initializerFactory();
                 initializer.Initialize(this, configuration.ViewProviderConfiguration);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the context's plugins.
+        /// </summary>
+        /// <param name="configuration">The Ultraviolet Framework configuration settings for this context.</param>
+        protected void InitializePlugins(UltravioletConfiguration configuration)
+        {
+            foreach (var plugin in configuration.Plugins)
+            {
+                plugin.Initialize(this, Factory);
+                plugin.Initialized = true;
             }
         }
 

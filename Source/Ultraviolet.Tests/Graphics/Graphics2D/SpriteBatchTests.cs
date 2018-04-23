@@ -20,11 +20,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             var spriteFont  = default(UltravioletFont);
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(content =>
                 {
                     spriteBatch = SpriteBatch.Create();
@@ -61,11 +57,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             var spriteFont = default(UltravioletFont);
 
             var result = GivenAnUltravioletApplication()
-                .WithInitialization(uv =>
-                {
-                    if (fontKind == FontKind.FreeType2)
-                        FreeTypeFontPlugin.Initialize(uv);
-                })
+                .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(content =>
                 {
                     spriteBatch = SpriteBatch.Create();
