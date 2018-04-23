@@ -8,13 +8,10 @@ namespace Ultraviolet.FreeType2
     /// <summary>
     /// Contains methods for managing the lifetime of the FreeType2 Font Plugin for Ultraviolet.
     /// </summary>
-    public static unsafe class FreeTypeFontPlugin
+    public unsafe class FreeTypeFontPlugin : UltravioletPlugin
     {
-        /// <summary>
-        /// Initializes the FreeType2 Font Plugin for Ultraviolet.
-        /// </summary>
-        /// <param name="uv">The Ultraviolet context.</param>
-        public static void Initialize(UltravioletContext uv)
+        /// <inheritdoc/>
+        public override void Initialize(UltravioletContext uv, UltravioletFactory factory)
         {
             Contract.Require(uv, nameof(uv));
 

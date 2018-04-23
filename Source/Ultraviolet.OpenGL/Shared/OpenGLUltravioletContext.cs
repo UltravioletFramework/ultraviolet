@@ -89,6 +89,7 @@ namespace Ultraviolet.OpenGL
             
             InitializeContext();
             InitializeViewProvider(configuration);
+            InitializePlugins(configuration);
         }
 
         /// <inheritdoc/>

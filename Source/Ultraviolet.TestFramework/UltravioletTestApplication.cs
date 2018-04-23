@@ -51,6 +51,19 @@ namespace Ultraviolet.TestFramework
         }
 
         /// <inheritdoc/>
+        public IUltravioletTestApplication WithPlugin(UltravioletPlugin plugin)
+        {
+            if (plugin == null)
+                return this;
+
+            if (this.plugins == null)
+                this.plugins = new List<UltravioletPlugin>();
+
+            this.plugins.Add(plugin);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public IUltravioletTestApplication WithInitialization(Action<UltravioletContext> initializer)
         {
             if (this.initializer != null)
@@ -247,7 +260,7 @@ namespace Ultraviolet.TestFramework
         /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            var configuration = new OpenGLUltravioletConfiguration();
+            var configuration = new OpenGLUltravioletConfiguration();           
             configuration.Headless = headless;
             configuration.EnableServiceMode = serviceMode;
             configuration.IsHardwareInputDisabled = true;
@@ -263,7 +276,13 @@ namespace Ultraviolet.TestFramework
 
             if (configureUPF)
                 PresentationFoundation.Configure(configuration);
-            
+
+            if (plugins != null)
+            {
+                foreach (var plugin in plugins)
+                    configuration.Plugins.Add(plugin);
+            }
+
             return new OpenGLUltravioletContext(this, configuration);
         }        
 
@@ -479,6 +498,7 @@ namespace Ultraviolet.TestFramework
         private Int32 framesToSkip;
         private DateTime startTime;
         private List<FrameAction> frameActions;
+        private List<UltravioletPlugin> plugins;
 
         // The render target to which the test scene will be rendered.
         private RenderTarget2D rtarget;

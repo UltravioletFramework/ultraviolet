@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Ultraviolet.Graphics;
+using System.Collections.Generic;
 
 namespace Ultraviolet
 {
@@ -51,6 +52,11 @@ namespace Ultraviolet
             AudioSubsystemAssembly = $"{asmname}, Version={version}, Culture=neutral, processorArchitecture=MSIL";
 #endif
         }
+
+        /// <summary>
+        /// Gets the list of plugins which will be loaded by the Ultraviolet context.
+        /// </summary>
+        public UltravioletPluginCollection Plugins { get; } = new UltravioletPluginCollection();
 
         /// <summary>
         /// Gets or sets the <see cref="RenderTargetUsage"/> value which is used by the back buffer.
