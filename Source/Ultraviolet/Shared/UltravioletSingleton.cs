@@ -30,14 +30,12 @@ namespace Ultraviolet
         {
             Contract.Require(initializer, nameof(initializer));
 
-            this.flags = flags;
+            this.Flags = flags;
             this.initializer = initializer;
 
             var uv = UltravioletContext.RequestCurrent();
-            if (uv != null && uv.IsInitialized && !uv.Disposing && !uv.Disposed && ShouldInitializeResource(uv))
-            {
-                resource = initializer(uv);
-            }
+            if (uv != null && uv.IsInitialized)
+                InitializeResource();
 
             UltravioletContext.ContextInitialized += UltravioletContext_ContextInitialized;
             UltravioletContext.ContextInvalidated += UltravioletContext_ContextInvalidated;
@@ -54,12 +52,25 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Initializes the singleton resource, assuming the Ultraviolet context is currently in a valid state.
+        /// </summary>
+        public void InitializeResource()
+        {
+            var uv = UltravioletContext.RequestCurrent();
+            if (uv == null || uv.Disposing || uv.Disposed)
+                return;
+
+            if (resource == null || resource.Ultraviolet != uv)
+            {
+                if (ShouldInitializeResource(uv))
+                    resource = initializer(uv);
+            }
+        }
+
+        /// <summary>
         /// Gets the singleton's flags.
         /// </summary>
-        public UltravioletSingletonFlags Flags
-        {
-            get { return flags; }
-        }
+        public UltravioletSingletonFlags Flags { get; }
 
         /// <summary>
         /// Gets the bound resource.
@@ -79,29 +90,13 @@ namespace Ultraviolet
         /// </summary>
         private Boolean ShouldInitializeResource(UltravioletContext uv)
         {
-            var disabledInServiceMode = (flags & UltravioletSingletonFlags.DisabledInServiceMode) == UltravioletSingletonFlags.DisabledInServiceMode;
+            var disabledInServiceMode = (Flags & UltravioletSingletonFlags.DisabledInServiceMode) == UltravioletSingletonFlags.DisabledInServiceMode;
             if (disabledInServiceMode && uv.IsRunningInServiceMode)
                 return false;
 
             return true;
         }
-
-        /// <summary>
-        /// Initializes the singleton resource.
-        /// </summary>
-        private void InitializeResource()
-        {
-            var uv = UltravioletContext.RequestCurrent();
-            if (uv == null)
-                return;
-
-            if (resource == null || resource.Ultraviolet != uv)
-            {
-                if (ShouldInitializeResource(uv))
-                    resource = initializer(uv);
-            }
-        }
-
+        
         /// <summary>
         /// Handles the <see cref="UltravioletContext.ContextInitialized"/> event.
         /// </summary>
@@ -118,11 +113,8 @@ namespace Ultraviolet
             SafeDispose.DisposeRef(ref resource);
         }
 
-        // Property values.
-        private readonly UltravioletSingletonFlags flags;
-        private T resource;
-
         // State values.
         private readonly Func<UltravioletContext, T> initializer;
+        private T resource;
     }
 }
