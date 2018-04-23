@@ -50,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Diagnostics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Layout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Types.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\CompositeUvssDocumentChild.cs" />
