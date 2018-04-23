@@ -131,7 +131,7 @@ namespace Ultraviolet.FreeType2.Native
                 throw new InvalidOperationException(FreeTypeStrings.FontDoesNotHaveBitmapStrikes);
 
             Int32 GetFixedSizeInPixels(IntPtr face, Int32 ix) =>
-                FreeTypeCalc.F26Dot6ToInt32(Use64BitInterface ? ((FT_FaceRec64*)face)->available_sizes[ix].height : ((FT_FaceRec32*)face)->available_sizes[ix].height);
+                Use64BitInterface ? ((FT_FaceRec64*)face)->available_sizes[ix].height : ((FT_FaceRec32*)face)->available_sizes[ix].height;
 
             var bestMatchIx = 0;
             var bestMatchDiff = Math.Abs(GetFixedSizeInPixels(face, 0) - sizeInPixels);
