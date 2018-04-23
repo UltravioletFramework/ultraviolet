@@ -15,6 +15,11 @@ namespace Ultraviolet.FreeType2
         public Boolean UseClosestPixelSize { get; private set; } = false;
 
         /// <summary>
+        /// Gets the scaling factor which is applied to the font's glyphs.
+        /// </summary>
+        public Single Scale { get; private set; } = 1f;
+
+        /// <summary>
         /// Gets the width, in pixels, of the texture atlases which contain the font's glyphs.
         /// </summary>
         public Int32 AtlasWidth { get; private set; } = 1024;
@@ -58,6 +63,11 @@ namespace Ultraviolet.FreeType2
         /// Gets an adjustment, in pixels, which is added to the face's descender.
         /// </summary>
         public Int32 AdjustDescender { get; private set; } = 0;
+
+        /// <summary>
+        /// Gets an adjustment, in pixels, which is added to the face's line spacing.
+        /// </summary>
+        public Int32 AdjustLineSpacing { get; private set; } = 0;
 
         /// <summary>
         /// Gets an adjustment, in pixels, which is applied to the horizontal advance of the face's glyphs.
