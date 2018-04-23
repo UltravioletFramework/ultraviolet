@@ -46,8 +46,7 @@ namespace Ultraviolet.TestFramework
         /// <inheritdoc/>
         public IUltravioletTestApplication WithPresentationFoundationConfigured()
         {
-            configureUPF = true;
-            return this;
+            return WithPlugin(new PresentationFoundationPlugin());
         }
 
         /// <inheritdoc/>
@@ -274,9 +273,6 @@ namespace Ultraviolet.TestFramework
             if (audioImplementation != null)
                 configuration.SelectAudioImplementation(audioImplementation.Value);
 
-            if (configureUPF)
-                PresentationFoundation.Configure(configuration);
-
             if (plugins != null)
             {
                 foreach (var plugin in plugins)
@@ -484,7 +480,6 @@ namespace Ultraviolet.TestFramework
         private readonly Boolean headless;
         private readonly Boolean serviceMode;
         private AudioImplementation? audioImplementation;
-        private Boolean configureUPF;
         private Func<Boolean> shouldExit;
         private ContentManager content;
         private Action<UltravioletContext> initializer;
