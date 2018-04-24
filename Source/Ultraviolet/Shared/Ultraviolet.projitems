@@ -52,6 +52,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextShaper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextDirection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextScript.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonContractResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CurveKey.Equality.cs" />

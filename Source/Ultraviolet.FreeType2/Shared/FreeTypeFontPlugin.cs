@@ -1,4 +1,5 @@
 ﻿using System;
+using Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Core;
 
 namespace Ultraviolet.FreeType2
@@ -30,6 +31,8 @@ namespace Ultraviolet.FreeType2
             }
 
             content.RegisterImportersAndProcessors(typeof(FreeTypeFontPlugin).Assembly);
+
+            factory.SetFactoryMethod<TextShaperFactory>((uvctx, capacity) => new HarfBuzzTextShaper(uvctx, capacity));
         }
 
         /// <summary>
