@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeLineCapMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeCalc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HarfBuzzTextShaper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_FACE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_LOAD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
@@ -76,6 +77,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphSlotRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_LibraryRec.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextScriptUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextDirectionUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\hb_direction_t.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\hb_script_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromXDocument.cs" />

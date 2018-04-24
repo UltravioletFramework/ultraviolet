@@ -89,7 +89,7 @@ namespace UvDebug
         {
             if (!SetFileSourceFromManifestIfExists("UvDebug.Content.uvarc"))
                 UsePlatformSpecificFileSource();
-            
+
             base.OnInitialized();
         }
 
