@@ -50,7 +50,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     textRenderer.RegisterFont("header", content.Load<SpriteFont>("Fonts/Garamond"));
                     textRenderer.RegisterFont("text", content.Load<SpriteFont>("Fonts/SegoeUI"));
 
-                    tableTexture = Texture2D.Create(1, 1);
+                    tableTexture = Texture2D.CreateTexture(1, 1);
                     tableTexture.SetData(new[] { Color.White });
 
                     tableLayout     = content.Load<TextTableLayout>("Tables/TestTextTable");
@@ -109,7 +109,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     textRenderer.RegisterFont("header", content.Load<SpriteFont>("Fonts/Garamond"));
                     textRenderer.RegisterFont("text", content.Load<SpriteFont>("Fonts/SegoeUI"));
 
-                    tableTexture = Texture2D.Create(1, 1);
+                    tableTexture = Texture2D.CreateTexture(1, 1);
                     tableTexture.SetData(new[] { Color.White });
 
                     tableLayout = content.Load<TextTableLayout>("Tables/TestTextTableJson");

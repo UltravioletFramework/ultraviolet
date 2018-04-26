@@ -566,7 +566,7 @@ namespace Ultraviolet.FreeType2
             if (srf == null)
             {
                 srf?.Dispose();
-                srf = Surface2D.Create(w, h);
+                srf = Surface2D.Create(w, h, SurfaceOptions.LinearColor);
             }
             srf.Clear(Color.Transparent);
         }
@@ -1097,7 +1097,7 @@ namespace Ultraviolet.FreeType2
                 // Attempt to create a new atlas if we weren't able to make a reservation.
                 if (!reservationFound)
                 {
-                    var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing);
+                    var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing, TextureOptions.LinearColor);
                     atlas.Surface.Clear(Color.Transparent);
                     atlases.Add(atlas);
 

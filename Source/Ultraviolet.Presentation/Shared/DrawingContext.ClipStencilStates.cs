@@ -8,7 +8,7 @@ namespace Ultraviolet.Presentation
         private static readonly UltravioletSingleton<Texture2D> StencilTexture = 
             new UltravioletSingleton<Texture2D>(UltravioletSingletonFlags.DisabledInServiceMode, uv =>
             {
-                var texture = Texture2D.Create(1, 1);
+                var texture = Texture2D.CreateTexture(1, 1);
                 texture.SetData(new[] { Color.White });
                 return texture;
             });

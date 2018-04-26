@@ -317,8 +317,8 @@ namespace Ultraviolet.TestFramework
                 var width = MathUtil.FindNextPowerOfTwo(window.DrawableSize.Width);
                 var height = MathUtil.FindNextPowerOfTwo(window.DrawableSize.Height);
 
-                rtargetColorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, width, height);
-                rtargetDepthStencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, width, height);
+                rtargetColorBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, width, height);
+                rtargetDepthStencilBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth24Stencil8, width, height);
                 rtarget = RenderTarget2D.Create(width, height);
                 rtarget.Attach(rtargetColorBuffer);
                 rtarget.Attach(rtargetDepthStencilBuffer);

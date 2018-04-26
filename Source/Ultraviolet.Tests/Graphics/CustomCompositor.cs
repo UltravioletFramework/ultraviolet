@@ -23,26 +23,26 @@ namespace Ultraviolet.Tests.Graphics
         {
             rtScene = RenderTarget2D.Create(BufferWidth, BufferHeight);
 
-            rtSceneColor = RenderBuffer2D.Create(RenderBufferFormat.Color, BufferWidth, BufferHeight);
+            rtSceneColor = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, BufferWidth, BufferHeight);
             rtScene.Attach(rtSceneColor);
 
-            rtSceneDepthStencil = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, BufferWidth, BufferHeight);
+            rtSceneDepthStencil = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth24Stencil8, BufferWidth, BufferHeight);
             rtScene.Attach(rtSceneDepthStencil);
 
             rtInterface = RenderTarget2D.Create(BufferWidth, BufferHeight);
 
-            rtInterfaceColor = RenderBuffer2D.Create(RenderBufferFormat.Color, BufferWidth, BufferHeight);
+            rtInterfaceColor = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, BufferWidth, BufferHeight);
             rtInterface.Attach(rtInterfaceColor);
 
-            rtInterfaceDepthStencil = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, BufferWidth, BufferHeight);
+            rtInterfaceDepthStencil = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth24Stencil8, BufferWidth, BufferHeight);
             rtInterface.Attach(rtInterfaceDepthStencil);
 
             rtComposition = RenderTarget2D.Create(BufferWidth, BufferHeight, RenderTargetUsage.PreserveContents);
 
-            rtCompositionColor = RenderBuffer2D.Create(RenderBufferFormat.Color, BufferWidth, BufferHeight);
+            rtCompositionColor = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, BufferWidth, BufferHeight);
             rtComposition.Attach(rtCompositionColor);
 
-            rtCompositionDepthStencil = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, BufferWidth, BufferHeight);
+            rtCompositionDepthStencil = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth24Stencil8, BufferWidth, BufferHeight);
             rtComposition.Attach(rtCompositionDepthStencil);
 
             spriteBatch = SpriteBatch.Create();

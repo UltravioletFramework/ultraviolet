@@ -1096,7 +1096,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     spriteBatch = SpriteBatch.Create();
                     spriteFont = content.Load<SpriteFont>("Fonts/Garamond");
                     textRenderer = new TextRenderer();
-                    blankTexture = Texture2D.Create(1, 1);
+                    blankTexture = Texture2D.CreateTexture(1, 1);
                     blankTexture.SetData(new[] { Color.White });
                 })
                 .Render(uv =>

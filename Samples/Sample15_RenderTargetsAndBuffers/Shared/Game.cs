@@ -52,8 +52,8 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers
 
             // A render target is composed of one or more render buffers. Each render buffer represents a particular
             // output channel from a pixel shader, such as color or depth.
-            this.rbufferColor = RenderBuffer2D.Create(RenderBufferFormat.Color, 256, 256);
-            this.rbufferDepth = RenderBuffer2D.Create(RenderBufferFormat.Depth16, 256, 256);
+            this.rbufferColor = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, 256, 256);
+            this.rbufferDepth = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth16, 256, 256);
             this.rtarget = RenderTarget2D.Create(256, 256);
 
             // Render buffers must be explicitly attached to a render target before they can be used.
