@@ -13,21 +13,13 @@ namespace Ultraviolet.OpenGL
         /// Gets or sets the minimum OpenGL version that is required by the application.
         /// This cannot be lower than the minimum version required by Ultraviolet itself.
         /// </summary>
-        public Version MinimumOpenGLVersion
-        {
-            get { return minimumOpenGLVersion; }
-            set { minimumOpenGLVersion = value; }
-        }
+        public Version MinimumOpenGLVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum OpenGL ES version that is required by the application.
         /// This cannot be lower than the minimum version required by Ultraviolet itself.
         /// </summary>
-        public Version MinimumOpenGLESVersion
-        {
-            get { return minimumOpenGLESVersion; }
-            set { minimumOpenGLESVersion = value; }
-        }
+        public Version MinimumOpenGLESVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the minimum number of bits in the depth buffer.
@@ -88,31 +80,19 @@ namespace Ultraviolet.OpenGL
         /// <summary>
         /// Gets or sets a value indicating whether the context will disable hardware input by default.
         /// </summary>
-        public Boolean IsHardwareInputDisabled
-        {
-            get { return isHardwareInputDisabled; }
-            set { isHardwareInputDisabled = value; }
-        }
+        public Boolean IsHardwareInputDisabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the default framebuffer should be 32-bit (if <see langword="true"/>)
         /// or 16-bit (if <see langword="false"/>). 
         /// </summary>
-        public Boolean Use32BitFramebuffer
-        {
-            get { return use32BitFramebuffer; }
-            set { use32BitFramebuffer = value; }
-        }
+        public Boolean Use32BitFramebuffer { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Ultraviolet should attempt to use buffer mapping when
         /// rendering geometry, if it is available on the current driver.
         /// </summary>
-        public Boolean UseBufferMapping
-        {
-            get { return useBufferMapping; }
-            set { useBufferMapping = value; }
-        }
+        public Boolean UseBufferMapping { get; set; }
 
         /// <summary>
         /// The default configuration for the OpenGL implementation.
@@ -120,14 +100,9 @@ namespace Ultraviolet.OpenGL
         public static readonly OpenGLUltravioletConfiguration Default = new OpenGLUltravioletConfiguration();
 
         // Property values.
-        private Version minimumOpenGLVersion;
-        private Version minimumOpenGLESVersion;
         private Int32 backBufferDepthSize = 16;
         private Int32 backBufferStencilSize = 1;
         private Int32 multiSampleBuffers = 0;
         private Int32 multiSampleSamples = 0;
-        private Boolean isHardwareInputDisabled;
-        private Boolean use32BitFramebuffer;
-        private Boolean useBufferMapping = true;
     }
 }
