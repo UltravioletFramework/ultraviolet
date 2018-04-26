@@ -245,6 +245,7 @@
     <Compile Include="BoundingBoxTests.cs" />
     <Compile Include="BoundingSphereTests.cs" />
     <Content Include="Content\Fonts\Noto-LICENSE.txt" />
+    <Compile Include="Graphics\ColorEncoding.cs" />
     <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
     <Compile Include="Graphics\Graphics2D\FontKind.cs" />
@@ -400,9 +401,33 @@
     <Compile Include="CircleTests.cs" />
     <Compile Include="Size2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Content\Textures\ColorBlendFg.uvmeta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\ColorBlendBg.uvmeta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2_sRGB%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\ColorBlendBg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures\ColorBlendFg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28sRGB%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Srgb%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">

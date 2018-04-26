@@ -10,15 +10,26 @@ namespace Ultraviolet.Tests.Graphics
     public partial class UltravioletGraphicsTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [TestCase(ColorEncoding.Linear)]
+        [TestCase(ColorEncoding.Srgb)]
         [Category("Rendering")]
         [Description("Ensures that the Graphics subsystem can render a single untextured triangle.")]
-        public void UltravioletGraphics_CanRenderAColoredTriangle()
+        public void UltravioletGraphics_CanRenderAColoredTriangle(ColorEncoding encoding)
         {
             var effect = default(BasicEffect);
             var vertexBuffer = default(VertexBuffer);
             var geometryStream = default(GeometryStream);
 
             var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    if (encoding == ColorEncoding.Srgb)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
                 .WithContent(content =>
                 {
                     effect = BasicEffect.Create();
@@ -58,8 +69,16 @@ namespace Ultraviolet.Tests.Graphics
                     }
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderAColoredTriangle.png");
+            if (encoding == ColorEncoding.Linear)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderAColoredTriangle.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderAColoredTriangle(Srgb).png");
+            }
         }
 
         [Test]
@@ -374,6 +393,6 @@ namespace Ultraviolet.Tests.Graphics
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRender3DTextures_FromPreprocessedAsset.png");
-        }
+        }        
     }
 }

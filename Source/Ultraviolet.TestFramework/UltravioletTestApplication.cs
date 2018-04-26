@@ -50,6 +50,13 @@ namespace Ultraviolet.TestFramework
         }
 
         /// <inheritdoc/>
+        public IUltravioletTestApplication WithConfiguration(Action<UltravioletConfiguration> configurer)
+        {
+            this.configurer = configurer;
+            return this;
+        }
+
+        /// <inheritdoc/>
         public IUltravioletTestApplication WithPlugin(UltravioletPlugin plugin)
         {
             if (plugin == null)
@@ -273,6 +280,8 @@ namespace Ultraviolet.TestFramework
             if (audioImplementation != null)
                 configuration.SelectAudioImplementation(audioImplementation.Value);
 
+            configurer?.Invoke(configuration);
+
             if (plugins != null)
             {
                 foreach (var plugin in plugins)
@@ -467,7 +476,11 @@ namespace Ultraviolet.TestFramework
                 {
                     if (x < windowWidth && y < windowHeight)
                     {
-                        bmp.SetPixel(x, y, System.Drawing.Color.FromArgb((int)data[pixel].ToArgb()));
+                        var rawColor = data[pixel];
+                        
+                        bmp.SetPixel(x, y, 
+                            System.Drawing.Color.FromArgb(255, 
+                            System.Drawing.Color.FromArgb((Int32)rawColor.ToArgb())));
                     }
                     pixel++;
                 }
@@ -482,6 +495,7 @@ namespace Ultraviolet.TestFramework
         private AudioImplementation? audioImplementation;
         private Func<Boolean> shouldExit;
         private ContentManager content;
+        private Action<UltravioletConfiguration> configurer;
         private Action<UltravioletContext> initializer;
         private Action<ContentManager> loader;
         private Action<UltravioletContext> renderer;
