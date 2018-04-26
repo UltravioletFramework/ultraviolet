@@ -235,7 +235,7 @@ namespace Ultraviolet.SDL2.Graphics
 
             if (unprocessed)
             {
-                return Texture2D.CreateTexture((IntPtr)NativePtr->pixels, Width, Height, BytesPerPixel);
+                return Texture2D.Create((IntPtr)NativePtr->pixels, Width, Height, BytesPerPixel);
             }
             else
             {
@@ -247,7 +247,7 @@ namespace Ultraviolet.SDL2.Graphics
                     copysurf.Flip(Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? 
                         SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None);
 
-                    return Texture2D.CreateTexture((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
+                    return Texture2D.Create((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
                 }
             }
         }

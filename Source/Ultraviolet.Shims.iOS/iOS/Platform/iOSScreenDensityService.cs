@@ -114,7 +114,7 @@ namespace Ultraviolet.Shims.iOS.Platform
             densityX *= 96f / 72f;
             densityY *= 96f / 72f;
 
-            var displayIsScaled = !UltravioletContext.DemandCurrent().SupportsHighDensityDisplayModes;
+            var displayIsScaled = !UltravioletContext.DemandCurrent().Properties.SupportsHighDensityDisplayModes;
             if (displayIsScaled)
             {
                 densityX /= deviceScale;
