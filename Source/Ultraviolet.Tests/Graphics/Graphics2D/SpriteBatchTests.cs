@@ -10,16 +10,27 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
     public class SpriteBatchTests : UltravioletApplicationTestFramework
     {
         [Test]
-        [TestCase(FontKind.SpriteFont)]
-        [TestCase(FontKind.FreeType2)]
+        [TestCase(FontKind.SpriteFont, ColorEncoding.Linear)]
+        [TestCase(FontKind.SpriteFont, ColorEncoding.Srgb)]
+        [TestCase(FontKind.FreeType2, ColorEncoding.Linear)]
+        [TestCase(FontKind.FreeType2, ColorEncoding.Srgb)]
         [Category("Rendering")]
         [Description("Ensures that the SpriteBatch class can render text using the DrawString() method.")]
-        public void SpriteBatch_CanRenderSimpleStrings(FontKind fontKind)
+        public void SpriteBatch_CanRenderSimpleStrings(FontKind fontKind, ColorEncoding encoding)
         {
             var spriteBatch = default(SpriteBatch);
             var spriteFont  = default(UltravioletFont);
 
             var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    if (encoding == ColorEncoding.Srgb)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
                 .WithPlugin(fontKind == FontKind.FreeType2 ? new FreeTypeFontPlugin() : null)
                 .WithContent(content =>
                 {
@@ -41,8 +52,16 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             }
             else
             {
-                TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2).png");
+                if (encoding == ColorEncoding.Linear)
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2).png");
+                }
+                else
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2_sRGB).png");
+                }
             }
         }
 
@@ -147,6 +166,53 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_RendersSpecifiedSubstitutionGlyphForSpriteFont.png");
+        }
+
+        [Test]
+        [TestCase(ColorEncoding.Linear)]
+        [TestCase(ColorEncoding.Srgb)]
+        [Category("Rendering")]
+        [Description("Ensures that SpriteBatch performs color blending correctly.")]
+        public void SpriteBatch_CanBlendColorsCorrectly(ColorEncoding encoding)
+        {
+            var spriteBatch = default(SpriteBatch);
+            var blendBg = default(Texture2D);
+            var blendFg = default(Texture2D);
+
+            var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    if (encoding == ColorEncoding.Srgb)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    blendBg = content.Load<Texture2D>("Textures/ColorBlendBg");
+                    blendFg = content.Load<Texture2D>("Textures/ColorBlendFg");
+                })
+                .Render(uv =>
+                {
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    spriteBatch.Draw(blendBg, Vector2.Zero, Color.White);
+                    spriteBatch.Draw(blendFg, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+                });
+
+            if (encoding == ColorEncoding.Linear)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanBlendColorsCorrectly.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanBlendColorsCorrectly(sRGB).png");
+            }
         }
     }
 }

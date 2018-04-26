@@ -29,6 +29,13 @@ namespace Ultraviolet.TestFramework
         /// </summary>
         /// <param name="plugin">The plugin to load.</param>
         /// <returns>The Ultraviolet test application.</returns>
+        IUltravioletTestApplication WithConfiguration(Action<UltravioletConfiguration> configurer);
+
+        /// <summary>
+        /// Specifies that a plugin should be added to the list which is loaded by Ultraviolet.
+        /// </summary>
+        /// <param name="plugin">The plugin to load.</param>
+        /// <returns>The Ultraviolet test application.</returns>
         IUltravioletTestApplication WithPlugin(UltravioletPlugin plugin);
 
         /// <summary>
