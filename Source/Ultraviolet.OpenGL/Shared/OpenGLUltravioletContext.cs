@@ -288,6 +288,22 @@ namespace Ultraviolet.OpenGL
                 if (SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5) < 0)
                     throw new SDL2Exception();
             }
+
+            if (configuration.SrgbBuffersEnabled)
+            {
+                if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1) < 0)
+                    throw new SDL2Exception();
+
+                unsafe
+                {
+                    var value = 0;
+                    if (SDL_GL_GetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, &value) < 0)
+                        throw new SDL2Exception();
+
+                    if (value != 1)
+                        configuration.SrgbBuffersEnabled = false;
+                }
+            }
         }
 
         // Ultraviolet subsystems.
