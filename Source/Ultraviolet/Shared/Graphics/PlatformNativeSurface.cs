@@ -116,6 +116,11 @@ namespace Ultraviolet.Graphics
         public abstract Boolean IsAlphaPremultiplied { get; }
         
         /// <summary>
+        /// Gets or sets a value indicating whether the surface's color is sRGB encoded.
+        /// </summary>
+        public abstract Boolean SrgbEncoded { get; set; }
+
+        /// <summary>
         /// Gets the number of bytes per pixel on this surface.
         /// </summary>
         public abstract Int32 BytesPerPixel { get; }

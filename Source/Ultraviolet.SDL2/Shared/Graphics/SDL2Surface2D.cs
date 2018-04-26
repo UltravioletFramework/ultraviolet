@@ -275,7 +275,11 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
-        public override Boolean SrgbEncoded { get; set; }
+        public override Boolean SrgbEncoded
+        {
+            get => nativesurf.SrgbEncoded;
+            set => nativesurf.SrgbEncoded = value;
+        }
 
         /// <inheritdoc/>
         public override Int32 Width => nativesurf.Width;
