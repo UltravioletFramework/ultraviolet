@@ -542,23 +542,6 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Converts an SRGB color value to a linear color value.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Color ConvertSrgbColorToLinear(Color c)
-        {
-            Double ConvertSrgbColorChannelToLinear(Double x) =>
-                (x < 0.04045) ? x / 12.92 : Math.Pow((x + 0.055) / 1.055, 2.4);
-
-            var r = (Single)ConvertSrgbColorChannelToLinear(c.R / 255.0);
-            var g = (Single)ConvertSrgbColorChannelToLinear(c.G / 255.0);
-            var b = (Single)ConvertSrgbColorChannelToLinear(c.B / 255.0);
-            var a = c.A / 255.0f;
-
-            return new Color(r, g, b, a);
-        }
-
-        /// <summary>
         /// Ensures that the specified scratch surface exists and has at least the specified size.
         /// </summary>
         private static void CreateResamplingSurface(ref Surface2D srf, Int32 w, Int32 h)
@@ -854,7 +837,7 @@ namespace Ultraviolet.FreeType2
                 {
                     for (int x = 0; x < bmpWidth; x++)
                     {
-                        var srcColor = ConvertSrgbColorToLinear(*pSrc++);
+                        var srcColor = Color.ConvertSrgbColorToLinear(*pSrc++);
                         var dstColor = new Color(srcColor.B, srcColor.G, srcColor.R, srcColor.A);
                         *pDst++ = dstColor;
                     }
@@ -863,7 +846,7 @@ namespace Ultraviolet.FreeType2
                 {
                     for (int x = 0; x < bmpWidth; x++)
                     {
-                        var srcColor = ConvertSrgbColorToLinear(*pSrc++);
+                        var srcColor = Color.ConvertSrgbColorToLinear(*pSrc++);
                         var dstColor = *pDst;
 
                         *pDst++ = AlphaBlend(srcColor, dstColor);
