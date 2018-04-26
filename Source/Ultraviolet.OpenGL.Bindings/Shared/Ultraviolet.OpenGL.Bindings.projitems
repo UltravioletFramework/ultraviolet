@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DSA\DirectStateAccessImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DSA\DirectStateAccessNullImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_debug_output.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_framebuffer_sRGB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_map_buffer_alignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_map_buffer_range.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ARB_sampler_objects.cs" />
