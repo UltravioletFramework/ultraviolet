@@ -601,10 +601,10 @@ namespace Ultraviolet.FreeType2
             {
                 var pos = ((i + 0.5f) * ratio) - 0.5f;
                 var min = (Int32)Math.Ceiling(pos - radius);
-                var max = (Int32)Math.Floor(pos + radius);
+                var max = min + weightCountPerPixel;
                 var sum = 0.0f;
 
-                for (var j = min; j <= max; j++)
+                for (var j = min; j < max; j++)
                 {
                     var weight = TriangleKernel((j - pos) / scale);
                     sum += weight;
