@@ -54,6 +54,12 @@ namespace Ultraviolet.Graphics
         public abstract Boolean SupportsDoublePrecisionVertexAttributes { get; }
 
         /// <summary>
+        /// Gets a value indicating whether hardware sRGB encoding of textures and render
+        /// buffers is supported by and enabled for the current device.
+        /// </summary>
+        public abstract Boolean SrgbEncodingEnabled { get; }
+
+        /// <summary>
         /// Gets the maximum texture size supported by the device.
         /// </summary>
         public abstract Int32 MaximumTextureSize { get; }

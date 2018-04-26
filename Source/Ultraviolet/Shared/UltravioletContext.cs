@@ -74,10 +74,17 @@ namespace Ultraviolet
             ConfigurePlugins(configuration);
 
             this.isRunningInServiceMode = configuration.EnableServiceMode;
-            this.supportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
+
+            this.Properties = new UltravioletContextProperties();
+            this.Properties.SupportsHighDensityDisplayModes = configuration.SupportsHighDensityDisplayModes;
+            this.Properties.SrgbDefaultForSurface2D = configuration.SrgbDefaultForSurface2D;
+            this.Properties.SrgbDefaultForSurface3D = configuration.SrgbDefaultForSurface3D;
+            this.Properties.SrgbDefaultForTexture2D = configuration.SrgbDefaultForTexture2D;
+            this.Properties.SrgbDefaultForTexture3D = configuration.SrgbDefaultForTexture3D;
+            this.Properties.SrgbDefaultForRenderBuffer2D = configuration.SrgbDefaultForRenderBuffer2D;
 
             if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR)
-                this.supportsHighDensityDisplayModes = false;
+                this.Properties.SupportsHighDensityDisplayModes = false;
 
             this.host = host;
 
@@ -462,6 +469,11 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Gets the context's runtime properties.
+        /// </summary>
+        public UltravioletContextProperties Properties { get; }
+
+        /// <summary>
         /// Gets the runtime on which this context is running.
         /// </summary>
         public UltravioletRuntime Runtime => UltravioletPlatformInfo.CurrentRuntime;
@@ -490,13 +502,6 @@ namespace Ultraviolet
         /// Gets the assembly which implements views for the user interface subsystem.
         /// </summary>
         public Assembly ViewProviderAssembly => viewProviderAssembly;
-
-        /// <summary>
-        /// Gets a value indicating whether the context supports high-density display modes
-        /// such as Retina and Retina HD. This allows the application to make use of every physical pixel 
-        /// on the screen, rather than being scaled to use logical pixels.
-        /// </summary>
-        public Boolean SupportsHighDensityDisplayModes => supportsHighDensityDisplayModes;
 
         /// <summary>
         /// Gets or sets a value indicating whether the context is currently processing messages
@@ -1044,7 +1049,6 @@ namespace Ultraviolet
         private readonly Thread thread;
         private Assembly platformCompatibilityShimAssembly;
         private Assembly viewProviderAssembly;
-        private Boolean supportsHighDensityDisplayModes;
         private Boolean isRunningInServiceMode;
 
         // The context's list of pending tasks.

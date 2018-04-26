@@ -956,7 +956,7 @@ namespace Ultraviolet.SDL2.Platform
             ((SDL2UltravioletDisplay)Display)?.RefreshDensityInformation();
 
             // On Windows, resize the window to match the new scale.
-            if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.SupportsHighDensityDisplayModes)
+            if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.Properties.SupportsHighDensityDisplayModes)
             {
                 var factor = (reportedScale ?? Display.DensityScale) / windowScale;
 

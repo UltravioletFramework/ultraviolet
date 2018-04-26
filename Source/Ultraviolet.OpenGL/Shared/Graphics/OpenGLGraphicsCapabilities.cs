@@ -80,6 +80,11 @@ namespace Ultraviolet.OpenGL.Graphics
             // If we've been explicitly told to disable buffer mapping, override the caps from the driver.
             if (!configuration.UseBufferMapping)
                 this.SupportsMapBufferRange = false;
+
+            // SRGB is always supported unless we're on GLES2, in which case we need an extension.
+            // If it wasn't explicitly enabled in the configuration, we treat it like it's not supported.
+            if (configuration.SrgbBuffersEnabled)
+                SrgbEncodingEnabled = !gl.IsGLES2 || gl.IsExtensionSupported("GL_EXT_sRGB");
         }
 
         /// <inheritdoc/>
@@ -105,6 +110,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public override Boolean SupportsDoublePrecisionVertexAttributes { get; }
+
+        /// <inheritdoc/>
+        public override Boolean SrgbEncodingEnabled { get; }
 
         /// <summary>
         /// Gets a value indicating whether the OpenGL context supports glMapBufferRange().
