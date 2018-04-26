@@ -266,6 +266,9 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Boolean HasColorBuffer => colorAttachments > 0;
 
         /// <inheritdoc/>
+        public override Boolean HasSrgbEncodedColorBuffer => hasSrgbEncodedColorBuffer;
+
+        /// <inheritdoc/>
         public override Boolean HasDepthBuffer => depthAttachments > 0;
 
         /// <inheritdoc/>
@@ -338,6 +341,11 @@ namespace Ultraviolet.OpenGL.Graphics
         private void AttachColorBuffer(OpenGLRenderBuffer2D buffer)
         {
             Contract.Ensure(colorAttachments < 16, OpenGLStrings.RenderBufferExceedsTargetCapacity);
+
+            if (colorAttachments > 0 && buffer.SrgbEncoded != hasSrgbEncodedColorBuffer)
+                throw new InvalidOperationException(UltravioletStrings.TargetsCannotHaveMultipleEncodings);
+
+            hasSrgbEncodedColorBuffer = buffer.SrgbEncoded;
 
             if (buffer.WillNotBeSampled)
             {
@@ -563,6 +571,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private readonly Boolean glFramebufferTextureIsSupported;
         private readonly Boolean glDrawBufferIsSupported;
         private readonly Boolean glDrawBuffersIsSupported;
+        private Boolean hasSrgbEncodedColorBuffer;
         private UInt32 framebuffer;
         private Int32 colorAttachments;
         private Int32 depthAttachments;
