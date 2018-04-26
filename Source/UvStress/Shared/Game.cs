@@ -83,7 +83,7 @@ namespace UvStress
             this.spriteFont = content.Load<SpriteFont>("Fonts/SegoeUI");
             this.spriteBatch = SpriteBatch.Create();
 
-            this.blankTexture = Texture2D.Create(1, 1);
+            this.blankTexture = Texture2D.CreateTexture(1, 1);
             this.blankTexture.SetData(new[] { Color.White });
 
             this.effect = BasicEffect.Create();

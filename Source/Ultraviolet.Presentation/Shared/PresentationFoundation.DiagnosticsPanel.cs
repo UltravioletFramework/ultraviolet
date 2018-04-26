@@ -168,7 +168,7 @@ namespace Ultraviolet.Presentation
                 using (var stream = asm.GetManifestResourceStream("Ultraviolet.Presentation.Resources.Content.Fonts.SegoeUITexture.png"))
                     font = content.LoadFromStream<UltravioletFont>(stream, "png");
 
-                blankTexture = Texture2D.Create(1, 1);
+                blankTexture = Texture2D.CreateTexture(1, 1);
                 blankTexture.SetData(new[] { Color.White });
             }
 

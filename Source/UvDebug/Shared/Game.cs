@@ -62,6 +62,8 @@ namespace UvDebug
         {
             var configuration = new OpenGLUltravioletConfiguration();
             configuration.SupportsHighDensityDisplayModes = true;
+            configuration.SrgbBuffersEnabled = true;
+            configuration.SrgbDefaultForTexture2D = true;
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             configuration.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());

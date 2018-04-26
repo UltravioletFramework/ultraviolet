@@ -18,20 +18,20 @@ namespace Ultraviolet.Presentation
         {
             renderTarget = RenderTarget2D.Create(1, 1);
 
-            colorBuffer = RenderBuffer2D.Create(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.None);
+            colorBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.None);
             renderTarget.Attach(colorBuffer);
 
             if (uv.GetGraphics().Capabilities.SupportsDepthStencilTextures)
             {
-                depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth24Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
+                depthBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth24Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
                 renderTarget.Attach(depthBuffer);
             }
             else
             {
-                depthBuffer = RenderBuffer2D.Create(RenderBufferFormat.Depth16, 1, 1, RenderBufferOptions.WillNotBeSampled);
+                depthBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Depth16, 1, 1, RenderBufferOptions.WillNotBeSampled);
                 renderTarget.Attach(depthBuffer);
 
-                stencilBuffer = RenderBuffer2D.Create(RenderBufferFormat.Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
+                stencilBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Stencil8, 1, 1, RenderBufferOptions.WillNotBeSampled);
                 renderTarget.Attach(stencilBuffer);
             }
         }

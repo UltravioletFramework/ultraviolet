@@ -216,7 +216,7 @@ namespace Ultraviolet.Tests.Graphics
                 .WithContent(content =>
                 {
                     spriteBatch = SpriteBatch.Create();
-                    spriteTexture = Texture2D.Create(1, 1);
+                    spriteTexture = Texture2D.CreateTexture(1, 1);
                     spriteTexture.SetData(new Color[] { Color.White });
                 })
                 .Render(uv =>
