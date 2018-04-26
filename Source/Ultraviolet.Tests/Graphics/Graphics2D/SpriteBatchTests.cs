@@ -66,6 +66,40 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
         }
 
         [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the SpriteBatch class can render stroked FreeType2 text using the DrawString() method.")]
+        public void SpriteBatch_CanRenderStrokedSimpleStrings()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(UltravioletFont);
+
+            var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    config.SrgbBuffersEnabled = true;
+                    config.SrgbDefaultForTexture2D = true;
+                    config.SrgbDefaultForRenderBuffer2D = true;
+                })
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<UltravioletFont>("Fonts/FiraSansStroked");
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                    spriteBatch.DrawString(spriteFont.Regular, "Hello, world!", new Vector2(32, 32), Color.White);
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderStrokedSimpleStrings.png");
+        }
+
+        [Test]
         [TestCase(FontKind.SpriteFont)]
         [TestCase(FontKind.FreeType2)]
         [Category("Rendering")]
