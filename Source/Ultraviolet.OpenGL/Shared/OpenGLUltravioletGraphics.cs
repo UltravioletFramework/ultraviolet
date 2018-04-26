@@ -38,7 +38,7 @@ namespace Ultraviolet.OpenGL
                     throw new SDL2Exception();
                 if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &attemptedVersionMinor) < 0)
                     throw new SDL2Exception();
-                
+
                 var attemptedVersion = new Version(attemptedVersionMajor, attemptedVersionMinor, 0, 0);
 
                 var isGLES = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
@@ -79,6 +79,9 @@ namespace Ultraviolet.OpenGL
             }
             
             this.capabilities = new OpenGLGraphicsCapabilities(configuration);
+
+            if (capabilities.SrgbEncodingEnabled)
+                gl.Enable(gl.GL_FRAMEBUFFER_SRGB);
 
             this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture[maxTextureStages];
