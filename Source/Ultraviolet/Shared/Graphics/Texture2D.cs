@@ -11,8 +11,9 @@ namespace Ultraviolet.Graphics
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
     /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+    /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-    public delegate Texture2D Texture2DFromRawDataFactory(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel);
+    public delegate Texture2D Texture2DFromRawDataFactory(UltravioletContext uv, IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options);
 
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="Texture2D"/> class.
@@ -20,9 +21,9 @@ namespace Ultraviolet.Graphics
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
-    /// <param name="immutable">A value indicating whether the texture should be created with immutable storage.</param>
+    /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-    public delegate Texture2D Texture2DFactory(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable);
+    public delegate Texture2D Texture2DFactory(UltravioletContext uv, Int32 width, Int32 height, TextureOptions options);
 
     /// <summary>
     /// Represents a two-dimensional texture.
@@ -46,14 +47,15 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D Create(IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel)
+        public static Texture2D CreateTexture(IntPtr pixels, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options = TextureOptions.Default)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture2DFromRawDataFactory>()(uv, pixels, width, height, bytesPerPixel);
+            return uv.GetFactoryMethod<Texture2DFromRawDataFactory>()(uv, pixels, width, height, bytesPerPixel, options);
         }
 
         /// <summary>
@@ -61,26 +63,15 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D Create(Int32 width, Int32 height)
-        {
-            return Create(width, height, true);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="Texture2D"/> class.
-        /// </summary>
-        /// <param name="width">The texture's width in pixels.</param>
-        /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
-        /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D Create(Int32 width, Int32 height, Boolean immutable)
+        public static Texture2D CreateTexture(Int32 width, Int32 height, TextureOptions options = TextureOptions.Default)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height, immutable);
+            return uv.GetFactoryMethod<Texture2DFactory>()(uv, width, height, options);
         }
 
         /// <summary>
@@ -92,9 +83,9 @@ namespace Ultraviolet.Graphics
         /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D CreateDynamic(Int32 width, Int32 height, Object state, Action<Texture2D, Object> flushed)
+        public static Texture2D CreateDynamicTexture(Int32 width, Int32 height, Object state, Action<Texture2D, Object> flushed)
         {
-            return CreateDynamic(width, height, true, state, flushed);
+            return CreateDynamicTexture(width, height, TextureOptions.Default, state, flushed);
         }
 
         /// <summary>
@@ -103,18 +94,47 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture2D CreateDynamic(Int32 width, Int32 height, Boolean immutable, Object state, Action<Texture2D, Object> flushed)
+        public static Texture2D CreateDynamicTexture(Int32 width, Int32 height, TextureOptions options, Object state, Action<Texture2D, Object> flushed)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.Require(flushed, nameof(flushed));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<DynamicTexture2DFactory>()(uv, width, height, immutable, state, flushed);
+            return uv.GetFactoryMethod<DynamicTexture2DFactory>()(uv, width, height, options, state, flushed);
+        }
+        
+        /// <summary>
+        /// Creates a new instance of the <see cref="RenderBuffer2D"/> that represents a color buffer.
+        /// </summary>
+        /// <param name="width">The render buffer's width in pixels.</param>
+        /// <param name="height">The render buffer's height in pixels.</param>
+        /// <param name="options">The render buffer's configuration options.</param>
+        /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
+        public static RenderBuffer2D CreateRenderBuffer(Int32 width, Int32 height, RenderBufferOptions options = RenderBufferOptions.Default)
+        {
+            return CreateRenderBuffer(RenderBufferFormat.Color, width, height, options);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="RenderBuffer2D"/> class.
+        /// </summary>
+        /// <param name="format">A <see cref="RenderBufferFormat"/> value specifying the render buffer's data format.</param>
+        /// <param name="width">The render buffer's width in pixels.</param>
+        /// <param name="height">The render buffer's height in pixels.</param>
+        /// <param name="options">The render buffer's configuration options.</param>
+        /// <returns>The instance of <see cref="RenderBuffer2D"/> that was created.</returns>
+        public static RenderBuffer2D CreateRenderBuffer(RenderBufferFormat format, Int32 width, Int32 height, RenderBufferOptions options = RenderBufferOptions.Default)
+        {
+            Contract.EnsureRange(width > 0, nameof(width));
+            Contract.EnsureRange(height > 0, nameof(height));
+
+            var uv = UltravioletContext.DemandCurrent();
+            return uv.GetFactoryMethod<RenderBuffer2DFactory>()(uv, format, width, height, options);
         }
 
         /// <summary>
@@ -176,6 +196,11 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="surface">The <see cref="Surface2D"/> which contains the data to set.</param>
         public abstract void SetData(Surface2D surface);
+
+        /// <summary>
+        /// Gets a value indicating whether this is an SRGB encoded texture.
+        /// </summary>
+        public abstract Boolean SrgbEncoded { get; }
 
         /// <summary>
         /// Gets the texture's width in pixels.

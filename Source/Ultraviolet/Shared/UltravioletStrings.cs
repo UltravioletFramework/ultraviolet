@@ -148,6 +148,8 @@ namespace Ultraviolet
         public static readonly StringResource SurfaceLayerEncodingMismatch         = new StringResource(StringDatabase, "SURFACE_LAYER_ENCODING_MISMATCH");
         public static readonly StringResource SurfaceCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "SURFACE_CANNOT_HAVE_MULTIPLE_ENCODINGS");
         public static readonly StringResource TextureCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "TEXTURE_CANNOT_HAVE_MULTIPLE_ENCODINGS");
+        public static readonly StringResource BuffersCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "BUFFERS_CANNOT_HAVE_MULTIPLE_ENCODINGS");
+        public static readonly StringResource EncodingSpecifiedForNonColorBuffer   = new StringResource(StringDatabase, "ENCODING_SPECIFIED_FOR_NON_COLOR_BUFFER");
 #pragma warning restore 1591
     }
 }
