@@ -530,26 +530,46 @@ namespace Ultraviolet.FreeType2
         /// Performs alpha blending between two colors.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Color AlphaBlend(Color src, Color dst)
+        private static Color AlphaBlend(Color src, Color dst, Boolean srgb)
         {
-            var invSrcA = (1f - (src.A / 255.0f));
-            var outR = (Byte)(src.R + (dst.R * invSrcA));
-            var outG = (Byte)(src.G + (dst.G * invSrcA));
-            var outB = (Byte)(src.B + (dst.B * invSrcA));
-            var outA = (Byte)(src.A + (dst.A * invSrcA));
+            if (srgb)
+            {
+                src = Color.ConvertSrgbColorToLinear(src);
+                dst = Color.ConvertSrgbColorToLinear(dst);
+            }
 
-            return new Color(outR, outG, outB, 255) * outA;
+            var srcA = src.A / 255f;
+            var srcR = src.R / 255f;
+            var srcG = src.G / 255f;
+            var srcB = src.B / 255f;
+
+            var dstA = dst.A / 255f;
+            var dstR = dst.R / 255f;
+            var dstG = dst.G / 255f;
+            var dstB = dst.B / 255f;
+
+            var invSrcA = (1f - srcA);
+            var outA = srcA + (dstA * invSrcA);
+            var outR = srcR + (dstR * invSrcA);
+            var outG = srcG + (dstG * invSrcA);
+            var outB = srcB + (dstB * invSrcA);
+            var outColor = new Color(outR, outG, outB, outA);
+
+            return srgb ? Color.ConvertLinearColorToSrgb(outColor) : outColor;
         }
 
         /// <summary>
         /// Ensures that the specified scratch surface exists and has at least the specified size.
         /// </summary>
-        private static void CreateResamplingSurface(ref Surface2D srf, Int32 w, Int32 h)
+        private static void CreateResamplingSurface(UltravioletContext uv, ref Surface2D srf, Int32 w, Int32 h)
         {
             if (srf == null)
             {
+                var srgb = uv.GetGraphics().Capabilities.SrgbEncodingEnabled;
+                var opts = srgb ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+
                 srf?.Dispose();
-                srf = Surface2D.Create(w, h, SurfaceOptions.LinearColor);
+                srf = Surface2D.Create(w, h, opts);
             }
             srf.Clear(Color.Transparent);
         }
@@ -634,8 +654,8 @@ namespace Ultraviolet.FreeType2
                     resampleRadius = 1f;
 
                 // Ensure that our scratch surfaces exist with enough space.
-                CreateResamplingSurface(ref resamplingSurface1, width, height);
-                CreateResamplingSurface(ref resamplingSurface2, scaledWidth, height);
+                CreateResamplingSurface(Ultraviolet, ref resamplingSurface1, width, height);
+                CreateResamplingSurface(Ultraviolet, ref resamplingSurface2, scaledWidth, height);
 
                 // Precalculate pixel weights.
                 CreateResamplingWeights(ref resamplingWeightsX, width, reservation.Width, resampleRatio, resampleRadius);
@@ -759,6 +779,8 @@ namespace Ultraviolet.FreeType2
         private static void BlitGlyphBitmapMono(Surface2D dstSurface, Int32 dstX, Int32 dstY,
             ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, Boolean flip)
         {
+            var srgb = dstSurface.SrgbEncoded;
+
             for (int y = 0; y < bmpHeight; y++)
             {
                 var pSrcY = flip ? (bmpHeight - 1) - y : y;
@@ -772,6 +794,10 @@ namespace Ultraviolet.FreeType2
                         for (int b = 0; b < 8; b++)
                         {
                             var srcColor = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : color;
+
+                            if (srgb)
+                                srcColor = Color.ConvertLinearColorToSrgb(srcColor);
+
                             *pDst++ = srcColor;
                         }
                     }
@@ -786,7 +812,10 @@ namespace Ultraviolet.FreeType2
                             var srcColor = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : color;
                             var dstColor = *pDst;
 
-                            *pDst++ = AlphaBlend(srcColor, dstColor);
+                            if (srgb)
+                                srcColor = Color.ConvertLinearColorToSrgb(srcColor);
+
+                            *pDst++ = AlphaBlend(srcColor, dstColor, srgb);
                         }
                     }
                 }
@@ -799,6 +828,8 @@ namespace Ultraviolet.FreeType2
         private static void BlitGlyphBitmapGray(Surface2D dstSurface, Int32 dstX, Int32 dstY,
             ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, Color color, FreeTypeBlendMode blendMode, Boolean flip)
         {
+            var srgb = dstSurface.SrgbEncoded;
+
             for (int y = 0; y < bmpHeight; y++)
             {
                 var pSrcY = flip ? (bmpHeight - 1) - y : y;
@@ -807,7 +838,14 @@ namespace Ultraviolet.FreeType2
                 if (blendMode == FreeTypeBlendMode.Opaque)
                 {
                     for (int x = 0; x < bmpWidth; x++)
-                        *pDst++ = color * (*pSrc++ / 255f);
+                    {
+                        var srcColor = color * (*pSrc++ / 255f);
+
+                        if (srgb)
+                            srcColor = Color.ConvertLinearColorToSrgb(srcColor);
+
+                        *pDst++ = srcColor;
+                    }
                 }
                 else
                 {
@@ -816,7 +854,10 @@ namespace Ultraviolet.FreeType2
                         var srcColor = color * (*pSrc++ / 255f);
                         var dstColor = *pDst;
 
-                        *pDst++ = AlphaBlend(srcColor, dstColor);
+                        if (srgb)
+                            srcColor = Color.ConvertLinearColorToSrgb(srcColor);
+
+                        *pDst++ = AlphaBlend(srcColor, dstColor, srgb);
                     }
                 }
             }
@@ -828,6 +869,8 @@ namespace Ultraviolet.FreeType2
         private static void BlitGlyphBitmapBgra(Surface2D dstSurface, Int32 dstX, Int32 dstY, 
             ref FT_Bitmap bmp, Int32 bmpWidth, Int32 bmpHeight, Int32 bmpPitch, FreeTypeBlendMode blendMode, Boolean flip)
         {
+            var srgb = dstSurface.SrgbEncoded;
+
             for (int y = 0; y < bmpHeight; y++)
             {
                 var pSrcY = flip ? (bmpHeight - 1) - y : y;
@@ -837,7 +880,7 @@ namespace Ultraviolet.FreeType2
                 {
                     for (int x = 0; x < bmpWidth; x++)
                     {
-                        var srcColor = Color.ConvertSrgbColorToLinear(*pSrc++);
+                        var srcColor = *pSrc++;
                         var dstColor = new Color(srcColor.B, srcColor.G, srcColor.R, srcColor.A);
                         *pDst++ = dstColor;
                     }
@@ -846,10 +889,10 @@ namespace Ultraviolet.FreeType2
                 {
                     for (int x = 0; x < bmpWidth; x++)
                     {
-                        var srcColor = Color.ConvertSrgbColorToLinear(*pSrc++);
+                        var srcColor = *pSrc++;
                         var dstColor = *pDst;
 
-                        *pDst++ = AlphaBlend(srcColor, dstColor);
+                        *pDst++ = AlphaBlend(srcColor, dstColor, srgb);
                     }
                 }
             }
@@ -1080,7 +1123,9 @@ namespace Ultraviolet.FreeType2
                 // Attempt to create a new atlas if we weren't able to make a reservation.
                 if (!reservationFound)
                 {
-                    var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing, TextureOptions.LinearColor);
+                    var srgb = Ultraviolet.GetGraphics().Capabilities.SrgbEncodingEnabled;
+                    var opts = TextureOptions.ImmutableStorage | (srgb ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+                    var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing, opts);
                     atlas.Surface.Clear(Color.Transparent);
                     atlases.Add(atlas);
 
