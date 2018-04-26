@@ -1111,38 +1111,41 @@ namespace Ultraviolet.FreeType2
                 }
 
                 // Attempt to reserve space on one of the font's existing atlases.
-                foreach (var atlas in atlases)
+                if (reservationWidth > 0 && reservationHeight > 0)
                 {
-                    if (atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
+                    foreach (var atlas in atlases)
                     {
-                        reservationFound = true;
-                        break;
+                        if (atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
+                        {
+                            reservationFound = true;
+                            break;
+                        }
                     }
+
+                    // Attempt to create a new atlas if we weren't able to make a reservation.
+                    if (!reservationFound)
+                    {
+                        var srgb = Ultraviolet.GetGraphics().Capabilities.SrgbEncodingEnabled;
+                        var opts = TextureOptions.ImmutableStorage | (srgb ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+                        var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing, opts);
+                        atlas.Surface.Clear(Color.Transparent);
+                        atlases.Add(atlas);
+
+                        if (!atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
+                            throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format(cu16));
+                    }
+
+                    // Update the atlas surface.
+                    var blendMode = FreeTypeBlendMode.Opaque;
+                    if (strokeGlyph != IntPtr.Zero)
+                    {
+                        BlitBitmap(ref strokeBmp, 0, 0, Color.Black, blendMode, ref reservation);
+                        blendMode = FreeTypeBlendMode.Blend;
+
+                        FT_Done_Glyph(strokeGlyph);
+                    }
+                    BlitBitmap(ref glyphBmp, glyphAdjustX, glyphAdjustY, Color.White, blendMode, ref reservation);
                 }
-
-                // Attempt to create a new atlas if we weren't able to make a reservation.
-                if (!reservationFound)
-                {
-                    var srgb = Ultraviolet.GetGraphics().Capabilities.SrgbEncodingEnabled;
-                    var opts = TextureOptions.ImmutableStorage | (srgb ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
-                    var atlas = DynamicTextureAtlas.Create(AtlasWidth, AtlasHeight, AtlasSpacing, opts);
-                    atlas.Surface.Clear(Color.Transparent);
-                    atlases.Add(atlas);
-
-                    if (!atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
-                        throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format(cu16));
-                }
-
-                // Update the atlas surface.
-                var blendMode = FreeTypeBlendMode.Opaque;
-                if (strokeGlyph != IntPtr.Zero)
-                {
-                    BlitBitmap(ref strokeBmp, 0, 0, Color.Black, blendMode, ref reservation);
-                    blendMode = FreeTypeBlendMode.Blend;
-
-                    FT_Done_Glyph(strokeGlyph);
-                }
-                BlitBitmap(ref glyphBmp, glyphAdjustX, glyphAdjustY, Color.White, blendMode, ref reservation);
             }
 
             // Calculate the glyph's metrics and apply scaling.
