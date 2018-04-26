@@ -24,5 +24,10 @@ namespace Ultraviolet.Graphics
         /// Mutually exclusive with <see cref="LinearColor"/>.
         /// </summary>
         SrgbColor = 0x02,
+
+        /// <summary>
+        /// The default options for a surface.
+        /// </summary>
+        Default = None,
     }
 }

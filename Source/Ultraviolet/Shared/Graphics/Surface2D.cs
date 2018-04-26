@@ -56,7 +56,7 @@ namespace Ultraviolet.Graphics
         /// <param name="height">The surface's height in pixels.</param>
         /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(Int32 width, Int32 height, SurfaceOptions options = SurfaceOptions.None)
+        public static Surface2D Create(Int32 width, Int32 height, SurfaceOptions options = SurfaceOptions.Default)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
@@ -71,7 +71,7 @@ namespace Ultraviolet.Graphics
         /// <param name="source">The <see cref="SurfaceSource"/> from which to create the surface.</param>
         /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(SurfaceSource source, SurfaceOptions options = SurfaceOptions.None)
+        public static Surface2D Create(SurfaceSource source, SurfaceOptions options = SurfaceOptions.Default)
         {
             Contract.Require(source, nameof(source));
 
@@ -85,7 +85,7 @@ namespace Ultraviolet.Graphics
         /// <param name="surface">The <see cref="PlatformNativeSurface"/> from which to create the surface.</param>
         /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(PlatformNativeSurface surface, SurfaceOptions options = SurfaceOptions.None)
+        public static Surface2D Create(PlatformNativeSurface surface, SurfaceOptions options = SurfaceOptions.Default)
         {
             Contract.Require(surface, nameof(surface));
 

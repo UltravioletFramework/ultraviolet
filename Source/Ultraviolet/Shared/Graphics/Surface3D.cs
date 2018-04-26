@@ -40,7 +40,7 @@ namespace Ultraviolet.Graphics
         /// <param name="depth">The number of layers in the surface.</param>
         /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface3D"/> which was created.</returns>
-        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, SurfaceOptions options = SurfaceOptions.None)
+        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, SurfaceOptions options = SurfaceOptions.Default)
         {
             return Create(width, height, depth, 4, options);
         }
@@ -54,7 +54,7 @@ namespace Ultraviolet.Graphics
         /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on the surface.</param>
         /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface3D"/> which was created.</returns>
-        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel, SurfaceOptions options = SurfaceOptions.None)
+        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel, SurfaceOptions options = SurfaceOptions.Default)
         {
             Contract.Ensure(width > 0, nameof(width));
             Contract.Ensure(height > 0, nameof(height));
