@@ -1338,24 +1338,35 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [TestCase(ColorEncoding.Linear)]
+        [TestCase(ColorEncoding.Srgb)]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class correctly renders text which makes use of fallback fonts.")]
-        public void TextRenderer_CorrectlyRendersFallbackFonts()
+        public void TextRenderer_CorrectlyRendersFallbackFonts(ColorEncoding encoding)
         {
             var emojiFont = default(UltravioletFont);
             var content = new TextRendererTestContent(
                 "😀Lorem ipsum😀 dolor sit 😀🤣😀 amet 🤣 😀", TextParserOptions.IgnoreCommandCodes);
 
             var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    if (encoding == ColorEncoding.Srgb)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
                 .WithPlugin(new FreeTypeFontPlugin())
                 .WithContent(manager =>
                 {
                     content.LoadFreeType(manager);
-                    emojiFont = manager.Load<UltravioletFont>("Fonts/NotoEmoji-Regular");
+                    emojiFont = manager.Load<UltravioletFont>("Fonts/NotoColorEmoji");
                 })
                 .Render(uv =>
                 {
-                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+                    uv.GetGraphics().Clear(Color.Black);
 
                     content.TextLayoutEngine.RegisterFont("emoji", emojiFont);
                     content.TextLayoutEngine.RegisterFallbackFont("emoji", 126976, 129519, "emoji");
@@ -1369,8 +1380,16 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts.png");
+            if (encoding == ColorEncoding.Linear)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts(sRGB).png");
+            }
         }
 
         protected static LineInfoResult TheResultingValue(LineInfo obj)
