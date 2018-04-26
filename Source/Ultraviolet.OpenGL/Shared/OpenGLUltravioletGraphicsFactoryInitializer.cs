@@ -24,13 +24,13 @@ namespace Ultraviolet.OpenGL
             factory.SetFactoryMethod<IndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_STATIC_DRAW));
             factory.SetFactoryMethod<DynamicVertexBufferFactory>((uv, vdecl, vcount) => new OpenGLVertexBuffer(uv, vdecl, vcount, gl.GL_DYNAMIC_DRAW));
             factory.SetFactoryMethod<DynamicIndexBufferFactory>((uv, itype, icount) => new OpenGLIndexBuffer(uv, itype, icount, gl.GL_DYNAMIC_DRAW));
-            factory.SetFactoryMethod<Texture2DFromRawDataFactory>((uv, pixels, width, height, bytesPerPixel) => new OpenGLTexture2D(uv, pixels, width, height, bytesPerPixel));
-            factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, immutable) => new OpenGLTexture2D(uv, width, height, immutable));
+            factory.SetFactoryMethod<Texture2DFromRawDataFactory>((uv, pixels, width, height, bytesPerPixel, srgb) => new OpenGLTexture2D(uv, pixels, width, height, bytesPerPixel, srgb));
+            factory.SetFactoryMethod<Texture2DFactory>((uv, width, height, options) => new OpenGLTexture2D(uv, width, height, options));
             factory.SetFactoryMethod<Texture3DFromRawDataFactory>((uv, layers, width, height, bytesPerPixel, srgb) => new OpenGLTexture3D(uv, layers, width, height, bytesPerPixel, srgb));
             factory.SetFactoryMethod<Texture3DFactory>((uv, width, height, depth, options) => new OpenGLTexture3D(uv, width, height, depth, options));
             factory.SetFactoryMethod<RenderTarget2DFactory>((uv, width, height, usage) => new OpenGLRenderTarget2D(uv, width, height, usage));
             factory.SetFactoryMethod<RenderBuffer2DFactory>((uv, format, width, height, options) => new OpenGLRenderBuffer2D(uv, format, width, height, options));
-            factory.SetFactoryMethod<DynamicTexture2DFactory>((uv, width, height, immutable, state, flushed) => new OpenGLDynamicTexture2D(uv, width, height, immutable, state, flushed));
+            factory.SetFactoryMethod<DynamicTexture2DFactory>((uv, width, height, options, state, flushed) => new OpenGLDynamicTexture2D(uv, width, height, options, state, flushed));
             factory.SetFactoryMethod<DynamicTexture3DFactory>((uv, width, height, depth, options, state, flushed) => new OpenGLDynamicTexture3D(uv, width, height, depth, options, state, flushed));
 
             // Core effects

@@ -10,8 +10,9 @@ namespace Ultraviolet.Graphics
     /// <param name="width">The width of the texture atlas in pixels.</param>
     /// <param name="height">The height of the texture atlas in pixels.</param>
     /// <param name="spacing">The number of pixels between cells on the texture atlas.</param>
+    /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="DynamicTextureAtlas"/> that was created.</returns>
-    public delegate DynamicTextureAtlas DynamicTextureAtlasFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 spacing);
+    public delegate DynamicTextureAtlas DynamicTextureAtlasFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 spacing, TextureOptions options);
 
     /// <summary>
     /// Represents a texture atlas which can be built dynamically at runtime.
@@ -25,20 +26,30 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The width of the texture atlas in pixels.</param>
         /// <param name="height">The height of the texture atlas in pixels.</param>
         /// <param name="spacing">The number of pixels between cells on the texture atlas.</param>
-        private DynamicTextureAtlas(UltravioletContext uv, Int32 width, Int32 height, Int32 spacing)
+        /// <param name="options">The texture's configuration options.</param>
+        private DynamicTextureAtlas(UltravioletContext uv, Int32 width, Int32 height, Int32 spacing, TextureOptions options)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(spacing >= 0, nameof(spacing));
 
+            var isSrgb = (options & TextureOptions.SrgbColor) == TextureOptions.SrgbColor;
+            var isLinear = (options & TextureOptions.LinearColor) == TextureOptions.LinearColor;
+            if (isSrgb && isLinear)
+                throw new ArgumentException(UltravioletStrings.TextureCannotHaveMultipleEncodings);
+
+            var caps = uv.GetGraphics().Capabilities;
+            var srgbEncoded = (isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForTexture2D)) && caps.SrgbEncodingEnabled;
+            var surfOptions = (srgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor);
+
             this.IsFlipped = Ultraviolet.GetGraphics().Capabilities.FlippedTextures;
 
             this.Width = width;
             this.Height = height;
             this.Spacing = spacing;
-            this.Surface = Surface2D.Create(width, height);
-            this.Texture = Texture2D.CreateDynamic(width, height, this, (dt2d, state) =>
+            this.Surface = Surface2D.Create(width, height, surfOptions);
+            this.Texture = Texture2D.CreateDynamicTexture(width, height, options, this, (dt2d, state) =>
             {
                 ((DynamicTextureAtlas)state).Flush();
             });
@@ -53,11 +64,12 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="spacing">The number of pixels between cells on the texture atlas.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="DynamicTextureAtlas"/> that was created.</returns>
-        public static DynamicTextureAtlas Create(Int32 width, Int32 height, Int32 spacing)
+        public static DynamicTextureAtlas Create(Int32 width, Int32 height, Int32 spacing, TextureOptions options = TextureOptions.Default)
         {
             var uv = UltravioletContext.DemandCurrent();
-            return new DynamicTextureAtlas(uv, width, height, spacing);
+            return new DynamicTextureAtlas(uv, width, height, spacing, options);
         }
 
         /// <summary>

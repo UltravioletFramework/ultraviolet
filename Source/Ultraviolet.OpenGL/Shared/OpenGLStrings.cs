@@ -76,7 +76,6 @@ namespace Ultraviolet.OpenGL
         public static readonly StringResource SamplerDirectiveInvalidUniform        = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_INVALID_UNIFORM");
         public static readonly StringResource SamplerDirectiveAlreadyInUse          = new StringResource(StringDatabase, "SAMPLER_DIRECTIVE_ALREADY_IN_USE");
         public static readonly StringResource ImplicitEffectsMustLoadFromShaders    = new StringResource(StringDatabase, "IMPLICIT_EFFECTS_MUST_LOAD_FROM_SHADERS");
-        public static readonly StringResource SrgbEncodingOnlyValidForColorBuffers  = new StringResource(StringDatabase, "SRGB_ENCODING_ONLY_VALID_FOR_COLOR_BUFFERS");
 #pragma warning restore 1591
     }
 }

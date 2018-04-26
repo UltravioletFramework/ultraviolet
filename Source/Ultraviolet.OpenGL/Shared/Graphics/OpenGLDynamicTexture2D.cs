@@ -15,13 +15,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
-        public OpenGLDynamicTexture2D(UltravioletContext uv, Int32 width, Int32 height, Boolean immutable, Object state, Action<Texture2D, Object> flushed)
-            : base(uv, width, height, immutable, state, flushed)
+        public OpenGLDynamicTexture2D(UltravioletContext uv, Int32 width, Int32 height, TextureOptions options, Object state, Action<Texture2D, Object> flushed)
+            : base(uv, width, height, options, state, flushed)
         {
-            this.texture = new OpenGLTexture2D(uv, width, height, immutable);
+            this.texture = new OpenGLTexture2D(uv, width, height, options);
         }
 
         /// <inheritdoc/>
@@ -74,6 +74,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public UInt32 OpenGLName => texture.OpenGLName;
+
+        /// <inheritdoc/>
+        public override Boolean SrgbEncoded => texture.SrgbEncoded;
 
         /// <inheritdoc/>
         public override Int32 Width => texture.Width;

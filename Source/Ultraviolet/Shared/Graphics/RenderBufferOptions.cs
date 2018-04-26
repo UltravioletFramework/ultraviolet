@@ -14,7 +14,7 @@ namespace Ultraviolet.Graphics
         None = 0x00,
 
         /// <summary>
-        /// The render buffer should use immutable storage, if it is available.
+        /// Specifies that the render buffer should use immutable storage, if it is available.
         /// </summary>
         ImmutableStorage = 0x01,
 
@@ -24,5 +24,22 @@ namespace Ultraviolet.Graphics
         /// populated via a call to the SetData() method.
         /// </summary>
         WillNotBeSampled = 0x02,
+
+        /// <summary>
+        /// Specifies that the render buffer will contain linearly encoded color data.
+        /// Mutually exclusive with <see cref="SrgbColor"/>.
+        /// </summary>
+        LinearColor = 0x04,
+
+        /// <summary>
+        /// Specifies that the render buffer will contain sRGB encoded color data.
+        /// Mutually exclusive with <see cref="LinearColor"/>.
+        /// </summary>
+        SrgbColor = 0x08,
+
+        /// <summary>
+        /// The default options for a render buffer.
+        /// </summary>
+        Default = ImmutableStorage,
     }
 }

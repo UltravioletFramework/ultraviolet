@@ -19,13 +19,13 @@ namespace Ultraviolet.Graphics
         ImmutableStorage = 0x01,
 
         /// <summary>
-        /// Specifies that the surface will contain linearly encoded color data.
+        /// Specifies that the texture will contain linearly encoded color data.
         /// Mutually exclusive with <see cref="SrgbColor"/>.
         /// </summary>
         LinearColor = 0x02,
 
         /// <summary>
-        /// Specifies that the surface will contain sRGB encoded color data.
+        /// Specifies that the texture will contain sRGB encoded color data.
         /// Mutually exclusive with <see cref="LinearColor"/>.
         /// </summary>
         SrgbColor = 0x04,

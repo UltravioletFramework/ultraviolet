@@ -24,6 +24,16 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
+            var isSrgb = (options & RenderBufferOptions.SrgbColor) == RenderBufferOptions.SrgbColor;
+            var isLinear = (options & RenderBufferOptions.LinearColor) == RenderBufferOptions.LinearColor;
+            if (isSrgb && isLinear)
+                throw new ArgumentException(UltravioletStrings.BuffersCannotHaveMultipleEncodings);
+
+            if ((isSrgb || isLinear) && format != RenderBufferFormat.Color)
+                throw new ArgumentException(UltravioletStrings.EncodingSpecifiedForNonColorBuffer);
+
+            var srgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForRenderBuffer2D);
+
             this.format = format;
             this.width = width;
             this.height = height;
@@ -42,7 +52,12 @@ namespace Ultraviolet.OpenGL.Graphics
                 switch (format)
                 {
                     case RenderBufferFormat.Color:
-                        this.texture = new OpenGLTexture2D(uv, gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8, width, height, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable, true);
+                        {
+                            var texformat = OpenGLTextureUtil.GetFormatFromBytesPerPixel(4);
+                            var texinternalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, srgbEncoded);
+                            this.texture = new OpenGLTexture2D(uv, texinternalformat, width, height, texformat, gl.GL_UNSIGNED_BYTE, IntPtr.Zero, immutable, true);
+                            this.SrgbEncoded = this.texture.SrgbEncoded;
+                        }
                         break;
 
                     case RenderBufferFormat.Depth24Stencil8:
@@ -196,6 +211,9 @@ namespace Ultraviolet.OpenGL.Graphics
         public override RenderBufferFormat Format => format;
 
         /// <inheritdoc/>
+        public override Boolean SrgbEncoded { get; }
+
+        /// <inheritdoc/>
         public override Int32 Width => width;
 
         /// <inheritdoc/>
@@ -289,8 +307,11 @@ namespace Ultraviolet.OpenGL.Graphics
                 switch (format)
                 {
                     case RenderBufferFormat.Color:
-                        gl.RenderbufferStorage(gl.GL_RENDERBUFFER, gl.IsGLES2 ? gl.GL_RGBA4 : gl.GL_RGBA8, width, height);
-                        gl.ThrowIfError();
+                        {
+                            var internalformat = OpenGLTextureUtil.GetInternalFormatFromBytesPerPixel(4, SrgbEncoded);
+                            gl.RenderbufferStorage(gl.GL_RENDERBUFFER, internalformat, width, height);
+                            gl.ThrowIfError();
+                        }
                         break;
 
                     case RenderBufferFormat.Depth24Stencil8:
