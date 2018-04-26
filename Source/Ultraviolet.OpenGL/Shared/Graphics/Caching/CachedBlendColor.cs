@@ -36,7 +36,7 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
                 return false;
 
             current = desired;
-            gl.ClearColor(desired.R / 255f, desired.G / 255f, desired.B / 255f, desired.A / 255f);
+            gl.BlendColor(desired.R / 255f, desired.G / 255f, desired.B / 255f, desired.A / 255f);
             gl.ThrowIfError();
 
             return true;
