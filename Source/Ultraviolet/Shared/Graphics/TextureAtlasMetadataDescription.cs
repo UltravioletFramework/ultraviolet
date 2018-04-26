@@ -64,5 +64,13 @@ namespace Ultraviolet.Graphics
         /// </summary>
         [JsonProperty(Required = Required.DisallowNull)]
         public Boolean FlattenCellName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the texture is SRGB encoded. If no value is provided,
+        /// the default specified by the <see cref="UltravioletContextProperties.SrgbDefaultForTexture2D"/>
+        /// property is used.
+        /// </summary>
+        [JsonProperty(Required = Required.Default)]
+        public Boolean? SrgbEncoded { get; set; }
     }
 }

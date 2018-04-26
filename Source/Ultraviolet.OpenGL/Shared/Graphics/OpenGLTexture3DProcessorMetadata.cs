@@ -38,5 +38,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Gets or sets a value indicating whether the texture is opaque and color keying should be disabled.
         /// </summary>
         public Boolean Opaque { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the texture is SRGB encoded. If no value is provided,
+        /// the default specified by the <see cref="UltravioletContextProperties.SrgbDefaultForTexture3D"/>
+        /// property is used.
+        /// </summary>
+        public Boolean? SrgbEncoded { get; private set; }
     }
 }
