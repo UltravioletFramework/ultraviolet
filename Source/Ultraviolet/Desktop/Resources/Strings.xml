@@ -595,4 +595,9 @@
       <Variant>The specified layer cannot be added to this surface because its width, height, or bit depth is not compatible.</Variant>
     </en-US>
   </String>
+  <String Key="SURFACE_LAYER_ENCODING_MISMATCH">
+    <en-US>
+      <Variant>This surface cannot be converted to a texture because one or more of its layers do not match the sRGB encoding of the surface.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

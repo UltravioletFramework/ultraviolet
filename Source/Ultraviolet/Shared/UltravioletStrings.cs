@@ -145,6 +145,7 @@ namespace Ultraviolet
         public static readonly StringResource ExceptionDuringViewReloading         = new StringResource(StringDatabase, "EXCEPTION_DURING_VIEW_RELOADING");
         public static readonly StringResource SpriteFontMissingGlyphs              = new StringResource(StringDatabase, "SPRITE_FONT_MISSING_GLYPHS");
         public static readonly StringResource IncompatibleSurfaceLayer             = new StringResource(StringDatabase, "INCOMPATIBLE_SURFACE_LAYER");
+        public static readonly StringResource SurfaceLayerEncodingMismatch         = new StringResource(StringDatabase, "SURFACE_LAYER_ENCODING_MISMATCH");
 #pragma warning restore 1591
     }
 }
