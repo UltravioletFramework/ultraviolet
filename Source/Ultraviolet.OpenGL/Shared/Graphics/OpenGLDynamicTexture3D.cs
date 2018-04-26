@@ -16,13 +16,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="depth">The texture's depth in pixels.</param>
-        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
-        public OpenGLDynamicTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable, Object state, Action<Texture3D, Object> flushed)
-            : base(uv, width, height, depth, immutable, state, flushed)
+        public OpenGLDynamicTexture3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, TextureOptions options, Object state, Action<Texture3D, Object> flushed)
+            : base(uv, width, height, depth, options, state, flushed)
         {
-            this.texture = new OpenGLTexture3D(uv, width, height, depth, immutable);
+            this.texture = new OpenGLTexture3D(uv, width, height, depth, options);
         }
 
         /// <inheritdoc/>
@@ -63,6 +63,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public UInt32 OpenGLName => texture.OpenGLName;
+
+        /// <inheritdoc/>
+        public override Boolean SrgbEncoded => texture.SrgbEncoded;
 
         /// <inheritdoc/>
         public override Int32 Width => texture.Width;

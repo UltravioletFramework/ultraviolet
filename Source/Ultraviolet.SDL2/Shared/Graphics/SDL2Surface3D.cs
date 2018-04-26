@@ -134,7 +134,8 @@ namespace Ultraviolet.SDL2.Graphics
                     surfsdata[i] = (IntPtr)((SDL2Surface2D)copysurfs[i]).NativePtr->pixels;
                 }
 
-                return Texture3D.Create(surfsdata, Width, Height, BytesPerPixel);
+                var options = TextureOptions.ImmutableStorage | (SrgbEncoded ? TextureOptions.SrgbColor : TextureOptions.LinearColor);
+                return Texture3D.CreateTexture(surfsdata, Width, Height, BytesPerPixel, options);
             }
             finally
             {
