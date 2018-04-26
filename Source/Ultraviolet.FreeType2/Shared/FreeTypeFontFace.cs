@@ -527,31 +527,35 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Performs gamma-corrected alpha blending between two colors.
+        /// Performs alpha blending between two colors.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void GammaCorrectedAlphaBlend(ref Color src, ref Color dst, out Color result)
+        private static Color AlphaBlend(Color src, Color dst)
         {
-            const Double Gamma = 2.2;
-            const Double InverseGamma = 1.0 / Gamma;
+            var invSrcA = (1f - (src.A / 255.0f));
+            var outR = (Byte)(src.R + (dst.R * invSrcA));
+            var outG = (Byte)(src.G + (dst.G * invSrcA));
+            var outB = (Byte)(src.B + (dst.B * invSrcA));
+            var outA = (Byte)(src.A + (dst.A * invSrcA));
 
-            var srcA = src.A / 255.0;
-            var srcR = Math.Pow((src.R / 255.0), Gamma);
-            var srcG = Math.Pow((src.G / 255.0), Gamma);
-            var srcB = Math.Pow((src.B / 255.0), Gamma);
+            return new Color(outR, outG, outB, 255) * outA;
+        }
 
-            var dstA = dst.A / 255.0;
-            var dstR = Math.Pow((dst.R / 255.0), Gamma);
-            var dstG = Math.Pow((dst.G / 255.0), Gamma);
-            var dstB = Math.Pow((dst.B / 255.0), Gamma);
+        /// <summary>
+        /// Converts an SRGB color value to a linear color value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Color ConvertSrgbColorToLinear(Color c)
+        {
+            Double ConvertSrgbColorChannelToLinear(Double x) =>
+                (x < 0.04045) ? x / 12.92 : Math.Pow((x + 0.055) / 1.055, 2.4);
 
-            var invSrcA = (1f - srcA);
-            var outR = (Single)Math.Pow(srcR + (dstR * invSrcA), InverseGamma);
-            var outG = (Single)Math.Pow(srcG + (dstG * invSrcA), InverseGamma);
-            var outB = (Single)Math.Pow(srcB + (dstB * invSrcA), InverseGamma);
-            var outA = (Single)(srcA + (dstA * invSrcA));
+            var r = (Single)ConvertSrgbColorChannelToLinear(c.R / 255.0);
+            var g = (Single)ConvertSrgbColorChannelToLinear(c.G / 255.0);
+            var b = (Single)ConvertSrgbColorChannelToLinear(c.B / 255.0);
+            var a = c.A / 255.0f;
 
-            result = new Color(outR, outG, outB, 1f) * outA;
+            return new Color(r, g, b, a);
         }
 
         /// <summary>
@@ -799,8 +803,7 @@ namespace Ultraviolet.FreeType2
                             var srcColor = ((bits >> (7 - b)) & 1) == 0 ? Color.Transparent : color;
                             var dstColor = *pDst;
 
-                            GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
-                            *pDst++ = result;
+                            *pDst++ = AlphaBlend(srcColor, dstColor);
                         }
                     }
                 }
@@ -830,8 +833,7 @@ namespace Ultraviolet.FreeType2
                         var srcColor = color * (*pSrc++ / 255f);
                         var dstColor = *pDst;
 
-                        GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
-                        *pDst++ = result;
+                        *pDst++ = AlphaBlend(srcColor, dstColor);
                     }
                 }
             }
@@ -852,7 +854,7 @@ namespace Ultraviolet.FreeType2
                 {
                     for (int x = 0; x < bmpWidth; x++)
                     {
-                        var srcColor = *pSrc++;
+                        var srcColor = ConvertSrgbColorToLinear(*pSrc++);
                         var dstColor = new Color(srcColor.B, srcColor.G, srcColor.R, srcColor.A);
                         *pDst++ = dstColor;
                     }
@@ -861,11 +863,10 @@ namespace Ultraviolet.FreeType2
                 {
                     for (int x = 0; x < bmpWidth; x++)
                     {
-                        var srcColor = *pSrc++;
+                        var srcColor = ConvertSrgbColorToLinear(*pSrc++);
                         var dstColor = *pDst;
 
-                        GammaCorrectedAlphaBlend(ref srcColor, ref dstColor, out var result);
-                        *pDst++ = result;
+                        *pDst++ = AlphaBlend(srcColor, dstColor);
                     }
                 }
             }
