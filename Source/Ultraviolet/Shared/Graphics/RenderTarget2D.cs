@@ -121,6 +121,11 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
+        /// Gets a value indicating whether the render target has an sRGB encoded color buffer.
+        /// </summary>
+        public abstract Boolean HasSrgbEncodedColorBuffer { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the render target has an attached depth buffer.
         /// </summary>
         public abstract Boolean HasDepthBuffer

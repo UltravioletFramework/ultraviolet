@@ -615,6 +615,11 @@
       <Variant>A render buffer cannot specify both RenderBufferOptions.LinearColor and RenderBufferOptions.SrgbColor.</Variant>
     </en-US>
   </String>
+  <String Key="TARGETS_CANNOT_HAVE_MULTIPLE_ENCODINGS">
+    <en-US>
+      <Variant>A render target cannot have color buffers with differing color encodings.</Variant>
+    </en-US>
+  </String>
   <String Key="ENCODING_SPECIFIED_FOR_NON_COLOR_BUFFER">
     <en-US>
       <Variant>The RenderBufferOptions.LinearColor and RenderBufferOptions.SrgbColor values are not valid for non-color buffers.</Variant>
