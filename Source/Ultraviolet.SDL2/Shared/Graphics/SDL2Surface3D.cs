@@ -20,7 +20,8 @@ namespace Ultraviolet.SDL2.Graphics
         /// <param name="height">The surface's height in pixels.</param>
         /// <param name="depth">The surface's depth in pixels.</param>
         /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on the surface.</param>
-        public SDL2Surface3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel = 4)
+        /// <param name="options">The surface's configuration options.</param>
+        public SDL2Surface3D(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel, SurfaceOptions options)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
@@ -28,12 +29,19 @@ namespace Ultraviolet.SDL2.Graphics
             Contract.EnsureRange(depth > 0, nameof(depth));
             Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
+            var isSrgb = (options & SurfaceOptions.SrgbColor) == SurfaceOptions.SrgbColor;
+            var isLinear = (options & SurfaceOptions.LinearColor) == SurfaceOptions.LinearColor;
+            if (isSrgb && isLinear)
+                throw new ArgumentException(UltravioletStrings.SurfaceCannotHaveMultipleEncodings);
+
             this.width = width;
             this.height = height;
             this.bytesPerPixel = bytesPerPixel;
 
             this.layers = new Surface2D[depth];
             this.layerOwnership = new Boolean[depth];
+
+            this.SrgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForSurface3D);
         }
 
         /// <inheritdoc/>
@@ -94,7 +102,8 @@ namespace Ultraviolet.SDL2.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var result = new SDL2Surface3D(Ultraviolet, Width, Height, Depth);
+            var resultOpts = SrgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+            var result = new SDL2Surface3D(Ultraviolet, Width, Height, Depth, BytesPerPixel, resultOpts);
             for (int i = 0; i < Depth; i++)
             {
                 var layerCopy = this.GetLayer(i).CreateSurface();
@@ -108,6 +117,8 @@ namespace Ultraviolet.SDL2.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
+
+            EnsureAllLayersMatchSrgbEncoding();
 
             var copysurfs = new Surface2D[Depth];
             var surfsdata = new IntPtr[Depth];
@@ -123,7 +134,7 @@ namespace Ultraviolet.SDL2.Graphics
                     surfsdata[i] = (IntPtr)((SDL2Surface2D)copysurfs[i]).NativePtr->pixels;
                 }
 
-                return Texture3D.Create(surfsdata, Width, Height, BytesPerPixel);
+                return Texture3D.CreateTexture(surfsdata, Width, Height, BytesPerPixel);
             }
             finally
             {
@@ -139,7 +150,10 @@ namespace Ultraviolet.SDL2.Graphics
             Contract.Require(stream, nameof(stream));
             Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
 
-            using (var outputSurface = Surface2D.Create(Width * Depth, Height))
+            EnsureAllLayersMatchSrgbEncoding();
+
+            var outputSurfaceOptions = SrgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+            using (var outputSurface = Surface2D.Create(Width * Depth, Height, outputSurfaceOptions))
             {
                 var position = 0;
                 for (int i = 0; i < Depth; i++)
@@ -160,7 +174,10 @@ namespace Ultraviolet.SDL2.Graphics
             Contract.Require(stream, nameof(stream));
             Contract.Ensure(IsComplete, SDL2Strings.SurfaceIsNotComplete);
 
-            using (var outputSurface = Surface2D.Create(Width * Depth, Height))
+            EnsureAllLayersMatchSrgbEncoding();
+
+            var outputSurfaceOptions = SrgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+            using (var outputSurface = Surface2D.Create(Width * Depth, Height, outputSurfaceOptions))
             {
                 var position = 0;
                 for (int i = 0; i < Depth; i++)
@@ -173,6 +190,9 @@ namespace Ultraviolet.SDL2.Graphics
                 surfaceSaver.SaveAsPng(outputSurface, stream);
             }
         }
+
+        /// <inheritdoc/>
+        public override Boolean SrgbEncoded { get; set; }
 
         /// <inheritdoc/>
         public override Int32 Width => width;
@@ -205,6 +225,19 @@ namespace Ultraviolet.SDL2.Graphics
                 }
             }
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Throws an exception if any of the surface's layers don't match the current value 
+        /// of the surface's <see cref="SrgbEncoded"/> property.
+        /// </summary>
+        private void EnsureAllLayersMatchSrgbEncoding()
+        {
+            for (int i = 0; i < layers.Length; i++)
+            {
+                if (layers[i].SrgbEncoded != SrgbEncoded)
+                    throw new InvalidOperationException(UltravioletStrings.SurfaceLayerEncodingMismatch);
+            }
         }
 
         // State values.

@@ -20,8 +20,14 @@ namespace Ultraviolet.SDL2.Graphics
         /// <returns>The game asset that was created.</returns>
         public override Surface2D Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
+            var mdat = metadata.As<SDL2Surface2DProcessorMetadata>();
+            var srgbEncoded = mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForSurface2D;
+            var surfOptions = srgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+
             var copy = input.CreateCopy();
-            return new SDL2Surface2D(manager.Ultraviolet, copy);
+            var result = new SDL2Surface2D(manager.Ultraviolet, copy, surfOptions);
+
+            return result;
         }
     }
 }

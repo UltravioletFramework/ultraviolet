@@ -35,7 +35,7 @@ namespace Ultraviolet.Shims.Desktop.Platform
                 {
                     using (var source = new DesktopSurfaceSource(iconbmp))
                     {
-                        return Surface2D.Create(source);
+                        return Surface2D.Create(source, SurfaceOptions.SrgbColor);
                     }
                 }
             }

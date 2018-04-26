@@ -21,7 +21,7 @@ namespace Ultraviolet.SDL2
         /// <returns>The game asset that was created.</returns>
         public override Cursor Process(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input)
         {
-            using (var surface = new SDL2Surface2D(manager.Ultraviolet, input.CreateCopy()))
+            using (var surface = new SDL2Surface2D(manager.Ultraviolet, input.CreateCopy(), SurfaceOptions.SrgbColor))
             {
                 return new SDL2Cursor(manager.Ultraviolet, surface, 0, 0);
             }

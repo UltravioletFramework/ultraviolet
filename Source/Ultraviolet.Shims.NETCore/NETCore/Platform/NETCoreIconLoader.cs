@@ -30,7 +30,7 @@ namespace Ultraviolet.Shims.NETCore.Platform
             {
                 using (var source = SurfaceSource.Create(iconStream))
                 {
-                    return Surface2D.Create(source);
+                    return Surface2D.Create(source, SurfaceOptions.SrgbColor);
                 }
             }
 
