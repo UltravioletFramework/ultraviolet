@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -226,6 +227,40 @@ namespace Ultraviolet
             var a = (byte)(value);
 
             return new Color((uint)((r) | (g << 8) | (b << 16) | (a << 24)));
+        }
+
+        /// <summary>
+        /// Converts an sRGB color value to a linear color value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Color ConvertSrgbColorToLinear(Color c)
+        {
+            Double ConvertSrgbColorChannelToLinear(Double x) =>
+                (x < 0.04045) ? x / 12.92 : Math.Pow((x + 0.055) / 1.055, 2.4);
+
+            var r = (Single)ConvertSrgbColorChannelToLinear(c.R / 255.0);
+            var g = (Single)ConvertSrgbColorChannelToLinear(c.G / 255.0);
+            var b = (Single)ConvertSrgbColorChannelToLinear(c.B / 255.0);
+            var a = c.A / 255.0f;
+
+            return new Color(r, g, b, a);
+        }
+
+        /// <summary>
+        /// Converts a linear color value to an sRGB color value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Color ConvertLinearColorToSrgb(Color c)
+        {
+            Double ConvertLinearColorChannelToSrgb(Double x) =>
+                (x < 0.0031308) ? x * 12.92 : 1.055 * Math.Pow(x, 1.0 / 2.4) - 0.055;
+
+            var r = (Single)ConvertLinearColorChannelToSrgb(c.R / 255.0);
+            var g = (Single)ConvertLinearColorChannelToSrgb(c.G / 255.0);
+            var b = (Single)ConvertLinearColorChannelToSrgb(c.B / 255.0);
+            var a = c.A / 255.0f;
+
+            return new Color(r, g, b, a);
         }
 
         /// <inheritdoc/>
