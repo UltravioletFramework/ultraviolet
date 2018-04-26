@@ -260,4 +260,9 @@
       <Variant>Implicit effects must be loaded from either *.frag or *.vert files; asset "{0}" is neither.</Variant>
     </en-US>
   </String>
+  <String Key="SRGB_ENCODING_ONLY_VALID_FOR_COLOR_BUFFERS">
+    <en-US>
+      <Variant>sRGB encoding is only valid for color buffers.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
