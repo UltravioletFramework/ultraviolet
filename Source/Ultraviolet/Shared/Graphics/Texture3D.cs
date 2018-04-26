@@ -12,8 +12,9 @@ namespace Ultraviolet.Graphics
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
     /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+    /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-    public delegate Texture3D Texture3DFromRawDataFactory(UltravioletContext uv, IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel);
+    public delegate Texture3D Texture3DFromRawDataFactory(UltravioletContext uv, IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options);
 
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="Texture3D"/> class.
@@ -22,9 +23,9 @@ namespace Ultraviolet.Graphics
     /// <param name="width">The texture's width in pixels.</param>
     /// <param name="height">The texture's height in pixels.</param>
     /// <param name="depth">The texture's depth in layers.</param>
-    /// <param name="immutable">A value indicating whether the texture should be created with immutable storage.</param>
+    /// <param name="options">The texture's configuration options.</param>
     /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-    public delegate Texture3D Texture3DFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Boolean immutable);
+    public delegate Texture3D Texture3DFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, TextureOptions options);
 
     /// <summary>
     /// Represents a three-dimensional texture.
@@ -47,33 +48,16 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="depth">The texture's depth in layers.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-        public static Texture3D Create(Int32 width, Int32 height, Int32 depth)
+        public static Texture3D CreateTexture(Int32 width, Int32 height, Int32 depth, TextureOptions options = TextureOptions.Default)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.EnsureRange(depth > 0, nameof(depth));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture3DFactory>()(uv, width, height, depth, true);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="Texture3D"/> class.
-        /// </summary>
-        /// <param name="width">The texture's width in pixels.</param>
-        /// <param name="height">The texture's height in pixels.</param>
-        /// <param name="depth">The texture's depth in layers.</param>
-        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
-        /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-        public static Texture3D Create(Int32 width, Int32 height, Int32 depth, Boolean immutable)
-        {
-            Contract.EnsureRange(width > 0, nameof(width));
-            Contract.EnsureRange(height > 0, nameof(height));
-            Contract.EnsureRange(depth > 0, nameof(depth));
-
-            var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture3DFactory>()(uv, width, height, depth, immutable);
+            return uv.GetFactoryMethod<Texture3DFactory>()(uv, width, height, depth, options);
         }
 
         /// <summary>
@@ -83,8 +67,9 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="bytesPerPixel">The number of bytes which represent each pixel in the raw data.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <returns>The instance of <see cref="Texture3D"/> that was created.</returns>
-        public static Texture3D Create(IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel)
+        public static Texture3D CreateTexture(IList<IntPtr> layers, Int32 width, Int32 height, Int32 bytesPerPixel, TextureOptions options = TextureOptions.Default)
         {
             Contract.Require(layers, nameof(layers));
             Contract.EnsureRange(width > 0, nameof(width));
@@ -92,7 +77,7 @@ namespace Ultraviolet.Graphics
             Contract.EnsureRange(bytesPerPixel == 3 || bytesPerPixel == 4, nameof(bytesPerPixel));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Texture3DFromRawDataFactory>()(uv, layers, width, height, bytesPerPixel);
+            return uv.GetFactoryMethod<Texture3DFromRawDataFactory>()(uv, layers, width, height, bytesPerPixel, options);
         }
 
         /// <summary>
@@ -105,9 +90,9 @@ namespace Ultraviolet.Graphics
         /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture3D CreateDynamic(Int32 width, Int32 height, Int32 depth, Object state, Action<Texture3D, Object> flushed)
+        public static Texture3D CreateDynamicTexture(Int32 width, Int32 height, Int32 depth, Object state, Action<Texture3D, Object> flushed)
         {
-            return CreateDynamic(width, height, depth, true, state, flushed);
+            return CreateDynamicTexture(width, height, depth, TextureOptions.ImmutableStorage, state, flushed);
         }
 
         /// <summary>
@@ -117,18 +102,18 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The texture's width in pixels.</param>
         /// <param name="height">The texture's height in pixels.</param>
         /// <param name="depth">The texture's depth in pixels.</param>
-        /// <param name="immutable">A value indicating whether to use immutable storage.</param>
+        /// <param name="options">The texture's configuration options.</param>
         /// <param name="state">An arbitrary state object which will be passed to the flush handler.</param>
         /// <param name="flushed">The handler to invoke when the texture is flushed.</param>
         /// <returns>The instance of <see cref="Texture2D"/> that was created.</returns>
-        public static Texture3D CreateDynamic(Int32 width, Int32 height, Int32 depth, Boolean immutable, Object state, Action<Texture3D, Object> flushed)
+        public static Texture3D CreateDynamicTexture(Int32 width, Int32 height, Int32 depth, TextureOptions options, Object state, Action<Texture3D, Object> flushed)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
             Contract.Require(flushed, nameof(flushed));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<DynamicTexture3DFactory>()(uv, width, height, depth, immutable, state, flushed);
+            return uv.GetFactoryMethod<DynamicTexture3DFactory>()(uv, width, height, depth, options, state, flushed);
         }
 
         /// <summary>
@@ -170,6 +155,11 @@ namespace Ultraviolet.Graphics
         /// <param name="startIndex">The index of the first element to set.</param>
         /// <param name="elementCount">The number of elements to set.</param>
         public abstract void SetData<T>(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, T[] data, Int32 startIndex, Int32 elementCount) where T : struct;
+
+        /// <summary>
+        /// Gets a value indicating whether this is an SRGB encoded texture.
+        /// </summary>
+        public abstract Boolean SrgbEncoded { get; }
 
         /// <summary>
         /// Gets the texture's width in pixels.

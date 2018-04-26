@@ -605,4 +605,9 @@
       <Variant>A surface cannot specify both SurfaceOptions.LinearColor and SurfaceOptions.SrgbColor.</Variant>
     </en-US>
   </String>
+  <String Key="TEXTURE_CANNOT_HAVE_MULTIPLE_ENCODINGS">
+    <en-US>
+      <Variant>A texture cannot specify both TextureOptions.LinearColor and TextureOptions.SrgbColor.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
