@@ -61,97 +61,95 @@ namespace Ultraviolet
         /// <summary>
         /// Gets or sets the <see cref="RenderTargetUsage"/> value which is used by the back buffer.
         /// </summary>
-        public RenderTargetUsage BackBufferRenderTargetUsage
-        {
-            get;
-            set;
-        }
+        public RenderTargetUsage BackBufferRenderTargetUsage { get; set; }
         
         /// <summary>
         /// Gets or sets the name of the assembly that implements the audio subsystem.
         /// </summary>
-        public String AudioSubsystemAssembly
-        {
-            get;
-            set;
-        }
+        public String AudioSubsystemAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets the full name of the assembly which is responsible for
         /// creating and managing instances of the <see cref="Ultraviolet.UI.UIView"/> class.
         /// </summary>
-        public String ViewProviderAssembly
-        {
-            get;
-            set;
-        }
+        public String ViewProviderAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets an object which provides configuration values for the view provider.
         /// </summary>
-        public Object ViewProviderConfiguration
-        {
-            get;
-            set;
-        }
+        public Object ViewProviderConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to create a debug context.
         /// </summary>
-        public Boolean Debug
-        {
-            get;
-            set;
-        }
+        public Boolean Debug { get; set; }
 
         /// <summary>
         /// Gets or sets the levels of debug output which are enabled.
         /// </summary>
-        public DebugLevels DebugLevels
-        {
-            get;
-            set;
-        }
+        public DebugLevels DebugLevels { get; set; }
 
         /// <summary>
         /// Gets or sets the delegate that is invoked when a debug message is logged.
         /// </summary>
-        public DebugCallback DebugCallback
-        {
-            get;
-            set;
-        }
+        public DebugCallback DebugCallback { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SRGB encoding should be enabled for
+        /// textures and render buffers if it is supported. After device initialization, check the value
+        /// of the <see cref="GraphicsCapabilities.SrgbEncodingEnabled"/> property to determine whether SRGB 
+        /// encoding was actually enabled -- not all devices support it.
+        /// </summary>
+        public Boolean SrgbBuffersEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value which determines whether instances of the <see cref="Surface2D"/>
+        /// class are treated as SRGB encoded by default.
+        /// </summary>
+        public Boolean SrgbDefaultForSurface2D { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value which determines whether instances of the <see cref="Surface3D"/>
+        /// class are treated as SRGB encoded by default.
+        /// </summary>
+        public Boolean SrgbDefaultForSurface3D { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value which determines whether instances of the <see cref="Texture2D"/>
+        /// class are treated as SRGB encoded by default.
+        /// </summary>
+        public Boolean SrgbDefaultForTexture2D { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value which determines whether instances of the <see cref="Texture3D"/>
+        /// class are treated as SRGB encoded by default.
+        /// </summary>
+        public Boolean SrgbDefaultForTexture3D { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value which determines whether instances of the <see cref="RenderBuffer2D"/>
+        /// class are treated as SRGB encoded by default.
+        /// </summary>
+        public Boolean SrgbDefaultForRenderBuffer2D { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Ultraviolet should watch view definition files
         /// and reload them dynamically if changes are detected.
         /// </summary>
-        public Boolean WatchViewFilesForChanges
-        {
-            get;
-            set;
-        }
+        public Boolean WatchViewFilesForChanges { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the application supports high-density display modes
         /// such as Retina and Retina HD. This allows the application to make use of every physical pixel 
         /// on the screen, rather than being scaled to use logical pixels.
         /// </summary>
-        public Boolean SupportsHighDensityDisplayModes
-        {
-            get;
-            set;
-        }
+        public Boolean SupportsHighDensityDisplayModes { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Ultraviolet context is headless.
         /// A headless context will not create a default window upon initialization.
         /// </summary>
-        public Boolean Headless
-        {
-            get;
-            set;
-        }
+        public Boolean Headless { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether service mode is enabled. 
@@ -164,50 +162,30 @@ namespace Ultraviolet
         /// Windows service, for example on a build server. The Windows security model prevents services from accessing the graphics device,
         /// so we need to avoid doing so or else we'll run into errors.</para>
         /// </remarks>
-        public Boolean EnableServiceMode
-        {
-            get;
-            set;
-        }
+        public Boolean EnableServiceMode { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Ultraviolet context's default window is visible at startup.
         /// If the context is headless, this setting has no effect.
         /// </summary>
-        public Boolean WindowIsVisible
-        {
-            get;
-            set;
-        }
+        public Boolean WindowIsVisible { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Ultraviolet context's default window can be resized.
         /// If the context is headless, this setting has no effect.
         /// </summary>
-        public Boolean WindowIsResizable
-        {
-            get;
-            set;
-        }
+        public Boolean WindowIsResizable { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Ultraviolet context's default window is borderless.
         /// If the context is headless, this setting has no effect.
         /// </summary>
-        public Boolean WindowIsBorderless
-        {
-            get;
-            set;
-        }
+        public Boolean WindowIsBorderless { get; set; }
 
         /// <summary>
         /// Gets or sets the intial size and position of the context's primary window.
         /// </summary>
-        public Rectangle InitialWindowPosition
-        {
-            get;
-            set;
-        }
+        public Rectangle InitialWindowPosition { get; set; }
 
         /// <summary>
         /// The default x-position of a new window.

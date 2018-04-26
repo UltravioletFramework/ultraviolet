@@ -162,7 +162,7 @@ namespace Ultraviolet.SDL2.Platform
         {
             var sdlflags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
 
-            if (Ultraviolet.SupportsHighDensityDisplayModes)
+            if (Ultraviolet.Properties.SupportsHighDensityDisplayModes)
                 sdlflags |= SDL_WINDOW_ALLOW_HIGHDPI;
 
             if ((flags & WindowFlags.Resizable) == WindowFlags.Resizable)
@@ -459,7 +459,7 @@ namespace Ultraviolet.SDL2.Platform
             var masterHeight = 0;
             var masterFlags = (renderingAPI == SDL2PlatformRenderingAPI.OpenGL) ? SDL_WINDOW_OPENGL : 0;
 
-            if (Ultraviolet.SupportsHighDensityDisplayModes)
+            if (Ultraviolet.Properties.SupportsHighDensityDisplayModes)
                 masterFlags |= SDL_WINDOW_ALLOW_HIGHDPI;
 
             if (isRunningOnMobile)
