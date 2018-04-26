@@ -401,6 +401,13 @@
     <Compile Include="CircleTests.cs" />
     <Compile Include="Size2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Content\Fonts\NotoColorEmoji.uvmeta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\Fonts\NotoColorEmoji.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Textures\ColorBlendFg.uvmeta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -422,9 +429,12 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28sRGB%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -574,9 +584,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Fonts\MSGothic16.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Fonts\NotoEmoji-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Fonts\NotoSansCJKjp-Regular.otf">
