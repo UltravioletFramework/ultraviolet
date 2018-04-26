@@ -393,7 +393,7 @@ namespace Ultraviolet.Graphics
         private static Surface2D CreateOutputSurface(TextureAtlasDescription atlasDesc, IEnumerable<TextureAtlasImage> atlasImages,
             ContentManager content, IContentProcessorMetadata metadata, Int32 width, Int32 height, Dictionary<String, Rectangle> images)
         {
-            var output = Surface2D.Create(width, height);
+            var output = Surface2D.Create(width, height, SurfaceOptions.SrgbColor);
             
             foreach (var image in atlasImages)
             {

@@ -38,7 +38,7 @@ namespace Ultraviolet.Shims.macOS.Platform
             densityX = (Single)density.Width * (96f / 72f);
             densityY = (Single)density.Height * (96f / 72f);
 
-            var displayIsScaled = !UltravioletContext.DemandCurrent().SupportsHighDensityDisplayModes;
+            var displayIsScaled = !UltravioletContext.DemandCurrent().Properties.SupportsHighDensityDisplayModes;
             if (displayIsScaled)
             {
                 densityX /= deviceScale;
