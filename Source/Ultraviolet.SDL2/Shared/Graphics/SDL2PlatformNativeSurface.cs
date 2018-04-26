@@ -169,7 +169,7 @@ namespace Ultraviolet.SDL2.Graphics
                     {
                         if (!isAlphaPremultiplied)
                         {
-                            *srfPtr++ = Premultiply(srfColor);
+                            *srfPtr++ = GammaCorrectedPremultiply(srfColor);
                         }
                         else srfPtr++;
                     }
@@ -258,7 +258,10 @@ namespace Ultraviolet.SDL2.Graphics
 
             return copy;
         }
-        
+
+        /// <inheritdoc/>
+        public override Boolean SrgbEncoded { get; set; }
+
         /// <inheritdoc/>
         public override Boolean IsFlippedHorizontally => isFlippedHorizontally;
 
@@ -302,19 +305,35 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <summary>
-        /// Premultiplies the alpha of the specified color value.
+        /// Premultiplies the specified color.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static UInt32 Premultiply(UInt32 color)
+        private UInt32 GammaCorrectedPremultiply(UInt32 color)
         {
-            var a = (Byte)(color >> 24);
-            var afactor = a / 255f;
+            var a = (Byte)(color >> 24) / 255f;
+            var b = (Byte)(color >> 16) / 255f;
+            var g = (Byte)(color >> 8) / 255f;
+            var r = (Byte)(color) / 255f;
 
-            var b = (Byte)((Byte)(color >> 16) * afactor);
-            var g = (Byte)((Byte)(color >> 8) * afactor);
-            var r = (Byte)((Byte)(color) * afactor);
+            if (SrgbEncoded)
+            {
+                b = Color.ConvertSrgbColorChannelToLinear(b);
+                g = Color.ConvertSrgbColorChannelToLinear(g);
+                r = Color.ConvertSrgbColorChannelToLinear(r);
+            }
 
-            return (UInt32)((r) | (g << 8) | (b << 16) | (a << 24));
+            b *= a;
+            g *= a;
+            r *= a;
+
+            if (SrgbEncoded)
+            {
+                b = Color.ConvertLinearColorChannelToSrgb(b);
+                g = Color.ConvertLinearColorChannelToSrgb(g);
+                r = Color.ConvertLinearColorChannelToSrgb(r);
+            }
+
+            return (UInt32)(((Byte)(255f * r)) | ((Byte)(255f * g) << 8) | ((Byte)(255f * b) << 16) | ((Byte)(255f * a) << 24));
         }
 
         /// <summary>
@@ -354,7 +373,7 @@ namespace Ultraviolet.SDL2.Graphics
                     }
                     else
                     {
-                        *dstPtr = (premultiply && !isAlphaPremultiplied) ? Premultiply(srcColor) : srcColor;
+                        *dstPtr = (premultiply && !isAlphaPremultiplied) ? GammaCorrectedPremultiply(srcColor) : srcColor;
                     }
 
                     // dst -> src
@@ -364,7 +383,7 @@ namespace Ultraviolet.SDL2.Graphics
                     }
                     else
                     {
-                        *srcPtr = (premultiply && !isAlphaPremultiplied) ? Premultiply(dstColor) : dstColor;
+                        *srcPtr = (premultiply && !isAlphaPremultiplied) ? GammaCorrectedPremultiply(dstColor) : dstColor;
                     }
                 }
             }
@@ -413,7 +432,7 @@ namespace Ultraviolet.SDL2.Graphics
                     }
                     else
                     {
-                        *dstPtr++ = (premultiply && !isAlphaPremultiplied) ? Premultiply(srcColor) : srcColor;
+                        *dstPtr++ = (premultiply && !isAlphaPremultiplied) ? GammaCorrectedPremultiply(srcColor) : srcColor;
                     }
 
                     // dst -> src
@@ -423,7 +442,7 @@ namespace Ultraviolet.SDL2.Graphics
                     }
                     else
                     {
-                        *srcPtr++ = (premultiply && !isAlphaPremultiplied) ? Premultiply(dstColor) : dstColor;
+                        *srcPtr++ = (premultiply && !isAlphaPremultiplied) ? GammaCorrectedPremultiply(dstColor) : dstColor;
                     }
                 }
             }

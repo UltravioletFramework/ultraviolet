@@ -230,19 +230,59 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Converts a normalized color channel from sRGB to linear.
+        /// </summary>
+        /// <param name="x">The normalized color channel value to convert.</param>
+        /// <returns>The converted color channel value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ConvertSrgbColorChannelToLinear(Byte x)
+        {
+            return (Byte)(255f * ConvertSrgbColorChannelToLinear(x / 255f));
+        }
+
+        /// <summary>
+        /// Converts a color channel from linear to sRGB.
+        /// </summary>
+        /// <param name="x">The color channel value to convert.</param>
+        /// <returns>The converted color channel value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Byte ConvertLinearColorChannelToSrgb(Byte x)
+        {
+            return (Byte)(255f * ConvertLinearColorChannelToSrgb(x / 255f));
+        }
+
+        /// <summary>
+        /// Converts a normalized color channel from sRGB to linear.
+        /// </summary>
+        /// <param name="c">The normalized color channel value to convert.</param>
+        /// <returns>The converted color channel value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ConvertSrgbColorChannelToLinear(Single c)
+        {
+            return (c < 0.04045f) ? c / 12.92f : (Single)Math.Pow((c + 0.055) / 1.055, 2.4);
+        }
+
+        /// <summary>
+        /// Converts a normalized color channel from linear to sRGB.
+        /// </summary>
+        /// <param name="c">The normalized color channel value to convert.</param>
+        /// <returns>The converted color channel value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Single ConvertLinearColorChannelToSrgb(Single c)
+        {
+            return (c < 0.0031308f) ? c * 12.92f : 1.055f * (Single)Math.Pow(c, 1.0 / 2.4) - 0.055f;
+        }
+
+        /// <summary>
         /// Converts an sRGB color value to a linear color value.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color ConvertSrgbColorToLinear(Color c)
         {
-            Double ConvertSrgbColorChannelToLinear(Double x) =>
-                (x < 0.04045) ? x / 12.92 : Math.Pow((x + 0.055) / 1.055, 2.4);
-
-            var r = (Single)ConvertSrgbColorChannelToLinear(c.R / 255.0);
-            var g = (Single)ConvertSrgbColorChannelToLinear(c.G / 255.0);
-            var b = (Single)ConvertSrgbColorChannelToLinear(c.B / 255.0);
+            var r = ConvertSrgbColorChannelToLinear(c.R / 255.0f);
+            var g = ConvertSrgbColorChannelToLinear(c.G / 255.0f);
+            var b = ConvertSrgbColorChannelToLinear(c.B / 255.0f);
             var a = c.A / 255.0f;
-
             return new Color(r, g, b, a);
         }
 
@@ -252,14 +292,10 @@ namespace Ultraviolet
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color ConvertLinearColorToSrgb(Color c)
         {
-            Double ConvertLinearColorChannelToSrgb(Double x) =>
-                (x < 0.0031308) ? x * 12.92 : 1.055 * Math.Pow(x, 1.0 / 2.4) - 0.055;
-
-            var r = (Single)ConvertLinearColorChannelToSrgb(c.R / 255.0);
-            var g = (Single)ConvertLinearColorChannelToSrgb(c.G / 255.0);
-            var b = (Single)ConvertLinearColorChannelToSrgb(c.B / 255.0);
+            var r = ConvertLinearColorChannelToSrgb(c.R / 255.0f);
+            var g = ConvertLinearColorChannelToSrgb(c.G / 255.0f);
+            var b = ConvertLinearColorChannelToSrgb(c.B / 255.0f);
             var a = c.A / 255.0f;
-
             return new Color(r, g, b, a);
         }
 
