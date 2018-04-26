@@ -42,6 +42,9 @@ namespace Ultraviolet.SDL2.Graphics
         /// </summary>
         private Surface3D ProcessSingleFile(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input, String filename)
         {
+            var mdat = metadata.As<SDL2Surface3DProcessorMetadata>();
+            var srgbEncoded = mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForSurface3D;
+
             // Layers must be square. Validate our dimensions.
             var layerHeight = input.Height;
             var layerWidth = layerHeight;
@@ -52,7 +55,10 @@ namespace Ultraviolet.SDL2.Graphics
             // Create surfaces for each of our layers.
             using (var mainSurface = Surface2D.Create(input))
             {
-                var result = new SDL2Surface3D(manager.Ultraviolet, layerWidth, layerHeight, layerCount, mainSurface.BytesPerPixel);
+                mainSurface.SrgbEncoded = srgbEncoded;
+
+                var resultOpts = srgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+                var result = new SDL2Surface3D(manager.Ultraviolet, layerWidth, layerHeight, layerCount, mainSurface.BytesPerPixel, resultOpts);
                 for (int i = 0; i < layerCount; i++)
                 {
                     var layerSurface = mainSurface.CreateSurface(new Rectangle(i * layerWidth, 0, layerWidth, layerHeight));
@@ -67,6 +73,9 @@ namespace Ultraviolet.SDL2.Graphics
         /// </summary>
         private Surface3D ProcessMultipleFiles(ContentManager manager, IContentProcessorMetadata metadata, PlatformNativeSurface input, String filename)
         {
+            var mdat = metadata.As<SDL2Surface3DProcessorMetadata>();
+            var srgbEncoded = mdat.SrgbEncoded ?? manager.Ultraviolet.Properties.SrgbDefaultForSurface3D;
+
             var layer0 = input.CreateCopy();
             var layers = new Dictionary<Int32, String>();
             var layerIndex = 1;
@@ -90,8 +99,12 @@ namespace Ultraviolet.SDL2.Graphics
                 }
             }
 
-            var surface = new SDL2Surface3D(manager.Ultraviolet, layer0.Width, layer0.Height, 1 + layers.Count, layer0.BytesPerPixel);
-            surface.SetLayer(0, Surface2D.Create(layer0), true);
+            var surfaceOpts = srgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+            var surface = new SDL2Surface3D(manager.Ultraviolet, layer0.Width, layer0.Height, 1 + layers.Count, layer0.BytesPerPixel, surfaceOpts);
+
+            var surfaceLayer0 = Surface2D.Create(layer0);
+            surfaceLayer0.SrgbEncoded = srgbEncoded;
+            surface.SetLayer(0, surfaceLayer0, true);
 
             for (int i = 0; i < layers.Count; i++)
             {
@@ -99,6 +112,7 @@ namespace Ultraviolet.SDL2.Graphics
                 metadata.AddAssetDependency(layerAsset);
 
                 var layerSurface = manager.Load<Surface2D>(layerAsset, metadata.AssetDensity, false, metadata.IsLoadedFromSolution);
+                layerSurface.SrgbEncoded = srgbEncoded;
                 surface.SetLayer(1 + i, layerSurface, true);
             }
 

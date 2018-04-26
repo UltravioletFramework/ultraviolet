@@ -10,24 +10,27 @@ namespace Ultraviolet.Graphics
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="width">The surface's width in pixels.</param>
     /// <param name="height">The surface's height in pixels.</param>
+    /// <param name="options">The surface's configuration options.</param>
     /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-    public delegate Surface2D Surface2DFactory(UltravioletContext uv, Int32 width, Int32 height);
+    public delegate Surface2D Surface2DFactory(UltravioletContext uv, Int32 width, Int32 height, SurfaceOptions options);
 
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class from an instance of <see cref="SurfaceSource"/>.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="source">The surface source from which to create the surface.</param>
+    /// <param name="options">The surface's configuration options.</param>
     /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-    public delegate Surface2D Surface2DFromSourceFactory(UltravioletContext uv, SurfaceSource source);
+    public delegate Surface2D Surface2DFromSourceFactory(UltravioletContext uv, SurfaceSource source, SurfaceOptions options);
 
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="Surface2D"/> class from an instance of <see cref="PlatformNativeSurface"/>.
     /// </summary>
     /// <param name="uv">The Ultraviolet context.</param>
     /// <param name="surface">The native surface from which to create the surface.</param>
+    /// <param name="options">The surface's configuration options.</param>
     /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-    public delegate Surface2D Surface2DFromNativeSurfaceFactory(UltravioletContext uv, PlatformNativeSurface surface);
+    public delegate Surface2D Surface2DFromNativeSurfaceFactory(UltravioletContext uv, PlatformNativeSurface surface, SurfaceOptions options);
 
     /// <summary>
     /// Represents a two-dimensional image which is held in CPU memory.
@@ -51,40 +54,43 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="width">The surface's width in pixels.</param>
         /// <param name="height">The surface's height in pixels.</param>
+        /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(Int32 width, Int32 height)
+        public static Surface2D Create(Int32 width, Int32 height, SurfaceOptions options = SurfaceOptions.None)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Surface2DFactory>()(uv, width, height);
+            return uv.GetFactoryMethod<Surface2DFactory>()(uv, width, height, options);
         }
 
         /// <summary>
         /// Creates a new instance of the <see cref="Surface2D"/> class.
         /// </summary>
         /// <param name="source">The <see cref="SurfaceSource"/> from which to create the surface.</param>
+        /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(SurfaceSource source)
+        public static Surface2D Create(SurfaceSource source, SurfaceOptions options = SurfaceOptions.None)
         {
             Contract.Require(source, nameof(source));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Surface2DFromSourceFactory>()(uv, source);
+            return uv.GetFactoryMethod<Surface2DFromSourceFactory>()(uv, source, options);
         }
 
         /// <summary>
         /// Creates a new instance of the <see cref="Surface2D"/> class.
         /// </summary>
         /// <param name="surface">The <see cref="PlatformNativeSurface"/> from which to create the surface.</param>
+        /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface2D"/> that was created.</returns>
-        public static Surface2D Create(PlatformNativeSurface surface)
+        public static Surface2D Create(PlatformNativeSurface surface, SurfaceOptions options = SurfaceOptions.None)
         {
             Contract.Require(surface, nameof(surface));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Surface2DFromNativeSurfaceFactory>()(uv, surface);
+            return uv.GetFactoryMethod<Surface2DFromNativeSurfaceFactory>()(uv, surface, options);
         }
         
         /// <summary>
@@ -216,6 +222,12 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>
         public abstract void SaveAsPng(Stream stream);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the surface's data is SRGB encoded. The default value of this property
+        /// is determined by the value of the <see cref="UltravioletContextProperties.SrgbDefaultForSurface2D"/> property.
+        /// </summary>
+        public abstract Boolean SrgbEncoded { get; set; }
 
         /// <summary>
         /// Gets the surface's width in pixels.

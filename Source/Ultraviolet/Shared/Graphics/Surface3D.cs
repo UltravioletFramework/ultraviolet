@@ -13,8 +13,9 @@ namespace Ultraviolet.Graphics
     /// <param name="height">The surface's height in pixels.</param>
     /// <param name="depth">The number of layers in the surface.</param>
     /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on the surface.</param>
+    /// <param name="options">The surface's configuration options.</param>
     /// <returns>The instance of <see cref="Surface3D"/> that was created.</returns>
-    public delegate Surface3D Surface3DFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel);
+    public delegate Surface3D Surface3DFactory(UltravioletContext uv, Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel, SurfaceOptions options);
 
     /// <summary>
     /// Represents a three-dimensional image which is held in CPU memory.
@@ -37,16 +38,30 @@ namespace Ultraviolet.Graphics
         /// <param name="width">The surface's width in pixels.</param>
         /// <param name="height">The surface's height in pixels.</param>
         /// <param name="depth">The number of layers in the surface.</param>
-        /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on the surface.</param>
+        /// <param name="options">The surface's configuration options.</param>
         /// <returns>The instance of <see cref="Surface3D"/> which was created.</returns>
-        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel = 4)
+        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, SurfaceOptions options = SurfaceOptions.None)
+        {
+            return Create(width, height, depth, 4, options);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="Surface3D"/> class.
+        /// </summary>
+        /// <param name="width">The surface's width in pixels.</param>
+        /// <param name="height">The surface's height in pixels.</param>
+        /// <param name="depth">The number of layers in the surface.</param>
+        /// <param name="bytesPerPixel">The number of bytes used to represent a pixel on the surface.</param>
+        /// <param name="options">The surface's configuration options.</param>
+        /// <returns>The instance of <see cref="Surface3D"/> which was created.</returns>
+        public static Surface3D Create(Int32 width, Int32 height, Int32 depth, Int32 bytesPerPixel, SurfaceOptions options = SurfaceOptions.None)
         {
             Contract.Ensure(width > 0, nameof(width));
             Contract.Ensure(height > 0, nameof(height));
             Contract.Ensure(depth > 0, nameof(depth));
 
             var uv = UltravioletContext.DemandCurrent();
-            return uv.GetFactoryMethod<Surface3DFactory>()(uv, width, height, depth, bytesPerPixel);
+            return uv.GetFactoryMethod<Surface3DFactory>()(uv, width, height, depth, bytesPerPixel, options);
         }
 
         /// <summary>
@@ -117,6 +132,14 @@ namespace Ultraviolet.Graphics
         /// </summary>
         /// <param name="stream">The <see cref="Stream"/> to which to save the image data.</param>
         public abstract void SaveAsPng(Stream stream);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the surface's data is SRGB encoded. The default value of this property
+        /// is determined by the value of the <see cref="UltravioletContextProperties.SrgbDefaultForSurface3D"/> property.
+        /// </summary>
+        /// <remarks>Ultraviolet does not require that all of a 3D surface's layers match this property until the surface
+        /// is converted to a texture. At that point, any mismatch will cause an exception to be thrown.</remarks>
+        public abstract Boolean SrgbEncoded { get; set; }
 
         /// <summary>
         /// Gets the surface's width in pixels.

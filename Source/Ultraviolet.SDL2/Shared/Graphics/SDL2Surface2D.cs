@@ -18,8 +18,9 @@ namespace Ultraviolet.SDL2.Graphics
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="source">The surface source from which to create the surface.</param>
-        public SDL2Surface2D(UltravioletContext uv, SurfaceSource source)
-            : this(uv, new SDL2PlatformNativeSurface(source))
+        /// <param name="options">The surface's configuration options.</param>
+        public SDL2Surface2D(UltravioletContext uv, SurfaceSource source, SurfaceOptions options)
+            : this(uv, new SDL2PlatformNativeSurface(source), options)
         {
 
         }
@@ -29,13 +30,20 @@ namespace Ultraviolet.SDL2.Graphics
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="nativesurf">The native SDL surface that this object represents.</param>
-        public SDL2Surface2D(UltravioletContext uv, PlatformNativeSurface nativesurf)
+        /// <param name="options">The surface's configuration options.</param>
+        public SDL2Surface2D(UltravioletContext uv, PlatformNativeSurface nativesurf, SurfaceOptions options)
             : base(uv)
         {
             if (nativesurf == null)
-                throw new ArgumentNullException("nativesurf");
+                throw new ArgumentNullException(nameof(nativesurf));
+
+            var isSrgb = (options & SurfaceOptions.SrgbColor) == SurfaceOptions.SrgbColor;
+            var isLinear = (options & SurfaceOptions.LinearColor) == SurfaceOptions.LinearColor;
+            if (isSrgb && isLinear)
+                throw new ArgumentException(UltravioletStrings.SurfaceCannotHaveMultipleEncodings);
 
             this.nativesurf = (SDL2PlatformNativeSurface)nativesurf;
+            this.SrgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForSurface2D);
         }
 
         /// <summary>
@@ -44,13 +52,20 @@ namespace Ultraviolet.SDL2.Graphics
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="width">The width of the surface in pixels.</param>
         /// <param name="height">The height of the surface in pixels.</param>
-        public SDL2Surface2D(UltravioletContext uv, Int32 width, Int32 height)
+        /// <param name="options">The surface's configuration options.</param>
+        public SDL2Surface2D(UltravioletContext uv, Int32 width, Int32 height, SurfaceOptions options)
             : base(uv)
         {
             Contract.EnsureRange(width > 0, nameof(width));
             Contract.EnsureRange(height > 0, nameof(height));
 
+            var isSrgb = (options & SurfaceOptions.SrgbColor) == SurfaceOptions.SrgbColor;
+            var isLinear = (options & SurfaceOptions.LinearColor) == SurfaceOptions.LinearColor;
+            if (isSrgb && isLinear)
+                throw new ArgumentException(UltravioletStrings.SurfaceCannotHaveMultipleEncodings);
+
             this.nativesurf = new SDL2PlatformNativeSurface(width, height);
+            this.SrgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForSurface2D);
         }
 
         /// <inheritdoc/>
@@ -185,8 +200,10 @@ namespace Ultraviolet.SDL2.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            var options = SrgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
             var copysurf = nativesurf.CreateCopy();
-            return new SDL2Surface2D(Ultraviolet, copysurf);
+
+            return new SDL2Surface2D(Ultraviolet, copysurf, options);
         }
 
         /// <inheritdoc/>
@@ -205,7 +222,10 @@ namespace Ultraviolet.SDL2.Graphics
             if (SDL_BlitSurface(nativesurf.NativePtr, &srcrect, copysurf.NativePtr, &dstrect) < 0)
                 throw new SDL2Exception();
 
-            return new SDL2Surface2D(Ultraviolet, copysurf);
+            var options = SrgbEncoded ? SurfaceOptions.SrgbColor : SurfaceOptions.LinearColor;
+            var result = new SDL2Surface2D(Ultraviolet, copysurf, options);
+
+            return result;
         }
 
         /// <inheritdoc/>
@@ -215,7 +235,7 @@ namespace Ultraviolet.SDL2.Graphics
 
             if (unprocessed)
             {
-                return Texture2D.Create((IntPtr)NativePtr->pixels, Width, Height, BytesPerPixel);
+                return Texture2D.CreateTexture((IntPtr)NativePtr->pixels, Width, Height, BytesPerPixel);
             }
             else
             {
@@ -227,7 +247,7 @@ namespace Ultraviolet.SDL2.Graphics
                     copysurf.Flip(Ultraviolet.GetGraphics().Capabilities.FlippedTextures ? 
                         SurfaceFlipDirection.Vertical : SurfaceFlipDirection.None);
 
-                    return Texture2D.Create((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
+                    return Texture2D.CreateTexture((IntPtr)copysurf.NativePtr->pixels, copysurf.Width, copysurf.Height, copysurf.BytesPerPixel);
                 }
             }
         }
@@ -251,6 +271,9 @@ namespace Ultraviolet.SDL2.Graphics
             var saver = SurfaceSaver.Create();
             saver.SaveAsPng(this, stream);
         }
+
+        /// <inheritdoc/>
+        public override Boolean SrgbEncoded { get; set; }
 
         /// <inheritdoc/>
         public override Int32 Width => nativesurf.Width;
