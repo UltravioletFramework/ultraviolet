@@ -289,12 +289,12 @@ namespace Ultraviolet
         public Single FrameRate => 60f;
 
         /// <inheritdoc/>
-        public GraphicsCapabilities Capabilities => capabilities;
+        public GraphicsCapabilities Capabilities { get; } = new DummyGraphicsCapabilities();
+
+        /// <inheritdoc/>
+        public Boolean CurrentRenderTargetIsSrgbEncoded => false;
 
         /// <inheritdoc/>
         public event UltravioletSubsystemUpdateEventHandler Updating;
-
-        // Property values.
-        private readonly GraphicsCapabilities capabilities = new DummyGraphicsCapabilities();
     }
 }

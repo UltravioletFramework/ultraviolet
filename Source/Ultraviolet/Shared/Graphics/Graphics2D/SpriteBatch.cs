@@ -50,6 +50,8 @@ namespace Ultraviolet.Graphics.Graphics2D
         protected override unsafe void GenerateVertices(Texture2D texture, SpriteHeader[] sprites,
             SpriteVertex[] vertices, SpriteBatchData[] data, Int32 offset, Int32 count)
         {
+            var srgb = Ultraviolet.GetGraphics().CurrentRenderTargetIsSrgbEncoded;
+
             fixed (SpriteHeader* pSprites1 = &sprites[offset])
             fixed (SpriteBatchData* pData1 = &data[offset])
             fixed (SpriteVertex* pVertices1 = &vertices[0])
@@ -68,7 +70,7 @@ namespace Ultraviolet.Graphics.Graphics2D
                         CalculatePositionAndTextureCoordinates(pSprites, v,
                             (Vector2*)&pVertices->Position, &pVertices->U, &pVertices->V);
 
-                        pVertices->Color = pSprites->Color;
+                        pVertices->Color = pSprites->Color;// srgb ? Color.ConvertSrgbColorToLinear(pSprites->Color) : pSprites->Color;
                         pVertices++;
                     }
 

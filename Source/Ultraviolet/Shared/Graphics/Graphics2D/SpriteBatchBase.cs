@@ -2676,6 +2676,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 }
             }
 
+            var srgbColorParameter = customEffect.Parameters["SrgbColor"];
+            if (srgbColorParameter != null)
+                srgbColorParameter.SetValue(Ultraviolet.GetGraphics().CurrentRenderTargetIsSrgbEncoded);
+
             customEffect.CurrentTechnique.Passes[0].Apply();
         }
 
