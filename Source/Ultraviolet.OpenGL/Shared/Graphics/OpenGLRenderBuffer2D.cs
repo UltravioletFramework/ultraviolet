@@ -32,7 +32,8 @@ namespace Ultraviolet.OpenGL.Graphics
             if ((isSrgb || isLinear) && format != RenderBufferFormat.Color)
                 throw new ArgumentException(UltravioletStrings.EncodingSpecifiedForNonColorBuffer);
 
-            var srgbEncoded = isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForRenderBuffer2D);
+            var caps = uv.GetGraphics().Capabilities;
+            var srgbEncoded = (isLinear ? false : (isSrgb ? true : uv.Properties.SrgbDefaultForRenderBuffer2D)) && caps.SrgbEncodingEnabled;
 
             this.format = format;
             this.width = width;
