@@ -80,8 +80,11 @@ namespace Ultraviolet.OpenGL
             
             this.capabilities = new OpenGLGraphicsCapabilities(configuration);
 
-            if (capabilities.SrgbEncodingEnabled)
+            if (capabilities.SrgbEncodingEnabled && !gl.IsGLES)
+            {
                 gl.Enable(gl.GL_FRAMEBUFFER_SRGB);
+                gl.ThrowIfError();
+            }
 
             this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture[maxTextureStages];
