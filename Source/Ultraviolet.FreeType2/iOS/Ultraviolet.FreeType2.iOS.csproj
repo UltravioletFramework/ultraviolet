@@ -129,6 +129,14 @@
       <ForceLoad>True</ForceLoad>
     </NativeReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.FreeType2.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.FreeType2.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
 </Project>
