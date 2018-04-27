@@ -18,7 +18,7 @@ namespace Ultraviolet.Presentation
         {
             renderTarget = RenderTarget2D.Create(1, 1);
 
-            colorBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.None);
+            colorBuffer = Texture2D.CreateRenderBuffer(RenderBufferFormat.Color, 1, 1, RenderBufferOptions.SrgbColor);
             renderTarget.Attach(colorBuffer);
 
             if (uv.GetGraphics().Capabilities.SupportsDepthStencilTextures)
