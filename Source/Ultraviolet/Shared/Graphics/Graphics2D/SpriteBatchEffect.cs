@@ -1,4 +1,6 @@
-﻿namespace Ultraviolet.Graphics.Graphics2D
+﻿using System;
+
+namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
     /// Represents a factory method which constructs instances of the <see cref="SpriteBatchEffect"/> class.
@@ -22,6 +24,7 @@
             this.epTexture = Parameters["Texture"];
             this.epTextureSize = Parameters["TextureSize"];
             this.epMatrixTransform = Parameters["MatrixTransform"];
+            this.epSrgbColor = Parameters["SrgbColor"];
         }
 
         /// <summary>
@@ -58,9 +61,17 @@
             set => epMatrixTransform.SetValue(value);
         }
 
+        /// <inheritdoc/>
+        public Boolean SrgbColor
+        {
+            get => epSrgbColor?.GetValueBoolean() ?? false;
+            set => epSrgbColor?.SetValue(value);
+        }
+
         // Cached effect parameters.
         private readonly EffectParameter epTexture;
         private readonly EffectParameter epTextureSize;
         private readonly EffectParameter epMatrixTransform;
+        private readonly EffectParameter epSrgbColor;
     }
 }

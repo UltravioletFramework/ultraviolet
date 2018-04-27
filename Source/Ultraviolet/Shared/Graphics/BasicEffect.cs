@@ -21,12 +21,14 @@ namespace Ultraviolet.Graphics
         protected BasicEffect(EffectImplementation impl)
             : base(impl)
         {
-            this.epWorld        = Parameters["World"];
-            this.epView         = Parameters["View"];
-            this.epProjection   = Parameters["Projection"];
             this.epDiffuseColor = Parameters["DiffuseColor"];
+            this.epWorld = Parameters["World"];
+            this.epView = Parameters["View"];
+            this.epProjection = Parameters["Projection"];
+            this.epSrgbColor = Parameters["SrgbColor"];
+            this.epTexture = Parameters["Texture"];
+
             this.epDiffuseColor.SetValue(Color.White);
-            this.epTexture      = Parameters["Texture"];
         }
 
         /// <summary>
@@ -37,6 +39,15 @@ namespace Ultraviolet.Graphics
         {
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<BasicEffectFactory>()(uv);
+        }
+
+        /// <summary>
+        /// Gets or sets the material's diffuse color.
+        /// </summary>
+        public Color DiffuseColor
+        {
+            get => epDiffuseColor.GetValueColor();
+            set => epDiffuseColor.SetValue(value);
         }
 
         /// <summary>
@@ -83,15 +94,6 @@ namespace Ultraviolet.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the material's diffuse color.
-        /// </summary>
-        public Color DiffuseColor
-        {
-            get => epDiffuseColor.GetValueColor();
-            set => epDiffuseColor.SetValue(value);
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether textures are enabled for this effect.
         /// </summary>
         public Boolean TextureEnabled
@@ -105,6 +107,16 @@ namespace Ultraviolet.Graphics
                     OnTextureEnabledChanged();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the colors used by this effect should be
+        /// converted from the sRGB color space to the linear color space in the vertex shader.
+        /// </summary>
+        public Boolean SrgbColor
+        {
+            get => epSrgbColor?.GetValueBoolean() ?? false;
+            set => epSrgbColor?.SetValue(value);
         }
 
         /// <summary>
@@ -132,11 +144,20 @@ namespace Ultraviolet.Graphics
 
         }
 
+        /// <summary>
+        /// Occurs when the value of the <see cref="SrgbColor"/> property changes.
+        /// </summary>
+        protected virtual void OnSrgbColorChanged()
+        {
+
+        }
+
         // Cached effect parameters.
+        private readonly EffectParameter epDiffuseColor;
         private readonly EffectParameter epWorld;
         private readonly EffectParameter epView;
         private readonly EffectParameter epProjection;
-        private readonly EffectParameter epDiffuseColor;
+        private readonly EffectParameter epSrgbColor;
         private readonly EffectParameter epTexture;
 
         // Property values.

@@ -204,6 +204,7 @@
     <EmbeddedResource Include="Resources\SpriteBatchEffect.vert" />
     <EmbeddedResource Include="Resources\SpriteBatchEffectES.frag" />
     <EmbeddedResource Include="Resources\SpriteBatchEffectES.vert" />
+    <EmbeddedResource Include="Resources\SrgbConversion.verth" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Version.tt">

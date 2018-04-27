@@ -40,6 +40,7 @@
     <None Include="..\..\Version.tt" Link="Properties\Version.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <EmbeddedResource Include="..\Desktop\Resources\SrgbConversion.verth" Link="Resources\SrgbConversion.verth" />
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  
     </Compile>

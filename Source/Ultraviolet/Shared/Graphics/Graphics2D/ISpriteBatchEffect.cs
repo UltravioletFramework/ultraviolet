@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Ultraviolet.Graphics.Graphics2D
 {
     /// <summary>
@@ -10,6 +11,16 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Gets or sets the effect's transformation matrix.
         /// </summary>
         Matrix MatrixTransform
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the effect should transform
+        /// colors from the sRGB space to the linear space in the vertex shader.
+        /// </summary>
+        Boolean SrgbColor
         {
             get;
             set;
