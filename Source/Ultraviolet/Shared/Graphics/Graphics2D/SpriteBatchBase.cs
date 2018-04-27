@@ -2664,21 +2664,22 @@ namespace Ultraviolet.Graphics.Graphics2D
                 var viewport = Ultraviolet.GetGraphics().GetViewport();
                 var projection = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
                 spriteBatchEffect.MatrixTransform = transformMatrix * projection;
+                spriteBatchEffect.SrgbColor = graphics.CurrentRenderTargetIsSrgbEncoded;
             }
             else
             {
                 var matrixTransformParam = customEffect.Parameters["MatrixTransform"];
                 if (matrixTransformParam != null)
                 {
-                    var viewport = Ultraviolet.GetGraphics().GetViewport();
+                    var viewport = graphics.GetViewport();
                     var projection = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
                     matrixTransformParam.SetValue(transformMatrix * projection);
                 }
-            }
 
-            var srgbColorParameter = customEffect.Parameters["SrgbColor"];
-            if (srgbColorParameter != null)
-                srgbColorParameter.SetValue(Ultraviolet.GetGraphics().CurrentRenderTargetIsSrgbEncoded);
+                var srgbColorParameter = customEffect.Parameters["SrgbColor"];
+                if (srgbColorParameter != null)
+                    srgbColorParameter.SetValue(graphics.CurrentRenderTargetIsSrgbEncoded);
+            }
 
             customEffect.CurrentTechnique.Passes[0].Apply();
         }

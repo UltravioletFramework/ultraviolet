@@ -105,6 +105,9 @@
     <EmbeddedResource Include="..\Desktop\Resources\HeaderES.verth">
       <Link>Resources\HeaderES.verth</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\SrgbConversion.verth">
+      <Link>Resources\SrgbConversion.verth</Link>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

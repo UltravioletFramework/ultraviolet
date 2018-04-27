@@ -158,6 +158,7 @@ namespace UvDebug.Content.UI.Controls
             effect.View = Matrix.CreateLookAt(new Vector3(0, 0, triangleDistance), Vector3.Zero, Vector3.Up);
             effect.Projection = Matrix.CreatePerspectiveFieldOfView((Single)(Math.PI / 4.0), triangleAspectRatio, 1f, 1000f);
             effect.VertexColorEnabled = true;
+            effect.SrgbColor = gfx.CurrentRenderTargetIsSrgbEncoded;
             
             foreach (var pass in effect.CurrentTechnique.Passes)
             {

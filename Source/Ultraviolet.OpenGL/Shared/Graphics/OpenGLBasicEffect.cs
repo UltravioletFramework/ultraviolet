@@ -4,12 +4,12 @@ using Ultraviolet.Graphics;
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
     /// <summary>
-    /// Represents the OpenGL implementation of <see cref="Ultraviolet.Graphics.BasicEffect"/>.
+    /// Represents the OpenGL implementation of the <see cref="Ultraviolet.Graphics.BasicEffect"/> class.
     /// </summary>
     public sealed class OpenGLBasicEffect : BasicEffect
     {
         /// <summary>
-        /// Initializes a new instance of the OpenGLSpriteBatchEffect class.
+        /// Initializes a new instance of the <see cref="OpenGLBasicEffect"/> class.
         /// </summary>
         public OpenGLBasicEffect(UltravioletContext uv)
             : base(CreateEffectImplementation(uv))
@@ -17,17 +17,13 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 
         }
 
-        /// <summary>
-        /// Occurs when the value of the VertexColorEnabled property changes.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void OnVertexColorEnabledChanged()
         {
             UpdateProgramIndex();
         }
 
-        /// <summary>
-        /// Occurs when the value of the TextureEnabled property changes.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void OnTextureEnabledChanged()
         {
             UpdateProgramIndex();
