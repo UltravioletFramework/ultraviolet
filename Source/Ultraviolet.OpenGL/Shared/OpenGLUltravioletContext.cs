@@ -61,6 +61,7 @@ namespace Ultraviolet.OpenGL
             sdlconfig.RenderingAPI = SDL2PlatformRenderingAPI.OpenGL;
             sdlconfig.MultiSampleBuffers = configuration.MultiSampleBuffers;
             sdlconfig.MultiSampleSamples = configuration.MultiSampleSamples;
+            sdlconfig.SrgbBuffersEnabled = configuration.SrgbBuffersEnabled;
             this.platform = IsRunningInServiceMode ? (IUltravioletPlatform)new DummyUltravioletPlatform(this) : new SDL2UltravioletPlatform(this, configuration, sdlconfig);
 
             PumpEvents();
