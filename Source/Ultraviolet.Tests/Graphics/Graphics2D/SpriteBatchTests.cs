@@ -148,6 +148,44 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
 
         [Test]
         [Category("Rendering")]
+        [Description("Ensures that SpriteBatch can be used to draw stroked East Asian characters using FreeType2.")]
+        public void SpriteBatch_CorrectlyRendersStrokedEastAsianCharacters()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(UltravioletFont);
+
+            var result = GivenAnUltravioletApplication()
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<UltravioletFont>("Fonts/NotoSansCJKjpStroked");
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+                    // From the Japanese Wikipedia article "日本"
+                    spriteBatch.DrawString(spriteFont.Regular,
+                        "日本国（にっぽんこく、にほんこく）、または日本\n" +
+                        "（にっぽん、にほん）は、東アジアに位置する日本\n" +
+                        "列島（北海道・本州・四国・九州の主要四島および\n" +
+                        "それに付随する島々）及び、南西諸島・小笠原諸島\n" +
+                        "などの諸島嶼から成る島国である。日本語が事実上\n" +
+                        "の公用語として使用されている。首都は事実上東京\n" +
+                        "都とされている。", new Vector2(4, 4), Color.White);
+
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersStrokedEastAsianCharacters.png");
+        }
+
+        [Test]
+        [Category("Rendering")]
         [Description("Ensures that SpriteBatch correctly renders a sprite font's default substitution glyph.")]
         public void SpriteBatch_RendersDefaultSubstitutionGlyphForSpriteFont()
         {
