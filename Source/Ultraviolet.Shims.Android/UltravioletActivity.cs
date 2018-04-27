@@ -30,8 +30,19 @@ namespace Ultraviolet
         /// </summary>
         static UltravioletActivity()
         {
-            var dataDir = Android.App.Application.Context.ApplicationContext.DataDir.AbsolutePath;
-            Directory.SetCurrentDirectory(dataDir);
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                var dataDir = Android.App.Application.Context.ApplicationContext.DataDir.AbsolutePath;
+                Directory.SetCurrentDirectory(dataDir);
+            }
+            else
+            {
+                var pkgManager = Android.App.Application.Context.PackageManager;
+                var pkgName = Android.App.Application.Context.PackageName;
+                var pkgInfo = pkgManager.GetPackageInfo(pkgName, 0);
+                var dataDir = pkgInfo.ApplicationInfo.DataDir;
+                Directory.SetCurrentDirectory(dataDir);
+            }
         }
 
         /// <summary>
