@@ -134,7 +134,7 @@ namespace Ultraviolet.OpenGL
             {
                 // From EXT_framebuffer_sRGB:
                 // "The R, G, and B color components passed to glClearColor are assumed to be linear color components."
-                if (Capabilities.SrgbEncodingEnabled && (renderTarget == null || renderTarget.HasSrgbEncodedColorBuffer))
+                if (CurrentRenderTargetIsSrgbEncoded)
                     color = Color.ConvertSrgbColorToLinear(color);
 
                 if (blendState.ColorWriteChannels != ColorWriteChannels.All)
@@ -733,6 +733,10 @@ namespace Ultraviolet.OpenGL
         {
             get { return capabilities; }
         }
+
+        /// <inheritdoc/>
+        public Boolean CurrentRenderTargetIsSrgbEncoded => 
+            (renderTarget == null || renderTarget.HasSrgbEncodedColorBuffer) && Capabilities.SrgbEncodingEnabled;
 
         /// <summary>
         /// Occurs when the subsystem is updating its state.

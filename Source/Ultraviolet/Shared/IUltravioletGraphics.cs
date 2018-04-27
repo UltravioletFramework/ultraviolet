@@ -305,5 +305,10 @@ namespace Ultraviolet
         { 
             get; 
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the current render target uses sRGB encoded color.
+        /// </summary>
+        Boolean CurrentRenderTargetIsSrgbEncoded { get; }
     }
 }
