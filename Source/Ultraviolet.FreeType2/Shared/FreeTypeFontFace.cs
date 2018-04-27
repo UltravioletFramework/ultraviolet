@@ -1072,13 +1072,14 @@ namespace Ultraviolet.FreeType2
                 // Stroke the glyph.   
                 StrokeGlyph(out var strokeGlyph, out var strokeBmp, 
                     out var strokeOffsetX, out var strokeOffsetY);
-                
+
                 // Render the glyph.
                 err = FT_Render_Glyph(facade.GlyphSlot, FT_RENDER_MODE_NORMAL);
                 if (err != FT_Err_Ok)
                     throw new FreeTypeException(err);
 
                 var glyphBmp = facade.GlyphBitmap;
+                var glyphBmpHeightScaled = (Int32)glyphBmp.rows;
                 var glyphAdjustX = 0;
                 var glyphAdjustY = 0;
 
@@ -1098,12 +1099,13 @@ namespace Ultraviolet.FreeType2
 
                     glyphAscent = Math.Max(facade.GlyphBitmapTop, strokeOffsetY);
                     glyphAdjustX = -(strokeOffsetX - facade.GlyphBitmapLeft);
-                    glyphAdjustY = strokeOffsetY - facade.GlyphBitmapTop;
+                    glyphAdjustY = +(strokeOffsetY - facade.GlyphBitmapTop);
                 }
 
                 // Apply scaling to metrics.
                 if (scale != 1f)
                 {
+                    glyphBmpHeightScaled = (Int32)Math.Floor(glyphBmpHeightScaled * scale);
                     glyphAdvance = (Int32)Math.Floor(glyphAdvance * scale);
                     glyphAscent = (Int32)Math.Floor(glyphAscent * scale);
                     reservationWidth = (Int32)Math.Floor(reservationWidth * scale);
@@ -1134,6 +1136,10 @@ namespace Ultraviolet.FreeType2
                         if (!atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
                             throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format(cu16));
                     }
+
+                    // If we're using flipped textures, we need to modify our y-adjust...
+                    if (reservation.Atlas.IsFlipped)
+                        glyphAdjustY = (reservationHeight - glyphBmpHeightScaled) - glyphAdjustY;
 
                     // Update the atlas surface.
                     var blendMode = FreeTypeBlendMode.Opaque;
