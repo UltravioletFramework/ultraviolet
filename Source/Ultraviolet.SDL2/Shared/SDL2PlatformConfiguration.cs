@@ -21,5 +21,11 @@ namespace Ultraviolet.SDL2
         /// Gets the number of samples around the current pixel used for multisample anti-aliasing.
         /// </summary>
         public Int32 MultiSampleSamples { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SRGB encoding should be enabled for
+        /// textures and render buffers if it is supported.
+        /// </summary>
+        public Boolean SrgbBuffersEnabled { get; set; }
     }
 }

@@ -72,6 +72,9 @@ namespace Ultraviolet.SDL2.Platform
         /// <inheritdoc/>
         protected override void InitializeRenderingAPI(SDL2PlatformConfiguration sdlconfig)
         {
+            if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, sdlconfig.SrgbBuffersEnabled ? 1 : 0) < 0)
+                throw new SDL2Exception();
+
             if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, sdlconfig.MultiSampleBuffers) < 0)
                 throw new SDL2Exception();
 
@@ -80,13 +83,57 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        protected override void InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig)
+        protected override Boolean InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig, Int32 attempt)
         {
-            if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0) < 0)
-                throw new SDL2Exception();
+            InitializeRenderingAPI(sdlconfig);
 
-            if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0) < 0)
-                throw new SDL2Exception();
+            switch (attempt)
+            {
+                case 0:
+                    // Attempt #0: Try turning off sRGB.  
+                    if (sdlconfig.SrgbBuffersEnabled)
+                    {
+                        if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 0) < 0)
+                            throw new SDL2Exception();
+
+                        return true;
+                    }
+                    else goto case 1;
+
+                case 1:
+                    // Attempt #1: Try turning off multisampling.
+                    if (sdlconfig.MultiSampleBuffers > 0 || sdlconfig.MultiSampleSamples > 0)
+                    {
+                        if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0) < 0)
+                            throw new SDL2Exception();
+
+                        if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0) < 0)
+                            throw new SDL2Exception();
+
+                        return true;
+                    }
+                    else goto case 2;
+
+                case 2:
+                    // Attempt #2: Try turning off sRGB and multisampling.
+                    if (sdlconfig.SrgbBuffersEnabled)
+                    {
+                        if (SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 0) < 0)
+                            throw new SDL2Exception();
+
+                        if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0) < 0)
+                            throw new SDL2Exception();
+
+                        if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0) < 0)
+                            throw new SDL2Exception();
+
+                        return true;
+                    }
+                    else goto default;
+
+                default:
+                    return false;
+            }
         }
 
         /// <inheritdoc/>

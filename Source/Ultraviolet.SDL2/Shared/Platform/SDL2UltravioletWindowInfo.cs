@@ -342,9 +342,11 @@ namespace Ultraviolet.SDL2.Platform
         /// to initialize the API failed.
         /// </summary>
         /// <param name="sdlconfig">The platform configuration settings.</param>
-        protected virtual void InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig)
+        /// <param name="attempt">The number of attempts which have been made to find a working fallback configuration.</param>
+        /// <returns><see langword="true"/> if a fallback configuration was provided; otherwise, <see langword="false"/>.</returns>
+        protected virtual Boolean InitializeRenderingAPIFallback(SDL2PlatformConfiguration sdlconfig, Int32 attempt)
         {
-
+            return false;
         }
 
         /// <summary>
@@ -475,13 +477,25 @@ namespace Ultraviolet.SDL2.Platform
             var masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
             if (masterptr == IntPtr.Zero)
             {
-                InitializeRenderingAPIFallback(sdlconfig);
-
-                masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
-                if (masterptr == IntPtr.Zero)
+                var fallbackAttempt = 0;
+                while (InitializeRenderingAPIFallback(sdlconfig, fallbackAttempt++))
                 {
-                    throw new SDL2Exception();
+                    masterptr = SDL_CreateWindow(isRunningOnMobile ? caption : String.Empty, 0, 0, masterWidth, masterHeight, masterFlags);
+                    if (masterptr != IntPtr.Zero)
+                        break;
                 }
+
+                if (masterptr == IntPtr.Zero)
+                    throw new SDL2Exception();
+
+                // Fallback might have disabled sRGB, so update our configuration to reflect our current state.
+                var srgbFramebufferEnabled = 0;
+                unsafe
+                {
+                    if (SDL_GL_GetAttribute(SDL_GLattr.SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, &srgbFramebufferEnabled) < 0)
+                        throw new SDL2Exception();
+                }
+                uvconfig.SrgbBuffersEnabled = (srgbFramebufferEnabled > 0);
             }
 
             this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr);
