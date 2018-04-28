@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ultraviolet.FMOD.Native
+﻿namespace Ultraviolet.FMOD.Native
 {
 #pragma warning disable 1591
     public enum FMOD_DEBUG_MODE

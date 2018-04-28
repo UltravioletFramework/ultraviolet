@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Ultraviolet;
-using Ultraviolet.Core;
 
 namespace UvDebug
 {

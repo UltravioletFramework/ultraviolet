@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet.Input

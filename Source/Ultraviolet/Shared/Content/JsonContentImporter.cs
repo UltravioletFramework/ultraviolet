@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Newtonsoft.Json.Linq;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Content
 {

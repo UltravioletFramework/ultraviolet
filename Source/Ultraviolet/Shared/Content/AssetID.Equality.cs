@@ -1,5 +1,4 @@
 using System;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Content
 {

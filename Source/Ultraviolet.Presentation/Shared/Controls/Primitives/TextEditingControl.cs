@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet.Input;
 using Ultraviolet.Presentation.Documents;
 using Ultraviolet.Presentation.Input;

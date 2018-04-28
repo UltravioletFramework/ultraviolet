@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Ultraviolet.Core;
 using Ultraviolet.FMOD.Native;
 using static Ultraviolet.FMOD.Native.FMOD_RESULT;
-using System.Threading;
 
 namespace Ultraviolet.FMOD
 {

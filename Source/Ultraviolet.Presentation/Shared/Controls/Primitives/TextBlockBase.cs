@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet.Presentation.Documents;
 
 namespace Ultraviolet.Presentation.Controls.Primitives

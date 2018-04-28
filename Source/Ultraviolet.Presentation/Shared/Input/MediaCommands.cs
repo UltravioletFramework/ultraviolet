@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet.Input;
 
 namespace Ultraviolet.Presentation.Input

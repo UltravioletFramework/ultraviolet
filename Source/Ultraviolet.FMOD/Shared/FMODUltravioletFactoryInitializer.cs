@@ -1,5 +1,4 @@
 ﻿using Ultraviolet.Audio;
-using Ultraviolet.Core;
 using Ultraviolet.FMOD.Audio;
 
 namespace Ultraviolet.FMOD

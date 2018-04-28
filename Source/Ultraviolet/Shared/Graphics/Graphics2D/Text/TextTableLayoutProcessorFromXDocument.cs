@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
 namespace Ultraviolet.Graphics.Graphics2D.Text

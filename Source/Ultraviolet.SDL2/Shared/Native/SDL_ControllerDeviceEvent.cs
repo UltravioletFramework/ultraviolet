@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 using SDL_JoystickID = System.Int32;
 
 namespace Ultraviolet.SDL2.Native

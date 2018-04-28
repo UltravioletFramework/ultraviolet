@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.FMOD.Native
 {

@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Ultraviolet.Content;
 using Ultraviolet.OpenGL.Bindings;
-using System.Linq;
 
 namespace Ultraviolet.OpenGL.Graphics
 {

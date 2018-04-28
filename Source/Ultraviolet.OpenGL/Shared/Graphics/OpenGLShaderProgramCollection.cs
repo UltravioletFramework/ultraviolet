@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Graphics
 {

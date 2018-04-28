@@ -1,11 +1,10 @@
-﻿using Ultraviolet.Core;
-using Ultraviolet.Platform;
-using Ultraviolet.SDL2.Platform;
-using Ultraviolet.Graphics;
+﻿using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.OpenGL.Bindings;
 using Ultraviolet.OpenGL.Graphics;
 using Ultraviolet.OpenGL.Graphics.Graphics2D;
+using Ultraviolet.Platform;
+using Ultraviolet.SDL2.Platform;
 
 namespace Ultraviolet.OpenGL
 {

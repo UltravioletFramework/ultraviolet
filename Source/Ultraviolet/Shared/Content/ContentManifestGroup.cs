@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Xml;
-using System.Text.RegularExpressions;
 
 namespace Ultraviolet.Content
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Graphics;
 
 namespace Ultraviolet.SDL2.Graphics
 {

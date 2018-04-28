@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;

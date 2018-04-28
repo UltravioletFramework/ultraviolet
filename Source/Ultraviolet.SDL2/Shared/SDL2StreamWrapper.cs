@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
-using Ultraviolet.SDL2.Native;
 using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ultraviolet.Core;
-using Ultraviolet.Core.Collections;
 using Ultraviolet.Core.Data;
 using Ultraviolet.Presentation.Animations;
 using Ultraviolet.Presentation.Styles;

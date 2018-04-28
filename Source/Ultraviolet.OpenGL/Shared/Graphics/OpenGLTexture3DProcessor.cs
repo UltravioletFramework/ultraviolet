@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
 

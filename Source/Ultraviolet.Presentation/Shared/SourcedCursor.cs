@@ -1,6 +1,5 @@
 ﻿using System;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet.Presentation

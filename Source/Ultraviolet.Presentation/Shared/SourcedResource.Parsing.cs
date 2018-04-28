@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
 namespace Ultraviolet.Presentation

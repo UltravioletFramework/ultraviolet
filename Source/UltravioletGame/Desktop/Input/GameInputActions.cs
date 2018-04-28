@@ -1,5 +1,4 @@
 ﻿using Ultraviolet;
-using Ultraviolet.Core;
 using Ultraviolet.Input;
 
 namespace SAFE_PROJECT_NAME.Input

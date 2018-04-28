@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation.Uvss.Syntax
 {

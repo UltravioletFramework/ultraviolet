@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 using SDL_GestureID = System.Int64;
 using SDL_TouchID = System.Int64;
 

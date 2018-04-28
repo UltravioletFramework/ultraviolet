@@ -1,6 +1,4 @@
-﻿using Ultraviolet.Core;
-
-namespace Ultraviolet.Presentation
+﻿namespace Ultraviolet.Presentation
 {
     partial class PresentationFoundation
     {

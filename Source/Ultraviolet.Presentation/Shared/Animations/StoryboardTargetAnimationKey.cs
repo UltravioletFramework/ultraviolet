@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet.Presentation.Styles;
 
 namespace Ultraviolet.Presentation.Animations

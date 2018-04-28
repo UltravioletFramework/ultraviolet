@@ -1,5 +1,4 @@
 ﻿using System.Xml.Linq;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Content
 {

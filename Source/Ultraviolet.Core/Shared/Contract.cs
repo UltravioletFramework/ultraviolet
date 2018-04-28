@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Ultraviolet.Core.Text;
 using System.Runtime.CompilerServices;
+using Ultraviolet.Core.Text;
 
 namespace Ultraviolet.Core
 {

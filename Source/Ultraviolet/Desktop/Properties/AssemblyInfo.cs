@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 
 [assembly: CLSCompliant(true)]
 

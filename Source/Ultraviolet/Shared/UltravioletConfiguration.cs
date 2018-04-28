@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Ultraviolet.Graphics;
-using System.Collections.Generic;
 
 namespace Ultraviolet
 {

@@ -1,5 +1,4 @@
-﻿using Ultraviolet.Core;
-using Ultraviolet.UI;
+﻿using Ultraviolet.UI;
 
 namespace Ultraviolet.Presentation
 {

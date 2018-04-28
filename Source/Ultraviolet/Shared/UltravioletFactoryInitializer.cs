@@ -1,5 +1,4 @@
-﻿using Ultraviolet.Core;
-using Ultraviolet.Graphics.Graphics2D;
+﻿using Ultraviolet.Graphics.Graphics2D;
 
 namespace Ultraviolet
 {

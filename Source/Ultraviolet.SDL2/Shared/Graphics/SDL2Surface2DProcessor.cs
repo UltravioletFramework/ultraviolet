@@ -1,5 +1,4 @@
 ﻿using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet.SDL2.Graphics

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using Ultraviolet.Core;
 
 namespace Ultraviolet
 {

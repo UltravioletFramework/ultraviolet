@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Security;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
-using System.Runtime.CompilerServices;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {

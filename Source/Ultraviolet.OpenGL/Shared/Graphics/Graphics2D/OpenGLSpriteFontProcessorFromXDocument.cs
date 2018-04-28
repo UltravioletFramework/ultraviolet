@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
 
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D

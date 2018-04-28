@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
 
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D
