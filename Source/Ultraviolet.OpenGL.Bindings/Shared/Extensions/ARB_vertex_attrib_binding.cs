@@ -6,12 +6,6 @@ namespace Ultraviolet.OpenGL.Bindings
 {
     partial class gl
     {
-        public static Boolean IsVertexAttribBindingAvailable
-        {
-            get;
-            private set;
-        }
-
         [MonoNativeFunctionWrapper]
         private delegate void glBindVertexBufferDelegate(uint bindingindex, uint buffer, IntPtr offset, int stride);
         [Require(MinVersion = "4.3", MinVersionES = "3.1")]

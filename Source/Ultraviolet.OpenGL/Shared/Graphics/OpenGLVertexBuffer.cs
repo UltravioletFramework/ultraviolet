@@ -76,7 +76,7 @@ namespace Ultraviolet.OpenGL.Graphics
             try
             {
                 var caps = (OpenGLGraphicsCapabilities)Ultraviolet.GetGraphics().Capabilities;
-                if (caps.SupportsMapBufferRange && caps.MinMapBufferAlignment > 0)
+                if (caps.MinMapBufferAlignment > 0)
                     bufferSize = Math.Min(Math.Max(caps.MinMapBufferAlignment, MathUtil.FindNextPowerOfTwo(bufferSize)), SizeInBytes - bufferOffset);
 
                 using (OpenGLState.ScopedBindArrayBuffer(buffer))
@@ -91,7 +91,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         /* FIX: 
                          * I have no idea why the following code is necessary, but
                          * it seems to fix flickering sprites on Intel HD 4000 devices. */
-                        if (OpenGLState.SupportsVertexArrayObjects)
+                        if (gl.IsVertexArrayObjectAvailable)
                         {
                             var vao = (uint)OpenGLState.GL_VERTEX_ARRAY_BINDING;
                             gl.BindVertexArray(vao);
@@ -101,7 +101,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     if (isPartialUpdate)
                     {
-                        if (caps.SupportsMapBufferRange)
+                        if (caps.MinMapBufferAlignment >= 0)
                         {
                             var bufferRangeAccess = gl.GL_MAP_WRITE_BIT | (options == SetDataOptions.NoOverwrite ? gl.GL_MAP_UNSYNCHRONIZED_BIT : 0);
                             var bufferRangePtr = (Byte*)gl.MapNamedBufferRange(buffer, gl.GL_ARRAY_BUFFER,
@@ -203,7 +203,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         /* FIX: 
                          * I have no idea why the following code is necessary, but
                          * it seems to fix flickering sprites on Intel HD 4000 devices. */
-                        if (OpenGLState.SupportsVertexArrayObjects)
+                        if (gl.IsVertexArrayObjectAvailable)
                         {
                             var vao = (uint)OpenGLState.GL_VERTEX_ARRAY_BINDING;
                             gl.BindVertexArray(vao);

@@ -19,7 +19,7 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedClearDepth FromDevice()
         {
-            var value = gl.IsGLES ? gl.GetFloat(gl.GL_DEPTH_CLEAR_VALUE) : gl.GetDouble(gl.GL_DEPTH_CLEAR_VALUE);
+            var value = gl.IsDoublePrecisionClearDepthAvailable ? gl.GetDouble(gl.GL_DEPTH_CLEAR_VALUE) : gl.GetFloat(gl.GL_DEPTH_CLEAR_VALUE);
             gl.ThrowIfError();
 
             return value;

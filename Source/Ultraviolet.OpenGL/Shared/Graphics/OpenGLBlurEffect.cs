@@ -47,10 +47,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
         /// <summary>
         /// Gets a value indicating whether the arbitary-radius blur shader should be loaded.
         /// </summary>
-        private static Boolean IsArbitaryRadiusBlurAvailable
-        {
-            get { return !gl.IsGLES || gl.IsVersionAtLeast(3, 0); }
-        }
+        private static Boolean IsArbitaryRadiusBlurAvailable => !gl.IsGLES2;
 
         /// <summary>
         /// Updates the value of the Radius effect parameter.
@@ -70,7 +67,7 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
             if (nearestUnrolledRadius < 1)
                 nearestUnrolledRadius = 1;
 
-            var useUnrolledShader = (gl.IsGLES && gl.IsVersionAtMost(2, 0)) || (Int32)Radius == nearestUnrolledRadius;
+            var useUnrolledShader = gl.IsGLES2 || (Int32)Radius == nearestUnrolledRadius;
             if (useUnrolledShader)
             {
                 programIndex = (nearestUnrolledRadius - 1) / 2;

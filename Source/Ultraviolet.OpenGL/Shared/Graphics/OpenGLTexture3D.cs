@@ -396,7 +396,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 using (OpenGLState.ScopedCreateTexture3D(out glname))
                 {
-                    if (!gl.IsGLES2)
+                    if (gl.IsTextureMaxLevelSupported)
                     {
                         gl.TextureParameteri(glname, gl.GL_TEXTURE_3D, gl.GL_TEXTURE_MAX_LEVEL, 0);
                         gl.ThrowIfError();

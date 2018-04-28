@@ -776,7 +776,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateElementArrayBuffer(out UInt32 buffer)
         {
-            if (SupportsDirectStateAccessCreateFunctions)
+            if (gl.IsDirectStateAccessCreateAvailable)
             {
                 buffer = gl.CreateBuffer();
                 gl.ThrowIfError();
@@ -799,7 +799,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateArrayBuffer(out UInt32 buffer)
         {
-            if (SupportsDirectStateAccessCreateFunctions)
+            if (gl.IsDirectStateAccessCreateAvailable)
             {
                 buffer = gl.CreateBuffer();
                 gl.ThrowIfError();
@@ -822,7 +822,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateTexture2D(out UInt32 texture)
         {
-            if (SupportsDirectStateAccessCreateFunctions)
+            if (gl.IsDirectStateAccessCreateAvailable)
             {
                 texture = gl.CreateTexture(gl.GL_TEXTURE_2D);
                 gl.ThrowIfError();
@@ -846,7 +846,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateTexture3D(out UInt32 texture)
         {
-            if (SupportsDirectStateAccessCreateFunctions)
+            if (gl.IsDirectStateAccessCreateAvailable)
             {
                 texture = gl.CreateTexture(gl.GL_TEXTURE_3D);
                 gl.ThrowIfError();
@@ -870,7 +870,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateFramebuffer(out UInt32 framebuffer)
         {
-            if (SupportsDirectStateAccessCreateFunctions)
+            if (gl.IsDirectStateAccessCreateAvailable)
             {
                 framebuffer = gl.CreateFramebuffer();
             }
@@ -892,7 +892,7 @@ namespace Ultraviolet.OpenGL.Graphics
 
         private void Apply_CreateRenderbuffer(out UInt32 renderbuffer)
         {
-            if (SupportsDirectStateAccessCreateFunctions)
+            if (gl.IsDirectStateAccessCreateAvailable)
             {
                 renderbuffer = gl.CreateRenderbuffer();
             }
@@ -1443,17 +1443,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Gets the cached value of GL_CURRENT_PROGRAM.
         /// </summary>
         public static OpenGLStateInteger GL_CURRENT_PROGRAM { get { return glCurrentProgram; } }
-
-        /// <summary>
-        /// Gets a value indicating whether the current OpenGL context has support for vertex array objects (VAOs).
-        /// </summary>
-        public static Boolean SupportsVertexArrayObjects { get { return !gl.IsGLES || gl.IsVersionAtLeast(3, 0); } }
-
-        /// <summary>
-        /// Gets a value indicating whether the current OpenGL context has support for the glCreateX() functions provided by
-        /// ARB_direct_state_access or OpenGL 4.5.
-        /// </summary>
-        public static Boolean SupportsDirectStateAccessCreateFunctions { get { return gl.IsVersionAtLeast(4, 5) || gl.IsARBDirectStateAccessAvailable; } }
 
         // State values.
         private OpenGLStateType stateType;
