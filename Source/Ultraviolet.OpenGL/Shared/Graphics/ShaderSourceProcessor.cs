@@ -7,7 +7,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads shader source assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class ShaderSourceProcessor : ContentProcessor<String, ShaderSource>
     {

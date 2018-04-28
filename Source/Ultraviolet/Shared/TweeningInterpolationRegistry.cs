@@ -147,7 +147,6 @@ namespace Ultraviolet
         /// </summary>
         /// <typeparam name="T">The type for which to register an interpolator.</typeparam>
         /// <param name="interpolator">The interpolator for the non-nullable type.</param>
-        [Preserve]
         private void RegisterNullable<T>(Interpolator<T> interpolator) where T : struct
         {
             if (interpolator == null)

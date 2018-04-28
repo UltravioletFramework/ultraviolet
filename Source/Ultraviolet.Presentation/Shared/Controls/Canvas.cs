@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls
     /// Represents an element container which positions its children according to their distance from the container's
     /// left, top, right, and bottom edges.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.Canvas.xml")]
     public class Canvas : Panel
     {

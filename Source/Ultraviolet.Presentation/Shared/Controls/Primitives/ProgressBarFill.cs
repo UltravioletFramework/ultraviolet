@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a progress bar's fill image.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class ProgressBarFill : FrameworkElement
     {

@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS property trigger.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.PropertyTrigger)]
     public sealed class UvssPropertyTriggerSyntax : UvssTriggerBaseSyntax
     {

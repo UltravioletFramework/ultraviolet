@@ -12,7 +12,6 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonContentProcessor"/> class.
         /// </summary>
-        [Preserve]
         public JsonContentProcessor() { }
 
         /// <inheritdoc/>

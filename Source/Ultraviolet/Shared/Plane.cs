@@ -17,7 +17,6 @@ namespace Ultraviolet
         /// <param name="y">The y-component of the plane's normal vector.</param>
         /// <param name="z">The z-component of the plane's normal vector.</param>
         /// <param name="d">The plane's distance along its normal from the origin.</param>
-        [Preserve]
         public Plane(Single x, Single y, Single z, Single d)
         {
             Normal.X = x;
@@ -31,7 +30,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="normal">The plane's normal vector.</param>
         /// <param name="d">The plane's distance along its normal from the origin.</param>
-        [Preserve]
         [JsonConstructor]
         public Plane(Vector3 normal, Single d)
         {
@@ -44,7 +42,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="value">A vector whose first three elements represent the plane's normal vector, and whose last element
         /// represents the plane's distance along its normal from the origin.</param>
-        [Preserve]
         public Plane(Vector4 value)
         {
             Normal.X = value.X;
@@ -399,7 +396,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Plane Interpolate(Plane target, Single t)
         {
             Plane result;
@@ -413,14 +409,12 @@ namespace Ultraviolet
         /// <summary>
         /// The plane's normal vector.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Vector3 Normal;
 
         /// <summary>
         /// The plane's distance along its normal from the origin.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single D;
     }

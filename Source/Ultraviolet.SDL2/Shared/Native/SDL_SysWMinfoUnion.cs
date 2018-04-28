@@ -5,7 +5,6 @@ using Ultraviolet.Core;
 namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
-    [Preserve]
     [StructLayout(LayoutKind.Explicit)]
     public struct SDL_SysWMinfoUnion
     {

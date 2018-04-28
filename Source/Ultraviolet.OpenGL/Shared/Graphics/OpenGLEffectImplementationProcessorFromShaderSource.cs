@@ -10,7 +10,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads shader effect assets from shader source files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed partial class OpenGLEffectImplementationProcessorFromShaderSource : EffectImplementationProcessor<String>
     {

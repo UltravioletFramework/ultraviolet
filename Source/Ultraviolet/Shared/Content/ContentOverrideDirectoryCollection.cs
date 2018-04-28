@@ -22,7 +22,6 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Releases resources associated with the collection.
         /// </summary>
-        [Preserve]
         public void Dispose()
         {
             if (watchers != null)
@@ -37,7 +36,6 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Clears the collection.
         /// </summary>
-        [Preserve]
         public void Clear()
         {
             ClearInternal();
@@ -47,7 +45,6 @@ namespace Ultraviolet.Content
         /// Adds a directory to the collection.
         /// </summary>
         /// <param name="directory">The directory to add to the collection.</param>
-        [Preserve]
         public void Add(String directory)
         {
             AddInternal(directory);
@@ -58,7 +55,6 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="directory">The directory to remove from the collection.</param>
         /// <returns><see langword="true"/> if the directory was removed from the collection; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public Boolean Remove(String directory)
         {
             return RemoveInternal(directory);
@@ -69,7 +65,6 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="directory">The directory to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified directory; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public Boolean Contains(String directory)
         {
             return ContainsInternal(directory);

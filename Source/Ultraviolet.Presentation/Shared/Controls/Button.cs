@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a button on a user interface.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.Button.xml")]
     public class Button : ButtonBase
     {

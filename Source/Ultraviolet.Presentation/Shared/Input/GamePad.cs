@@ -56,7 +56,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Represents the primary game pad device.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static partial class GamePad
     {

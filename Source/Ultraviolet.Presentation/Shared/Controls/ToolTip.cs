@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a control which displays information about another control when it is hovered over with the mouse.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ToolTip.xml")]
     public class ToolTip : ContentControl
     {

@@ -30,7 +30,6 @@ namespace Ultraviolet
         /// <param name="M42">The value at row 4, column 2 of the matrix.</param>
         /// <param name="M43">The value at row 4, column 3 of the matrix.</param>
         /// <param name="M44">The value at row 4, column 4 of the matrix.</param>
-        [Preserve]
         public Matrix(
             Single M11, Single M12, Single M13, Single M14,
             Single M21, Single M22, Single M23, Single M24,
@@ -64,7 +63,6 @@ namespace Ultraviolet
         /// <param name="multiplier">The multiplier.</param>
         /// <param name="multiplicand">The multiplicand.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator *(Single multiplier, Matrix multiplicand)
         {
             Matrix result;
@@ -78,7 +76,6 @@ namespace Ultraviolet
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator *(Matrix multiplicand, Single multiplier)
         {
             Matrix result;
@@ -92,7 +89,6 @@ namespace Ultraviolet
         /// <param name="multiplicand">The multiplicand.</param>
         /// <param name="multiplier">The multiplier.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator *(Matrix multiplicand, Matrix multiplier)
         {
             Matrix result;
@@ -106,7 +102,6 @@ namespace Ultraviolet
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator /(Matrix dividend, Single divisor)
         {
             Matrix result;
@@ -120,7 +115,6 @@ namespace Ultraviolet
         /// <param name="dividend">The dividend.</param>
         /// <param name="divisor">The divisor.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator /(Matrix dividend, Matrix divisor)
         {
             Matrix result;
@@ -134,7 +128,6 @@ namespace Ultraviolet
         /// <param name="addend1">The <see cref="Matrix"/> on the left side of the addition operator.</param>
         /// <param name="addend2">The <see cref="Matrix"/> on the right side of the addition operator.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator +(Matrix addend1, Matrix addend2)
         {
             Matrix result;
@@ -148,7 +141,6 @@ namespace Ultraviolet
         /// <param name="minuend">The <see cref="Matrix"/> on the left side of the subtraction operator.</param>
         /// <param name="subtrahend">The <see cref="Matrix"/> on the right side of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator -(Matrix minuend, Matrix subtrahend)
         {
             Matrix result;
@@ -161,7 +153,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="matrix">The <see cref="Matrix"/> to negate.</param>
         /// <returns>The negated <see cref="Matrix"/>.</returns>
-        [Preserve]
         public static Matrix operator -(Matrix matrix)
         {
             Matrix result;
@@ -2096,7 +2087,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Matrix Interpolate(Matrix target, Single t)
         {
             Matrix.Lerp(ref this, ref target, t, out Matrix result);

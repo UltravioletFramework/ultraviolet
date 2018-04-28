@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Controls
     /// other (if <see cref="Orientation"/> is <see cref="Controls.Orientation.Vertical"/>) or
     /// side-by-side if (see <see cref="Orientation"/> is <see cref="Controls.Orientation.Horizontal"/>).
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.StackPanel.xml")]
     public class StackPanel : Panel
     {

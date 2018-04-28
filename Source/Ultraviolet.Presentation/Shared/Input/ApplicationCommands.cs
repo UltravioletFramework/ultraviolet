@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Contains a standard set of application commands.
     /// </summary>
-    [Preserve]
     public static class ApplicationCommands
     {
         /// <summary>

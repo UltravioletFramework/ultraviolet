@@ -16,7 +16,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="spriteAssetID">The <see cref="AssetID"/> that represents the sprite that contains the animation.</param>
         /// <param name="animationName">The name of the referenced animation.</param>
-        [Preserve]
         internal SpriteAnimationID(AssetID spriteAssetID, String animationName)
         {
             this.spriteAssetID = spriteAssetID;
@@ -29,7 +28,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="spriteAssetID">The <see cref="AssetID"/> that represents the sprite that contains the animation.</param>
         /// <param name="animationIndex">The index of the referenced animation.</param>
-        [Preserve]
         internal SpriteAnimationID(AssetID spriteAssetID, Int32 animationIndex)
         {
             this.spriteAssetID = spriteAssetID;

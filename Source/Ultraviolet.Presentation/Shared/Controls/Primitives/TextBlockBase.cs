@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the base class for text blocks.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class TextBlockBase : TextElement
     {

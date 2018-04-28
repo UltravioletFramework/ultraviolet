@@ -32,7 +32,6 @@ namespace Ultraviolet.Presentation.Styles
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
-        [Preserve]
         internal void Clear()
         {
             conditions.Clear();
@@ -42,7 +41,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Adds the specified item to the collection.
         /// </summary>
         /// <param name="condition">The item to add to the collection.</param>
-        [Preserve]
         internal void Add(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, nameof(condition));
@@ -55,7 +53,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Adds a set of conditions to this collection.
         /// </summary>
         /// <param name="conditions">The set of conditions to add to this collection.</param>
-        [Preserve]
         internal void AddRange(IEnumerable<UvssPropertyTriggerCondition> conditions)
         {
             Contract.Require(conditions, nameof(conditions));
@@ -68,7 +65,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Removes the specified item from the collection.
         /// </summary>
         /// <param name="condition">The item to remove from the collection.</param>
-        [Preserve]
         internal Boolean Remove(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, nameof(condition));
@@ -81,7 +77,6 @@ namespace Ultraviolet.Presentation.Styles
         /// </summary>
         /// <param name="condition">The item to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified item; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         internal Boolean Contains(UvssPropertyTriggerCondition condition)
         {
             Contract.Require(condition, nameof(condition));

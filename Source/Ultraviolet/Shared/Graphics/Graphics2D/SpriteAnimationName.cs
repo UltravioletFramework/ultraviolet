@@ -12,7 +12,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="SpriteAnimationName"/> structure.
         /// </summary>
         /// <param name="name">The animation name represented by this structure.</param>
-        [Preserve]
         public SpriteAnimationName(String name)
         {
             this.animationIndex = 0;
@@ -23,7 +22,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="SpriteAnimationName"/> structure.
         /// </summary>
         /// <param name="index">The animation index represented by this structure.</param>
-        [Preserve]
         public SpriteAnimationName(Int32 index)
         {
             this.animationIndex = index;

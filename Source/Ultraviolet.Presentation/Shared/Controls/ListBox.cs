@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a list of selectable items.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ListBox.xml")]
     [UvmlPlaceholder("ItemsPanel", typeof(StackPanel))]
     public class ListBox : Selector

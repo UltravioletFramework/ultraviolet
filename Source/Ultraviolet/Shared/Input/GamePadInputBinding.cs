@@ -16,7 +16,6 @@ namespace Ultraviolet.Input
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="element">The XML element that contains the binding data.</param>
-        [Preserve]
         internal GamePadInputBinding(UltravioletContext uv, XElement element)
         {
             Contract.Require(uv, nameof(uv));
@@ -35,7 +34,6 @@ namespace Ultraviolet.Input
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="playerIndex">The index of the player for which to create the binding.</param>
         /// <param name="button">A <see cref="GamePadButton"/> value representing the binding's primary button.</param>
-        [Preserve]
         public GamePadInputBinding(UltravioletContext uv, Int32 playerIndex, GamePadButton button)
             : base()
         {

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents structured trivia.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class StructuredTriviaSyntax : SyntaxTrivia
     {
         /// <summary>

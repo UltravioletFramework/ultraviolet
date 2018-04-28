@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Styles
     /// <summary>
     /// Represents a content importer for the *.uvss file type.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".uvss")]
     public class UvssDocumentImporter : ContentImporter<String>
     {

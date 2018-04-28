@@ -12,7 +12,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextTableLayout"/> class.
         /// </summary>
         /// <param name="description">The table layout description.</param>
-        [Preserve]
         internal TextTableLayout(TextTableLayoutDescription description)
         {
             Contract.Require(description, nameof(description));

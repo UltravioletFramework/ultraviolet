@@ -13,7 +13,6 @@ namespace Ultraviolet.Presentation.Input
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseGesture"/> class.
         /// </summary>
-        [Preserve]
         public MouseGesture()
             : this(MouseAction.None, ModifierKeys.None)
         {
@@ -24,7 +23,6 @@ namespace Ultraviolet.Presentation.Input
         /// Initializes a new instance of the <see cref="MouseGesture"/> class.
         /// </summary>
         /// <param name="mouseAction">The mouse action associated with this mouse gesture.</param>
-        [Preserve]
         public MouseGesture(MouseAction mouseAction)
             : this (mouseAction, ModifierKeys.None)
         {
@@ -36,7 +34,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="mouseAction">The mouse action associated with this mouse gesture.</param>
         /// <param name="modifiers">The set of modifier keys associated with this mouse gesture.</param>
-        [Preserve]
         public MouseGesture(MouseAction mouseAction, ModifierKeys modifiers)
         {
             this.MouseAction = mouseAction;
@@ -50,7 +47,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <param name="gesture">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="str"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String str, out MouseGesture gesture)
         {
             return TryParse(str, null, out gesture);
@@ -61,7 +57,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <returns>A instance of the <see cref="MouseGesture"/> structure equivalent to the gesture contained in <paramref name="str"/>.</returns>
-        [Preserve]
         public static MouseGesture Parse(String str)
         {
             MouseGesture gesture;
@@ -80,7 +75,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="gesture">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="str"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String str, IFormatProvider provider, out MouseGesture gesture)
         {
             Contract.Require(str, nameof(str));
@@ -122,7 +116,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="MouseGesture"/> structure equivalent to the gesture contained in <paramref name="str"/>.</returns>
-        [Preserve]
         public static MouseGesture Parse(String str, IFormatProvider provider)
         {
             MouseGesture gesture;

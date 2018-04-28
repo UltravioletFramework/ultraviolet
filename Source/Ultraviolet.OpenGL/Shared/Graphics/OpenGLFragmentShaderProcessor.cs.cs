@@ -7,7 +7,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads fragment shader assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLFragmentShaderProcessor : ContentProcessor<String, OpenGLFragmentShader>
     {

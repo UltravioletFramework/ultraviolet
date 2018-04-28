@@ -9,7 +9,6 @@ namespace Ultraviolet.FreeType2
     /// <summary>
     /// Loads font assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class UltravioletFontProcessorFromFreeType : ContentProcessor<FreeTypeFontInfo, UltravioletFont>
     {

@@ -10,7 +10,6 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents a content processor which loads XML definition files as texture atlases.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed partial class TextureAtlasProcessorFromXDocument : ContentProcessor<XDocument, TextureAtlas>
     {

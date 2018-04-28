@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a UI element which displays progress towards some goal.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ProgressBar.xml")]
     [UvmlDefaultProperty("Value")]
     public class ProgressBar : RangeBase

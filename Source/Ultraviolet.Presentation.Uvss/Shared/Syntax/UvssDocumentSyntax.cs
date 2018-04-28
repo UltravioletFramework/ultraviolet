@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the root node of a UVSS document.
     /// </summary>
-    [Preserve]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.Document)]
     public sealed class UvssDocumentSyntax : UvssNodeSyntax
     {

@@ -8,7 +8,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents a description of an effect.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class EffectDescription
     {
         /// <summary>
@@ -27,7 +26,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents a description of an effect technique.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class EffectTechniqueDescription
     {
         /// <summary>
@@ -46,7 +44,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents a description of an effect pass.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class EffectPassDescription
     {
         /// <summary>
@@ -65,7 +62,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Represents the stages of an effect pass.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class EffectStagesDescription
     {
         /// <summary>

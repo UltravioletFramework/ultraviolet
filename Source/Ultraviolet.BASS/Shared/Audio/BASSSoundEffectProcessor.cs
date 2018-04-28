@@ -8,7 +8,6 @@ namespace Ultraviolet.BASS.Audio
     /// <summary>
     /// Loads sound effect assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class BASSSoundEffectProcessor : ContentProcessor<String, SoundEffect>
     {

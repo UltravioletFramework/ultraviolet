@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// Represents a frustum and provides methods for determining whether other bounding volumes intersect with it.
     /// </summary>    
     [Serializable]
-    [Preserve(AllMembers = true)]
     public partial class BoundingFrustum : IEquatable<BoundingFrustum>
     {
         /// <summary>

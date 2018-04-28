@@ -6,7 +6,6 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents a vertex containing 3D position and color data.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public struct VertexPositionColor : IVertexType
     {
         /// <summary>

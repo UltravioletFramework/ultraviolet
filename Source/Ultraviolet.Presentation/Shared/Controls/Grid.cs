@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a grid of columns and columns which can contain child elements in each cell.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.Grid.xml")]
     public partial class Grid : Panel
     {

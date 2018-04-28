@@ -38,7 +38,6 @@ namespace Ultraviolet.Presentation.Styles
         /// <summary>
         /// Removes all items from the collection.
         /// </summary>
-        [Preserve]
         internal void Clear()
         {
             actions.Clear();
@@ -48,7 +47,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Adds an action to the collection.
         /// </summary>
         /// <param name="action">The action to add to the collection.</param>
-        [Preserve]
         internal void Add(TriggerAction action)
         {
             Contract.Require(action, nameof(action));
@@ -61,7 +59,6 @@ namespace Ultraviolet.Presentation.Styles
         /// </summary>
         /// <param name="action">The action to remove from the collection.</param>
         /// <returns><see langword="true"/> if the action was removed from the collection; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         internal Boolean Remove(TriggerAction action)
         {
             Contract.Require(action, nameof(action));
@@ -74,7 +71,6 @@ namespace Ultraviolet.Presentation.Styles
         /// </summary>
         /// <param name="action">The action to evaluate.</param>
         /// <returns><see langword="true"/> if the collection contains the specified action; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         internal Boolean Contains(TriggerAction action)
         {
             Contract.Require(action, nameof(action));

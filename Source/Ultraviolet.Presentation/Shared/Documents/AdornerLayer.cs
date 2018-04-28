@@ -10,7 +10,6 @@ namespace Ultraviolet.Presentation.Documents
     /// <summary>
     /// Represents a layer for containing adorners
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public partial class AdornerLayer : FrameworkElement
     {

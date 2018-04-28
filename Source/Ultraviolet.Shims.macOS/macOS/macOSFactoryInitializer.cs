@@ -1,4 +1,3 @@
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.Input;
 using Ultraviolet.Shims.macOS.Graphics;
@@ -8,7 +7,6 @@ using Ultraviolet.Platform;
 
 namespace Ultraviolet.Shims.macOS
 {
-    [Preserve(AllMembers = true)]
     internal sealed class macOSFactoryInitializer : IUltravioletFactoryInitializer
 	{   
 		/// <inheritdoc/>

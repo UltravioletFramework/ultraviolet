@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents a list of syntax nodes.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract partial class SyntaxList : SyntaxNode
     {
         /// <summary>

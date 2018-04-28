@@ -16,7 +16,6 @@ namespace Ultraviolet
         /// <param name="x">The x-coordinate of the circle's center.</param>
         /// <param name="y">The y-coordinate of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
-        [Preserve]
         [JsonConstructor]
         public Circle(Int32 x, Int32 y, Int32 radius)
         {
@@ -30,7 +29,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="position">The position of the circle's center.</param>
         /// <param name="radius">The circle's radius.</param>
-        [Preserve]
         public Circle(Point2 position, Int32 radius)
             : this(position.X, position.Y, radius)
         {
@@ -43,7 +41,6 @@ namespace Ultraviolet
         /// <param name="circle">The <see cref="Circle"/> to offset.</param>
         /// <param name="point">The <see cref="Point2"/> by which to offset the Circle.</param>
         /// <returns>A <see cref="Circle"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static Circle operator +(Circle circle, Point2 point)
         {
             Circle result;
@@ -61,7 +58,6 @@ namespace Ultraviolet
         /// <param name="circle">The <see cref="Circle"/> to offset.</param>
         /// <param name="point">The <see cref="Point2"/> by which to offset the Circle.</param>
         /// <returns>A <see cref="Circle"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static Circle operator -(Circle circle, Point2 point)
         {
             Circle result;
@@ -79,7 +75,6 @@ namespace Ultraviolet
         /// <param name="circle">The <see cref="Circle"/> to offset.</param>
         /// <param name="point">The <see cref="Point2F"/> by which to offset the Circle.</param>
         /// <returns>A <see cref="CircleF"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static CircleF operator +(Circle circle, Point2F point)
         {
             CircleF result;
@@ -97,7 +92,6 @@ namespace Ultraviolet
         /// <param name="circle">The <see cref="Circle"/> to offset.</param>
         /// <param name="point">The <see cref="Point2F"/> by which to offset the Circle.</param>
         /// <returns>A <see cref="CircleF"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static CircleF operator -(Circle circle, Point2F point)
         {
             CircleF result;
@@ -115,7 +109,6 @@ namespace Ultraviolet
         /// <param name="circle">The <see cref="Circle"/> to offset.</param>
         /// <param name="point">The <see cref="Point2D"/> by which to offset the Circle.</param>
         /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static CircleD operator +(Circle circle, Point2D point)
         {
             CircleD result;
@@ -133,7 +126,6 @@ namespace Ultraviolet
         /// <param name="circle">The <see cref="Circle"/> to offset.</param>
         /// <param name="point">The <see cref="Point2D"/> by which to offset the Circle.</param>
         /// <returns>A <see cref="CircleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static CircleD operator -(Circle circle, Point2D point)
         {
             CircleD result;
@@ -150,7 +142,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static implicit operator CircleF(Circle circle)
         {
             CircleF result;
@@ -167,7 +158,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="circle">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static implicit operator CircleD(Circle circle)
         {
             CircleD result;
@@ -188,7 +178,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Circle Interpolate(Circle target, Single t)
         {
             Circle result;
@@ -220,21 +209,18 @@ namespace Ultraviolet
         /// <summary>
         /// The x-coordinate of the circle's center.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Int32 X;
 
         /// <summary>
         /// The y-coordinate of the circle's center.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Int32 Y;
 
         /// <summary>
         /// Gets the circle's radius.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Int32 Radius;
     }

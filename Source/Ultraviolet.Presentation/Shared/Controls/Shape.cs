@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a framework element which renders a geometric shape.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class Shape : FrameworkElement
     {

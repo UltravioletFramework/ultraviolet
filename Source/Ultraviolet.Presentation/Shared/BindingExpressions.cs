@@ -52,12 +52,18 @@ namespace Ultraviolet.Presentation
         /// </summary>
         static BindingExpressions()
         {
+            Object.Equals(null, null);
             miReferenceEquals = typeof(Object).GetMethod("ReferenceEquals", new[] { typeof(Object), typeof(Object) });
+
+            Object.ReferenceEquals(null, null);
             miObjectEquals = typeof(Object).GetMethod("Equals", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Object), typeof(Object) }, null);
+
             if (UltravioletPlatformInfo.IsRuntimeCodeGenerationSupported())
             {
+                Nullable.Equals<Int32>(null, null);
                 miNullableEquals = typeof(Nullable).GetMethods().Where(x => x.Name == "Equals" && x.IsGenericMethod).Single();
             }
+
             RegisterPrecompiledComparisonDelegates();
         }
 

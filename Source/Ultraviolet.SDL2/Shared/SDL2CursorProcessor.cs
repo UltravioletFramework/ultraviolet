@@ -8,7 +8,6 @@ namespace Ultraviolet.SDL2
     /// <summary>
     /// Loads a cursor from an image.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class SDL2CursorProcessor : ContentProcessor<PlatformNativeSurface, Cursor>
     {

@@ -11,7 +11,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents an element which allows the user to edit a string of text.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.TextBox.xml")]
     [UvmlDefaultProperty("Text")]
     public class TextBox : TextBoxBase

@@ -5,7 +5,6 @@ using Ultraviolet.Core;
 namespace Ultraviolet.BASS.Native
 {
 #pragma warning disable 1591
-    [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
     public struct BASS_SAMPLE
     {

@@ -15,7 +15,6 @@ namespace Ultraviolet.Core.Text
         /// <param name="group">The name of the string variant's variant group.</param>
         /// <param name="value">The value of the string variant.</param>
         /// <param name="properties">A collection of properties to attach to the string variant.</param>
-        [Preserve]
         internal LocalizedStringVariant(LocalizedString parent, String group, String value, IEnumerable<String> properties = null)
         {
             Contract.Require(parent, nameof(parent));
@@ -41,7 +40,6 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         /// <param name="variant">The object to convert.</param>
         /// <returns>The converted object.</returns>
-        [Preserve]
         public static implicit operator String(LocalizedStringVariant variant)
         {
             return variant.Value;

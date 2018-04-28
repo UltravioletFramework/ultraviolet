@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a text block that is optimized for displaying numeric values.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Value")]
     public class NumericTextBlock : TextBlockBase

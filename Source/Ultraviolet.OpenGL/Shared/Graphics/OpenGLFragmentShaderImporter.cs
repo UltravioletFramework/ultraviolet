@@ -8,7 +8,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Imports .frag files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".frag"), ContentImporter(".fragh")]
     public sealed class OpenGLFragmentShaderImporter : ContentImporter<String>
     {

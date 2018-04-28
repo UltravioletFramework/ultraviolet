@@ -10,7 +10,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads 2D texture assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLTexture2DProcessor : ContentProcessor<PlatformNativeSurface, Texture2D>
     {

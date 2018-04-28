@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a horizontal slider.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.HSlider.xml")]
     public class HSlider : OrientedSlider
     {

@@ -15,7 +15,6 @@ namespace Ultraviolet
         /// Initializes a new instance of the <see cref="Radians"/> structure.
         /// </summary>
         /// <param name="value">The value in radians.</param>
-        [Preserve]
         public Radians(Single value)
         {
             this.value = value;
@@ -26,7 +25,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static implicit operator Single(Radians value)
         {
             return value.Value;
@@ -37,7 +35,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static explicit operator Radians(Single value)
         {
             return new Radians(value);
@@ -49,7 +46,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to add.</param>
         /// <param name="r2">The second value to add.</param>
         /// <returns>The sum of the specified values.</returns>
-        [Preserve]
         public static Radians operator +(Radians r1, Radians r2)
         {
             return new Radians(r1.Value + r2.Value);
@@ -61,7 +57,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to add.</param>
         /// <param name="r2">The second value to add.</param>
         /// <returns>The sum of the specified values.</returns>
-        [Preserve]
         public static Radians operator +(Radians r1, Single r2)
         {
             return new Radians(r1.Value + r2);
@@ -73,7 +68,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to subtract.</param>
         /// <param name="r2">The second value to subtract.</param>
         /// <returns>The difference of the specified values.</returns>
-        [Preserve]
         public static Radians operator -(Radians r1, Radians r2)
         {
             return new Radians(r1.Value - r2.Value);
@@ -85,7 +79,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to subtract.</param>
         /// <param name="r2">The second value to subtract.</param>
         /// <returns>The difference of the specified values.</returns>
-        [Preserve]
         public static Radians operator -(Radians r1, Single r2)
         {
             return new Radians(r1.Value - r2);
@@ -97,7 +90,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to multiply.</param>
         /// <param name="r2">The second value to multiply.</param>
         /// <returns>The product of the specified values.</returns>
-        [Preserve]
         public static Radians operator *(Radians r1, Radians r2)
         {
             return new Radians(r1.Value * r2.Value);
@@ -109,7 +101,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to multiply.</param>
         /// <param name="r2">The second value to multiply.</param>
         /// <returns>The product of the specified values.</returns>
-        [Preserve]
         public static Radians operator *(Radians r1, Single r2)
         {
             return new Radians(r1.Value * r2);
@@ -121,7 +112,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to divide.</param>
         /// <param name="r2">The second value to divide.</param>
         /// <returns>The quotient of the specified values.</returns>
-        [Preserve]
         public static Radians operator /(Radians r1, Radians r2)
         {
             return new Radians(r1.Value / r2.Value);
@@ -133,7 +123,6 @@ namespace Ultraviolet
         /// <param name="r1">The first value to divide.</param>
         /// <param name="r2">The second value to divide.</param>
         /// <returns>The quotient of the specified values.</returns>
-        [Preserve]
         public static Radians operator /(Radians r1, Single r2)
         {
             return new Radians(r1.Value / r2);
@@ -144,7 +133,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="r1">The value to negate.</param>
         /// <returns>The negated value.</returns>
-        [Preserve]
         public static Radians operator -(Radians r1)
         {
             return new Radians(-r1.Value);
@@ -200,7 +188,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="other">The angle to compare to this instance.</param>
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
-        [Preserve]
         public Int32 CompareTo(Radians other)
         {
             return value.CompareTo(other.value);
@@ -212,7 +199,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="other">The angle to compare to this instance.</param>
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
-        [Preserve]
         public Int32 CompareTo(Single other)
         {
             return value.CompareTo(other);
@@ -233,7 +219,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Radians Interpolate(Radians target, Single t)
         {
             var angle = Tweening.Lerp(this.value, target.value, t);

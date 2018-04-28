@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Uvss
         /// <summary>
         /// Represents a syntax list with two children.
         /// </summary>
-        [Preserve(AllMembers = true)]
         [SyntaxNodeTypeID((Byte)SyntaxNodeType.SyntaxListWithTwoChildren)]
         internal sealed class WithTwoChildren : SyntaxList
         {

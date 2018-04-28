@@ -17,7 +17,6 @@ namespace Ultraviolet.Input
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="element">The XML element that contains the binding data.</param>
-        [Preserve]
         internal MouseInputBinding(UltravioletContext uv, XElement element)
         {
             Contract.Require(element, nameof(element));
@@ -37,7 +36,6 @@ namespace Ultraviolet.Input
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="button">The <see cref="MouseButton"/> value that represents the binding's primary button.</param>
-        [Preserve]
         public MouseInputBinding(UltravioletContext uv, MouseButton button)
         {
             Contract.Require(uv, nameof(uv));

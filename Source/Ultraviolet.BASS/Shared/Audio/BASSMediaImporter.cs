@@ -8,7 +8,6 @@ namespace Ultraviolet.BASS.Audio
     /// <summary>
     /// Imports .mp3, .ogg, and .wav files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".mp3")]
     [ContentImporter(".ogg")]
     [ContentImporter(".wav")]

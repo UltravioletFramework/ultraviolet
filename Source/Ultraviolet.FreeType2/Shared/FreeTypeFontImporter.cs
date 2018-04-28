@@ -10,7 +10,6 @@ namespace Ultraviolet.FreeType2
     /// <summary>
     /// Imports font files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".ttf")]
     [ContentImporter(".ttc")]
     [ContentImporter(".otf")]

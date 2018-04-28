@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the base class for UVSS-language syntax nodes.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class UvssNodeSyntax : SyntaxNode
     {
         /// <summary>

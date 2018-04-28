@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a vertical scroll bar.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Primitives.Templates.VScrollBar.xml")]
     public class VScrollBar : OrientedScrollBar
     {

@@ -14,7 +14,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Contains attached properties and events relating to tool tips.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static class ToolTipService
     {

@@ -6,7 +6,6 @@ using Ultraviolet.Presentation.Controls;
 
 namespace UltravioletSample.Sample12_UPF.UI.Screens
 {
-    [Preserve(AllMembers = true)]
     public class ExampleViewModel
     {
         public ExampleViewModel(UltravioletContext uv)

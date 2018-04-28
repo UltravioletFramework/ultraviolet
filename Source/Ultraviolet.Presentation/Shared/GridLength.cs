@@ -13,7 +13,6 @@ namespace Ultraviolet.Presentation
         /// Initializes a new instance of the <see cref="GridLength"/> structure.
         /// </summary>
         /// <param name="value">The value of this instance.</param>
-        [Preserve]
         public GridLength(Double value)
         {
             this.value        = value;
@@ -25,7 +24,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="value">The value of this instance.</param>
         /// <param name="gridUnitType">The grid length's unit type.</param>
-        [Preserve]
         public GridLength(Double value, GridUnitType gridUnitType)
         {
             this.value        = value;

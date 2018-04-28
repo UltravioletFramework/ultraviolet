@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a framework element which displays a particular image.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Source")]
     public class Image : FrameworkElement

@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a control which renders a border around its content.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class Border : Decorator
     {

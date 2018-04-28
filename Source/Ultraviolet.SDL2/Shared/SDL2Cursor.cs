@@ -19,7 +19,6 @@ namespace Ultraviolet.SDL2
         /// <param name="surface">The surface that contains the cursor image.</param>
         /// <param name="hx">The x-coordinate of the cursor's hotspot.</param>
         /// <param name="hy">The y-coordinate of the cursor's hotspot.</param>
-        [Preserve]
         public SDL2Cursor(UltravioletContext uv, Surface2D surface, Int32 hx, Int32 hy)
             : base(uv)
         {

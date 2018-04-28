@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a two-dimensional transformation.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class Transform : GeneralTransform
     {

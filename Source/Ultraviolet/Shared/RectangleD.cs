@@ -15,7 +15,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="position">The rectangle's position.</param>
         /// <param name="size">The rectangle's size.</param>
-        [Preserve]
         public RectangleD(Point2D position, Size2D size)
             : this(position.X, position.Y, size.Width, size.Height)
         {
@@ -29,7 +28,6 @@ namespace Ultraviolet
         /// <param name="y">The y-coordinate of the rectangle's top-right corner.</param>
         /// <param name="width">The rectangle's width.</param>
         /// <param name="height">The rectangle's height.</param>
-        [Preserve]
         [JsonConstructor]
         public RectangleD(Double x, Double y, Double width, Double height)
         {
@@ -45,7 +43,6 @@ namespace Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static RectangleD operator +(RectangleD rect, Point2 point)
         {
             RectangleD result;
@@ -64,7 +61,6 @@ namespace Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static RectangleD operator -(RectangleD rect, Point2 point)
         {
             RectangleD result;
@@ -83,7 +79,6 @@ namespace Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static RectangleD operator +(RectangleD rect, Point2F point)
         {
             RectangleD result;
@@ -102,7 +97,6 @@ namespace Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2F"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static RectangleD operator -(RectangleD rect, Point2F point)
         {
             RectangleD result;
@@ -121,7 +115,6 @@ namespace Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2D"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static RectangleD operator +(RectangleD rect, Point2D point)
         {
             RectangleD result;
@@ -140,7 +133,6 @@ namespace Ultraviolet
         /// <param name="rect">The <see cref="RectangleD"/> to offset.</param>
         /// <param name="point">The <see cref="Point2D"/> by which to offset the rectangle.</param>
         /// <returns>A <see cref="RectangleD"/> that has been offset by the specified amount.</returns>
-        [Preserve]
         public static RectangleD operator -(RectangleD rect, Point2D point)
         {
             RectangleD result;
@@ -158,7 +150,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Rectangle(RectangleD rect)
         {
             Rectangle result;
@@ -176,7 +167,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="rect">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator RectangleF(RectangleD rect)
         {
             return new RectangleF((Single)rect.X, (Single)rect.Y, (Single)rect.Width, (Single)rect.Height);
@@ -562,7 +552,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public RectangleD Interpolate(RectangleD target, Single t)
         {
             RectangleD result;
@@ -658,28 +647,24 @@ namespace Ultraviolet
         /// <summary>
         /// The x-coordinate of the rectangle's top-left corner.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Double X;
 
         /// <summary>
         /// The y-coordinate of the rectangle's top-left corner.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Double Y;
 
         /// <summary>
         /// The rectangle's width.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Double Width;
 
         /// <summary>
         /// The rectangle's height.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Double Height;
     }

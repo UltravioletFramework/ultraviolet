@@ -11,7 +11,6 @@ namespace UltravioletSample.Sample9_ManagingStateWithUIScreens.Input
 
         public class Actions : InputActionCollection
         {
-			[Preserve]
 			public Actions(UltravioletContext uv)
                 : base(uv)
             { }

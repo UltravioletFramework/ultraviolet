@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS storyboard target.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.StoryboardTarget)]
     public sealed class UvssStoryboardTargetSyntax : UvssNodeSyntax
     {

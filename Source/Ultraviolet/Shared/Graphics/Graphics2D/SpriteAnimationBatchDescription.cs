@@ -7,7 +7,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// An intermediate representation of a related batch of animations within a sprite.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class SpriteAnimationBatchDescription
     {
         /// <summary>

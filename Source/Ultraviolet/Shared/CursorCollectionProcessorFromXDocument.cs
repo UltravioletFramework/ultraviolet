@@ -10,7 +10,6 @@ namespace Ultraviolet.SDL2
     /// <summary>
     /// Represents a content processor that loads cursor collections.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class CursorCollectionProcessorFromXDocument : ContentProcessor<XDocument, CursorCollection>
     {

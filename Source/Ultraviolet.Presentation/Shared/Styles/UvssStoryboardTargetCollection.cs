@@ -30,7 +30,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Adds a storyboard target to the collection.
         /// </summary>
         /// <param name="target">The storyboard target to add to the collection.</param>
-        [Preserve]
         internal void Add(UvssStoryboardTarget target)
         {
             Contract.Require(target, nameof(target));

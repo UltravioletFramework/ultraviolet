@@ -9,7 +9,6 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Dialogs
 		/// <summary>
 		/// Represents the view model for <see cref="DialogScreen"/>.
 		/// </summary>
-		[Preserve(AllMembers = true)]
 		public class DialogScreenVM
         {
             /// <summary>

@@ -10,7 +10,6 @@ namespace Ultraviolet.Presentation.Styles
     /// <summary>
     /// Represents a content processor for the *.uvss file type.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public class UvssDocumentProcessor : ContentProcessor<String, UvssDocument>
     {

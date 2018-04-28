@@ -17,7 +17,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="spriteAnimationID">The sprite animation's identifier.</param>
         /// <param name="spriteSource">The sprite asset's source.</param>
-        [Preserve]
         public SourcedSpriteAnimationID(SpriteAnimationID spriteAnimationID, AssetSource spriteSource)
         {
             this.spriteAnimationID = spriteAnimationID;

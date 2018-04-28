@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents structured trivia.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.StructurelessTrivia)]
     public sealed class StructurelessSyntaxTrivia : SyntaxTrivia
     {

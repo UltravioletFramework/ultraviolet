@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the base class for UVSS triggers.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class UvssTriggerBaseSyntax : UvssNodeSyntax
     {
         /// <summary>

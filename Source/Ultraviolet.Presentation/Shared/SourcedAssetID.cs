@@ -17,7 +17,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="assetID">The asset's identifier.</param>
         /// <param name="assetSource">The asset's source.</param>
-        [Preserve]
         public SourcedAssetID(AssetID assetID, AssetSource assetSource)
         {
             this.assetID = assetID;

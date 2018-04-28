@@ -10,7 +10,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads shader effect assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLEffectProcessorFromXDocument : ContentProcessor<XDocument, Effect>
     {

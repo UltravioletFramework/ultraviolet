@@ -14,7 +14,6 @@ namespace Ultraviolet.Core.Collections
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class.
         /// </summary>
-        [Preserve]
         public BinaryHeap()
             : this(null, 4)
         {
@@ -25,7 +24,6 @@ namespace Ultraviolet.Core.Collections
         /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class with the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The initial capacity of the binary heap.</param>
-        [Preserve]
         public BinaryHeap(Int32 capacity)
             : this(null, capacity)
         {
@@ -36,7 +34,6 @@ namespace Ultraviolet.Core.Collections
         /// Initializes a new instance of the <see cref="BinaryHeap{T}"/> class.
         /// </summary>
         /// <param name="comparer">An <see cref="IComparer{T}"/> to use to compare items in the heap.</param>
-        [Preserve]
         public BinaryHeap(IComparer<T> comparer)
             : this(comparer, 4)
         {
@@ -48,7 +45,6 @@ namespace Ultraviolet.Core.Collections
         /// </summary>
         /// <param name="comparer">An <see cref="IComparer{T}"/> to use to compare items in the heap.</param>
         /// <param name="capacity">The initial capacity of the binary heap.</param>
-        [Preserve]
         public BinaryHeap(IComparer<T> comparer, Int32 capacity)
         {
             Contract.EnsureNot<ArgumentOutOfRangeException>(capacity < 0, nameof(capacity));
@@ -63,7 +59,6 @@ namespace Ultraviolet.Core.Collections
         /// <summary>
         /// Removes all items from the heap.
         /// </summary>
-        [Preserve]
         public void Clear()
         {
             this.count = 0;
@@ -74,7 +69,6 @@ namespace Ultraviolet.Core.Collections
         /// Updates the specified item's position in the heap.
         /// </summary>
         /// <param name="item">The item to update.</param>
-        [Preserve]
         public void Update(T item)
         {
             if (reftype && item == null)
@@ -92,7 +86,6 @@ namespace Ultraviolet.Core.Collections
         /// Adds an item to the heap.
         /// </summary>
         /// <param name="item">The item to add to the heap.</param>
-        [Preserve]
         public void Add(T item)
         {
             if (reftype && item == null)
@@ -109,7 +102,6 @@ namespace Ultraviolet.Core.Collections
         /// Adds all of the items in the specified collection to the heap.
         /// </summary>
         /// <param name="collection">The collection that contains the items to add to the heap.</param>
-        [Preserve]
         public void AddRange(IEnumerable<T> collection)
         {
             Contract.Require(collection, nameof(collection));
@@ -124,7 +116,6 @@ namespace Ultraviolet.Core.Collections
         /// Removes and returns the first item in the heap.
         /// </summary>
         /// <returns>The next item in the heap.</returns>
-        [Preserve]
         public T Remove()
         {
             Contract.EnsureNot<InvalidOperationException>(IsEmpty, "Heap is empty.");
@@ -148,7 +139,6 @@ namespace Ultraviolet.Core.Collections
         /// Retrieves the first value from the heap without removing it.
         /// </summary>
         /// <returns>The first element on the heap.</returns>
-        [Preserve]
         public T Peek()
         {
             Contract.EnsureNot<InvalidOperationException>(IsEmpty, "Heap is empty.");
@@ -161,7 +151,6 @@ namespace Ultraviolet.Core.Collections
         /// </summary>
         /// <param name="item">The item to be removed.</param>
         /// <returns><see langword="true"/> if the item was removed; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public bool Remove(T item)
         {
             EnsureSort();
@@ -181,7 +170,6 @@ namespace Ultraviolet.Core.Collections
         /// </summary>
         /// <param name="item">The value for which to search the heap.</param>
         /// <returns><see langword="true"/> if the heap contains the specified value; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public bool Contains(T item)
         {
             EnsureSort();

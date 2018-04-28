@@ -11,7 +11,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads 3D texture assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLTexture3DProcessor : ContentProcessor<PlatformNativeSurface, Texture3D>
     {

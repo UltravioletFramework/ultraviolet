@@ -8,7 +8,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// used by the <see cref="Ultraviolet.Graphics.Graphics2D.SpriteBatch"/> class
     /// to render standard sprites.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public struct SpriteVertex : IVertexType
     {
         /// <summary>

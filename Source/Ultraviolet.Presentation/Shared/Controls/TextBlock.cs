@@ -12,7 +12,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a lightweight control for displaying text.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Text")]
     public class TextBlock : TextBlockBase

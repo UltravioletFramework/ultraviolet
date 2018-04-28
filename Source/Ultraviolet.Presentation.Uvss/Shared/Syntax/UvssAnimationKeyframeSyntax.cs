@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS animation keyframe.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.AnimationKeyframe)]
     public sealed class UvssAnimationKeyframeSyntax : UvssNodeSyntax
     {

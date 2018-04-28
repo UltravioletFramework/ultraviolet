@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents an item in a <see cref="ComboBox"/> control.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ComboBoxItem.xml")]
     public class ComboBoxItem : ListBoxItem
     {

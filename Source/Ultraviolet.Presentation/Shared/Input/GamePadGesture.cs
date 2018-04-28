@@ -15,7 +15,6 @@ namespace Ultraviolet.Presentation.Input
         /// Initializes a new instance of the <see cref="GamePadGesture"/> class.
         /// </summary>
         /// <param name="button">The button associated with this game pad gesture.</param>
-        [Preserve]
         public GamePadGesture(GamePadButton button)
             : this(button, AnyPlayerIndex, String.Empty)
         {
@@ -27,7 +26,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="playerIndex">The player index of the game pad for this gesture.</param>
         /// <param name="button">The button associated with this game pad gesture.</param>
-        [Preserve]
         public GamePadGesture(GamePadButton button, Int32 playerIndex)
             : this(button, playerIndex, String.Empty)
         {
@@ -39,7 +37,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="button">The button associated with this game pad gesture.</param>
         /// <param name="displayString">The display string for this keyboard gesture.</param>
-        [Preserve]
         public GamePadGesture(GamePadButton button, String displayString)
             : this(button, AnyPlayerIndex, displayString)
         {
@@ -52,7 +49,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="button">The button associated with this game pad gesture.</param>
         /// <param name="playerIndex">The player index of the game pad for this gesture.</param>
         /// <param name="displayString">The display string for this keyboard gesture.</param>
-        [Preserve]
         public GamePadGesture(GamePadButton button, Int32 playerIndex, String displayString)
         {
             Contract.EnsureRange(playerIndex >= AnyPlayerIndex, nameof(playerIndex));
@@ -70,7 +66,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <param name="gesture">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="str"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String str, out GamePadGesture gesture)
         {
             return TryParse(str, null, out gesture);
@@ -81,7 +76,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <returns>A instance of the <see cref="GamePadGesture"/> structure equivalent to the gesture contained in <paramref name="str"/>.</returns>
-        [Preserve]
         public static GamePadGesture Parse(String str)
         {
             GamePadGesture gesture;
@@ -100,7 +94,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="gesture">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="str"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String str, IFormatProvider provider, out GamePadGesture gesture)
         {
             Contract.Require(str, nameof(str));
@@ -140,7 +133,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="GamePadGesture"/> structure equivalent to the gesture contained in <paramref name="str"/>.</returns>
-        [Preserve]
         public static GamePadGesture Parse(String str, IFormatProvider provider)
         {
             GamePadGesture gesture;

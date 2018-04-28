@@ -5,9 +5,6 @@ using System.Runtime.InteropServices;
 using Ultraviolet.Core;
 
 [assembly: CLSCompliant(true)]
-[assembly: LinkerSafe]
-[assembly: Preserve(typeof(Object), AllMembers = true)]
-[assembly: Preserve(typeof(Nullable), AllMembers = true)]
 
 #if SIGNED
 [assembly: InternalsVisibleTo("Ultraviolet.Design, PublicKey=" +

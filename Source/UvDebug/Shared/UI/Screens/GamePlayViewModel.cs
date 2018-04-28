@@ -13,7 +13,6 @@ namespace UvDebug.UI.Screens
     /// <summary>
     /// Represents the view model for <see cref="GamePlayScreen"/>.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public sealed class GamePlayViewModel
     {
         /// <summary>

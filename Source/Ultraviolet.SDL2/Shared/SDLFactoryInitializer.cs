@@ -11,7 +11,6 @@ namespace Ultraviolet.SDL2
     /// <summary>
     /// Initializes factory methods for the SDL implementation of the graphics subsystem.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public sealed class SDLFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

@@ -6,7 +6,6 @@ namespace Ultraviolet
     /// <summary>
     /// Initializes factory methods for the Framework core.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class UltravioletFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>

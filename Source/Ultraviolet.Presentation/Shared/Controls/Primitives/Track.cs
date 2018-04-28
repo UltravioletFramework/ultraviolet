@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the track for a scroll bar or slider.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class Track : FrameworkElement
     {

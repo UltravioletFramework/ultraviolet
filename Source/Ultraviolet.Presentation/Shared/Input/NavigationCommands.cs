@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Contains a standard set of navigation-related commands.
     /// </summary>
-    [Preserve]
     public static class NavigationCommands
     {
         /// <summary>

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// Represents a list of syntax nodes.
     /// </summary>
     /// <typeparam name="TNode">The type of node contained by this list.</typeparam>
-    [Preserve(AllMembers = true)]
     public struct SyntaxList<TNode> where TNode : SyntaxNode
     {
         /// <summary>

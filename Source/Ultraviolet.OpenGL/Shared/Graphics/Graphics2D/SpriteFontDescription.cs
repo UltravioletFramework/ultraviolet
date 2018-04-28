@@ -8,7 +8,6 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
     /// <summary>
     /// An internal representation of a <see cref="SpriteFont"/> used during content processing.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class SpriteFontDescription
     {
         /// <summary>

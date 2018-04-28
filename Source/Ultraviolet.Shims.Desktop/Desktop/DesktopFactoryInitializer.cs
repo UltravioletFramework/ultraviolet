@@ -11,7 +11,6 @@ namespace Ultraviolet.Shims.Desktop
     /// <summary>
     /// Initializes factory methods for the Desktop platform compatibility shim.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class DesktopFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>

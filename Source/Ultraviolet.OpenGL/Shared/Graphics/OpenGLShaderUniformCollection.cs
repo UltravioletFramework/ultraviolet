@@ -12,7 +12,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Initializes a new instance of the OpenGLShaderUniformCollection class.
         /// </summary>
-        [Preserve]
         public OpenGLShaderUniformCollection(IEnumerable<OpenGLShaderUniform> uniforms)
         {
             Contract.Require(uniforms, nameof(uniforms));
@@ -26,7 +25,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         /// <param name="item">The item for which to retrieve a name.</param>
         /// <returns>The specified item's name.</returns>
-        [Preserve]
         protected override String GetName(OpenGLShaderUniform item)
         {
             return item.Name;

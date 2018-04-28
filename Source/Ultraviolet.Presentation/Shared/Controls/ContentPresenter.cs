@@ -11,7 +11,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents an element which is used to indicate the position of child content within a component template.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class ContentPresenter : FrameworkElement
     {

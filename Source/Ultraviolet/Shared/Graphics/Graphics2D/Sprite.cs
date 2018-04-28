@@ -14,7 +14,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         /// <param name="animations">A collection containing the sprite's animations, or <see langword="null"/> if the sprite has no animations.</param>
-        [Preserve]
         public Sprite(IEnumerable<SpriteAnimation> animations = null)
         {
             this.animations = new List<SpriteAnimation>(animations ?? Enumerable.Empty<SpriteAnimation>());

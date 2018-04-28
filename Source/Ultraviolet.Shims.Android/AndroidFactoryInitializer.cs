@@ -11,7 +11,6 @@ namespace Ultraviolet.Shims.Android
     /// <summary>
     /// Initializes factory methods for the Android platform compatibility shim.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class AndroidFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

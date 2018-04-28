@@ -7,7 +7,6 @@ namespace UvDebug
     /// <summary>
     /// Represents the factory initializer for this application.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public class UltravioletFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

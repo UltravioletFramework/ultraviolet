@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents the content presenter for a <see cref="ScrollViewer"/>.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class ScrollContentPresenter : ContentPresenter
     {

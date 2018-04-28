@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents a terminal token.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.Token)]
     public class SyntaxToken : SyntaxNode
     {

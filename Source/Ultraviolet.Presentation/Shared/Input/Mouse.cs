@@ -58,7 +58,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Represents the mouse device.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static partial class Mouse
     {

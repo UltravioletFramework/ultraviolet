@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a collection of transformations.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed partial class TransformCollection : IList<Transform>
     {
@@ -24,42 +23,36 @@ namespace Ultraviolet.Presentation.Media
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Clear()
         {
             transforms.Clear();
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Add(Transform item)
         {
             transforms.Add(item);
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Insert(Int32 index, Transform item)
         {
             transforms.Insert(index, item);
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void RemoveAt(Int32 index)
         {
             transforms.RemoveAt(index);
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Remove(Transform item)
         {
             return transforms.Remove(item);
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Contains(Transform item)
         {
             return transforms.Contains(item);

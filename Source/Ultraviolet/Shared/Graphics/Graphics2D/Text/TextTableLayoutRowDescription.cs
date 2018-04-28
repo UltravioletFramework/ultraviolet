@@ -7,7 +7,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// An intermediate representation of a row in a <see cref="TextTableLayout"/> used during content loading.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal class TextTableLayoutRowDescription
     {
         /// <summary>

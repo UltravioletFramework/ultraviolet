@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS property value enclosed in curly braces.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.PropertyValueWithBraces)]
     public sealed class UvssPropertyValueWithBracesSyntax : UvssPropertyValueBaseSyntax
     {

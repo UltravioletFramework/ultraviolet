@@ -12,7 +12,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a control designed for securely entering passwords.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.PasswordBox.xml")]
     public sealed class PasswordBox : TextEditingControl
     {

@@ -8,7 +8,6 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
     /// <summary>
     /// An internal representation of the glyph metadata for a <see cref="SpriteFontFace"/> used during content processing.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class SpriteFontFaceGlyphDescription
     {
         /// <summary>

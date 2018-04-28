@@ -12,7 +12,6 @@ namespace Ultraviolet
     /// Represents a content processor which processes XNA-formatted 
     /// curve definition XML files into instances of the Curve class.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class CurveProcessor : ContentProcessor<XDocument, Curve>
     {

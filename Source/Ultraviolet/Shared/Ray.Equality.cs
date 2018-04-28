@@ -23,7 +23,6 @@ namespace Ultraviolet
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator ==(Ray v1, Ray v2)
         {
             return v1.Equals(v2);
@@ -35,21 +34,18 @@ namespace Ultraviolet
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator !=(Ray v1, Ray v2)
         {
             return !v1.Equals(v2);
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public override Boolean Equals(Object other)
         {
             return (other is Ray x) ? Equals(x) : false;
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Equals(Ray other)
         {
             return

@@ -11,7 +11,6 @@ namespace UltravioletSample.Sample15_RenderTargetsAndBuffers.Input
 
         public class Actions : InputActionCollection
         {
-			[Preserve]
 			public Actions(UltravioletContext uv) 
                 : base(uv)
             { }

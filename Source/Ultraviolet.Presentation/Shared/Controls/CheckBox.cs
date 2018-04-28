@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a check box.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.CheckBox.xml")]
     public class CheckBox : ToggleButton
     {

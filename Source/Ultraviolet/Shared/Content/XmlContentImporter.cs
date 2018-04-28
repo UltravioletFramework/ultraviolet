@@ -7,7 +7,6 @@ namespace Ultraviolet.Content
     /// <summary>
     /// Represents a content importer which loads XML documents.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".xml")]
     public sealed class XmlContentImporter : ContentImporter<XDocument>
     {

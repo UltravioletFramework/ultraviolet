@@ -13,7 +13,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="manifests">The content manifest registry that contains the currently-loaded content manifests.</param>
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <returns>An instance of the SpriteAnimationID structure that is equivalent to the specified string.</returns>
-        [Preserve]
         public static SpriteAnimationID Parse(ContentManifestRegistry manifests, String s)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -33,7 +32,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="s">A string containing the sprite animation identifier to convert.</param>
         /// <param name="value">An instance of the SpriteAnimationID structure that is equivalent to the specified string.</param>
         /// <returns><see langword="true"/> if the string was successfully parsed; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(ContentManifestRegistry manifests, String s, out SpriteAnimationID value)
         {
             Contract.Require(manifests, nameof(manifests));
@@ -49,7 +47,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="s">The string to convert.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, out SpriteAnimationID v)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out v);
@@ -60,7 +57,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static SpriteAnimationID Parse(String s)
         {
             var v = default(SpriteAnimationID);
@@ -79,7 +75,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out SpriteAnimationID v)
         {
             Contract.Require(s, nameof(s));
@@ -95,7 +90,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static SpriteAnimationID Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             var v = default(SpriteAnimationID);

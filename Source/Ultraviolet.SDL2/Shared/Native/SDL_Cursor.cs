@@ -4,7 +4,6 @@ using Ultraviolet.Core;
 namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
-    [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct SDL_Cursor
     {

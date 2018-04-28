@@ -8,7 +8,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Imports .vert files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".vert"), ContentImporter(".verth")]
     public sealed class OpenGLVertexShaderImporter : ContentImporter<String>
     {

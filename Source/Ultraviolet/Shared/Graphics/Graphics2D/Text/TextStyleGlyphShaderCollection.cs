@@ -13,7 +13,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextStyleGlyphShaderCollection"/> class.
         /// </summary>
         /// <param name="glyphShaders"></param>
-        [Preserve]
         internal TextStyleGlyphShaderCollection(IEnumerable<GlyphShader> glyphShaders)
         {
             storage = (glyphShaders == null) ? new List<GlyphShader>() : new List<GlyphShader>(glyphShaders);

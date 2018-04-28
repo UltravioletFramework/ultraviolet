@@ -20,7 +20,6 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="UIPanelDefinitionProcessor"/> class.
         /// </summary>
-        [Preserve]
         public UIPanelDefinitionProcessor() { }
 
         /// <inheritdoc/>

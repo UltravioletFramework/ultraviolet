@@ -15,7 +15,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="width">The size's width.</param>
         /// <param name="height">The size's height.</param>
-        [Preserve]
         [JsonConstructor]
         public Size2(Int32 width, Int32 height)
         {
@@ -29,7 +28,6 @@ namespace Ultraviolet
         /// <param name="s1">The <see cref="Size2"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size2"/> on the right side of the operator.</param>
         /// <returns>The result of adding the two instances.</returns>
-        [Preserve]
         public static Size2 operator +(Size2 s1, Size2 s2)
         {
             Size2 result;
@@ -46,7 +44,6 @@ namespace Ultraviolet
         /// <param name="s1">The <see cref="Size2"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size2"/> on the right side of the operator.</param>
         /// <returns>The result of subtracting the two instances.</returns>
-        [Preserve]
         public static Size2 operator -(Size2 s1, Size2 s2)
         {
             Size2 result;
@@ -63,7 +60,6 @@ namespace Ultraviolet
         /// <param name="size">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Size2"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size2 operator *(Size2 size, Int32 multiplier)
         {
             Size2 result;
@@ -80,7 +76,6 @@ namespace Ultraviolet
         /// <param name="size">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Size2F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size2F operator *(Size2 size, Single multiplier)
         {
             Size2F result;
@@ -97,7 +92,6 @@ namespace Ultraviolet
         /// <param name="size">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size2D operator *(Size2 size, Double multiplier)
         {
             Size2D result;
@@ -114,7 +108,6 @@ namespace Ultraviolet
         /// <param name="size">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Size2"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size2 operator /(Size2 size, Int32 divisor)
         {
             Size2 result;
@@ -131,7 +124,6 @@ namespace Ultraviolet
         /// <param name="size">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Size2F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size2F operator /(Size2 size, Single divisor)
         {
             Size2F result;
@@ -148,7 +140,6 @@ namespace Ultraviolet
         /// <param name="size">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Size2D"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size2D operator /(Size2 size, Double divisor)
         {
             Size2D result;
@@ -164,7 +155,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Vector2(Size2 size)
         {
             Vector2 result;
@@ -180,7 +170,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2(Size2 size)
         {
             Point2 result;
@@ -196,7 +185,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2F(Size2 size)
         {
             Point2F result;
@@ -212,7 +200,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2D(Size2 size)
         {
             Point2D result;
@@ -228,7 +215,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static implicit operator Size2F(Size2 size)
         {
             Size2F result;
@@ -244,7 +230,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static implicit operator Size2D(Size2 size)
         {
             Size2D result;
@@ -264,7 +249,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Size2 Interpolate(Size2 target, Single t)
         {
             Size2 result;
@@ -295,14 +279,12 @@ namespace Ultraviolet
         /// <summary>
         /// The size's width.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Int32 Width;
 
         /// <summary>
         /// The size's height.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Int32 Height;
     }

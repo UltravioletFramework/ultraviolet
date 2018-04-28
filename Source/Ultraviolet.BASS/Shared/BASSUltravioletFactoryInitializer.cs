@@ -7,7 +7,6 @@ namespace Ultraviolet.BASS
     /// <summary>
     /// Initializes factory methods for the BASS implementation of the audio subsystem.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public sealed class BASSUltravioletFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

@@ -20,7 +20,6 @@ namespace Ultraviolet.Audio
         /// <summary>
         /// Removes all tag from the collection.
         /// </summary>
-        [Preserve]
         public void Clear()
         {
             storage.Clear();
@@ -31,7 +30,6 @@ namespace Ultraviolet.Audio
         /// </summary>
         /// <param name="key">The tag's identifying key.</param>
         /// <param name="value">The tag's raw value.</param>
-        [Preserve]
         public void Add(String key, String value)
         {
             Contract.RequireNotEmpty(key, nameof(key));
@@ -44,7 +42,6 @@ namespace Ultraviolet.Audio
         /// Adds a tag to the collection.
         /// </summary>
         /// <param name="tag">The tag to add to the collection.</param>
-        [Preserve]
         public void Add(SongTag tag)
         {
             Contract.Require(tag, nameof(tag));
@@ -59,7 +56,6 @@ namespace Ultraviolet.Audio
         /// <param name="key">The identifying key of the tag to remove.</param>
         /// <returns><see langword="true"/> if a tag with the specified key
         /// was removed from the collection; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public Boolean Remove(String key)
         {
             Contract.RequireNotEmpty(key, nameof(key));
@@ -74,7 +70,6 @@ namespace Ultraviolet.Audio
         /// <param name="key">The identifying key of the tag for which to search.</param>
         /// <returns><see langword="true"/> if the collection contains a tag with the
         /// specified key; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public Boolean ContainsKey(String key)
         {
             Contract.RequireNotEmpty(key, nameof(key));
@@ -85,7 +80,6 @@ namespace Ultraviolet.Audio
         /// <summary>
         /// Gets the number of items in the collection.
         /// </summary>
-        [Preserve]
         public Int32 Count => storage.Count;
 
         /// <summary>
@@ -104,13 +98,11 @@ namespace Ultraviolet.Audio
         /// <param name="key">The identifying key of the tag to retrieve.</param>
         /// <returns>The <see cref="SongTag"/> with the specified key, or <see langword="null"/> if
         /// no such tag exists within the collection.</returns>
-        [Preserve]
         public SongTag this[String key]
         {
             get
             {
-                SongTag value;
-                storage.TryGetValue(key, out value);
+                storage.TryGetValue(key, out var value);
                 return value;
             }
         }

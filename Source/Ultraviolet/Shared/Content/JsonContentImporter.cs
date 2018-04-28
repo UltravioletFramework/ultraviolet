@@ -13,7 +13,6 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonContentImporter"/> class.
         /// </summary>
-        [Preserve]
         public JsonContentImporter() { }
 
         /// <inheritdoc/>

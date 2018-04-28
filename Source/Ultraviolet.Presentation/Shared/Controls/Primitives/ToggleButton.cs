@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a button on a user interface which can be toggled between its states.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Primitives.Templates.ToggleButton.xml")]
     public class ToggleButton : ButtonBase
     {
