@@ -75,6 +75,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Generic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphSlotRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_LibraryRec.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromXDocument.cs" />
