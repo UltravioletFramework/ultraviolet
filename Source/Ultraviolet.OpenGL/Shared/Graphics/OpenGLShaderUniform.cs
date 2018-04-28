@@ -500,7 +500,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Matrix value)
         {
-            gl.UniformMatrix4fv(location, 1, true, (float*)&value);
+            var transpose = true;
+
+            if (gl.IsGLES2)
+            {
+                Matrix.Transpose(ref value, out value);
+                transpose = false;
+            }
+
+            gl.UniformMatrix4fv(location, 1, transpose, (float*)&value);
             gl.ThrowIfError();
 
             cache.Set(value);
@@ -512,10 +520,22 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void SetValue(Matrix[] value)
         {
-            fixed (Matrix* pValue = value)
+            if (gl.IsGLES2)
             {
-                gl.UniformMatrix4fv(location, value.Length, true, (float*)pValue);
+                var transposed = stackalloc Matrix[value.Length];
+                for (int i = 0; i < value.Length; i++)
+                    Matrix.Transpose(ref value[i], out transposed[i]);
+
+                gl.UniformMatrix4fv(location, value.Length, false, (float*)transposed);
                 gl.ThrowIfError();
+            }
+            else
+            {
+                fixed (Matrix* pValue = value)
+                {
+                    gl.UniformMatrix4fv(location, value.Length, true, (float*)pValue);
+                    gl.ThrowIfError();
+                }
             }
 
             cache.Set(value);

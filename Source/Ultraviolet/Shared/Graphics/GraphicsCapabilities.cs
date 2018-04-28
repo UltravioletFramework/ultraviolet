@@ -13,6 +13,11 @@ namespace Ultraviolet.Graphics
         public abstract Boolean FlippedTextures { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the device supports 3D textures.
+        /// </summary>
+        public abstract Boolean Supports3DTextures { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the device supports texture which have both depth and stencil components.
         /// </summary>
         public abstract Boolean SupportsDepthStencilTextures { get; }
