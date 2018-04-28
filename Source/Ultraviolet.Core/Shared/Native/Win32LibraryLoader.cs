@@ -26,25 +26,8 @@ namespace Ultraviolet.Core.Native
         }
 
         /// <inheritdoc/>
-        protected override IntPtr CoreLoadNativeLibrary(String libraryName)
-        {
-            var libraryDir = Path.GetDirectoryName(libraryName);
-
-            var oldCurrentDir = Directory.GetCurrentDirectory();
-            var newCurrentDir = String.IsNullOrEmpty(libraryDir) ? oldCurrentDir : Path.GetFullPath(libraryDir);
-
-            if (Directory.Exists(newCurrentDir))
-                Directory.SetCurrentDirectory(newCurrentDir);
-
-            try
-            {
-                return Native.LoadLibrary(libraryName);
-            }
-            finally
-            {
-                Directory.SetCurrentDirectory(oldCurrentDir);
-            }
-        }
+        protected override IntPtr CoreLoadNativeLibrary(String libraryName) =>
+            Native.LoadLibrary(libraryName);
 
         /// <inheritdoc/>
         protected override IntPtr CoreLoadNativeFunctionPointer(IntPtr handle, String functionName) => 
