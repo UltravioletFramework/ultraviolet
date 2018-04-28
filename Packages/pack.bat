@@ -77,7 +77,7 @@ nuget pack Ultraviolet.Presentation.nuspec -Symbols
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
 powershell -Command "(gc Ultraviolet.FreeType2.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.FreeType2.Native.nuspec"
-nuget pack Ultraviolet.FreeType2.Native.nuspec -Symbols
+nuget pack Ultraviolet.FreeType2.Native.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
 powershell -Command "(gc Ultraviolet.FreeType2.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.FreeType2.nuspec"
