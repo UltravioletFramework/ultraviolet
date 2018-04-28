@@ -11,6 +11,9 @@ namespace Ultraviolet.Graphics
         public override Boolean FlippedTextures { get; }
 
         /// <inheritdoc/>
+        public override Boolean Supports3DTextures { get; }
+
+        /// <inheritdoc/>
         public override Boolean SupportsDepthStencilTextures { get; }
 
         /// <inheritdoc/>

@@ -24,6 +24,7 @@ namespace Ultraviolet.OpenGL.Graphics
             this.maximumViewportWidth = viewportDims[0];
             this.maximumViewportHeight = viewportDims[1];
 
+            this.Supports3DTextures = !gl.IsGLES2 || gl.IsExtensionSupported("GL_OES_texture_3D");
             this.supportsDepthStencilTextures = !gl.IsGLES2 || gl.IsExtensionSupported("GL_OES_packed_depth_stencil");
 
             if (gl.IsGLES2 && !this.supportsDepthStencilTextures)
@@ -89,6 +90,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public override Boolean FlippedTextures { get { return true; } }
+
+        /// <inheritdoc/>
+        public override Boolean Supports3DTextures { get; }
 
         /// <inheritdoc/>
         public override Boolean SupportsDepthStencilTextures { get { return supportsDepthStencilTextures; } }

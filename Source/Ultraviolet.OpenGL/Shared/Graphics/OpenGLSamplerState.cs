@@ -127,9 +127,12 @@ namespace Ultraviolet.OpenGL.Graphics
                 throw new InvalidOperationException(UltravioletStrings.GenericError);
 
             OpenGLState.ActiveTexture((uint)(gl.GL_TEXTURE0 + sampler));
-            
-            gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_R, GetTextureAddressModeGL(AddressW));
-            gl.ThrowIfError();
+
+            if (Ultraviolet.GetGraphics().Capabilities.Supports3DTextures)
+            {
+                gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_R, GetTextureAddressModeGL(AddressW));
+                gl.ThrowIfError();
+            }
 
             gl.TexParameteri(target, gl.GL_TEXTURE_WRAP_S, GetTextureAddressModeGL(AddressU));
             gl.ThrowIfError();
