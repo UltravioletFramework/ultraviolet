@@ -46,10 +46,7 @@ namespace Ultraviolet.OpenGL.Bindings
             LoadExtensions();
 
             gl.InitializeDSA();
-
-            gl.IsTextureStorageAvailable = IsVersionAtLeast(4, 2) || IsExtensionSupported("GL_ARB_texture_storage");
-            gl.IsAnisotropicFilteringAvailable = IsExtensionSupported("GL_EXT_texture_filter_anisotropic");
-            gl.IsVertexAttribBindingAvailable = IsExtensionSupported("GL_ARB_vertex_attrib_binding");
+            gl.InitializeFeatureFlags();
 
             var functions = GetOpenGLFunctionFields();
             foreach (var function in functions)

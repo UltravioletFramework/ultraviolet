@@ -171,12 +171,6 @@ namespace Ultraviolet.OpenGL.Bindings
             dsaimpl.DisableVertexArrayAttrib(vaobj, index);
         }
 
-        public static Boolean IsTextureStorageAvailable
-        {
-            get;
-            private set;
-        }
-
         public static Boolean IsEXTDirectStateAccessAvailable
         {
             get;

@@ -79,7 +79,7 @@ namespace Ultraviolet.OpenGL
             
             this.capabilities = new OpenGLGraphicsCapabilities(configuration);
 
-            if (capabilities.SrgbEncodingEnabled && !gl.IsGLES)
+            if (capabilities.SrgbEncodingEnabled && gl.IsFramebufferSrgbAvailable)
             {
                 gl.Enable(gl.GL_FRAMEBUFFER_SRGB);
                 gl.ThrowIfError();

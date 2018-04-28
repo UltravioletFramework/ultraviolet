@@ -35,7 +35,7 @@ namespace Ultraviolet.OpenGL.Graphics
         public void ApplySamplerState(SamplerState state)
         {
             Contract.Require(state, nameof(state));
-            
+
             var textureWrapR = OpenGLSamplerState.GetTextureAddressModeGL(state.AddressW);
             if (textureWrapR != cachedTextureWrapR)
             {
@@ -60,19 +60,18 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfError();
             }
 
-            if (gl.IsGLES)
+            if (state.MipMapLevelOfDetailBias != 0)
             {
-                if (state.MipMapLevelOfDetailBias != 0)
-                    throw new NotSupportedException(OpenGLStrings.UnsupportedLODBiasGLES);
-            }
-            else
-            {
-                if (cachedMipMapLODBias != state.MipMapLevelOfDetailBias)
+                if (gl.IsMapMapLevelOfDetailBiasAvailable)
                 {
-                    cachedMipMapLODBias = state.MipMapLevelOfDetailBias;
-                    gl.SamplerParameterf(sampler, gl.GL_TEXTURE_LOD_BIAS, state.MipMapLevelOfDetailBias);
-                    gl.ThrowIfError();
+                    if (cachedMipMapLODBias != state.MipMapLevelOfDetailBias)
+                    {
+                        cachedMipMapLODBias = state.MipMapLevelOfDetailBias;
+                        gl.SamplerParameterf(sampler, gl.GL_TEXTURE_LOD_BIAS, state.MipMapLevelOfDetailBias);
+                        gl.ThrowIfError();
+                    }
                 }
+                else throw new NotSupportedException(OpenGLStrings.UnsupportedLODBiasGLES);
             }
 
             switch (state.Filter)

@@ -16,17 +16,17 @@ namespace Ultraviolet.OpenGL.Graphics
             if (bytesPerPixel == 4)
             {
                 if (srgbEncoded)
-                    return gl.IsGLES2 ? gl.GL_SRGB_ALPHA : gl.GL_SRGB8_ALPHA8;
+                    return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_SRGB8_ALPHA8 : gl.GL_SRGB_ALPHA;
 
-                return gl.IsGLES2 ? gl.GL_RGBA : gl.GL_RGBA8;
+                return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_RGBA8 : gl.GL_RGBA;
             }
 
             if (bytesPerPixel == 3)
             {
                 if (srgbEncoded)
-                    return gl.IsGLES2 ? gl.GL_SRGB : gl.GL_SRGB8;
-
-                return gl.GL_RGB8;
+                    return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_SRGB8 : gl.GL_SRGB;
+                
+                return gl.IsSizedTextureInternalFormatAvailable ? gl.GL_RGB8 : gl.GL_RGB;
             }
 
             return gl.GL_NONE;

@@ -19,18 +19,14 @@ namespace Ultraviolet.OpenGL.Graphics.Caching
 
         public static CachedPolygonMode FromDevice()
         {
-            if (gl.IsGLES)
-            {
+            if (!gl.IsPolygonModeAvailable)
                 return new CachedPolygonMode(gl.GL_FILL);
-            }
-            else
-            {
-                var modes = stackalloc int[2];
-                gl.GetIntegerv(gl.GL_POLYGON_MODE, modes);
-                gl.ThrowIfError();
 
-                return new CachedPolygonMode((UInt32)modes[0]);
-            }
+            var modes = stackalloc int[2];
+            gl.GetIntegerv(gl.GL_POLYGON_MODE, modes);
+            gl.ThrowIfError();
+
+            return new CachedPolygonMode((UInt32)modes[0]);
         }
 
         public static Boolean TryUpdate(ref CachedPolygonMode current, UInt32 desired)

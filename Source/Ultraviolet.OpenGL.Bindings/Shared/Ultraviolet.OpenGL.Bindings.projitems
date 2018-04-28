@@ -49,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)gl.Core_4_3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)gl.Core_4_4.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)gl.DSA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)gl.Features.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)gl.Initialization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BindingsStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IOpenGLInitializer.cs" />
