@@ -63,26 +63,12 @@ namespace Ultraviolet.Shims.Desktop.Platform
         /// </summary>
         private Boolean InitFallback(UltravioletContext uv, IUltravioletDisplay display)
         {
-            if (implFallbackService == null)
-                implFallbackService = uv.TryGetFactoryMethod<ScreenDensityServiceFactory>("ImplFallback")?.Invoke(display);
-
-            if (implFallbackService != null)
+            using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
             {
-                implFallbackService.Refresh();
-                this.densityX = implFallbackService.DensityX;
-                this.densityY = implFallbackService.DensityY;
-                this.densityScale = implFallbackService.DensityScale;
-                this.densityBucket = implFallbackService.DensityBucket;
-            }
-            else
-            {
-                using (var graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
-                {
-                    this.densityX = graphics.DpiX;
-                    this.densityY = graphics.DpiY;
-                    this.densityScale = graphics.DpiX / 96f;
-                    this.densityBucket = GuessBucketFromDensityScale(densityScale);
-                }
+                this.densityX = graphics.DpiX;
+                this.densityY = graphics.DpiY;
+                this.densityScale = graphics.DpiX / 96f;
+                this.densityBucket = GuessBucketFromDensityScale(densityScale);
             }
 
             return true;
@@ -139,8 +125,5 @@ namespace Ultraviolet.Shims.Desktop.Platform
         private Single densityY;
         private Single densityScale;
         private ScreenDensityBucket densityBucket;
-
-        // Fallback implementation.
-        private ScreenDensityService implFallbackService;
     }
 }
