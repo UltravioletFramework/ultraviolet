@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.SDL2.Native
 {

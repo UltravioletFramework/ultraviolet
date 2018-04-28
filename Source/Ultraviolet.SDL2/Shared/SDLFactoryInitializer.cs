@@ -1,9 +1,7 @@
-﻿using Ultraviolet.Core;
-using Ultraviolet.Graphics;
+﻿using Ultraviolet.Graphics;
 using Ultraviolet.Platform;
 using Ultraviolet.SDL2.Graphics;
 using Ultraviolet.SDL2.Platform;
-using Ultraviolet.SDL2.Native;
 
 namespace Ultraviolet.SDL2
 {

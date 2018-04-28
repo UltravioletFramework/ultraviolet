@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using Ultraviolet.Core;
-
-namespace Ultraviolet.OpenGL.Graphics.Graphics2D
+﻿namespace Ultraviolet.OpenGL.Graphics.Graphics2D
 {
     /// <summary>
     /// An internal representation of a sprite font's collection of faces used during content processing.

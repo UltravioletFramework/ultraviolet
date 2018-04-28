@@ -1,6 +1,5 @@
 ﻿using Ultraviolet.Audio;
 using Ultraviolet.BASS.Audio;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.BASS
 {

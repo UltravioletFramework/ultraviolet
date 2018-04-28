@@ -3,7 +3,6 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
 
 namespace Ultraviolet.OpenGL.Graphics.Graphics2D

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.SDL2
 {

@@ -1,12 +1,12 @@
 ﻿using System;
-using Ultraviolet.Presentation.Media;
 using System.Drawing;
 using NUnit.Framework;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Presentation;
+using Ultraviolet.Presentation.Media;
 using Ultraviolet.Tests.UI.Presentation.Screens;
 using Ultraviolet.UI;
-using Ultraviolet.Presentation;
 
 namespace Ultraviolet.Tests.UI.Presentation
 {

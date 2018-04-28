@@ -1,9 +1,8 @@
 ﻿using System;
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
-using Ultraviolet.SDL2.Native;
-using static Ultraviolet.SDL2.Native.SDLNative;
 using static Ultraviolet.SDL2.Native.SDL_GLattr;
+using static Ultraviolet.SDL2.Native.SDLNative;
 
 namespace Ultraviolet.SDL2.Platform
 {

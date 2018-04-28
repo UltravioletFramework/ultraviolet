@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
-using Ultraviolet.Content;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet

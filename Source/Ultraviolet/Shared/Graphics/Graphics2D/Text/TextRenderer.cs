@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;

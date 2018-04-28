@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Ultraviolet.Core;
+﻿using System.Runtime.InteropServices;
 
 namespace Ultraviolet.FreeType2.Native
 {

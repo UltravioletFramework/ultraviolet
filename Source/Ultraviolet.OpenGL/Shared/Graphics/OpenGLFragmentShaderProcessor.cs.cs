@@ -1,6 +1,5 @@
 ﻿using System;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.OpenGL.Graphics
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation.Uvss.Syntax
 {

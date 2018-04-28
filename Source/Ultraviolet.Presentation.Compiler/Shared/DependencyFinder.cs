@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using Ultraviolet.Core;
 using System.Reflection;
+using Ultraviolet.Core;
 
 namespace Ultraviolet.Presentation.Compiler
 {

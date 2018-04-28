@@ -1,6 +1,4 @@
-﻿using Ultraviolet.Core;
-
-namespace Ultraviolet
+﻿namespace Ultraviolet
 {
     partial struct Color
     {

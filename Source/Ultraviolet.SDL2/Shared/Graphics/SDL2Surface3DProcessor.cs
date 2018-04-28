@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet.SDL2.Graphics

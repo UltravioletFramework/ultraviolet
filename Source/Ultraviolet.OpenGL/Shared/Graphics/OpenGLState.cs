@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Ultraviolet.Core;
 using Ultraviolet.Core.Collections;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;

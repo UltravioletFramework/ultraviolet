@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 

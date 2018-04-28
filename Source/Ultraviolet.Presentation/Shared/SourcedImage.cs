@@ -1,6 +1,5 @@
 ﻿using System;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Platform;
 

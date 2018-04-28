@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
 using Ultraviolet.Audio;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.FMOD.Audio;
 using Ultraviolet.FMOD.Native;
-using static Ultraviolet.FMOD.Native.FMOD_INITFLAGS;
-using static Ultraviolet.FMOD.Native.FMOD_RESULT;
-using static Ultraviolet.FMOD.Native.FMODNative;
 using Ultraviolet.Platform;
 using static Ultraviolet.FMOD.Native.FMOD_DEBUG_FLAGS;
 using static Ultraviolet.FMOD.Native.FMOD_DEBUG_MODE;
+using static Ultraviolet.FMOD.Native.FMOD_INITFLAGS;
+using static Ultraviolet.FMOD.Native.FMOD_RESULT;
+using static Ultraviolet.FMOD.Native.FMODNative;
 
 namespace Ultraviolet.FMOD
 {

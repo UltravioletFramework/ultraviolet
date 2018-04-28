@@ -1,6 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security;
 
 namespace Ultraviolet.Graphics.Graphics2D.Text
 {

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D.Text
 {

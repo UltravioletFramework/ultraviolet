@@ -4,7 +4,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {

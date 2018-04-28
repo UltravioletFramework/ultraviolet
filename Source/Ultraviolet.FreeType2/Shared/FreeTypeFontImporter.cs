@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
 namespace Ultraviolet.FreeType2

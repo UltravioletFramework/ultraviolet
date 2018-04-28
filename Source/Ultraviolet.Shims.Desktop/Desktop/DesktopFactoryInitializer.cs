@@ -1,10 +1,9 @@
-﻿using Ultraviolet.Core;
+﻿using Ultraviolet.Graphics;
+using Ultraviolet.Input;
+using Ultraviolet.Platform;
 using Ultraviolet.Shims.Desktop.Graphics;
 using Ultraviolet.Shims.Desktop.Input;
 using Ultraviolet.Shims.Desktop.Platform;
-using Ultraviolet.Graphics;
-using Ultraviolet.Input;
-using Ultraviolet.Platform;
 
 namespace Ultraviolet.Shims.Desktop
 {

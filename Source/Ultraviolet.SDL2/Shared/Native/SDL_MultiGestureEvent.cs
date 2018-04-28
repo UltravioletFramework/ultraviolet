@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 using SDL_TouchID = System.Int64;
 
 namespace Ultraviolet.SDL2.Native

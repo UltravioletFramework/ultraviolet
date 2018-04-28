@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Presentation.Uvss;
 using Ultraviolet.Presentation.Uvss.Syntax;
 

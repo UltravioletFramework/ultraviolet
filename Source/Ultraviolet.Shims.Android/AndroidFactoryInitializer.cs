@@ -1,10 +1,9 @@
-﻿using Ultraviolet.Shims.Android.Graphics;
-using Ultraviolet.Shims.Android.Input;
-using Ultraviolet.Shims.Android.Platform;
-using Ultraviolet.Core;
-using Ultraviolet.Graphics;
+﻿using Ultraviolet.Graphics;
 using Ultraviolet.Input;
 using Ultraviolet.Platform;
+using Ultraviolet.Shims.Android.Graphics;
+using Ultraviolet.Shims.Android.Input;
+using Ultraviolet.Shims.Android.Platform;
 
 namespace Ultraviolet.Shims.Android
 {

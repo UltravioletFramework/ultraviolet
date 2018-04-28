@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics
 {

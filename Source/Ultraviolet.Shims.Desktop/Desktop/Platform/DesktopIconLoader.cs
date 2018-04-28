@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Ultraviolet.Shims.Desktop.Graphics;
 using Ultraviolet.Graphics;
 using Ultraviolet.Platform;
+using Ultraviolet.Shims.Desktop.Graphics;
 
 namespace Ultraviolet.Shims.Desktop.Platform
 {

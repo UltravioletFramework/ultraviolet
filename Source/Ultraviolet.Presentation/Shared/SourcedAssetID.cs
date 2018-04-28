@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 using Ultraviolet.Core.Data;
 
 namespace Ultraviolet.Presentation

@@ -1,7 +1,7 @@
 ﻿using Java.Lang;
-using Ultraviolet.Platform;
 using Ultraviolet.Core.Messages;
 using Ultraviolet.Messages;
+using Ultraviolet.Platform;
 
 namespace Ultraviolet.FMOD
 {

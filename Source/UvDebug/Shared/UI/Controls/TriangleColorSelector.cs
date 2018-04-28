@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Ultraviolet;
-using Ultraviolet.Core;
 using Ultraviolet.Presentation;
 using Ultraviolet.Presentation.Controls;
 

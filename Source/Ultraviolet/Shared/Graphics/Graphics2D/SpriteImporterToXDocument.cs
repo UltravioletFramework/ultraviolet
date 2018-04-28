@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Xml.Linq;
 using Ultraviolet.Content;
-using Ultraviolet.Core;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
