@@ -9,8 +9,6 @@ namespace Ultraviolet.BASS.Native
     public delegate UInt64 FileLenProc(IntPtr user);
     public delegate UInt32 FileReadProc(IntPtr buffer, UInt32 length, IntPtr user);
     public delegate Boolean FileSeekProc(UInt64 offset, IntPtr user);
-
-    [Preserve(AllMembers = true)]
     [StructLayout(LayoutKind.Sequential)]
     public struct BASS_FILEPROCS
     {

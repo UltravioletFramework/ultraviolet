@@ -12,7 +12,6 @@ namespace Ultraviolet.OpenGL.Graphics.Graphics2D
     /// <summary>
     /// Loads sprite font assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class OpenGLSpriteFontProcessorFromXDocument : ContentProcessor<XDocument, SpriteFont>
     {

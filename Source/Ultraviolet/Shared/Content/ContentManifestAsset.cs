@@ -16,7 +16,6 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="group">The <see cref="ContentManifestGroup"/> that owns the asset.</param>
         /// <param name="element">The XML element that defines the asset.</param>
-        [Preserve]
         internal ContentManifestAsset(ContentManifestGroup group, XElement element)
         {
             Contract.Require(group, nameof(group));
@@ -42,7 +41,6 @@ namespace Ultraviolet.Content
         /// </summary>
         /// <param name="group">The <see cref="ContentManifestGroup"/> that owns the asset.</param>
         /// <param name="desc">The manifest asset description.</param>
-        [Preserve]
         internal ContentManifestAsset(ContentManifestGroup group, ContentManifestAssetDescription desc)
         {
             Contract.Require(group, nameof(group));

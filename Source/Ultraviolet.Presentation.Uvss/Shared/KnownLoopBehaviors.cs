@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents the types of storyboard loop specifiers which are understood by the UVSS parser.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public static class KnownLoopBehaviors
     {
         /// <summary>

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a visual transition.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.Transition)]
     public sealed class UvssTransitionSyntax : UvssNodeSyntax
     {

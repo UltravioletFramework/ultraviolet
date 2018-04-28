@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Documents
     /// <summary>
     /// Represents an <see cref="AdornerDecorator"/> which does not connect its child to the logical tree.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     internal class NonLogicalAdornerDecorator : AdornerDecorator
     {

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS play-storyboard trigger action.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.PlayStoryboardTriggerAction)]
     public sealed class UvssPlayStoryboardTriggerActionSyntax : UvssTriggerActionBaseSyntax
     {

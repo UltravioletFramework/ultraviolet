@@ -29,7 +29,6 @@ namespace Ultraviolet.Presentation
         /// <param name="expressionType">The type of the bound expression.</param>
         /// <param name="dataSourceType">The type of the data source.</param>
         /// <param name="expression">The binding expression.</param>
-        [Preserve]
         public DependencyBoundValueNonConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression)
             : base(value, expressionType, dataSourceType, expression)
         {

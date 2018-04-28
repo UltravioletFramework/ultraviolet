@@ -24,7 +24,6 @@ namespace Ultraviolet.OpenGL
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
         /// <param name="versionRequested">The OpenGL context version which is required by the application.</param>
-        [Preserve]
         public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested)
             : base(uv)
         {

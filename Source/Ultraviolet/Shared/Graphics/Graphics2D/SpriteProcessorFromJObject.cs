@@ -11,7 +11,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a content processor which loads sprites from JSON files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class SpriteProcessorFromJObject : ContentProcessor<JObject, Sprite>
     {

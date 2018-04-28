@@ -23,7 +23,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="resource">The cursor resource which this object represents.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
-        [Preserve]
         public SourcedCursor(SourcedCursorResource resource, AssetSource source)
         {
             this.resource = resource;
@@ -35,7 +34,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="sourced">The <see cref="SourcedImage"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        [Preserve]
         public static implicit operator SourcedCursorResource(SourcedCursor sourced)
         {
             return sourced.Resource;
@@ -55,7 +53,6 @@ namespace Ultraviolet.Presentation
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public SourcedCursor Interpolate(SourcedCursor target, Single t)
         {
             return (t >= 1) ? target : this;

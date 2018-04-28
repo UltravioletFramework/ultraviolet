@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Documents
     /// <summary>
     /// Represents a decorator which adds an <see cref="AdornerLayer"/> to the visual tree.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public class AdornerDecorator : Decorator
     {

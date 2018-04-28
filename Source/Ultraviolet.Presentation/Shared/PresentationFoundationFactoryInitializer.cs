@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// Initializes factory methods for the Ultraviolet Presentation Foundation.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public sealed class PresentationFoundationFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

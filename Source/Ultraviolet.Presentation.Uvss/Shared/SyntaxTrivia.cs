@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents UVSS trivia, such as a comment or white space.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class SyntaxTrivia : SyntaxNode
     {
         /// <summary>

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the base class for horizontal and vertical scroll bars.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class OrientedScrollBar : RangeBase
     {

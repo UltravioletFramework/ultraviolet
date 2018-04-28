@@ -14,7 +14,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="StretchableImage9"/> class.
         /// </summary>
-        [Preserve]
         private StretchableImage9()
         {
 

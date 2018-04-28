@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS selector with a trailing navigation expression.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.SelectorWithNavigationExpression)]
     public sealed class UvssSelectorWithNavigationExpressionSyntax : UvssSelectorBaseSyntax
     {

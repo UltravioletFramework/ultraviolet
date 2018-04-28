@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a transformation based on an arbitrary matrix.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class MatrixTransform : Transform
     {

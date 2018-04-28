@@ -24,7 +24,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="cursorCollectionID">The asset identifier of the cursor collection that contains the cursor.</param>
         /// <param name="cursorName">The name of the cursor within its cursor collection.</param>
-        [Preserve]
         public SourcedCursorResource(AssetID cursorCollectionID, String cursorName)
         {
             this.cursorCollectionID = cursorCollectionID;

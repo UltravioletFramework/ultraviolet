@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS $culture directive.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.CultureDirective)]
     public sealed class UvssCultureDirectiveSyntax : UvssDirectiveSyntax
     {

@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Uvss
         /// <summary>
         /// Represents a syntax list with many children.
         /// </summary>
-        [Preserve(AllMembers = true)]
         [SyntaxNodeTypeID((Byte)SyntaxNodeType.SyntaxListWithManyChildren)]
         internal sealed class WithManyChildren : WithManyChildrenBase
         {

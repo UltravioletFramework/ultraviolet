@@ -7,7 +7,6 @@ namespace Ultraviolet.SDL2.Graphics
     /// <summary>
     /// Loads 2D surface assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class SDL2Surface2DProcessor : ContentProcessor<PlatformNativeSurface, Surface2D>
     {

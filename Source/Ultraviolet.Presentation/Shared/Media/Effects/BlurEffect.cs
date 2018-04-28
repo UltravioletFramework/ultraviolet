@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Media.Effects
     /// <summary>
     /// Represents an effect that blurs target element.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class BlurEffect : Effect
     {

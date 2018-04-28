@@ -14,7 +14,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="name">The message type's name.</param>
         /// <param name="value">The message's identifier value.</param>
-        [Preserve]
         private UltravioletMessageID(String name, Int32 value)
         {
             this.name = name;

@@ -12,7 +12,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// handled in WPF (https://msdn.microsoft.com/en-us/library/bb613596(v=vs.90).aspx). Ultraviolet follows the algorithms 
     /// described on that page. See in particular the tables under the "How the Properties Work Together" and 
     /// "When the Popup Encounters the Edge of the Screen" headings.</remarks>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Child")]
     public partial class Popup : FrameworkElement

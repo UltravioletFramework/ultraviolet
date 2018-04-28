@@ -355,7 +355,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
-        [Preserve]
         public Object GetUntypedValue(DependencyProperty dp)
         {
             Contract.Require(dp, nameof(dp));
@@ -370,7 +369,6 @@ namespace Ultraviolet.Presentation
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
         /// <returns>The value of the specified dependency property.</returns>
-        [Preserve]
         public T GetValue<T>(DependencyProperty dp)
         {
             Contract.Require(dp, nameof(dp));
@@ -388,7 +386,6 @@ namespace Ultraviolet.Presentation
         /// <typeparam name="T">The type of value contained by the dependency property.</typeparam>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, nameof(dp));
@@ -410,7 +407,6 @@ namespace Ultraviolet.Presentation
         /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to 
         /// the read-only dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetValue<T>(DependencyPropertyKey key, T value)
         {
             Contract.Require(key, nameof(key));
@@ -431,7 +427,6 @@ namespace Ultraviolet.Presentation
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies 
         /// the dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetDefaultValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, nameof(dp));
@@ -453,7 +448,6 @@ namespace Ultraviolet.Presentation
         /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to 
         /// the read-only dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetDefaultValue<T>(DependencyPropertyKey key, T value)
         {
             Contract.Require(key, nameof(key));
@@ -474,7 +468,6 @@ namespace Ultraviolet.Presentation
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies 
         /// the dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetLocalValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, nameof(dp));
@@ -496,7 +489,6 @@ namespace Ultraviolet.Presentation
         /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to 
         /// the read-only dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetLocalValue<T>(DependencyPropertyKey key, T value)
         {
             Contract.Require(key, nameof(key));
@@ -517,7 +509,6 @@ namespace Ultraviolet.Presentation
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies 
         /// the dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetStyledValue<T>(DependencyProperty dp, T value)
         {
             Contract.Require(dp, nameof(dp));
@@ -539,7 +530,6 @@ namespace Ultraviolet.Presentation
         /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to 
         /// the read-only dependency property for which to set a value.</param>
         /// <param name="value">The value to set on the specified dependency property.</param>
-        [Preserve]
         public void SetStyledValue<T>(DependencyPropertyKey key, T value)
         {
             Contract.Require(key, nameof(key));
@@ -559,7 +549,6 @@ namespace Ultraviolet.Presentation
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies 
         /// the dependency property for which to set a value;.;</param>
         /// <param name="action">The trigger action which will provide the dependency property's value.</param>
-        [Preserve]
         public void SetTriggeredValue(DependencyProperty dp, SetTriggerAction action)
         {
             Contract.Require(dp, nameof(dp));
@@ -578,7 +567,6 @@ namespace Ultraviolet.Presentation
         /// <param name="key">A <see cref="DependencyPropertyKey"/> instance which provides access to 
         /// the read-only dependency property for which to set a value.</param>
         /// <param name="action">The trigger action which will provide the dependency property's value.</param>
-        [Preserve]
         public void SetTriggeredValue(DependencyPropertyKey key, SetTriggerAction action)
         {
             Contract.Require(key, nameof(key));
@@ -595,7 +583,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to set a format string.</param>
         /// <param name="formatString">The format string to set for the specified dependency property.</param>
-        [Preserve]
         public void SetFormatString(DependencyProperty dp, String formatString)
         {
             Contract.Require(dp, nameof(dp));
@@ -946,7 +933,6 @@ namespace Ultraviolet.Presentation
         /// <param name="type">The type of object to create.</param>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         /// <returns>The object that was created.</returns>
-        [Preserve]
         private static Object ResolveStyledValue(UvssRule style, Type type, IFormatProvider provider)
         {
             if (style.CachedResolvedValue != null && style.CachedResolvedValue.GetType() == type)

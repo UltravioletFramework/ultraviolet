@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Documents
     /// <summary>
     /// Contains commands used to edit text.
     /// </summary>
-    [Preserve]
     public static class EditingCommands
     {
         /// <summary>

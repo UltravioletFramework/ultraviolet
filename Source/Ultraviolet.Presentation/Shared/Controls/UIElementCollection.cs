@@ -51,7 +51,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Clear()
         {
             if (Count == 0)
@@ -66,7 +65,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Add(UIElement item)
         {
             Contract.Require(item, nameof(item));
@@ -80,7 +78,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Adds a collection of items to this collection.
         /// </summary>
         /// <param name="items">The collection of items to add to this collection.</param>
-        [Preserve]
         public void AddRange(IEnumerable<UIElement> items)
         {
             Contract.Require(items, nameof(items));
@@ -94,7 +91,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Insert(Int32 index, UIElement item)
         {
             Contract.Require(item, nameof(item));
@@ -105,7 +101,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void RemoveAt(Int32 index)
         {
             var existing = visualChildren[index];
@@ -116,7 +111,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Remove(UIElement item)
         {
             Contract.Require(item, nameof(item));
@@ -131,7 +125,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Contains(UIElement item)
         {
             Contract.Require(item, nameof(item));
@@ -140,7 +133,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Int32 IndexOf(UIElement item)
         {
             Contract.Require(item, nameof(item));

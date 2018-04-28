@@ -17,7 +17,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="width">The table's width in pixels.</param>
         /// <param name="height">The table's height in pixels.</param>
         /// <param name="font">The table's default font.</param>
-        [Preserve]
         public TextTable(TextRenderer renderer, Int32 width, Int32 height, UltravioletFont font)
         {
             Contract.Require(renderer, nameof(renderer));

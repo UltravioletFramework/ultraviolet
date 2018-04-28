@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// Represents a list of syntax nodes which are separated by some delimiter.
     /// </summary>
     /// <typeparam name="TNode">The type of syntax node contained by the list.</typeparam>
-    [Preserve(AllMembers = true)]
     public struct SeparatedSyntaxList<TNode> where TNode : SyntaxNode
     {
         /// <summary>

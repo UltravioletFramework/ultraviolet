@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the base type for UVSS selector parts.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class UvssSelectorPartBaseSyntax : UvssNodeSyntax
     {
         /// <summary>

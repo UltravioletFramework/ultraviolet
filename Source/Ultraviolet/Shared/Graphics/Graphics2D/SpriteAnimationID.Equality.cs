@@ -24,7 +24,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator ==(SpriteAnimationID v1, SpriteAnimationID v2)
         {
             return v1.Equals(v2);
@@ -36,21 +35,18 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator !=(SpriteAnimationID v1, SpriteAnimationID v2)
         {
             return !v1.Equals(v2);
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public override Boolean Equals(Object other)
         {
             return (other is SpriteAnimationID x) ? Equals(x) : false;
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Equals(SpriteAnimationID other)
         {
             return

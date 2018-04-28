@@ -21,7 +21,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="resource">The texture image resouce which this object represents.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
-        [Preserve]
         public SourcedImage(TextureImage resource, AssetSource source)
         {
             this.Resource = resource;
@@ -33,7 +32,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="sourced">The <see cref="SourcedImage"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        [Preserve]
         public static implicit operator TextureImage(SourcedImage sourced) => sourced.Resource;
 
         /// <inheritdoc/>
@@ -51,7 +49,6 @@ namespace Ultraviolet.Presentation
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public SourcedImage Interpolate(SourcedImage target, Single t) => (t >= 1) ? target : this;
 
         /// <inheritdoc/>

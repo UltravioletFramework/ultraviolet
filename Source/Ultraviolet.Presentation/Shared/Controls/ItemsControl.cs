@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a control which presents the user with a list of items to select.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Items")]
     public abstract class ItemsControl : Control

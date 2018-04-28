@@ -19,7 +19,6 @@ namespace Ultraviolet.Input
         /// Initializes a new instance of the <see cref="InputActionCollection"/> class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        [Preserve]
         protected InputActionCollection(UltravioletContext uv)
             : base(uv)
         {

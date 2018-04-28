@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS identifier which has been escaped using square brackets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.EscapedIdentifier)]
     public sealed class UvssEscapedIdentifierSyntax : UvssIdentifierBaseSyntax
     {

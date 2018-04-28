@@ -7,7 +7,6 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// An intermediate representation of a <see cref="LocalizedStringVariantCollection"/> used during serialization.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [JsonConverter(typeof(LocalizedStringVariantCollectionJsonConverter))]
     internal sealed class LocalizedStringVariantCollectionDescription
     {

@@ -8,7 +8,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a content processor that loads text table layouts from XML definition files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class TextTableLayoutProcessorFromJObject : ContentProcessor<JObject, TextTableLayout>
     {

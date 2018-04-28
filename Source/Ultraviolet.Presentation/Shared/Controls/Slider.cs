@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a slider.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.Slider.xml")]
     public class Slider : RangeBase
     {

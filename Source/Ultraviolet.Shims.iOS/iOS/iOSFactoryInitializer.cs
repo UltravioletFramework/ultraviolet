@@ -1,4 +1,3 @@
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.Input;
 using Ultraviolet.Platform;
@@ -11,7 +10,6 @@ namespace Ultraviolet.Shims.iOS
     /// <summary>
     /// Initializes factory methods for the iOS platform compatibility shim.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class iOSFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>

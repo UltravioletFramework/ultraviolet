@@ -17,7 +17,6 @@ namespace Ultraviolet.Input
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="element">The XML element that contains the binding data.</param>
-        [Preserve]
         internal KeyboardInputBinding(UltravioletContext uv, XElement element)
         {
             Contract.Require(element, nameof(element));
@@ -37,7 +36,6 @@ namespace Ultraviolet.Input
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="key">A <see cref="Key"/> value representing the binding's primary key.</param>
-        [Preserve]
         public KeyboardInputBinding(UltravioletContext uv, Key key)
         {
             Contract.Require(uv, nameof(uv));

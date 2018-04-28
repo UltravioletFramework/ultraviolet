@@ -10,7 +10,6 @@ namespace UltravioletSample.Sample13_UPFAdvanced.UI.Screens
 	/// <summary>
 	/// Represents the view model for <see cref="GameMenuScreen"/>.
 	/// </summary>
-	[Preserve(AllMembers = true)]
 	public sealed class GameMenuViewModel
     {
         /// <summary>

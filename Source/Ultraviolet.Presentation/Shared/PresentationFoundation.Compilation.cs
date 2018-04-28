@@ -262,7 +262,7 @@ namespace Ultraviolet.Presentation
             }
 
             compiledDataSourceWrappersByWrappedType.Clear();
-            foreach (var dataSourceWrapperType in compiledExpressionsAssembly.GetTypes())
+            foreach (var dataSourceWrapperType in compiledExpressionsAssembly.GetExportedTypes())
             {
                 var wrapperAttr = (WrappedDataSourceAttribute)dataSourceWrapperType.GetCustomAttributes(typeof(WrappedDataSourceAttribute), false).SingleOrDefault();
                 if (wrapperAttr != null)

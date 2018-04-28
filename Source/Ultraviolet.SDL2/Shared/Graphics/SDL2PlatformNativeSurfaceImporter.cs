@@ -18,7 +18,6 @@ namespace Ultraviolet.SDL2.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="SDL2PlatformNativeSurfaceImporter"/> class.
         /// </summary>
-        [Preserve]
         public SDL2PlatformNativeSurfaceImporter() { }
 
         /// <summary>

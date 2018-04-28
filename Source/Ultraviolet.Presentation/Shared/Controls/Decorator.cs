@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents an element which contains a single child element.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Child")]
     public class Decorator : FrameworkElement

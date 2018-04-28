@@ -2,10 +2,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
 
 [assembly: CLSCompliant(true)]
-[assembly: LinkerSafe]
 
 #if SIGNED
 [assembly: InternalsVisibleTo("Ultraviolet.Tests, PublicKey=" +

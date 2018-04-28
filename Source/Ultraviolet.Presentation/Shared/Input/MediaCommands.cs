@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Contains a standard set of media-related commands.
     /// </summary>
-    [Preserve]
     public static class MediaCommands
     {
         /// <summary>

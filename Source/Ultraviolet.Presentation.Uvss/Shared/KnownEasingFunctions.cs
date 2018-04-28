@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents the easing function names which are recognized by the UVSS parser.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public static class KnownEasingFunctions
     {
         /// <summary>

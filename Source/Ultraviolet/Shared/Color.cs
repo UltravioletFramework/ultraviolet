@@ -36,7 +36,6 @@ namespace Ultraviolet
         /// Initializes a new instance of the <see cref="Color"/> structure.
         /// </summary>
         /// <param name="packedValue">The color's packed value in ABGR format.</param>
-        [Preserve]
         [CLSCompliant(false)]
         public Color(UInt32 packedValue)
         {
@@ -49,7 +48,6 @@ namespace Ultraviolet
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
         /// <param name="b">The blue component.</param>
-        [Preserve]
         public Color(Single r, Single g, Single b)
         {
             if (r < 0) r = 0;
@@ -73,7 +71,6 @@ namespace Ultraviolet
         /// <param name="g">The green component.</param>
         /// <param name="b">The blue component.</param>
         /// <param name="a">The alpha component.</param>
-        [Preserve]
         public Color(Single r, Single g, Single b, Single a)
         {
             if (r < 0) r = 0;
@@ -99,7 +96,6 @@ namespace Ultraviolet
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
         /// <param name="b">The blue component.</param>
-        [Preserve]
         public Color(Int32 r, Int32 g, Int32 b)
         {
             if (r < 0) r = 0;
@@ -119,7 +115,6 @@ namespace Ultraviolet
         /// <param name="g">The green component.</param>
         /// <param name="b">The blue component.</param>
         /// <param name="a">The alpha component.</param>
-        [Preserve]
         public Color(Int32 r, Int32 g, Int32 b, Int32 a)
         {
             if (r < 0) r = 0;
@@ -139,7 +134,6 @@ namespace Ultraviolet
         /// of the specified vector as normalized red, green, and blue values.
         /// </summary>
         /// <param name="vector">The vector from which to create the color.</param>
-        [Preserve]
         public Color(Vector3 vector)
             : this(vector.X, vector.Y, vector.Z)
         {
@@ -151,7 +145,6 @@ namespace Ultraviolet
         /// of the specified vector as normalized red, green, blue, and alpha values.
         /// </summary>
         /// <param name="vector">The vector from which to create the color.</param>
-        [Preserve]
         public Color(Vector4 vector)
             : this(vector.X, vector.Y, vector.Z, vector.W)
         {
@@ -164,7 +157,6 @@ namespace Ultraviolet
         /// <param name="color">The <see cref="Color"/> to multiply.</param>
         /// <param name="alpha">The scaling factor by which to multiply the color.</param>
         /// <returns>The scaled <see cref="Color"/>.</returns>
-        [Preserve]
         public static Color operator *(Color color, Single alpha)
         {
             if (alpha < 0)
@@ -363,7 +355,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Color Interpolate(Color target, Single t)
         {
             var a = Tweening.Lerp(this.A, target.A, t);
@@ -376,7 +367,6 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the color's packed value.
         /// </summary>
-        [Preserve]
         [CLSCompliant(false)]
         public UInt32 PackedValue
         {

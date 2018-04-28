@@ -112,7 +112,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Represents the touch device.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static partial class Touch
     {

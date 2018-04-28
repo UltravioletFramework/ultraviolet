@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents an unrecognized UVSS directive.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.UnknownDirective)]
     public sealed class UvssUnknownDirectiveSyntax : UvssDirectiveSyntax
     {

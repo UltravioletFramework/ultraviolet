@@ -12,7 +12,6 @@ namespace Ultraviolet.Presentation.Animations
         /// <summary>
         /// Initializes a new instance of the <see cref="Animation{T}"/> class.
         /// </summary>
-        [Preserve]
         public Animation()
         {
             this.keyframes = new AnimationKeyframeCollection<T>(this);

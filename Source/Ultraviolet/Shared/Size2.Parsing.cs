@@ -13,7 +13,6 @@ namespace Ultraviolet
         /// <param name="s">The string to convert.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, out Size2 v)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out v);
@@ -24,7 +23,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static Size2 Parse(String s)
         {
             var v = default(Size2);
@@ -43,7 +41,6 @@ namespace Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Size2 v)
         {
             v = default(Size2);
@@ -71,7 +68,6 @@ namespace Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static Size2 Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             var v = default(Size2);

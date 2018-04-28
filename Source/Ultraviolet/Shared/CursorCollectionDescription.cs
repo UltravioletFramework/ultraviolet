@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// <summary>
     /// An intermediate representation of a <see cref="CursorCollection"/> used during content processing.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal class CursorCollectionDescription
     {
         /// <summary>

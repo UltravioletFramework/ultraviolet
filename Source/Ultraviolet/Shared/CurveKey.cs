@@ -17,7 +17,6 @@ namespace Ultraviolet
         /// <param name="tangentIn">The value of the tangent when approaching this key from the previous key.</param>
         /// <param name="tangentOut">The value of the tangent when approaching this key from the next key.</param>
         /// <param name="continuity">A value describing the continuity between this key and the next.</param>
-        [Preserve]
         public CurveKey(Single position, Single value, Single tangentIn, Single tangentOut, CurveContinuity continuity)
         {
             this.position = position;
@@ -35,7 +34,6 @@ namespace Ultraviolet
         /// <returns>A value that indicates the relative order of the objects being compared.</returns>
         /// <remarks>If the keys have the same position, this method returns zero.  If this key comes before <paramref name="other"/>,
         /// then this method returns -1.  Otherwise, this method returns 1.</remarks>
-        [Preserve]
         public Int32 CompareTo(CurveKey other)
         {
             Contract.Require(other, nameof(other));

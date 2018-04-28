@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// Represents an array element.
     /// </summary>
     /// <typeparam name="T">The type of the array element's value.</typeparam>
-    [Preserve(AllMembers = true)]
     public struct ArrayElement<T> where T : SyntaxNode
     {
         /// <summary>

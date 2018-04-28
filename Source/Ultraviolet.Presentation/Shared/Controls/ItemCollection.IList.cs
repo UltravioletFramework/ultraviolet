@@ -28,7 +28,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Clear()
         {
             EnsureNotBoundToItemsSource();
@@ -41,7 +40,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Add(Object item)
         {
             EnsureNotBoundToItemsSource();
@@ -54,7 +52,6 @@ namespace Ultraviolet.Presentation.Controls
         /// Adds the specified collection of items to this collection.
         /// </summary>
         /// <param name="items">The collection of items to add to this collection.</param>
-        [Preserve]
         public void AddRange(IEnumerable<Object> items)
         {
             Contract.Require(items, nameof(items));
@@ -69,7 +66,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void Insert(Int32 index, Object item)
         {
             EnsureNotBoundToItemsSource();
@@ -79,7 +75,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public void RemoveAt(Int32 index)
         {
             EnsureNotBoundToItemsSource();
@@ -90,7 +85,6 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Remove(Object item)
         {
             EnsureNotBoundToItemsSource();
@@ -106,14 +100,12 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Contains(Object item)
         {
             return IndexOf(item) >= 0;
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Int32 IndexOf(Object item)
         {
             if (IsBoundToItemsSource)

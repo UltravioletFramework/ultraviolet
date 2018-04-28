@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS set trigger action.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.SetTriggerAction)]
     public sealed class UvssSetTriggerActionSyntax : UvssTriggerActionBaseSyntax
     {

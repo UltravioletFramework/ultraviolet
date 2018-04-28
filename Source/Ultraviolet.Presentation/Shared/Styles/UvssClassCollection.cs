@@ -13,7 +13,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Initializes a new instance of the <see cref="UvssClassCollection"/> class.
         /// </summary>
         /// <param name="classes">A collection of class names with which to initialize the collection.</param>
-        [Preserve]
         internal UvssClassCollection(IEnumerable<String> classes)
         {
             this.storage = (classes == null) ? new List<String>() : new List<String>(classes);

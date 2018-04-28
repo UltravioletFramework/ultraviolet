@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// An internal representation of a formatted text icon used during deserialization.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class SourcedTextIconDescription
     {
         /// <summary>

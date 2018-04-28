@@ -16,7 +16,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a control which provides a scrollable view of its content.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ScrollViewer.xml")]
     public class ScrollViewer : ContentControl
     {

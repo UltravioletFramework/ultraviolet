@@ -15,7 +15,6 @@ namespace Ultraviolet.Presentation
         /// <param name="s">The string to convert.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, out SourcedResource<T> v)
         {
             return TryParse(s, NumberStyles.Number, NumberFormatInfo.CurrentInfo, out v);
@@ -26,7 +25,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static SourcedResource<T> Parse(String s)
         {
             var v = default(SourcedResource<T>);
@@ -45,7 +43,6 @@ namespace Ultraviolet.Presentation
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out SourcedResource<T> v)
         {
             var source = AssetSource.Global;
@@ -74,7 +71,6 @@ namespace Ultraviolet.Presentation
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static SourcedResource<T> Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             var v = default(SourcedResource<T>);

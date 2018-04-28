@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the base class for directive syntax nodes.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class UvssDirectiveSyntax : UvssNodeSyntax
     {
         /// <summary>

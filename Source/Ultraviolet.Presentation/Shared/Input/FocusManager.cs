@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Contains attached properties relating to logical focus and focus scopes.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static class FocusManager
     {

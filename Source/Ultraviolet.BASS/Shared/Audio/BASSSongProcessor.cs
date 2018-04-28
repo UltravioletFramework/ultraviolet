@@ -8,7 +8,6 @@ namespace Ultraviolet.BASS.Audio
     /// <summary>
     /// Loads song assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class BASSSongProcessor : ContentProcessor<String, Song>
     {

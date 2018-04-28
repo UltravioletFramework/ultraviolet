@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the part of a <see cref="TabControl"/> which displays the tabbed list of items.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Primitives.Templates.TabPanel.xml")]
     public class TabPanel : Panel
     {

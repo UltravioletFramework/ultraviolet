@@ -11,7 +11,6 @@ namespace UltravioletSample.Sample13_UPFAdvanced.Input
 
         public class Actions : InputActionCollection
         {
-			[Preserve]
 			public Actions(UltravioletContext uv)
                 : base(uv)
             { }

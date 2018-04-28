@@ -15,7 +15,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="position">The ray's position in space.</param>
         /// <param name="direction">The ray's direction vector.</param>
-        [Preserve]
         [JsonConstructor]
         public Ray(Vector3 position, Vector3 direction)
         {
@@ -260,7 +259,6 @@ namespace Ultraviolet
         public override String ToString() => $"{{Position:{Position} Direction:{Direction}}}";
 
         /// <inheritdoc/>
-        [Preserve]
         public Ray Interpolate(Ray target, Single t)
         {
             Ray result;
@@ -274,13 +272,11 @@ namespace Ultraviolet
         /// <summary>
         /// The ray's position in space.
         /// </summary>
-        [Preserve]
         public Vector3 Position;
 
         /// <summary>
         /// The ray's direction vector.
         /// </summary>
-        [Preserve]
         public Vector3 Direction;
     }
 }

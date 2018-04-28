@@ -30,7 +30,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Adds an animation keyframe to the collection.
         /// </summary>
         /// <param name="keyframe">The animation keyframe to add to the collection.</param>
-        [Preserve]
         internal void Add(UvssStoryboardKeyframe keyframe)
         {
             Contract.Require(keyframe, nameof(keyframe));

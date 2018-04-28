@@ -18,7 +18,6 @@ namespace Ultraviolet
         /// <param name="postLoop">A <see cref="CurveLoopType"/> value indicating how the curve's values are determined
         /// for points after the end of the curve.</param>
         /// <param name="keys">A collection of <see cref="CurveKey"/> objects from which to construct the curve.</param>
-        [Preserve]
         public Curve(CurveLoopType preLoop, CurveLoopType postLoop, IEnumerable<CurveKey> keys)
         {
             this.preLoop = preLoop;
@@ -37,7 +36,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="curve">The <see cref="Curve"/> to convert.</param>
         /// <returns>The converted <see cref="EasingFunction"/>.</returns>
-        [Preserve]
         public static implicit operator EasingFunction(Curve curve)
         {
             return (curve == null) ? null : curve.easingFunction;

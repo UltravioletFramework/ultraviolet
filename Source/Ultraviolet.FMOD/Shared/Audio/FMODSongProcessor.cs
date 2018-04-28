@@ -8,7 +8,6 @@ namespace Ultraviolet.FMOD.Audio
     /// <summary>
     /// Loads song assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class FMODSongProcessor : ContentProcessor<String, Song>
     {

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a block of nodes enclosed by curly braces.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.Block)]
     public sealed class UvssBlockSyntax : UvssNodeSyntax
     {

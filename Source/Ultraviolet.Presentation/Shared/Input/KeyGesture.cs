@@ -16,7 +16,6 @@ namespace Ultraviolet.Presentation.Input
         /// Initializes a new instance of the <see cref="KeyGesture"/> class.
         /// </summary>
         /// <param name="key">The key associated with this keyboard gesture.</param>
-        [Preserve]
         public KeyGesture(Key key)
             : this(key, ModifierKeys.None, String.Empty)
         {
@@ -28,7 +27,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="key">The key associated with this keyboard gesture.</param>
         /// <param name="modifiers">The set of modifier keys associated with this keyboard gesture.</param>
-        [Preserve]
         public KeyGesture(Key key, ModifierKeys modifiers)
             : this(key, modifiers, String.Empty)
         {
@@ -41,7 +39,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="key">The key associated with this keyboard gesture.</param>
         /// <param name="modifiers">The set of modifier keys associated with this keyboard gesture.</param>
         /// <param name="displayString">The display string for this keyboard gesture.</param>
-        [Preserve]
         public KeyGesture(Key key, ModifierKeys modifiers, String displayString)
         {
             Contract.Require(displayString, nameof(displayString));
@@ -58,7 +55,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <param name="gesture">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="str"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String str, out KeyGesture gesture)
         {
             return TryParse(str, null, out gesture);
@@ -69,7 +65,6 @@ namespace Ultraviolet.Presentation.Input
         /// </summary>
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <returns>A instance of the <see cref="KeyGesture"/> structure equivalent to the gesture contained in <paramref name="str"/>.</returns>
-        [Preserve]
         public static KeyGesture Parse(String str)
         {
             KeyGesture gesture;
@@ -88,7 +83,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="gesture">A variable to populate with the converted value.</param>
         /// <returns><see langword="true"/> if <paramref name="str"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String str, IFormatProvider provider, out KeyGesture gesture)
         {
             Contract.Require(str, nameof(str));
@@ -130,7 +124,6 @@ namespace Ultraviolet.Presentation.Input
         /// <param name="str">A string containing a gesture to convert.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>A instance of the <see cref="KeyGesture"/> structure equivalent to the gesture contained in <paramref name="str"/>.</returns>
-        [Preserve]
         public static KeyGesture Parse(String str, IFormatProvider provider)
         {
             KeyGesture gesture;

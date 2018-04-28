@@ -11,7 +11,6 @@ namespace Ultraviolet.Shims.NETCore
     /// <summary>
     /// Initializes factory methods for the .NET Standard 2.0 platform compatibility shim.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class NETCoreFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <summary>

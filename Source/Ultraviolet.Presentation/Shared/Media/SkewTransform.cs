@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a transformation which skews an object in two dimensions.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class SkewTransform : Transform
     {

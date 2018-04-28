@@ -18,7 +18,6 @@ namespace Ultraviolet
         /// <param name="y">The y-coordinate of the quaternion's vector component.</param>
         /// <param name="z">The z-coordinate of the quaternion's vector component.</param>
         /// <param name="w">The quaternion's scalar rotation component.</param>
-        [Preserve]
         [JsonConstructor]
         public Quaternion(Single x, Single y, Single z, Single w)
         {
@@ -33,7 +32,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The quaternion's vector component.</param>
         /// <param name="scalar">The quaternion's scalar component.</param>
-        [Preserve]
         public Quaternion(Vector3 vector, Single scalar)
         {
             this.X = vector.X;
@@ -48,7 +46,6 @@ namespace Ultraviolet
         /// <param name="quaternion1">The <see cref="Quaternion"/> to the left of the addition operator.</param>
         /// <param name="quaternion2">The <see cref="Quaternion"/> to the right of the addition operator.</param>
         /// <returns>The resulting <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator +(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion result;
@@ -67,7 +64,6 @@ namespace Ultraviolet
         /// <param name="quaternion1">The <see cref="Quaternion"/> to the left of the subtraction operator.</param>
         /// <param name="quaternion2">The <see cref="Quaternion"/> to the right of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator -(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion result;
@@ -86,7 +82,6 @@ namespace Ultraviolet
         /// <param name="quaternion1">The <see cref="Quaternion"/> to the left of the multiplication operator.</param>
         /// <param name="quaternion2">The <see cref="Quaternion"/> to the right of the multiplication operator.</param>
         /// <returns>The resulting <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator *(Quaternion quaternion1, Quaternion quaternion2)
         {
             var q1x = quaternion1.X;
@@ -121,7 +116,6 @@ namespace Ultraviolet
         /// <param name="quaternion">The <see cref="Quaternion"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the quaternion.</param>
         /// <returns>The resulting <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator *(Single factor, Quaternion quaternion)
         {
             Quaternion result;
@@ -140,7 +134,6 @@ namespace Ultraviolet
         /// <param name="quaternion">The <see cref="Quaternion"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the quaternion.</param>
         /// <returns>The resulting <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator *(Quaternion quaternion, Single factor)
         {
             Quaternion result;
@@ -159,7 +152,6 @@ namespace Ultraviolet
         /// <param name="quaternion1">The <see cref="Quaternion"/> to the left of the division operator.</param>
         /// <param name="quaternion2">The <see cref="Quaternion"/> to the right of the division operator.</param>
         /// <returns>The resulting <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator /(Quaternion quaternion1, Quaternion quaternion2)
         {
             var q1x = quaternion1.X;
@@ -200,7 +192,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="quaternion">The <see cref="Quaternion"/> to reverse.</param>
         /// <returns>The reversed <see cref="Quaternion"/>.</returns>
-        [Preserve]
         public static Quaternion operator -(Quaternion quaternion)
         {
             Quaternion result;
@@ -1115,7 +1106,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Quaternion Interpolate(Quaternion target, Single t)
         {
             Slerp(ref this, ref target, t, out Quaternion result);
@@ -1130,25 +1120,21 @@ namespace Ultraviolet
         /// <summary>
         /// The x-coordinate of the quaternion's vector component.
         /// </summary>
-        [Preserve]
         public Single X;
 
         /// <summary>
         /// The y-coordinate of the quaternion's vector component.
         /// </summary>
-        [Preserve]
         public Single Y;
 
         /// <summary>
         /// The z-coordinate of the quaternion's vector component.
         /// </summary>
-        [Preserve]
         public Single Z;
 
         /// <summary>
         /// The quaternion's scalar rotation component.
         /// </summary>
-        [Preserve]
         public Single W;
     }
 }

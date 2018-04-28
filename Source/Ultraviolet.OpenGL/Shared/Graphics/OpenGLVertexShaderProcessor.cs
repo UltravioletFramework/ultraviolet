@@ -7,7 +7,6 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <summary>
     /// Loads vertex shader assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class OpenGLVertexShaderProcessor : ContentProcessor<String, OpenGLVertexShader>
     {

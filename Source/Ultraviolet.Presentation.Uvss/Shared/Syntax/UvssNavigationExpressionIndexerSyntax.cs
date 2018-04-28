@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the indexing operator of a UVSS navigation expression.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.NavigationExpressionIndexer)]
     public sealed class UvssNavigationExpressionIndexerSyntax : UvssNodeSyntax
     {

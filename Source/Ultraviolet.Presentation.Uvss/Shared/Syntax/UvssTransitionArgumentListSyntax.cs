@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the argument list for a visual transition.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.TransitionArgumentList)]
     public sealed class UvssTransitionArgumentListSyntax : UvssNodeSyntax
     {

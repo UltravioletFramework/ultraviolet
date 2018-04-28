@@ -15,7 +15,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="x">The point's x-coordinate.</param>
         /// <param name="y">The point's y-coordinate.</param>
-        [Preserve]
         [JsonConstructor]
         public Point2F(Single x, Single y)
         {
@@ -29,7 +28,6 @@ namespace Ultraviolet
         /// <param name="p1">The first <see cref="Point2F"/> to add.</param>
         /// <param name="p2">The second <see cref="Point2F"/> to add.</param>
         /// <returns>A <see cref="Point2F"/> that represents the sum of the specified points.</returns>
-        [Preserve]
         public static Point2F operator +(Point2F p1, Point2F p2)
         {
             Point2F result;
@@ -46,7 +44,6 @@ namespace Ultraviolet
         /// <param name="p1">The first <see cref="Point2F"/> to subtract.</param>
         /// <param name="p2">The second <see cref="Point2F"/> to subtract.</param>
         /// <returns>A <see cref="Point2F"/> that represents the difference of the specified points.</returns>
-        [Preserve]
         public static Point2F operator -(Point2F p1, Point2F p2)
         {
             Point2F result;
@@ -63,7 +60,6 @@ namespace Ultraviolet
         /// <param name="point">The <see cref="Point2F"/> to offset.</param>
         /// <param name="offset">The <see cref="Size2"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
-        [Preserve]
         public static Point2F operator -(Point2F point, Size2 offset)
         {
             Point2F result;
@@ -80,7 +76,6 @@ namespace Ultraviolet
         /// <param name="point">The <see cref="Point2F"/> to offset.</param>
         /// <param name="offset">The <see cref="Size2D"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
-        [Preserve]
         public static Point2F operator +(Point2F point, Size2 offset)
         {
             Point2F result;
@@ -97,7 +92,6 @@ namespace Ultraviolet
         /// <param name="point">The <see cref="Point2F"/> to offset.</param>
         /// <param name="offset">The <see cref="Size2F"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
-        [Preserve]
         public static Point2F operator +(Point2F point, Size2F offset)
         {
             Point2F result;
@@ -114,7 +108,6 @@ namespace Ultraviolet
         /// <param name="point">The <see cref="Point2F"/> to offset.</param>
         /// <param name="offset">The <see cref="Size2F"/> that specifies how much to offset <paramref name="point"/>.</param>
         /// <returns>A <see cref="Point2F"/> that represents the original point plus the specified offset.</returns>
-        [Preserve]
         public static Point2F operator -(Point2F point, Size2F offset)
         {
             Point2F result;
@@ -131,7 +124,6 @@ namespace Ultraviolet
         /// <param name="point">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Point2F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Point2F operator *(Point2F point, Int32 multiplier)
         {
             Point2F result;
@@ -148,7 +140,6 @@ namespace Ultraviolet
         /// <param name="point">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Point2F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Point2F operator *(Point2F point, Single multiplier)
         {
             Point2F result;
@@ -165,7 +156,6 @@ namespace Ultraviolet
         /// <param name="point">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Point2D"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Point2D operator *(Point2F point, Double multiplier)
         {
             Point2D result;
@@ -182,7 +172,6 @@ namespace Ultraviolet
         /// <param name="point">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Point2F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Point2F operator /(Point2F point, Int32 divisor)
         {
             Point2F result;
@@ -199,7 +188,6 @@ namespace Ultraviolet
         /// <param name="point">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Point2F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Point2F operator /(Point2F point, Single divisor)
         {
             Point2F result;
@@ -216,7 +204,6 @@ namespace Ultraviolet
         /// <param name="point">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Point2D"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Point2D operator /(Point2F point, Double divisor)
         {
             Point2D result;
@@ -232,7 +219,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Vector2(Point2F point)
         {
             Vector2 result;
@@ -248,7 +234,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size2(Point2F point)
         {
             Size2 result;
@@ -264,7 +249,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size2F(Point2F point)
         {
             Size2F result;
@@ -280,7 +264,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size2D(Point2F point)
         {
             Size2D result;
@@ -296,7 +279,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2(Point2F point)
         {
             Point2 result;
@@ -312,7 +294,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="point">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static implicit operator Point2D(Point2F point)
         {
             Point2D result;
@@ -416,7 +397,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Point2F Interpolate(Point2F target, Single t)
         {
             Point2F result;
@@ -438,14 +418,12 @@ namespace Ultraviolet
         /// <summary>
         /// The point's x-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single X;
 
         /// <summary>
         /// The point's y-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Y;
     }

@@ -14,7 +14,6 @@ namespace Ultraviolet
         /// Initializes a new instance of the <see cref="Vector4"/> structure with all of its components set to the specified value.
         /// </summary>
         /// <param name="value">The value to which to set the vector's components.</param>
-        [Preserve]
         public Vector4(Single value)
         {
             this.X = value;
@@ -30,7 +29,6 @@ namespace Ultraviolet
         /// <param name="y">The vector's y component.</param>
         /// <param name="z">The vector's z component.</param>
         /// <param name="w">The vector's w component.</param>
-        [Preserve]
         [JsonConstructor]
         public Vector4(Single x, Single y, Single z, Single w)
         {
@@ -47,7 +45,6 @@ namespace Ultraviolet
         /// <param name="vector">The vector from which to set the vector's x and y components.</param>
         /// <param name="z">The vector's z component.</param>
         /// <param name="w">The vector's w component.</param>
-        [Preserve]
         public Vector4(Vector2 vector, Single z, Single w)
         {
             this.X = vector.X;
@@ -62,7 +59,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The vector from which to set the vector's x, y, and z components.</param>
         /// <param name="w">The vector's w component.</param>
-        [Preserve]
         public Vector4(Vector3 vector, Single w)
         {
             this.X = vector.X;
@@ -77,7 +73,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector4"/> to the left of the addition operator.</param>
         /// <param name="vector2">The <see cref="Vector4"/> to the right of the addition operator.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator +(Vector4 vector1, Vector4 vector2)
         {
             Vector4 result;
@@ -96,7 +91,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector4"/> to the left of the subtraction operator.</param>
         /// <param name="vector2">The <see cref="Vector4"/> to the right of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator -(Vector4 vector1, Vector4 vector2)
         {
             Vector4 result;
@@ -115,7 +109,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector4"/> to the left of the multiplication operator.</param>
         /// <param name="vector2">The <see cref="Vector4"/> to the right of the multiplication operator.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator *(Vector4 vector1, Vector4 vector2)
         {
             Vector4 result;
@@ -134,7 +127,6 @@ namespace Ultraviolet
         /// <param name="vector">The <see cref="Vector4"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator *(Single factor, Vector4 vector)
         {
             Vector4 result;
@@ -153,7 +145,6 @@ namespace Ultraviolet
         /// <param name="vector">The <see cref="Vector4"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator *(Vector4 vector, Single factor)
         {
             Vector4 result;
@@ -172,7 +163,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector4"/> to the left of the division operator.</param>
         /// <param name="vector2">The <see cref="Vector4"/> to the right of the division operator.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator /(Vector4 vector1, Vector4 vector2)
         {
             Vector4 result;
@@ -191,7 +181,6 @@ namespace Ultraviolet
         /// <param name="vector">The <see cref="Vector4"/> to divide.</param>
         /// <param name="factor">The scaling factor by which to divide the vector.</param>
         /// <returns>The resulting <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator /(Vector4 vector, Single factor)
         {
             Vector4 result;
@@ -209,7 +198,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The <see cref="Vector4"/> to reverse.</param>
         /// <returns>The reversed <see cref="Vector4"/>.</returns>
-        [Preserve]
         public static Vector4 operator -(Vector4 vector)
         {
             Vector4 result;
@@ -1249,7 +1237,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Vector4 Interpolate(Vector4 target, Single t)
         {
             Vector4 result;
@@ -1313,28 +1300,24 @@ namespace Ultraviolet
         /// <summary>
         /// The vector's x-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single X;
 
         /// <summary>
         /// The vector's y-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Y;
 
         /// <summary>
         /// The vector's z-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Z;
 
         /// <summary>
         /// The vector's w-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single W;
     }

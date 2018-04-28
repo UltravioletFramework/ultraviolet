@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Uvss
         /// <summary>
         /// Represents the base class for syntax lists with many children.
         /// </summary>
-        [Preserve(AllMembers = true)]
         internal abstract class WithManyChildrenBase : SyntaxList
         {
             /// <summary>

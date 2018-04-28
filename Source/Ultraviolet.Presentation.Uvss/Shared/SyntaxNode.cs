@@ -12,7 +12,6 @@ namespace Ultraviolet.Presentation.Uvss
     /// <summary>
     /// Represents a node in a UVSS syntax tree.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public abstract class SyntaxNode
     {
         /// <summary>

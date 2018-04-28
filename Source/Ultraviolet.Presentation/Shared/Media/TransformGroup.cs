@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a group of transformations.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     [UvmlDefaultProperty("Children")]
     public sealed class TransformGroup : Transform, IIndexable

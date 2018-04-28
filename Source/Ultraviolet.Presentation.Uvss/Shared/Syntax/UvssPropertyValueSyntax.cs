@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS property value terminated by a semi-colon.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.PropertyValue)]
     public sealed class UvssPropertyValueSyntax : UvssPropertyValueBaseSyntax
     {

@@ -44,7 +44,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Represents the keyboard device.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public static partial class Keyboard
     {

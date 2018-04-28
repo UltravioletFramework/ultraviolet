@@ -12,7 +12,6 @@ namespace Ultraviolet.OpenGL
     /// <summary>
     /// Initializes factory methods for the OpenGL implementation of the graphics subsystem.
     /// </summary>
-    [Preserve(AllMembers = true)]
     public sealed class OpenGLUltravioletGraphicsFactoryInitializer : IUltravioletFactoryInitializer
     {
         /// <inheritdoc/>

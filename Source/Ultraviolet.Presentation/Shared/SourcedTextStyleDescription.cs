@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation
     /// <summary>
     /// An internal representation of a <see cref="TextStyle"/> used during deserialization.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal sealed class SourcedTextStyleDescription
     {
         /// <summary>

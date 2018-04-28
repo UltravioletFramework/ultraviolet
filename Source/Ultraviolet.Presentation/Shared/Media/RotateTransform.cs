@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a transformation which rotates an object around the specified origin.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class RotateTransform : Transform
     {

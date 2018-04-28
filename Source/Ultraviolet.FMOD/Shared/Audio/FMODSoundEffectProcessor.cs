@@ -8,7 +8,6 @@ namespace Ultraviolet.FMOD.Audio
     /// <summary>
     /// Loads sound effect assets.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     public sealed class FMODSoundEffectProcessor : ContentProcessor<String, SoundEffect>
     {

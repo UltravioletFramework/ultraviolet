@@ -17,7 +17,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="asset">The asset identifier of the resource.</param>
         /// <param name="source">An <see cref="AssetSource"/> value describing how to load the resource.</param>
-        [Preserve]
         public SourcedResource(AssetID asset, AssetSource source)
         {
             this.Resource = new FrameworkResource<T>();
@@ -30,7 +29,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="sourced">The <see cref="SourcedResource{T}"/> to convert.</param>
         /// <returns>The underlying value of the sourced asset.</returns>
-        [Preserve]
         public static implicit operator T(SourcedResource<T> sourced) => sourced.Resource;
 
         /// <inheritdoc/>
@@ -47,7 +45,6 @@ namespace Ultraviolet.Presentation
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public SourcedResource<T> Interpolate(SourcedResource<T> target, Single t)
         {
             return (t >= 1) ? target : this;

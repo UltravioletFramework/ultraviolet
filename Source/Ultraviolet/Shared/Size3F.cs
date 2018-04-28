@@ -16,7 +16,6 @@ namespace Ultraviolet
         /// <param name="width">The area's width.</param>
         /// <param name="height">The area's height.</param>
         /// <param name="depth">The area's depth</param>
-        [Preserve]
         [JsonConstructor]
         public Size3F(Single width, Single height, Single depth)
         {
@@ -31,7 +30,6 @@ namespace Ultraviolet
         /// <param name="s1">The <see cref="Size3F"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size3F"/> on the right side of the operator.</param>
         /// <returns>The result of adding the two instances.</returns>
-        [Preserve]
         public static Size3F operator +(Size3F s1, Size3F s2)
         {
             Size3F result;
@@ -49,7 +47,6 @@ namespace Ultraviolet
         /// <param name="s1">The <see cref="Size3F"/> on the left side of the operator.</param>
         /// <param name="s2">The <see cref="Size3F"/> on the right side of the operator.</param>
         /// <returns>The result of subtracting the two instances.</returns>
-        [Preserve]
         public static Size3F operator -(Size3F s1, Size3F s2)
         {
             Size3F result;
@@ -67,7 +64,6 @@ namespace Ultraviolet
         /// <param name="size">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Size3F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size3F operator *(Size3F size, Int32 multiplier)
         {
             Size3F result;
@@ -85,7 +81,6 @@ namespace Ultraviolet
         /// <param name="size">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Size3F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size3F operator *(Size3F size, Single multiplier)
         {
             Size3F result;
@@ -103,7 +98,6 @@ namespace Ultraviolet
         /// <param name="size">The size to multiply.</param>
         /// <param name="multiplier">The multiplier to apply to the size.</param>
         /// <returns>A <see cref="Size3D"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size3D operator *(Size3F size, Double multiplier)
         {
             Size3D result;
@@ -121,7 +115,6 @@ namespace Ultraviolet
         /// <param name="size">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Size3F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size3F operator /(Size3F size, Int32 divisor)
         {
             Size3F result;
@@ -139,7 +132,6 @@ namespace Ultraviolet
         /// <param name="size">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Size3F"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size3F operator /(Size3F size, Single divisor)
         {
             Size3F result;
@@ -157,7 +149,6 @@ namespace Ultraviolet
         /// <param name="size">The size to divide.</param>
         /// <param name="divisor">The divisor to apply to the size.</param>
         /// <returns>A <see cref="Size3D"/> which is the result of the muliplication.</returns>
-        [Preserve]
         public static Size3D operator /(Size3F size, Double divisor)
         {
             Size3D result;
@@ -174,7 +165,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Vector3(Size3F size)
         {
             Vector3 result;
@@ -191,7 +181,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size3(Size3F size)
         {
             Size3 result;
@@ -208,7 +197,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="size">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static implicit operator Size3D(Size3F size)
         {
             Size3D result;
@@ -229,7 +217,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Size3F Interpolate(Size3F target, Single t)
         {
             Size3F result;
@@ -261,21 +248,18 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the size's width.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Width;
 
         /// <summary>
         /// Gets the size's height.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Height;
 
         /// <summary>
         /// Gets the size's depth.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Depth;
     }

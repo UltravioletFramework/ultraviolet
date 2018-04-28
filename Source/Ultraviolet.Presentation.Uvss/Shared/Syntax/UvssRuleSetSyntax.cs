@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS rule set.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.RuleSet)]
     public sealed class UvssRuleSetSyntax : UvssNodeSyntax
     {

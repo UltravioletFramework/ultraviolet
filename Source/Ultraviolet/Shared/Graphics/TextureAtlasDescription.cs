@@ -7,7 +7,6 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// An intermediate representation of a <see cref="TextureAtlas"/> used during content processing.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal class TextureAtlasDescription
     {
         /// <summary>

@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a radio button.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.RadioButton.xml")]
     public class RadioButton : ToggleButton
     {

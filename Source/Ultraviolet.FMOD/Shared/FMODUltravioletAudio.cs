@@ -27,7 +27,6 @@ namespace Ultraviolet.FMOD
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet configuration.</param>
-        [Preserve]
         public FMODUltravioletAudio(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {

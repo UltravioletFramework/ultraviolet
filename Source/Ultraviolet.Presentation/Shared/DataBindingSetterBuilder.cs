@@ -104,7 +104,6 @@ namespace Ultraviolet.Presentation
         /// Represents a reflection-based implementation of a binding expression setter which is
         /// used on platforms that don't support runtime code generation.
         /// </summary>
-        [Preserve]
         private static void ReflectionBasedImplementation(PropertyInfo property, Object dataSource, Object value)
         {
             if (dataSource == null)

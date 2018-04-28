@@ -18,7 +18,6 @@ namespace Ultraviolet.Content
         /// <param name="assetName">The asset's name within its content manifest group.</param>
         /// <param name="assetPath">The asset's path as specified by its content manifest.</param>
         /// <param name="assetIndex">The asset's index within its content manifest group.</param>
-        [Preserve]
         internal AssetID(String manifestName, String manifestGroup, String assetName, String assetPath, Int32 assetIndex)
         {
             Contract.RequireNotEmpty(manifestName, nameof(manifestName));

@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents an item in a <see cref="ListBox"/> control.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ListBoxItem.xml")]
     public class ListBoxItem : ContentControl
     {

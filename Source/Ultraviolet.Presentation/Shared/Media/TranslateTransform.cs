@@ -6,7 +6,6 @@ namespace Ultraviolet.Presentation.Media
     /// <summary>
     /// Represents a transformation which translates an object.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public sealed class TranslateTransform : Transform
     {

@@ -9,7 +9,6 @@ namespace Ultraviolet
     /// Represents a bounding sphere.
     /// </summary>
     [Serializable]
-    [Preserve(AllMembers = true)]
     public partial struct BoundingSphere : IEquatable<BoundingSphere>
     {
         /// <summary>

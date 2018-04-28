@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a control which hosts a text editor.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType]
     public abstract class TextEditingControl : Control
     {

@@ -24,7 +24,6 @@ namespace Ultraviolet
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator ==(Vector3 v1, Vector3 v2)
         {
             return
@@ -39,7 +38,6 @@ namespace Ultraviolet
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator !=(Vector3 v1, Vector3 v2)
         {
             return
@@ -49,14 +47,12 @@ namespace Ultraviolet
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public override Boolean Equals(Object other)
         {
             return (other is Vector3 x) ? Equals(x) : false;
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Equals(Vector3 other)
         {
             return

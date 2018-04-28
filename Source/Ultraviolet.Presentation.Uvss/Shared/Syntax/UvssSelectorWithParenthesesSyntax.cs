@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents a UVSS selector with enclosing parentheses.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.SelectorWithParentheses)]
     public sealed class UvssSelectorWithParenthesesSyntax : UvssSelectorBaseSyntax
     {

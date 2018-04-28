@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Input
     /// <summary>
     /// Contains a standard set of component-related commands.
     /// </summary>
-    [Preserve]
     public static class ComponentCommands
     {
         /// <summary>

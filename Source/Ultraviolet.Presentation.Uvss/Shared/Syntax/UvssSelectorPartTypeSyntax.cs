@@ -7,7 +7,6 @@ namespace Ultraviolet.Presentation.Uvss.Syntax
     /// <summary>
     /// Represents the component of a UVSS selector part which specifies the selected type.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [SyntaxNodeTypeID((Byte)SyntaxNodeType.SelectorPartType)]
     public sealed class UvssSelectorPartTypeSyntax : UvssNodeSyntax
     {

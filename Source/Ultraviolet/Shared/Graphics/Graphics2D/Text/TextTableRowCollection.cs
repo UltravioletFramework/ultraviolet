@@ -23,7 +23,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Adds a row to the collection.
         /// </summary>
         /// <returns>The row that was added to the collection.</returns>
-        [Preserve]
         public TextTableRow<ViewModelType> Add()
         {
             var row = new TextTableRow<ViewModelType>(table);

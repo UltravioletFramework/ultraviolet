@@ -32,7 +32,6 @@ namespace Ultraviolet.Presentation
         /// <param name="dataSourceType">The type of the data source.</param>
         /// <param name="expression">The binding expression.</param>
         /// <param name="coerceToString">A value indicating whether to coerce Object values to String values if no valid type conversion exists.</param>
-        [Preserve]
         public DependencyBoundValueConverting(IDependencyPropertyValue value, Type expressionType, Type dataSourceType, String expression, Boolean coerceToString)
             : base(value, expressionType, dataSourceType, expression)
         {

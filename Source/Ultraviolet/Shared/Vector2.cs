@@ -14,7 +14,6 @@ namespace Ultraviolet
         /// Initializes a new instance of the <see cref="Vector2"/> structure with all of its components set to the specified value.
         /// </summary>
         /// <param name="value">The value to which to set the vector's components.</param>
-        [Preserve]
         public Vector2(Single value)
         {
             this.X = value;
@@ -26,7 +25,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="x">The vector's x component.</param>
         /// <param name="y">The vector's y component.</param>
-        [Preserve]
         [JsonConstructor]
         public Vector2(Single x, Single y)
         {
@@ -40,7 +38,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the addition operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the addition operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator +(Vector2 vector1, Vector2 vector2)
         {
             Vector2 result;
@@ -57,7 +54,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the subtraction operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the subtraction operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator -(Vector2 vector1, Vector2 vector2)
         {
             Vector2 result;
@@ -74,7 +70,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the multiplication operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the multiplication operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator *(Vector2 vector1, Vector2 vector2)
         {
             Vector2 result;
@@ -91,7 +86,6 @@ namespace Ultraviolet
         /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator *(Single factor, Vector2 vector)
         {
             Vector2 result;
@@ -108,7 +102,6 @@ namespace Ultraviolet
         /// <param name="vector">The <see cref="Vector2"/> to multiply.</param>
         /// <param name="factor">The scaling factor by which to multiply the vector.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator *(Vector2 vector, Single factor)
         {
             Vector2 result;
@@ -125,7 +118,6 @@ namespace Ultraviolet
         /// <param name="vector1">The <see cref="Vector2"/> to the left of the division operator.</param>
         /// <param name="vector2">The <see cref="Vector2"/> to the right of the division operator.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator /(Vector2 vector1, Vector2 vector2)
         {
             Vector2 result;
@@ -142,7 +134,6 @@ namespace Ultraviolet
         /// <param name="vector">The <see cref="Vector2"/> to divide.</param>
         /// <param name="factor">The scaling factor by which to divide the vector.</param>
         /// <returns>The resulting <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator /(Vector2 vector, Single factor)
         {
             Vector2 result;
@@ -158,7 +149,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The <see cref="Vector2"/> to reverse.</param>
         /// <returns>The reversed <see cref="Vector2"/>.</returns>
-        [Preserve]
         public static Vector2 operator -(Vector2 vector)
         {
             Vector2 result;
@@ -174,7 +164,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2(Vector2 vector)
         {
             Point2 result;
@@ -190,7 +179,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2F(Vector2 vector)
         {
             Point2F result;
@@ -206,7 +194,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Point2D(Vector2 vector)
         {
             Point2D result;
@@ -222,7 +209,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size2(Vector2 vector)
         {
             Size2 result;
@@ -238,7 +224,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size2F(Vector2 vector)
         {
             Size2F result;
@@ -254,7 +239,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="vector">The structure to convert.</param>
         /// <returns>The converted structure.</returns>
-        [Preserve]
         public static explicit operator Size2D(Vector2 vector)
         {
             Size2D result;
@@ -1028,7 +1012,6 @@ namespace Ultraviolet
         /// <param name="target">The target value.</param>
         /// <param name="t">A value between 0.0 and 1.0 representing the interpolation factor.</param>
         /// <returns>The interpolated value.</returns>
-        [Preserve]
         public Vector2 Interpolate(Vector2 target, Single t)
         {
             Vector2 result;
@@ -1074,14 +1057,12 @@ namespace Ultraviolet
         /// <summary>
         /// The vector's x-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single X;
 
         /// <summary>
         /// The vector's y-coordinate.
         /// </summary>
-        [Preserve]
         [JsonProperty(Required = Required.Always)]
         public Single Y;
     }

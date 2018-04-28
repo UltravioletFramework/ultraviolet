@@ -6,7 +6,6 @@ using SDL_TouchID = System.Int64;
 namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
-    [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_MultiGestureEvent
     {

@@ -11,7 +11,6 @@ namespace Ultraviolet.Graphics.Graphics2D
     /// <summary>
     /// Represents a content processor which loads sprites from XML files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentProcessor]
     internal sealed class SpriteProcessorFromXDocument : ContentProcessor<XDocument, Sprite>
     {

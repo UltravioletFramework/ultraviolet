@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents an item in a <see cref="TabControl"/> control.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.TabItem.xml")]
     public class TabItem : HeaderedContentControl
     {

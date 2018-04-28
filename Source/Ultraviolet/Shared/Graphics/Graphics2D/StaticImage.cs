@@ -12,7 +12,6 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticImage"/> class.
         /// </summary>
-        [Preserve]
         private StaticImage()
         {
 

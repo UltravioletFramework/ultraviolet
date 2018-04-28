@@ -28,7 +28,6 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator ==(StringSegment v1, StringSegment v2)
         {
             return v1.Equals(v2);
@@ -40,7 +39,6 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator !=(StringSegment v1, StringSegment v2)
         {
             return !v1.Equals(v2);
@@ -52,7 +50,6 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator ==(StringSegment v1, String v2)
         {
             return v1.Equals(v2);
@@ -64,7 +61,6 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator !=(StringSegment v1, String v2)
         {
             return !v1.Equals(v2);
@@ -76,7 +72,6 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator ==(StringSegment v1, StringBuilder v2)
         {
             return v1.Equals(v2);
@@ -88,14 +83,12 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean operator !=(StringSegment v1, StringBuilder v2)
         {
             return !v1.Equals(v2);
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public override Boolean Equals(Object other)
         {
             if (other is StringSegment ss) return Equals(ss);
@@ -105,7 +98,6 @@ namespace Ultraviolet.Core.Text
         }
         
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Equals(StringSegment other)
         {
             if (IsEmpty)
@@ -127,7 +119,6 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Equals(String other)
         {
             if (IsEmpty && other == String.Empty)
@@ -147,7 +138,6 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <inheritdoc/>
-        [Preserve]
         public Boolean Equals(StringBuilder other)
         {
             if (IsEmpty && other.Length == 0)

@@ -8,7 +8,6 @@ namespace Ultraviolet.FMOD.Audio
     /// <summary>
     /// Imports .mp3, .ogg, and .wav files.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [ContentImporter(".aif")]
     [ContentImporter(".aiff")]
     [ContentImporter(".flac")]

@@ -14,7 +14,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Initializes a new instance of the <see cref="TextTableCell{ViewModelType}"/> class.
         /// </summary>
         /// <param name="row">The row that owns the cell.</param>
-        [Preserve]
         internal TextTableCell(TextTableRow<ViewModelType> row)
         {
             Contract.Require(row, nameof(row));

@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// side-by-side if (see <see cref="Orientation"/> is <see cref="Controls.Orientation.Horizontal"/>,
     /// wrapping the content if necessary to fit within the available space.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.WrapPanel.xml")]
     public class WrapPanel : Panel
     {

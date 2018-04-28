@@ -10,7 +10,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a combo box with a drop down list of selectable items.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.ComboBox.xml")]
     [UvmlPlaceholder("ItemsPanel", typeof(StackPanel))]
     public class ComboBox : Selector

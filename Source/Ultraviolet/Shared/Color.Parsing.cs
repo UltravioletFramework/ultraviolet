@@ -13,7 +13,6 @@ namespace Ultraviolet
         /// <param name="s">The string to convert.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, out Color v)
         {
             return TryParse(s, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out v);
@@ -24,7 +23,6 @@ namespace Ultraviolet
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static Color Parse(String s)
         {
             var v = default(Color);
@@ -43,7 +41,6 @@ namespace Ultraviolet
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <param name="v">The converted value.</param>
         /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        [Preserve]
         public static Boolean TryParse(String s, NumberStyles style, IFormatProvider provider, out Color v)
         {
             v = default(Color);
@@ -79,7 +76,6 @@ namespace Ultraviolet
         /// <param name="style">A set of <see cref="NumberStyles"/> values indicating which elements are present in <paramref name="s"/>.</param>
         /// <param name="provider">A format provider that provides culture-specific formatting information.</param>
         /// <returns>The converted value.</returns>
-        [Preserve]
         public static Color Parse(String s, NumberStyles style, IFormatProvider provider)
         {
             var v = default(Color);
@@ -106,7 +102,6 @@ namespace Ultraviolet
         /// <item><description>#aarrggbb</description></item>
         /// </list>
         /// </remarks>
-        [Preserve]
         private static Boolean TryParseHex(String s, NumberStyles style, IFormatProvider provider, ref Color color)
         {
             var length = s.Length;
@@ -164,7 +159,6 @@ namespace Ultraviolet
         /// <returns><see langword="true"/> if <paramref name="s"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
         /// <remarks>Strings parsed by this methods must be comma-delimited lists of three or four color components,
         /// in either R, G, B or A, R, G, B format, or a named color.</remarks>
-        [Preserve]
         private static Boolean TryParseDelimitedOrNamed(String s, NumberStyles style, IFormatProvider provider, ref Color color)
         {
             var components = s.Split(',');

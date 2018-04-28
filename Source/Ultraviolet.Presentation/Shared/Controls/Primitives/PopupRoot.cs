@@ -8,7 +8,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents the root visual for elements inside of a <see cref="Popup"/> control.
     /// </summary>
-    [Preserve(AllMembers = true)]
     internal class PopupRoot : FrameworkElement
     {
         /// <summary>

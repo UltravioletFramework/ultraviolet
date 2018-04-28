@@ -89,7 +89,6 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <param name="dobj">The dependency object that raised the event.</param>
         /// <param name="data">The routed event's metadata.</param>
-        [Preserve]
         internal void RaiseRaisedNotification(DependencyObject dobj, RoutedEventData data)
         {
             raisedNotificationServer.Notify(dobj, data);

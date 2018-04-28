@@ -21,7 +21,6 @@ namespace Ultraviolet.BASS
         /// Initializes a new instance of the BASSUltravioletAudio class.
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
-        [Preserve]
         public BASSUltravioletAudio(UltravioletContext uv)
             : base(uv)
         {

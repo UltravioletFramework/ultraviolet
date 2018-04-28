@@ -6,7 +6,6 @@ using SDL_JoystickID = System.Int32;
 namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
-    [Preserve]
     [StructLayout(LayoutKind.Sequential)]
     public struct SDL_JoyHatEvent
     {

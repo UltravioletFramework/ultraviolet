@@ -9,7 +9,6 @@ namespace Ultraviolet.Presentation.Controls
     /// <summary>
     /// Represents a control that contains multiple tabbed pages.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Templates.TabControl.xml")]
     [UvmlPlaceholder("ItemsPanel", typeof(TabPanel))]
     public class TabControl : Selector

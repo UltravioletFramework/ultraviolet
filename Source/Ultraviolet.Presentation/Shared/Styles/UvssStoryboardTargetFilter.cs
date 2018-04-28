@@ -13,7 +13,6 @@ namespace Ultraviolet.Presentation.Styles
         /// Adds a type filter to the collection.
         /// </summary>
         /// <param name="type">The type filter to add to the collection.</param>
-        [Preserve]
         internal void Add(String type)
         {
             Contract.Require(type, nameof(type));

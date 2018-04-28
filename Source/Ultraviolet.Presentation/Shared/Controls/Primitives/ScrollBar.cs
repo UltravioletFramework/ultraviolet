@@ -16,7 +16,6 @@ namespace Ultraviolet.Presentation.Controls.Primitives
     /// <summary>
     /// Represents a scroll bar with a sliding thumb.
     /// </summary>
-    [Preserve(AllMembers = true)]
     [UvmlKnownType(null, "Ultraviolet.Presentation.Controls.Primitives.Templates.ScrollBar.xml")]
     public class ScrollBar : RangeBase
     {
