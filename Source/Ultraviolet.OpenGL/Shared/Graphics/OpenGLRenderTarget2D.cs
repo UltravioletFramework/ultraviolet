@@ -124,6 +124,85 @@ namespace Ultraviolet.OpenGL.Graphics
             GetDataInternal(data, region);
         }
 
+        /// <inheritdoc/>
+        public override void Invalidate(Boolean color, Boolean depth, Boolean stencil, Boolean depthStencil, Int32 colorOffset, Int32 colorCount)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            // If we don't have any support for framebuffer invalidation, simply do nothing.
+            if (!gl.IsFramebufferInvalidationAvailable)
+                return;
+
+            // If we're relying on EXT_discard_framebuffer, then we can only discard the first color
+            // attachment. If that leaves us with nothing to do, bail out.
+            if (!gl.IsInvalidateSubdataAvailable)
+            {
+                if (colorOffset != 0)
+                {
+                    color = false;
+                    if (!depth && !stencil && !depthStencil)
+                        return;
+                }
+
+                if (colorCount > 1)
+                    colorCount = 1;
+            }
+
+            // Bind the framebuffer (if we're not using DSA) and perform the invalidation.
+            unsafe
+            {
+                var numAttachments =
+                    (color ? colorCount : 0) +
+                    (depth ? 1 : 0) +
+                    (stencil ? 1 : 0) +
+                    (depthStencil ? 1 : 0);
+
+                var attachments = stackalloc UInt32[numAttachments];
+                var attachmentsIx = 0;
+
+                if (color)
+                {
+                    for (int i = 0; i < colorCount; i++)
+                        attachments[attachmentsIx++] = (UInt32)(gl.GL_COLOR_ATTACHMENT0 + colorOffset + i);
+                }
+
+                if (depth)
+                    attachments[attachmentsIx++] = gl.GL_DEPTH_ATTACHMENT;
+
+                if (stencil)
+                    attachments[attachmentsIx++] = gl.GL_STENCIL_ATTACHMENT;
+
+                if (depthStencil)
+                    attachments[attachmentsIx++] = gl.GL_DEPTH_STENCIL_ATTACHMENT;
+
+                if (gl.IsInvalidateSubdataAvailable)
+                {
+                    // The EXT DSA extension doesn't seem to provide glInvalidateNamedFramebuffer, so...
+                    using (OpenGLState.ScopedBindFramebuffer(framebuffer, gl.IsEXTDirectStateAccessAvailable))
+                    {
+                        if (gl.IsEXTDirectStateAccessAvailable)
+                        {
+                            gl.InvalidateFramebuffer(gl.GL_FRAMEBUFFER, numAttachments, (IntPtr)attachments);
+                            gl.ThrowIfError();
+                        }
+                        else
+                        {
+                            gl.InvalidateNamedFramebufferData(gl.GL_FRAMEBUFFER, framebuffer, numAttachments, (IntPtr)attachments);
+                            gl.ThrowIfError();
+                        }
+                    }
+                }
+                else
+                {
+                    using (OpenGLState.ScopedBindFramebuffer(framebuffer, true))
+                    {
+                        gl.DiscardFramebufferEXT(gl.GL_FRAMEBUFFER, numAttachments, (IntPtr)attachments);
+                        gl.ThrowIfError();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Validates that the framebuffer is in a state which is ready for rendering.
         /// </summary>
@@ -131,7 +210,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            if (colorAttachments == 0 && depthAttachments == 0 && stencilAttachments == 0)
+            if (colorAttachments == 0 && depthAttachments == 0 && stencilAttachments == 0 && depthStencilAttachments == 0)
                 throw new InvalidOperationException(OpenGLStrings.RenderTargetNeedsBuffers);
 
             if (framebufferStatus != gl.GL_FRAMEBUFFER_COMPLETE)
@@ -269,6 +348,9 @@ namespace Ultraviolet.OpenGL.Graphics
         public override Boolean HasStencilBuffer => stencilAttachments > 0;
 
         /// <inheritdoc/>
+        public override Boolean HasDepthStencilBuffer => depthStencilAttachments > 0;
+
+        /// <inheritdoc/>
         public override RenderTargetUsage RenderTargetUsage => renderTargetUsage;
 
         /// <inheritdoc/>
@@ -313,12 +395,12 @@ namespace Ultraviolet.OpenGL.Graphics
                     AttachDepthBuffer(buffer);
                     break;
 
-                case RenderBufferFormat.Depth24Stencil8:
-                    AttachDepthStencilBuffer(buffer);
-                    break;
-
                 case RenderBufferFormat.Stencil8:
                     AttachStencilBuffer(buffer);
+                    break;
+
+                case RenderBufferFormat.Depth24Stencil8:
+                    AttachDepthStencilBuffer(buffer);
                     break;
 
                 default:
@@ -372,7 +454,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="buffer">The depth buffer to attach to the render target.</param>
         private void AttachDepthBuffer(OpenGLRenderBuffer2D buffer)
         {
-            Contract.Ensure(depthAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
+            Contract.Ensure(depthAttachments == 0 && depthStencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
 
             if (buffer.WillNotBeSampled)
             {
@@ -394,6 +476,36 @@ namespace Ultraviolet.OpenGL.Graphics
             }
 
             depthAttachments++;
+        }
+
+        /// <summary>
+        /// Attaches a stencil buffer to the render target.
+        /// </summary>
+        /// <param name="buffer">The stencil buffer to attach to the render target.</param>
+        private void AttachStencilBuffer(OpenGLRenderBuffer2D buffer)
+        {
+            Contract.Ensure(stencilAttachments == 0 && depthStencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
+
+            if (buffer.WillNotBeSampled)
+            {
+                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
+                gl.ThrowIfError();
+            }
+            else
+            {
+                if (!gl.IsFramebufferTextureAvailable)
+                {
+                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+                else
+                {
+                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
+                    gl.ThrowIfError();
+                }
+            }
+
+            stencilAttachments++;
         }
 
         /// <summary>
@@ -456,38 +568,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 }
             }
 
-            depthAttachments++;
-            stencilAttachments++;
-        }
-
-        /// <summary>
-        /// Attaches a stencil buffer to the render target.
-        /// </summary>
-        /// <param name="buffer">The stencil buffer to attach to the render target.</param>
-        private void AttachStencilBuffer(OpenGLRenderBuffer2D buffer)
-        {
-            Contract.Ensure(stencilAttachments == 0, OpenGLStrings.RenderBufferExceedsTargetCapacity);
-
-            if (buffer.WillNotBeSampled)
-            {
-                gl.NamedFramebufferRenderbuffer(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_RENDERBUFFER, buffer.OpenGLName);
-                gl.ThrowIfError();
-            }
-            else
-            {
-                if (!gl.IsFramebufferTextureAvailable)
-                {
-                    gl.FramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, gl.GL_TEXTURE_2D, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
-                else
-                {
-                    gl.NamedFramebufferTexture(framebuffer, gl.GL_FRAMEBUFFER, gl.GL_STENCIL_ATTACHMENT, buffer.OpenGLName, 0);
-                    gl.ThrowIfError();
-                }
-            }
-
-            stencilAttachments++;
+            depthStencilAttachments++;
         }
 
         /// <summary>
@@ -567,6 +648,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private Int32 colorAttachments;
         private Int32 depthAttachments;
         private Int32 stencilAttachments;
+        private Int32 depthStencilAttachments;
         private UInt32 framebufferStatus = gl.GL_FRAMEBUFFER_UNDEFINED;
 
         // The target's list of attached buffers.

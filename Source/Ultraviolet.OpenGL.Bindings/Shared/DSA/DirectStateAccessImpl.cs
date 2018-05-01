@@ -70,6 +70,8 @@ namespace Ultraviolet.OpenGL.Bindings
             public abstract void EnableVertexArrayAttrib(uint vaobj, uint index);
 
             public abstract void DisableVertexArrayAttrib(uint vaobj, uint index);
+
+            public abstract void InvalidateNamedFramebufferData(uint target, uint framebuffer, int numAttachments, IntPtr attachments);
         }
     }
 }

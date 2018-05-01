@@ -265,5 +265,11 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glDisableVertexArrayAttribEXT")]
         private static readonly glDisableVertexArrayAttribDelegate glDisableVertexArrayAttrib = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glInvalidateNamedFramebufferDataDelegate(UInt32 framebuffer, Int32 numAttachments, IntPtr attachments);
+        [Require(MinVersion = "4.5")]
+        [Require(Extension = "GL_ARB_direct_state_access")]
+        private static readonly glInvalidateNamedFramebufferDataDelegate glInvalidateNamedFramebufferData = null;
     }
 }

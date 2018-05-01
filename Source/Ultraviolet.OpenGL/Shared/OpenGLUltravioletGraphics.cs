@@ -149,7 +149,7 @@ namespace Ultraviolet.OpenGL
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer))
+            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer || renderTarget.HasDepthStencilBuffer))
             {
                 if (!depthStencilState.DepthBufferEnable)
                 {
@@ -161,7 +161,7 @@ namespace Ultraviolet.OpenGL
                 mask |= gl.GL_DEPTH_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer))
+            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer || renderTarget.HasDepthStencilBuffer))
             {
                 OpenGLState.ClearStencil = stencil;
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
