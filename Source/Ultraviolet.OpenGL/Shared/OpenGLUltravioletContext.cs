@@ -74,7 +74,7 @@ namespace Ultraviolet.OpenGL
             }
             else
             {
-                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested);
+                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested ?? versionRequired);
                 ((OpenGLUltravioletGraphics)this.graphics).ResetDeviceStates();
                 this.audio = InitializeAudioSubsystem(configuration);
                 this.input = new SDL2UltravioletInput(this);
@@ -220,18 +220,11 @@ namespace Ultraviolet.OpenGL
 
             versionRequired = isGLES ? new Version(2, 0) : new Version(3, 1);
             versionRequested = isGLES ? configuration.MinimumOpenGLESVersion : configuration.MinimumOpenGLVersion;
-            if (versionRequested == null || versionRequested < versionRequired)
-            {
-                if (isGLES)
-                {
-                    versionRequested = Platform == UltravioletPlatform.Android ?
-                        new Version(2, 0) : new Version(3, 0);
-                }
-                else
-                {
-                    versionRequested = versionRequired;
-                }
-            }
+            if (versionRequested != null && versionRequested < versionRequired)
+                versionRequested = versionRequired;
+
+            if (versionRequested == null && isGLES)
+                versionRequested = Platform == UltravioletPlatform.Android ? new Version(2, 0) : new Version(3, 0);
         }
 
         /// <summary>
@@ -249,7 +242,7 @@ namespace Ultraviolet.OpenGL
             // context pointer, but actually using it will cause segfaults. It seems like
             // the best thing to do on Android is just not ask for a specific version,
             // and trust the OS to give you the highest version it supports.
-            if (Platform != UltravioletPlatform.Android)
+            if (Platform != UltravioletPlatform.Android && versionRequested != null)
             {
                 if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
                     throw new SDL2Exception();
