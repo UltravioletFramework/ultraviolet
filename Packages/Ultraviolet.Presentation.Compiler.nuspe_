@@ -20,6 +20,7 @@ Quick start guides for development using the Ultraviolet Framework are available
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
     <dependency id="Ultraviolet" version="UV_VERSION" />
     <dependency id="Ultraviolet.Presentation" version="UV_VERSION" />
+    <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.6.1">
   </dependencies>
   </metadata>
   <files>
