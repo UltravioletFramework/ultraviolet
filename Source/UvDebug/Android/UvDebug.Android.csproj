@@ -347,10 +347,10 @@
     <DesktopProjectName>macOS</DesktopProjectName>
     <DesktopProjectDir>macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources</DesktopProjectDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(OS)' == 'Unix'">
+  <PropertyGroup Condition="'$(OS)' == 'Unix' AND '$(ConfigurationName)' != 'Signed'">
     <PreBuildEvent>mono $(ProjectDir)../../UvAssetList/bin/$(ConfigurationName)/UvAssetList.exe "$(ProjectPath)"</PreBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(OS)' != 'Unix'">
+  <PropertyGroup Condition="'$(OS)' != 'Unix' AND '$(ConfigurationName)' != 'Signed'">
     <PreBuildEvent>$(ProjectDir)..\..\UvAssetList\bin\$(ConfigurationName)\UvAssetList.exe "$(ProjectPath)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
