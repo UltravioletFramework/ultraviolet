@@ -38,6 +38,7 @@ sn.exe -R "Ultraviolet.Shims.macOS.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Tooling.dll" "%TLSN%"
 sn.exe -R "uvfont.exe" "%TLSN%"
 sn.exe -R "uvarchive.exe" "%TLSN%"
+sn.exe -R "uvassetlist.exe" "%TLSN%"
 GOTO :eof
 
 :sign_android

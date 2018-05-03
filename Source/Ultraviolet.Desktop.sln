@@ -109,6 +109,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Deskt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{9A019AAC-83C1-4550-8364-E5C84411CD55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvAssetList", "UvAssetList\UvAssetList.csproj", "{7F71C120-2F97-4EDD-B809-99E2F340390E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
@@ -854,6 +856,24 @@ Global
 		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x64.Build.0 = Debug|Any CPU
 		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x86.ActiveCfg = Debug|Any CPU
 		{9A019AAC-83C1-4550-8364-E5C84411CD55}.Signed|x86.Build.0 = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|x64.Build.0 = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|x86.Build.0 = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|Any CPU.Build.0 = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x64.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x64.Build.0 = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x86.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
