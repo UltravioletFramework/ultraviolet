@@ -12,9 +12,22 @@
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package implements the FreeType2 Font Plugin for Ultraviolet.</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-    <dependency id="Ultraviolet" version="UV_VERSION" />
-    <dependency id="Ultraviolet.FreeType2.Native" version="UV_VERSION" />
+    <group>
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+    </group>
+    <group targetFramework="net45">
+      <dependency id="Ultraviolet.FreeType2.Native" version="UV_VERSION" />
+    </group>
+    <group targetFramework="netstandard2.0">
+      <dependency id="Ultraviolet.FreeType2.Native" version="UV_VERSION" />
+    </group>
+    <group targetFramework="monoandroid">
+      <dependency id="Ultraviolet.FreeType2.Native" version="UV_VERSION" />
+    </group>
+    <group targetFramework="xamarinmac">
+      <dependency id="Ultraviolet.FreeType2.Native" version="UV_VERSION" />
+    </group>
   </dependencies>
   </metadata>
   <files>
