@@ -172,6 +172,7 @@
     <AndroidAsset Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
       <Link>Content\Fonts\Inconsolata.uvmeta</Link>
     </AndroidAsset>
+    <EmbeddedResource Include="AndroidAssets.aalist" />
     <None Include="app.config" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
@@ -331,7 +332,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
@@ -345,6 +346,12 @@
   <PropertyGroup Condition="'$(IsMac)' == 'true' ">
     <DesktopProjectName>macOS</DesktopProjectName>
     <DesktopProjectDir>macOS/bin/$(ConfigurationName)/UvDebug.app/Contents/Resources</DesktopProjectDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' == 'Unix'">
+    <PreBuildEvent>mono $(ProjectDir)../../UvAssetList/bin/$(ConfigurationName)/UvAssetList.exe "$(ProjectPath)"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' != 'Unix'">
+    <PreBuildEvent>$(ProjectDir)..\..\UvAssetList\bin\$(ConfigurationName)\UvAssetList.exe "$(ProjectPath)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

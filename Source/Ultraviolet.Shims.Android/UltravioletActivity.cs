@@ -604,7 +604,7 @@ namespace Ultraviolet
         /// <returns><see langword="true"/> if a platform-specific file source was used; otherwise, <see langword="false"/>.</returns>
         protected Boolean UsePlatformSpecificFileSource()
         {
-            FileSystemService.Source = new AndroidAssetFileSource(Assets);
+            FileSystemService.Source = new AndroidAssetFileSource(Assets, GetType().Assembly);
             return true;
         }
 
