@@ -46,14 +46,14 @@ namespace UvAssetList
                 var link = projAsset.Elements().Where(x => x.Name.LocalName == "Link").SingleOrDefault();
                 if (link != null)
                 {
-                    path = link.Value;
+                    path = link.Value.Replace('\\', Path.DirectorySeparatorChar);
                 }
                 else
                 {
                     var include = projAsset.Attribute("Include");
                     if (include != null)
                     {
-                        path = include.Value;
+                        path = include.Value.Replace('\\', Path.DirectorySeparatorChar);
                     }
                 }
 
