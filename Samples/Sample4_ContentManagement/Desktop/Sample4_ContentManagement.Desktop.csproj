@@ -70,25 +70,25 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="Ultraviolet, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3578\lib\net47\Ultraviolet.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3594\lib\net47\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.BASS, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3578\lib\net47\Ultraviolet.BASS.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3594\lib\net47\Ultraviolet.BASS.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3578\lib\net47\Ultraviolet.Core.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3594\lib\net47\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3578\lib\net47\Ultraviolet.OpenGL.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3594\lib\net47\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL.Bindings, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3578\lib\net47\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3594\lib\net47\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.SDL2, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3578\lib\net47\Ultraviolet.SDL2.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3594\lib\net47\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Shims.Desktop, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Shims.Desktop.2018.5.0.3578\lib\net47\Ultraviolet.Shims.Desktop.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Shims.Desktop.2018.5.0.3594\lib\net47\Ultraviolet.Shims.Desktop.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -124,13 +124,13 @@
     <Content Include="uv.ico" />
   </ItemGroup>
   <Import Project="..\Shared\Sample4_ContentManagement.projitems" Label="Shared" />
-  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3578\build\net47\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3578\build\net47\Ultraviolet.BASS.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\net47\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\net47\Ultraviolet.BASS.Native.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3578\build\net47\Ultraviolet.BASS.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3578\build\net47\Ultraviolet.BASS.Native.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3578\build\net47\Ultraviolet.SDL2.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3578\build\net47\Ultraviolet.SDL2.Native.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\net47\Ultraviolet.BASS.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\net47\Ultraviolet.BASS.Native.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\net47\Ultraviolet.SDL2.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\net47\Ultraviolet.SDL2.Native.targets'))" />
   </Target>
-  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3578\build\net47\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3578\build\net47\Ultraviolet.SDL2.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\net47\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\net47\Ultraviolet.SDL2.Native.targets')" />
 </Project>
