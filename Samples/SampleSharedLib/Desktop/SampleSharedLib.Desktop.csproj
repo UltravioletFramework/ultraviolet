@@ -49,13 +49,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="Ultraviolet, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3578\lib\net47\Ultraviolet.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3594\lib\net47\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3578\lib\net47\Ultraviolet.Core.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3594\lib\net47\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Shims.Desktop, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Shims.Desktop.2018.5.0.3578\lib\net47\Ultraviolet.Shims.Desktop.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Shims.Desktop.2018.5.0.3594\lib\net47\Ultraviolet.Shims.Desktop.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
