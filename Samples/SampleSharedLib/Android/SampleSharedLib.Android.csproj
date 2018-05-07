@@ -51,13 +51,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Ultraviolet, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.Core.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Shims.Android, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Shims.Android.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.Shims.Android.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Shims.Android.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Shims.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

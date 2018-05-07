@@ -81,40 +81,40 @@
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="org.libsdl.app, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\lib\MonoAndroid80\org.libsdl.app.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\lib\MonoAndroid80\org.libsdl.app.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Ultraviolet, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.BASS, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.BASS.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.BASS.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.Core.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.OpenGL.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL.Bindings, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Presentation, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.Presentation.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Presentation.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Presentation.CompiledExpressions, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Presentation.Uvss, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.Presentation.Uvss.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Presentation.Uvss.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.SDL2, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.SDL2.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Shims.Android, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ultraviolet.Shims.Android.2018.5.0.3594\lib\MonoAndroid80\Ultraviolet.Shims.Android.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Shims.Android.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Shims.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -222,11 +222,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.BASS.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.BASS.Native.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.BASS.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.BASS.Native.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets'))" />
   </Target>
-  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.BASS.Native.targets')" />
-  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.BASS.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
