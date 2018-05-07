@@ -95,25 +95,25 @@
       <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Core">
-      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3594\lib\net47\Ultraviolet.Core.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\net47\Ultraviolet.Core.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet">
-      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3594\lib\net47\Ultraviolet.dll</HintPath>
-    </Reference>
-    <Reference Include="Ultraviolet.BASS">
-      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3594\lib\net47\Ultraviolet.BASS.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\net47\Ultraviolet.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL.Bindings">
-      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3594\lib\net47\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3604\lib\net47\Ultraviolet.OpenGL.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.SDL2">
-      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3594\lib\net47\Ultraviolet.SDL2.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3604\lib\net47\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.OpenGL">
-      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3594\lib\net47\Ultraviolet.OpenGL.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3604\lib\net47\Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3604\lib\net47\Ultraviolet.BASS.dll</HintPath>
     </Reference>
     <Reference Include="Ultraviolet.Shims.macOS">
-      <HintPath>..\..\packages\Ultraviolet.Shims.macOS.2018.5.0.3594\lib\net45\Ultraviolet.Shims.macOS.dll</HintPath>
+      <HintPath>..\..\packages\Ultraviolet.Shims.macOS.2018.5.0.3604\lib\net45\Ultraviolet.Shims.macOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +172,6 @@
   <ItemGroup />
   <Import Project="..\Shared\Sample9_ManagingStateWithUIScreens.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\net47\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3594\build\net47\Ultraviolet.BASS.Native.targets')" />
-  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\net47\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3594\build\net47\Ultraviolet.SDL2.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\net47\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\net47\Ultraviolet.SDL2.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\net47\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\net47\Ultraviolet.BASS.Native.targets')" />
 </Project>
