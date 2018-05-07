@@ -1,5 +1,5 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Condition="$(UseXamMacFullFramework) == ''">
+  <ItemGroup Condition="'$(MonoMacResourcePrefix)' == '' And '$(UseXamMacFullFramework)' == ''">
     <None Include="$(MSBuildThisFileDirectory)x86\unix\libfmod.so">
       <Link>x86\unix\libfmod.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -17,7 +17,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup Condition="'$(UseXamMacFullFramework)' != ''">
+  <ItemGroup Condition="'$(MonoMacResourcePrefix)' != '' Or '$(UseXamMacFullFramework)' != ''">
     <BundleResource Include="$(MSBuildThisFileDirectory)x64\osx\libfmod.dylib">
       <Link>x64\osx\libfmod.dylib</Link>
     </BundleResource>
