@@ -34,28 +34,36 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=2.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.DotNet.PlatformAbstractions.2.0.4\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel, Version=2.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="Ultraviolet, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\net47\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\net47\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.Desktop, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ultraviolet.Shims.Desktop.2018.5.0.3604\lib\net47\Ultraviolet.Shims.Desktop.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
-      <Project>{7da6158b-a0b9-4100-904e-22fd86949608}</Project>
-      <Name>Ultraviolet.Core.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
-      <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
-      <Name>Ultraviolet.Shims.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
-      <Project>{f071abe3-05e5-4df9-a929-cf71b01ec50a}</Project>
-      <Name>Ultraviolet.Desktop</Name>
-    </ProjectReference>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\Shared\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -15,7 +15,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,12 +35,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=2.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.DotNet.PlatformAbstractions.2.0.4\lib\netstandard1.3\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel, Version=2.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="org.libsdl.app">
       <HintPath>..\..\..\Dependencies\SDL2\Android\org.libsdl.app.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Ultraviolet, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.Android, Version=2018.5.0.0, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ultraviolet.Shims.Android.2018.5.0.3604\lib\MonoAndroid80\Ultraviolet.Shims.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
@@ -49,26 +67,14 @@
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
-      <Project>{7eb671f1-6b46-426d-8a27-730d2b682043}</Project>
-      <Name>Ultraviolet.Core.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj">
-      <Project>{1ebcae25-9fc2-420a-8e62-c5b6733bac9d}</Project>
-      <Name>Ultraviolet.Shims.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet\Android\Ultraviolet.Android.csproj">
-      <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
-      <Name>Ultraviolet.Android</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Shared\SampleSharedLib.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

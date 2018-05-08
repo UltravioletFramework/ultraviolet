@@ -10,7 +10,6 @@
     <AssemblyName>Sample16_CustomTextLayoutCommands</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <UseXamMacFullFramework>true</UseXamMacFullFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,6 +34,8 @@
     <XamMacArch>
     </XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <AOTMode>None</AOTMode>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -55,6 +56,7 @@
     <TlsProvider>Default</TlsProvider>
     <XamMacArch>
     </XamMacArch>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -77,44 +79,44 @@
     </TlsProvider>
     <XamMacArch>
     </XamMacArch>
+    <NoWarn></NoWarn>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SampleSharedLib\macOS\SampleSharedLib.macOS.csproj">
-      <Project>{44E65162-EF15-4076-91C2-319AAC6A22AC}</Project>
-      <Name>SampleSharedLib.macOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.macOS\Ultraviolet.Shims.macOS.csproj">
-      <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
-      <Name>Ultraviolet.Shims.macOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
-      <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>Ultraviolet.SDL2.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
-      <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
-      <Name>Ultraviolet.OpenGL.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
-      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>Ultraviolet.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>Ultraviolet.Core.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
-      <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
-      <Name>Ultraviolet.BASS.Desktop</Name>
-    </ProjectReference>  
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions">
+      <HintPath>..\..\packages\Microsoft.DotNet.PlatformAbstractions.2.0.4\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\net47\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\net47\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3604\lib\net47\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3604\lib\net47\Ultraviolet.SDL2.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3604\lib\net47\Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3604\lib\net47\Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.macOS">
+      <HintPath>..\..\packages\Ultraviolet.Shims.macOS.2018.5.0.3604\lib\net45\Ultraviolet.Shims.macOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcons.appiconset\Contents.json" />
@@ -141,15 +143,6 @@
     <BundleResource Include="..\Desktop\Content\Manifests\Global.manifest">
       <Link>Content\Manifests\Global.manifest</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
-      <Link>x64\osx\libbass.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
-      <Link>x64\osx\libbass_fx.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SampleSharedLib\macOS\SampleSharedLib.macOS.csproj">
@@ -166,4 +159,6 @@
   <ItemGroup />
   <Import Project="..\Shared\Sample16_CustomTextLayoutCommands.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\net47\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\net47\Ultraviolet.SDL2.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\net47\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\net47\Ultraviolet.BASS.Native.targets')" />
 </Project>
