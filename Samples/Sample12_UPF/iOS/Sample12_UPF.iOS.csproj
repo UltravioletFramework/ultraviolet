@@ -141,50 +141,64 @@
     </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions">
+      <HintPath>..\..\packages\Microsoft.DotNet.PlatformAbstractions.2.0.4\lib\netstandard1.3\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation">
+      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation.Uvss">
+      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.Presentation.Uvss.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.iOS">
+      <HintPath>..\..\packages\Ultraviolet.Shims.iOS.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.Shims.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2.UIKit">
+      <HintPath>..\..\packages\Ultraviolet.SDL2.UIKit.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.SDL2.UIKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.SDL2.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3604\lib\Xamarin.iOS10\Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>bin\iPhone\Debug\Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>bin\iPhone\Debug\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>bin\iPhone\Debug\Ultraviolet.OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation">
+      <HintPath>bin\iPhone\Debug\Ultraviolet.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation.Uvss">
+      <HintPath>bin\iPhone\Debug\Ultraviolet.Presentation.Uvss.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>bin\iPhone\Debug\Ultraviolet.SDL2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.iOS\Ultraviolet.Shims.iOS.csproj">
-      <Project>{F7D661D7-101B-417F-BBF7-8170CC04AB55}</Project>
-      <Name>Ultraviolet.Shims.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2.UIKit\Ultraviolet.SDL2.UIKit.csproj">
-      <Project>{7B9F1A34-DF26-4F6F-A6F3-C43D2DB50D18}</Project>
-      <Name>Ultraviolet.SDL2.UIKit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\iOS\Ultraviolet.SDL2.iOS.csproj">
-      <Project>{89FC9118-5303-44C8-8AFE-20CB48A3F99E}</Project>
-      <Name>Ultraviolet.SDL2.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Presentation.Uvss\iOS\Ultraviolet.Presentation.Uvss.iOS.csproj">
-      <Project>{6115A978-B4B6-46D3-AD13-F0DC358B8BD3}</Project>
-      <Name>Ultraviolet.Presentation.Uvss.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Presentation\iOS\Ultraviolet.Presentation.iOS.csproj">
-      <Project>{4F741CCA-6FBF-439E-A26A-ABB189619101}</Project>
-      <Name>Ultraviolet.Presentation.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\iOS\Ultraviolet.OpenGL.iOS.csproj">
-      <Project>{480C60A0-20C2-4BBC-8D87-E5383EE66FF8}</Project>
-      <Name>Ultraviolet.OpenGL.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL.Bindings\iOS\Ultraviolet.OpenGL.Bindings.iOS.csproj">
-      <Project>{65ECB0C3-FD4E-494A-A000-43500B9CB851}</Project>
-      <Name>Ultraviolet.OpenGL.Bindings.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet\iOS\Ultraviolet.iOS.csproj">
-      <Project>{8F9F44FB-E63C-48DE-8752-19B745111559}</Project>
-      <Name>Ultraviolet.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
-      <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
-      <Name>Ultraviolet.Core.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\iOS\Ultraviolet.BASS.iOS.csproj">
-      <Project>{356EC667-7F8B-4DBE-A854-C70B7BB9ADB3}</Project>
-      <Name>Ultraviolet.BASS.iOS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\SampleSharedLib\iOS\SampleSharedLib.iOS.csproj">
       <Project>{55F3D708-B0C1-446B-A83E-555E7E9EC9E1}</Project>
       <Name>SampleSharedLib.iOS</Name>

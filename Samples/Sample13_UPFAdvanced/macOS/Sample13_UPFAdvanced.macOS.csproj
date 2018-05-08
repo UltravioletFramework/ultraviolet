@@ -10,7 +10,6 @@
     <AssemblyName>Sample13_UPFAdvanced</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <UseXamMacFullFramework>true</UseXamMacFullFramework>    
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,6 +33,7 @@
     <LinkMode>None</LinkMode>
     <XamMacArch>x86_64</XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -54,6 +54,7 @@
     <TlsProvider>Default</TlsProvider>
     <XamMacArch>
     </XamMacArch>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -74,13 +75,142 @@
     <TlsProvider>Default</TlsProvider>
     <XamMacArch>
     </XamMacArch>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions">
+      <HintPath>..\..\packages\Microsoft.DotNet.PlatformAbstractions.2.0.4\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.AppContext">
+      <HintPath>..\..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Console">
+      <HintPath>..\..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.FileVersionInfo">
+      <HintPath>..\..\packages\System.Diagnostics.FileVersionInfo.4.3.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace">
+      <HintPath>..\..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>..\..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression">
+      <HintPath>..\..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives">
+      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem">
+      <HintPath>..\..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>..\..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Expressions">
+      <HintPath>..\..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection">
+      <HintPath>..\..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata">
+      <HintPath>..\..\packages\System.Reflection.Metadata.1.4.2\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Runtime.Extensions">
+      <HintPath>..\..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.4.3.0\lib\net463\System.Runtime.InteropServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Security.Cryptography.Encoding">
+      <HintPath>..\..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives">
+      <HintPath>..\..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms">
+      <HintPath>..\..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates">
+      <HintPath>..\..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages">
+      <HintPath>..\..\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <HintPath>..\..\packages\System.Threading.Thread.4.3.0\lib\net46\System.Threading.Thread.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple">
+      <HintPath>..\..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.ReaderWriter">
+      <HintPath>..\..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.XmlDocument">
+      <HintPath>..\..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath">
+      <HintPath>..\..\packages\System.Xml.XPath.4.3.0\lib\net46\System.Xml.XPath.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument">
+      <HintPath>..\..\packages\System.Xml.XPath.XDocument.4.3.0\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.2.6.1\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.2.6.1\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Core">
+      <HintPath>..\..\packages\Ultraviolet.Core.2018.5.0.3604\lib\net47\Ultraviolet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet">
+      <HintPath>..\..\packages\Ultraviolet.2018.5.0.3604\lib\net47\Ultraviolet.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation">
+      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3604\lib\net47\Ultraviolet.Presentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation.Uvss">
+      <HintPath>..\..\packages\Ultraviolet.Presentation.2018.5.0.3604\lib\net47\Ultraviolet.Presentation.Uvss.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Presentation.Compiler">
+      <HintPath>..\..\packages\Ultraviolet.Presentation.Compiler.2018.5.0.3604\lib\net47\Ultraviolet.Presentation.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.Shims.macOS">
+      <HintPath>..\..\packages\Ultraviolet.Shims.macOS.2018.5.0.3604\lib\net45\Ultraviolet.Shims.macOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.BASS">
+      <HintPath>..\..\packages\Ultraviolet.BASS.2018.5.0.3604\lib\net47\Ultraviolet.BASS.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL.Bindings">
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.Bindings.2018.5.0.3604\lib\net47\Ultraviolet.OpenGL.Bindings.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.SDL2">
+      <HintPath>..\..\packages\Ultraviolet.SDL2.2018.5.0.3604\lib\net47\Ultraviolet.SDL2.dll</HintPath>
+    </Reference>
+    <Reference Include="Ultraviolet.OpenGL">
+      <HintPath>..\..\packages\Ultraviolet.OpenGL.2018.5.0.3604\lib\net47\Ultraviolet.OpenGL.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -171,15 +301,6 @@
     <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
       <Link>Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib">
-      <Link>x64\osx\libbass.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib">
-      <Link>x64\osx\libbass_fx.dylib</Link>
-    </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib">
-      <Link>x64\osx\libSDL2.dylib</Link>
-    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml">
@@ -191,42 +312,6 @@
       <Project>{44E65162-EF15-4076-91C2-319AAC6A22AC}</Project>
       <Name>SampleSharedLib.macOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Shims.macOS\Ultraviolet.Shims.macOS.csproj">
-      <Project>{CE722165-4EA0-4E27-9D83-CC2CB6FEDD1D}</Project>
-      <Name>Ultraviolet.Shims.macOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.SDL2\Desktop\Ultraviolet.SDL2.Desktop.csproj">
-      <Project>{50AEFA93-FE53-414A-89FC-C061C165C673}</Project>
-      <Name>Ultraviolet.SDL2.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Presentation.Uvss\Desktop\Ultraviolet.Presentation.Uvss.Desktop.csproj">
-      <Project>{F38A5F9E-52F1-424C-9776-7FA80B9F58FF}</Project>
-      <Name>Ultraviolet.Presentation.Uvss.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Presentation\Desktop\Ultraviolet.Presentation.Desktop.csproj">
-      <Project>{7379D9E1-BB01-4B05-B4F7-5D39B393348F}</Project>
-      <Name>Ultraviolet.Presentation.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Presentation.Compiler\Desktop\Ultraviolet.Presentation.Compiler.Desktop.csproj">
-      <Project>{8F3C2DA1-8930-493B-854B-A053BDBF9071}</Project>
-      <Name>Ultraviolet.Presentation.Compiler.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.OpenGL\Desktop\Ultraviolet.OpenGL.Desktop.csproj">
-      <Project>{40D272DB-90E1-4332-A32F-6EFFEB44FE87}</Project>
-      <Name>Ultraviolet.OpenGL.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
-      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>Ultraviolet.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>Ultraviolet.Core.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Source\Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj">
-      <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
-      <Name>Ultraviolet.BASS.Desktop</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
@@ -237,4 +322,6 @@
   <ItemGroup />
   <Import Project="..\Shared\Sample13_UPFAdvanced.projitems" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\net47\Ultraviolet.BASS.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.BASS.Native.2018.5.0.3604\build\net47\Ultraviolet.BASS.Native.targets')" />
+  <Import Project="..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\net47\Ultraviolet.SDL2.Native.targets" Condition="Exists('..\..\packages\Ultraviolet.SDL2.Native.2018.5.0.3604\build\net47\Ultraviolet.SDL2.Native.targets')" />
 </Project>
