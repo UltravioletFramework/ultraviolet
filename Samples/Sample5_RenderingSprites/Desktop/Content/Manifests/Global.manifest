@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentManifest Name="Global">
-  <ContentGroup Name="Sprites" Directory="Sprites" Type="Ultraviolet.Graphics.Graphics2D.Sprite">
-    <Asset Name="Explosion">Explosion</Asset>
-  </ContentGroup>
-</ContentManifest>
