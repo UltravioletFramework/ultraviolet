@@ -568,6 +568,11 @@ namespace Ultraviolet
         public Point2 Location
         {
             get { return new Point2(X, Y); }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+            }
         }
 
         /// <summary>
