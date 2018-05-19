@@ -591,6 +591,11 @@ namespace Ultraviolet
         public Size2 Size
         {
             get { return new Size2(Width, Height); }
+            set
+            {
+                Width = value.Width;
+                Height = value.Height;
+            }
         }
         
         /// <summary>
