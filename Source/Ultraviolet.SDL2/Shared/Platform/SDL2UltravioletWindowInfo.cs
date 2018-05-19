@@ -171,10 +171,8 @@ namespace Ultraviolet.SDL2.Platform
             if ((flags & WindowFlags.Borderless) == WindowFlags.Borderless)
                 sdlflags |= SDL_WINDOW_BORDERLESS;
 
-            if ((flags & WindowFlags.Hidden) == WindowFlags.Hidden)
-                sdlflags |= SDL_WINDOW_HIDDEN;
-            else
-                sdlflags |= SDL_WINDOW_SHOWN;
+            // We force it to be hidden so we can clear the window to the desired color first!
+            sdlflags |= SDL_WINDOW_HIDDEN;
 
             var sdlptr = SDL_CreateWindow(caption ?? String.Empty,
                 x == -1 ? (int) SDL_WINDOWPOS_CENTERED_MASK : x,
@@ -184,7 +182,7 @@ namespace Ultraviolet.SDL2.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr);
+            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr, flags);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -205,7 +203,7 @@ namespace Ultraviolet.SDL2.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr);
+            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr, WindowFlags.None);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -497,8 +495,16 @@ namespace Ultraviolet.SDL2.Platform
                 }
                 uvconfig.SrgbBuffersEnabled = (srgbFramebufferEnabled > 0);
             }
+            
+            var flags = uvconfig.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
 
-            this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr);
+            if (uvconfig.WindowIsResizable)
+                flags |= WindowFlags.Resizable;
+
+            if (uvconfig.WindowIsBorderless)
+                flags |= WindowFlags.Borderless;
+
+            this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr, flags);
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
@@ -515,14 +521,6 @@ namespace Ultraviolet.SDL2.Platform
                 }
                 else
                 {
-                    var flags = uvconfig.WindowIsVisible ? WindowFlags.None : WindowFlags.Hidden;
-
-                    if (uvconfig.WindowIsResizable)
-                        flags |= WindowFlags.Resizable;
-
-                    if (uvconfig.WindowIsBorderless)
-                        flags |= WindowFlags.Borderless;
-
                     var primary = Create(caption,
                         uvconfig.InitialWindowPosition.X,
                         uvconfig.InitialWindowPosition.Y,
