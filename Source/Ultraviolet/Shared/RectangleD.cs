@@ -623,6 +623,11 @@ namespace Ultraviolet
         public Point2D Location
         {
             get { return new Point2D(X, Y); }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+            }
         }
 
         /// <summary>
@@ -641,6 +646,11 @@ namespace Ultraviolet
         public Size2D Size
         {
             get { return new Size2D(Width, Height); }
+            set
+            {
+                Width = value.Width;
+                Height = value.Height;
+            }
         }
 
         /// <summary>
