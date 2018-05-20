@@ -99,6 +99,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindowInfoOpenGL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2UltravioletWindowInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platform\SDL2ScreenDensityService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\WindowStatusFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2PlatformRenderingAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDL2Cursor.cs" />

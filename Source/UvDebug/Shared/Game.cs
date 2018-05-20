@@ -61,7 +61,9 @@ namespace UvDebug
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
             var configuration = new OpenGLUltravioletConfiguration();
-//            configuration.MinimumOpenGLVersion = new Version(4, 5, 0, 0);
+            //            configuration.MinimumOpenGLVersion = new Version(4, 5, 0, 0);
+            configuration.WindowIsShownImmediately = true;
+            configuration.WindowIsVisible = false;
             configuration.SupportsHighDensityDisplayModes = true;
             configuration.SrgbBuffersEnabled = true;
             configuration.SrgbDefaultForTexture2D = true;

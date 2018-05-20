@@ -182,6 +182,13 @@ namespace Ultraviolet
         public Boolean WindowIsBorderless { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the Ultraviolet context's default window is shown immediately.
+        /// The default behavior is to hide the window until immediately before it is about to be rendered for the first time.
+        /// If the context is headless, this setting has no effect.
+        /// </summary>
+        public Boolean WindowIsShownImmediately { get; set; }
+
+        /// <summary>
         /// Gets or sets the intial size and position of the context's primary window.
         /// </summary>
         public Rectangle InitialWindowPosition { get; set; }
