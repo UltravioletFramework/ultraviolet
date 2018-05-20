@@ -8,18 +8,29 @@ namespace Ultraviolet.Core.Text
         /// <inheritdoc/>
         public override Int32 GetHashCode()
         {
-            if ((sourceString == null && sourceBuilder == null) || length == 0)
+            if (IsEmpty)
                 return 0;
 
-            unchecked
+            var hash = 17;
+            switch (Source)
             {
-                var hash = 17;
-                for (int i = 0; i < length; i++)
-                {
-                    hash = hash * 31 + this[i].GetHashCode();
-                }
-                return hash;
+                case String str:
+                    unchecked
+                    {
+                        for (int count = 0, ix = Start; count < Length; count++, ix++)
+                            hash = hash * 31 + str[ix].GetHashCode();
+                    }
+                    break;
+
+                case StringBuilder sb:
+                    unchecked
+                    {
+                        for (int count = 0, ix = Start; count < Length; count++, ix++)
+                            hash = hash * 32 + sb[ix].GetHashCode();
+                    }
+                    break;
             }
+            return hash;
         }
         
         /// <summary>
@@ -28,10 +39,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringSegment v1, StringSegment v2)
-        {
-            return v1.Equals(v2);
-        }
+        public static Boolean operator ==(StringSegment v1, StringSegment v2) => v1.Equals(v2);
 
         /// <summary>
         /// Compares two objects to determine whether they are unequal.
@@ -39,10 +47,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringSegment v1, StringSegment v2)
-        {
-            return !v1.Equals(v2);
-        }
+        public static Boolean operator !=(StringSegment v1, StringSegment v2) => !v1.Equals(v2);
 
         /// <summary>
         /// Compares two objects to determine whether they are equal.
@@ -50,10 +55,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringSegment v1, String v2)
-        {
-            return v1.Equals(v2);
-        }
+        public static Boolean operator ==(StringSegment v1, String v2) => v1.Equals(v2);
 
         /// <summary>
         /// Compares two objects to determine whether they are unequal.
@@ -61,10 +63,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringSegment v1, String v2)
-        {
-            return !v1.Equals(v2);
-        }
+        public static Boolean operator !=(StringSegment v1, String v2) => !v1.Equals(v2);
 
         /// <summary>
         /// Compares two objects to determine whether they are equal.
@@ -72,10 +71,7 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are equal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator ==(StringSegment v1, StringBuilder v2)
-        {
-            return v1.Equals(v2);
-        }
+        public static Boolean operator ==(StringSegment v1, StringBuilder v2) => v1.Equals(v2);
 
         /// <summary>
         /// Compares two objects to determine whether they are unequal.
@@ -83,18 +79,22 @@ namespace Ultraviolet.Core.Text
         /// <param name="v1">The first value to compare.</param>
         /// <param name="v2">The second value to compare.</param>
         /// <returns><see langword="true"/> if the two values are unequal; otherwise, <see langword="false"/>.</returns>
-        public static Boolean operator !=(StringSegment v1, StringBuilder v2)
-        {
-            return !v1.Equals(v2);
-        }
+        public static Boolean operator !=(StringSegment v1, StringBuilder v2) => !v1.Equals(v2);
         
         /// <inheritdoc/>
         public override Boolean Equals(Object other)
         {
-            if (other is StringSegment ss) return Equals(ss);
-            if (other is String s) return Equals(s);
-            if (other is StringBuilder sb) return Equals(sb);
-            return false;
+            switch (other)
+            {
+                case StringSegment ss:
+                    return Equals(ss);
+                case String s:
+                    return Equals(s);
+                case StringBuilder sb:
+                    return Equals(sb);
+                default:
+                    return false;
+            }
         }
         
         /// <inheritdoc/>
@@ -105,17 +105,30 @@ namespace Ultraviolet.Core.Text
             if (other.IsEmpty)
                 return IsEmpty;
 
-            if (other.length != length)
+            if (other.Length != Length)
                 return false;
 
-            for (int i = 0; i < length; i++)
+            if (Source is String str)
             {
-                if (this[i] != other[i])
+                for (int ixstr = Start, ixother = 0; ixother < Length; ixstr++, ixother++)
                 {
-                    return false;
+                    if (str[ixstr] != other[ixother])
+                        return false;
                 }
+                return true;
             }
-            return true;
+
+            if (Source is StringBuilder sb)
+            {
+                for (int ixsb = Start, ixother = 0; ixother < Length; ixsb++, ixother++)
+                {
+                    if (sb[ixsb] != other[ixother])
+                        return false;
+                }
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc/>
@@ -124,17 +137,30 @@ namespace Ultraviolet.Core.Text
             if (IsEmpty && other == String.Empty)
                 return true;
 
-            if (other == null || other.Length != length)
+            if (other == null || other.Length != Length)
                 return false;
 
-            for (int i = 0; i < length; i++)
+            if (Source is String str)
             {
-                if (this[i] != other[i])
+                for (int ixstr = Start, ixother = 0; ixother < Length; ixstr++, ixother++)
                 {
-                    return false;
+                    if (str[ixstr] != other[ixother])
+                        return false;
                 }
+                return true;
             }
-            return true;
+
+            if (Source is StringBuilder sb)
+            {
+                for (int ixsb = Start, ixother = 0; ixother < Length; ixsb++, ixother++)
+                {
+                    if (sb[ixsb] != other[ixother])
+                        return false;
+                }
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc/>
@@ -143,17 +169,30 @@ namespace Ultraviolet.Core.Text
             if (IsEmpty && other.Length == 0)
                 return true;
 
-            if (other == null || other.Length != length)
+            if (other == null || other.Length != Length)
                 return false;
 
-            for (int i = 0; i < length; i++)
+            if (Source is String str)
             {
-                if (this[i] != other[i])
+                for (int ixstr = Start, ixother = 0; ixother < Length; ixstr++, ixother++)
                 {
-                    return false;
+                    if (str[ixstr] != other[ixother])
+                        return false;
                 }
+                return true;
             }
-            return true;
+
+            if (Source is StringBuilder sb)
+            {
+                for (int ixsb = Start, ixother = 0; ixother < Length; ixsb++, ixother++)
+                {
+                    if (sb[ixsb] != other[ixother])
+                        return false;
+                }
+                return true;
+            }
+
+            return false;
         }
     }
 }

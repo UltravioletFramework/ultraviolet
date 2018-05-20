@@ -14,14 +14,8 @@ namespace Ultraviolet.Core.Text
         /// </summary>
         /// <param name="segment">The string segment to convert.</param>
         /// <returns>The converted value.</returns>
-        public static Int32 ParseInt32(StringSegment segment)
-        {
-            Int32 value;
-            if (!TryParseInt32(segment, out value))
-                throw new FormatException();
-
-            return value;
-        }
+        public static Int32 ParseInt32(StringSegment segment) =>
+            TryParseInt32(segment, out var value) ? value : throw new FormatException();
 
         /// <summary>
         /// Converts the decimal text of the specified <see cref="StringSegment"/> to an 
@@ -71,20 +65,60 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <summary>
+        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an
+        /// instance of <see cref="Int32"/>, throwing a <see cref="FormatException"/> if the conversion fails.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <returns>The converted value.</returns>
+        public static Int32 ParseHexadecimalInt32(StringSegment segment) =>
+            TryParseHexadecimalInt32(segment, out var value) ? value : throw new FormatException();
+        
+        /// <summary>
+        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an 
+        /// instance of <see cref="Int32"/> if possible.
+        /// </summary>
+        /// <param name="segment">The string segment to convert.</param>
+        /// <param name="result">The converted value.</param>
+        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
+        public static Boolean TryParseHexadecimalInt32(StringSegment segment, out Int32 result)
+        {
+            var spaceCountLeading = CountLeadingSpace(ref segment);
+            var spaceCountTrailing = CountTrailingSpace(ref segment);
+            
+            var valueStart = spaceCountLeading;
+            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
+            
+            var magnitude = (Int64)Math.Pow(16, valueLength - 1);
+            var digit = 0;
+            var total = 0L;
+            for (int i = 0; i < valueLength; i++)
+            {
+                if (!ConvertHexadecimalDigit(segment[valueStart + i], out digit))
+                {
+                    result = 0;
+                    return false;
+                }
+
+                total += (magnitude * digit);
+                magnitude /= 16;
+            }
+
+            if (total > Int32.MaxValue)
+                throw new OverflowException();
+
+            result = (Int32)total;
+            return true;
+        }
+
+        /// <summary>
         /// Converts the decimal text of the specified <see cref="StringSegment"/> to an
         /// instance of <see cref="UInt32"/>, throwing a <see cref="FormatException"/> if the conversion fails.
         /// </summary>
         /// <param name="segment">The string segment to convert.</param>
         /// <returns>The converted value.</returns>
         [CLSCompliant(false)]
-        public static UInt32 ParseUInt32(StringSegment segment)
-        {
-            UInt32 value;
-            if (!TryParseUInt32(segment, out value))
-                throw new FormatException();
-
-            return value;
-        }
+        public static UInt32 ParseUInt32(StringSegment segment) =>
+            TryParseUInt32(segment, out var value) ? value : throw new FormatException();
 
         /// <summary>
         /// Converts the decimal text of the specified <see cref="StringSegment"/> to an 
@@ -126,71 +160,13 @@ namespace Ultraviolet.Core.Text
 
         /// <summary>
         /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an
-        /// instance of <see cref="Int32"/>, throwing a <see cref="FormatException"/> if the conversion fails.
-        /// </summary>
-        /// <param name="segment">The string segment to convert.</param>
-        /// <returns>The converted value.</returns>
-        public static Int32 ParseHexadecimalInt32(StringSegment segment)
-        {
-            Int32 value;
-            if (!TryParseHexadecimalInt32(segment, out value))
-                throw new FormatException();
-
-            return value;
-        }
-        
-        /// <summary>
-        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an 
-        /// instance of <see cref="Int32"/> if possible.
-        /// </summary>
-        /// <param name="segment">The string segment to convert.</param>
-        /// <param name="result">The converted value.</param>
-        /// <returns><see langword="true"/> if the conversion succeeded; otherwise, <see langword="false"/>.</returns>
-        public static Boolean TryParseHexadecimalInt32(StringSegment segment, out Int32 result)
-        {
-            var spaceCountLeading = CountLeadingSpace(ref segment);
-            var spaceCountTrailing = CountTrailingSpace(ref segment);
-            
-            var valueStart = spaceCountLeading;
-            var valueLength = segment.Length - (spaceCountLeading + spaceCountTrailing);
-            
-            var magnitude = (Int64)Math.Pow(16, valueLength - 1);
-            var digit = 0;
-            var total = 0L;
-            for (int i = 0; i < valueLength; i++)
-            {
-                if (!ConvertHexadecimalDigit(segment[valueStart + i], out digit))
-                {
-                    result = 0;
-                    return false;
-                }
-
-                total += (magnitude * digit);
-                magnitude /= 16;
-            }
-
-            if (total > Int32.MaxValue)
-                throw new OverflowException();
-
-            result = (Int32)total;
-            return true;
-        }
-
-        /// <summary>
-        /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an
         /// instance of <see cref="UInt32"/>, throwing a <see cref="FormatException"/> if the conversion fails.
         /// </summary>
         /// <param name="segment">The string segment to convert.</param>
         /// <returns>The converted value.</returns>
         [CLSCompliant(false)]
-        public static UInt32 ParseHexadecimalUInt32(StringSegment segment)
-        {
-            UInt32 value;
-            if (!TryParseHexadecimalUInt32(segment, out value))
-                throw new FormatException();
-
-            return value;
-        }
+        public static UInt32 ParseHexadecimalUInt32(StringSegment segment) =>
+            TryParseHexadecimalUInt32(segment, out var value) ? value : throw new FormatException();
 
         /// <summary>
         /// Converts the hexadecimal text of the specified <see cref="StringSegment"/> to an 
