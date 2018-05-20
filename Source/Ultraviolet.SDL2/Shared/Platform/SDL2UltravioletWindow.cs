@@ -28,13 +28,14 @@ namespace Ultraviolet.SDL2.Platform
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="ptr">The SDL2 pointer that represents the window.</param>
+        /// <param name="visible">A value indicating whether this window should be visible by default.</param>
         /// <param name="native">A value indicating whether the window was created from a native pointer.</param>
-        internal SDL2UltravioletWindow(UltravioletContext uv, IntPtr ptr, Boolean native = false)
+        internal SDL2UltravioletWindow(UltravioletContext uv, IntPtr ptr, Boolean visible, Boolean native = false)
             : base(uv)
         {
             this.ptr = ptr;
-            this.id = SDL_GetWindowID(ptr);
-            this.native = native;
+            this.ID = (Int32)SDL_GetWindowID(ptr);
+            this.Native = native;
 
             SetIcon(DefaultWindowIcon.Value);
 
@@ -45,10 +46,22 @@ namespace Ultraviolet.SDL2.Platform
 
             var flags = SDL_GetWindowFlags(ptr);
 
-            this.focused = (flags & SDL_WINDOW_INPUT_FOCUS) == SDL_WINDOW_INPUT_FOCUS;
-            this.minimized = (flags & SDL_WINDOW_MINIMIZED) == SDL_WINDOW_MINIMIZED;
-            this.opengl = (flags & SDL_WINDOW_OPENGL) == SDL_WINDOW_OPENGL;
-            this.windowScale = Display?.DensityScale ?? 1f;
+            if ((flags & SDL_WINDOW_OPENGL) == SDL_WINDOW_OPENGL)
+                this.windowStatus |= WindowStatusFlags.OpenGL;
+
+            if ((flags & SDL_WINDOW_VULKAN) == SDL_WINDOW_VULKAN)
+                this.windowStatus |= WindowStatusFlags.Vulkan;
+
+            if ((flags & SDL_WINDOW_INPUT_FOCUS) == SDL_WINDOW_INPUT_FOCUS)
+                this.windowStatus |= WindowStatusFlags.Focused;
+
+            if ((flags & SDL_WINDOW_MINIMIZED) == SDL_WINDOW_MINIMIZED)
+                this.windowStatus |= WindowStatusFlags.Minimized;
+
+            if ((flags & SDL_WINDOW_HIDDEN) == SDL_WINDOW_HIDDEN && visible)
+                this.windowStatus |= WindowStatusFlags.Unshown;
+
+            this.WindowScale = Display?.DensityScale ?? 1f;
 
             ChangeCompositor(DefaultCompositor.Create(this));
         }
@@ -69,8 +82,8 @@ namespace Ultraviolet.SDL2.Platform
             if (type != SDL2UltravioletMessages.SDLEvent)
                 return;
 
-            var msg = (SDL2.Messages.SDL2EventMessageData)data;
-            if (msg.Event.type != SDL_WINDOWEVENT || msg.Event.window.windowID != id)
+            var msg = (Messages.SDL2EventMessageData)data;
+            if (msg.Event.type != SDL_WINDOWEVENT || msg.Event.window.windowID != ID)
                 return;
 
             switch (msg.Event.window.@event)
@@ -84,17 +97,17 @@ namespace Ultraviolet.SDL2.Platform
                     break;
 
                 case SDL_WINDOWEVENT_MINIMIZED:
-                    minimized = true;
+                    this.windowStatus |= WindowStatusFlags.Minimized;
                     OnMinimized();
                     break;
 
                 case SDL_WINDOWEVENT_MAXIMIZED:
-                    minimized = false;
+                    this.windowStatus &= ~WindowStatusFlags.Minimized;
                     OnMaximized();
                     break;
 
                 case SDL_WINDOWEVENT_RESTORED:
-                    minimized = false;
+                    this.windowStatus &= ~WindowStatusFlags.Minimized;
                     OnRestored();
                     break;
 
@@ -107,11 +120,11 @@ namespace Ultraviolet.SDL2.Platform
                     break;
 
                 case SDL_WINDOWEVENT_FOCUS_GAINED:
-                    focused = true;
+                    this.windowStatus |= WindowStatusFlags.Focused;
                     break;
 
                 case SDL_WINDOWEVENT_FOCUS_LOST:
-                    focused = false;
+                    this.windowStatus &= ~WindowStatusFlags.Focused;
                     break;
             }
         }
@@ -159,8 +172,7 @@ namespace Ultraviolet.SDL2.Platform
 
             this.WindowedPosition = bounds.Location;
             this.WindowedClientSize = bounds.Size;
-
-            this.windowScale = scale;
+            this.WindowScale = scale;
         }
 
         /// <inheritdoc/>
@@ -170,8 +182,7 @@ namespace Ultraviolet.SDL2.Platform
             Contract.EnsureRange(scale >= 1f, nameof(scale));
 
             this.WindowedClientSize = size;
-
-            this.windowScale = scale;
+            this.WindowScale = scale;
         }
 
         /// <inheritdoc/>
@@ -182,8 +193,7 @@ namespace Ultraviolet.SDL2.Platform
 
             this.WindowedPosition = new Point2((Int32)SDL_WINDOWPOS_CENTERED_MASK, (Int32)SDL_WINDOWPOS_CENTERED_MASK);
             this.WindowedClientSize = size;
-
-            this.windowScale = scale;
+            this.WindowScale = scale;
         }
 
         /// <inheritdoc/>
@@ -323,10 +333,8 @@ namespace Ultraviolet.SDL2.Platform
             if (IsCurrentWindow)
                 throw new InvalidOperationException(UltravioletStrings.CannotChangeCompositorWhileCurrent);
 
-            if (this.compositor != null)
-                this.compositor.Dispose();
-
-            this.compositor = compositor ?? DefaultCompositor.Create(this);
+            this.Compositor?.Dispose();
+            this.Compositor = compositor ?? DefaultCompositor.Create(this);
         }
 
         /// <inheritdoc/>
@@ -362,7 +370,7 @@ namespace Ultraviolet.SDL2.Platform
         /// <param name="time">Time elapsed since the last call to <see cref="UltravioletContext.Update(UltravioletTime)"/>.</param>
         public void Update(UltravioletTime time)
         {
-            if (Display.DensityScale != windowScale)
+            if (Display.DensityScale != WindowScale)
                 HandleDpiChanged();
         }
 
@@ -377,15 +385,7 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Int32 ID
-        {
-            get
-            {
-                Contract.EnsureNotDisposed(this, Disposed);
-
-                return (Int32)SDL_GetWindowID(ptr);
-            }
-        }
+        public Int32 ID { get; }
 
         /// <inheritdoc/>
         public String Caption
@@ -405,7 +405,7 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Single WindowScale => windowScale;
+        public Single WindowScale { get; private set; }
 
         /// <inheritdoc/>
         public Point2 Position
@@ -452,7 +452,9 @@ namespace Ultraviolet.SDL2.Platform
                 Contract.EnsureNotDisposed(this, Disposed);
 
                 Int32 w, h;
-                if (opengl)
+
+                var isOpenGLWindow = (this.windowStatus & WindowStatusFlags.OpenGL) == WindowStatusFlags.OpenGL;
+                if (isOpenGLWindow)
                 {
                     SDL_GL_GetDrawableSize(ptr, out w, out h);
                 }
@@ -541,14 +543,12 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Boolean SynchronizeWithVerticalRetrace
-        {
-            get => synchronizeWithVerticalRetrace;
-            set => synchronizeWithVerticalRetrace = value;
-        }
+        public Boolean SynchronizeWithVerticalRetrace { get; set; } = true;
 
         /// <inheritdoc/>
-        public Boolean Active => focused && !minimized;
+        public Boolean Active =>
+            (windowStatus & WindowStatusFlags.Focused) == WindowStatusFlags.Focused &&
+            (windowStatus & WindowStatusFlags.Minimized) != WindowStatusFlags.Minimized;
 
         /// <inheritdoc/>
         public Boolean Visible
@@ -600,7 +600,7 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Boolean Native => native;
+        public Boolean Native { get; }
 
         /// <inheritdoc/>
         public Boolean GrabsMouseWhenWindowed
@@ -675,7 +675,7 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
-        public Compositor Compositor => compositor;
+        public Compositor Compositor { get; private set; }
 
         /// <inheritdoc/>
         public IUltravioletDisplay Display
@@ -737,12 +737,36 @@ namespace Ultraviolet.SDL2.Platform
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the window is bound for rendering.
+        /// </summary>
+        internal Boolean IsBoundForRendering
+        {
+            get => (windowStatus & WindowStatusFlags.BoundForRendering) == WindowStatusFlags.BoundForRendering;
+            set
+            {
+                if (value)
+                {
+                    windowStatus |= WindowStatusFlags.BoundForRendering;
+                    if ((windowStatus & WindowStatusFlags.Unshown) == WindowStatusFlags.Unshown)
+                    {
+                        windowStatus &= ~WindowStatusFlags.Unshown;
+                        SDL_ShowWindow(ptr);
+                    }
+                }
+                else
+                {
+                    windowStatus &= ~WindowStatusFlags.BoundForRendering;
+                }
+            }
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
             if (disposing)
             {
-                SafeDispose.Dispose(compositor);
+                Compositor?.Dispose();
             }
             SDL_DestroyWindow(ptr);
             base.Dispose(disposing);
@@ -958,7 +982,7 @@ namespace Ultraviolet.SDL2.Platform
             // On Windows, resize the window to match the new scale.
             if (Ultraviolet.Platform == UltravioletPlatform.Windows && Ultraviolet.Properties.SupportsHighDensityDisplayModes)
             {
-                var factor = (reportedScale ?? Display.DensityScale) / windowScale;
+                var factor = (reportedScale ?? Display.DensityScale) / WindowScale;
 
                 SDL_GetWindowPosition(ptr, out var windowX, out var windowY);
                 SDL_GetWindowSize(ptr, out var windowW, out var windowH);
@@ -970,7 +994,7 @@ namespace Ultraviolet.SDL2.Platform
                 WindowedPosition = bounds.Location;
                 WindowedClientSize = size;
             }
-            windowScale = (reportedScale ?? Display.DensityScale);
+            WindowScale = (reportedScale ?? Display.DensityScale);
 
             // Inform the rest of the system that this window's DPI has changed.
             var messageData = Ultraviolet.Messages.CreateMessageData<WindowDensityChangedMessageData>();
@@ -1101,26 +1125,19 @@ namespace Ultraviolet.SDL2.Platform
         private IntPtr wndProcPrev;
 
         // Property values.
-        private readonly UInt32 id;
-        private Single windowScale;
         private Point2? windowedPosition;
         private Size2? windowedClientSize;
-        private Boolean synchronizeWithVerticalRetrace = true;
-        private readonly Boolean native;
         private Boolean grabsMouseWhenWindowed;
         private Boolean grabsMouseWhenFullscreenWindowed;
         private Boolean grabsMouseWhenFullscreen;
         private Surface2D icon;
-        private Compositor compositor;
 
         // State values.
         private readonly IntPtr ptr;
         private WindowMode windowMode = WindowMode.Windowed;
+        private WindowStatusFlags windowStatus = WindowStatusFlags.None;
         private DisplayMode displayMode;
-        private Boolean focused;
-        private Boolean minimized;
-        private Boolean opengl;
-
+        
         // HACK: Cached style from before entering fullscreen windowed mode.
         private IntPtr win32CachedStyle;
 

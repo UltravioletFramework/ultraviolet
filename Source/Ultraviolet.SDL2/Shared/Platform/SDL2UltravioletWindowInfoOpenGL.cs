@@ -183,14 +183,20 @@ namespace Ultraviolet.SDL2.Platform
                     throw new SDL2Exception();
             }
 
+            VSync = win.SynchronizeWithVerticalRetrace;
+
+            if (glwin != null)
+                glwin.IsBoundForRendering = false;
+
             glwin = win;
             glcontext = context;
 
-            VSync = win.SynchronizeWithVerticalRetrace;
+            if (glwin != null)
+                glwin.IsBoundForRendering = true;
         }
 
         // OpenGL context state.
-        private IUltravioletWindow glwin;
+        private SDL2UltravioletWindow glwin;
         private IntPtr glcontext;
     }
 }

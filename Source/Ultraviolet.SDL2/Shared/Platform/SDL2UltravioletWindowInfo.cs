@@ -165,26 +165,25 @@ namespace Ultraviolet.SDL2.Platform
             if (Ultraviolet.Properties.SupportsHighDensityDisplayModes)
                 sdlflags |= SDL_WINDOW_ALLOW_HIGHDPI;
 
+            if ((flags & WindowFlags.Hidden) == WindowFlags.Hidden || (flags & WindowFlags.ShownImmediately) != WindowFlags.ShownImmediately)
+                sdlflags |= SDL_WINDOW_HIDDEN;
+
             if ((flags & WindowFlags.Resizable) == WindowFlags.Resizable)
                 sdlflags |= SDL_WINDOW_RESIZABLE;
 
             if ((flags & WindowFlags.Borderless) == WindowFlags.Borderless)
                 sdlflags |= SDL_WINDOW_BORDERLESS;
 
-            if ((flags & WindowFlags.Hidden) == WindowFlags.Hidden)
-                sdlflags |= SDL_WINDOW_HIDDEN;
-            else
-                sdlflags |= SDL_WINDOW_SHOWN;
-
             var sdlptr = SDL_CreateWindow(caption ?? String.Empty,
-                x == -1 ? (int) SDL_WINDOWPOS_CENTERED_MASK : x,
-                y == -1 ? (int) SDL_WINDOWPOS_CENTERED_MASK : y,
+                x < 0 ? (Int32)SDL_WINDOWPOS_CENTERED_MASK : x,
+                y < 0 ? (Int32)SDL_WINDOWPOS_CENTERED_MASK : y,
                 width, height, sdlflags);
             
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr);
+            var visible = (flags & WindowFlags.Hidden) != WindowFlags.Hidden;
+            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr, visible);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -205,7 +204,7 @@ namespace Ultraviolet.SDL2.Platform
             if (sdlptr == IntPtr.Zero)
                 throw new SDL2Exception();
 
-            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr);
+            var win = new SDL2UltravioletWindow(Ultraviolet, sdlptr, true);
             windows.Add(win);
 
             Ultraviolet.Messages.Subscribe(win, SDL2UltravioletMessages.SDLEvent);
@@ -498,7 +497,7 @@ namespace Ultraviolet.SDL2.Platform
                 uvconfig.SrgbBuffersEnabled = (srgbFramebufferEnabled > 0);
             }
 
-            this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr);
+            this.master = new SDL2UltravioletWindow(Ultraviolet, masterptr, isRunningOnMobile);
 
             // Set SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT so that enlisted windows
             // will be OpenGL-enabled and set to the correct pixel format.
@@ -522,6 +521,9 @@ namespace Ultraviolet.SDL2.Platform
 
                     if (uvconfig.WindowIsBorderless)
                         flags |= WindowFlags.Borderless;
+
+                    if (uvconfig.WindowIsShownImmediately)
+                        flags |= WindowFlags.ShownImmediately;
 
                     var primary = Create(caption,
                         uvconfig.InitialWindowPosition.X,
