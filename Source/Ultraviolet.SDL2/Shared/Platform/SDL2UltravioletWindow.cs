@@ -28,13 +28,15 @@ namespace Ultraviolet.SDL2.Platform
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="ptr">The SDL2 pointer that represents the window.</param>
+        /// <param name="creationFlags">Flags used for the creation of the window.</param>
         /// <param name="native">A value indicating whether the window was created from a native pointer.</param>
-        internal SDL2UltravioletWindow(UltravioletContext uv, IntPtr ptr, Boolean native = false)
+        internal SDL2UltravioletWindow(UltravioletContext uv, IntPtr ptr, WindowFlags creationFlags, Boolean native = false)
             : base(uv)
         {
             this.ptr = ptr;
             this.id = SDL_GetWindowID(ptr);
             this.native = native;
+            this.CreationFlags = creationFlags;
 
             SetIcon(DefaultWindowIcon.Value);
 
@@ -736,6 +738,11 @@ namespace Ultraviolet.SDL2.Platform
             get;
             set;
         }
+        
+        /// <summary>
+        /// Get the flags used to create this window
+        /// </summary>
+        internal WindowFlags CreationFlags { get; private set; }
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)

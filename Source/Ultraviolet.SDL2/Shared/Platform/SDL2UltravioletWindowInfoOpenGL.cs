@@ -187,6 +187,11 @@ namespace Ultraviolet.SDL2.Platform
             glcontext = context;
 
             VSync = win.SynchronizeWithVerticalRetrace;
+            
+            // If the window was created without the Hidden flag, then we can show it
+            var flags = win.CreationFlags;
+            if (flags.HasFlag(WindowFlags.Hidden) == false)
+                SDL_ShowWindow(winptr);
         }
 
         // OpenGL context state.
