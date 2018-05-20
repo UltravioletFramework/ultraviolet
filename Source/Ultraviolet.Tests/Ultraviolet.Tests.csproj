@@ -896,8 +896,12 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderStrokedSimpleStrings.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Content\Fonts\SegoeUI12.xml" />
-    <Content Include="Content\Fonts\SegoeUI12Texture.png" />
+    <None Include="Content\Fonts\SegoeUI12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts\SegoeUI12Texture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
