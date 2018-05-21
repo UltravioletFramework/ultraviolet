@@ -108,39 +108,39 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text)
         {
-            var source = new StringSource(text);
+            var source = new StringBuilderSource(text);
             return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
         {
-            var source = new StringSource(text);
+            var source = new StringBuilderSource(text);
             return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(ref StringSegment text)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(ref StringSegment text, Int32 start, Int32 count)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureString(ref StringSource source)
+        public override Size2 MeasureString<TSource>(ref TSource source)
         {
             return MeasureString(ref source, 0, source.Length);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
+        public override Size2 MeasureString<TSource>(ref TSource source, Int32 start, Int32 count)
         {
             if (count == 0)
                 return Size2.Zero;
@@ -190,33 +190,33 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(StringBuilder text, Int32 ix)
         {
-            var source = new StringSource(text);
+            var source = new StringBuilderSource(text);
             return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(ref StringSegment text, Int32 ix)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSegment text, Int32 ix, Int32 c2)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureGlyphWithHypotheticalKerning(ref source, ix, c2);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithoutKerning(ref StringSegment text, Int32 ix)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureGlyphWithoutKerning(ref source, ix);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyph(ref StringSource text, Int32 ix)
+        public override Size2 MeasureGlyph<TSource>(ref TSource text, Int32 ix)
         {
             var c1 = text[ix];
 
@@ -254,7 +254,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSource text, Int32 ix, Int32 c2)
+        public override Size2 MeasureGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 c2)
         {
             if (c2 < 0 || c2 > Char.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(c2));
@@ -279,7 +279,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyphWithoutKerning(ref StringSource text, Int32 ix)
+        public override Size2 MeasureGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix)
         {
             var c1 = text[ix];
             if (Char.IsSurrogate(c1))
@@ -333,7 +333,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(ref StringSource text, Int32 ix)
+        public override Size2 GetKerningInfo<TSource>(ref TSource text, Int32 ix)
         {
             var c1 = text[ix];
 
@@ -359,7 +359,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 GetHypotheticalKerningInfo(ref StringSource text, Int32 ix, Int32 c2)
+        public override Size2 GetHypotheticalKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 c2)
         {
             if (c2 < 0 || c2 > Char.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(c2));
@@ -372,7 +372,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2)
+        public override Size2 GetKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2)
         {
             var c1 = text1[ix1];
             if (Char.IsSurrogate(c1))
@@ -388,22 +388,22 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <inheritdoc/>
         public override Size2 GetKerningInfo(ref StringSegment text, Int32 ix)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return GetKerningInfo(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 GetHypotheticalKerningInfo(ref StringSegment text, Int32 ix, Int32 c2)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return GetHypotheticalKerningInfo(ref source, ix, c2);
         }
 
         /// <inheritdoc/>
         public override Size2 GetKerningInfo(ref StringSegment text1, Int32 ix1, ref StringSegment text2, Int32 ix2)
         {
-            var source1 = new StringSource(text1);
-            var source2 = new StringSource(text2);
+            var source1 = new StringSegmentSource(text1);
+            var source2 = new StringSegmentSource(text2);
             return GetKerningInfo(ref source1, ix1, ref source2, ix2);
         }
 

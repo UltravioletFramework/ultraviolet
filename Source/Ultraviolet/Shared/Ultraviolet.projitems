@@ -49,6 +49,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\WatchableAssetReference.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\FallbackFontInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StringSourceUnion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StringSourceUnionValueType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
@@ -286,7 +288,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StretchableImage9.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\TextureImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\GlyphSearchMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\IncrementalResult.cs" />

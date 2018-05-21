@@ -755,7 +755,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text),
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -773,7 +774,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -795,7 +797,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -818,7 +821,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -840,7 +844,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -863,7 +868,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -881,7 +887,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -900,7 +907,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -923,7 +931,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text),
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -947,7 +956,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -970,7 +980,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -994,7 +1005,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1011,7 +1023,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringBuilderSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -1029,7 +1042,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringBuilderSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -1051,7 +1065,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1074,7 +1089,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1096,7 +1112,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1119,7 +1136,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1137,7 +1155,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringBuilderSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -1156,7 +1175,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(glyphShader, fontFace, new StringBuilderSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -1179,7 +1199,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1203,7 +1224,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(glyphShader, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1226,7 +1248,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1250,7 +1273,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(glyphShader, fontFace, new StringBuilderSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1267,7 +1291,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -1285,7 +1310,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
         /// <summary>
@@ -1307,7 +1333,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1330,7 +1357,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1352,7 +1380,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1375,7 +1404,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+            DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
         /// <summary>
@@ -1393,7 +1423,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -1412,7 +1443,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+            DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
         /// <summary>
@@ -1435,7 +1467,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1459,7 +1492,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+            DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1482,7 +1516,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -1506,7 +1541,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
-            DrawStringInternal(glyphShader, fontFace, new StringSource(text), position, color, rotation, origin, scale, effects, layerDepth, data);
+            DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
         /// <summary>
@@ -2414,8 +2450,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The text's rendering effects.</param>
         /// <param name="layerDepth">The text's layer depth.</param>
         /// <param name="data">The text's custom data.</param>
-        private void DrawStringInternal(GlyphShaderContext glyphShaderContext, UltravioletFontFace fontFace, StringSource text, Vector2 position,
+        private void DrawStringInternal<TSource>(GlyphShaderContext glyphShaderContext, UltravioletFontFace fontFace, TSource text, Vector2 position,
             Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+            where TSource : IStringSource<Char>
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);

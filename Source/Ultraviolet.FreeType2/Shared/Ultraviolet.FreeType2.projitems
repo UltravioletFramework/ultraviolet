@@ -78,10 +78,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_LibraryRec.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNative.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TextScriptUtil.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TextDirectionUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_direction_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_script_t.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextDirectionUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextScriptUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromXDocument.cs" />
