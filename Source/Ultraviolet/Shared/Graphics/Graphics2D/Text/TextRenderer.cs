@@ -628,9 +628,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
 
-            var source = (input.SourceText.SourceString != null) ?
-                new StringSource(input.SourceText.SourceString) :
-                new StringSource(input.SourceText.SourceStringBuilder);
+            var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -678,7 +676,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphCountSeen + cmd->TextLength > index)
                             {
-                                var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
+                                var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
 
                                 var glyphIndexWithinText = index - glyphCountSeen;
                                 if (glyphIndexWithinText > 0 && Char.IsSurrogatePair(text[glyphIndexWithinText - 1], text[glyphIndexWithinText]))
@@ -1229,6 +1227,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Creates a new <see cref="StringSourceUnion"/> from the originating string for the specified string segment.
+        /// </summary>
+        private static StringSourceUnion CreateSourceUnionFromSegmentOrigin(StringSegment segment)
+        {
+            if (segment.IsBackedByString)
+                return (StringSource)segment.SourceString;
+
+            if (segment.IsBackedByStringBuilder)
+                return (StringBuilderSource)segment.SourceStringBuilder;
+
+            return new StringSourceUnion();
+        }
+
+        /// <summary>
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
         private RectangleF DrawInternal(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count)
@@ -1257,7 +1269,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var charsSeen = 0;
             var charsMax = (count == Int32.MaxValue) ? Int32.MaxValue : start + count - 1;
 
-            var source = new StringSource(input.SourceText);
+            var source = (StringSourceUnion)(StringSegmentSource)input.SourceText;
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -1341,7 +1353,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Draws a text command.
         /// </summary>
-        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSource source,
+        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSourceUnion source,
             Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
         {
             var wasDrawnToCompletion = true;
@@ -1671,7 +1683,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Processes a styling command and returns a value specifying which, if any, styling parameters were changed as a result.
         /// </summary>
         private TextRendererStateChange ProcessStylingCommand(TextLayoutCommandStream input, TextLayoutCommandType type, TextRendererStacks stacks,
-            ref Boolean bold, ref Boolean italic, ref StringSource source)
+            ref Boolean bold, ref Boolean italic, ref StringSourceUnion source)
         {
             switch (type)
             {
@@ -1778,7 +1790,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.ChangeSourceStringBuilder:
                     {
                         var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
-                        source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
+                        source = new StringBuilderSource(input.GetSourceStringBuilder(cmd->SourceIndex));
                     }
                     return TextRendererStateChange.None;
 
@@ -1935,9 +1947,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
 
-            var source = (input.SourceText.SourceString != null) ?
-                new StringSource(input.SourceText.SourceString) :
-                new StringSource(input.SourceText.SourceStringBuilder);
+            var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
             
             input.Seek(0);
 
@@ -2051,7 +2061,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineHeight);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
-                                    var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
+                                    var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
                                     var glyphPos = (x - tokenBounds.Left);
                                     var glyphWidth = 0;
                                     var glyphHeight = 0;

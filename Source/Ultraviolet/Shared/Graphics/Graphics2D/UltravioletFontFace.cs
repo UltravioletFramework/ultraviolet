@@ -75,18 +75,22 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Measures the size of the specified string of text when rendered using this font.
         /// </summary>
+        /// <typeparam name="TSource">The type of string source which represents the text to measure.</typeparam>
         /// <param name="text">The text to measure.</param>
         /// <returns>The size of the specified string of text when rendered using this font.</returns>
-        public abstract Size2 MeasureString(ref StringSource text);
+        public abstract Size2 MeasureString<TSource>(ref TSource text)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Measures the size of the specified substring of text when rendered using this font.
         /// </summary>
+        /// <typeparam name="TSource">The type of string source which represents the text to measure.</typeparam>
         /// <param name="text">The text to measure.</param>
         /// <param name="start">The index of the first character of the substring to measure.</param>
         /// <param name="count">The number of characters in the substring to measure.</param>
         /// <returns>The size of the specified substring of text when rendered using this font.</returns>
-        public abstract Size2 MeasureString(ref StringSource text, Int32 start, Int32 count);
+        public abstract Size2 MeasureString<TSource>(ref TSource text, Int32 start, Int32 count)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Measures the specified glyph in a string, taking kerning into account.
@@ -132,27 +136,33 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Measures the specified glyph in a string, taking kerning into account.
         /// </summary>
+        /// <typeparam name="TSource">The type of string source which represents the text to measure.</typeparam>
         /// <param name="source">The text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureGlyph(ref StringSource source, Int32 ix);
+        public abstract Size2 MeasureGlyph<TSource>(ref TSource source, Int32 ix)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Measures the specified glyph in a string, taking kerning with a hypothetical second character into account.
         /// </summary>
+        /// <typeparam name="TSource">The type of string source which represents the text to measure.</typeparam>
         /// <param name="text">The text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
         /// <param name="c2">The glyph that comes immediately after the glyph being measured.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureGlyphWithHypotheticalKerning(ref StringSource text, Int32 ix, Int32 c2);
+        public abstract Size2 MeasureGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 c2)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Measures the specified glyph in a string, ignoring kerning.
         /// </summary>
+        /// <typeparam name="TSource">The type of string source which represents the text to measure.</typeparam>
         /// <param name="text">The text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureGlyphWithoutKerning(ref StringSource text, Int32 ix);
+        public abstract Size2 MeasureGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Measures the specified glyph, taking kerning into account.
@@ -173,29 +183,37 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
         /// </summary>
-        /// <param name="text">The string segment that contains the character pair.</param>
+        /// <typeparam name="TSource">The type of string source which contains the character pair.</typeparam>
+        /// <param name="text">The string source that contains the character pair.</param>
         /// <param name="ix">The index of the first character in the pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Size2 GetKerningInfo(ref StringSource text, Int32 ix);
+        public abstract Size2 GetKerningInfo<TSource>(ref TSource text, Int32 ix)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
         /// </summary>
-        /// <param name="text">The string segment that contains the character pair.</param>
+        /// <typeparam name="TSource">The type of string source which contains the character pair.</typeparam>
+        /// <param name="text">The string source that contains the character pair.</param>
         /// <param name="ix">The index of the first character in the pair to evaluate.</param>
         /// <param name="c2">The second character in the pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Size2 GetHypotheticalKerningInfo(ref StringSource text, Int32 ix, Int32 c2);
+        public abstract Size2 GetHypotheticalKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 c2)
+            where TSource : IStringSource<Char>;
 
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
         /// </summary>
-        /// <param name="text1">The string segment that contains the first character in the pair.</param>
+        /// <typeparam name="TSource1">The type of string source contains the first character in the pair.</typeparam>
+        /// <typeparam name="TSource2">The type of string source contains the second character in the pair.</typeparam>
+        /// <param name="text1">The string source that contains the first character in the pair.</param>
         /// <param name="ix1">The index of the first character in the pair to evaluate.</param>
-        /// <param name="text2">The string segment that contains the second character in the pair.</param>
+        /// <param name="text2">The string source that contains the second character in the pair.</param>
         /// <param name="ix2">The index of the second character in the pair to evaluate.</param>
         /// <returns>The kerning offset for the specified character pair.</returns>
-        public abstract Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2);
+        public abstract Size2 GetKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2)
+            where TSource1 : IStringSource<Char>
+            where TSource2 : IStringSource<Char>;
 
         /// <summary>
         /// Gets this font's kerning offset for the specified character pair.
