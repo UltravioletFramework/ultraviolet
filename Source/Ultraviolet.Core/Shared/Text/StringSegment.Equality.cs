@@ -6,32 +6,7 @@ namespace Ultraviolet.Core.Text
     partial struct StringSegment
     {
         /// <inheritdoc/>
-        public override Int32 GetHashCode()
-        {
-            if (IsEmpty)
-                return 0;
-
-            var hash = 17;
-            switch (Source)
-            {
-                case String str:
-                    unchecked
-                    {
-                        for (int count = 0, ix = Start; count < Length; count++, ix++)
-                            hash = hash * 31 + str[ix].GetHashCode();
-                    }
-                    break;
-
-                case StringBuilder sb:
-                    unchecked
-                    {
-                        for (int count = 0, ix = Start; count < Length; count++, ix++)
-                            hash = hash * 32 + sb[ix].GetHashCode();
-                    }
-                    break;
-            }
-            return hash;
-        }
+        public override Int32 GetHashCode() => hashCode;
         
         /// <summary>
         /// Compares two objects to determine whether they are equal.
@@ -193,6 +168,39 @@ namespace Ultraviolet.Core.Text
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Calculates the hash code for the specified instance.
+        /// </summary>
+        private static Int32 CalculateHashCode(Object source, Int32 start, Int32 length)
+        {
+            if (source == null)
+                return 0;
+
+            var hash = 17;
+            switch (source)
+            {
+                case String str:
+                    unchecked
+                    {
+                        for (int count = 0, ix = start; count < length; count++, ix++)
+                            hash = hash * 31 + str[ix].GetHashCode();
+                    }
+                    break;
+
+                case StringBuilder sb:
+                    unchecked
+                    {
+                        for (int count = 0, ix = start; count < length; count++, ix++)
+                            hash = hash * 32 + sb[ix].GetHashCode();
+                    }
+                    break;
+
+                default:
+                    return 0;
+            }
+            return hash;
         }
     }
 }
