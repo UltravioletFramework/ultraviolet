@@ -19,6 +19,8 @@ namespace Ultraviolet.Core.Text
             this.Source = source;
             this.Start = 0;
             this.Length = source.Length;
+
+            this.hashCode = CalculateHashCode(source, 0, source.Length);
         }
 
         /// <summary>
@@ -32,6 +34,8 @@ namespace Ultraviolet.Core.Text
             this.Source = source;
             this.Start = 0;
             this.Length = source.Length;
+
+            this.hashCode = CalculateHashCode(source, 0, source.Length);
         }
 
         /// <summary>
@@ -49,6 +53,8 @@ namespace Ultraviolet.Core.Text
             this.Source = source;
             this.Start = start;
             this.Length = length;
+
+            this.hashCode = CalculateHashCode(source, start, length);
         }
 
         /// <summary>
@@ -66,6 +72,8 @@ namespace Ultraviolet.Core.Text
             this.Source = source;
             this.Start = start;
             this.Length = length;
+
+            this.hashCode = CalculateHashCode(source, start, length);
         }
 
         /// <summary>
@@ -82,6 +90,8 @@ namespace Ultraviolet.Core.Text
             this.Source = source.Source;
             this.Start = source.Start + start;
             this.Length = length;
+
+            this.hashCode = CalculateHashCode(source, start, length);
         }
 
         /// <summary>
@@ -341,6 +351,10 @@ namespace Ultraviolet.Core.Text
         /// <summary>
         /// Represents an empty string segment.
         /// </summary>
-        public static readonly StringSegment Empty = new StringSegment();        
+        public static readonly StringSegment Empty = new StringSegment();
+
+        // Hash code is cached to avoid unnecessary recalculations and also
+        // to make sure that it doesn't change if our source is a StringBuilder instance.
+        private readonly Int32 hashCode;
     }
 }
