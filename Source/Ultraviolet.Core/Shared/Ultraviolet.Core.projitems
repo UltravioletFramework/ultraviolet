@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\ArrayEnumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\BinaryHeap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\BinaryHeap.Enumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\ExpandingPool.cs" />
