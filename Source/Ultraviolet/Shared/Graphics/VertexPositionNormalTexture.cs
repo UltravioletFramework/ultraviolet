@@ -14,7 +14,7 @@
         public VertexPositionNormalTexture(Vector3 position, Vector3 normal, Vector2 textureCoordinate)
         {
             this.Position          = position;
-            this.Normal = normal;
+            this.Normal            = normal;
             this.TextureCoordinate = textureCoordinate;
         }
 
