@@ -6,7 +6,7 @@
     public struct VertexPositionNormalTexture : IVertexType
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VertexPositionColorTexture"/> structure.
+        /// Initializes a new instance of the <see cref="VertexPositionNormalTexture"/> structure.
         /// </summary>
         /// <param name="position">The vertex position.</param>
         /// <param name="normal">The vertex normal.</param>
