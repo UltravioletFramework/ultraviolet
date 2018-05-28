@@ -249,6 +249,8 @@
     <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
     <Compile Include="Graphics\Graphics2D\FontKind.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\ShapedStringTests.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\TextShaperTests.cs" />
     <Compile Include="Graphics\Surface2DTests.cs" />
     <Compile Include="Graphics\DynamicTextureAtlasTests.cs" />
     <Compile Include="Graphics\ViewportTests.cs" />
@@ -401,6 +403,9 @@
     <Compile Include="CircleTests.cs" />
     <Compile Include="Size2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Content\Fonts\FiraGO-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersStrokedEastAsianCharacters.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

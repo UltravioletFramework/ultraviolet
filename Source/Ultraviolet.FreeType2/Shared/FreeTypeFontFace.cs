@@ -445,6 +445,11 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Char SubstitutionCharacter { get; }
 
+        /// <summary>
+        /// Gets a pointer to the native font object.
+        /// </summary>
+        internal IntPtr NativePointer => face;
+
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {

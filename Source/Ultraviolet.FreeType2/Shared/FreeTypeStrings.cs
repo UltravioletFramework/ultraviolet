@@ -33,6 +33,7 @@ namespace Ultraviolet.FreeType2
         public static readonly StringResource FontDoesNotHaveBitmapStrikes          = new StringResource(StringDatabase, "FONT_DOES_NOT_HAVE_BITMAP_STRIKES");
         public static readonly StringResource NoMatchingPixelSize                   = new StringResource(StringDatabase, "NO_MATCHING_PIXEL_SIZE");
         public static readonly StringResource InvalidAtlasParameters                = new StringResource(StringDatabase, "INVALID_ATLAS_PARAMETERS");
+        public static readonly StringResource TextShaperRequiresFreeTypeFont        = new StringResource(StringDatabase, "TEXT_SHAPER_REQUIRES_FREE_TYPE_FONT");
 #pragma warning restore 1591
     }
 }

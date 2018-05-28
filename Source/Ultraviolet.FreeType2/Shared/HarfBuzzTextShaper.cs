@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
+using Ultraviolet.FreeType2.Native;
+using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
 using static Ultraviolet.FreeType2.Native.HarfBuzzNative;
 
@@ -26,15 +28,7 @@ namespace Ultraviolet.FreeType2
             if (capacity > 0)
                 hb_buffer_pre_allocate(native, (UInt32)capacity);
         }
-
-        /// <inheritdoc/>
-        public override void Reset()
-        {
-            Contract.EnsureNotDisposed(this, Disposed);
-
-            hb_buffer_reset(native);
-        }
-
+        
         /// <inheritdoc/>
         public override void Clear()
         {
@@ -123,6 +117,17 @@ namespace Ultraviolet.FreeType2
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            unsafe
+            {
+                fixed (byte* pbytes = System.Text.Encoding.Unicode.GetBytes(str))
+                {
+                    hb_buffer_add_utf16(native, (IntPtr)pbytes, str.Length, 0, str.Length);
+                    length = (Int32)hb_buffer_get_length(native);
+                }
+            }
+
+
+            /*
             var pstr = Marshal.StringToHGlobalUni(str);
             try
             {
@@ -134,6 +139,7 @@ namespace Ultraviolet.FreeType2
                 if (pstr != IntPtr.Zero)
                     Marshal.FreeHGlobal(pstr);
             }
+            */
         }
 
         /// <inheritdoc/>
@@ -177,6 +183,53 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
+        public override ShapedString CreateShapedString(UltravioletFontFace fontFace)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var ftFontFace = fontFace as FreeTypeFontFace;
+            if (ftFontFace == null)
+                throw new NotSupportedException(FreeTypeStrings.TextShaperRequiresFreeTypeFont);
+
+            if (lastUsedFont != ftFontFace && lastUsedFontNative != IntPtr.Zero)
+                hb_font_destroy(lastUsedFontNative);
+
+            var fontNative = hb_ft_font_create(ftFontFace.NativePointer, IntPtr.Zero);
+            lastUsedFont = ftFontFace;
+            lastUsedFontNative = fontNative;
+
+            GuessUnicodeProperties();
+            hb_shape(fontNative, native, IntPtr.Zero, 0);
+
+            unsafe
+            {
+                var glyphCount = 0u;
+                var glyphInfo =
+                    (hb_glyph_info_t*)hb_buffer_get_glyph_infos(native, (IntPtr)(&glyphCount));
+                var glyphPosition =
+                    (hb_glyph_position_t*)hb_buffer_get_glyph_positions(native, IntPtr.Zero);
+
+                var chars = new ShapedChar[glyphCount];
+
+                for (var i = 0; i < glyphCount; i++)
+                {
+                    var cGlyphIndex = (Int32)glyphInfo->codepoint;
+                    var cOffsetX = (Int16)(glyphPosition->x_offset / 64);
+                    var cOffsetY = (Int16)(glyphPosition->y_offset / 64);
+                    var cAdvanceX = (Int16)(glyphPosition->x_advance / 64);
+                    var cAdvanceY = (Int16)(glyphPosition->y_advance / 64);
+                    chars[i] = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvanceX, cAdvanceY);
+
+                    glyphInfo++;
+                    glyphPosition++;
+                }
+
+                return new ShapedString(ftFontFace, GetLanguage(), GetScript(), GetDirection(), chars);
+            }
+        }
+
+        /// <inheritdoc/>
         public override Int32 Length
         {
             get => length;
@@ -200,11 +253,21 @@ namespace Ultraviolet.FreeType2
                 hb_buffer_destroy(native);
                 native = IntPtr.Zero;
             }
+            if (lastUsedFontNative != IntPtr.Zero)
+            {
+                hb_font_destroy(lastUsedFontNative);
+                lastUsedFontNative = IntPtr.Zero;
+                lastUsedFont = null;
+            }
             base.Dispose(disposing);
         }
 
         // The native HarfBuzz buffer.
         private IntPtr native;
         private Int32 length;
+
+        // The native HarfBuzz font.
+        private FreeTypeFontFace lastUsedFont;
+        private IntPtr lastUsedFontNative;
     }
 }

@@ -36,12 +36,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var uv = UltravioletContext.DemandCurrent();
             return uv.GetFactoryMethod<TextShaperFactory>()(uv, capacity);
         }
-
-        /// <summary>
-        /// Clears the buffer's contents and resets its properties.
-        /// </summary>
-        public abstract void Reset();
-
+        
         /// <summary>
         /// Clears the buffer's contents.
         /// </summary>
@@ -121,6 +116,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="str">The string to append.</param>
         public abstract void Append(StringSegment str);
+
+        /// <summary>
+        /// Creates a new <see cref="ShapedString"/> instance from the current contents of the shaping buffer.
+        /// </summary>
+        /// <param name="fontFace">The font face with which to shape the string.</param>
+        /// <returns>A new shaped string instance.</returns>
+        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace);
 
         /// <summary>
         /// Gets or sets the number of glyphs in the text builder.
