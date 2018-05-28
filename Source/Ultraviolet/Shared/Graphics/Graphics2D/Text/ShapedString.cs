@@ -19,6 +19,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="value">An array of <see cref="ShapedChar"/> values.</param>
         public ShapedString(UltravioletFontFace fontFace, String language, TextScript script, TextDirection direction, ShapedChar[] value)
         {
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.Require(language, nameof(language));
             Contract.Require(value, nameof(value));
 
@@ -41,6 +42,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="count">The number of characters within <paramref name="value"/> to use.</param>
         public ShapedString(UltravioletFontFace fontFace, String language, TextScript script, TextDirection direction, ShapedChar[] value, Int32 startIndex, Int32 count)
         {
+            Contract.Require(fontFace, nameof(fontFace));
             Contract.Require(language, nameof(language));
             Contract.Require(value, nameof(value));
 
