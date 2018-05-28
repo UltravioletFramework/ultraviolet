@@ -13,8 +13,8 @@
         /// <param name="textureCoordinate">The texture coordinate.</param>
         public VertexPositionNormalTexture(Vector3 position, Vector3 normal, Vector2 textureCoordinate)
         {
-            this.Position          = position;
-            this.Normal            = normal;
+            this.Position = position;
+            this.Normal = normal;
             this.TextureCoordinate = textureCoordinate;
         }
 
@@ -32,7 +32,7 @@
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new[] {
             new VertexElement(0, VertexFormat.Vector3, VertexUsage.Position, 0),
             new VertexElement(sizeof(Single) * 3, VertexFormat.Vector3, VertexUsage.Normal, 0),
-            new VertexElement(sizeof(Single) * 3 + sizeof(Byte) * 4, VertexFormat.Vector2, VertexUsage.TextureCoordinate, 0),
+            new VertexElement(sizeof(Single) * 3 + sizeof(Single) * 3, VertexFormat.Vector2, VertexUsage.TextureCoordinate, 0),
         });
 
         /// <summary>
