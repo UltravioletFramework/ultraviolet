@@ -87,7 +87,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Appends a UTF-16 encoded string to the end of the buffer.
         /// </summary>
         /// <param name="str">The string to append.</param>
-        public abstract void Append(String str);
+        public abstract TextShaper Append(String str);
 
         /// <summary>
         /// Appends a substring of the specified UTF-16 encoded string to the end of the buffer.
@@ -95,13 +95,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="str">The string to append.</param>
         /// <param name="start">The index of the first character in <paramref name="str"/> to append.</param>
         /// <param name="length">The number of characters from <paramref name="str"/> to append.</param>
-        public abstract void Append(String str, Int32 start, Int32 length);
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TextShaper Append(String str, Int32 start, Int32 length);
 
         /// <summary>
         /// Appends a UTF-16 encoded string to the end of the buffer.
         /// </summary>
         /// <param name="str">The string to append.</param>
-        public abstract void Append(StringBuilder str);
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TextShaper Append(StringBuilder str);
 
         /// <summary>
         /// Appends a substring of the specified UTF-16 encoded string to the end of the buffer.
@@ -109,13 +111,22 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="str">The string to append.</param>
         /// <param name="start">The index of the first character in <paramref name="str"/> to append.</param>
         /// <param name="length">The number of characters from <paramref name="str"/> to append.</param>
-        public abstract void Append(StringBuilder str, Int32 start, Int32 length);
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TextShaper Append(StringBuilder str, Int32 start, Int32 length);
 
         /// <summary>
         /// Appends a UTF-16 encoded string to the end of the buffer.
         /// </summary>
         /// <param name="str">The string to append.</param>
-        public abstract void Append(StringSegment str);
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TextShaper Append(StringSegment str);
+
+        /// <summary>
+        /// Appends the contents of this shaping buffer to the specified <see cref="ShapedStringBuilder"/> instance.
+        /// </summary>
+        /// <param name="builder">The <see cref="ShapedStringBuilder"/> instance to which to append this shaper's contents.</param>
+        /// <param name="fontFace">The font face with which to shape the string.</param>
+        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace);
 
         /// <summary>
         /// Creates a new <see cref="ShapedString"/> instance from the current contents of the shaping buffer.
