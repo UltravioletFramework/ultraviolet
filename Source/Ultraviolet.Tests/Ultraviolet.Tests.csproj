@@ -249,6 +249,7 @@
     <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
     <Compile Include="Graphics\Graphics2D\FontKind.cs" />
+    <Compile Include="Graphics\Graphics2D\Text\ShapedStringBuilderTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\ShapedStringTests.cs" />
     <Compile Include="Graphics\Graphics2D\Text\TextShaperTests.cs" />
     <Compile Include="Graphics\Surface2DTests.cs" />

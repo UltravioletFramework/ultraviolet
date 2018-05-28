@@ -28,7 +28,7 @@ namespace Ultraviolet.FreeType2
             if (capacity > 0)
                 hb_buffer_pre_allocate(native, (UInt32)capacity);
         }
-        
+
         /// <inheritdoc/>
         public override void Clear()
         {
@@ -113,21 +113,10 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override void Append(String str)
+        public override TextShaper Append(String str)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
-            unsafe
-            {
-                fixed (byte* pbytes = System.Text.Encoding.Unicode.GetBytes(str))
-                {
-                    hb_buffer_add_utf16(native, (IntPtr)pbytes, str.Length, 0, str.Length);
-                    length = (Int32)hb_buffer_get_length(native);
-                }
-            }
-
-
-            /*
             var pstr = Marshal.StringToHGlobalUni(str);
             try
             {
@@ -139,29 +128,30 @@ namespace Ultraviolet.FreeType2
                 if (pstr != IntPtr.Zero)
                     Marshal.FreeHGlobal(pstr);
             }
-            */
+
+            return this;
         }
 
         /// <inheritdoc/>
-        public override void Append(String str, Int32 start, Int32 length)
+        public override TextShaper Append(String str, Int32 start, Int32 length)
         {
-            Append(new StringSegment(str, start, length));
+            return Append(new StringSegment(str, start, length));
         }
 
         /// <inheritdoc/>
-        public override void Append(StringBuilder str)
+        public override TextShaper Append(StringBuilder str)
         {
-            Append(new StringSegment(str));
+            return Append(new StringSegment(str));
         }
 
         /// <inheritdoc/>
-        public override void Append(StringBuilder str, Int32 start, Int32 length)
+        public override TextShaper Append(StringBuilder str, Int32 start, Int32 length)
         {
-            Append(new StringSegment(str, start, length));
+            return Append(new StringSegment(str, start, length));
         }
 
         /// <inheritdoc/>
-        public override void Append(StringSegment str)
+        public override TextShaper Append(StringSegment str)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
@@ -180,6 +170,33 @@ namespace Ultraviolet.FreeType2
                     length = (Int32)hb_buffer_get_length(native);
                 }
             }
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            
+            unsafe
+            {
+                Shape(fontFace, out var glyphInfo, out var glyphPosition, out var glyphCount);
+
+                for (var i = 0; i < glyphCount; i++)
+                {
+                    var cGlyphIndex = (Int32)glyphInfo->codepoint;
+                    var cOffsetX = (Int16)(glyphPosition->x_offset / 64);
+                    var cOffsetY = (Int16)(glyphPosition->y_offset / 64);
+                    var cAdvanceX = (Int16)(glyphPosition->x_advance / 64);
+                    var cAdvanceY = (Int16)(glyphPosition->y_advance / 64);
+                    var c = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvanceX, cAdvanceY);
+                    builder.Append(c);
+
+                    glyphInfo++;
+                    glyphPosition++;
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -188,30 +205,11 @@ namespace Ultraviolet.FreeType2
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            var ftFontFace = fontFace as FreeTypeFontFace;
-            if (ftFontFace == null)
-                throw new NotSupportedException(FreeTypeStrings.TextShaperRequiresFreeTypeFont);
-
-            if (lastUsedFont != ftFontFace && lastUsedFontNative != IntPtr.Zero)
-                hb_font_destroy(lastUsedFontNative);
-
-            var fontNative = hb_ft_font_create(ftFontFace.NativePointer, IntPtr.Zero);
-            lastUsedFont = ftFontFace;
-            lastUsedFontNative = fontNative;
-
-            GuessUnicodeProperties();
-            hb_shape(fontNative, native, IntPtr.Zero, 0);
-
             unsafe
             {
-                var glyphCount = 0u;
-                var glyphInfo =
-                    (hb_glyph_info_t*)hb_buffer_get_glyph_infos(native, (IntPtr)(&glyphCount));
-                var glyphPosition =
-                    (hb_glyph_position_t*)hb_buffer_get_glyph_positions(native, IntPtr.Zero);
+                Shape(fontFace, out var glyphInfo, out var glyphPosition, out var glyphCount);
 
                 var chars = new ShapedChar[glyphCount];
-
                 for (var i = 0; i < glyphCount; i++)
                 {
                     var cGlyphIndex = (Int32)glyphInfo->codepoint;
@@ -224,9 +222,8 @@ namespace Ultraviolet.FreeType2
                     glyphInfo++;
                     glyphPosition++;
                 }
-
-                return new ShapedString(ftFontFace, GetLanguage(), GetScript(), GetDirection(), chars);
-            }
+                return new ShapedString(fontFace, GetLanguage(), GetScript(), GetDirection(), chars);
+            }            
         }
 
         /// <inheritdoc/>
@@ -260,6 +257,31 @@ namespace Ultraviolet.FreeType2
                 lastUsedFont = null;
             }
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Performs shaping on the native buffer using the specified font..
+        /// </summary>
+        private unsafe void Shape(UltravioletFontFace fontFace, out hb_glyph_info_t* infos, out hb_glyph_position_t* positions, out UInt32 count)
+        {
+            var ftFontFace = fontFace as FreeTypeFontFace;
+            if (ftFontFace == null)
+                throw new NotSupportedException(FreeTypeStrings.TextShaperRequiresFreeTypeFont);
+
+            if (lastUsedFont != ftFontFace && lastUsedFontNative != IntPtr.Zero)
+                hb_font_destroy(lastUsedFontNative);
+
+            var fontNative = hb_ft_font_create(ftFontFace.NativePointer, IntPtr.Zero);
+            lastUsedFont = ftFontFace;
+            lastUsedFontNative = fontNative;
+
+            GuessUnicodeProperties();
+            hb_shape(fontNative, native, IntPtr.Zero, 0);
+
+            var glyphCount = 0u;
+            infos = (hb_glyph_info_t*)hb_buffer_get_glyph_infos(native, (IntPtr)(&glyphCount));
+            positions = (hb_glyph_position_t*)hb_buffer_get_glyph_positions(native, IntPtr.Zero);
+            count = glyphCount;
         }
 
         // The native HarfBuzz buffer.
