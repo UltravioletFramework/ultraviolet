@@ -76,6 +76,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Generic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphSlotRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_LibraryRec.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\hb_glyph_position_t.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\hb_glyph_info_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_direction_t.cs" />

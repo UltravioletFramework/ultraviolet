@@ -205,6 +205,61 @@ namespace Ultraviolet.FreeType2.Native
         private static readonly hb_language_from_stringDelegate phb_language_from_string = lib.LoadFunction<hb_language_from_stringDelegate>("hb_language_from_string");
         public static IntPtr hb_language_from_string(IntPtr str, Int32 len) => phb_language_from_string(str, len);
 #endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_buffer_get_glyph_infos", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr hb_buffer_get_glyph_infos(IntPtr buffer, IntPtr length);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr hb_buffer_get_glyph_infosDelegate(IntPtr buffer, IntPtr length);
+        private static readonly hb_buffer_get_glyph_infosDelegate phb_buffer_get_glyph_infos = lib.LoadFunction<hb_buffer_get_glyph_infosDelegate>("hb_buffer_get_glyph_infos");
+        public static IntPtr hb_buffer_get_glyph_infos(IntPtr buffer, IntPtr length) => phb_buffer_get_glyph_infos(buffer, length);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_buffer_get_glyph_positions", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr hb_buffer_get_glyph_positions(IntPtr buffer, IntPtr length);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr hb_buffer_get_glyph_positionsDelegate(IntPtr buffer, IntPtr length);
+        private static readonly hb_buffer_get_glyph_positionsDelegate phb_buffer_get_glyph_positions = lib.LoadFunction<hb_buffer_get_glyph_positionsDelegate>("hb_buffer_get_glyph_positions");
+        public static IntPtr hb_buffer_get_glyph_positions(IntPtr buffer, IntPtr length) => phb_buffer_get_glyph_positions(buffer, length);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_shape", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void hb_shape(IntPtr font, IntPtr buffer, IntPtr features, UInt32 num_features);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void hb_shapeDelegate(IntPtr font, IntPtr buffer, IntPtr features, UInt32 num_features);
+        private static readonly hb_shapeDelegate phb_shape = lib.LoadFunction<hb_shapeDelegate>("hb_shape");
+        public static void hb_shape(IntPtr font, IntPtr buffer, IntPtr features, UInt32 num_features) => phb_shape(font, buffer, features, num_features);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_ft_font_create", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr hb_ft_font_create(IntPtr ft_face, IntPtr destroy);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr hb_ft_font_createDelegate(IntPtr ft_face, IntPtr destroy);
+        private static readonly hb_ft_font_createDelegate phb_ft_font_create = lib.LoadFunction<hb_ft_font_createDelegate>("hb_ft_font_create");
+        public static IntPtr hb_ft_font_create(IntPtr ft_face, IntPtr destroy) => phb_ft_font_create(ft_face, destroy);
+#endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_font_destroy", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void hb_font_destroy(IntPtr font);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void hb_font_destroyDelegate(IntPtr font);
+        private static readonly hb_font_destroyDelegate phb_font_destroy = lib.LoadFunction<hb_font_destroyDelegate>("hb_font_destroy");
+        public static void hb_font_destroy(IntPtr font) => phb_font_destroy(font);
+#endif
     }
 #pragma warning restore 1591
 }

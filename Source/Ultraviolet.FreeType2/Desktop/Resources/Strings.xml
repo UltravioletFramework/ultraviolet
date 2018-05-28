@@ -50,4 +50,9 @@
       <Variant>The texture atlas parameters specified for this font face are invalid.</Variant>
     </en-US>
   </String>
+  <String Key="TEXT_SHAPER_REQUIRES_FREE_TYPE_FONT">
+    <en-US>
+      <Variant>The HarfBuzzTextShaper class only supports text shaping using FreeType2 fonts.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
