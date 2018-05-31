@@ -12,6 +12,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
     public class ShapedStringBuilderTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_CanSpecifyInitialValueAndCapacityInConstructor()
         {
             var sstrb = default(ShapedStringBuilder);
@@ -37,6 +38,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_CanBeCleared()
         {
             var sstrb = new ShapedStringBuilder();
@@ -63,6 +65,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_CanBeManuallyExpanded()
         {
             var sstrb = new ShapedStringBuilder();
@@ -89,6 +92,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_CannotBeManuallyShrunkSmallerThanLength()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -100,6 +104,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_ExpandsWhenCapacityIsExceeded()
         {
             var sstrb = new ShapedStringBuilder();
@@ -131,6 +136,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_CanCreateShapedString()
         {
             var sstrb = new ShapedStringBuilder();
