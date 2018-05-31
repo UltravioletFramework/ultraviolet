@@ -22,6 +22,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Android", "Ultraviolet.Presentation\Android\Ultraviolet.Presentation.Android.csproj", "{35BFCF7E-1756-4FE1-864C-6A0AAFF97799}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebug.Android", "UvDebug\Android\UvDebug.Android.csproj", "{FEC3B657-42E7-4E8E-8760-9FD7EFF1D0E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F71C120-2F97-4EDD-B809-99E2F340390E} = {7F71C120-2F97-4EDD-B809-99E2F340390E}
+	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL.Bindings", "Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.shproj", "{F2660B00-B04A-4301-9DFB-226DD9D0798B}"
 EndProject
@@ -60,6 +63,8 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.shproj", "{9C6D1468-B7A7-4FB9-B7EF-088803A62B89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Android", "Ultraviolet.FreeType2\Android\Ultraviolet.FreeType2.Android.csproj", "{39F2C819-57D5-419E-AA90-BC92D55F0749}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvAssetList", "UvAssetList\UvAssetList.csproj", "{7F71C120-2F97-4EDD-B809-99E2F340390E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -201,6 +206,12 @@ Global
 		{39F2C819-57D5-419E-AA90-BC92D55F0749}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39F2C819-57D5-419E-AA90-BC92D55F0749}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{39F2C819-57D5-419E-AA90-BC92D55F0749}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|Any CPU.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -169,6 +169,9 @@
     <CreateItem Include="Source/UvArchive/bin/$(Configuration)/uvarchive.exe">
         <Output TaskParameter="Include" ItemName="uvarchive_exe"/>
     </CreateItem>
+    <CreateItem Include="Source/UvAssetList/bin/$(Configuration)/uvassetlist.exe">
+        <Output TaskParameter="Include" ItemName="uvassetlist_exe"/>
+    </CreateItem>
     <Copy SourceFiles="@(Newtonsoft_Json_Desktop)" DestinationFiles="@(Newtonsoft_Json_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_DotNet_PlatformAbstractions_Desktop)" DestinationFiles="@(Microsoft_DotNet_PlatformAbstractions_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Microsoft_Extensions_DependencyModel_Desktop)" DestinationFiles="@(Microsoft_Extensions_DependencyModel_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -189,6 +192,7 @@
     <Copy SourceFiles="@(Ultraviolet_Tooling)" DestinationFiles="@(Ultraviolet_Tooling->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvfont_exe)" DestinationFiles="@(uvfont_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(uvarchive_exe)" DestinationFiles="@(uvarchive_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(uvassetlist_exe)" DestinationFiles="@(uvassetlist_exe->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
   </Target>  
   <Target Name="CopyNETCoreBinaries">
     <CreateItem Include="Source/Ultraviolet.Core/NETStandard/bin/$(Configuration)/netstandard2.0/Newtonsoft.Json.*">

@@ -80,21 +80,21 @@ namespace Ultraviolet.OpenGL.Bindings
         private delegate void glTextureStorage1DDelegate(uint texture, int levels, uint internalformat, int width);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glTextureStorage1DEXT")]
+        /* NOTE: Different signature in GL_EXT_direct_state_access */
         private static readonly glTextureStorage1DDelegate glTextureStorage1D = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage2DDelegate(uint texture, int levels, uint internalformat, int width, int height);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glTextureStorage2DEXT")]
+        /* NOTE: Different signature in GL_EXT_direct_state_access */
         private static readonly glTextureStorage2DDelegate glTextureStorage2D = null;
                 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage3DDelegate(uint texture, int levels, uint internalformat, int width, int height, int depth);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glTextureStorage3DEXT")]
+        /* NOTE: Different signature in GL_EXT_direct_state_access */
         private static readonly glTextureStorage3DDelegate glTextureStorage3D = null;
 
         [MonoNativeFunctionWrapper]
@@ -265,5 +265,11 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glDisableVertexArrayAttribEXT")]
         private static readonly glDisableVertexArrayAttribDelegate glDisableVertexArrayAttrib = null;
+
+        [MonoNativeFunctionWrapper]
+        private delegate void glInvalidateNamedFramebufferDataDelegate(UInt32 framebuffer, Int32 numAttachments, IntPtr attachments);
+        [Require(MinVersion = "4.5")]
+        [Require(Extension = "GL_ARB_direct_state_access")]
+        private static readonly glInvalidateNamedFramebufferDataDelegate glInvalidateNamedFramebufferData = null;
     }
 }

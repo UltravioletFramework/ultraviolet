@@ -159,6 +159,11 @@ namespace Ultraviolet.OpenGL.Bindings
             {
                 glDisableVertexAttribArray(index);
             }
+
+            public override void InvalidateNamedFramebufferData(uint target, uint framebuffer, int numAttachments, IntPtr attachments)
+            {
+                glInvalidateFramebuffer(target, numAttachments, attachments);
+            }
         }
     }
 }

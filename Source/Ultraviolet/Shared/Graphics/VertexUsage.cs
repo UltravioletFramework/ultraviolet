@@ -20,5 +20,10 @@ namespace Ultraviolet.Graphics
         /// The element provides texture coordinate data.
         /// </summary>
         TextureCoordinate,
+
+        /// <summary>
+        /// The element provides normal data.
+        /// </summary>
+        Normal,
     }
 }

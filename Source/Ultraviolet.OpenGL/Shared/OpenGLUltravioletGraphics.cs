@@ -23,7 +23,7 @@ namespace Ultraviolet.OpenGL
         /// </summary>
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
-        /// <param name="versionRequested">The OpenGL context version which is required by the application.</param>
+        /// <param name="versionRequested">The OpenGL context version which is requested by the application.</param>
         public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested)
             : base(uv)
         {
@@ -149,7 +149,7 @@ namespace Ultraviolet.OpenGL
                 mask |= gl.GL_COLOR_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer))
+            if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer && (renderTarget == null || renderTarget.HasDepthBuffer || renderTarget.HasDepthStencilBuffer))
             {
                 if (!depthStencilState.DepthBufferEnable)
                 {
@@ -161,7 +161,7 @@ namespace Ultraviolet.OpenGL
                 mask |= gl.GL_DEPTH_BUFFER_BIT;
             }
 
-            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer))
+            if ((options & ClearOptions.Stencil) == ClearOptions.Stencil && (renderTarget == null || renderTarget.HasStencilBuffer || renderTarget.HasDepthStencilBuffer))
             {
                 OpenGLState.ClearStencil = stencil;
                 mask |= gl.GL_STENCIL_BUFFER_BIT;
