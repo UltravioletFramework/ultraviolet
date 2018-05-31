@@ -27,5 +27,11 @@ namespace Ultraviolet.Platform
         /// The window is initially hidden.
         /// </summary>
         Hidden = 0x0004,
+
+        /// <summary>
+        /// The window is immediately visible. Normally, windows are hidden
+        /// until they are about to be rendered to for the first time.
+        /// </summary>
+        ShownImmediately = 0x0008,
     }
 }

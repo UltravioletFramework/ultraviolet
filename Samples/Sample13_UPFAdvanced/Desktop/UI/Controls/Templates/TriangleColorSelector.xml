@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ComponentTemplate>
-  <View>
-    <StackPanel Orientation="Horizontal">
-      <ContentPresenter/>
-      <ComboBox SelectedIndex="{{VertexColorIndex}}" ItemsSource="{{AvailableColors}}"/>
-    </StackPanel>
-  </View>
-</ComponentTemplate>

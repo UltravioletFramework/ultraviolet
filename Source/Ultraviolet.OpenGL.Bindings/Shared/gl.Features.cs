@@ -136,6 +136,17 @@ namespace Ultraviolet.OpenGL.Bindings
         public static Boolean IsPolygonModeAvailable { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether support for framebuffer invalidation is available.
+        /// </summary>
+        public static Boolean IsFramebufferInvalidationAvailable { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the ARB_invalidate_subdata extension is available. This property
+        /// will also return true if running OpenGL 4.3 or higher.
+        /// </summary>
+        public static Boolean IsInvalidateSubdataAvailable { get; private set; }
+
+        /// <summary>
         /// Initializes the context's feature flags.
         /// </summary>
         private static void InitializeFeatureFlags()
@@ -201,6 +212,13 @@ namespace Ultraviolet.OpenGL.Bindings
             IsDoublePrecisionClearDepthAvailable = !IsGLES;
 
             IsPolygonModeAvailable = !IsGLES;
+
+            IsFramebufferInvalidationAvailable = (IsGLES && IsVersionAtLeast(3, 0)) || (!IsGLES && IsVersionAtLeast(4, 3)) ||
+                IsExtensionSupported("GL_ARB_invalidate_subdata") ||
+                IsExtensionSupported("GL_EXT_discard_framebuffer");
+
+            IsInvalidateSubdataAvailable = (!IsGLES && IsVersionAtLeast(4, 3)) ||
+                IsExtensionSupported("GL_ARB_invalidate_subdata");
         }
     }
 }

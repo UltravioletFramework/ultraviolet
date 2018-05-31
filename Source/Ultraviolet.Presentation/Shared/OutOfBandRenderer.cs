@@ -267,6 +267,8 @@ namespace Ultraviolet.Presentation
 
                         currentElementDrawingRenderTarget = null;
 
+                        var rt2d = rtarget.RenderTarget;
+                        rtarget.RenderTarget.Invalidate(false, rt2d.HasDepthBuffer, rt2d.HasStencilBuffer, rt2d.HasDepthStencilBuffer, 0, 0);
                         rtarget.IsReady = true;
                     }
                 }

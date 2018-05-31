@@ -19,9 +19,10 @@ Quick start guides for development using the Ultraviolet Framework are available
     <dependencies/>
   </metadata>
   <files>
-	<file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="tools\Ultraviolet.Core.dll"/>
-	<file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Tooling.dll" target="tools\Ultraviolet.Tooling.dll"/>
+	  <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="tools\Ultraviolet.Core.dll"/>
+	  <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Tooling.dll" target="tools\Ultraviolet.Tooling.dll"/>
     <file src="..\Binaries\AnyCPU\Signed\uvarchive.exe" target="tools\uvarchive.exe"/>
     <file src="..\Binaries\AnyCPU\Signed\uvfont.exe" target="tools\uvfont.exe"/>
+    <file src="..\Binaries\AnyCPU\Signed\uvassetlist.exe" target="tools\uvassetlist.exe"/>
   </files>  
 </package>

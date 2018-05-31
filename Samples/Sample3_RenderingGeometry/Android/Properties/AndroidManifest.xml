@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="UltravioletSample.Sample3_RenderingGeometry" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="10" />
-	<application android:label="Sample 3 - Rendering Geometry" android:icon="@drawable/desktop_uv72"></application>
-</manifest>

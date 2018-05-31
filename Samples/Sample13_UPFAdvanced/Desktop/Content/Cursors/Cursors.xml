@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Cursors Image="CursorsImage">
-  <Cursor Name="Normal" Position="0 0" Size="32 32" Hotspot="0 0" />
-  <Cursor Name="NormalDisabled" Position="32 0" Size="32 32" Hotspot="0 0" />
-  <Cursor Name="IBeam" Position="64 0" Size="32 32" Hotspot="0 14" />
-  <Cursor Name="IBeamDisabled" Position="96 0" Size="32 32" Hotspot="0 14" />
-</Cursors>

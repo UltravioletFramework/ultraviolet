@@ -171,6 +171,11 @@ namespace Ultraviolet.OpenGL.Bindings
             dsaimpl.DisableVertexArrayAttrib(vaobj, index);
         }
 
+        public static void InvalidateNamedFramebufferData(uint target, uint framebuffer, int numAttachments, IntPtr attachments)
+        {
+            dsaimpl.InvalidateNamedFramebufferData(target, framebuffer, numAttachments, attachments);
+        }
+
         public static Boolean IsEXTDirectStateAccessAvailable
         {
             get;

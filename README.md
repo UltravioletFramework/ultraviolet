@@ -48,6 +48,8 @@ If you don't want to build Ultraviolet yourself, official packages are available
 
 The wiki contains a quick start guide for development on both [Windows](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-on-Windows) and [macOS](https://github.com/tlgkccampbell/ultraviolet/wiki/Getting-Started-on-macOS).
 
+A [dedicated repository](https://github.com/tlgkccampbell/ultraviolet-samples) contains a number of sample projects which demonstrate various features of the Framework.
+
 Requirements
 ============
 
