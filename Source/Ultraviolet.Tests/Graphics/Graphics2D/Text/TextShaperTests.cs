@@ -14,7 +14,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         {
             var textLength = default(Int32);
 
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                 .WithInitialization(uv =>
                 {
                     using (var textShaper = new HarfBuzzTextShaper(uv))
@@ -40,7 +40,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             var textDirection = default(TextDirection);
             var textLength = default(Int32);
 
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                 .WithInitialization(uv =>
                 {
                     using (var textShaper = new HarfBuzzTextShaper(uv))
@@ -71,7 +71,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             var textDirection = default(TextDirection);
             var textLength = default(Int32);
 
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                 .WithInitialization(uv =>
                 {
                     using (var textShaper = new HarfBuzzTextShaper(uv))
@@ -104,7 +104,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             var textDirection = default(TextDirection);
             var textLength = default(Int32);
 
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                 .WithInitialization(uv =>
                 {
                     using (var textShaper = new HarfBuzzTextShaper(uv))
@@ -139,7 +139,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             var textScript = default(TextScript);
             var textDirection = default(TextDirection);
 
-            GivenAnUltravioletApplicationWithNoWindow()
+            GivenAnUltravioletApplicationInServiceMode()
                 .WithInitialization(uv =>
                 {
                     using (var textShaper = new HarfBuzzTextShaper(uv))

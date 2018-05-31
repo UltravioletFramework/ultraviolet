@@ -11,6 +11,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
     public class ShapedStringTests : UltravioletApplicationTestFramework
     {
         [Test]
+        [Category("Content")]
         public void ShapedString_ReflectsUnicodePropertiesOfTextShaper_WhenCreated()
         {
             var sstr = default(ShapedString);
@@ -37,6 +38,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedString_ProvidesCorrectShapingData_InEnglish()
         {
             var sstr = default(ShapedString);
@@ -84,6 +86,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedString_ProvidesCorrectShapingData_InArabic()
         {
             var sstr = default(ShapedString);
@@ -131,6 +134,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [Category("Content")]
         public void ShapedString_CombinesLigatures()
         {
             var sstr = default(ShapedString);
