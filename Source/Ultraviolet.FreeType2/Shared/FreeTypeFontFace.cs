@@ -1148,7 +1148,7 @@ namespace Ultraviolet.FreeType2
             }
             else
             {
-                if (glyphInfoCache.TryGetValue(codePoint, out var cached))
+                if (glyphInfoCache.TryGetValue(glyphIndex, out var cached))
                 {
                     info = cached;
                 }
