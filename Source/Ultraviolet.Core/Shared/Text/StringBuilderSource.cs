@@ -6,7 +6,7 @@ namespace Ultraviolet.Core.Text
     /// <summary>
     /// Represents an <see cref="IStringSource{TChar}"/> which encapsulates a <see cref="StringBuilder"/> instance.
     /// </summary>
-    public partial struct StringBuilderSource : IStringSource<Char>
+    public partial struct StringBuilderSource : ISegmentableStringSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringBuilderSource"/> structure.

@@ -96,6 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.NativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinkerSafeAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\ISegmentableStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\IStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.Equality.cs" />

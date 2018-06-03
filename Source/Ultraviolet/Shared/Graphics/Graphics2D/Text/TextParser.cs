@@ -109,7 +109,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Lexes and parses the specified string.
         /// </summary>
         private void Parse<TSource>(TSource input, TextParserTokenStream output, Int32 index, Int32 count, TextParserOptions options = TextParserOptions.None)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var bound = index + count;
             while (index < bound)
@@ -155,7 +155,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Incrementally lexes and parses the specified string.
         /// </summary>
         private IncrementalResult ParseIncremental<TSource>(TSource input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var inputLengthOld = output.SourceText.Length;
             var inputLengthNew = input.Length;
@@ -283,7 +283,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Retrieves a newline token from the input stream, beginning at the specified character.
         /// </summary>
         private static TextParserToken ConsumeNewlineToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var sourceLength = 1;
             if (input[ix] == '\r' && ix + 1 < input.Length && input[ix + 1] == '\n')
@@ -300,7 +300,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Retrieves a non-breaking white space token from the input stream, beginning at the specified character.
         /// </summary>
         private static TextParserToken ConsumeNonBreakingSpaceToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
 
@@ -317,7 +317,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Retrieves a breaking white space token from the input stream, beginning at the specified character.
         /// </summary>
         private static TextParserToken ConsumeBreakingSpaceToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
 
@@ -334,7 +334,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Retrieves an escaped pipe token from the input stream, beginning at the specified character.
         /// </summary>
         private static TextParserToken ConsumeEscapedPipeToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
             
@@ -350,7 +350,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Retrieves a command token from the input stream, beginning at the specified character.
         /// </summary>
         private static TextParserToken ConsumeCommandToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var valid = false;
             var start = ix++;
@@ -376,7 +376,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Retrieves a word token from the input stream, beginning at the specified character.
         /// </summary>
         private static TextParserToken ConsumeWordToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
-            where TSource : IStringSource<Char>
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
             while (ix < input.Length && !IsEndOfWord(input, ix))
