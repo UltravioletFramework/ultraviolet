@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 
 namespace Ultraviolet.Graphics.Graphics2D.Text
 {
     /// <summary>
     /// Represents an immutable string composed of shaped characters.
     /// </summary>
-    public sealed partial class ShapedString
+    public sealed partial class ShapedString : IStringSource<ShapedChar>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapedString"/> class.

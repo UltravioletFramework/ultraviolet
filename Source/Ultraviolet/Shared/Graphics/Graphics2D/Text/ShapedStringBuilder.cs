@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 
 namespace Ultraviolet.Graphics.Graphics2D.Text
 {
@@ -10,7 +12,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <remarks>The <see cref="ShapedStringBuilder"/> class does not enforce that all of its source data has the same
     /// font, language, script, or direction; mixing and matching these properties within a single buffer will produce
     /// nonsensical results, so application code should perform these checks where necessary.</remarks>
-    public sealed class ShapedStringBuilder
+    public sealed partial class ShapedStringBuilder : IStringSource<ShapedChar>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapedStringBuilder"/> class.
@@ -118,6 +120,23 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.EnsureRange(sourceIndex + count <= length, nameof(count));
 
             Array.Copy(buffer, sourceIndex, destination, destinationIndex, count);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ShapedChar"/> object at the specified position 
+        /// in the current <see cref="ShapedString"/> object.
+        /// </summary>
+        /// <param name="index">A position in the current string.</param>
+        /// <returns>The object at position <paramref name="index"/>.</returns>
+        [IndexerName("Chars")]
+        public ShapedChar this[Int32 index]
+        {
+            get
+            {
+                Contract.EnsureRange(index < Length, nameof(index));
+
+                return buffer[index];
+            }
         }
 
         /// <summary>
