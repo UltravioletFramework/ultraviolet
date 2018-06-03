@@ -6,6 +6,7 @@ using Ultraviolet.Core.Text;
 using Ultraviolet.FreeType2.Native;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
+using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.HarfBuzzNative;
 
 namespace Ultraviolet.FreeType2
@@ -272,6 +273,8 @@ namespace Ultraviolet.FreeType2
                 hb_font_destroy(lastUsedFontNative);
 
             var fontNative = hb_ft_font_create(ftFontFace.NativePointer, IntPtr.Zero);
+            var fontLoadFlags = ftFontFace.IsStroked ? FT_LOAD_NO_BITMAP : FT_LOAD_COLOR;
+            hb_ft_font_set_load_flags(fontNative, fontLoadFlags);
             lastUsedFont = ftFontFace;
             lastUsedFontNative = fontNative;
 

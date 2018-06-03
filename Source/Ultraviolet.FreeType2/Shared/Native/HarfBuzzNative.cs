@@ -260,6 +260,17 @@ namespace Ultraviolet.FreeType2.Native
         private static readonly hb_font_destroyDelegate phb_font_destroy = lib.LoadFunction<hb_font_destroyDelegate>("hb_font_destroy");
         public static void hb_font_destroy(IntPtr font) => phb_font_destroy(font);
 #endif
+
+#if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_ft_font_set_load_flags", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void hb_ft_font_set_load_flags(IntPtr font, Int32 load_flags);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void hb_ft_font_set_load_flagsDelegate(IntPtr font, Int32 load_flags);
+        private static readonly hb_ft_font_set_load_flagsDelegate phb_ft_font_set_load_flags = lib.LoadFunction<hb_ft_font_set_load_flagsDelegate>("hb_ft_font_set_load_flags");
+        public static void hb_ft_font_set_load_flags(IntPtr font, Int32 load_flags) => phb_ft_font_set_load_flags(font, load_flags);
+#endif
     }
 #pragma warning restore 1591
 }

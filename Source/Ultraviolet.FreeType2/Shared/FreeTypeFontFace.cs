@@ -529,6 +529,11 @@ namespace Ultraviolet.FreeType2
         /// </summary>
         public Boolean HasKerningInfo { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether this font face is stroked.
+        /// </summary>
+        public Boolean IsStroked => stroker != IntPtr.Zero;
+
         /// <inheritdoc/>
         public override Boolean SupportsGlyphIndices => true;
 
@@ -1170,7 +1175,7 @@ namespace Ultraviolet.FreeType2
             var err = default(FT_Error);
 
             // Load the glyph into the face's glyph slot.
-            var flags = (stroker == IntPtr.Zero) ? FT_LOAD_COLOR : FT_LOAD_NO_BITMAP;
+            var flags = IsStroked ? FT_LOAD_NO_BITMAP : FT_LOAD_COLOR;
             err = FT_Load_Glyph(face, glyphIndex, flags);
             if (err != FT_Err_Ok)
                 throw new FreeTypeException(err);
