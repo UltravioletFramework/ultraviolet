@@ -187,10 +187,10 @@ namespace Ultraviolet.FreeType2
                 for (var i = 0; i < glyphCount; i++)
                 {
                     var cGlyphIndex = (Int32)glyphInfo->codepoint;
-                    var cOffsetX = (Int16)(glyphPosition->x_offset / 64);
-                    var cOffsetY = (Int16)(glyphPosition->y_offset / 64);
-                    var cAdvanceX = (Int16)(glyphPosition->x_advance / 64);
-                    var cAdvanceY = (Int16)(glyphPosition->y_advance / 64);
+                    var cOffsetX = (Int16)Math.Round(glyphPosition->x_offset / 64f, MidpointRounding.AwayFromZero);
+                    var cOffsetY = (Int16)Math.Round(glyphPosition->y_offset / 64f, MidpointRounding.AwayFromZero);
+                    var cAdvanceX = (Int16)Math.Round(glyphPosition->x_advance / 64f, MidpointRounding.AwayFromZero);
+                    var cAdvanceY = (Int16)Math.Round(glyphPosition->y_advance / 64f, MidpointRounding.AwayFromZero);
                     var c = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvanceX, cAdvanceY);
                     builder.Append(c);
 
@@ -214,10 +214,10 @@ namespace Ultraviolet.FreeType2
                 for (var i = 0; i < glyphCount; i++)
                 {
                     var cGlyphIndex = (Int32)glyphInfo->codepoint;
-                    var cOffsetX = (Int16)(glyphPosition->x_offset / 64);
-                    var cOffsetY = (Int16)(glyphPosition->y_offset / 64);
-                    var cAdvanceX = (Int16)(glyphPosition->x_advance / 64);
-                    var cAdvanceY = (Int16)(glyphPosition->y_advance / 64);
+                    var cOffsetX = (Int16)Math.Round(glyphPosition->x_offset / 64f, MidpointRounding.AwayFromZero);
+                    var cOffsetY = (Int16)Math.Round(glyphPosition->y_offset / 64f, MidpointRounding.AwayFromZero);
+                    var cAdvanceX = (Int16)Math.Round(glyphPosition->x_advance / 64f, MidpointRounding.AwayFromZero);
+                    var cAdvanceY = (Int16)Math.Round(glyphPosition->y_advance / 64f, MidpointRounding.AwayFromZero);
                     chars[i] = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvanceX, cAdvanceY);
 
                     glyphInfo++;
