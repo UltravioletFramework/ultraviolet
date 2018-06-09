@@ -168,7 +168,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             var advances_x = chars.Select(x => x.AdvanceX).ToArray();
             TheResultingCollection(advances_x)
-                .ShouldBeExactly(10, 8, 4, 4, 9, 3, 4, 11, 9, 6, 4, 9, 3);
+                .ShouldBeExactly(11, 9, 5, 5, 9, 4, 4, 11, 9, 6, 5, 10, 4);
 
             var advances_y = chars.Select(x => x.AdvanceY).ToArray();
             TheResultingCollection(advances_y)
