@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Ultraviolet.Core;
@@ -35,6 +36,7 @@ namespace Ultraviolet.FreeType2
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            rawstr.Clear();
             hb_buffer_clear_contents(native);
             this.length = 0;
         }
@@ -121,6 +123,7 @@ namespace Ultraviolet.FreeType2
             var pstr = Marshal.StringToHGlobalUni(str);
             try
             {
+                rawstr.Append(str);
                 hb_buffer_add_utf16(native, pstr, str.Length, 0, str.Length);
                 length = (Int32)hb_buffer_get_length(native);
             }
@@ -156,6 +159,9 @@ namespace Ultraviolet.FreeType2
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            if (rawstr.Capacity < rawstr.Length + str.Length)
+                rawstr.Capacity = rawstr.Length + str.Length;
+
             unsafe
             {
                 const Int32 BufferSize = 64;
@@ -165,34 +171,48 @@ namespace Ultraviolet.FreeType2
                 {
                     var remaining = Math.Min(BufferSize, str.Length - i);
                     for (int j = 0; j < remaining; j++)
-                        buffer[j] = str[i + j];
+                    {
+                        var c = str[i + j];
+                        buffer[j] = c;
+                        rawstr.Append(c);
+                    }
 
                     hb_buffer_add_utf16(native, (IntPtr)buffer, remaining, 0, remaining);
                     length = (Int32)hb_buffer_get_length(native);
                 }
             }
+
             return this;
         }
 
         /// <inheritdoc/>
-        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace)
+        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace) =>
+            AppendTo(builder, fontFace, 0, rawstr.Length);
+
+        /// <inheritdoc/>
+        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length)
         {
             Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureRange(start >= 0 && start < rawstr.Length, nameof(start));
+            Contract.EnsureRange(length >= 0 && start + length <= rawstr.Length, nameof(length));
             Contract.EnsureNotDisposed(this, Disposed);
-            
+
             unsafe
             {
                 Shape(fontFace, out var glyphInfo, out var glyphPosition, out var glyphCount);
 
+                var end = start + length;
                 for (var i = 0; i < glyphCount; i++)
                 {
-                    var cGlyphIndex = (Int32)glyphInfo->codepoint;
-                    var cOffsetX = (Int16)Math.Round(glyphPosition->x_offset / 64f, MidpointRounding.AwayFromZero);
-                    var cOffsetY = (Int16)Math.Round(glyphPosition->y_offset / 64f, MidpointRounding.AwayFromZero);
-                    var cAdvanceX = (Int16)Math.Round(glyphPosition->x_advance / 64f, MidpointRounding.AwayFromZero);
-                    var cAdvanceY = (Int16)Math.Round(glyphPosition->y_advance / 64f, MidpointRounding.AwayFromZero);
-                    var c = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvanceX, cAdvanceY);
-                    builder.Append(c);
+                    var cluster = (Int32)glyphInfo->cluster;
+                    if (cluster < start)
+                        continue;
+
+                    if (cluster >= end)
+                        break;
+
+                    CreateShapedChar(glyphInfo, glyphPosition, out var sc);
+                    builder.Append(sc);
 
                     glyphInfo++;
                     glyphPosition++;
@@ -201,30 +221,52 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override ShapedString CreateShapedString(UltravioletFontFace fontFace)
+        public override ShapedString CreateShapedString(UltravioletFontFace fontFace) =>
+            CreateShapedString(fontFace, 0, rawstr.Length);
+
+        /// <inheritdoc/>
+        public override ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length)
         {
             Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureRange(start >= 0 && start < rawstr.Length, nameof(start));
+            Contract.EnsureRange(length >= 0 && start + length <= rawstr.Length, nameof(length));
             Contract.EnsureNotDisposed(this, Disposed);
 
             unsafe
             {
                 Shape(fontFace, out var glyphInfo, out var glyphPosition, out var glyphCount);
 
+                var end = start + length;
                 var chars = new ShapedChar[glyphCount];
                 for (var i = 0; i < glyphCount; i++)
                 {
-                    var cGlyphIndex = (Int32)glyphInfo->codepoint;
-                    var cOffsetX = (Int16)Math.Round(glyphPosition->x_offset / 64f, MidpointRounding.AwayFromZero);
-                    var cOffsetY = (Int16)Math.Round(glyphPosition->y_offset / 64f, MidpointRounding.AwayFromZero);
-                    var cAdvanceX = (Int16)Math.Round(glyphPosition->x_advance / 64f, MidpointRounding.AwayFromZero);
-                    var cAdvanceY = (Int16)Math.Round(glyphPosition->y_advance / 64f, MidpointRounding.AwayFromZero);
-                    chars[i] = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvanceX, cAdvanceY);
+                    var cluster = (Int32)glyphInfo->cluster;
+                    if (cluster < start)
+                        continue;
 
+                    if (cluster >= end)
+                        break;
+
+                    switch (rawstr[cluster])
+                    {
+                        case '\n':
+                            chars[i] = ShapedChar.Newline;
+                            break;
+
+                        case '\t':
+                            chars[i] = ShapedChar.Tab;
+                            break;
+
+                        default:
+                            CreateShapedChar(glyphInfo, glyphPosition, out chars[i]);
+                            break;
+                    }
                     glyphInfo++;
                     glyphPosition++;
                 }
+
                 return new ShapedString(fontFace, GetLanguage(), GetScript(), GetDirection(), chars);
-            }            
+            }
         }
 
         /// <inheritdoc/>
@@ -261,6 +303,19 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
+        /// Creates a <see cref="ShapedChar"/> instance from the specified shaping information.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private unsafe void CreateShapedChar(hb_glyph_info_t* info, hb_glyph_position_t* position, out ShapedChar result)
+        {
+            var cGlyphIndex = (Int32)info->codepoint;
+            var cOffsetX = (Int16)Math.Round(position->x_offset / 64f, MidpointRounding.AwayFromZero);
+            var cOffsetY = (Int16)Math.Round(position->y_offset / 64f, MidpointRounding.AwayFromZero);
+            var cAdvance = (Int16)Math.Round((position->x_advance == 0 ? position->y_advance : position->x_advance) / 64f, MidpointRounding.AwayFromZero);
+            result = new ShapedChar(cGlyphIndex, cOffsetX, cOffsetY, cAdvance);
+        }
+
+        /// <summary>
         /// Performs shaping on the native buffer using the specified font..
         /// </summary>
         private unsafe void Shape(UltravioletFontFace fontFace, out hb_glyph_info_t* infos, out hb_glyph_position_t* positions, out UInt32 count)
@@ -294,5 +349,8 @@ namespace Ultraviolet.FreeType2
         // The native HarfBuzz font.
         private FreeTypeFontFace lastUsedFont;
         private IntPtr lastUsedFontNative;
+
+        // The string builder which contains the raw text.
+        private readonly StringBuilder rawstr = new StringBuilder();
     }
 }
