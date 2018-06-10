@@ -155,6 +155,8 @@ namespace Ultraviolet.FreeType2
 
             var cx = 0;
             var cy = 0;
+            var maxLineWidth = 0;
+
             for (var i = 0; i < count; i++)
             {
                 var ix = start + i;
@@ -170,6 +172,7 @@ namespace Ultraviolet.FreeType2
                         continue;
 
                     case '\n':
+                        maxLineWidth = Math.Max(maxLineWidth, cx);
                         cx = 0;
                         cy = cy + LineSpacing;
                         continue;
@@ -181,8 +184,9 @@ namespace Ultraviolet.FreeType2
 
                 cx += MeasureGlyph(ref text, ix).Width;
             }
+            maxLineWidth = Math.Max(maxLineWidth, cx);
 
-            return new Size2(cx, cy + totalDesignHeight);
+            return new Size2(maxLineWidth, cy + totalDesignHeight);
         }
 
         /// <inheritdoc/>
@@ -215,10 +219,32 @@ namespace Ultraviolet.FreeType2
             Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
 
             var cx = 0;
-            for (var i = 0; i < count; i++)
-                cx += text[i].Advance;
+            var cy = 0;
+            var maxLineWidth = 0;
 
-            return new Size2(cx, totalDesignHeight);
+            for (var i = 0; i < count; i++)
+            {
+                var sc = text[i];
+                switch (sc.GetSpecialCharacter())
+                {
+                    case '\n':
+                        maxLineWidth = Math.Max(maxLineWidth, cx);
+                        cx = 0;
+                        cy = cy + LineSpacing;
+                        break;
+
+                    case '\t':
+                        cx = cx + TabWidth;
+                        break;
+
+                    default:
+                        cx = cx + sc.Advance;
+                        break;
+                }
+            }
+            maxLineWidth = Math.Max(maxLineWidth, cx);
+
+            return new Size2(maxLineWidth, totalDesignHeight);
         }
 
         /// <inheritdoc/>
@@ -274,15 +300,28 @@ namespace Ultraviolet.FreeType2
 
         /// <inheritdoc/>
         public override Size2 MeasureShapedGlyph(ShapedString text, Int32 ix) =>
-            throw new NotImplementedException();
+            MeasureShapedGlyph(ref text, ix);
 
         /// <inheritdoc/>
         public override Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix) =>
-            throw new NotImplementedException();
+            MeasureShapedGlyph(ref text, ix);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix) =>
-            throw new NotImplementedException();
+        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix)
+        {
+            var sc = source[ix];
+            switch (sc.GetSpecialCharacter())
+            {
+                case '\n':
+                    return Size2.Zero;
+
+                case '\t':
+                    return new Size2(TabWidth, totalDesignHeight);
+
+                default:
+                    return new Size2(sc.Advance, totalDesignHeight);
+            }
+        }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSegment text, Int32 ix, Int32 c2)
