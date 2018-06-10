@@ -13,8 +13,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 hash = hash * 23 + GlyphIndex.GetHashCode();
                 hash = hash * 23 + OffsetX.GetHashCode();
                 hash = hash * 23 + OffsetY.GetHashCode();
-                hash = hash * 23 + AdvanceX.GetHashCode();
-                hash = hash * 23 + AdvanceY.GetHashCode();
+                hash = hash * 23 + Advance.GetHashCode();
                 return hash;
             }
         }
@@ -48,8 +47,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 this.GlyphIndex == other.GlyphIndex &&
                 this.OffsetX == other.OffsetX &&
                 this.OffsetY == other.OffsetY &&
-                this.AdvanceX == other.AdvanceX &&
-                this.AdvanceY == other.AdvanceY;
+                this.Advance == other.Advance;
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override void GetGlyphRenderInfo(Int32 c, out GlyphRenderInfo info)
+        public override void GetCodePointRenderInfo(Int32 c, out GlyphRenderInfo info)
         {
             if (c < 0 || c > Char.MaxValue)
                 c = SubstitutionCharacter;
@@ -91,6 +91,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 Advance = advance,
             };
         }
+
+        /// <inheritdoc/>
+        public override void GetGlyphIndexRenderInfo(Int32 glyphIndex, out GlyphRenderInfo info) => 
+            throw new NotSupportedException();
 
         /// <inheritdoc/>
         public override Size2 MeasureString(String text)

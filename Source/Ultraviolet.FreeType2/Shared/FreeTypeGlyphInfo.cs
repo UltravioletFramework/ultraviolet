@@ -1,5 +1,6 @@
 ﻿using System;
 using Ultraviolet.Graphics;
+using Ultraviolet.Graphics.Graphics2D;
 
 namespace Ultraviolet.FreeType2
 {
@@ -9,9 +10,20 @@ namespace Ultraviolet.FreeType2
     internal struct FreeTypeGlyphInfo
     {
         /// <summary>
-        /// Gets or sets the Unicode character which the glyph represents.
+        /// Creates a <see cref="GlyphRenderInfo"/> structure from this instance.
         /// </summary>
-        public UInt32 UnicodeCharacter { get; set; }
+        /// <returns>The <see cref="GlyphRenderInfo"/> structure which was created.</returns>
+        public GlyphRenderInfo ToGlyphRenderInfo()
+        {
+            return new GlyphRenderInfo
+            {
+                Texture = Texture,
+                TextureRegion = TextureRegion,
+                OffsetX = OffsetX,
+                OffsetY = OffsetY,
+                Advance = Advance,
+            };
+        }
 
         /// <summary>
         /// Gets or sets the glyph's advance in pixels.

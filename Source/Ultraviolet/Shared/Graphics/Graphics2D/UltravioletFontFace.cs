@@ -19,11 +19,18 @@ namespace Ultraviolet.Graphics.Graphics2D
         { }
 
         /// <summary>
+        /// Gets the information required to draw the specified Unicode code point.
+        /// </summary>
+        /// <param name="codePoint">The 32-bit Unicode value of the glyph to draw.</param>
+        /// <param name="info">The rendering information for the specified glyph.</param>
+        public abstract void GetCodePointRenderInfo(Int32 codePoint, out GlyphRenderInfo info);
+
+        /// <summary>
         /// Gets the information required to draw the specified glyph.
         /// </summary>
-        /// <param name="c">The 32-bit Unicode value of the glyph to draw.</param>
+        /// <param name="glyphIndex">The glyph index of the glyph to draw.</param>
         /// <param name="info">The rendering information for the specified glyph.</param>
-        public abstract void GetGlyphRenderInfo(Int32 c, out GlyphRenderInfo info);
+        public abstract void GetGlyphIndexRenderInfo(Int32 glyphIndex, out GlyphRenderInfo info);
 
         /// <summary>
         /// Measures the size of the specified string of text when rendered using this font.
