@@ -20,7 +20,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             {
                 // Determine whether the text is flipped.
                 var isFlippedHorizontally = (effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipHorizontally;
-                var isFlippedVertically = (effects & SpriteEffects.FlipHorizontally) == SpriteEffects.FlipVertically;
+                var isFlippedVertically = (effects & SpriteEffects.FlipVertically) == SpriteEffects.FlipVertically;
 
                 // Calculate the text area from its measurement.
                 var areaTL = new Vector2(position.X - origin.X, position.Y - origin.Y);
@@ -123,10 +123,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 GlyphTexture = glyphRenderInfo.Texture;
                 GlyphTextureRegion = glyphRenderInfo.TextureRegion;
                 GlyphPosition.X = TextIsFlippedHorizontally ?
-                    (TextRenderPosition.X + glyphRenderInfo.OffsetX) - GlyphTextureRegion.Width : 
+                    (TextRenderPosition.X - glyphRenderInfo.OffsetX) - GlyphTextureRegion.Width : 
                     (TextRenderPosition.X + glyphRenderInfo.OffsetX);
                 GlyphPosition.Y = TextIsFlippedVertically ?
-                    (TextRenderPosition.Y + glyphRenderInfo.OffsetY + GlyphKerning.Y) - GlyphTextureRegion.Height : 
+                    (TextRenderPosition.Y - glyphRenderInfo.OffsetY + GlyphKerning.Y) - GlyphTextureRegion.Height : 
                     (TextRenderPosition.Y + glyphRenderInfo.OffsetY + GlyphKerning.Y);
                 GlyphOrigin = new Vector2(GlyphTextureRegion.Width / 2, GlyphTextureRegion.Height / 2);
             }
