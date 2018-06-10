@@ -13,15 +13,37 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="glyphIndex">The glyph index which this character represents.</param>
         /// <param name="offsetX">The offset of the character along the x-axis, in pixels.</param>
         /// <param name="offsetY">The offset of the character along the y-axis, in pixels.</param>
-        /// <param name="advanceX">The character's advance along the x-axis, in pixels.</param>
-        /// <param name="advanceY">The character's advance along the y-axis, in pixels.</param>
-        public ShapedChar(Int32 glyphIndex, Int16 offsetX, Int16 offsetY, Int16 advanceX, Int16 advanceY)
+        /// <param name="advance">The character's advance in pixels.</param>
+        public ShapedChar(Int32 glyphIndex, Int16 offsetX, Int16 offsetY, Int16 advance)
         {
             this.GlyphIndex = glyphIndex;
             this.OffsetX = offsetX;
             this.OffsetY = offsetY;
-            this.AdvanceX = advanceX;
-            this.AdvanceY = advanceY;
+            this.Advance = advance;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ShapedChar"/> instance which represents a tab character.
+        /// </summary>
+        public static ShapedChar Tab => new ShapedChar('\t', Int16.MaxValue, Int16.MaxValue, Int16.MaxValue);
+
+        /// <summary>
+        /// Gets a <see cref="ShapedChar"/> instance which represents a newline character.
+        /// </summary>
+        public static ShapedChar Newline => new ShapedChar('\n', Int16.MaxValue, Int16.MaxValue, Int16.MaxValue);
+
+        /// <summary>
+        /// Gets the special character which this shaped character represents, if any.
+        /// </summary>
+        /// <returns>The special character which this shaped character represents, 
+        /// or 0 if it does not represent a special character.</returns>
+        public Char GetSpecialCharacter()
+        {
+            if (OffsetX == Int16.MaxValue && OffsetY == Int16.MaxValue && Advance == Int16.MaxValue)
+            {
+                return (Char)GlyphIndex;
+            }
+            return Char.MinValue;
         }
 
         /// <summary>
@@ -30,23 +52,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public Int32 GlyphIndex { get; }
 
         /// <summary>
-        /// Gets the offset of the character along the x-axis, in pixels.
+        /// Gets the offset of the character along the x-axis in pixels.
         /// </summary>
         public Int16 OffsetX { get; }
 
         /// <summary>
-        /// Gets the offset the character along the y-axis, in pixels.
+        /// Gets the offset the character along the y-axis in pixels.
         /// </summary>
         public Int16 OffsetY { get; }
 
         /// <summary>
-        /// Gets the character's advance along the x-axis, in pixels.
+        /// Gets the character's advance in pixels.
         /// </summary>
-        public Int16 AdvanceX { get; }
-
-        /// <summary>
-        /// Gets the character's advance along the y-axis, in pixels.
-        /// </summary>
-        public Int16 AdvanceY { get; }
+        public Int16 Advance { get; }
     }
 }
