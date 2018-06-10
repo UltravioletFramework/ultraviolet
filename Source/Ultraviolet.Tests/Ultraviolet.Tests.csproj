@@ -909,6 +909,9 @@
     <None Include="Content\Fonts\SegoeUI12Texture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings_RightToLeft.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
