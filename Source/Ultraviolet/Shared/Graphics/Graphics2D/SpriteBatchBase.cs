@@ -2965,8 +2965,17 @@ namespace Ultraviolet.Graphics.Graphics2D
             var glyphRenderState = GlyphRenderState.FromDrawStringParameters(fontFace, 
                 position, origin, scale, rotation, effects, measure);
 
+            // Figure out our loop direction based on text orientation.
+            var loopStart = 0;
+            var loopDelta = 1;
+            if ((effects & SpriteEffects.RtlText) == SpriteEffects.RtlText)
+            {
+                loopStart = text.Length - 1;
+                loopDelta = -1;
+            }
+
             // Add the text's glyphs to the sprite batch.
-            for (int i = 0, length = 1; i < text.Length; i += length)
+            for (int i = loopStart, length = 1; i >= 0 && i < text.Length; i += length * loopDelta)
             {
                 // Retrieve the glyph that we're rendering from the source text.
                 // If this is not the first shader pass, it means a shader changed our glyph.
@@ -2992,8 +3001,16 @@ namespace Ultraviolet.Graphics.Graphics2D
                     DrawInternal(glyphRenderState.GlyphTexture, glyphPosTransformed + glyphRenderState.GlyphOrigin,
                         glyphRenderState.GlyphTextureRegion, glyphRenderState.GlyphColor, rotation, glyphRenderState.GlyphOrigin, glyphRenderState.GlyphScale, effects, layerDepth, data);
 
-                    if (i != text.Length - 1)
-                        kerning = fontFace.GetKerningInfo(ref text, i);
+                    if (loopDelta > 0)
+                    {
+                        if (i != text.Length - 1)
+                            kerning = fontFace.GetKerningInfo(ref text, i);
+                    }
+                    else
+                    {
+                        if (i > 0)
+                            kerning = fontFace.GetKerningInfo(ref text, i, ref text, i - 1);
+                    }
                 }
                 glyphRenderState.GlyphKerning = (Vector2)kerning;
                 glyphRenderState.TextRenderPosition.X += (glyphRenderState.GlyphAdvance.X + glyphRenderState.GlyphKerning.X) * glyphRenderState.TextDirection.X;

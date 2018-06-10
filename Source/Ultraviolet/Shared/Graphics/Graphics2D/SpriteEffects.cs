@@ -28,5 +28,15 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// its destination rectangle, rather than its source rectangle.
         /// </summary>
         OriginRelativeToDestination = 0x0004,
+
+        /// <summary>
+        /// Indicates that text should be drawn left-to-right (the default behavior).
+        /// </summary>
+        LtrText = 0x0000,
+
+        /// <summary>
+        /// Indicates that text should be drawn right-to-left.
+        /// </summary>
+        RtlText = 0x0020,
     }
 }
