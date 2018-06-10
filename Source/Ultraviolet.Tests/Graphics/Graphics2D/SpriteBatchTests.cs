@@ -3,6 +3,7 @@ using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.TestFramework;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace Ultraviolet.Tests.Graphics.Graphics2D
 {
@@ -63,6 +64,39 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                         .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2_sRGB).png");
                 }
             }
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the SpriteBatch class can render right-to-left text using the DrawString() method.")]
+        public void SpriteBatch_CanRenderSimpleStrings_RightToLeft()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(UltravioletFont);
+
+            var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    config.SrgbBuffersEnabled = true;
+                    config.SrgbDefaultForTexture2D = true;
+                    config.SrgbDefaultForRenderBuffer2D = true;
+                })
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<UltravioletFont>("Fonts/FiraGO-Regular");
+                })
+                .Render(uv =>
+                {
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                    spriteBatch.DrawString(spriteFont.Regular, "Hello, world!", new Vector2(16f, 16f), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.RtlText, 0f);
+                    spriteBatch.DrawString(spriteFont.Regular, "שלום עולם", new Vector2(16f, 48f), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.RtlText, 0f);
+                    spriteBatch.End();
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings_RightToLeft.png");
         }
 
         [Test]
@@ -144,6 +178,43 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                 TheResultingImage(result)
                     .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters(FreeType2).png");
             }
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that SpriteBatch can be used to draw shaped Arabic script.")]
+        public void SpriteBatch_CorrectlyRendersShapedArabicScript()
+        {
+            var spriteBatch = default(SpriteBatch);
+            var spriteFont = default(UltravioletFont);
+            var sstr = default(ShapedString);
+
+            var result = GivenAnUltravioletApplication()
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(content =>
+                {
+                    spriteBatch = SpriteBatch.Create();
+                    spriteFont = content.Load<UltravioletFont>("Fonts/FiraGO-Regular");
+
+                    using (var textShaper = TextShaper.Create())
+                    {
+                        textShaper.SetLanguage("ar");
+                        textShaper.Append("مرحبا بالعالم");
+
+                        sstr = textShaper.CreateShapedString(spriteFont.Regular);
+                    }
+                })
+                .Render(uv =>
+                {
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                    spriteBatch.DrawShapedString(spriteFont.Regular, sstr, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+                });
+
+            result.Save("C:\\Users\\colec\\Desktop\\SpriteBatch_CorrectlyRendersShapedArabicScript.png", System.Drawing.Imaging.ImageFormat.Png);
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersShapedArabicScript.png");
         }
 
         [Test]
