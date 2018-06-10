@@ -123,10 +123,10 @@ namespace Ultraviolet.Graphics.Graphics2D
                 GlyphTexture = glyphRenderInfo.Texture;
                 GlyphTextureRegion = glyphRenderInfo.TextureRegion;
                 GlyphPosition.X = TextIsFlippedHorizontally ?
-                    (TextRenderPosition.X - glyphRenderInfo.OffsetX) - GlyphTextureRegion.Width : 
+                    (TextRenderPosition.X - glyphRenderInfo.OffsetX) - GlyphTextureRegion.Width :
                     (TextRenderPosition.X + glyphRenderInfo.OffsetX);
                 GlyphPosition.Y = TextIsFlippedVertically ?
-                    (TextRenderPosition.Y - glyphRenderInfo.OffsetY + GlyphKerning.Y) - GlyphTextureRegion.Height : 
+                    (TextRenderPosition.Y - glyphRenderInfo.OffsetY + GlyphKerning.Y) - GlyphTextureRegion.Height :
                     (TextRenderPosition.Y + glyphRenderInfo.OffsetY + GlyphKerning.Y);
                 GlyphOrigin = new Vector2(GlyphTextureRegion.Width / 2, GlyphTextureRegion.Height / 2);
             }
@@ -273,6 +273,11 @@ namespace Ultraviolet.Graphics.Graphics2D
             /// A value indicating whether the text being drawn has been shaped.
             /// </summary>
             public Boolean TextIsShaped;
+
+            /// <summary>
+            /// A value indicating whether the text is being drawn right-to-left.
+            /// </summary>
+            public Boolean TextIsRightToLeft;
 
             /// <summary>
             /// A value indicating whether the text is being flipped horizontally.
