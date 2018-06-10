@@ -211,8 +211,6 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                     spriteBatch.End();
                 });
 
-            result.Save("C:\\Users\\colec\\Desktop\\SpriteBatch_CorrectlyRendersShapedArabicScript.png", System.Drawing.Imaging.ImageFormat.Png);
-
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersShapedArabicScript.png");
         }
