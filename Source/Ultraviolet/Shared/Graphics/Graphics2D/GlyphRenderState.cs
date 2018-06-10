@@ -1,6 +1,7 @@
 ﻿using System;
-using Ultraviolet.Core.Text;
 using System.Runtime.CompilerServices;
+using Ultraviolet.Core.Text;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
@@ -71,19 +72,35 @@ namespace Ultraviolet.Graphics.Graphics2D
                 {
                     if (iNext >= text.Length)
                     {
-                        GlyphIndex = FontFace.SubstitutionCharacter;
+                        GlyphCharacter = FontFace.SubstitutionCharacter;
+                        GlyphIndexOrCodePoint = GlyphCharacter;
                     }
                     else
                     {
-                        GlyphIndex = Char.ConvertToUtf32(text[i], text[iNext]);
+                        GlyphCharacter = Char.MinValue;
+                        GlyphIndexOrCodePoint = Char.ConvertToUtf32(text[i], text[iNext]);
                     }
                     length = 2;
                 }
                 else
                 {
-                    GlyphIndex = text[i];
+                    GlyphCharacter = text[i];
+                    GlyphIndexOrCodePoint = GlyphCharacter;
                     length = 1;
                 }
+            }
+
+            /// <summary>
+            /// Updates the state object with the next glyph to draw.
+            /// </summary>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void RetrieveGlyph(IStringSource<ShapedChar> text, Int32 i)
+            {
+                var sc = text[i];
+                GlyphCharacter = sc.GetSpecialCharacter();
+                GlyphIndexOrCodePoint = sc.GlyphIndex;
+                GlyphAdvance = new Vector2(sc.Advance, 0);
+                GlyphOffset = new Vector2(sc.OffsetX, sc.OffsetY);
             }
 
             /// <summary>
@@ -92,7 +109,16 @@ namespace Ultraviolet.Graphics.Graphics2D
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void UpdateFromRenderInfo()
             {
-                FontFace.GetGlyphRenderInfo(GlyphIndex, out var glyphRenderInfo);
+                GlyphRenderInfo glyphRenderInfo;
+                if (TextIsShaped)
+                {
+                    FontFace.GetGlyphIndexRenderInfo(GlyphIndexOrCodePoint, out glyphRenderInfo);
+                }
+                else
+                {
+                    FontFace.GetCodePointRenderInfo(GlyphIndexOrCodePoint, out glyphRenderInfo);
+                    GlyphAdvance = new Vector2(glyphRenderInfo.Advance, 0);
+                }
 
                 GlyphTexture = glyphRenderInfo.Texture;
                 GlyphTextureRegion = glyphRenderInfo.TextureRegion;
@@ -103,9 +129,8 @@ namespace Ultraviolet.Graphics.Graphics2D
                     (TextRenderPosition.Y + glyphRenderInfo.OffsetY + GlyphKerning.Y) - GlyphTextureRegion.Height : 
                     (TextRenderPosition.Y + glyphRenderInfo.OffsetY + GlyphKerning.Y);
                 GlyphOrigin = new Vector2(GlyphTextureRegion.Width / 2, GlyphTextureRegion.Height / 2);
-                GlyphAdvance = new Vector2(glyphRenderInfo.Advance, 0);
             }
-
+            
             /// <summary>
             /// Updates the state object from the specified glyph data.
             /// </summary>
@@ -114,7 +139,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             {
                 if (glyphData.DirtyUnicodeCodePoint)
                 {
-                    GlyphIndex = glyphData.UnicodeCodePoint;
+                    GlyphIndexOrCodePoint = glyphData.UnicodeCodePoint;
                     UpdateFromRenderInfo();
                     return;
                 }
@@ -131,14 +156,14 @@ namespace Ultraviolet.Graphics.Graphics2D
                 if (glyphData.DirtyColor)
                     GlyphColor = glyphData.Color;
             }
-
+            
             /// <summary>
             /// Populates a glyph data object from the current state.
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void PopulateGlyphData(ref GlyphData glyphData)
             {
-                glyphData.UnicodeCodePoint = GlyphIndex;
+                glyphData.UnicodeCodePoint = TextIsShaped ? GlyphCharacter : GlyphIndexOrCodePoint;
                 glyphData.Pass = GlyphShaderPass;
                 glyphData.X = GlyphPosition.X;
                 glyphData.Y = GlyphPosition.Y;
@@ -154,7 +179,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public Boolean ProcessSpecialCharacters()
             {
-                switch ((Char)GlyphIndex)
+                switch (GlyphCharacter)
                 {
                     case '\t':
                         GlyphShaderPass = 0;
@@ -245,6 +270,11 @@ namespace Ultraviolet.Graphics.Graphics2D
             public RectangleF TextAreaTransformed;
 
             /// <summary>
+            /// A value indicating whether the text being drawn has been shaped.
+            /// </summary>
+            public Boolean TextIsShaped;
+
+            /// <summary>
             /// A value indicating whether the text is being flipped horizontally.
             /// </summary>
             public Boolean TextIsFlippedHorizontally;
@@ -260,19 +290,29 @@ namespace Ultraviolet.Graphics.Graphics2D
             public Matrix TextTransform;
 
             /// <summary>
+            /// Gets the character which this glyph represents.
+            /// </summary>
+            public Char GlyphCharacter;
+
+            /// <summary>
+            /// The glyph index or Unicode code point of the glyph being drawn.
+            /// </summary>
+            public Int32 GlyphIndexOrCodePoint;
+
+            /// <summary>
             /// The index of the current glyph shader pass.
             /// </summary>
             public Int32 GlyphShaderPass;
 
             /// <summary>
-            /// The index of the glyph being drawn.
-            /// </summary>
-            public Int32 GlyphIndex;
-
-            /// <summary>
             /// The position at which the current glyph is being drawn.
             /// </summary>
             public Vector2 GlyphPosition;
+
+            /// <summary>
+            /// The offset applied to the glyph when drawn.
+            /// </summary>
+            public Vector2 GlyphOffset;
 
             /// <summary>
             /// The kerning offsets for the current glyph.
