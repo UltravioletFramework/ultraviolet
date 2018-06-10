@@ -17,7 +17,7 @@
   </String>
   <String Key="GLYPH_TOO_BIG_FOR_ATLAS">
     <en-US>
-      <Variant>The glyph for '{0}' is too big to fit on a font atlas.</Variant>
+      <Variant>Glyph is too big to fit on a font atlas.</Variant>
     </en-US>
   </String>
   <String Key="PIXEL_FORMAT_NOT_SUPPORTED">
