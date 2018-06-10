@@ -39,6 +39,30 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [Test]
         [Category("Content")]
+        public void ShapedStringBuilder_IsAppendedFromShaper_WhenSpecifyingSubstring()
+        {
+            var sstrb = default(ShapedStringBuilder);
+
+            GivenAnUltravioletApplicationWithNoWindow()
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(content =>
+                {
+                    var font = content.Load<UltravioletFont>("Fonts/FiraSans");
+                    using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
+                    {
+                        textShaper.SetLanguage("en");
+                        textShaper.Append("Hello, world!");
+
+                        textShaper.AppendTo(sstrb, font.Regular, 7, 5);
+                    }
+                })
+                .RunForOneFrame();
+
+            TheResultingValue(sstrb.Length).ShouldBe(5);
+        }
+
+        [Test]
+        [Category("Content")]
         public void ShapedStringBuilder_CanBeCleared()
         {
             var sstrb = new ShapedStringBuilder();
@@ -166,14 +190,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             TheResultingCollection(glyphIndices)
                 .ShouldBeExactly(111, 412, 514, 514, 555, 2122, 3, 696, 555, 609, 514, 393, 2125);
 
-            var advances_x = chars.Select(x => x.AdvanceX).ToArray();
-            TheResultingCollection(advances_x)
+            var advances = chars.Select(x => x.Advance).ToArray();
+            TheResultingCollection(advances)
                 .ShouldBeExactly(11, 9, 5, 5, 9, 4, 4, 11, 9, 6, 5, 10, 4);
-
-            var advances_y = chars.Select(x => x.AdvanceY).ToArray();
-            TheResultingCollection(advances_y)
-                .ShouldContainTheSpecifiedNumberOfItems(13)
-                .ShouldContainItemsSatisfyingTheCondition(x => x == 0);
 
             var offsets_x = chars.Select(x => x.OffsetX).ToArray();
             TheResultingCollection(offsets_x)

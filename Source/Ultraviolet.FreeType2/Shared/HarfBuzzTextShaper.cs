@@ -205,15 +205,14 @@ namespace Ultraviolet.FreeType2
                 for (var i = 0; i < glyphCount; i++)
                 {
                     var cluster = (Int32)glyphInfo->cluster;
-                    if (cluster < start)
-                        continue;
+                    if (cluster >= start)
+                    {
+                        if (cluster >= end)
+                            break;
 
-                    if (cluster >= end)
-                        break;
-
-                    CreateShapedChar(glyphInfo, glyphPosition, out var sc);
-                    builder.Append(sc);
-
+                        CreateShapedChar(glyphInfo, glyphPosition, out var sc);
+                        builder.Append(sc);
+                    }
                     glyphInfo++;
                     glyphPosition++;
                 }
@@ -238,34 +237,36 @@ namespace Ultraviolet.FreeType2
 
                 var end = start + length;
                 var chars = new ShapedChar[glyphCount];
+                var charsCount = 0;
                 for (var i = 0; i < glyphCount; i++)
                 {
                     var cluster = (Int32)glyphInfo->cluster;
-                    if (cluster < start)
-                        continue;
-
-                    if (cluster >= end)
-                        break;
-
-                    switch (rawstr[cluster])
+                    if (cluster >= start)
                     {
-                        case '\n':
-                            chars[i] = ShapedChar.Newline;
+                        if (cluster >= end)
                             break;
 
-                        case '\t':
-                            chars[i] = ShapedChar.Tab;
-                            break;
+                        switch (rawstr[cluster])
+                        {
+                            case '\n':
+                                chars[i] = ShapedChar.Newline;
+                                break;
 
-                        default:
-                            CreateShapedChar(glyphInfo, glyphPosition, out chars[i]);
-                            break;
+                            case '\t':
+                                chars[i] = ShapedChar.Tab;
+                                break;
+
+                            default:
+                                CreateShapedChar(glyphInfo, glyphPosition, out chars[i]);
+                                break;
+                        }
+                        charsCount++;
                     }
                     glyphInfo++;
                     glyphPosition++;
                 }
 
-                return new ShapedString(fontFace, GetLanguage(), GetScript(), GetDirection(), chars);
+                return new ShapedString(fontFace, GetLanguage(), GetScript(), GetDirection(), chars, 0, charsCount);
             }
         }
 
