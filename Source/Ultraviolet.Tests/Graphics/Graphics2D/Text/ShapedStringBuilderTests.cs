@@ -41,7 +41,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         [Category("Content")]
         public void ShapedStringBuilder_IsAppendedFromShaper_WhenSpecifyingSubstring()
         {
-            var sstrb = default(ShapedStringBuilder);
+            var sstrb = new ShapedStringBuilder();
 
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithPlugin(new FreeTypeFontPlugin())

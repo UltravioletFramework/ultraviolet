@@ -192,6 +192,7 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length)
         {
+            Contract.Require(builder, nameof(builder));
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureRange(start >= 0 && start < rawstr.Length, nameof(start));
             Contract.EnsureRange(length >= 0 && start + length <= rawstr.Length, nameof(length));
