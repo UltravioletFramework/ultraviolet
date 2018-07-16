@@ -30,13 +30,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         OriginRelativeToDestination = 0x0004,
 
         /// <summary>
-        /// Indicates that text should be drawn left-to-right (the default behavior).
+        /// Indicates that text characters should be drawn in reverse
+        /// order, i.e. right-to-left.
         /// </summary>
-        LtrText = 0x0000,
-
-        /// <summary>
-        /// Indicates that text should be drawn right-to-left.
-        /// </summary>
-        RtlText = 0x0020,
+        DrawTextReversed = 0x0020,
     }
 }

@@ -34,13 +34,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineWidth">The width of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <param name="direction">The direction in which the text is oriented.</param>
         /// <returns>A <see cref="Point2"/> that describes the absolute position of the icon.</returns>
-        public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineHeight)
+        public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineWidth, Int32 lineHeight, TextDirection direction)
         {
             var lineHeightSansDescender = lineHeight + iconDescender;
             var iconHeightSansDescender = iconHeight + iconDescender;
-            return new Point2(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2));
+            var absX = (direction == TextDirection.RightToLeft) ? (x + lineWidth) - (iconX + iconWidth) : x + iconX;
+            var absY = (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2);
+            return new Point2(absX, absY);
         }
 
         /// <summary>
@@ -48,13 +52,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineWidth">The width of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <param name="direction">The direction in which the text is oriented.</param>
         /// <returns>A <see cref="Vector2"/> that describes the absolute position of the icon.</returns>
-        public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineHeight)
+        public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineWidth, Int32 lineHeight, TextDirection direction)
         {
             var lineHeightSansDescender = lineHeight + iconDescender;
             var iconHeightSansDescender = iconHeight + iconDescender;
-            return new Vector2(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2));
+            var absX = (direction == TextDirection.RightToLeft) ? (x + lineWidth) - (iconX + iconWidth) : x + iconX;
+            var absY = (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2);
+            return new Vector2(absX, absY);
         }
 
         /// <summary>
@@ -62,13 +70,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineWidth">The width of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <param name="direction">The direction in which the text is oriented.</param>
         /// <returns>A <see cref="Rectangle"/> that describes the absolute bounds of the icon.</returns>
-        public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineHeight)
+        public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineWidth, Int32 lineHeight, TextDirection direction)
         {
             var lineHeightSansDescender = lineHeight + iconDescender;
             var iconHeightSansDescender = iconHeight + iconDescender;
-            return new Rectangle(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2), iconWidth, iconHeight);
+            var absX = (direction == TextDirection.RightToLeft) ? (x + lineWidth) - (iconX + iconWidth) : x + iconX;
+            var absY = (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2);
+            return new Rectangle(absX, absY, iconWidth, iconHeight);
         }
 
         /// <summary>

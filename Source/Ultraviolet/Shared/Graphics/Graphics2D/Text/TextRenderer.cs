@@ -627,6 +627,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
+            var direction = settings.Direction;
 
             var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
 
@@ -685,7 +686,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(ref text, 0, glyphIndexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(ref text, glyphIndexWithinText);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX + glyphOffset, cmd->Bounds.Location.Y) :
-                                    cmd->GetAbsolutePosition(fontFace, offsetLineX + glyphOffset, blockOffset, lineHeight);
+                                    cmd->GetAbsolutePosition(fontFace, offsetLineX + glyphOffset, blockOffset, lineWidth, lineHeight, direction);
 
                                 bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
@@ -702,7 +703,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 var glyphSize = new Size2(cmd->IconWidth, cmd->IconHeight);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX, cmd->Bounds.Location.Y) :
-                                    cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineHeight);
+                                    cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineWidth, lineHeight, direction);
 
                                 bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
@@ -1255,6 +1256,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var fontFace = font.GetFace(bold, italic);
             var color = defaultColor;
             var lastColorOutsideLink = defaultColor;
+            var direction = settings.Direction;
 
             var availableHeight = settings.Height ?? Int32.MaxValue;
             var blockOffset = 0;
@@ -1304,12 +1306,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.Text:
                         DrawText(spriteBatch, input, fontFace, ref source,
-                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, charsMax, color, ref charsSeen);
+                            position.X + lineOffset, position.Y + blockOffset, lineWidth, lineHeight, start, charsMax, color, direction, ref charsSeen);
                         break;
 
                     case TextLayoutCommandType.Icon:
                         DrawIcon(spriteBatch, input, 
-                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, lastColorOutsideLink, ref charsSeen);
+                            position.X + lineOffset, position.Y + blockOffset, lineWidth, lineHeight, start, count, lastColorOutsideLink, direction, ref charsSeen);
                         break;
                         
                     case TextLayoutCommandType.LineBreak:
@@ -1354,7 +1356,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Draws a text command.
         /// </summary>
         private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSourceUnion source,
-            Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
         {
             var wasDrawnToCompletion = true;
 
@@ -1390,10 +1392,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     cmdText = cmdText.Substring(subStart, subLength);
                 }
 
-                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineHeight);
+                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
                 cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
 
-                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
+                var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
+                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color, 0f, Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
             }
 
             charsSeen += cmdLength;
@@ -1406,8 +1409,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 {
                     var hyphenatedTextWidth = fontFace.MeasureString(ref cmdText).Width;
                     var hyphenatedTextKerning = fontFace.GetHypotheticalKerningInfo(ref cmdText, cmdText.Length - 1, '-');
+                    var hyphenWidth = fontFace.MeasureString("-").Width;
 
-                    cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning.Width, cmdPosition.Y + hyphenatedTextKerning.Height);
+                    var cmdX = (direction == TextDirection.RightToLeft) ?
+                        (cmdPosition.X - (hyphenWidth - hyphenatedTextKerning.Width)) :
+                        (cmdPosition.X + (hyphenatedTextWidth + hyphenatedTextKerning.Width));
+                    var cmdY = cmdPosition.Y + hyphenatedTextKerning.Height;
+                    cmdPosition = new Vector2(cmdX, cmdY);
                     cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
 
                     spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, "-", cmdPosition, color);
@@ -1421,7 +1429,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Draws an icon command.
         /// </summary>
         private void DrawIcon(SpriteBatch spriteBatch, TextLayoutCommandStream input,
-            Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
         {
             var cmd = (TextLayoutIconCommand*)input.Data;
 
@@ -1431,7 +1439,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var icon = input.GetIcon(cmd->IconIndex);
                 var iconWidth = (Single)(icon.Width ?? icon.Icon.Controller.Width);
                 var iconHeight = (Single)(icon.Height ?? icon.Icon.Controller.Height);
-                var iconPosition = cmd->GetAbsolutePositionVector(x, y, lineHeight);
+                var iconPosition = cmd->GetAbsolutePositionVector(x, y, lineWidth, lineHeight, direction);
                 var iconRotation = 0f;
 
                 var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
@@ -1946,7 +1954,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
-
+            var direction = settings.Direction;
+            
             var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
             
             input.Seek(0);
@@ -2058,7 +2067,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineHeight);
+                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineWidth, lineHeight, direction);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
                                     var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
@@ -2088,7 +2097,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             if (glyphIsInCurrentLine)
                             {
                                 var iconCmd = (TextLayoutIconCommand*)input.Data;
-                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
+                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineWidth, lineHeight, direction);
                                 if (x >= iconBounds.Left && x < iconBounds.Right)
                                 {
                                     glyph = glyphCountSeen;
