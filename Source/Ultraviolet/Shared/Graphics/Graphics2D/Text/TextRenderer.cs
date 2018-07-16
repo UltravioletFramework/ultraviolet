@@ -1361,7 +1361,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var wasDrawnToCompletion = true;
 
             var cmd = (TextLayoutTextCommand*)input.Data;
-            var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+            var cmdText = (cmd->TextLength == 0) ? StringSegment.Empty : source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
             if (cmdText.Equals("\n"))
             {
                 charsSeen += cmdText.Length;
