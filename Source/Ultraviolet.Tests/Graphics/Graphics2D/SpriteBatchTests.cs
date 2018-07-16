@@ -90,8 +90,8 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                 .Render(uv =>
                 {
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                    spriteBatch.DrawString(spriteFont.Regular, "Hello, world!", new Vector2(16f, 16f), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.RtlText, 0f);
-                    spriteBatch.DrawString(spriteFont.Regular, "שלום עולם", new Vector2(16f, 48f), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.RtlText, 0f);
+                    spriteBatch.DrawString(spriteFont.Regular, "Hello, world!", new Vector2(16f, 16f), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.DrawTextReversed, 0f);
+                    spriteBatch.DrawString(spriteFont.Regular, "שלום עולם", new Vector2(16f, 48f), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.DrawTextReversed, 0f);
                     spriteBatch.End();
                 });
 

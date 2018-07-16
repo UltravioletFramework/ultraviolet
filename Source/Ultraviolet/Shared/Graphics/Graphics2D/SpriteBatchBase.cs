@@ -2968,7 +2968,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             // Figure out our loop direction based on text orientation.
             var loopStart = 0;
             var loopDelta = 1;
-            if ((effects & SpriteEffects.RtlText) == SpriteEffects.RtlText)
+            if ((effects & SpriteEffects.DrawTextReversed) == SpriteEffects.DrawTextReversed)
             {
                 loopStart = text.Length - 1;
                 loopDelta = -1;
