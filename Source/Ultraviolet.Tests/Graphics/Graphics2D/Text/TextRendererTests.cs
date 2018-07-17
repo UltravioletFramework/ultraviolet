@@ -1392,6 +1392,60 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             }
         }
 
+        [Test]
+        [TestCase(ColorEncoding.Linear)]
+        [TestCase(ColorEncoding.Srgb)]
+        [Category("Rendering")]
+        [Description("Ensures that the TextRenderer class correctly renders text which makes use of fallback fonts.")]
+        public void TextRenderer_CorrectlyPerformsRightToLeftLayout(ColorEncoding encoding)
+        {
+            var content = new TextRendererTestContent(
+                "Hello, |c:ffff0000|world|c|! This is a |c:ff00ff00|test of RTL text|c| rendering in the |c:ff0000ff|layout engine|c|! Supercalifragilisticexpialidocious", TextParserOptions.None);
+
+            var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    if (encoding == ColorEncoding.Srgb)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(manager =>
+                {
+                    content.LoadFreeType(manager);
+                })
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.Black);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, window.Compositor.Width / 4, window.Compositor.Height, 
+                            TextFlags.AlignTop | TextFlags.AlignRight, TextLayoutOptions.Hyphenate, TextDirection.RightToLeft));
+
+                    content.SpriteBatch.Begin();
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+                    content.SpriteBatch.End();
+                });
+
+            using (var stream = System.IO.File.OpenWrite("C:\\Dev\\output" + encoding + ".png"))
+                result.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+
+            if (encoding == ColorEncoding.Linear)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout.png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB).png");
+            }
+        }
+
         protected static LineInfoResult TheResultingValue(LineInfo obj)
         {
             return new LineInfoResult(obj);
