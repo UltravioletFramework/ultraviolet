@@ -87,7 +87,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction)
-            : this(font, width, height, flags, options, TextDirection.LeftToRight, UltravioletFontStyle.Regular, null)
+            : this(font, width, height, flags, options, direction, UltravioletFontStyle.Regular, null)
         {
 
         }
