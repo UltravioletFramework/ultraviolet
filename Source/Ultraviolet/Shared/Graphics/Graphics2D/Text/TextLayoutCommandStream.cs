@@ -207,7 +207,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>A <see cref="TextLayoutCommandType"/> that represents the type of command at the stream's new position.</returns>
         public TextLayoutCommandType Seek(Int32 index)
         {
-            var ptr = stream.RawSeekObject(index);
+            var ptr = InternalObjectStream.RawSeekObject(index);
             return (index < Count) ? *(TextLayoutCommandType*)ptr : TextLayoutCommandType.None;
         }
 
@@ -224,11 +224,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             for (int i = 0; i <= index; i++)
             {
-                stream.RawSeekObject(position);
-                position += ((TextLayoutLineInfoCommand*)stream.Data)->LengthInCommands;
+                InternalObjectStream.RawSeekObject(position);
+                position += ((TextLayoutLineInfoCommand*)InternalObjectStream.Data)->LengthInCommands;
             }
 
-            return *(TextLayoutCommandType*)stream.Data;
+            return *(TextLayoutCommandType*)InternalObjectStream.Data;
         }
 
         /// <summary>
@@ -253,9 +253,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><see langword="true"/> if the stream was able to seek to the next command; otherwise, <see langword="false"/>.</returns>
         public Boolean SeekNextCommand()
         {
-            if (stream.PositionInObjects < stream.LengthInObjects)
+            if (InternalObjectStream.PositionInObjects < InternalObjectStream.LengthInObjects)
             {
-                stream.RawSeekForward();
+                InternalObjectStream.RawSeekForward();
                 return true;
             }
             return false;
@@ -267,16 +267,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns><see langword="true"/> if the stream was able to seek to another line of text; otherwise, <see langword="false"/>.</returns>
         public Boolean SeekNextLine()
         {
-            var currentCommandType = *(TextLayoutCommandType*)stream.Data;
+            var currentCommandType = *(TextLayoutCommandType*)InternalObjectStream.Data;
             if (currentCommandType == TextLayoutCommandType.LineInfo)
             {
-                Seek(stream.PositionInObjects + ((TextLayoutLineInfoCommand*)stream.Data)->LengthInCommands + 1);
+                Seek(InternalObjectStream.PositionInObjects + ((TextLayoutLineInfoCommand*)InternalObjectStream.Data)->LengthInCommands + 1);
             }
             else
             {
-                while (*(TextLayoutCommandType*)stream.Data != TextLayoutCommandType.LineInfo && SeekNextCommand()) { }
+                while (*(TextLayoutCommandType*)InternalObjectStream.Data != TextLayoutCommandType.LineInfo && SeekNextCommand()) { }
             }
-            return stream.PositionInObjects < Count;
+            return InternalObjectStream.PositionInObjects < Count;
         }
 
         /// <summary>
@@ -510,7 +510,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void AcquirePointers()
         {
-            stream.AcquirePointers();
+            InternalObjectStream.AcquirePointers();
         }
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void ReleasePointers()
         {
-            stream.ReleasePointers();
+            InternalObjectStream.ReleasePointers();
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void Clear()
         {
-            stream.Clear();
+            InternalObjectStream.Clear();
 
             if (resources != null)
                 resources.Clear();
@@ -540,7 +540,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             TotalLength = 0;
             LineCount = 0;
 
-            hasMultipleFontStyles = false;
+            HasMultipleFontStyles = false;
         }
 
         /// <summary>
@@ -548,10 +548,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteBlockInfo()
         {
-            stream.Reserve(sizeof(TextLayoutBlockInfoCommand));
-            *(TextLayoutBlockInfoCommand*)stream.Data = new TextLayoutBlockInfoCommand();
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.BlockInfo;
-            stream.FinalizeObject(sizeof(TextLayoutBlockInfoCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutBlockInfoCommand));
+            *(TextLayoutBlockInfoCommand*)InternalObjectStream.Data = new TextLayoutBlockInfoCommand();
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.BlockInfo;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutBlockInfoCommand));
         }
 
         /// <summary>
@@ -559,10 +559,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteLineInfo()
         {
-            stream.Reserve(sizeof(TextLayoutLineInfoCommand));
-            *(TextLayoutLineInfoCommand*)stream.Data = new TextLayoutLineInfoCommand();
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineInfo;
-            stream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutLineInfoCommand));
+            *(TextLayoutLineInfoCommand*)InternalObjectStream.Data = new TextLayoutLineInfoCommand();
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.LineInfo;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutLineInfoCommand));
         }
 
         /// <summary>
@@ -571,10 +571,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteText(TextLayoutTextCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutTextCommand));
-            *(TextLayoutTextCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Text;
-            stream.FinalizeObject(sizeof(TextLayoutTextCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutTextCommand));
+            *(TextLayoutTextCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.Text;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutTextCommand));
         }
 
         /// <summary>
@@ -583,10 +583,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteIcon(TextLayoutIconCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutIconCommand));
-            *(TextLayoutIconCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Icon;
-            stream.FinalizeObject(sizeof(TextLayoutIconCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutIconCommand));
+            *(TextLayoutIconCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.Icon;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutIconCommand));
         }
 
         /// <summary>
@@ -594,11 +594,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteToggleBold()
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ToggleBold;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ToggleBold;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -606,11 +606,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteToggleItalic()
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ToggleItalic;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ToggleItalic;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -619,12 +619,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushStyle(TextLayoutStyleCommand command)
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutStyleCommand));
-            *(TextLayoutStyleCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushStyle;
-            stream.FinalizeObject(sizeof(TextLayoutStyleCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutStyleCommand));
+            *(TextLayoutStyleCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PushStyle;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutStyleCommand));
         }
 
         /// <summary>
@@ -633,12 +633,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushFont(TextLayoutFontCommand command)
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutFontCommand));
-            *(TextLayoutFontCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushFont;
-            stream.FinalizeObject(sizeof(TextLayoutFontCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutFontCommand));
+            *(TextLayoutFontCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PushFont;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutFontCommand));
         }
 
         /// <summary>
@@ -647,10 +647,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushColor(TextLayoutColorCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutColorCommand));
-            *(TextLayoutColorCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushColor;
-            stream.FinalizeObject(sizeof(TextLayoutColorCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutColorCommand));
+            *(TextLayoutColorCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PushColor;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutColorCommand));
         }
 
         /// <summary>
@@ -659,10 +659,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushGlyphShader(TextLayoutGlyphShaderCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutGlyphShaderCommand));
-            *(TextLayoutGlyphShaderCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushGlyphShader;
-            stream.FinalizeObject(sizeof(TextLayoutGlyphShaderCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutGlyphShaderCommand));
+            *(TextLayoutGlyphShaderCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PushGlyphShader;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutGlyphShaderCommand));
         }
 
         /// <summary>
@@ -670,11 +670,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopStyle()
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopStyle;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PopStyle;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -682,11 +682,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopFont()
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopFont;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PopFont;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -694,9 +694,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopColor()
         {
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopColor;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PopColor;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -704,9 +704,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopGlyphShader()
         {
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopGlyphShader;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PopGlyphShader;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -715,10 +715,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteChangeSourceString(TextLayoutSourceStringCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutSourceStringCommand));
-            *(TextLayoutSourceStringCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ChangeSourceString;
-            stream.FinalizeObject(sizeof(TextLayoutSourceStringCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutSourceStringCommand));
+            *(TextLayoutSourceStringCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ChangeSourceString;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutSourceStringCommand));
         }
 
         /// <summary>
@@ -727,10 +727,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteChangeSourceStringBuilder(TextLayoutSourceStringBuilderCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutSourceStringBuilderCommand));
-            *(TextLayoutSourceStringBuilderCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.ChangeSourceStringBuilder;
-            stream.FinalizeObject(sizeof(TextLayoutSourceStringBuilderCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutSourceStringBuilderCommand));
+            *(TextLayoutSourceStringBuilderCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ChangeSourceStringBuilder;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutSourceStringBuilderCommand));
         }
 
         /// <summary>
@@ -738,9 +738,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WriteHyphen()
         {
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Hyphen;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.Hyphen;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -749,10 +749,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteLineBreak(TextLayoutLineBreakCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutLineBreakCommand));
-            *(TextLayoutLineBreakCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.LineBreak;
-            stream.FinalizeObject(sizeof(TextLayoutLineBreakCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutLineBreakCommand));
+            *(TextLayoutLineBreakCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.LineBreak;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutLineBreakCommand));
         }
 
         /// <summary>
@@ -761,12 +761,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WritePushLink(TextLayoutLinkCommand command)
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutLinkCommand));
-            *(TextLayoutLinkCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PushLink;
-            stream.FinalizeObject(sizeof(TextLayoutLinkCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutLinkCommand));
+            *(TextLayoutLinkCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PushLink;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutLinkCommand));
         }
         
         /// <summary>
@@ -774,11 +774,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void WritePopLink()
         {
-            hasMultipleFontStyles = true;
+            HasMultipleFontStyles = true;
 
-            stream.Reserve(sizeof(TextLayoutCommandType));
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.PopLink;
-            stream.FinalizeObject(sizeof(TextLayoutCommandType));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCommandType));
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.PopLink;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCommandType));
         }
 
         /// <summary>
@@ -787,10 +787,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="command">The command to write to the stream.</param>
         public void WriteCustomCommand(TextLayoutCustomCommand command)
         {
-            stream.Reserve(sizeof(TextLayoutCustomCommand));
-            *(TextLayoutCustomCommand*)stream.Data = command;
-            *(TextLayoutCommandType*)stream.Data = TextLayoutCommandType.Custom;
-            stream.FinalizeObject(sizeof(TextLayoutCustomCommand));
+            InternalObjectStream.Reserve(sizeof(TextLayoutCustomCommand));
+            *(TextLayoutCustomCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.Custom;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutCustomCommand));
         }
 
         /// <summary>
@@ -799,8 +799,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutBlockInfoCommand ReadBlockInfoCommand()
         {
-            var command = *(TextLayoutBlockInfoCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutBlockInfoCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -810,8 +810,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutLineInfoCommand ReadLineInfoCommand()
         {
-            var command = *(TextLayoutLineInfoCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutLineInfoCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -821,8 +821,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutTextCommand ReadTextCommand()
         {
-            var command = *(TextLayoutTextCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutTextCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -832,8 +832,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutIconCommand ReadIconCommand()
         {
-            var command = *(TextLayoutIconCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutIconCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -843,7 +843,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadToggleBoldCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -852,7 +852,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadToggleItalicCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -861,8 +861,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutStyleCommand ReadPushStyleCommand()
         {
-            var command = *(TextLayoutStyleCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutStyleCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -872,8 +872,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutFontCommand ReadPushFontCommand()
         {
-            var command = *(TextLayoutFontCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutFontCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -883,8 +883,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutColorCommand ReadPushColorCommand()
         {
-            var command = *(TextLayoutColorCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutColorCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -894,8 +894,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutGlyphShaderCommand ReadPushGlyphShaderCommand()
         {
-            var command = *(TextLayoutGlyphShaderCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutGlyphShaderCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -905,7 +905,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadPopStyleCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -914,7 +914,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadPopFontCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -923,7 +923,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadPopColorCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -932,7 +932,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadPopGlyphShaderCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -941,8 +941,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutSourceStringCommand ReadChangeSourceStringCommand()
         {
-            var command = *(TextLayoutSourceStringCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutSourceStringCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -952,8 +952,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutSourceStringBuilderCommand ReadChangeSourceStringBuilderCommand()
         {
-            var command = *(TextLayoutSourceStringBuilderCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutSourceStringBuilderCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -963,7 +963,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public void ReadHyphenCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -972,8 +972,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutLineBreakCommand ReadLineBreakCommand()
         {
-            var command = *(TextLayoutLineBreakCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutLineBreakCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -983,8 +983,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutLinkCommand ReadPushLinkCommand()
         {
-            var command = *(TextLayoutLinkCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutLinkCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -993,7 +993,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public void ReadPopLinkCommand()
         {
-            stream.RawSeekForward();
+            InternalObjectStream.RawSeekForward();
         }
 
         /// <summary>
@@ -1002,8 +1002,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <returns>The command that was read.</returns>
         public TextLayoutCustomCommand ReadCustomCommand()
         {
-            var command = *(TextLayoutCustomCommand*)stream.Data;
-            stream.RawSeekForward();
+            var command = *(TextLayoutCustomCommand*)InternalObjectStream.Data;
+            InternalObjectStream.RawSeekForward();
             return command;
         }
 
@@ -1075,7 +1075,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Int32 StreamPositionInObjects
         {
-            get { return stream.PositionInObjects; }
+            get { return InternalObjectStream.PositionInObjects; }
         }
 
         /// <summary>
@@ -1083,7 +1083,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Int32 StreamPositionInBytes
         {
-            get { return stream.PositionInBytes; }
+            get { return InternalObjectStream.PositionInBytes; }
         }
 
         /// <summary>
@@ -1091,7 +1091,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         public Int32 Count
         {
-            get { return stream.LengthInObjects; }
+            get { return InternalObjectStream.LengthInObjects; }
         }
 
         /// <summary>
@@ -1110,7 +1110,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         {
             get
             {
-                return stream.Data;
+                return InternalObjectStream.Data;
             }
         }
 
@@ -1121,7 +1121,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         {
             get
             {
-                return stream.Data0;
+                return InternalObjectStream.Data0;
             }
         }
 
@@ -1136,17 +1136,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <see cref="TextLayoutCommandType.PopFont"/>, or 
         /// <see cref="TextLayoutCommandType.PopStyle"/> commands.
         /// </remarks>
-        public Boolean HasMultipleFontStyles
-        {
-            get { return hasMultipleFontStyles; }
-        }
+        public Boolean HasMultipleFontStyles { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the command stream has acquired pointers to its underlying buffers.
         /// </summary>
         public Boolean HasAcquiredPointers
         {
-            get { return stream.HasAcquiredPointers; }
+            get { return InternalObjectStream.HasAcquiredPointers; }
         }
 
         /// <summary>
@@ -1188,16 +1185,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the <see cref="UnsafeObjectStream"/> which provides the command stream's storage.
         /// </summary>
-        internal UnsafeObjectStream InternalObjectStream
-        {
-            get { return stream; }
-        }
-        
-        // The underlying data stream containing our commands.
-        private readonly UnsafeObjectStream stream = new UnsafeObjectStream(32, 256);
-        private TextLayoutCommandStreamResources resources;
+        internal UnsafeObjectStream InternalObjectStream { get; } = new UnsafeObjectStream(32, 256);
 
-        // Property values.
-        private Boolean hasMultipleFontStyles;
+        // Registry of content resources used by the stream.
+        private TextLayoutCommandStreamResources resources;
     }
 }
