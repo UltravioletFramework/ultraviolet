@@ -109,11 +109,11 @@ namespace Ultraviolet.Core.Text
         /// <inheritdoc/>
         public Boolean Equals(String other)
         {
-            if (IsEmpty && other == String.Empty)
-                return true;
-
             if (other == null || other.Length != Length)
                 return false;
+
+            if (IsEmpty && other.Length == 0)
+                return true;
 
             if (Source is String str)
             {
@@ -141,11 +141,11 @@ namespace Ultraviolet.Core.Text
         /// <inheritdoc/>
         public Boolean Equals(StringBuilder other)
         {
-            if (IsEmpty && other.Length == 0)
-                return true;
-
             if (other == null || other.Length != Length)
                 return false;
+
+            if (IsEmpty && other.Length == 0)
+                return true;
 
             if (Source is String str)
             {
