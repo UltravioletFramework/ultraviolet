@@ -42,8 +42,8 @@ namespace Ultraviolet.Core.Text
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
         /// <param name="source">The source <see cref="String"/> object from which the segment's characters are retrieved.</param>
-        /// <param name="start">The index of the string segment's first character within its parent string.</param>
-        /// <param name="length">The number of characters in the string segment.</param>
+        /// <param name="start">The index of the segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the segment.</param>
         public StringSegment(String source, Int32 start, Int32 length)
         {
             Contract.Require(source, nameof(source));
@@ -61,8 +61,8 @@ namespace Ultraviolet.Core.Text
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
         /// <param name="source">The source <see cref="StringBuilder"/> object from which the segment's characters are retrieved.</param>
-        /// <param name="start">The index of the string segment's first character within its parent string.</param>
-        /// <param name="length">The number of characters in the string segment.</param>
+        /// <param name="start">The index of the segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the segment.</param>
         public StringSegment(StringBuilder source, Int32 start, Int32 length)
         {
             Contract.Require(source, nameof(source));
@@ -80,8 +80,8 @@ namespace Ultraviolet.Core.Text
         /// Initializes a new instance of the <see cref="StringSegment"/> structure.
         /// </summary>
         /// <param name="source">The source <see cref="StringSegment"/> object from which the segment's characters are retrieved.</param>
-        /// <param name="start">The index of the string segment's first character within its parent string.</param>
-        /// <param name="length">The number of characters in the string segment.</param>
+        /// <param name="start">The index of the segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the segment.</param>
         public StringSegment(StringSegment source, Int32 start, Int32 length)
         {
             Contract.EnsureRange(start >= 0 && start <= source.Length, nameof(start));
@@ -143,8 +143,8 @@ namespace Ultraviolet.Core.Text
         /// Creates a new <see cref="StringSegment"/> from the same source as the specified segment.
         /// </summary>
         /// <param name="segment">The segment from which to retrieve a string source.</param>
-        /// <param name="start">The index of the string segment's first character within its parent string.</param>
-        /// <param name="length">The number of characters in the string segment.</param>
+        /// <param name="start">The index of the segment's first character within its parent string.</param>
+        /// <param name="length">The number of characters in the segment.</param>
         /// <returns>The string segment that was created.</returns>
         public static StringSegment FromSource(StringSegment segment, Int32 start, Int32 length)
         {
@@ -176,10 +176,10 @@ namespace Ultraviolet.Core.Text
         }
         
         /// <summary>
-        /// Creates a string segment which is a substring of this string segment.
+        /// Creates a string segment which is a substring of this segment.
         /// </summary>
         /// <param name="start">The starting character of the substring within this string segment.</param>
-        /// <returns>A <see cref="StringSegment"/> which is a substring of this string segment.</returns>
+        /// <returns>A <see cref="StringSegment"/> which is a substring of this segment.</returns>
         public StringSegment Substring(Int32 start)
         {
             Contract.EnsureRange(start >= 0 && start < this.Length, nameof(start));
@@ -197,11 +197,11 @@ namespace Ultraviolet.Core.Text
         }
 
         /// <summary>
-        /// Creates a string segment which is a substring of this string segment.
+        /// Creates a string segment which is a substring of this segment.
         /// </summary>
         /// <param name="start">The starting character of the substring within this string segment.</param>
         /// <param name="length">The number of characters in the substring.</param>
-        /// <returns>A <see cref="StringSegment"/> which is a substring of this string segment.</returns>
+        /// <returns>A <see cref="StringSegment"/> which is a substring of this segment.</returns>
         public StringSegment Substring(Int32 start, Int32 length)
         {
             Contract.EnsureRange(start >= 0 && start < this.Length, nameof(start));
@@ -221,7 +221,7 @@ namespace Ultraviolet.Core.Text
         /// Gets the index of the first occurrence of the specified character within the string segment.
         /// </summary>
         /// <param name="value">The character for which to search.</param>
-        /// <returns>The index of the first occurrence of the specified character, or -1 if the string segment does not contain the character.</returns>
+        /// <returns>The index of the first occurrence of the specified character, or -1 if the segment does not contain the character.</returns>
         public Int32 IndexOf(Char value)
         {
             if (Source is String str)
@@ -243,7 +243,7 @@ namespace Ultraviolet.Core.Text
         /// Gets the index of the first occurrence of the specified string within the string segment.
         /// </summary>
         /// <param name="value">The string for which to search.</param>
-        /// <returns>The index of the first occurrence of the specified string, or -1 if the string segment does not contain the string.</returns>
+        /// <returns>The index of the first occurrence of the specified string, or -1 if the segment does not contain the string.</returns>
         public Int32 IndexOf(String value)
         {
             Contract.Require(value, nameof(value));
@@ -315,7 +315,7 @@ namespace Ultraviolet.Core.Text
         public Int32 Start { get; }
 
         /// <summary>
-        /// Gets the number of characters in the string segment.
+        /// Gets the number of characters in the segment.
         /// </summary>
         public Int32 Length { get; }
 
