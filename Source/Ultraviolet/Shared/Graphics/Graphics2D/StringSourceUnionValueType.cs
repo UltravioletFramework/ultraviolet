@@ -26,5 +26,20 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// The union represents a <see cref="StringSegmentSource"/> instance.
         /// </summary>
         StringSegment,
+
+        /// <summary>
+        /// The union represents a <see cref="ShapedString"/> instance.
+        /// </summary>
+        ShapedString,
+
+        /// <summary>
+        /// The union represents a <see cref="ShapedStringBuilder"/> instance.
+        /// </summary>
+        ShapedStringBuilder,
+
+        /// <summary>
+        /// The union represents a <see cref="ShapedStringSegment"/> instance.
+        /// </summary>
+        ShapedStringSegment,
     }
 }

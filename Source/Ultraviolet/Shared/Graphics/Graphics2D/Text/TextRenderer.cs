@@ -1802,6 +1802,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     }
                     return TextRendererStateChange.None;
 
+                case TextLayoutCommandType.ChangeSourceShapedString:
+                    {
+                        var cmd = (TextLayoutSourceShapedStringCommand*)input.Data;
+                        source = input.GetSourceShapedString(cmd->SourceIndex);
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.ChangeSourceShapedStringBuilder:
+                    {
+                        var cmd = (TextLayoutSourceShapedStringBuilderCommand*)input.Data;
+                        source = input.GetSourceShapedStringBuilder(cmd->SourceIndex);
+                    }
+                    return TextRendererStateChange.None;
+
                 case TextLayoutCommandType.Custom:
                     return TextRendererStateChange.None;
             }

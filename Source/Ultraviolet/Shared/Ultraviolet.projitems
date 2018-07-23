@@ -64,6 +64,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.Source.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceShapedStringBuilderCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceShapedStringCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />

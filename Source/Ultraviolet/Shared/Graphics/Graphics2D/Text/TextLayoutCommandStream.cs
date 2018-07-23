@@ -296,6 +296,22 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterSource(source);
 
         /// <summary>
+        /// Registers a source shaped string with the command stream.
+        /// </summary>
+        /// <param name="source">The source shaped string to register.</param>
+        /// <returns>The index of the specified source shaped string within the command stream's internal registry.</returns>
+        public Int16 RegisterSourceShapedString(ShapedString source) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterSource(source);
+
+        /// <summary>
+        /// Registers a source shaped string builder with the command stream.
+        /// </summary>
+        /// <param name="source">The source shaped string builder to register.</param>
+        /// <returns>The index of the specified source shaped string builder within the command stream's internal registry.</returns>
+        public Int16 RegisterSourceShapedStringBuilder(ShapedStringBuilder source) =>
+            (resources = resources ?? new TextLayoutCommandStreamResources()).RegisterSource(source);
+
+        /// <summary>
         /// Registers a style with the command stream.
         /// </summary>
         /// <param name="name">The name of the style to register.</param>
@@ -363,6 +379,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 throw new IndexOutOfRangeException(nameof(index));
 
             return resources.GetSourceStringBuilder(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered source shaped string at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered source shaped string to retrieve.</param>
+        /// <returns>The registered source shaped string at the specified index within the command stream's internal registry.</returns>
+        public ShapedString GetSourceShapedString(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetSourceShapedString(index);
+        }
+
+        /// <summary>
+        /// Retrieves the registered source shaped string builder at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered source shaped string builder to retrieve.</param>
+        /// <returns>The registered source shaped string builder at the specified index within the command stream's internal registry.</returns>
+        public ShapedStringBuilder GetSourceShapedStringBuilder(Int16 index)
+        {
+            if (resources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return resources.GetSourceShapedStringBuilder(index);
         }
 
         /// <summary>
@@ -731,6 +773,30 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             *(TextLayoutSourceStringBuilderCommand*)InternalObjectStream.Data = command;
             *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ChangeSourceStringBuilder;
             InternalObjectStream.FinalizeObject(sizeof(TextLayoutSourceStringBuilderCommand));
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.ChangeSourceShapedString"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WriteChangeSourceString(TextLayoutSourceShapedStringCommand command)
+        {
+            InternalObjectStream.Reserve(sizeof(TextLayoutSourceShapedStringCommand));
+            *(TextLayoutSourceShapedStringCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ChangeSourceShapedString;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutSourceShapedStringCommand));
+        }
+
+        /// <summary>
+        /// Writes a <see cref="TextLayoutCommandType.ChangeSourceShapedStringBuilder"/> command to the current position in the stream.
+        /// </summary>
+        /// <param name="command">The command to write to the stream.</param>
+        public void WriteChangeSourceShapedStringBuilder(TextLayoutSourceShapedStringBuilderCommand command)
+        {
+            InternalObjectStream.Reserve(sizeof(TextLayoutSourceShapedStringBuilderCommand));
+            *(TextLayoutSourceShapedStringBuilderCommand*)InternalObjectStream.Data = command;
+            *(TextLayoutCommandType*)InternalObjectStream.Data = TextLayoutCommandType.ChangeSourceShapedStringBuilder;
+            InternalObjectStream.FinalizeObject(sizeof(TextLayoutSourceShapedStringBuilderCommand));
         }
 
         /// <summary>
@@ -1183,11 +1249,19 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Gets a shaped string builder used to assemble shaped tokens for this command stream.
+        /// </summary>
+        /// <returns>The <see cref="ShapedStringBuilder"/> used to assemble tokens for this command stream.</returns>
+        internal ShapedStringBuilder GetShapedStringBuilder() =>
+            (shapedStringBuilder = shapedStringBuilder ?? new ShapedStringBuilder());
+
+        /// <summary>
         /// Gets the <see cref="UnsafeObjectStream"/> which provides the command stream's storage.
         /// </summary>
         internal UnsafeObjectStream InternalObjectStream { get; } = new UnsafeObjectStream(32, 256);
 
         // Registry of content resources used by the stream.
         private TextLayoutCommandStreamResources resources;
+        private ShapedStringBuilder shapedStringBuilder;
     }
 }
