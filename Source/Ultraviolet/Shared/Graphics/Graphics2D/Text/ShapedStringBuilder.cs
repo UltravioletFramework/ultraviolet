@@ -12,7 +12,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <remarks>The <see cref="ShapedStringBuilder"/> class does not enforce that all of its source data has the same
     /// font, language, script, or direction; mixing and matching these properties within a single buffer will produce
     /// nonsensical results, so application code should perform these checks where necessary.</remarks>
-    public sealed partial class ShapedStringBuilder : IStringSource<ShapedChar>
+    public sealed partial class ShapedStringBuilder : ISegmentableShapedStringSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapedStringBuilder"/> class.

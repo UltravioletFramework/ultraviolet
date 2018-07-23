@@ -7,7 +7,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents a segment of a shaped string.
     /// </summary>
-    public partial struct ShapedStringSegment : IEquatable<ShapedStringSegment>, IEquatable<ShapedString>, IEquatable<ShapedStringBuilder>
+    public partial struct ShapedStringSegment : IEquatable<ShapedStringSegment>, IEquatable<ShapedString>, IEquatable<ShapedStringBuilder>, ISegmentableShapedStringSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapedStringSegment"/> structure.
@@ -315,11 +315,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 return ((ShapedStringBuilder)Source)?.Length ?? 0;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether this is an empty shaped string segment.
-        /// </summary>
-        public Boolean IsEmpty => Length == 0;
 
         /// <summary>
         /// Gets a value indicating whether <see cref="Source"/> is a <see cref="ShapedString"/> instance.

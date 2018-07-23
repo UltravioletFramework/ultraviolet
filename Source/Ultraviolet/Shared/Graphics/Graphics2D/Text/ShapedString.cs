@@ -8,7 +8,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
     /// <summary>
     /// Represents an immutable string composed of shaped characters.
     /// </summary>
-    public sealed partial class ShapedString : IStringSource<ShapedChar>
+    public sealed partial class ShapedString : ISegmentableShapedStringSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShapedString"/> class.
@@ -74,7 +74,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             return new ShapedString(str.FontFace, str.Language, str.Script, str.Direction, str.buffer);
         }
-        
+
         /// <summary>
         /// Retrieves a substring from this instance. The substring starts at a specified character
         /// position and continues to the end of the string.
