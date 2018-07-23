@@ -12,5 +12,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
         /// <inheritdoc/>
         public Boolean IsEmpty => Length == 0;
+
+        /// <inheritdoc/>
+        public ShapedStringSegment CreateShapedStringSegment() =>
+            new ShapedStringSegment(this);
+
+        /// <inheritdoc/>
+        public ShapedStringSegment CreateShapedStringSegmentFromSubstring(Int32 start, Int32 length) =>
+            new ShapedStringSegment(this, start, length);
+
+        /// <inheritdoc/>
+        public ShapedStringSegment CreateShapedStringSegmentFromSameOrigin(Int32 start, Int32 length) =>
+            new ShapedStringSegment(this, start, length);
     }
 }

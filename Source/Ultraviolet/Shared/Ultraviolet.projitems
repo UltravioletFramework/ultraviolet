@@ -52,6 +52,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\FallbackFontInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StringSourceUnion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\StringSourceUnionValueType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ISegmentableShapedStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedChar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedChar.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedString.Enumeration.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringBuilder.Source.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.Source.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
