@@ -1218,7 +1218,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="layerDepth">The shaped text's layer depth.</param>
         /// <param name="data">The shaped text's custom data.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawString(UltravioletFontFace fontFace, ShapedString text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedString text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1250,6 +1250,31 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(glyphShader, fontFace, new StringSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedString text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
                 position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
@@ -1411,7 +1436,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="effects">The shaped text's rendering effects.</param>
         /// <param name="layerDepth">The shaped text's layer depth.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void DrawString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringBuilder text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureNotDisposed(this, Disposed);
@@ -1808,6 +1833,24 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(GlyphShaderContext.Invalid, fontFace, text,
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+        }
+
+        /// <summary>
         /// Draws a string of text.
         /// </summary>
         /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
@@ -1823,6 +1866,25 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
                 position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, default(SpriteData));
         }
 
@@ -1846,6 +1908,29 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(GlyphShaderContext.Invalid, fontFace, text,
                 position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
         }
 
@@ -1874,6 +1959,30 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, default(SpriteData));
+        }
+
+        /// <summary>
         /// Draws a string of text.
         /// </summary>
         /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
@@ -1893,6 +2002,29 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(GlyphShaderContext.Invalid, fontFace, text,
                 position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
         }
 
@@ -1921,6 +2053,30 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
+                position, color, rotation, origin, scale, effects, layerDepth, default(SpriteData));
+        }
+
+        /// <summary>
         /// Draws a string of text.
         /// </summary>
         /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
@@ -1936,6 +2092,25 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(GlyphShaderContext.Invalid, fontFace, text,
                 position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
         }
 
@@ -1960,6 +2135,26 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
+                position, color, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f, data);
+        }
+
+        /// <summary>
         /// Draws a string of text.
         /// </summary>
         /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
@@ -1980,6 +2175,30 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(GlyphShaderContext.Invalid, fontFace, text,
                 position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
         }
 
@@ -2009,6 +2228,31 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Single scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
+                position, color, rotation, origin, new Vector2(scale, scale), effects, layerDepth, data);
+        }
+
+        /// <summary>
         /// Draws a string of text.
         /// </summary>
         /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the text.</param>
@@ -2029,6 +2273,30 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(GlyphShaderContext.Invalid, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(GlyphShaderContext.Invalid, fontFace, text,
                 position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
@@ -2054,6 +2322,31 @@ namespace Ultraviolet.Graphics.Graphics2D
             Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
 
             DrawStringInternal(glyphShader, fontFace, new StringSegmentSource(text), 
+                position, color, rotation, origin, scale, effects, layerDepth, data);
+        }
+
+        /// <summary>
+        /// Draws a string of shaped text.
+        /// </summary>
+        /// <param name="glyphShader">The glyph shader to apply to the rendered string.</param>
+        /// <param name="fontFace">The <see cref="UltravioletFontFace"/> with which to draw the shaped text.</param>
+        /// <param name="text">The text to draw.</param>
+        /// <param name="position">The text's position.</param>
+        /// <param name="color">The text's color.</param>
+        /// <param name="rotation">The text's rotation in radians.</param>
+        /// <param name="origin">The text's point of origin relative to its top-left corner.</param>
+        /// <param name="scale">The text's scale factor.</param>
+        /// <param name="effects">The text's rendering effects.</param>
+        /// <param name="layerDepth">The text's layer depth.</param>
+        /// <param name="data">The text's custom data.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void DrawShapedString(GlyphShaderContext glyphShader, UltravioletFontFace fontFace, ShapedStringSegment text, Vector2 position, Color color, Single rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, Single layerDepth, SpriteData data)
+        {
+            Contract.Require(fontFace, nameof(fontFace));
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Ensure(begun, UltravioletStrings.BeginMustBeCalledBeforeDraw);
+
+            DrawShapedStringInternal(glyphShader, fontFace, text,
                 position, color, rotation, origin, scale, effects, layerDepth, data);
         }
 
