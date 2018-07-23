@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core.Text;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace Ultraviolet.Graphics.Graphics2D
 {
@@ -47,6 +48,42 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <summary>
+        /// Implicitly converts a <see cref="ShapedString"/> instance to a <see cref="StringSourceUnion"/> instance.
+        /// </summary>
+        /// <param name="src">The <see cref="ShapedString"/> instance to convert.</param>
+        public static implicit operator StringSourceUnion(ShapedString src)
+        {
+            var result = new StringSourceUnion();
+            result.ValueType = StringSourceUnionValueType.ShapedString;
+            result.ShapedStringSource = src;
+            return result;
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="ShapedStringBuilder"/> instance to a <see cref="StringSourceUnion"/> instance.
+        /// </summary>
+        /// <param name="src">The <see cref="ShapedStringBuilder"/> instance to convert.</param>
+        public static implicit operator StringSourceUnion(ShapedStringBuilder src)
+        {
+            var result = new StringSourceUnion();
+            result.ValueType = StringSourceUnionValueType.ShapedStringBuilder;
+            result.ShapedStringBuilderSource = src;
+            return result;
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="ShapedStringSegment"/> instance to a <see cref="StringSourceUnion"/> instance.
+        /// </summary>
+        /// <param name="src">The <see cref="ShapedStringBuilder"/> instance to convert.</param>
+        public static implicit operator StringSourceUnion(ShapedStringSegment src)
+        {
+            var result = new StringSourceUnion();
+            result.ValueType = StringSourceUnionValueType.ShapedStringSegment;
+            result.ShapedStringSegmentSource = src;
+            return result;
+        }
+
+        /// <summary>
         /// Creates a <see cref="StringSegment"/> structure that represents this string source.
         /// </summary>
         /// <returns>The <see cref="StringSegment"/> that was created.</returns>
@@ -62,6 +99,11 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 case StringSourceUnionValueType.StringSegment:
                     return StringSegmentSource.CreateStringSegment();
+
+                case StringSourceUnionValueType.ShapedString:
+                case StringSourceUnionValueType.ShapedStringBuilder:
+                case StringSourceUnionValueType.ShapedStringSegment:
+                    throw new NotSupportedException();
 
                 default:
                     throw new InvalidOperationException();
@@ -90,6 +132,11 @@ namespace Ultraviolet.Graphics.Graphics2D
                 case StringSourceUnionValueType.StringSegment:
                     return StringSegmentSource.CreateStringSegmentFromSubstring(start, length);
 
+                case StringSourceUnionValueType.ShapedString:
+                case StringSourceUnionValueType.ShapedStringBuilder:
+                case StringSourceUnionValueType.ShapedStringSegment:
+                    throw new NotSupportedException();
+
                 default:
                     throw new InvalidOperationException();
             }
@@ -116,6 +163,102 @@ namespace Ultraviolet.Graphics.Graphics2D
 
                 case StringSourceUnionValueType.StringSegment:
                     return StringSegmentSource.CreateStringSegmentFromSameOrigin(start, length);
+
+                case StringSourceUnionValueType.ShapedString:
+                case StringSourceUnionValueType.ShapedStringBuilder:
+                case StringSourceUnionValueType.ShapedStringSegment:
+                    throw new NotSupportedException();
+
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ShapedStringSegment"/> structure that represents this string source.
+        /// </summary>
+        /// <returns>The <see cref="ShapedStringSegment"/> that was created.</returns>
+        public ShapedStringSegment CreateShapedStringSegment()
+        {
+            switch (ValueType)
+            {
+                case StringSourceUnionValueType.String:
+                case StringSourceUnionValueType.StringBuilder:
+                case StringSourceUnionValueType.StringSegment:
+                    throw new NotSupportedException();
+
+                case StringSourceUnionValueType.ShapedString:
+                    return ShapedStringSource.CreateShapedStringSegment();
+
+                case StringSourceUnionValueType.ShapedStringBuilder:
+                    return ShapedStringBuilderSource.CreateShapedStringSegment();
+
+                case StringSourceUnionValueType.ShapedStringSegment:
+                    return ShapedStringSegmentSource.CreateShapedStringSegment();
+
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ShapedStringSegment"/> structure that represents a substring of
+        /// this string source.
+        /// </summary>
+        /// <param name="start">The index of the first character in the substring that will 
+        /// be represented by the string segment.</param>
+        /// <param name="length">The length of the substring that will be represented by 
+        /// the string segment.</param>
+        /// <returns>The <see cref="StringSegment"/> that was created.</returns>
+        public ShapedStringSegment CreateShapedStringSegmentFromSubstring(Int32 start, Int32 length)
+        {
+            switch (ValueType)
+            {
+                case StringSourceUnionValueType.String:
+                case StringSourceUnionValueType.StringBuilder:
+                case StringSourceUnionValueType.StringSegment:
+                    throw new NotSupportedException();
+
+                case StringSourceUnionValueType.ShapedString:
+                    return ShapedStringSource.CreateShapedStringSegmentFromSubstring(start, length);
+
+                case StringSourceUnionValueType.ShapedStringBuilder:
+                    return ShapedStringBuilderSource.CreateShapedStringSegmentFromSubstring(start, length);
+
+                case StringSourceUnionValueType.ShapedStringSegment:
+                    return ShapedStringSegmentSource.CreateShapedStringSegmentFromSubstring(start, length);
+
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ShapedStringSegment"/> structure with the same origin as this 
+        /// string source but a different character range. This method only differs from
+        /// the <see cref="CreateShapedStringSegmentFromSubstring(Int32, Int32)"/> method if this
+        /// string source represents a substring of some other, larger string.
+        /// </summary>
+        /// <param name="start">The index of the first character in the created segment.</param>
+        /// <param name="length">The number of characters in the created segment.</param>
+        /// <returns>The <see cref="ShapedStringSegment"/> structure that was created.</returns>
+        public ShapedStringSegment CreateShapedStringSegmentFromSameOrigin(Int32 start, Int32 length)
+        {
+            switch (ValueType)
+            {
+                case StringSourceUnionValueType.String:
+                case StringSourceUnionValueType.StringBuilder:
+                case StringSourceUnionValueType.StringSegment:
+                    throw new NotSupportedException();
+
+                case StringSourceUnionValueType.ShapedString:
+                    return ShapedStringSource.CreateShapedStringSegmentFromSameOrigin(start, length);
+
+                case StringSourceUnionValueType.ShapedStringBuilder:
+                    return ShapedStringBuilderSource.CreateShapedStringSegmentFromSameOrigin(start, length);
+
+                case StringSourceUnionValueType.ShapedStringSegment:
+                    return ShapedStringSegmentSource.CreateShapedStringSegmentFromSameOrigin(start, length);
 
                 default:
                     throw new InvalidOperationException();
@@ -146,5 +289,23 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         [FieldOffset(8)]
         public StringSegmentSource StringSegmentSource;
+
+        /// <summary>
+        /// The <see cref="ShapedString"/> value which is represented by this object.
+        /// </summary>
+        [FieldOffset(8)]
+        public ShapedString ShapedStringSource;
+
+        /// <summary>
+        /// The <see cref="ShapedStringBuilder"/> which is represented by this object.
+        /// </summary>
+        [FieldOffset(8)]
+        public ShapedStringBuilder ShapedStringBuilderSource;
+
+        /// <summary>
+        /// The <see cref="ShapedStringSegment"/> which is represented by this object.
+        /// </summary>
+        [FieldOffset(8)]
+        public ShapedStringSegment ShapedStringSegmentSource;
     }
 }

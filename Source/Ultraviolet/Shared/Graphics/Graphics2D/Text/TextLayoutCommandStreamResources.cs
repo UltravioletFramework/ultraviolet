@@ -77,6 +77,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Retrieves the registered source shaped string at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered source shaped string to retrieve.</param>
+        /// <returns>The registered source shaped string at the specified index within the command stream's internal registry.</returns>
+        public ShapedString GetSourceShapedString(Int16 index)
+        {
+            if (sources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return (ShapedString)sources[index];
+        }
+
+        /// <summary>
+        /// Retrieves the registered source shaped string builder at the specified index within the command stream's internal registry.
+        /// </summary>
+        /// <param name="index">The index of the registered source shaped string builder to retrieve.</param>
+        /// <returns>The registered source shaped string builder at the specified index within the command stream's internal registry.</returns>
+        public ShapedStringBuilder GetSourceShapedStringBuilder(Int16 index)
+        {
+            if (sources == null)
+                throw new IndexOutOfRangeException(nameof(index));
+
+            return (ShapedStringBuilder)sources[index];
+        }
+
+        /// <summary>
         /// Retrieves the registered style with the specified name.
         /// </summary>
         /// <param name="name">The name of the style to retrieve.</param>
