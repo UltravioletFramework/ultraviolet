@@ -327,9 +327,13 @@ namespace Ultraviolet.FreeType2
                 throw new NotSupportedException(FreeTypeStrings.TextShaperRequiresFreeTypeFont);
 
             if (lastUsedFont != ftFontFace && lastUsedFontNative != IntPtr.Zero)
+            {
                 hb_font_destroy(lastUsedFontNative);
+                lastUsedFont = null;
+                lastUsedFontNative = IntPtr.Zero;
+            }
 
-            var fontNative = hb_ft_font_create(ftFontFace.NativePointer, IntPtr.Zero);
+            var fontNative = (lastUsedFontNative == IntPtr.Zero) ? hb_ft_font_create(ftFontFace.NativePointer, IntPtr.Zero) : lastUsedFontNative;
             var fontLoadFlags = ftFontFace.IsStroked ? FT_LOAD_NO_BITMAP : FT_LOAD_COLOR;
             hb_ft_font_set_load_flags(fontNative, fontLoadFlags);
             lastUsedFont = ftFontFace;
