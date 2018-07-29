@@ -148,8 +148,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
-        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, String initialLayoutStyle)
-            : this(font, width, height, flags, options, direction, UltravioletFontStyle.Regular, initialLayoutStyle)
+        /// <param name="language">The ISO 639 name of the text language.</param>
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, String initialLayoutStyle, String language = "en")
+            : this(font, width, height, flags, options, direction, UltravioletFontStyle.Regular, initialLayoutStyle, language)
         {
 
         }
@@ -181,7 +182,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
         /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
-        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, UltravioletFontStyle fontStyle, String initialLayoutStyle)
+        /// <param name="language">The ISO 639 name of the text language.</param>
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, UltravioletFontStyle fontStyle, String initialLayoutStyle, String language = "en")
         {
             if (direction == TextDirection.TopToBottom || direction == TextDirection.BottomToTop)
                 throw new NotSupportedException(UltravioletStrings.UnsupportedTextDirection);
@@ -194,6 +196,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             this.Direction = direction;
             this.Options = options;
             this.InitialLayoutStyle = initialLayoutStyle;
+            this.Language = language;
         }
 
         /// <summary>
@@ -235,5 +238,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the name of the text's initial layout style.
         /// </summary>
         public String InitialLayoutStyle { get; }
+
+        /// <summary>
+        /// Gets the ISO 639 name of the text language.
+        /// </summary>
+        public String Language { get; }
     }
 }

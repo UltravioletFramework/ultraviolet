@@ -630,4 +630,9 @@
       <Variant>The specified text direction is not supported by the layout engine.</Variant>
     </en-US>
   </String>
+  <String Key="TEXT_SHAPER_NOT_REGISTERED">
+    <en-US>
+      <Variant>Text shaping was requested, but no text shaper is registered with this layout engine.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

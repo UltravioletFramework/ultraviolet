@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
@@ -795,6 +796,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Removes the registered text shaper.
+        /// </summary>
+        public void ClearTextShaper()
+        {
+            layoutEngine.ClearTextShaper();
+        }
+
+        /// <summary>
+        /// Registers a text shaper.
+        /// </summary>
+        /// <param name="shaper">The text shaper to register.</param>
+        public void RegisterTextShaper(TextShaper shaper)
+        {
+            layoutEngine.RegisterTextShaper(shaper);
+        }
+
+        /// <summary>
+        /// Unregisters the text shaper.
+        /// </summary>
+        /// <returns><see langword="true"/> if the text shaper was unregistered; otherwise <see langword="false"/>.</returns>
+        public Boolean UnregisterTextShaper()
+        {
+            return layoutEngine.UnregisterTextShaper();
+        }
+
+        /// <summary>
         /// Removes all registered styles.
         /// </summary>
         public void ClearStyles()
@@ -1353,72 +1380,208 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Advances the input stream past a text command after it has been drawn.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void AdvancePastTextCommand(TextLayoutCommandStream input, Int32 length, ref Int32 charsSeen)
+        {
+            charsSeen += length;
+            input.SeekNextCommand();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a text command is visible.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetIsTextVisible(Int32 length, Int32 start, Int32 end, Int32 charsSeen)
+        {
+            var tokenStart = charsSeen;
+            var tokenEnd = tokenStart + length - 1;
+
+            return (start < charsSeen + length);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a text command is only partially visible due to substring rendering.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetIsTextPartiallyVisible(Int32 length, Int32 start, Int32 end, Int32 charsSeen, out Int32 subStart, out Int32 subLength, out Boolean wasDrawnToCompletion)
+        {
+            var tokenStart = charsSeen;
+            var tokenEnd = tokenStart + length - 1;
+            var isPartiallyVisible = ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end));
+            if (isPartiallyVisible)
+            {
+                wasDrawnToCompletion = false;
+                subStart = (charsSeen > start) ? 0 : start - charsSeen;
+                subLength = 1 + ((Math.Min(end, charsSeen + length - 1) - charsSeen) - subStart);
+                return true;
+            }
+            else
+            {
+                wasDrawnToCompletion = true;
+                subStart = 0;
+                subLength = 0;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a text command is split by a hyphen.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetIsTextSplitByHyphen(TextLayoutCommandStream input, UltravioletFontFace font, Boolean wasDrawnToCompletion, out Int32 hyphenGlyphIndex, out Boolean hyphenIsVisible)
+        {
+            var isSplitByHyphen = (input.StreamPositionInObjects < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
+            if (isSplitByHyphen)
+            {
+                hyphenGlyphIndex = font.SupportsGlyphIndices ? font.GetGlyphIndex('-') : 0;
+                hyphenIsVisible = wasDrawnToCompletion;
+                return true;
+            }
+            else
+            {
+                hyphenGlyphIndex = 0;
+                hyphenIsVisible = false;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Adjusts the position of a command to account for hyphenation.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Vector2 AdjustCommandPositionForHyphen(TextDirection direction, Vector2 position, Int32 hyphenWidth, Int32 hyphenatedTextWidth, Size2 hyphenatedTextKerning)
+        {
+            var cmdX = (direction == TextDirection.RightToLeft) ?
+               (position.X - (hyphenWidth - hyphenatedTextKerning.Width)) :
+               (position.X + (hyphenatedTextWidth + hyphenatedTextKerning.Width));
+            var cmdY = position.Y + hyphenatedTextKerning.Height;
+            return new Vector2(cmdX, cmdY);
+        }
+
+        /// <summary>
         /// Draws a text command.
         /// </summary>
         private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSourceUnion source,
             Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
         {
-            var wasDrawnToCompletion = true;
-
-            var cmd = (TextLayoutTextCommand*)input.Data;
-            var cmdText = (cmd->TextLength == 0) ? StringSegment.Empty : source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
-            if (cmdText.Equals("\n"))
+            var shaped = (source.ValueType >= StringSourceUnionValueType.ShapedString);
+            if (shaped)
             {
-                charsSeen += cmdText.Length;
-                input.SeekNextCommand();
-                return;
-            }
-
-            var cmdLength = cmdText.Length;
-            var cmdPosition = Vector2.Zero;
-            var cmdGlyphShaderContext = default(GlyphShaderContext);
-            var cmdOffset = 0;
-
-            var isTextVisible = (start < charsSeen + cmdLength);
-            if (isTextVisible)
-            {
-                var tokenStart = charsSeen;
-                var tokenEnd = tokenStart + cmdText.Length - 1;
-
-                var isTextPartiallyVisible = ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end));
-                if (isTextPartiallyVisible)
+                var cmd = (TextLayoutTextCommand*)input.Data;
+                var cmdText = (cmd->TextLength == 0) ? ShapedStringSegment.Empty : source.CreateShapedStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+                if (cmdText.Length == 1 && cmdText[0].GetSpecialCharacter() == '\n')
                 {
-                    wasDrawnToCompletion = false;
+                    charsSeen += cmdText.Length;
+                    input.SeekNextCommand();
+                    return;
+                }
+                DrawShapedTextCore(spriteBatch, input, fontFace, ref cmdText, x, y, lineWidth, lineHeight, start, end, color, direction, ref charsSeen);
+            }
+            else
+            {
+                var cmd = (TextLayoutTextCommand*)input.Data;
+                var cmdText = (cmd->TextLength == 0) ? StringSegment.Empty : source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+                if (cmdText.Equals("\n"))
+                {
+                    charsSeen += cmdText.Length;
+                    input.SeekNextCommand();
+                    return;
+                }
+                DrawTextCore(spriteBatch, input, fontFace, ref cmdText, x, y, lineWidth, lineHeight, start, end, color, direction, ref charsSeen);
+            }
+        }
 
-                    var subStart = (charsSeen > start) ? 0 : start - charsSeen;
-                    var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
-                    var subLength = 1 + (subEnd - subStart);
+        /// <summary>
+        /// Draws a text command.
+        /// </summary>
+        private void DrawTextCore(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSegment cmdText,
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
+        {
+            var cmd = (TextLayoutTextCommand*)input.Data;
+            var cmdFullLength = cmdText.Length;
+            var cmdPosition = Vector2.Zero;
+            var cmdWasDrawnCompletely = true;
+
+            if (GetIsTextVisible(cmdFullLength, start, end, charsSeen))
+            {
+                var cmdOffset = 0;
+                if (GetIsTextPartiallyVisible(cmdFullLength, start, end, charsSeen, out var subStart, out var subLength, out cmdWasDrawnCompletely))
+                {
                     cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureString(ref cmdText, 0, subStart).Width;
                     cmdText = cmdText.Substring(subStart, subLength);
                 }
 
                 cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
-                cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
-
+                
                 var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
-                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color, 0f, Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
+                var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                spriteBatch.DrawString(gscontext, fontFace, cmdText, cmdPosition, color, 0f, 
+                    Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
             }
 
-            charsSeen += cmdLength;
-            input.SeekNextCommand();
+            AdvancePastTextCommand(input, cmdFullLength, ref charsSeen);
 
-            var isTextSplitByHyphen = (input.StreamPositionInObjects < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
-            if (isTextSplitByHyphen)
+            if (GetIsTextSplitByHyphen(input, fontFace, cmdWasDrawnCompletely, out var hyphenGlyphIndex, out var hyphenIsVisible))
             {
-                if (wasDrawnToCompletion)
+                if (hyphenIsVisible)
                 {
                     var hyphenatedTextWidth = fontFace.MeasureString(ref cmdText).Width;
                     var hyphenatedTextKerning = fontFace.GetHypotheticalKerningInfo(ref cmdText, cmdText.Length - 1, '-');
                     var hyphenWidth = fontFace.MeasureString("-").Width;
 
-                    var cmdX = (direction == TextDirection.RightToLeft) ?
-                        (cmdPosition.X - (hyphenWidth - hyphenatedTextKerning.Width)) :
-                        (cmdPosition.X + (hyphenatedTextWidth + hyphenatedTextKerning.Width));
-                    var cmdY = cmdPosition.Y + hyphenatedTextKerning.Height;
-                    cmdPosition = new Vector2(cmdX, cmdY);
-                    cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+                    cmdPosition = AdjustCommandPositionForHyphen(direction, cmdPosition, hyphenWidth, hyphenatedTextWidth, hyphenatedTextKerning);
 
-                    spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, "-", cmdPosition, color);
+                    var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+                    spriteBatch.DrawString(gscontext, fontFace, "-", cmdPosition, color);
+                }
+                input.SeekNextCommand();
+            }
+        }
+
+        /// <summary>
+        /// Draws a text command.
+        /// </summary>
+        private void DrawShapedTextCore(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref ShapedStringSegment cmdText,
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
+        {
+            var cmd = (TextLayoutTextCommand*)input.Data;
+            var cmdFullLength = cmdText.Length;
+            var cmdPosition = Vector2.Zero;
+            var cmdWasDrawnCompletely = true;
+
+            if (GetIsTextVisible(cmdText.Length, start, end, charsSeen))
+            {
+                var cmdOffset = 0;
+                if (GetIsTextPartiallyVisible(cmdText.Length, start, end, charsSeen, out var subStart, out var subLength, out cmdWasDrawnCompletely))
+                {
+                    cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureShapedString(ref cmdText, 0, subStart).Width;
+                    cmdText = cmdText.Substring(subStart, subLength);
+                }
+
+                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
+
+                var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
+                var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                spriteBatch.DrawShapedString(gscontext, fontFace, cmdText, cmdPosition, color, 0f, 
+                    Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
+            }
+
+            AdvancePastTextCommand(input, cmdText.Length, ref charsSeen);
+
+            if (GetIsTextSplitByHyphen(input, fontFace, cmdWasDrawnCompletely, out var hyphenGlyphIndex, out var hyphenIsVisible))
+            {
+                if (hyphenIsVisible)
+                {
+                    var hyphenatedTextWidth = fontFace.MeasureShapedString(ref cmdText).Width;
+                    var hyphenatedTextKerning = fontFace.GetHypotheticalShapedKerningInfo(ref cmdText, cmdText.Length - 1, hyphenGlyphIndex);
+                    var hyphenWidth = fontFace.MeasureString("-").Width;
+
+                    cmdPosition = AdjustCommandPositionForHyphen(direction, cmdPosition, hyphenWidth, hyphenatedTextWidth, hyphenatedTextKerning);
+
+                    var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+                    spriteBatch.DrawString(gscontext, fontFace, "-", cmdPosition, color);
                 }
 
                 input.SeekNextCommand();
