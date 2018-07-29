@@ -13,28 +13,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="styleIndex">The index of the style within the command stream's style registry.</param>
         public TextLayoutStyleCommand(Int16 styleIndex)
         {
-            this.commandType = TextLayoutCommandType.PushStyle;
-            this.styleIndex = styleIndex;
+            this.CommandType = TextLayoutCommandType.PushStyle;
+            this.StyleIndex = styleIndex;
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the index of the style within the command stream's style registry.
         /// </summary>
-        public Int16 StyleIndex
-        {
-            get { return styleIndex; }
-        }
-
-        // Property values.
-        private readonly TextLayoutCommandType commandType;
-        private readonly Int16 styleIndex;
+        public Int16 StyleIndex { get; private set; }
     }
 }
