@@ -19,6 +19,13 @@ namespace Ultraviolet.Graphics.Graphics2D
         { }
 
         /// <summary>
+        /// Gets the glyph index that corresponds to the specified code point.
+        /// </summary>
+        /// <param name="codePoint">The 32-bit Unicode value of the glyph for which to retrieve an index.</param>
+        /// <returns>The glyph index which corresponds to the specified code point, or 0 if the font cannot represent the code point.</returns>
+        public abstract Int32 GetGlyphIndex(Int32 codePoint);
+
+        /// <summary>
         /// Gets the information required to draw the specified Unicode code point.
         /// </summary>
         /// <param name="codePoint">The 32-bit Unicode value of the glyph to draw.</param>
