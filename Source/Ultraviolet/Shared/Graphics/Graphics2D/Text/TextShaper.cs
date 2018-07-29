@@ -84,9 +84,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public abstract String GetLanguage();
 
         /// <summary>
+        /// Appends a UTF-16 encoded character to the end of the buffer.
+        /// </summary>
+        /// <param name="c">The character to append.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TextShaper Append(Char c);
+
+        /// <summary>
         /// Appends a UTF-16 encoded string to the end of the buffer.
         /// </summary>
         /// <param name="str">The string to append.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
         public abstract TextShaper Append(String str);
 
         /// <summary>
