@@ -152,6 +152,7 @@ namespace Ultraviolet
         public static readonly StringResource TargetsCannotHaveMultipleEncodings   = new StringResource(StringDatabase, "TARGETS_CANNOT_HAVE_MULTIPLE_ENCODINGS");
         public static readonly StringResource EncodingSpecifiedForNonColorBuffer   = new StringResource(StringDatabase, "ENCODING_SPECIFIED_FOR_NON_COLOR_BUFFER");
         public static readonly StringResource UnsupportedTextDirection             = new StringResource(StringDatabase, "UNSUPPORTED_TEXT_DIRECTION");
+        public static readonly StringResource TextShaperNotRegistered              = new StringResource(StringDatabase, "TEXT_SHAPER_NOT_REGISTERED");
 #pragma warning restore 1591
     }
 }

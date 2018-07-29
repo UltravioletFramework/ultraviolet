@@ -102,7 +102,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             {
                 positionX += width;
                 lineLengthInCommands += lengthInCommands;
-                lineLengthInText += lengthInText;
+                lineLengthInGlyphs += lengthInText;
                 lineWidth += width;
                 lineHeight = Math.Max(lineHeight, height);
 
@@ -157,7 +157,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 if (lineHeight == 0)
                     lineHeight = lineHeightTentative;
 
-                WriteLineInfo(output, lineWidth, lineHeight, lineLengthInCommands, lineLengthInText, lineIsTerminatedByLineBreak, ref settings);
+                WriteLineInfo(output, lineWidth, lineHeight, lineLengthInCommands, lineLengthInGlyphs, lineIsTerminatedByLineBreak, ref settings);
 
                 positionX = 0;
                 positionY += lineHeight;
@@ -167,11 +167,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 lineWidth = 0;
                 lineHeight = 0;
                 lineHeightTentative = 0;
-                lineLengthInText = 0;
+                lineLengthInGlyphs = 0;
                 lineLengthInCommands = 0;
                 lineInfoCommandIndex = output.Count;
                 lineBreakCommand = null;
                 lineBreakOffset = null;
+                LineBreakOffsetOutput = null;
                 lineIsTerminatedByLineBreak = false;
                 brokenTextSizeBeforeBreak = null;
                 brokenTextSizeAfterBreak = null;
@@ -213,7 +214,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             /// <param name="settings">The current layout settings.</param>
             public unsafe Boolean ReplaceLastBreakingSpaceWithLineBreak(TextLayoutCommandStream output, ref TextLayoutSettings settings)
             {
-                if (!lineBreakCommand.HasValue || !lineBreakOffset.HasValue)
+                if (!lineBreakCommand.HasValue || !lineBreakOffset.HasValue || !LineBreakOffsetOutput.HasValue)
                     return false;
 
                 var sizeBeforeBreak = brokenTextSizeBeforeBreak.Value;
@@ -236,15 +237,21 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     brokenCommandLength = cmd->TextLength;
                     brokenCommandSize = cmd->Bounds.Size;
 
-                    cmd->TextLength = lineBreakOffset.Value;
+                    var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
+                    if (shape && settings.Direction == TextDirection.RightToLeft)
+                    {
+                        cmd->TextOffset = cmd->TextOffset + (brokenCommandLength - lineBreakOffsetOutput.Value);
+                    }
+
+                    cmd->TextLength = lineBreakOffsetOutput.Value;
                     cmd->TextWidth = (Int16)sizeBeforeBreak.Width;
                     cmd->TextHeight = (Int16)sizeBeforeBreak.Height;
                 }
                 output.SeekNextCommand();
 
                 // Insert a line break, a new line, and the second half of the truncated text.
-                var part1Length = lineBreakOffset.Value;
-                var part2Offset = brokenCommandOffset + (lineBreakOffset.Value + 1);
+                var part1Length = lineBreakOffsetOutput.Value;
+                var part2Offset = brokenCommandOffset + (lineBreakOffsetOutput.Value + 1);
                 var part2Length = brokenCommandLength - (part1Length + 1);
                 var part2IsNotDegenerate = (part2Length > 0);
 
@@ -282,7 +289,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 var brokenLineWidth = 0;
                 var brokenLineHeight = 0;
-                var brokenLineLengthInText = 0;
+                var brokenLineLengthInGlyphs = 0;
                 var brokenLineLengthInCommands = 0;
 
                 var cmdType = TextLayoutCommandType.None;
@@ -295,7 +302,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var cmd = (TextLayoutTextCommand*)output.Data;
                                 brokenLineWidth += cmd->TextWidth;
                                 brokenLineHeight = Math.Max(brokenLineHeight, cmd->TextHeight);
-                                brokenLineLengthInText += cmd->TextLength;
+                                brokenLineLengthInGlyphs += cmd->TextLength;
                             }
                             break;
 
@@ -304,14 +311,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var cmd = (TextLayoutIconCommand*)output.Data;
                                 brokenLineWidth += cmd->Bounds.Width;
                                 brokenLineHeight = Math.Max(brokenLineHeight, cmd->Bounds.Height);
-                                brokenLineLengthInText += 1;
+                                brokenLineLengthInGlyphs += 1;
                             }
                             break;
 
                         case TextLayoutCommandType.LineBreak:
                             {
                                 var cmd = (TextLayoutLineBreakCommand*)output.Data;
-                                brokenLineLengthInText += cmd->Length;
+                                brokenLineLengthInGlyphs += cmd->Length;
                             }
                             break;
                     }
@@ -320,10 +327,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 }
 
                 // Finalize the broken line.
-                totalLength = (totalLength - lineLengthInText) + brokenLineLengthInText;
+                totalLength = (totalLength - lineLengthInGlyphs) + brokenLineLengthInGlyphs;
                 lineWidth = brokenLineWidth;
                 lineHeight = brokenLineHeight;
-                lineLengthInText = brokenLineLengthInText;
+                lineLengthInGlyphs = brokenLineLengthInGlyphs;
                 lineLengthInCommands = brokenLineLengthInCommands;
                 FinalizeLine(output, ref settings);
 
@@ -452,12 +459,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             }
 
             /// <summary>
-            /// Gets or sets the number of text characters on the current line.
+            /// Gets or sets the number of glyphs on the current line.
             /// </summary>
-            public Int32 LineLengthInText
+            public Int32 LineLengthInGlyphs
             {
-                get { return lineLengthInText; }
-                set { lineLengthInText = value; }
+                get { return lineLengthInGlyphs; }
+                set { lineLengthInGlyphs = value; }
             }
 
             /// <summary>
@@ -515,12 +522,21 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             }
 
             /// <summary>
-            /// Gets or sets the offset within <see cref="LineBreakCommand"/> at which the line will break.
+            /// Gets or sets the offset within the accumulated input text at which the current line will break.
             /// </summary>
-            public Int32? LineBreakOffset
+            public Int32? LineBreakOffsetInput
             {
                 get { return lineBreakOffset; }
                 set { lineBreakOffset = value; }
+            }
+
+            /// <summary>
+            /// Gets or sets the offset within the accumulated output text at which the current line will break.
+            /// </summary>
+            public Int32? LineBreakOffsetOutput
+            {
+                get { return lineBreakOffsetOutput; }
+                set { lineBreakOffsetOutput = value; }
             }
 
             /// <summary>
@@ -579,7 +595,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             private Int32 lineWidth;
             private Int32 lineHeight;
             private Int32 lineHeightTentative;
-            private Int32 lineLengthInText;
+            private Int32 lineLengthInGlyphs;
             private Int32 lineLengthInCommands;
             private Int32 actualWidth;
             private Int32 actualHeight;
@@ -587,6 +603,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             private Int32? parserTokenOffset;
             private Int32? lineBreakCommand;
             private Int32? lineBreakOffset;
+            private Int32? lineBreakOffsetOutput;
             private Size2? brokenTextSizeBeforeBreak;
             private Size2? brokenTextSizeAfterBreak;
             private Int32? minBlockOffset;
