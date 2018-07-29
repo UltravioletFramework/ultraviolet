@@ -1431,9 +1431,6 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            using (var stream = System.IO.File.OpenWrite("C:\\Dev\\output" + encoding + ".png"))
-                result.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-
             if (encoding == ColorEncoding.Linear)
             {
                 TheResultingImage(result)
