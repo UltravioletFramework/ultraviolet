@@ -116,6 +116,21 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
+        public override TextShaper Append(Char c)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            unsafe
+            {
+                rawstr.Append(c);
+                hb_buffer_add_utf16(native, (IntPtr)(&c), 1, 0, 1);
+                length = (Int32)hb_buffer_get_length(native);
+            }
+
+            return this;
+        }
+
+        /// <inheritdoc/>
         public override TextShaper Append(String str)
         {
             Contract.EnsureNotDisposed(this, Disposed);
@@ -284,6 +299,7 @@ namespace Ultraviolet.FreeType2
                     throw new OutOfMemoryException();
 
                 length = value;
+                rawstr.Length = value;
             }
         }
 
