@@ -89,6 +89,10 @@ namespace Ultraviolet.FreeType2
         public override String ToString() => String.Format("{0} {1} {2}pt", FamilyName, StyleName, SizeInPoints);
 
         /// <inheritdoc/>
+        public override Int32 GetGlyphIndex(Int32 codePoint) => 
+            (Int32)facade.GetCharIndex((UInt32)codePoint);
+        
+        /// <inheritdoc/>
         public override void GetCodePointRenderInfo(Int32 codePoint, out GlyphRenderInfo info) =>
             info = GetGlyphInfo((UInt32)codePoint, false, out var ginfo) ? ginfo.ToGlyphRenderInfo() : default(GlyphRenderInfo);
 

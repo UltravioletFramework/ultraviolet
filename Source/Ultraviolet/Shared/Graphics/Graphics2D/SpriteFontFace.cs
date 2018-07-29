@@ -75,6 +75,10 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
+        public override Int32 GetGlyphIndex(Int32 codePoint) =>
+            throw new NotSupportedException();
+
+        /// <inheritdoc/>
         public override void GetCodePointRenderInfo(Int32 c, out GlyphRenderInfo info)
         {
             if (c < 0 || c > Char.MaxValue)
