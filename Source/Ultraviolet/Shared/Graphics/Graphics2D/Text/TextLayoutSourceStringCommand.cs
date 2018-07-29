@@ -13,28 +13,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="sourceIndex">The index of the source string within the command stream's source registry.</param>
         public TextLayoutSourceStringCommand(Int16 sourceIndex)
         {
-            this.commandType = TextLayoutCommandType.ChangeSourceString;
-            this.sourceIndex = sourceIndex;
+            this.CommandType = TextLayoutCommandType.ChangeSourceString;
+            this.SourceIndex = sourceIndex;
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the index of the source string within the command stream's source registry.
         /// </summary>
-        public Int16 SourceIndex
-        {
-            get { return sourceIndex; }
-        }
-
-        // Property values.
-        private readonly TextLayoutCommandType commandType;
-        private readonly Int16 sourceIndex;
+        public Int16 SourceIndex { get; private set; }
     }
 }

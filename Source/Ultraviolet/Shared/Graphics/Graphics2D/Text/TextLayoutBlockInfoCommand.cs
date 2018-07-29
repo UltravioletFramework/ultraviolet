@@ -14,40 +14,24 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="lengthInLines">The length of the block of text in lines.</param>
         public TextLayoutBlockInfoCommand(Int32 offset, Int32 lengthInLines)
         {
-            this.commandType = TextLayoutCommandType.BlockInfo;
-            this.offset = offset;
-            this.lengthInLines = lengthInLines;
+            this.CommandType = TextLayoutCommandType.BlockInfo;
+            this.Offset = offset;
+            this.LengthInLines = lengthInLines;
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the vertical offset of the block of text within its layout area.
         /// </summary>
-        public Int32 Offset
-        {
-            get { return offset; }
-            internal set { offset = value; }
-        }
+        public Int32 Offset { get; internal set; }
 
         /// <summary>
         /// Gets the length of the block of text in lines.
         /// </summary>
-        public Int32 LengthInLines
-        {
-            get { return lengthInLines; }
-            internal set { lengthInLines = value; }
-        }
-
-        // Property values.
-        private TextLayoutCommandType commandType;
-        private Int32 offset;
-        private Int32 lengthInLines;
+        public Int32 LengthInLines { get; internal set; }
     }
 }
