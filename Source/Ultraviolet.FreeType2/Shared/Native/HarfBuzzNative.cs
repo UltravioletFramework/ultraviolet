@@ -229,6 +229,17 @@ namespace Ultraviolet.FreeType2.Native
 #endif
 
 #if ANDROID || IOS
+        [DllImport(LIBRARY, EntryPoint="hb_buffer_get_content_type", CallingConvention = CallingConvention.Cdecl)]
+        public static extern hb_buffer_content_type_t hb_buffer_get_content_type(IntPtr buffer);
+#else
+        [MonoNativeFunctionWrapper]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate hb_buffer_content_type_t hb_buffer_get_content_typeDelegate(IntPtr buffer);
+        private static readonly hb_buffer_get_content_typeDelegate phb_buffer_get_content_type = lib.LoadFunction<hb_buffer_get_content_typeDelegate>("hb_buffer_get_content_type");
+        public static hb_buffer_content_type_t hb_buffer_get_content_type(IntPtr buffer) => phb_buffer_get_content_type(buffer);
+#endif
+
+#if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="hb_shape", CallingConvention = CallingConvention.Cdecl)]
         public static extern void hb_shape(IntPtr font, IntPtr buffer, IntPtr features, UInt32 num_features);
 #else

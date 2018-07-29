@@ -9,6 +9,7 @@ using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.HarfBuzzNative;
+using static Ultraviolet.FreeType2.Native.hb_buffer_content_type_t;
 
 namespace Ultraviolet.FreeType2
 {
@@ -26,6 +27,7 @@ namespace Ultraviolet.FreeType2
             : base(uv, capacity)
         {
             native = hb_buffer_create();
+            rawstr = new HarfBuzzNativeStringBuffer(uv, capacity);
 
             if (capacity > 0)
                 hb_buffer_pre_allocate(native, (UInt32)capacity);
@@ -120,6 +122,8 @@ namespace Ultraviolet.FreeType2
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
+            RestoreUnicodeContent();
+
             unsafe
             {
                 rawstr.Append(c);
@@ -134,6 +138,8 @@ namespace Ultraviolet.FreeType2
         public override TextShaper Append(String str)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            RestoreUnicodeContent();
 
             var pstr = Marshal.StringToHGlobalUni(str);
             try
@@ -173,6 +179,8 @@ namespace Ultraviolet.FreeType2
         public override TextShaper Append(StringSegment str)
         {
             Contract.EnsureNotDisposed(this, Disposed);
+
+            RestoreUnicodeContent();
 
             if (rawstr.Capacity < rawstr.Length + str.Length)
                 rawstr.Capacity = rawstr.Length + str.Length;
@@ -306,6 +314,10 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
+            if (disposing)
+            {
+                rawstr.Dispose();
+            }
             if (native != IntPtr.Zero)
             {
                 hb_buffer_destroy(native);
@@ -342,6 +354,8 @@ namespace Ultraviolet.FreeType2
             if (ftFontFace == null)
                 throw new NotSupportedException(FreeTypeStrings.TextShaperRequiresFreeTypeFont);
 
+            RestoreUnicodeContent();
+
             if (lastUsedFont != ftFontFace && lastUsedFontNative != IntPtr.Zero)
             {
                 hb_font_destroy(lastUsedFontNative);
@@ -364,6 +378,21 @@ namespace Ultraviolet.FreeType2
             count = glyphCount;
         }
 
+        /// <summary>
+        /// Clears the buffer and restores its Unicode content, if the buffer's Unicode content has been
+        /// replaced with shaped glyph data.
+        /// </summary>
+        private unsafe void RestoreUnicodeContent()
+        {
+            if (hb_buffer_get_content_type(native) != HB_BUFFER_CONTENT_TYPE_GLYPHS)
+                return;
+
+            hb_buffer_clear_contents(native);
+
+            if (rawstr.Length > 0)
+                hb_buffer_add_utf16(native, rawstr.Native, rawstr.Length, 0, rawstr.Length);
+        }
+
         // The native HarfBuzz buffer.
         private IntPtr native;
         private Int32 length;
@@ -373,6 +402,6 @@ namespace Ultraviolet.FreeType2
         private IntPtr lastUsedFontNative;
 
         // The string builder which contains the raw text.
-        private readonly StringBuilder rawstr = new StringBuilder();
+        private readonly HarfBuzzNativeStringBuffer rawstr;
     }
 }
