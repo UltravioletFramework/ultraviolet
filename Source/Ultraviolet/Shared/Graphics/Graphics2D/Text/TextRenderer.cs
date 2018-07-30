@@ -1466,7 +1466,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSourceUnion source,
             Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
         {
-            var shaped = (source.ValueType >= StringSourceUnionValueType.ShapedString);
+            var shaped = source.IsShaped;
             if (shaped)
             {
                 var cmd = (TextLayoutTextCommand*)input.Data;
@@ -2094,7 +2094,31 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             glyphHeight = 0;
             return null;
         }
-        
+
+        /// <summary>
+        /// Gets the index of the glyph within the specified shaped text that contains the specified position.
+        /// </summary>
+        private Int32? GetGlyphAtPositionWithinShapedText(UltravioletFontFace fontFace, ref ShapedStringSegment text, ref Int32 position, out Int32 glyphWidth, out Int32 glyphHeight)
+        {
+            var glyphPosition = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                var glyphSize = fontFace.MeasureShapedGlyph(ref text, i);
+                if (position >= glyphPosition && position < glyphPosition + glyphSize.Width)
+                {
+                    position = glyphPosition;
+                    glyphWidth = glyphSize.Width;
+                    glyphHeight = glyphSize.Height;
+                    return i;
+                }
+                glyphPosition += glyphSize.Width;
+            }
+            position = 0;
+            glyphWidth = 0;
+            glyphHeight = 0;
+            return null;
+        }
+
         /// <summary>
         /// Gets the index of the glyph or insertion point which is closest to the specified position in layout-relative space.
         /// </summary>
@@ -2247,18 +2271,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineWidth, lineHeight, direction);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
-                                    var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
-                                    var glyphPos = (x - tokenBounds.Left);
+                                    var glyphPos = 0;
                                     var glyphWidth = 0;
                                     var glyphHeight = 0;
-                                    var glyphOffsetInText = GetGlyphAtPositionWithinText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight) ?? 0;
+                                    var glyphOffsetInText = 0;
+
+                                    if (source.IsShaped)
+                                    {
+                                        var text = source.CreateShapedStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
+                                        glyphPos = (x - tokenBounds.Left);
+                                        glyphOffsetInText = GetGlyphAtPositionWithinShapedText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight) ?? 0;
+                                        isSurrogatePair = false;
+                                    }
+                                    else
+                                    {
+                                        var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
+                                        glyphPos = (x - tokenBounds.Left);
+                                        glyphOffsetInText = GetGlyphAtPositionWithinText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight) ?? 0;
+
+                                        var glyphIx = glyphOffsetInText;
+                                        var glyphIxNext = glyphIx + 1;
+                                        isSurrogatePair = (glyphIxNext < text.Length) && Char.IsSurrogatePair(text[glyphIx], text[glyphIxNext]);
+                                    }
+
                                     glyph = glyphCountSeen + glyphOffsetInText;
                                     glyphBounds = new Rectangle(tokenBounds.X + glyphPos, tokenBounds.Y, glyphWidth, glyphHeight);
                                     glyphFound = true;
-
-                                    var glyphIx = glyphOffsetInText;
-                                    var glyphIxNext = glyphIx + 1;
-                                    isSurrogatePair = (glyphIxNext < text.Length) && Char.IsSurrogatePair(text[glyphIx], text[glyphIxNext]);
                                 }
                             }
                             glyphCountSeen += cmd->TextLength;

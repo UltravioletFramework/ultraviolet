@@ -54,6 +54,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         public static implicit operator StringSourceUnion(ShapedString src)
         {
             var result = new StringSourceUnion();
+            result.IsShaped = true;
             result.ValueType = StringSourceUnionValueType.ShapedString;
             result.ShapedStringSource = src;
             return result;
@@ -66,6 +67,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         public static implicit operator StringSourceUnion(ShapedStringBuilder src)
         {
             var result = new StringSourceUnion();
+            result.IsShaped = true;
             result.ValueType = StringSourceUnionValueType.ShapedStringBuilder;
             result.ShapedStringBuilderSource = src;
             return result;
@@ -78,6 +80,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         public static implicit operator StringSourceUnion(ShapedStringSegment src)
         {
             var result = new StringSourceUnion();
+            result.IsShaped = true;
             result.ValueType = StringSourceUnionValueType.ShapedStringSegment;
             result.ShapedStringSegmentSource = src;
             return result;
@@ -271,6 +274,12 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         [FieldOffset(0)]
         public StringSourceUnionValueType ValueType;
+
+        /// <summary>
+        /// A value indicating whether the source contains shaped text.
+        /// </summary>
+        [FieldOffset(4)]
+        public Boolean IsShaped;
 
         /// <summary>
         /// The <see cref="Core.Text.StringSource"/> value which is represented by this object.
