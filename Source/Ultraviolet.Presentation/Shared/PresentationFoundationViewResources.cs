@@ -36,6 +36,13 @@ namespace Ultraviolet.Presentation
             Contract.Require(view, nameof(view));
 
             this.view = view;
+
+            this.StringFormatter = new StringFormatter();
+            this.StringBuffer = new StringBuilder();
+            this.TextRenderer = new TextRenderer();
+
+            if (view.TextShaper != null)
+                this.TextRenderer.RegisterTextShaper(view.TextShaper);
         }
 
         /// <summary>
@@ -136,26 +143,17 @@ namespace Ultraviolet.Presentation
         /// <summary>
         /// Gets the view's global string formatter.
         /// </summary>
-        public StringFormatter StringFormatter
-        {
-            get { return stringFormatter; }
-        }
+        public StringFormatter StringFormatter { get; }
 
         /// <summary>
         /// Gets the view's global string buffer.
         /// </summary>
-        public StringBuilder StringBuffer
-        {
-            get { return stringBuffer; }
-        }
+        public StringBuilder StringBuffer { get; }
 
         /// <summary>
         /// Gets the view's global text renderer.
         /// </summary>
-        public TextRenderer TextRenderer
-        {
-            get { return textRenderer; }
-        }
+        public TextRenderer TextRenderer { get; }
 
         /// <summary>
         /// Identifies the <see cref="BlankImage"/> dependency property.
@@ -559,11 +557,6 @@ namespace Ultraviolet.Presentation
 
             return resource;
         }
-
-        // Property values.
-        private readonly StringFormatter stringFormatter = new StringFormatter();
-        private readonly StringBuilder stringBuffer = new StringBuilder();
-        private readonly TextRenderer textRenderer = new TextRenderer();
 
         // State values.
         private readonly PresentationFoundationView view;
