@@ -1,5 +1,7 @@
 ﻿using System;
+using Ultraviolet.Core;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
 
 namespace Ultraviolet.Presentation.Documents
 {
@@ -92,6 +94,71 @@ namespace Ultraviolet.Presentation.Documents
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to perform text shaping on the element's text.
+        /// </summary>
+        /// <value><see langword="true"/> to perform text shaping; otherwise, <see langword="false"/>.
+        /// The default value is <see langword="false"/>.</value>
+        public Boolean TextIsShaped
+        {
+            get { return GetValue<Boolean>(TextIsShapedProperty); }
+            set { SetValue(TextIsShapedProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the direction in which the element's text is laid out.
+        /// </summary>
+        /// <value>The <see cref="Graphics.Graphics2D.Text.TextDirection"/> value that specifies the direction in which the element's text is laid out.
+        /// The default value is <see cref="TextDirection.LeftToRight"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="TextDirectionProperty"/></dpropField>
+        ///		<dpropStylingName>text-direction</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public TextDirection TextDirection
+        {
+            get { return GetValue<TextDirection>(TextDirectionProperty); }
+            set { SetValue(TextDirectionProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the direction in which the element's text is laid out.
+        /// </summary>
+        /// <value>The <see cref="Graphics.Graphics2D.Text.TextScript"/> value that specifies the type of script used to draw the element's text.
+        /// The default value is <see cref="TextScript.Latin"/>.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="TextScriptProperty"/></dpropField>
+        ///		<dpropStylingName>text-script</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public TextScript TextScript
+        {
+            get { return GetValue<TextScript>(TextScriptProperty); }
+            set { SetValue(TextScriptProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ISO 639 language code which specifies the language of the element's text.
+        /// </summary>
+        /// <value>The ISO 639 language code which specifies the language of the element's text.
+        /// The default value is "en" for English.</value>
+        /// <remarks>
+        /// <dprop>
+        ///		<dpropField><see cref="TextLanguageProperty"/></dpropField>
+        ///		<dpropStylingName>text-script</dpropStylingName>
+        ///		<dpropMetadata>None</dpropMetadata>
+        /// </dprop>
+        /// </remarks>
+        public String TextLanguage
+        {
+            get { return GetValue<String>(TextLanguageProperty); }
+            set { SetValue(TextLanguageProperty, value); }
+        }
+
+        /// <summary>
         /// Identifies the <see cref="Font"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Font"/> dependency property.</value>
@@ -118,6 +185,34 @@ namespace Ultraviolet.Presentation.Documents
         /// <value>The identifier for the <see cref="Foreground"/> dependency property.</value>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.RegisterAttached("Foreground", typeof(Color), typeof(TextElement),
             new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black));
+
+        /// <summary>
+        /// Identifies the <see cref="TextIsShaped"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TextIsShaped"/> dependency property.</value>
+        public static readonly DependencyProperty TextIsShapedProperty = DependencyProperty.RegisterAttached("TextIsShaped", typeof(Boolean), typeof(TextElement),
+            new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="TextDirection"/> text property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TextDirection"/> dependency property.</value>
+        public static readonly DependencyProperty TextDirectionProperty = DependencyProperty.RegisterAttached("TextDirection", typeof(TextDirection), typeof(TextElement),
+            new PropertyMetadata<String>(TextDirection.LeftToRight, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="TextScript"/> text property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TextScript"/> dependency property.</value>
+        public static readonly DependencyProperty TextScriptProperty = DependencyProperty.RegisterAttached("TextScript", typeof(TextScript), typeof(TextElement),
+            new PropertyMetadata<String>(TextScript.Latin, PropertyMetadataOptions.None));
+
+        /// <summary>
+        /// Identifies the <see cref="TextLanguage"/> dependency property.
+        /// </summary>
+        /// <value>The identifier for the <see cref="TextLanguage"/> dependency property.</value>
+        public static readonly DependencyProperty TextLanguageProperty = DependencyProperty.RegisterAttached("TextLanguage", typeof(String), typeof(TextElement),
+            new PropertyMetadata<String>("en", PropertyMetadataOptions.None));
 
         /// <inheritdoc/>
         protected override void ReloadContentOverride(Boolean recursive)
