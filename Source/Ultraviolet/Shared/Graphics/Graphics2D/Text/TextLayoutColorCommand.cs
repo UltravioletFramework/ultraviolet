@@ -11,28 +11,18 @@
         /// <param name="color">The color to push onto the color stack.</param>
         public TextLayoutColorCommand(Color color)
         {
-            this.commandType = TextLayoutCommandType.PushColor;
-            this.color = color;
+            this.CommandType = TextLayoutCommandType.PushColor;
+            this.Color = color;
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the color to push onto the color stack.
         /// </summary>
-        public Color Color
-        {
-            get { return color; }
-        }
-
-        // Property values.
-        private readonly TextLayoutCommandType commandType;
-        private readonly Color color;
+        public Color Color { get; private set; }
     }
 }

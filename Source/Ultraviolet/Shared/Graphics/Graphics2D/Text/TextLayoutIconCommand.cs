@@ -19,14 +19,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="iconDescender">The icon's descender value in pixels. Negative values are below the baseline.</param>
         public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight, Int16 iconAscender, Int16 iconDescender)
         {
-            this.commandType = TextLayoutCommandType.Icon;
-            this.iconIndex = iconIndex;
-            this.iconX = iconX;
-            this.iconY = iconY;
-            this.iconWidth = iconWidth;
-            this.iconHeight = iconHeight;
-            this.iconAscender = iconAscender;
-            this.iconDescender = iconDescender;
+            this.CommandType = TextLayoutCommandType.Icon;
+            this.IconIndex = iconIndex;
+            this.IconX = iconX;
+            this.IconY = iconY;
+            this.IconWidth = iconWidth;
+            this.IconHeight = iconHeight;
+            this.IconAscender = iconAscender;
+            this.IconDescender = iconDescender;
         }
 
         /// <summary>
@@ -34,13 +34,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineWidth">The width of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <param name="direction">The direction in which the text is oriented.</param>
         /// <returns>A <see cref="Point2"/> that describes the absolute position of the icon.</returns>
-        public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineHeight)
+        public Point2 GetAbsolutePosition(Int32 x, Int32 y, Int32 lineWidth, Int32 lineHeight, TextDirection direction)
         {
-            var lineHeightSansDescender = lineHeight + iconDescender;
-            var iconHeightSansDescender = iconHeight + iconDescender;
-            return new Point2(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2));
+            var lineHeightSansDescender = lineHeight + IconDescender;
+            var iconHeightSansDescender = IconHeight + IconDescender;
+            var absX = (direction == TextDirection.RightToLeft) ? (x + lineWidth) - (IconX + IconWidth) : x + IconX;
+            var absY = (y - IconDescender) + IconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2);
+            return new Point2(absX, absY);
         }
 
         /// <summary>
@@ -48,13 +52,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineWidth">The width of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <param name="direction">The direction in which the text is oriented.</param>
         /// <returns>A <see cref="Vector2"/> that describes the absolute position of the icon.</returns>
-        public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineHeight)
+        public Vector2 GetAbsolutePositionVector(Single x, Single y, Int32 lineWidth, Int32 lineHeight, TextDirection direction)
         {
-            var lineHeightSansDescender = lineHeight + iconDescender;
-            var iconHeightSansDescender = iconHeight + iconDescender;
-            return new Vector2(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2));
+            var lineHeightSansDescender = lineHeight + IconDescender;
+            var iconHeightSansDescender = IconHeight + IconDescender;
+            var absX = (direction == TextDirection.RightToLeft) ? (x + lineWidth) - (IconX + IconWidth) : x + IconX;
+            var absY = (y - IconDescender) + IconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2);
+            return new Vector2(absX, absY);
         }
 
         /// <summary>
@@ -62,101 +70,65 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="x">The x-coordinate of the top-left corner of the line of text that is being rendered.</param>
         /// <param name="y">The y-coordinate of the top-left corner of the line of text that is being rendered.</param>
+        /// <param name="lineWidth">The width of the line of text that is being rendered.</param>
         /// <param name="lineHeight">The height of the line of text that is being rendered.</param>
+        /// <param name="direction">The direction in which the text is oriented.</param>
         /// <returns>A <see cref="Rectangle"/> that describes the absolute bounds of the icon.</returns>
-        public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineHeight)
+        public Rectangle GetAbsoluteBounds(Int32 x, Int32 y, Int32 lineWidth, Int32 lineHeight, TextDirection direction)
         {
-            var lineHeightSansDescender = lineHeight + iconDescender;
-            var iconHeightSansDescender = iconHeight + iconDescender;
-            return new Rectangle(x + iconX, (y - iconDescender) + iconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2), iconWidth, iconHeight);
+            var lineHeightSansDescender = lineHeight + IconDescender;
+            var iconHeightSansDescender = IconHeight + IconDescender;
+            var absX = (direction == TextDirection.RightToLeft) ? (x + lineWidth) - (IconX + IconWidth) : x + IconX;
+            var absY = (y - IconDescender) + IconY + ((lineHeightSansDescender - iconHeightSansDescender) / 2);
+            return new Rectangle(absX, absY, IconWidth, IconHeight);
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the index of the icon within the command stream's icon registry.
         /// </summary>
-        public Int16 IconIndex
-        {
-            get { return iconIndex; }
-        }
+        public Int16 IconIndex { get; private set; }
 
         /// <summary>
         /// Gets the x-coordinate of the icon's origin relative to its layout area.
         /// </summary>
-        public Int32 IconX
-        {
-            get { return iconX; }
-            internal set { iconX = value; }
-        }
+        public Int32 IconX { get; internal set; }
 
         /// <summary>
         /// Gets the y-coordinate of the icon's origin relative to its layout area.
         /// </summary>
-        public Int32 IconY
-        {
-            get { return iconY; }
-            internal set { iconY = value; }
-        }
+        public Int32 IconY { get; internal set; }
 
         /// <summary>
         /// Gets the icon's width in pixels.
         /// </summary>
-        public Int16 IconWidth
-        {
-            get { return iconWidth; }
-            internal set { iconWidth = value; }
-        }
+        public Int16 IconWidth { get; internal set; }
 
         /// <summary>
         /// Gets the icon's height in pixels.
         /// </summary>
-        public Int16 IconHeight
-        {
-            get { return iconHeight; }
-            internal set { iconHeight = value; }
-        }
+        public Int16 IconHeight { get; internal set; }
 
         /// <summary>
         /// Gets the icon's ascender value in pixels.
         /// </summary>
-        public Int16 IconAscender
-        {
-            get { return iconAscender; }
-            internal set { iconAscender = value; }
-        }
+        public Int16 IconAscender { get; internal set; }
 
         /// <summary>
         /// Gets the icon's descender value in pixels. Negative values are below the baseline.
         /// </summary>
-        public Int16 IconDescender
-        {
-            get { return iconDescender; }
-            internal set { iconDescender = value; }
-        }
+        public Int16 IconDescender { get; internal set; }
 
         /// <summary>
         /// Gets the bounds of the icon drawn by this command relative to the layout area.
         /// </summary>
         public Rectangle Bounds
         {
-            get { return new Rectangle(iconX, iconY, iconWidth, iconHeight); }
+            get { return new Rectangle(IconX, IconY, IconWidth, IconHeight); }
         }
-
-        // Property values.
-        private readonly TextLayoutCommandType commandType;
-        private readonly Int16 iconIndex;
-        private Int32 iconX;
-        private Int32 iconY;
-        private Int16 iconWidth;
-        private Int16 iconHeight;
-        private Int16 iconAscender;
-        private Int16 iconDescender;
     }
 }

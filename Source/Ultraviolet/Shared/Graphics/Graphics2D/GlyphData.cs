@@ -9,6 +9,7 @@ namespace Ultraviolet.Graphics.Graphics2D
     {
         /// <summary>
         /// Gets or sets the unicode code point which is being drawn.
+        /// Not every glyph corresponds to a Unicode code point.
         /// </summary>
         public Int32 UnicodeCodePoint
         {

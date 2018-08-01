@@ -7,6 +7,7 @@ using Ultraviolet.Core.Text;
 using Ultraviolet.FreeType2.Native;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
 using static Ultraviolet.FreeType2.Native.FreeTypeNative;
 using static Ultraviolet.FreeType2.Native.FT_Error;
 using static Ultraviolet.FreeType2.Native.FT_Kerning_Mode;
@@ -69,7 +70,7 @@ namespace Ultraviolet.FreeType2
                 this.LineSpacing = facade.LineSpacing + metadata.AdjustLineSpacing;
             }
 
-            if (GetGlyphInfo(' ', out var spaceGlyphInfo))
+            if (GetGlyphInfo(' ', false, out var spaceGlyphInfo))
                 this.SpaceWidth = spaceGlyphInfo.Width;
 
             this.SizeInPoints = metadata.SizeInPoints;
@@ -88,24 +89,16 @@ namespace Ultraviolet.FreeType2
         public override String ToString() => String.Format("{0} {1} {2}pt", FamilyName, StyleName, SizeInPoints);
 
         /// <inheritdoc/>
-        public override void GetGlyphRenderInfo(Int32 c, out GlyphRenderInfo info)
-        {
-            if (GetGlyphInfo((UInt32)c, out var ginfo))
-            {
-                info = new GlyphRenderInfo
-                {
-                    Texture = ginfo.Texture,
-                    TextureRegion = ginfo.TextureRegion,
-                    OffsetX = ginfo.OffsetX,
-                    OffsetY = ginfo.OffsetY,
-                    Advance = ginfo.Advance,
-                };
-            }
-            else
-            {
-                info = default(GlyphRenderInfo);
-            }
-        }
+        public override Int32 GetGlyphIndex(Int32 codePoint) => 
+            (Int32)facade.GetCharIndex((UInt32)codePoint);
+        
+        /// <inheritdoc/>
+        public override void GetCodePointRenderInfo(Int32 codePoint, out GlyphRenderInfo info) =>
+            info = GetGlyphInfo((UInt32)codePoint, false, out var ginfo) ? ginfo.ToGlyphRenderInfo() : default(GlyphRenderInfo);
+
+        /// <inheritdoc/>
+        public override void GetGlyphIndexRenderInfo(Int32 glyphIndex, out GlyphRenderInfo info) =>
+            info = GetGlyphInfo((UInt32)glyphIndex, true, out var ginfo) ? ginfo.ToGlyphRenderInfo() : default(GlyphRenderInfo);
 
         /// <inheritdoc/>
         public override Size2 MeasureString(String text)
@@ -124,55 +117,57 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text)
         {
-            var source = new StringSource(text);
+            var source = new StringBuilderSource(text);
             return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(StringBuilder text, Int32 start, Int32 count)
         {
-            var source = new StringSource(text);
+            var source = new StringBuilderSource(text);
             return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(ref StringSegment text)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureString(ref source, 0, text.Length);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureString(ref StringSegment text, Int32 start, Int32 count)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureString(ref source, start, count);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureString(ref StringSource source)
+        public override Size2 MeasureString<TSource>(ref TSource text)
         {
-            return MeasureString(ref source, 0, source.Length);
+            return MeasureString(ref text, 0, text.Length);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureString(ref StringSource source, Int32 start, Int32 count)
+        public override Size2 MeasureString<TSource>(ref TSource text, Int32 start, Int32 count)
         {
             if (count == 0)
                 return Size2.Zero;
 
-            Contract.EnsureRange(start >= 0 && start < source.Length, nameof(start));
-            Contract.EnsureRange(count >= 0 && start + count <= source.Length, nameof(count));
+            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
 
             var cx = 0;
             var cy = 0;
+            var maxLineWidth = 0;
+
             for (var i = 0; i < count; i++)
             {
                 var ix = start + i;
                 var ixNext = ix + 1;
 
-                var character = source[ix];
-                if (ixNext < count && Char.IsSurrogatePair(source[ix], source[ixNext]))
+                var character = text[ix];
+                if (ixNext < count && Char.IsSurrogatePair(text[ix], text[ixNext]))
                     i++;
 
                 switch (character)
@@ -181,6 +176,7 @@ namespace Ultraviolet.FreeType2
                         continue;
 
                     case '\n':
+                        maxLineWidth = Math.Max(maxLineWidth, cx);
                         cx = 0;
                         cy = cy + LineSpacing;
                         continue;
@@ -190,10 +186,87 @@ namespace Ultraviolet.FreeType2
                         continue;
                 }
 
-                cx += MeasureGlyph(ref source, ix).Width;
+                cx += MeasureGlyph(ref text, ix).Width;
             }
+            maxLineWidth = Math.Max(maxLineWidth, cx);
 
-            return new Size2(cx, cy + totalDesignHeight);
+            return new Size2(maxLineWidth, cy + totalDesignHeight);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedString(ShapedString text) =>
+            MeasureShapedString(ref text, 0, text.Length);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count) =>
+            MeasureShapedString(ref text, start, count);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedString(ShapedStringBuilder text) =>
+            MeasureShapedString(ref text, 0, text.Length);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count) =>
+            MeasureShapedString(ref text, start, count);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedString<TSource>(ref TSource text) =>
+            MeasureShapedString(ref text, 0, text.Length);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count)
+        {
+            if (count == 0)
+                return Size2.Zero;
+
+            Contract.EnsureRange(start >= 0 && start < text.Length, nameof(start));
+            Contract.EnsureRange(count >= 0 && start + count <= text.Length, nameof(count));
+
+            var cx = 0;
+            var cy = 0;
+            var maxLineWidth = 0;
+
+            for (var i = 0; i < count; i++)
+            {
+                var sc = text[i];
+                switch (sc.GetSpecialCharacter())
+                {
+                    case '\n':
+                        maxLineWidth = Math.Max(maxLineWidth, cx);
+                        cx = 0;
+                        cy = cy + LineSpacing;
+                        break;
+
+                    case '\t':
+                        cx = cx + TabWidth;
+                        break;
+
+                    default:
+                        cx = cx + sc.Advance;
+                        break;
+                }
+            }
+            maxLineWidth = Math.Max(maxLineWidth, cx);
+
+            return new Size2(maxLineWidth, totalDesignHeight);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyph(Int32 c1, Int32? c2 = null)
+        {
+            if (!GetGlyphInfo((UInt32)c1, false, out var c1Info))
+                return Size2.Zero;
+
+            return new Size2(c1Info.Advance, totalDesignHeight);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyphByGlyphIndex(Int32 glyphIndex1, Int32? glyphIndex2 = null)
+        {
+            if (!GetGlyphInfo((UInt32)glyphIndex1, true, out var info))
+                return Size2.Zero;
+
+            return new Size2(info.Advance, totalDesignHeight);
         }
 
         /// <inheritdoc/>
@@ -206,48 +279,66 @@ namespace Ultraviolet.FreeType2
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(StringBuilder text, Int32 ix)
         {
-            var source = new StringSource(text);
+            var source = new StringBuilderSource(text);
             return MeasureGlyph(ref source, ix);
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyph(ref StringSegment text, Int32 ix)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureGlyph(ref source, ix);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyph<TSource>(ref TSource text, Int32 ix)
+        {
+            GetUtf32CodePointFromString(ref text, ix, out var c1);
+            if (!GetGlyphInfo(c1, false, out var cinfo))
+                return Size2.Zero;
+
+            var c2 = (ix + 1 < text.Length) ? text[ix + 1] : (Char?)null;
+            var offset = c2.HasValue ? GetKerningInfo(text[ix], c2.GetValueOrDefault()) : Size2.Zero;
+            return new Size2(cinfo.Advance, totalDesignHeight) + offset;
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedGlyph(ShapedString text, Int32 ix) =>
+            MeasureShapedGlyph(ref text, ix);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix) =>
+            MeasureShapedGlyph(ref text, ix);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix)
+        {
+            var sc = source[ix];
+            switch (sc.GetSpecialCharacter())
+            {
+                case '\n':
+                    return Size2.Zero;
+
+                case '\t':
+                    return new Size2(TabWidth, totalDesignHeight);
+
+                default:
+                    return new Size2(sc.Advance, totalDesignHeight);
+            }
         }
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSegment text, Int32 ix, Int32 c2)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return MeasureGlyphWithHypotheticalKerning(ref source, ix, c2);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyphWithoutKerning(ref StringSegment text, Int32 ix)
-        {
-            var source = new StringSource(text);
-            return MeasureGlyphWithoutKerning(ref source, ix);
-        }
-
-        /// <inheritdoc/>
-        public override Size2 MeasureGlyph(ref StringSource text, Int32 ix)
+        public override Size2 MeasureGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 c2)
         {
             GetUtf32CodePointFromString(ref text, ix, out var c1);
-            if (!GetGlyphInfo(c1, out var cinfo))
-                return Size2.Zero;
-
-            var c2 = (ix + 1 < text.Length) ? text[ix + 1] : (Char?)null;
-            var offset = c2.HasValue ? GetKerningInfo(text[ix], c2.GetValueOrDefault()) : Size2.Zero;            
-            return new Size2(cinfo.Advance, totalDesignHeight) + offset;
-        }
-
-        /// <inheritdoc/>
-        public override Size2 MeasureGlyphWithHypotheticalKerning(ref StringSource text, Int32 ix, Int32 c2)
-        {
-            GetUtf32CodePointFromString(ref text, ix, out var c1);
-            if (!GetGlyphInfo(c1, out var cinfo))
+            if (!GetGlyphInfo(c1, false, out var cinfo))
                 return Size2.Zero;
 
             var offset = GetKerningInfo(text[ix], c2);
@@ -255,22 +346,58 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyphWithoutKerning(ref StringSource text, Int32 ix)
+        public override Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2) =>
+            new Size2(text[ix].Advance, totalDesignHeight);
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyphWithoutKerning(ref StringSegment text, Int32 ix)
+        {
+            var source = new StringSegmentSource(text);
+            return MeasureGlyphWithoutKerning(ref source, ix);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 MeasureGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix)
         {
             GetUtf32CodePointFromString(ref text, ix, out var c1);
-            if (!GetGlyphInfo(c1, out var cinfo))
+            if (!GetGlyphInfo(c1, false, out var cinfo))
                 return Size2.Zero;
 
             return new Size2(cinfo.Advance, totalDesignHeight);
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureGlyph(Int32 c1, Int32? c2 = null)
+        public override Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix) =>
+            new Size2(text[ix].Advance, totalDesignHeight);
+
+        /// <inheritdoc/>
+        public override Size2 GetKerningInfoByGlyphIndex(Int32 glyphIndex1, Int32 glyphIndex2)
         {
-            if (!GetGlyphInfo((UInt32)c1, out var c1Info))
+            if (face == IntPtr.Zero || !HasKerningInfo)
                 return Size2.Zero;
 
-            return new Size2(c1Info.Advance, totalDesignHeight);
+            if (Use64BitInterface)
+            {
+                var kerning = default(FT_Vector64);
+                var err = FT_Get_Kerning(face, (UInt32)glyphIndex1, (UInt32)glyphIndex2, (UInt32)FT_KERNING_DEFAULT, (IntPtr)(&kerning));
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                var x = FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+                var y = FreeTypeCalc.F26Dot6ToInt32(kerning.y);
+                return new Size2(x, y);
+            }
+            else
+            {
+                var kerning = default(FT_Vector32);
+                var err = FT_Get_Kerning(face, (UInt32)glyphIndex1, (UInt32)glyphIndex2, (UInt32)FT_KERNING_DEFAULT, (IntPtr)(&kerning));
+                if (err != FT_Err_Ok)
+                    throw new FreeTypeException(err);
+
+                var x = FreeTypeCalc.F26Dot6ToInt32(kerning.x);
+                var y = FreeTypeCalc.F26Dot6ToInt32(kerning.y);
+                return new Size2(x, y);
+            }
         }
 
         /// <inheritdoc/>
@@ -312,7 +439,22 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(ref StringSource text, Int32 ix)
+        public override Size2 GetKerningInfo(ref StringSegment text, Int32 ix)
+        {
+            var source = new StringSegmentSource(text);
+            return GetKerningInfo(ref source, ix);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetKerningInfo(ref StringSegment text1, Int32 ix1, ref StringSegment text2, Int32 ix2)
+        {
+            var source1 = new StringSegmentSource(text1);
+            var source2 = new StringSegmentSource(text2);
+            return GetKerningInfo(ref source1, ix1, ref source2, ix2);
+        }
+
+        /// <inheritdoc/>
+        public override Size2 GetKerningInfo<TSource>(ref TSource text, Int32 ix)
         {
             if (ix + 1 >= text.Length)
                 return Size2.Zero;
@@ -328,14 +470,7 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 GetHypotheticalKerningInfo(ref StringSource text, Int32 ix, Int32 c2)
-        {
-            var c1 = text[ix];
-            return GetKerningInfo(c1, c2);
-        }
-
-        /// <inheritdoc/>
-        public override Size2 GetKerningInfo(ref StringSource text1, Int32 ix1, ref StringSource text2, Int32 ix2)
+        public override Size2 GetKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2)
         {
             var c1 = text1[ix1];
             var c2 = text2[ix2];
@@ -343,41 +478,38 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(ref StringSegment text, Int32 ix)
-        {
-            var source = new StringSource(text);
-            return GetKerningInfo(ref source, ix);
-        }
+        public override Size2 GetShapedKerningInfo<TSource>(ref TSource text, Int32 ix) => Size2.Zero;
+
+        /// <inheritdoc/>
+        public override Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2) => Size2.Zero;
 
         /// <inheritdoc/>
         public override Size2 GetHypotheticalKerningInfo(ref StringSegment text, Int32 ix, Int32 c2)
         {
-            var source = new StringSource(text);
+            var source = new StringSegmentSource(text);
             return GetHypotheticalKerningInfo(ref source, ix, c2);
         }
 
         /// <inheritdoc/>
-        public override Size2 GetKerningInfo(ref StringSegment text1, Int32 ix1, ref StringSegment text2, Int32 ix2)
+        public override Size2 GetHypotheticalKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 c2)
         {
-            var source1 = new StringSource(text1);
-            var source2 = new StringSource(text2);
-            return GetKerningInfo(ref source1, ix1, ref source2, ix2);
+            var c1 = text[ix];
+            return GetKerningInfo(c1, c2);
         }
 
         /// <inheritdoc/>
-        public override Boolean ContainsGlyph(Int32 c)
-        {
-            return facade.GetCharIndex((UInt32)c) > 0;
-        }
+        public override Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2) => Size2.Zero;
+
+        /// <inheritdoc/>
+        public override Boolean ContainsGlyph(Int32 c) =>
+            facade.GetCharIndex((UInt32)c) > 0;
 
         /// <summary>
         /// Ensures that the specified character's associated glyph has been added to the font's texture atlases.
         /// </summary>
         /// <param name="c">The character for which to ensure that a glyph has been populated.</param>
-        public void PopulateGlyph(Char c)
-        {
-            GetGlyphInfo(c, out var info);
-        }
+        public void PopulateGlyph(Char c) =>
+            GetGlyphInfo(c, false, out var info);
 
         /// <summary>
         /// Gets the font's family name.
@@ -424,8 +556,19 @@ namespace Ultraviolet.FreeType2
         /// </summary>
         public Boolean HasKerningInfo { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether this font face is stroked.
+        /// </summary>
+        public Boolean IsStroked => stroker != IntPtr.Zero;
+
         /// <inheritdoc/>
-        public override Int32 Characters => glyphInfoCache.Count;
+        public override Boolean SupportsGlyphIndices => true;
+
+        /// <inheritdoc/>
+        public override Boolean SupportsShapedText => true;
+
+        /// <inheritdoc/>
+        public override Int32 Glyphs => glyphInfoCache.Count;
 
         /// <inheritdoc/>
         public override Int32 SpaceWidth { get; }
@@ -444,6 +587,11 @@ namespace Ultraviolet.FreeType2
 
         /// <inheritdoc/>
         public override Char SubstitutionCharacter { get; }
+
+        /// <summary>
+        /// Gets a pointer to the native font object.
+        /// </summary>
+        internal IntPtr NativePointer => face;
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
@@ -749,7 +897,8 @@ namespace Ultraviolet.FreeType2
         /// Converts the specified index of a string to a UTF-32 codepoint.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Boolean GetUtf32CodePointFromString(ref StringSource text, Int32 ix, out UInt32 utf32)
+        private Boolean GetUtf32CodePointFromString<TSource>(ref TSource text, Int32 ix, out UInt32 utf32)
+            where TSource : IStringSource<Char>
         {
             var ixNext = ix + 1;
             if (ixNext < text.Length)
@@ -1015,44 +1164,46 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <summary>
-        /// Gets the font face's metadata for the specified glyph.
+        /// Gets the font face's metadata for the specified code point or glyph index.
         /// </summary>
-        private Boolean GetGlyphInfo(UInt32 value, out FreeTypeGlyphInfo info)
+        private Boolean GetGlyphInfo(UInt32 glyphIndexOrCodePoint, Boolean isGlyphIndex, out FreeTypeGlyphInfo info)
         {
-            if (glyphInfoCache.TryGetValue(value, out var cached))
+            var glyphIndex = isGlyphIndex ? glyphIndexOrCodePoint : facade.GetCharIndex(glyphIndexOrCodePoint);
+            if (glyphIndex == 0)
             {
-                info = cached;
+                if (!isGlyphIndex)
+                {
+                    var cu16 = (glyphIndexOrCodePoint <= Char.MaxValue) ? (Char?)glyphIndexOrCodePoint : null;
+                    if (cu16 != SubstitutionCharacter)
+                        return GetGlyphInfo(SubstitutionCharacter, false, out info);
+                }
+                info = default(FreeTypeGlyphInfo);
+                return false;
             }
             else
             {
-                var cu16 = (value <= Char.MaxValue) ? (Char?)value : null;
-                var index = facade.GetCharIndex(value);
-                if (index == 0)
+                if (glyphInfoCache.TryGetValue(glyphIndex, out var cached))
                 {
-                    if (cu16 != SubstitutionCharacter)
-                        return GetGlyphInfo(SubstitutionCharacter, out info);
-
-                    info = default(FreeTypeGlyphInfo);
-                    return false;
+                    info = cached;
                 }
                 else
                 {
-                    LoadGlyphTexture(cu16, value, index, out info);
-                    glyphInfoCache[value] = info;
+                    LoadGlyphTexture(glyphIndex, out info);
+                    glyphInfoCache[glyphIndex] = info;
                 }
             }
             return true;
         }
-        
+
         /// <summary>
         /// Loads the texture data for the specified glyph.
         /// </summary>
-        private void LoadGlyphTexture(Char? cu16, UInt32 cu32, UInt32 glyphIndex, out FreeTypeGlyphInfo info)
+        private void LoadGlyphTexture(UInt32 glyphIndex, out FreeTypeGlyphInfo info)
         {
             var err = default(FT_Error);
 
             // Load the glyph into the face's glyph slot.
-            var flags = (stroker == IntPtr.Zero) ? FT_LOAD_COLOR : FT_LOAD_NO_BITMAP;
+            var flags = IsStroked ? FT_LOAD_NO_BITMAP : FT_LOAD_COLOR;
             err = FT_Load_Glyph(face, glyphIndex, flags);
             if (err != FT_Err_Ok)
                 throw new FreeTypeException(err);
@@ -1060,25 +1211,24 @@ namespace Ultraviolet.FreeType2
             var glyphOffsetX = 0;
             var glyphOffsetY = 0;
             var glyphAscent = 0;
-            var glyphAdvance = (cu16 == '\t') ?
-                (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment) * 4 :
-                (facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment);
+            var glyphAdvance = facade.GlyphMetricHorizontalAdvance + hAdvanceAdjustment;
 
-            // If the glyph is not whitespace, we need to add it to one of our atlases.
+
             var reservation = default(DynamicTextureAtlas.Reservation);
             var reservationFound = false;
-            if (!cu16.HasValue || !Char.IsWhiteSpace(cu16.GetValueOrDefault()))
+
+            // Stroke the glyph.   
+            StrokeGlyph(out var strokeGlyph, out var strokeBmp,
+                out var strokeOffsetX, out var strokeOffsetY);
+
+            // Render the glyph.
+            err = FT_Render_Glyph(facade.GlyphSlot, FT_RENDER_MODE_NORMAL);
+            if (err != FT_Err_Ok)
+                throw new FreeTypeException(err);
+
+            var glyphBmp = facade.GlyphBitmap;
+            if (glyphBmp.rows > 0 && glyphBmp.width > 0)
             {
-                // Stroke the glyph.   
-                StrokeGlyph(out var strokeGlyph, out var strokeBmp, 
-                    out var strokeOffsetX, out var strokeOffsetY);
-
-                // Render the glyph.
-                err = FT_Render_Glyph(facade.GlyphSlot, FT_RENDER_MODE_NORMAL);
-                if (err != FT_Err_Ok)
-                    throw new FreeTypeException(err);
-
-                var glyphBmp = facade.GlyphBitmap;
                 var glyphBmpHeightScaled = (Int32)glyphBmp.rows;
                 var glyphAdjustX = 0;
                 var glyphAdjustY = 0;
@@ -1134,7 +1284,7 @@ namespace Ultraviolet.FreeType2
                         atlases.Add(atlas);
 
                         if (!atlas.TryReserveCell(reservationWidth, reservationHeight, out reservation))
-                            throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format(cu16));
+                            throw new InvalidOperationException(FreeTypeStrings.GlyphTooBigForAtlas.Format());
                     }
 
                     // If we're using flipped textures, we need to modify our y-adjust...
@@ -1173,7 +1323,6 @@ namespace Ultraviolet.FreeType2
             // Create the glyph info structure for the glyph cache.
             info = new FreeTypeGlyphInfo
             {
-                UnicodeCharacter = cu32,
                 Advance = glyphAdvance,
                 Width = glyphWidth,
                 Height = glyphHeight,

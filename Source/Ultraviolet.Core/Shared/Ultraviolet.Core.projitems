@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\ArrayEnumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\BinaryHeap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\BinaryHeap.Enumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\ExpandingPool.cs" />
@@ -95,6 +96,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Performance\GCDebug.NativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Performance\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinkerSafeAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\ISegmentableStringSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\IStringSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentSource.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSource.Equality.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Text\StringSourceEquality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlatformInfo.cs" />

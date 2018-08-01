@@ -91,6 +91,16 @@
         ChangeSourceStringBuilder,
 
         /// <summary>
+        /// Represents a command to change the source shaped string.
+        /// </summary>
+        ChangeSourceShapedString,
+
+        /// <summary>
+        /// Represents a command to change the source shaped string builder.
+        /// </summary>
+        ChangeSourceShapedStringBuilder,
+
+        /// <summary>
         /// Represents a command to draw a hyphen character.
         /// </summary>
         Hyphen,

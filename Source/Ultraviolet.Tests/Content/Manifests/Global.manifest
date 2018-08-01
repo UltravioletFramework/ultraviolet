@@ -4,6 +4,9 @@
     <Asset Name="DefaultUI">..\UI\DefaultUIFont</Asset>
     <Asset Name="SegoeUI">SegoeUI</Asset>
   </ContentGroup>
+  <ContentGroup Name="FreeTypeFonts" Directory="Fonts" Type="Ultraviolet.FreeType2.FreeTypeFont, Ultraviolet.FreeType2">
+    <Asset Name="FiraGO">FiraGO-Regular</Asset>
+  </ContentGroup>
   <ContentGroup Name="Textures" Directory="Textures" Type="Ultraviolet.Graphics.Texture2D">
     <Asset Name="DefaultUI">..\UI\DefaultUI</Asset>
     <Asset Name="DefaultUIBackground">..\UI\DefaultUIBackground</Asset>

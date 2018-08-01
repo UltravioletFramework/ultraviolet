@@ -80,7 +80,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.Require(output, nameof(output));
 
             output.Clear();
-            Parse(new StringSource(input), output, 0, input.Length, options);
+            Parse(new StringBuilderSource(input), output, 0, input.Length, options);
         }
 
         /// <summary>
@@ -102,18 +102,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Contract.EnsureRange(start >= 0, nameof(start));
             Contract.EnsureRange(count >= 0 && start + count <= input.Length, nameof(count));
 
-            return ParseIncremental(new StringSource(input), start, count, result, options);
+            return ParseIncremental(new StringBuilderSource(input), start, count, result, options);
         }
 
         /// <summary>
         /// Lexes and parses the specified string.
         /// </summary>
-        /// <param name="input">The <see cref="StringSource"/> to parse.</param>
-        /// <param name="output">The parsed token stream.</param>
-        /// <param name="index">The index at which to begin parsing the input string.</param>
-        /// <param name="count">the number of characters to parse.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        private void Parse(StringSource input, TextParserTokenStream output, Int32 index, Int32 count, TextParserOptions options = TextParserOptions.None)
+        private void Parse<TSource>(TSource input, TextParserTokenStream output, Int32 index, Int32 count, TextParserOptions options = TextParserOptions.None)
+            where TSource : ISegmentableStringSource
         {
             var bound = index + count;
             while (index < bound)
@@ -158,16 +154,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Incrementally lexes and parses the specified string.
         /// </summary>
-        /// <param name="input">The <see cref="StringSource"/> to parse.</param>
-        /// <param name="start">The index of the first character that was changed.</param>
-        /// <param name="count">The number of characters that were changed.</param>
-        /// <param name="output">The parsed token stream.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        /// <returns>An <see cref="IncrementalResult"/> structure that represents the result of the operation.</returns>
-        /// <remarks>Incremental parsing provides a performance benefit when relatively small changes are being made
-        /// to a large source text. Only tokens which are potentially influenced by changes within the specified substring
-        /// of the source text are re-parsed by this operation.</remarks>
-        private IncrementalResult ParseIncremental(StringSource input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
+        private IncrementalResult ParseIncremental<TSource>(TSource input, Int32 start, Int32 count, TextParserTokenStream output, TextParserOptions options = TextParserOptions.None)
+            where TSource : ISegmentableStringSource
         {
             var inputLengthOld = output.SourceText.Length;
             var inputLengthNew = input.Length;
@@ -201,10 +189,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the start of a newline token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the start of a newline token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsStartOfNewline(StringSource input, Int32 ix)
+        private static Boolean IsStartOfNewline<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] == '\n' || input[ix] == '\r';
         }
@@ -212,10 +198,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the start of a non-breaking white space token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the start of a non-breaking white space token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsStartOfNonBreakingSpace(StringSource input, Int32 ix)
+        private static Boolean IsStartOfNonBreakingSpace<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] == '\u00A0';
         }
@@ -223,10 +207,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the end of a non-breaking white space token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the end of a non-breaking white space token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsEndOfNonBreakingSpace(StringSource input, Int32 ix)
+        private static Boolean IsEndOfNonBreakingSpace<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] != '\u00A0';
         }
@@ -234,10 +216,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the start of a breaking white space token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the start of a breaking white space token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsStartOfBreakingSpace(StringSource input, Int32 ix)
+        private static Boolean IsStartOfBreakingSpace<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] != '\u00A0' && Char.IsWhiteSpace(input[ix]) && !IsStartOfNewline(input, ix);
         }
@@ -245,10 +225,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the end of a breaking white space token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the end of a breaking white space token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsEndOfBreakingSpace(StringSource input, Int32 ix)
+        private static Boolean IsEndOfBreakingSpace<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] == '\u00A0' || !Char.IsWhiteSpace(input[ix]) || IsStartOfNewline(input, ix);
         }
@@ -256,11 +234,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is an escaped pipe.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        /// <returns><see langword="true"/> if the specified character is an escaped pipe; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsEscapedPipe(StringSource input, Int32 ix, TextParserOptions options)
+        private static Boolean IsEscapedPipe<TSource>(TSource input, Int32 ix, TextParserOptions options)
+            where TSource : IStringSource<Char>
         {
             if ((options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes)
                 return false;
@@ -271,10 +246,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the start of a command token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the start of a command token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsStartOfCommand(StringSource input, Int32 ix)
+        private static Boolean IsStartOfCommand<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] == '|';
         }
@@ -282,10 +255,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the end of a command token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the end of a command token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsEndOfCommand(StringSource input, Int32 ix)
+        private static Boolean IsEndOfCommand<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return input[ix] == '|';
         }
@@ -293,10 +264,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the start of a word token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the start of a word token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsStartOfWord(StringSource input, Int32 ix)
+        private static Boolean IsStartOfWord<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return !Char.IsWhiteSpace(input[ix]) && !IsStartOfCommand(input, ix);
         }
@@ -304,10 +273,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets a value indicating whether the specified character is the end of a word token.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="ix">The index of the character to evaluate.</param>
-        /// <returns><see langword="true"/> if the specified character is the end of a word token; otherwise, <see langword="false"/>.</returns>
-        private static Boolean IsEndOfWord(StringSource input, Int32 ix)
+        private static Boolean IsEndOfWord<TSource>(TSource input, Int32 ix)
+            where TSource : IStringSource<Char>
         {
             return Char.IsWhiteSpace(input[ix]) || IsStartOfCommand(input, ix);
         }
@@ -315,11 +282,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Retrieves a newline token from the input stream, beginning at the specified character.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="options">The parser options.</param>
-        /// <param name="ix">The index at which to begin consuming token characters.</param>
-        /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeNewlineToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeNewlineToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
+            where TSource : ISegmentableStringSource
         {
             var sourceLength = 1;
             if (input[ix] == '\r' && ix + 1 < input.Length && input[ix + 1] == '\n')
@@ -328,18 +292,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var sourceOffset = ix;
             ix += sourceLength;
 
-            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            var segment = input.CreateStringSegmentFromSameOrigin(sourceOffset, sourceLength);
             return ParseLexerToken(LexedTokenType.NewLine, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
         /// Retrieves a non-breaking white space token from the input stream, beginning at the specified character.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="options">The parser options.</param>
-        /// <param name="ix">The index at which to begin consuming token characters.</param>
-        /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeNonBreakingSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeNonBreakingSpaceToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
 
@@ -348,18 +309,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var sourceOffset = start;
             var sourceLength = ix - start;
-            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            var segment = input.CreateStringSegmentFromSameOrigin(sourceOffset, sourceLength);
             return ParseLexerToken(LexedTokenType.NonBreakingWhiteSpace, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
         /// Retrieves a breaking white space token from the input stream, beginning at the specified character.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="options">The parser options.</param>
-        /// <param name="ix">The index at which to begin consuming token characters.</param>
-        /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeBreakingSpaceToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeBreakingSpaceToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
 
@@ -368,18 +326,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var sourceOffset = start;
             var sourceLength = ix - start;
-            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            var segment = input.CreateStringSegmentFromSameOrigin(sourceOffset, sourceLength);
             return ParseLexerToken(LexedTokenType.BreakingWhiteSpace, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
         /// Retrieves an escaped pipe token from the input stream, beginning at the specified character.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="options">The parser options.</param>
-        /// <param name="ix">The index at which to begin consuming token characters.</param>
-        /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeEscapedPipeToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeEscapedPipeToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
             
@@ -394,11 +349,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Retrieves a command token from the input stream, beginning at the specified character.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="options">The parser options.</param>
-        /// <param name="ix">The index at which to begin consuming token characters.</param>
-        /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeCommandToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeCommandToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
+            where TSource : ISegmentableStringSource
         {
             var valid = false;
             var start = ix++;
@@ -416,18 +368,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var sourceOffset = start;
             var sourceLength = ix - start;
-            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            var segment = input.CreateStringSegmentFromSameOrigin(sourceOffset, sourceLength);
             return ParseLexerToken(valid ? LexedTokenType.Command : LexedTokenType.Word, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
         /// Retrieves a word token from the input stream, beginning at the specified character.
         /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="options">The parser options.</param>
-        /// <param name="ix">The index at which to begin consuming token characters.</param>
-        /// <returns>The token that was created.</returns>
-        private static TextParserToken ConsumeWordToken(StringSource input, TextParserOptions options, ref Int32 ix)
+        private static TextParserToken ConsumeWordToken<TSource>(TSource input, TextParserOptions options, ref Int32 ix)
+            where TSource : ISegmentableStringSource
         {
             var start = ix++;
             while (ix < input.Length && !IsEndOfWord(input, ix))
@@ -435,19 +384,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             var sourceOffset = start;
             var sourceLength = ix - start;
-            var segment = input.CreateStringSegmentFromSameSource(sourceOffset, sourceLength);
+            var segment = input.CreateStringSegmentFromSameOrigin(sourceOffset, sourceLength);
             return ParseLexerToken(LexedTokenType.Word, segment, sourceOffset, sourceLength, options);
         }
 
         /// <summary>
         /// Parses a lexer token.
         /// </summary>
-        /// <param name="tokenType">A <see cref="LexedTokenType"/> value specifying the type of token produced by the lexer.</param>
-        /// <param name="tokenText">The text associated with the lexer token.</param>
-        /// <param name="sourceOffset">The offset of the first character in the source text that produced the token.</param>
-        /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>
-        /// <param name="options">A set of <see cref="TextParserOptions"/> values that specify how the text should be parsed.</param>
-        /// <returns>The parsed token.</returns>
         private static TextParserToken ParseLexerToken(LexedTokenType tokenType, StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength, TextParserOptions options)
         {
             var isIgnoringCommandCodes = (options & TextParserOptions.IgnoreCommandCodes) == TextParserOptions.IgnoreCommandCodes;
@@ -462,10 +405,6 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Parses a command token.
         /// </summary>
-        /// <param name="tokenText">The text associated with the lexer token.</param>
-        /// <param name="sourceOffset">The offset of the first character in the source text that produced the token.</param>
-        /// <param name="sourceLength">The number of characters in the source text that produced the token.</param>
-        /// <returns>The parsed token.</returns>
         private static TextParserToken ParseCommandToken(StringSegment tokenText, Int32 sourceOffset, Int32 sourceLength)
         {
             // Toggle bold style.

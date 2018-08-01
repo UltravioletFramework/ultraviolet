@@ -378,6 +378,24 @@ namespace Ultraviolet.Tests.UI.Presentation
             TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_TextBox_BindsCorrectlyToViewModel.png");
         }
 
+        [Test]
+        [Category("UPF"), Category("Rendering")]
+        [Description("Ensures that a UPF view can correctly render shaped text.")]
+        public void UPF_View_DrawsShapedTextCorrectly()
+        {
+            var result = GivenAPresentationFoundationTestFor(content => new UPF_View_DrawsShapedTextCorrectly(content))
+                .WithPlugin(new FreeType2.FreeTypeFontPlugin())
+                .Render(uv =>
+                {
+                    using (var spriteBatch = SpriteBatch.Create())
+                    {
+                        uv.GetUI().GetScreens().Draw(new UltravioletTime(), spriteBatch);
+                    }
+                });
+
+            TheResultingImage(result).ShouldMatch(@"Resources/Expected/UI/Presentation/UPF_View_DrawsShapedTextCorrectly.png");
+        }
+
         /// <summary>
         /// Runs a standard test by spinning up an Ultraviolet application and displaying the specified UPF screen.
         /// </summary>

@@ -491,10 +491,11 @@ namespace Ultraviolet.Presentation.Controls
 
                     var cursorpos = textLayoutCommands.CursorPosition;
 
+                    var options = containingControl.TextIsShaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalAlignment, VerticalAlignment);
                     var settings = new TextLayoutSettings(font,
                         (Int32)Math.Ceiling(availableSizeInPixels.Width),
-                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, containingControl.FontStyle);
+                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, options, containingControl.TextDirection, containingControl.FontStyle, null, containingControl.TextLanguage);
 
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                     View.Resources.TextRenderer.UpdateCursor(textLayoutCommands, cursorpos);
