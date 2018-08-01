@@ -17,7 +17,7 @@
   </String>
   <String Key="GLYPH_TOO_BIG_FOR_ATLAS">
     <en-US>
-      <Variant>The glyph for '{0}' is too big to fit on a font atlas.</Variant>
+      <Variant>Glyph is too big to fit on a font atlas.</Variant>
     </en-US>
   </String>
   <String Key="PIXEL_FORMAT_NOT_SUPPORTED">
@@ -48,6 +48,11 @@
   <String Key="INVALID_ATLAS_PARAMETERS">
     <en-US>
       <Variant>The texture atlas parameters specified for this font face are invalid.</Variant>
+    </en-US>
+  </String>
+  <String Key="TEXT_SHAPER_REQUIRES_FREE_TYPE_FONT">
+    <en-US>
+      <Variant>The HarfBuzzTextShaper class only supports text shaping using FreeType2 fonts.</Variant>
     </en-US>
   </String>
 </LocalizedStrings>

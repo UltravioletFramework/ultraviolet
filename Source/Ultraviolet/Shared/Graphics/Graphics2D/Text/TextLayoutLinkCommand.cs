@@ -13,28 +13,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="linkTargetIndex">The index of the link target within the command stream's link target registry.</param>
         public TextLayoutLinkCommand(Int16 linkTargetIndex)
         {
-            this.commandType = TextLayoutCommandType.PushLink;
-            this.linkTargetIndex = linkTargetIndex;
+            this.CommandType = TextLayoutCommandType.PushLink;
+            this.LinkTargetIndex = linkTargetIndex;
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the index of the link target within the command stream's link target registry.
         /// </summary>
-        public Int16 LinkTargetIndex
-        {
-            get { return linkTargetIndex; }
-        }
-
-        // Property values.
-        private readonly TextLayoutCommandType commandType;
-        private readonly Int16 linkTargetIndex;
+        public Int16 LinkTargetIndex { get; private set; }
     }
 }

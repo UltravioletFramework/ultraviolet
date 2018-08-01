@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
@@ -627,10 +628,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
+            var direction = settings.Direction;
 
-            var source = (input.SourceText.SourceString != null) ?
-                new StringSource(input.SourceText.SourceString) :
-                new StringSource(input.SourceText.SourceStringBuilder);
+            var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -678,7 +678,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphCountSeen + cmd->TextLength > index)
                             {
-                                var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
+                                var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
 
                                 var glyphIndexWithinText = index - glyphCountSeen;
                                 if (glyphIndexWithinText > 0 && Char.IsSurrogatePair(text[glyphIndexWithinText - 1], text[glyphIndexWithinText]))
@@ -687,7 +687,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var glyphOffset = (glyphIndexWithinText == 0) ? 0 : fontFace.MeasureString(ref text, 0, glyphIndexWithinText).Width;
                                 var glyphSize = fontFace.MeasureGlyph(ref text, glyphIndexWithinText);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX + glyphOffset, cmd->Bounds.Location.Y) :
-                                    cmd->GetAbsolutePosition(fontFace, offsetLineX + glyphOffset, blockOffset, lineHeight);
+                                    cmd->GetAbsolutePosition(fontFace, offsetLineX + glyphOffset, blockOffset, lineWidth, lineHeight, direction);
 
                                 bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
@@ -704,7 +704,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             {
                                 var glyphSize = new Size2(cmd->IconWidth, cmd->IconHeight);
                                 var glyphPosition = spanLineHeight ? new Point2(cmd->Bounds.Location.X + offsetLineX, cmd->Bounds.Location.Y) :
-                                    cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineHeight);
+                                    cmd->GetAbsolutePosition(offsetLineX, blockOffset, lineWidth, lineHeight, direction);
 
                                 bounds = new Rectangle(glyphPosition, spanLineHeight ? new Size2(glyphSize.Width, lineHeight) : glyphSize);
                                 boundsFound = true;
@@ -793,6 +793,32 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 glyphBounds = glyphBoundsValue;
                 return new Rectangle(glyphBoundsValue.Left, glyphBoundsValue.Top, 0, glyphBoundsValue.Height);
             }
+        }
+
+        /// <summary>
+        /// Removes the registered text shaper.
+        /// </summary>
+        public void ClearTextShaper()
+        {
+            layoutEngine.ClearTextShaper();
+        }
+
+        /// <summary>
+        /// Registers a text shaper.
+        /// </summary>
+        /// <param name="shaper">The text shaper to register.</param>
+        public void RegisterTextShaper(TextShaper shaper)
+        {
+            layoutEngine.RegisterTextShaper(shaper);
+        }
+
+        /// <summary>
+        /// Unregisters the text shaper.
+        /// </summary>
+        /// <returns><see langword="true"/> if the text shaper was unregistered; otherwise <see langword="false"/>.</returns>
+        public Boolean UnregisterTextShaper()
+        {
+            return layoutEngine.UnregisterTextShaper();
         }
 
         /// <summary>
@@ -1229,6 +1255,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Creates a new <see cref="StringSourceUnion"/> from the originating string for the specified string segment.
+        /// </summary>
+        private static StringSourceUnion CreateSourceUnionFromSegmentOrigin(StringSegment segment)
+        {
+            if (segment.IsBackedByString)
+                return (StringSource)segment.SourceString;
+
+            if (segment.IsBackedByStringBuilder)
+                return (StringBuilderSource)segment.SourceStringBuilder;
+
+            return new StringSourceUnion();
+        }
+
+        /// <summary>
         /// Draws a string of formatted text using the specified <see cref="SpriteBatch"/> instance.
         /// </summary>
         private RectangleF DrawInternal(SpriteBatch spriteBatch, TextLayoutCommandStream input, Vector2 position, Color defaultColor, Int32 start, Int32 count)
@@ -1243,6 +1283,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var fontFace = font.GetFace(bold, italic);
             var color = defaultColor;
             var lastColorOutsideLink = defaultColor;
+            var direction = settings.Direction;
 
             var availableHeight = settings.Height ?? Int32.MaxValue;
             var blockOffset = 0;
@@ -1257,7 +1298,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var charsSeen = 0;
             var charsMax = (count == Int32.MaxValue) ? Int32.MaxValue : start + count - 1;
 
-            var source = new StringSource(input.SourceText);
+            var source = (StringSourceUnion)(StringSegmentSource)input.SourceText;
 
             var acquiredPointers = !input.HasAcquiredPointers;
             if (acquiredPointers)
@@ -1292,12 +1333,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                     case TextLayoutCommandType.Text:
                         DrawText(spriteBatch, input, fontFace, ref source,
-                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, charsMax, color, ref charsSeen);
+                            position.X + lineOffset, position.Y + blockOffset, lineWidth, lineHeight, start, charsMax, color, direction, ref charsSeen);
                         break;
 
                     case TextLayoutCommandType.Icon:
                         DrawIcon(spriteBatch, input, 
-                            position.X + lineOffset, position.Y + blockOffset, lineHeight, start, count, lastColorOutsideLink, ref charsSeen);
+                            position.X + lineOffset, position.Y + blockOffset, lineWidth, lineHeight, start, count, lastColorOutsideLink, direction, ref charsSeen);
                         break;
                         
                     case TextLayoutCommandType.LineBreak:
@@ -1339,66 +1380,208 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Advances the input stream past a text command after it has been drawn.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void AdvancePastTextCommand(TextLayoutCommandStream input, Int32 length, ref Int32 charsSeen)
+        {
+            charsSeen += length;
+            input.SeekNextCommand();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a text command is visible.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetIsTextVisible(Int32 length, Int32 start, Int32 end, Int32 charsSeen)
+        {
+            var tokenStart = charsSeen;
+            var tokenEnd = tokenStart + length - 1;
+
+            return (start < charsSeen + length);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a text command is only partially visible due to substring rendering.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetIsTextPartiallyVisible(Int32 length, Int32 start, Int32 end, Int32 charsSeen, out Int32 subStart, out Int32 subLength, out Boolean wasDrawnToCompletion)
+        {
+            var tokenStart = charsSeen;
+            var tokenEnd = tokenStart + length - 1;
+            var isPartiallyVisible = ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end));
+            if (isPartiallyVisible)
+            {
+                wasDrawnToCompletion = false;
+                subStart = (charsSeen > start) ? 0 : start - charsSeen;
+                subLength = 1 + ((Math.Min(end, charsSeen + length - 1) - charsSeen) - subStart);
+                return true;
+            }
+            else
+            {
+                wasDrawnToCompletion = true;
+                subStart = 0;
+                subLength = 0;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a text command is split by a hyphen.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Boolean GetIsTextSplitByHyphen(TextLayoutCommandStream input, UltravioletFontFace font, Boolean wasDrawnToCompletion, out Int32 hyphenGlyphIndex, out Boolean hyphenIsVisible)
+        {
+            var isSplitByHyphen = (input.StreamPositionInObjects < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
+            if (isSplitByHyphen)
+            {
+                hyphenGlyphIndex = font.SupportsGlyphIndices ? font.GetGlyphIndex('-') : 0;
+                hyphenIsVisible = wasDrawnToCompletion;
+                return true;
+            }
+            else
+            {
+                hyphenGlyphIndex = 0;
+                hyphenIsVisible = false;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Adjusts the position of a command to account for hyphenation.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Vector2 AdjustCommandPositionForHyphen(TextDirection direction, Vector2 position, Int32 hyphenWidth, Int32 hyphenatedTextWidth, Size2 hyphenatedTextKerning)
+        {
+            var cmdX = (direction == TextDirection.RightToLeft) ?
+               (position.X - (hyphenWidth - hyphenatedTextKerning.Width)) :
+               (position.X + (hyphenatedTextWidth + hyphenatedTextKerning.Width));
+            var cmdY = position.Y + hyphenatedTextKerning.Height;
+            return new Vector2(cmdX, cmdY);
+        }
+
+        /// <summary>
         /// Draws a text command.
         /// </summary>
-        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSource source,
-            Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
+        private void DrawText(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSourceUnion source,
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
         {
-            var wasDrawnToCompletion = true;
-
-            var cmd = (TextLayoutTextCommand*)input.Data;
-            var cmdText = source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
-            if (cmdText.Equals("\n"))
+            var shaped = source.IsShaped;
+            if (shaped)
             {
-                charsSeen += cmdText.Length;
-                input.SeekNextCommand();
-                return;
-            }
-
-            var cmdLength = cmdText.Length;
-            var cmdPosition = Vector2.Zero;
-            var cmdGlyphShaderContext = default(GlyphShaderContext);
-            var cmdOffset = 0;
-
-            var isTextVisible = (start < charsSeen + cmdLength);
-            if (isTextVisible)
-            {
-                var tokenStart = charsSeen;
-                var tokenEnd = tokenStart + cmdText.Length - 1;
-
-                var isTextPartiallyVisible = ((tokenStart < start && tokenEnd >= start) || (tokenStart <= end && tokenEnd > end));
-                if (isTextPartiallyVisible)
+                var cmd = (TextLayoutTextCommand*)input.Data;
+                var cmdText = (cmd->TextLength == 0) ? ShapedStringSegment.Empty : source.CreateShapedStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+                if (cmdText.Length == 1 && cmdText[0].GetSpecialCharacter() == '\n')
                 {
-                    wasDrawnToCompletion = false;
+                    charsSeen += cmdText.Length;
+                    input.SeekNextCommand();
+                    return;
+                }
+                DrawShapedTextCore(spriteBatch, input, fontFace, ref cmdText, x, y, lineWidth, lineHeight, start, end, color, direction, ref charsSeen);
+            }
+            else
+            {
+                var cmd = (TextLayoutTextCommand*)input.Data;
+                var cmdText = (cmd->TextLength == 0) ? StringSegment.Empty : source.CreateStringSegmentFromSubstring(cmd->TextOffset, cmd->TextLength);
+                if (cmdText.Equals("\n"))
+                {
+                    charsSeen += cmdText.Length;
+                    input.SeekNextCommand();
+                    return;
+                }
+                DrawTextCore(spriteBatch, input, fontFace, ref cmdText, x, y, lineWidth, lineHeight, start, end, color, direction, ref charsSeen);
+            }
+        }
 
-                    var subStart = (charsSeen > start) ? 0 : start - charsSeen;
-                    var subEnd = Math.Min(end, charsSeen + cmdText.Length - 1) - charsSeen;
-                    var subLength = 1 + (subEnd - subStart);
+        /// <summary>
+        /// Draws a text command.
+        /// </summary>
+        private void DrawTextCore(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref StringSegment cmdText,
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
+        {
+            var cmd = (TextLayoutTextCommand*)input.Data;
+            var cmdFullLength = cmdText.Length;
+            var cmdPosition = Vector2.Zero;
+            var cmdWasDrawnCompletely = true;
+
+            if (GetIsTextVisible(cmdFullLength, start, end, charsSeen))
+            {
+                var cmdOffset = 0;
+                if (GetIsTextPartiallyVisible(cmdFullLength, start, end, charsSeen, out var subStart, out var subLength, out cmdWasDrawnCompletely))
+                {
                     cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureString(ref cmdText, 0, subStart).Width;
                     cmdText = cmdText.Substring(subStart, subLength);
                 }
 
-                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineHeight);
-                cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
-
-                spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, cmdText, cmdPosition, color);
+                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
+                
+                var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
+                var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                spriteBatch.DrawString(gscontext, fontFace, cmdText, cmdPosition, color, 0f, 
+                    Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
             }
 
-            charsSeen += cmdLength;
-            input.SeekNextCommand();
+            AdvancePastTextCommand(input, cmdFullLength, ref charsSeen);
 
-            var isTextSplitByHyphen = (input.StreamPositionInObjects < input.Count && *(TextLayoutCommandType*)input.Data == TextLayoutCommandType.Hyphen);
-            if (isTextSplitByHyphen)
+            if (GetIsTextSplitByHyphen(input, fontFace, cmdWasDrawnCompletely, out var hyphenGlyphIndex, out var hyphenIsVisible))
             {
-                if (wasDrawnToCompletion)
+                if (hyphenIsVisible)
                 {
                     var hyphenatedTextWidth = fontFace.MeasureString(ref cmdText).Width;
                     var hyphenatedTextKerning = fontFace.GetHypotheticalKerningInfo(ref cmdText, cmdText.Length - 1, '-');
+                    var hyphenWidth = fontFace.MeasureString("-").Width;
 
-                    cmdPosition = new Vector2(cmdPosition.X + hyphenatedTextWidth + hyphenatedTextKerning.Width, cmdPosition.Y + hyphenatedTextKerning.Height);
-                    cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+                    cmdPosition = AdjustCommandPositionForHyphen(direction, cmdPosition, hyphenWidth, hyphenatedTextWidth, hyphenatedTextKerning);
 
-                    spriteBatch.DrawString(cmdGlyphShaderContext, fontFace, "-", cmdPosition, color);
+                    var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+                    spriteBatch.DrawString(gscontext, fontFace, "-", cmdPosition, color);
+                }
+                input.SeekNextCommand();
+            }
+        }
+
+        /// <summary>
+        /// Draws a text command.
+        /// </summary>
+        private void DrawShapedTextCore(SpriteBatch spriteBatch, TextLayoutCommandStream input, UltravioletFontFace fontFace, ref ShapedStringSegment cmdText,
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
+        {
+            var cmd = (TextLayoutTextCommand*)input.Data;
+            var cmdFullLength = cmdText.Length;
+            var cmdPosition = Vector2.Zero;
+            var cmdWasDrawnCompletely = true;
+
+            if (GetIsTextVisible(cmdText.Length, start, end, charsSeen))
+            {
+                var cmdOffset = 0;
+                if (GetIsTextPartiallyVisible(cmdText.Length, start, end, charsSeen, out var subStart, out var subLength, out cmdWasDrawnCompletely))
+                {
+                    cmdOffset = (subStart == 0) ? 0 : fontFace.MeasureShapedString(ref cmdText, 0, subStart).Width;
+                    cmdText = cmdText.Substring(subStart, subLength);
+                }
+
+                cmdPosition = cmd->GetAbsolutePositionVector(fontFace, x + cmdOffset, y, lineWidth, lineHeight, direction);
+
+                var effects = (direction == TextDirection.RightToLeft) ? SpriteEffects.DrawTextReversed : SpriteEffects.None;
+                var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
+                spriteBatch.DrawShapedString(gscontext, fontFace, cmdText, cmdPosition, color, 0f, 
+                    Vector2.Zero, Vector2.One, effects, 0f, default(SpriteBatchData));
+            }
+
+            AdvancePastTextCommand(input, cmdText.Length, ref charsSeen);
+
+            if (GetIsTextSplitByHyphen(input, fontFace, cmdWasDrawnCompletely, out var hyphenGlyphIndex, out var hyphenIsVisible))
+            {
+                if (hyphenIsVisible)
+                {
+                    var hyphenatedTextWidth = fontFace.MeasureShapedString(ref cmdText).Width;
+                    var hyphenatedTextKerning = fontFace.GetHypotheticalShapedKerningInfo(ref cmdText, cmdText.Length - 1, hyphenGlyphIndex);
+                    var hyphenWidth = fontFace.MeasureString("-").Width;
+
+                    cmdPosition = AdjustCommandPositionForHyphen(direction, cmdPosition, hyphenWidth, hyphenatedTextWidth, hyphenatedTextKerning);
+
+                    var gscontext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen - 1, input.TotalLength);
+                    spriteBatch.DrawString(gscontext, fontFace, "-", cmdPosition, color);
                 }
 
                 input.SeekNextCommand();
@@ -1409,7 +1592,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Draws an icon command.
         /// </summary>
         private void DrawIcon(SpriteBatch spriteBatch, TextLayoutCommandStream input,
-            Single x, Single y, Int32 lineHeight, Int32 start, Int32 end, Color color, ref Int32 charsSeen)
+            Single x, Single y, Int32 lineWidth, Int32 lineHeight, Int32 start, Int32 end, Color color, TextDirection direction, ref Int32 charsSeen)
         {
             var cmd = (TextLayoutIconCommand*)input.Data;
 
@@ -1419,7 +1602,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var icon = input.GetIcon(cmd->IconIndex);
                 var iconWidth = (Single)(icon.Width ?? icon.Icon.Controller.Width);
                 var iconHeight = (Single)(icon.Height ?? icon.Icon.Controller.Height);
-                var iconPosition = cmd->GetAbsolutePositionVector(x, y, lineHeight);
+                var iconPosition = cmd->GetAbsolutePositionVector(x, y, lineWidth, lineHeight, direction);
                 var iconRotation = 0f;
 
                 var cmdGlyphShaderContext = (glyphShaderStack.Count == 0) ? GlyphShaderContext.Invalid : new GlyphShaderContext(glyphShaderStack, charsSeen, input.TotalLength);
@@ -1671,7 +1854,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Processes a styling command and returns a value specifying which, if any, styling parameters were changed as a result.
         /// </summary>
         private TextRendererStateChange ProcessStylingCommand(TextLayoutCommandStream input, TextLayoutCommandType type, TextRendererStacks stacks,
-            ref Boolean bold, ref Boolean italic, ref StringSource source)
+            ref Boolean bold, ref Boolean italic, ref StringSourceUnion source)
         {
             switch (type)
             {
@@ -1778,7 +1961,21 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 case TextLayoutCommandType.ChangeSourceStringBuilder:
                     {
                         var cmd = (TextLayoutSourceStringBuilderCommand*)input.Data;
-                        source = new StringSource(input.GetSourceStringBuilder(cmd->SourceIndex));
+                        source = new StringBuilderSource(input.GetSourceStringBuilder(cmd->SourceIndex));
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.ChangeSourceShapedString:
+                    {
+                        var cmd = (TextLayoutSourceShapedStringCommand*)input.Data;
+                        source = input.GetSourceShapedString(cmd->SourceIndex);
+                    }
+                    return TextRendererStateChange.None;
+
+                case TextLayoutCommandType.ChangeSourceShapedStringBuilder:
+                    {
+                        var cmd = (TextLayoutSourceShapedStringBuilderCommand*)input.Data;
+                        source = input.GetSourceShapedStringBuilder(cmd->SourceIndex);
                     }
                     return TextRendererStateChange.None;
 
@@ -1897,7 +2094,31 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             glyphHeight = 0;
             return null;
         }
-        
+
+        /// <summary>
+        /// Gets the index of the glyph within the specified shaped text that contains the specified position.
+        /// </summary>
+        private Int32? GetGlyphAtPositionWithinShapedText(UltravioletFontFace fontFace, ref ShapedStringSegment text, ref Int32 position, out Int32 glyphWidth, out Int32 glyphHeight)
+        {
+            var glyphPosition = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                var glyphSize = fontFace.MeasureShapedGlyph(ref text, i);
+                if (position >= glyphPosition && position < glyphPosition + glyphSize.Width)
+                {
+                    position = glyphPosition;
+                    glyphWidth = glyphSize.Width;
+                    glyphHeight = glyphSize.Height;
+                    return i;
+                }
+                glyphPosition += glyphSize.Width;
+            }
+            position = 0;
+            glyphWidth = 0;
+            glyphHeight = 0;
+            return null;
+        }
+
         /// <summary>
         /// Gets the index of the glyph or insertion point which is closest to the specified position in layout-relative space.
         /// </summary>
@@ -1934,10 +2155,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var italic = (settings.Style == UltravioletFontStyle.Italic || settings.Style == UltravioletFontStyle.BoldItalic);
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
-
-            var source = (input.SourceText.SourceString != null) ?
-                new StringSource(input.SourceText.SourceString) :
-                new StringSource(input.SourceText.SourceStringBuilder);
+            var direction = settings.Direction;
+            
+            var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
             
             input.Seek(0);
 
@@ -2048,21 +2268,35 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             var cmd = (TextLayoutTextCommand*)input.Data;
                             if (glyphIsInCurrentLine)
                             {
-                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineHeight);
+                                var tokenBounds = cmd->GetAbsoluteBounds(fontFace, offsetLineX, blockOffset, lineWidth, lineHeight, direction);
                                 if (x >= tokenBounds.Left && x < tokenBounds.Right)
                                 {
-                                    var text = source.CreateStringSegmentFromSameSource(cmd->TextOffset, cmd->TextLength);
-                                    var glyphPos = (x - tokenBounds.Left);
+                                    var glyphPos = 0;
                                     var glyphWidth = 0;
                                     var glyphHeight = 0;
-                                    var glyphOffsetInText = GetGlyphAtPositionWithinText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight) ?? 0;
+                                    var glyphOffsetInText = 0;
+
+                                    if (source.IsShaped)
+                                    {
+                                        var text = source.CreateShapedStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
+                                        glyphPos = (x - tokenBounds.Left);
+                                        glyphOffsetInText = GetGlyphAtPositionWithinShapedText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight) ?? 0;
+                                        isSurrogatePair = false;
+                                    }
+                                    else
+                                    {
+                                        var text = source.CreateStringSegmentFromSameOrigin(cmd->TextOffset, cmd->TextLength);
+                                        glyphPos = (x - tokenBounds.Left);
+                                        glyphOffsetInText = GetGlyphAtPositionWithinText(fontFace, ref text, ref glyphPos, out glyphWidth, out glyphHeight) ?? 0;
+
+                                        var glyphIx = glyphOffsetInText;
+                                        var glyphIxNext = glyphIx + 1;
+                                        isSurrogatePair = (glyphIxNext < text.Length) && Char.IsSurrogatePair(text[glyphIx], text[glyphIxNext]);
+                                    }
+
                                     glyph = glyphCountSeen + glyphOffsetInText;
                                     glyphBounds = new Rectangle(tokenBounds.X + glyphPos, tokenBounds.Y, glyphWidth, glyphHeight);
                                     glyphFound = true;
-
-                                    var glyphIx = glyphOffsetInText;
-                                    var glyphIxNext = glyphIx + 1;
-                                    isSurrogatePair = (glyphIxNext < text.Length) && Char.IsSurrogatePair(text[glyphIx], text[glyphIxNext]);
                                 }
                             }
                             glyphCountSeen += cmd->TextLength;
@@ -2078,7 +2312,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             if (glyphIsInCurrentLine)
                             {
                                 var iconCmd = (TextLayoutIconCommand*)input.Data;
-                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineHeight);
+                                var iconBounds = iconCmd->GetAbsoluteBounds(offsetLineX, blockOffset, lineWidth, lineHeight, direction);
                                 if (x >= iconBounds.Left && x < iconBounds.Right)
                                 {
                                     glyph = glyphCountSeen;

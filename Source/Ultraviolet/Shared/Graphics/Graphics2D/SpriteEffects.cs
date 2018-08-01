@@ -28,5 +28,11 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// its destination rectangle, rather than its source rectangle.
         /// </summary>
         OriginRelativeToDestination = 0x0004,
+
+        /// <summary>
+        /// Indicates that text characters should be drawn in reverse
+        /// order, i.e. right-to-left.
+        /// </summary>
+        DrawTextReversed = 0x0020,
     }
 }

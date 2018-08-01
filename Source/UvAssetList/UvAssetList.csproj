@@ -73,6 +73,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
+    <Content Include="..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+    </Content>
     <Compile Include="AndroidAssetInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -135,7 +135,11 @@ namespace Ultraviolet.OpenGL.Graphics
                 case OpenGLEffectParameterDataType.Matrix:
                     SetValue(source.GetMatrix());
                     break;
-
+					
+                case OpenGLEffectParameterDataType.MatrixArray:
+                    SetValue(source.GetMatrixArray());
+                    break;
+					
                 case OpenGLEffectParameterDataType.Texture2D:
                     SetValue(source.GetTexture2D());
                     break;

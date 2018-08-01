@@ -4,6 +4,7 @@ using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Input;
 using Ultraviolet.Platform;
 using Ultraviolet.Presentation.Animations;
@@ -33,6 +34,10 @@ namespace Ultraviolet.Presentation
         {
             if (uv.IsRunningInServiceMode)
                 throw new NotSupportedException(UltravioletStrings.NotSupportedInServiceMode);
+
+            var textShaperFactory = Ultraviolet.TryGetFactoryMethod<TextShaperFactory>();
+            if (textShaperFactory != null)
+                this.TextShaper = textShaperFactory(Ultraviolet);
 
             this.combinedStyleSheet = new UvssDocument(uv);
 
@@ -1000,6 +1005,11 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Gets the view's text shaper.
+        /// </summary>
+        internal TextShaper TextShaper { get; }
+
+        /// <summary>
         /// Gets a value indicating whether this view's focused element was most recently changed by 
         /// a keyboard or game pad device.
         /// </summary>
@@ -1065,26 +1075,32 @@ namespace Ultraviolet.Presentation
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (disposing && !Ultraviolet.Disposed)
+            if (disposing)
             {
-                OnClosed();
+                if (!Ultraviolet.Disposed)
+                {
+                    OnClosed();
 
-                UnhookGlobalStyleSheetChanged();
-                UnhookKeyboardEvents();
-                UnhookMouseEvents();
-                UnhookTouchEvents();
-                UnhookGamePadEvents();
+                    UnhookGlobalStyleSheetChanged();
+                    UnhookKeyboardEvents();
+                    UnhookMouseEvents();
+                    UnhookTouchEvents();
+                    UnhookGamePadEvents();
 
-                foreach (var weakReference in defaultButtons)
-                    WeakReferencePool.Instance.Release(weakReference);
+                    foreach (var weakReference in defaultButtons)
+                        WeakReferencePool.Instance.Release(weakReference);
 
-                foreach (var weakReference in cancelButtons)
-                    WeakReferencePool.Instance.Release(weakReference);
+                    foreach (var weakReference in cancelButtons)
+                        WeakReferencePool.Instance.Release(weakReference);
 
-                defaultButtons.Clear();
-                cancelButtons.Clear();
+                    defaultButtons.Clear();
+                    cancelButtons.Clear();
 
-                PresentationFoundation.Instance.RemoveFromQueues(this);
+                    PresentationFoundation.Instance.RemoveFromQueues(this);
+                }
+
+                if (TextShaper != null)
+                    TextShaper.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -13,28 +13,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="glyphShaderIndex">The index of the glyph shader within the command stream's glyph shader registry.</param>
         public TextLayoutGlyphShaderCommand(Int16 glyphShaderIndex)
         {
-            this.commandType = TextLayoutCommandType.PushGlyphShader;
-            this.glyphShaderIndex = glyphShaderIndex;
+            this.CommandType = TextLayoutCommandType.PushGlyphShader;
+            this.GlyphShaderIndex = glyphShaderIndex;
         }
 
         /// <summary>
         /// Gets the command type.
         /// </summary>
-        public TextLayoutCommandType CommandType
-        {
-            get { return commandType; }
-        }
+        public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
         /// Gets the index of the glyph shader within the command stream's glyph shader registry.
         /// </summary>
-        public Int16 GlyphShaderIndex
-        {
-            get { return glyphShaderIndex; }
-        }
-
-        // Property values.
-        private readonly TextLayoutCommandType commandType;
-        private readonly Int16 glyphShaderIndex;
+        public Int16 GlyphShaderIndex { get; private set; }
     }
 }
