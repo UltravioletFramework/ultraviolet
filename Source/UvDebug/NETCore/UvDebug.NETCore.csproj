@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <Configurations>Debug;Release;Signed</Configurations>
     <AssemblyName>UvDebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
@@ -20,6 +20,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf" Link="Content\Fonts\Inconsolata-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Fonts\Inconsolata-Bold.ttf" Link="Content\Fonts\Inconsolata-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta" Link="Content\Fonts\Inconsolata.uvmeta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Desktop\Content\Fonts\SegoeUI.xml" Link="Content\Fonts\SegoeUI.xml">
@@ -175,7 +181,67 @@
     <None Include="..\..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll" Link="x86\win32nt\SDL2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" Link="x86\unix\libfreetype.so.6.16.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" Link="x64\unix\libfreetype.so.6.16.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" Link="x86\unix\libharfbuzz.so.0.10706.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" Link="x64\unix\libharfbuzz.so.0.10706.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" Link="x86\unix\libpng16.so.16.34.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" Link="x64\unix\libpng16.so.16.34.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>    
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\freetype.dll" Link="x64\win32nt\freetype.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll" Link="x64\win32nt\harfbuzz.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\libpng16.dll" Link="x64\win32nt\libpng16.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\freetype.dll" Link="x86\win32nt\freetype.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" Link="x86\win32nt\harfbuzz.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" Link="x86\win32nt\libpng16.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
   </ItemGroup>
+
+  <PropertyGroup>
+    <RunCreateSymbolicLinksToFreeType2Dependencies>false</RunCreateSymbolicLinksToFreeType2Dependencies>
+    <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And !Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
+  </PropertyGroup>
+  <Target Name="CreateSymbolicLinksToDependencies_x86" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies)' == 'true' " AfterTargets="AfterBuild">
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0.10706.0&quot; &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libharfbuzz.so.0&quot; &quot;$(TargetDir)/x86/unix/libharfbuzz.so&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x86/unix/libpng16.so.16&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x86/unix/libpng16.so&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libpng16.so&quot; &quot;$(TargetDir)/x86/unix/libpng.so&quot;" />
+  </Target>
+  <Target Name="CreateSymbolicLinksToDependencies_x64" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies)' == 'true' " AfterTargets="CreateSymbolicLinksToDependencies_x86">
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x64/unix/libfreetype.so.6&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libfreetype.so.6&quot; &quot;$(TargetDir)/x64/unix/libfreetype.so&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0.10706.0&quot; &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libharfbuzz.so.0&quot; &quot;$(TargetDir)/x64/unix/libharfbuzz.so&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x64/unix/libpng16.so&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so&quot; &quot;$(TargetDir)/x64/unix/libpng.so&quot;" />
+  </Target>
 
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
 
