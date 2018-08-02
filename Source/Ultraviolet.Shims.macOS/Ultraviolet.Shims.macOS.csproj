@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Ultraviolet.Shims.macOS</RootNamespace>
     <AssemblyName>Ultraviolet.Shims.macOS</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <UseXamMacFullFramework>true</UseXamMacFullFramework>
   </PropertyGroup>
