@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Collections.Generic;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
@@ -90,11 +92,20 @@ namespace Ultraviolet.Presentation
 
             var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition, vmfactory);
 
-            var uvss = String.Join(Environment.NewLine, uiPanelDefinition.StyleSheetSources);
-            var uvssdoc = UvssDocument.Compile(uv, uvss);
-
-            view.SetStyleSheet(uvssdoc);
-
+            var sources = uiPanelDefinition.StyleSheetSources
+                .Where(x => !(x?.Cultures.Any() ?? false) || x.Cultures.Contains(CultureInfo.CurrentCulture.Name))
+                .Where(x => !(x?.Languages.Any() ?? false) || x.Languages.Contains(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
+                .Select(x => x.Source).ToList();
+            if (sources.Any())
+            {
+                var uvss = String.Join(Environment.NewLine, sources);
+                var uvssdoc = UvssDocument.Compile(uv, uvss);
+                view.SetStyleSheet(uvssdoc);
+            }
+            else
+            {
+                view.SetStyleSheet(null);
+            }
             return view;
         }
 

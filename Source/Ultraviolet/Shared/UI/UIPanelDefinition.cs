@@ -39,12 +39,12 @@ namespace Ultraviolet.UI
         /// <summary>
         /// Gets the asset paths of the panel's associated style sheets, if it has any.
         /// </summary>
-        public IEnumerable<String> StyleSheetAssets { get; internal set; }
+        public IEnumerable<UIStyleSheetAsset> StyleSheetAssets { get; internal set; }
 
         /// <summary>
         /// Gets the contents of the panel's associated style sheets, if it has any.
         /// </summary>
-        public IEnumerable<String> StyleSheetSources { get; internal set; }
+        public IEnumerable<UIStyleSheetSource> StyleSheetSources { get; internal set; }
 
         /// <summary>
         /// Gets the panel's collection of directives, if it has any.

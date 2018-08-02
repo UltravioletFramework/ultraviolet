@@ -31,18 +31,25 @@ namespace Ultraviolet.UI
 
             var styleSheetRoot = Path.GetDirectoryName(metadata.AssetPath);
             var styleSheetElements = input.Root.Elements("StyleSheet");
-            var styleSheetAssets = styleSheetElements.Select(x => Path.Combine(styleSheetRoot, x.Value));
-            var styleSheetPaths = styleSheetAssets.Select(x => manager.ResolveAssetFilePath(x, metadata.AssetDensity, metadata.IsLoadedFromSolution));
-            var styleSheetSources = new List<String>();
-
-            foreach (var styleSheetPath in styleSheetPaths)
+            var styleSheetInfos = styleSheetElements.Select(x => new
             {
-                using (var stream = fss.OpenRead(styleSheetPath))
+                AssetPath = Path.Combine(styleSheetRoot, x.Value),
+                Cultures = ((String)x.Attribute("Cultures"))?.Split(',').Select(y => y.Trim()),
+                Languages = ((String)x.Attribute("Languages"))?.Split(',').Select(y => y.Trim()),
+            });
+
+            var styleSheetAssets = styleSheetInfos.Select(x => new UIStyleSheetAsset(x.AssetPath));
+            var styleSheetSources = new List<UIStyleSheetSource>();
+
+            foreach (var styleSheetInfo in styleSheetInfos)
+            {
+                var styleSheetFilePath = manager.ResolveAssetFilePath(styleSheetInfo.AssetPath, metadata.AssetDensity, metadata.IsLoadedFromSolution);
+                using (var stream = fss.OpenRead(styleSheetFilePath))
                 {
                     using (var reader = new StreamReader(stream))
                     {
                         var source = reader.ReadToEnd();
-                        styleSheetSources.Add(source);
+                        styleSheetSources.Add(new UIStyleSheetSource(source, styleSheetInfo.Cultures, styleSheetInfo.Languages));
                     }
                 }
             }
@@ -60,7 +67,7 @@ namespace Ultraviolet.UI
             }
 
             foreach (var styleSheetAsset in styleSheetAssets)
-                metadata.AddAssetDependency(styleSheetAsset);
+                metadata.AddAssetDependency(styleSheetAsset.Asset);
 
             return new UIPanelDefinition()
             {
