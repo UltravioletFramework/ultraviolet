@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.Core.Text;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
@@ -93,8 +93,8 @@ namespace Ultraviolet.Presentation
             var view = UvmlLoader.Load(uv, uiPanel, uiPanelDefinition, vmfactory);
 
             var sources = uiPanelDefinition.StyleSheetSources
-                .Where(x => !(x?.Cultures.Any() ?? false) || x.Cultures.Contains(CultureInfo.CurrentCulture.Name))
-                .Where(x => !(x?.Languages.Any() ?? false) || x.Languages.Contains(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
+                .Where(x => !(x?.Cultures.Any() ?? false) || x.Cultures.Contains(Localization.CurrentCulture))
+                .Where(x => !(x?.Languages.Any() ?? false) || x.Languages.Contains(Localization.CurrentLanguage))
                 .Select(x => x.Source).ToList();
             if (sources.Any())
             {
