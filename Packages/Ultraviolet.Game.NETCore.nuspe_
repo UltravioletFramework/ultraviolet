@@ -28,4 +28,5 @@ Quick start guides for development using the Ultraviolet Framework are available
         <dependency id="Ultraviolet.Tools" version="UV_VERSION" />
     </dependencies>
   </metadata>
+  <files />
 </package>
