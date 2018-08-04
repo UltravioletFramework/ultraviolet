@@ -21,10 +21,9 @@ namespace $RootNamespace$
         }
 
         /// <inheritdoc/>
-        protected override UltravioletContext OnCreatingUltravioletContext(out UltravioletTickMode tickmode)
+        protected override UltravioletContext OnCreatingUltravioletContext()
         {
             // NOTE: Making the context headless allows Windows Forms to control window creation for us.
-            tickmode = UltravioletTickMode.Idle;
             return new OpenGLUltravioletContext(this, new OpenGLUltravioletConfiguration()
             {
                 Headless = true
