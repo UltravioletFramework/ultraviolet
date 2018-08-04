@@ -255,6 +255,8 @@ namespace Ultraviolet.Windows.Forms
                         break;
                 }
 
+                hostcore.Cleanup();
+
                 if (uv != null)
                     uv.WaitForPendingTasks(true);
             }

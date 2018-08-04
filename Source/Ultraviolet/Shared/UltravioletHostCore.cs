@@ -163,6 +163,20 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Cleans up any state after the application has finished its run loop.
+        /// </summary>
+        public void Cleanup()
+        {
+            if (Ultraviolet.Platform == UltravioletPlatform.Windows)
+            {
+                if (systemTimerPeriod > 0)
+                    Win32Native.timeEndPeriod(systemTimerPeriod);
+
+                systemTimerPeriod = 0;
+            }
+        }
+
+        /// <summary>
         /// Gets the default value for TargetElapsedTime.
         /// </summary>
         public static TimeSpan DefaultTargetElapsedTime

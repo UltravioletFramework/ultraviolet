@@ -80,6 +80,8 @@ namespace Ultraviolet
                 Thread.Yield();
             }
 
+            hostcore.Cleanup();
+
             uv.WaitForPendingTasks(true);
         }
 
