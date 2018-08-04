@@ -40,6 +40,10 @@ powershell -Command "(gc Ultraviolet.Shims.Desktop.nuspe_) -replace 'UV_VERSION'
 nuget pack Ultraviolet.Shims.Desktop.nuspec -Symbols
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
+powershell -Command "(gc Ultraviolet.Shims.NETCore.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Shims.NETCore.nuspec"
+nuget pack Ultraviolet.Shims.NETCore.nuspec -Symbols
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
 powershell -Command "(gc Ultraviolet.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.nuspec"
 nuget pack Ultraviolet.nuspec -Symbols
 @if %errorlevel% neq 0 @exit /b %errorlevel%
