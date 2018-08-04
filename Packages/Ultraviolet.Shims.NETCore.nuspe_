@@ -17,6 +17,7 @@ Quick start guides for development using the Ultraviolet Framework are available
   <dependencies>
     <dependency id="Ultraviolet.Core" version="UV_VERSION" />
     <dependency id="Ultraviolet" version="UV_VERSION" />
+    <dependency id="Microsoft.Windows.Compatibility" version="2.0.0" />
   </dependencies>
   </metadata>
   <files>
