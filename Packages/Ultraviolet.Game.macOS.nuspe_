@@ -29,7 +29,7 @@ Quick start guides for development using the Ultraviolet Framework are available
     </dependencies>
   </metadata>
   <files>
-    <file src="Ultraviolet.Game.macOS\build\net47\Ultraviolet.Game.macOS.targets" target="build\net47\Ultraviolet.Game.macOS.targets"/>
+    <file src="Ultraviolet.Game.macOS\build\net461\Ultraviolet.Game.macOS.targets" target="build\net461\Ultraviolet.Game.macOS.targets"/>
     <file src="Ultraviolet.Game.macOS\content\Main.cs.pp" target="content"/>
     <file src="Ultraviolet.Game.macOS\content\Game.cs.pp" target="content"/>
   </files>  

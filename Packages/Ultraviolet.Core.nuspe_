@@ -23,9 +23,9 @@ Quick start guides for development using the Ultraviolet Framework are available
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="lib\net47\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.XML" target="lib\net47\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.pdb" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="lib\net461\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.XML" target="lib\net461\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.pdb" target="lib\net461\"/>
 
     <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Core.dll" target="lib\netstandard2.0\"/>
     <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Core.XML" target="lib\netstandard2.0\"/>
