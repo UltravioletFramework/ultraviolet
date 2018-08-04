@@ -8,7 +8,7 @@ namespace Ultraviolet
     /// <summary>
     /// Contains core functionality for Ultraviolet host processes.
     /// </summary>
-    public sealed class UltravioletHostCore : IUltravioletComponent
+    public sealed partial class UltravioletHostCore : IUltravioletComponent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UltravioletHostCore"/> class.
@@ -37,7 +37,11 @@ namespace Ultraviolet
         /// </summary>
         public void RunOneTickSuspended()
         {
-            host.Ultraviolet.UpdateSuspended();
+            var uv = host.Ultraviolet;
+
+            UpdateSystemTimerResolution();
+
+            uv.UpdateSuspended();
             if (InactiveSleepTime.TotalMilliseconds > 0)
             {
                 Thread.Sleep(InactiveSleepTime);
@@ -50,6 +54,8 @@ namespace Ultraviolet
         public void RunOneTick()
         {
             var uv = host.Ultraviolet;
+
+            UpdateSystemTimerResolution();
 
             if (!host.IsActive && InactiveSleepTime.TotalMilliseconds > 0)
                 Thread.Sleep(InactiveSleepTime);
@@ -122,13 +128,10 @@ namespace Ultraviolet
                 }
                 else
                 {
-                    // NOTE: The precision of Sleep() can generally be assumed to be something like 10-15ms, so 
-                    // we only call it if we know we're going to be waiting a long time and there's no point
-                    // in sucking up CPU cycles spinning our loop.
                     var frameDelay = (int)(targetElapsedTime.TotalMilliseconds - tickTimer.Elapsed.TotalMilliseconds);
-                    if (frameDelay >= 10)
+                    if (frameDelay >= 1 + systemTimerPeriod)
                     {
-                        Thread.Sleep(frameDelay);
+                        Thread.Sleep(frameDelay - 1);
                     }
                 }
             }
@@ -234,6 +237,31 @@ namespace Ultraviolet
             return !uv.Disposed;
         }
 
+        /// <summary>
+        /// Updates the resolution of the system timer on platforms which require it.
+        /// </summary>
+        private Boolean UpdateSystemTimerResolution()
+        {
+            if (Ultraviolet.Platform != UltravioletPlatform.Windows)
+            {
+                systemTimerPeriod = 1u;
+                return false;
+            }
+
+            var requiredTimerPeriod = Math.Max(1u, host.IsActive ? (IsFixedTimeStep ? 1u: 15u) : (UInt32)InactiveSleepTime.TotalMilliseconds);
+            if (requiredTimerPeriod != systemTimerPeriod)
+            {
+                if (systemTimerPeriod > 0)
+                    Win32Native.timeEndPeriod(systemTimerPeriod);
+
+                var result = Win32Native.timeBeginPeriod(requiredTimerPeriod);
+                systemTimerPeriod = requiredTimerPeriod;
+                return (result == 0);
+            }
+
+            return false;
+        }
+
         // The Ultraviolet host.
         private readonly IUltravioletHost host;
 
@@ -254,5 +282,8 @@ namespace Ultraviolet
         private Boolean isFixedTimeStep = defaultIsFixedTimeStep;
         private Boolean isRunningSlowly = false;
         private Int32 runningSlowlyFrames;
+
+        // Current system timer resolution.
+        private UInt32 systemTimerPeriod;
     }
 }
