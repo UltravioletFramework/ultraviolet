@@ -27,11 +27,9 @@ namespace SAFE_PROJECT_NAME
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
-        /// <param name="tickmode">The appliction's tick mode.</param>
         /// <returns>The application's Ultraviolet context.</returns>
-        protected override UltravioletContext OnCreatingUltravioletContext(out UltravioletTickMode tickmode)
+        protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            tickmode = UltravioletTickMode.Idle;
             return new OpenGLUltravioletContext(this, new OpenGLUltravioletConfiguration()
             {
                 Headless = true
@@ -123,14 +121,18 @@ namespace SAFE_PROJECT_NAME
         /// <param name="e">An EventArgs that contains the event data.</param>
         private void ultravioletPanel1_Drawing(Object sender, EventArgs e)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Matrix.CreateRotationZ(foo));
 
             var size = Ultraviolet.GetPlatform().Windows.GetCurrent().Compositor.Size;
             var settings = new TextLayoutSettings(spriteFont, size.Width, size.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
             textRenderer.Draw(spriteBatch, "Welcome to the |c:FFFF00C0|Ultraviolet Framework|c|!", Vector2.Zero, Color.White, settings);
 
             spriteBatch.End();
+
+            foo += 0.05f;
         }
+
+        private Single foo;
 
         /// <summary>
         /// Handles the Drawing event for ultravioletPanel2.

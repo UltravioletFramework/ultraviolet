@@ -3,14 +3,13 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Ultraviolet.Core;
-using Timer = System.Windows.Forms.Timer;
 
 namespace Ultraviolet.Windows.Forms
 {
     /// <summary>
     /// Represents the primary Form for a Windows Forms application using the Ultraviolet engine.
     /// </summary>
-    public partial class UltravioletForm : Form, IUltravioletHost
+    public abstract partial class UltravioletForm : Form, IUltravioletHost
     {
         /// <summary>
         /// Contains native methods used by the host.
@@ -187,13 +186,8 @@ namespace Ultraviolet.Windows.Forms
         /// <summary>
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
-        /// <param name="tickmode">The appliction's tick mode.</param>
         /// <returns>The application's Ultraviolet context.</returns>
-        protected virtual UltravioletContext OnCreatingUltravioletContext(out UltravioletTickMode tickmode)
-        {
-            tickmode = UltravioletTickMode.Idle;
-            return null;
-        }
+        protected abstract UltravioletContext OnCreatingUltravioletContext();
 
         /// <summary>
         /// Called when the application is initializing.
@@ -244,16 +238,7 @@ namespace Ultraviolet.Windows.Forms
         {
             if (!DesignMode)
             {
-                switch (tickmode)
-                {
-                    case UltravioletTickMode.Timer:
-                        tickTimer.Stop();
-                        break;
-
-                    case UltravioletTickMode.Idle:
-                        Application.Idle -= Application_Idle;
-                        break;
-                }
+                Application.Idle -= Application_Idle;
 
                 hostcore.Cleanup();
 
@@ -271,7 +256,6 @@ namespace Ultraviolet.Windows.Forms
         {
             if (disposing)
             {
-                SafeDispose.Dispose(tickTimer);
                 SafeDispose.Dispose(components);
                 SafeDispose.Dispose(uv);
 
@@ -290,7 +274,7 @@ namespace Ultraviolet.Windows.Forms
 
             OnInitializing();
 
-            uv = OnCreatingUltravioletContext(out tickmode);
+            uv = OnCreatingUltravioletContext();
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 
@@ -299,29 +283,7 @@ namespace Ultraviolet.Windows.Forms
             uv.Updating += uv_Updating;
             uv.Shutdown += uv_Shutdown;
 
-            switch (tickmode)
-            {
-                case UltravioletTickMode.Timer:
-                    {
-                        this.tickTimer = new Timer();
-                        this.tickTimer.Interval = (int)(TargetElapsedTime.TotalMilliseconds / 2);
-                        this.tickTimer.Tick += (sender, evt) =>
-                        {
-                            Tick();
-                        };
-                        this.tickTimer.Start();
-                    }
-                    break;
-
-                case UltravioletTickMode.Idle:
-                    {
-                        Application.Idle += Application_Idle;
-                    }
-                    break;
-
-                default:
-                    throw new InvalidOperationException("Unrecognized tick mode.");
-            }
+            Application.Idle += Application_Idle;
 
             OnInitialized();
 
@@ -333,8 +295,8 @@ namespace Ultraviolet.Windows.Forms
         /// </summary>
         private void InitializeUltravioletHostCore()
         {
-            hostcore                   = new UltravioletHostCore(this);
-            hostcore.IsFixedTimeStep   = this.IsFixedTimeStep;
+            hostcore = new UltravioletHostCore(this);
+            hostcore.IsFixedTimeStep = this.IsFixedTimeStep;
             hostcore.TargetElapsedTime = this.TargetElapsedTime;
             hostcore.InactiveSleepTime = this.InactiveSleepTime;
         }
@@ -384,15 +346,11 @@ namespace Ultraviolet.Windows.Forms
 
         // The Ultraviolet context.
         private UltravioletContext uv;
-        private UltravioletTickMode tickmode;
         private UltravioletHostCore hostcore;
 
         // The application's tick state.
-        private Boolean isFixedTimeStep    = UltravioletHostCore.DefaultIsFixedTimeStep;
+        private Boolean isFixedTimeStep = UltravioletHostCore.DefaultIsFixedTimeStep;
         private TimeSpan targetElapsedTime = UltravioletHostCore.DefaultTargetElapsedTime;
         private TimeSpan inactiveSleepTime = UltravioletHostCore.DefaultInactiveSleepTime;
-
-        // Ticks the application in scenarios where the app doesn't become idle.
-        private Timer tickTimer;
     }
 }
