@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using Ultraviolet.Core;
@@ -107,15 +109,27 @@ namespace Ultraviolet.Presentation.Compiler
         /// NuGet cache, if they exist there.
         /// </summary>
         /// <returns>The path to the reference assemblies, or <see langword="null"/> if they don't exist.</returns>
-        public static String GetNetStandardLibraryDirFromNuGetCache()
+        public static String GetNetStandardLibraryDirFromNuGetCache(IList<String> additionalPaths)
         {
+            additionalPaths.Clear();
+
             var cache = GetNuGetCacheDirectory();
             if (cache == null)
                 return null;
 
-            var dir = Path.Combine(cache, "netstandard.library", "2.0.1", "build", "netstandard2.0", "ref");
-
-            return Directory.Exists(dir) ? dir : null;
+            var dir = new DirectoryInfo(Path.Combine(cache, "netstandard.library"));
+            if (dir.Exists)
+            {
+                var best = dir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "build", "netstandard2.0", "ref")), Version = TryParseVersion(x.Name) })
+                    .Where(x => x.Version != null && x.Version == new Version(2, 0, 1) && x.Target.Exists)
+                    .OrderByDescending(x => x.Version)
+                    .FirstOrDefault();
+                if (best != null)
+                {
+                    return best.Target.FullName;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -123,41 +137,60 @@ namespace Ultraviolet.Presentation.Compiler
         /// fallback directory, if they exist there.
         /// </summary>
         /// <returns>The path to the reference assemblies, or <see langword="null"/> if they don't exist.</returns>
-        public static String GetNetStandardLibraryDirFromFallback()
+        public static String GetNetStandardLibraryDirFromFallback(IList<String> additionalPaths)
         {
+            additionalPaths.Clear();
+
             // On Windows, check for an installation of .NET Framework 4.7.1, which includes support
             // for the entirety of .NET Standard 2.0 as part of the base installation.
             if (UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows)
             {
-                var netFramework471Dir = Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)"), "Reference Assemblies", "Framework", ".NETFramework", "v4.7.1", "Facades");
-                if (Directory.Exists(netFramework471Dir))
-                    return netFramework471Dir;
+                var netFrameworkDir = new DirectoryInfo(Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)"), "Reference Assemblies", "Microsoft", "Framework", ".NETFramework"));
+                if (netFrameworkDir.Exists)
+                {
+                    var netFrameworkBest = netFrameworkDir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "Facades")), Version = TryParseVersion(x.Name.Substring(1)) })
+                        .Where(x => x.Version == new Version(4, 7, 1) && x.Target.Exists)
+                        .OrderByDescending(x => x.Version).FirstOrDefault();
+                    if (netFrameworkBest != null)
+                    {
+                        additionalPaths.Add(Path.Combine(netFrameworkBest.Directory.FullName, "mscorlib.dll"));
+                        return netFrameworkBest.Target.FullName;
+                    }
+                }
             }
 
             // If the .NET Core SDK is installed, we can try the NuGetFallbackFolder, which is in a 
             // couple of different places depending on the current platform...
+            var nuGetFallbackFolderDir = default(DirectoryInfo);
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
                 case UltravioletPlatform.Windows:
                     {
-                        var fallbackDir = Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES(X86)"), "dotnet", "sdk", "NuGetFallbackFolder", "microsoft.netcore.app", "2.0.0", "ref", "netcoreapp2.0");
-                        if (Directory.Exists(fallbackDir))
-                            return fallbackDir;
+                        nuGetFallbackFolderDir = new DirectoryInfo(Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES"), "dotnet", "sdk", "NuGetFallbackFolder", "microsoft.netcore.app"));
                     }
                     break;
 
                 case UltravioletPlatform.Linux:
                 case UltravioletPlatform.macOS:
                     {
-                        var fallbackDirLocal = Path.Combine("usr", "local", "share", "dotnet", "sdk", "NuGetFallbackFolder", "microsoft.netcore.app", "2.0.0", "ref", "netcoreapp2.0");
-                        if (Directory.Exists(fallbackDirLocal))
-                            return fallbackDirLocal;
+                        nuGetFallbackFolderDir = new DirectoryInfo(Path.Combine("usr", "local", "share", "dotnet", "sdk", "NuGetFallbackFolder", "microsoft.netcore.app"));
+                        if (nuGetFallbackFolderDir.Exists)
+                            break;
 
-                        var fallbackDir = Path.Combine("usr", "share", "dotnet", "sdk", "NuGetFallbackFolder", "microsoft.netcore.app", "2.0.0", "ref", "netcoreapp2.0");
-                        if (Directory.Exists(fallbackDir))
-                            return fallbackDir;
+                        nuGetFallbackFolderDir = new DirectoryInfo(Path.Combine("usr", "share", "dotnet", "sdk", "NuGetFallbackFolder", "microsoft.netcore.app"));
                     }
                     break;
+            }
+
+            if (nuGetFallbackFolderDir.Exists)
+            {
+                var nuGetFallbackBest = nuGetFallbackFolderDir.EnumerateDirectories().Select(x => new { Directory = x, Target = new DirectoryInfo(Path.Combine(x.FullName, "ref", "netcoreapp2.0")), Version = TryParseVersion(x.Name) })
+                    .Where(x => x.Version != null && x.Version == new Version(2, 0, 1) && x.Target.Exists)
+                    .OrderByDescending(x => x.Version).FirstOrDefault();
+                if (nuGetFallbackBest != null)
+                {
+                    return nuGetFallbackBest.Target.FullName;
+                }
             }
 
             return null;
@@ -180,5 +213,10 @@ namespace Ultraviolet.Presentation.Compiler
 
             return null;
         }
+
+        /// <summary>
+        /// Attempts to parse a version string.,
+        /// </summary>
+        private static Version TryParseVersion(String str) => Version.TryParse(str, out var result) ? result : null;
     }
 }

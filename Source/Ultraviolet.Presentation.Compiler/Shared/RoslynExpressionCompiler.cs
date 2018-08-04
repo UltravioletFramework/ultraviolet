@@ -286,9 +286,10 @@ namespace Ultraviolet.Presentation.Compiler
         {
             var referencedAssemblies = new ConcurrentBag<String>();
 
+            var netStandardRefAdditionalPaths = new List<String>();
             var netStandardRefAsmDir = 
-                DependencyFinder.GetNetStandardLibraryDirFromNuGetCache() ?? 
-                DependencyFinder.GetNetStandardLibraryDirFromFallback();
+                DependencyFinder.GetNetStandardLibraryDirFromNuGetCache(netStandardRefAdditionalPaths) ??
+                DependencyFinder.GetNetStandardLibraryDirFromFallback(netStandardRefAdditionalPaths);
 
             if (netStandardRefAsmDir == null && DependencyFinder.IsNuGetAvailable())
             {
@@ -305,6 +306,10 @@ namespace Ultraviolet.Presentation.Compiler
 
             var refDllFiles = Directory.GetFiles(netStandardRefAsmDir, "*.dll");
             foreach (var refDllFile in refDllFiles)
+            {
+                referencedAssemblies.Add(refDllFile);
+            }
+            foreach (var refDllFile in netStandardRefAdditionalPaths)
             {
                 referencedAssemblies.Add(refDllFile);
             }
