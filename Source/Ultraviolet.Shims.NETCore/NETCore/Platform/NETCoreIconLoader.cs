@@ -42,7 +42,7 @@ namespace Ultraviolet.Shims.NETCore.Platform
         /// </summary>
         private static String GetLongestCommonResourcePrefix(String[] resourceNames)
         {
-            if (resourceNames == null || resourceNames.Length == 1)
+            if (resourceNames == null || resourceNames.Length <= 1)
                 return String.Empty;
 
             var resourceNamesSplit = resourceNames.Select(x => x.Split('.')).ToArray();
