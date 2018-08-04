@@ -164,7 +164,6 @@
     <Compile Include="UltravioletPanel.Designer.cs">
       <DependentUpon>UltravioletPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="UltravioletTickMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
