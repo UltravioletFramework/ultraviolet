@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Ultraviolet.OpenGL.Bindings</id>
-    <version>UV_VERSION</version>
+    <version>2018.05.0.0</version>
     <authors>Cole Campbell</authors>
     <owners>Cole Campbell</owners>
     <licenseUrl>http://ultraviolet.tl/licenses</licenseUrl>
@@ -17,20 +17,20 @@ This package shouldn't be referenced directly unless you know what you're doing.
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
-    <dependency id="Ultraviolet.Core" version="UV_VERSION"/>
+    <dependency id="Ultraviolet.Core" version="2018.05.0.0"/>
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\net461\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\net461\"/>
+    <file src="..\Binaries\AnyCPU\Debug\Ultraviolet.OpenGL.Bindings.dll" target="lib\net461\"/>
+    <file src="..\Binaries\AnyCPU\Debug\Ultraviolet.OpenGL.Bindings.pdb" target="lib\net461\"/>
 
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Debug\Ultraviolet.OpenGL.Bindings.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Debug\Ultraviolet.OpenGL.Bindings.pdb" target="lib\netstandard2.0\"/>
     
-    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\MonoAndroid80\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Debug\Ultraviolet.OpenGL.Bindings.dll" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Debug\Ultraviolet.OpenGL.Bindings.pdb" target="lib\MonoAndroid80\"/>
 
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.Bindings.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.OpenGL.Bindings.pdb" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Debug\Ultraviolet.OpenGL.Bindings.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Debug\Ultraviolet.OpenGL.Bindings.pdb" target="lib\Xamarin.iOS10\"/>
   </files>
 </package>

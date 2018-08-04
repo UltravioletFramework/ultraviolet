@@ -23,7 +23,7 @@ Quick start guides for development using the Ultraviolet Framework are available
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.dll" target="lib\net47\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.pdb" target="lib\net47\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.dll" target="lib\net461\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Windows.Forms.pdb" target="lib\net461\"/>
   </files>  
 </package>

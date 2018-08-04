@@ -19,19 +19,19 @@ Quick start guides for development using the Ultraviolet Framework are available
     <tags>ultraviolet gamedev</tags>	
   </metadata>
   <files>    
-    <file src="Ultraviolet.SDL2.Native\build\net47\Ultraviolet.SDL2.Native.targets" target="build\net47\Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net47\x86\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net47\x64\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net47\x86\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net47\x64\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net47\x64\osx\libSDL2.dylib"/>
+    <file src="Ultraviolet.SDL2.Native\build\net461\Ultraviolet.SDL2.Native.targets" target="build\net461\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\net461\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\net461\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\net461\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\net461\x64\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\net461\x64\osx\libSDL2.dylib"/>
   
-    <file src="Ultraviolet.SDL2.Native\build\netcoreapp2.0\Ultraviolet.SDL2.Native.targets" target="build\netcoreapp2.0\Ultraviolet.SDL2.Native.targets"/>
-    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\netcoreapp2.0\x86\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\netcoreapp2.0\x64\unix\libSDL2.so"/>
-    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\netcoreapp2.0\x86\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\netcoreapp2.0\x64\win32nt\SDL2.dll"/>
-    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\netcoreapp2.0\x64\osx\libSDL2.dylib"/>
+    <file src="Ultraviolet.SDL2.Native\build\netcoreapp2.1\Ultraviolet.SDL2.Native.targets" target="build\netcoreapp2.1\Ultraviolet.SDL2.Native.targets"/>
+    <file src="..\Dependencies\SDL2\x86\unix\libSDL2.so" target="build\netcoreapp2.1\x86\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x64\unix\libSDL2.so" target="build\netcoreapp2.1\x64\unix\libSDL2.so"/>
+    <file src="..\Dependencies\SDL2\x86\win32nt\SDL2.dll" target="build\netcoreapp2.1\x86\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\win32nt\SDL2.dll" target="build\netcoreapp2.1\x64\win32nt\SDL2.dll"/>
+    <file src="..\Dependencies\SDL2\x64\osx\libSDL2.dylib" target="build\netcoreapp2.1\x64\osx\libSDL2.dylib"/>
   
     <file src="Ultraviolet.SDL2.Native\build\MonoAndroid80\Ultraviolet.SDL2.Native.targets" target="build\MonoAndroid80\Ultraviolet.SDL2.Native.targets"/>
     <file src="..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so" target="build\MonoAndroid80\lib\armeabi-v7a\libSDL2.so"/>
