@@ -1273,7 +1273,132 @@ namespace Ultraviolet
             result.M43 = 0f;
             result.M44 = 1f;
         }
-        
+
+        /// <summary>
+        /// Creates a rotation matrix from the specified quaternion.
+        /// </summary>
+        /// <param name="quaternion">A quaternion describing the rotation.</param>
+        /// <returns>The rotation <see cref="Matrix"/> that was created.</returns>
+        public static Matrix CreateFromQuaternion(Quaternion quaternion)
+        {
+            Matrix result;
+            CreateFromQuaternion(ref quaternion, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a rotation matrix from the specified quaternion.
+        /// </summary>
+        /// <param name="quaternion">A quaternion describing the rotation.</param>
+        /// <param name="result">The rotation <see cref="Matrix"/> that was created.</param>
+        public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix result)
+        {
+            var xx = quaternion.X * quaternion.X;
+            var yy = quaternion.Y * quaternion.Y;
+            var zz = quaternion.Z * quaternion.Z;
+            var xy = quaternion.X * quaternion.Y;
+            var zw = quaternion.Z * quaternion.W;
+            var zx = quaternion.Z * quaternion.X;
+            var yw = quaternion.Y * quaternion.W;
+            var yz = quaternion.Y * quaternion.Z;
+            var xw = quaternion.X * quaternion.W;
+
+            result.M11 = 1f - (2f * (yy + zz));
+            result.M12 = 2f * (xy + zw);
+            result.M13 = 2f * (zx - yw);
+            result.M14 = 0f;
+            result.M21 = 2f * (xy - zw);
+            result.M22 = 1f - (2f * (zz + xx));
+            result.M23 = 2f * (yz + xw);
+            result.M24 = 0f;
+            result.M31 = 2f * (zx + yw);
+            result.M32 = 2f * (yz - xw);
+            result.M33 = 1f - (2f * (yy + xx));
+            result.M34 = 0f;
+            result.M41 = 0f;
+            result.M42 = 0f;
+            result.M43 = 0f;
+            result.M44 = 1f;
+        }
+
+        /// <summary>
+        /// Creates a new rotation matrix from the specified yaw, pitch, and roll values.
+        /// </summary>
+        /// <param name="yaw">The yaw rotation value in radians.</param>
+        /// <param name="pitch">The pitch rotation value in radians.</param>
+        /// <param name="roll">The roll rotation value in radians.</param>
+        /// <returns>The rotation <see cref="Matrix"/> which was created.</returns>
+        public static Matrix CreateFromYawPitchRoll(Single yaw, Single pitch, Single roll)
+        {
+            Matrix result;
+            CreateFromYawPitchRoll(yaw, pitch, roll, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new rotation matrix from the specified yaw, pitch, and roll values.
+        /// </summary>
+        /// <param name="yaw">The yaw rotation value in radians.</param>
+        /// <param name="pitch">The pitch rotation value in radians.</param>
+        /// <param name="roll">The roll rotation value in radians.</param>
+        /// <param name="result">The rotation <see cref="Matrix"/> which was created.</param>
+        public static void CreateFromYawPitchRoll(Single yaw, Single pitch, Single roll, out Matrix result)
+        {
+            Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out var quaternion);
+            CreateFromQuaternion(ref quaternion, out result);
+        }
+
+        /// <summary>
+        /// Creates a new transformation matrix from the specified translation, rotation, and scaling values.
+        /// </summary>
+        /// <param name="translation">A vector representing the translation.</param>
+        /// <param name="rotation">A quaternion representing the rotation.</param>
+        /// <param name="scale">A vector representing the scaling factor.</param>
+        /// <returns>The transformation <see cref="Matrix"/> which was created.</returns>
+        public static Matrix CreateFromTranslationRotationScale(Vector3 translation, Quaternion rotation, Vector3 scale)
+        {
+            Matrix result;
+            CreateFromTranslationRotationScale(ref translation, ref rotation, ref scale, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new transformation matrix from the specified translation, rotation, and scaling values.
+        /// </summary>
+        /// <param name="translation">A vector representing the translation.</param>
+        /// <param name="rotation">A quaternion representing the rotation.</param>
+        /// <param name="scale">A vector representing the scaling factor.</param>
+        /// <param name="result">The transformation <see cref="Matrix"/> which was created.</param>
+        public static void CreateFromTranslationRotationScale(ref Vector3 translation, ref Quaternion rotation, ref Vector3 scale, out Matrix result)
+        {
+            var xx = rotation.X * rotation.X;
+            var yy = rotation.Y * rotation.Y;
+            var zz = rotation.Z * rotation.Z;
+            var xy = rotation.X * rotation.Y;
+            var zw = rotation.Z * rotation.W;
+            var zx = rotation.Z * rotation.X;
+            var yw = rotation.Y * rotation.W;
+            var yz = rotation.Y * rotation.Z;
+            var xw = rotation.X * rotation.W;
+
+            result.M11 = scale.X * (1f - (2f * (yy + zz)));
+            result.M12 = scale.X * (2f * (xy + zw));
+            result.M13 = scale.X * (2f * (zx - yw));
+            result.M14 = 0f;
+            result.M21 = scale.Y * (2f * (xy - zw));
+            result.M22 = scale.Y * (1f - (2f * (zz + xx)));
+            result.M23 = scale.Y * (2f * (yz + xw));
+            result.M24 = 0f;
+            result.M31 = scale.Z * (2f * (zx + yw));
+            result.M32 = scale.Z * (2f * (yz - xw));
+            result.M33 = scale.Z * (1f - (2f * (yy + xx)));
+            result.M34 = 0f;
+            result.M41 = translation.X;
+            result.M42 = translation.Y;
+            result.M43 = translation.Z;
+            result.M44 = 1f;
+        }
+
         /// <summary>
         /// Adds a matrix to another matrix.
         /// </summary>
