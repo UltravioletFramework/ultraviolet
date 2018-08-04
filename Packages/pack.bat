@@ -96,6 +96,10 @@ powershell -Command "(gc Ultraviolet.Game.Desktop.nuspe_) -replace 'UV_VERSION',
 nuget pack Ultraviolet.Game.Desktop.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
+powershell -Command "(gc Ultraviolet.Game.NETCore.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.NETCore.nuspec"
+nuget pack Ultraviolet.Game.NETCore.nuspec
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
 powershell -Command "(gc Ultraviolet.Game.Android.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Game.Android.nuspec"
 nuget pack Ultraviolet.Game.Android.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
