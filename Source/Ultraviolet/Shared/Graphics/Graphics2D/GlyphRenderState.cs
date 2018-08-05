@@ -64,7 +64,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             /// Updates the state object with the next glyph to draw.
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void RetrieveGlyph(IStringSource<Char> text, Int32 i, ref Int32 length)
+            public void RetrieveGlyph<TSource>(TSource text, Int32 i, ref Int32 length)
+                where TSource : IStringSource<Char>
             {
                 var iNext = i + 1;
                 var characterIsSurrogatePair = iNext < text.Length && Char.IsSurrogatePair(text[i], text[iNext]);
@@ -94,7 +95,8 @@ namespace Ultraviolet.Graphics.Graphics2D
             /// Updates the state object with the next glyph to draw.
             /// </summary>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void RetrieveGlyph(IStringSource<ShapedChar> text, Int32 i)
+            public void RetrieveGlyph<TSource>(TSource text, Int32 i)
+                where TSource : IStringSource<ShapedChar>
             {
                 var sc = text[i];
                 GlyphCharacter = sc.GetSpecialCharacter();
