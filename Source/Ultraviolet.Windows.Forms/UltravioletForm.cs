@@ -9,7 +9,7 @@ namespace Ultraviolet.Windows.Forms
     /// <summary>
     /// Represents the primary Form for a Windows Forms application using the Ultraviolet engine.
     /// </summary>
-    public abstract partial class UltravioletForm : Form, IUltravioletHost
+    public partial class UltravioletForm : Form, IUltravioletHost
     {
         /// <summary>
         /// Contains native methods used by the host.
@@ -187,7 +187,10 @@ namespace Ultraviolet.Windows.Forms
         /// Called when the application is creating its Ultraviolet context.
         /// </summary>
         /// <returns>The application's Ultraviolet context.</returns>
-        protected abstract UltravioletContext OnCreatingUltravioletContext();
+        protected virtual UltravioletContext OnCreatingUltravioletContext()
+        {
+            return null;
+        }
 
         /// <summary>
         /// Called when the application is initializing.
