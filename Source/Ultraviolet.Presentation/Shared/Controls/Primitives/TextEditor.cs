@@ -1385,6 +1385,15 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             RoutingStrategy.Bubble, typeof(UpfTextEntryValidationHandler), typeof(TextEditor));
 
         /// <summary>
+        /// Gets a value indicating whether this control lays out text right-to-left.
+        /// </summary>
+        /// <returns><see langword="true"/> if the editor is right-to-left; otherwise, <see langword="false"/>.</returns>
+        internal Boolean IsRightToLeft()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Called when the value of the <see cref="TextBox.TextProperty"/> dependency property changes.
         /// </summary>
         /// <param name="value">The new value of the dependency property.</param>
@@ -2085,7 +2094,9 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                     break;
             }
 
-            var settings = new TextLayoutSettings(owner.Font, layoutWidth, layoutHeight, textFlags);
+            var options = TextLayoutOptions.None;
+            var direction = IsRightToLeft() ? TextDirection.RightToLeft : TextDirection.LeftToRight;
+            var settings = new TextLayoutSettings(owner.Font, layoutWidth, layoutHeight, textFlags, options, direction, UltravioletFontStyle.Regular);
             View.Resources.TextRenderer.CalculateLayout(textParserStream, textLayoutStream, settings);
 
             UpdateSelectionAndCaret();
@@ -2651,6 +2662,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
                     caretX = glyphBounds.Left;
                     caretY = glyphBounds.Top;
+
                     caretWidth = glyphBounds.Width;
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, glyphBounds.Height);
                     caretLineIndex = glyphLineInfo.LineIndex;
@@ -2678,17 +2690,18 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 
                 if (textLayoutStream.TotalLength > 0)
                 {
-                    var lineInfo = default(LineInfo);
-                    var boundsGlyph = default(Ultraviolet.Rectangle?);
-                    var boundsInsert = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream,
-                        caretPosition, out lineInfo, out boundsGlyph);
+                    var insertLineInfo = default(LineInfo);
+                    var insertGlyphBounds = default(Ultraviolet.Rectangle?);
+                    var insertBounds = View.Resources.TextRenderer.GetInsertionPointBounds(textLayoutStream,
+                        caretPosition, out insertLineInfo, out insertGlyphBounds);
 
-                    caretX = boundsInsert.X;
-                    caretY = boundsInsert.Y;
-                    caretWidth = (boundsGlyph.HasValue && boundsGlyph.Value.Width > 0) ? boundsGlyph.Value.Width : fontLineSpacingHalf;
-                    caretHeight = boundsInsert.Height;
+                    caretX = insertBounds.X;
+                    caretY = insertBounds.Y;
+
+                    caretWidth = (insertGlyphBounds.HasValue && insertGlyphBounds.Value.Width > 0) ? insertGlyphBounds.Value.Width : fontLineSpacingHalf;
+                    caretHeight = insertBounds.Height;
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
-                    caretLineIndex = lineInfo.LineIndex;                    
+                    caretLineIndex = insertLineInfo.LineIndex;                    
                 }
                 else
                 {
@@ -2751,22 +2764,45 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 selectionLineStart = selectionStartLineInfo.LineIndex;
                 selectionLineCount = 1 + (selectionEndLineInfo.LineIndex - selectionStartLineInfo.LineIndex);
 
-                // Top
-                var selectionTopX = selectionStartGlyphBounds.X;
-                var selectionTopY = selectionStartGlyphBounds.Y;
-                var selectionTopWidth = (selectionLineCount == 1) ? selectionEndGlyphBounds.Right - selectionStartGlyphBounds.Left :
-                    selectionStartLineInfo.Width - (selectionStartGlyphBounds.X - selectionStartLineInfo.X);
-                var selectionTopHeight = selectionStartLineInfo.Height;
-                selectionTop = new Ultraviolet.Rectangle(selectionTopX, selectionTopY, selectionTopWidth, selectionTopHeight);
-
-                // Bottom
-                if (selectionLineCount > 1)
+                if (IsRightToLeft())
                 {
-                    var selectionBottomX = selectionEndLineInfo.X;
-                    var selectionBottomY = selectionEndGlyphBounds.Y;
-                    var selectionBottomWidth = selectionEndGlyphBounds.Right - selectionBottomX;
-                    var selectionBottomHeight = selectionEndLineInfo.Height;
-                    selectionBottom = new Ultraviolet.Rectangle(selectionBottomX, selectionBottomY, selectionBottomWidth, selectionBottomHeight);
+                    // Top
+                    var selectionTopWidth = (selectionLineCount == 1) ? selectionStartGlyphBounds.Right - selectionEndGlyphBounds.Left :
+                        selectionStartGlyphBounds.Right - selectionStartLineInfo.X;
+                    var selectionTopHeight = selectionStartLineInfo.Height;
+                    var selectionTopX = selectionStartGlyphBounds.Right - selectionTopWidth;
+                    var selectionTopY = selectionStartGlyphBounds.Top;
+                    selectionTop = new Ultraviolet.Rectangle(selectionTopX, selectionTopY, selectionTopWidth, selectionTopHeight);
+
+                    // Bottom
+                    if (selectionLineCount > 1)
+                    {
+                        var selectionBottomX = selectionEndGlyphBounds.Left;
+                        var selectionBottomY = selectionEndGlyphBounds.Top;
+                        var selectionBottomWidth = (selectionEndLineInfo.X + selectionEndLineInfo.Width) - selectionBottomX;
+                        var selectionBottomHeight = selectionEndLineInfo.Height;
+                        selectionBottom = new Ultraviolet.Rectangle(selectionBottomX, selectionBottomY, selectionBottomWidth, selectionBottomHeight);
+                    }
+                }
+                else
+                {
+                    // Top
+                    var selectionTopWidth = (selectionLineCount == 1) ? selectionEndGlyphBounds.Right - selectionStartGlyphBounds.Left :
+                        selectionStartLineInfo.Width - (selectionStartGlyphBounds.Left - selectionStartLineInfo.X);
+                    var selectionTopHeight = selectionStartLineInfo.Height;
+                    var selectionTopX = selectionStartGlyphBounds.Left;
+                    var selectionTopY = selectionStartGlyphBounds.Top;
+                    selectionTop = new Ultraviolet.Rectangle(selectionTopX, selectionTopY, selectionTopWidth, selectionTopHeight);
+
+                    // Bottom
+                    if (selectionLineCount > 1)
+                    {
+                        var selectionBottomX = selectionEndLineInfo.X;
+                        var selectionBottomY = selectionEndGlyphBounds.Top;
+                        var selectionBottomWidth = selectionEndGlyphBounds.Right - selectionBottomX;
+                        var selectionBottomHeight = selectionEndLineInfo.Height;
+                        selectionBottom = new Ultraviolet.Rectangle(selectionBottomX, selectionBottomY, selectionBottomWidth, selectionBottomHeight);
+                    }
                 }
             }
         }
