@@ -6,6 +6,7 @@ using Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Input;
 using Ultraviolet.Presentation.Controls.Primitives;
 using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Media;
 
 namespace Ultraviolet.Presentation.Controls
 {
@@ -233,10 +234,13 @@ namespace Ultraviolet.Presentation.Controls
 
                 var cursorpos = textLayoutCommands.CursorPosition;
 
-                var options = TextIsShaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
+                var textRenderingMode = TextOptions.GetTextRenderingMode(this);
+                var textLanguage = TextOptions.GetTextLanguage(this);
+
+                var options = (textRenderingMode == TextRenderingMode.Shaped) ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                 var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalContentAlignment, VerticalContentAlignment);
                 var direction = FlowDirection == FlowDirection.RightToLeft ? TextDirection.RightToLeft : TextDirection.LeftToRight;
-                var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, options, direction, FontStyle, null, TextLanguage);
+                var settings = new TextLayoutSettings(Font, constraintX, constraintY, flags, options, direction, FontStyle, null, textLanguage);
 
                 View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                 View.Resources.TextRenderer.UpdateCursor(textLayoutCommands, cursorpos);
