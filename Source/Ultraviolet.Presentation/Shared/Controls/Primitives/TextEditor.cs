@@ -2075,8 +2075,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 return;
 
             var textFlags = TextFlags.AlignTop;
-            var textWrapping = (owner == null) ? TextWrapping.NoWrap : owner.GetValue<TextWrapping>(TextBox.TextWrappingProperty);
-            var textAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
+            var textWrapping = GetActualTextWrapping();
+            var textAlignment = GetActualTextAlignment();
 
             var layoutWidth = (textWrapping == TextWrapping.Wrap) ? (Int32?)Display.DipsToPixels(availableSize.Width) : null;
             var layoutHeight = (Int32?)null;
@@ -2675,7 +2675,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 }
                 else
                 {
-                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
+                    caretAlignment = GetActualTextAlignment();
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, fontLineSpacing);
                     caretLineIndex = 0;
                 }
@@ -2711,7 +2711,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 }
                 else
                 {
-                    caretAlignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
+                    caretAlignment = GetActualTextAlignment();
                     caretBounds = new Ultraviolet.Rectangle(caretX, caretY, caretWidth, caretHeight);
                     caretLineIndex = 0;
                 }
@@ -2865,7 +2865,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (showMaximumLineWidth)
             {
                 var owner = TemplatedParent as Control;
-                var alignment = (owner == null) ? TextAlignment.Left : owner.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
+                var alignment = GetActualTextAlignment();
                 var horizontalOffset = (alignment == TextAlignment.Right) ? boundsCaretDips.Left : boundsCaretDips.Right - boundsViewport.Width;
                 scrollViewer.ScrollToHorizontalOffset(horizontalOffset);
             }
@@ -2999,6 +2999,45 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets the editor's actual text wrapping mode.
+        /// </summary>
+        private TextWrapping GetActualTextWrapping()
+        {
+            var dobj = (TemplatedParent ?? this) as FrameworkElement;
+            if (dobj == null)
+                return TextWrapping.Wrap;
+
+            return dobj.GetValue<TextWrapping>(TextBox.TextWrappingProperty);
+        }
+
+        /// <summary>
+        /// Gets the text editor's actual text alignment, which depends on both the value of
+        /// the <see cref="TextAlignment"/> property and the <see cref="FlowDirection"/> property.
+        /// </summary>
+        private TextAlignment GetActualTextAlignment()
+        {
+            var dobj = (TemplatedParent ?? this) as FrameworkElement;
+            if (dobj == null)
+                return TextAlignment.Left;
+
+            var align = dobj.GetValue<TextAlignment>(TextBox.TextAlignmentProperty);
+            if (dobj.FlowDirection == FlowDirection.RightToLeft)
+            {
+                switch (align)
+                {
+                    case TextAlignment.Left:
+                        align = TextAlignment.Right;
+                        break;
+
+                    case TextAlignment.Right:
+                        align = TextAlignment.Left;
+                        break;
+                }
+            }
+            return align;
         }
 
         // State values.
