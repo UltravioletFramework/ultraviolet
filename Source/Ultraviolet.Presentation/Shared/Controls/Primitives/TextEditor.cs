@@ -1390,7 +1390,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <returns><see langword="true"/> if the editor is right-to-left; otherwise, <see langword="false"/>.</returns>
         internal Boolean IsRightToLeft()
         {
-            return false;
+            var parent = TemplatedParent as FrameworkElement;
+            return parent?.FlowDirection == FlowDirection.RightToLeft;
         }
 
         /// <summary>
