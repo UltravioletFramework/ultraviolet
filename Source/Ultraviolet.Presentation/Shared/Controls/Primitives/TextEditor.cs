@@ -1447,6 +1447,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             EndTrackingSelectionChanges();
 
+            ScrollToCaret(true, false, false);
+
             return true;
         }
 
