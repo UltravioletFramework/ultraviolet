@@ -36,8 +36,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 null);
 
             // Commands - track
-            CommandManager.RegisterClassBindings(typeof(HScrollBar), Track.IncreaseCommand, ExecutedPageRightCommand, CanExecuteScrollCommand);
-            CommandManager.RegisterClassBindings(typeof(HScrollBar), Track.DecreaseCommand, ExecutedPageLeftCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), Track.IncreaseCommand, ExecutedTrackIncreaseCommand, CanExecuteTrackCommand);
+            CommandManager.RegisterClassBindings(typeof(HScrollBar), Track.DecreaseCommand, ExecutedTrackDecreaseCommand, CanExecuteTrackCommand);
         }
 
         /// <summary>
@@ -200,6 +200,24 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 scrollBar.RaiseScrollEvent(ScrollEventType.ThumbPosition);
             }
         }
+        
+        /// <summary>
+        /// Executes the <see cref="Track.IncreaseCommand"/> command.
+        /// </summary>
+        private static void ExecutedTrackIncreaseCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
+        {
+            if (element is FrameworkElement fe)
+                ScrollBar.PageRightCommand.Execute(fe.View, null, fe);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="Track.DecreaseCommand"/> command.
+        /// </summary>
+        private static void ExecutedTrackDecreaseCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
+        {
+            if (element is FrameworkElement fe)
+                ScrollBar.PageLeftCommand.Execute(fe.View, null, fe);
+        }
 
         /// <summary>
         /// Determines whether a scroll command can execute.
@@ -207,6 +225,14 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         private static void CanExecuteScrollCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
         {
             data.CanExecute = !((HScrollBar)element).IsPartOfScrollViewer;
+        }
+
+        /// <summary>
+        /// Determines whether a track command can execute.
+        /// </summary>
+        private static void CanExecuteTrackCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            data.CanExecute = true;
         }
 
         /// <summary>
