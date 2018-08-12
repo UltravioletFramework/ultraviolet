@@ -2205,7 +2205,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var font = settings.Font;
             var fontFace = font.GetFace(bold, italic);
             var direction = settings.Direction;
-            
+            var rtl = (direction == TextDirection.RightToLeft);
+
             var source = CreateSourceUnionFromSegmentOrigin(input.SourceText);
             
             input.Seek(0);
@@ -2258,10 +2259,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 SkipToLineAtPosition(input, x, y, ref lineIndex, ref offsetLineX, ref offsetLineY, 
                     ref lineWidth, ref lineHeight, ref lineLengthInCommands, ref lineLengthInGlyphs, ref lineIsTerminatedByLineBreak, ref glyphCountSeen);
                 input.SeekNextCommand();
-                
+
                 // If our search point comes before the beginning of the line that it's on,
                 // then the only possible answer is the first glyph on the line.
-                if (x < offsetLineX)
+                if ((rtl && x >= offsetLineX + lineWidth) || (!rtl && x < offsetLineX))
                 {
                     lineAtPosition = lineIndex;
                     return (searchInsertionPoints || searchSnapToLine) ? glyphCountSeen : default(Int32?);
@@ -2302,8 +2303,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                             if (glyphIsInCurrentLine)
                             {
                                 lineAtPosition = lineIndex;
-
-                                if (x < offsetLineX)
+                                if ((rtl && x >= offsetLineX + lineWidth) || (!rtl && x < offsetLineX))
                                     return (searchInsertionPoints || searchSnapToLine) ? glyphCountSeen : default(Int32?);
                             }
                         }
