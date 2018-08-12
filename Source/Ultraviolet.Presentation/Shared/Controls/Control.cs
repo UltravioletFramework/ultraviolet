@@ -142,24 +142,6 @@ namespace Ultraviolet.Presentation.Controls
         /// <summary>
         /// Gets or sets the direction in which the element's text is laid out.
         /// </summary>
-        /// <value>The <see cref="Graphics.Graphics2D.Text.TextDirection"/> value that specifies the direction in which the element's text is laid out.
-        /// The default value is <see cref="TextDirection.LeftToRight"/>.</value>
-        /// <remarks>
-        /// <dprop>
-        ///		<dpropField><see cref="TextDirectionProperty"/></dpropField>
-        ///		<dpropStylingName>text-direction</dpropStylingName>
-        ///		<dpropMetadata>None</dpropMetadata>
-        /// </dprop>
-        /// </remarks>
-        public TextDirection TextDirection
-        {
-            get { return GetValue<TextDirection>(TextDirectionProperty); }
-            set { SetValue(TextDirectionProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the direction in which the element's text is laid out.
-        /// </summary>
         /// <value>The <see cref="Graphics.Graphics2D.Text.TextScript"/> value that specifies the type of script used to draw the element's text.
         /// The default value is <see cref="TextScript.Latin"/>.</value>
         /// <remarks>
@@ -266,12 +248,6 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="TextIsShaped"/> dependency property.</value>
         public static readonly DependencyProperty TextIsShapedProperty = TextElement.TextIsShapedProperty.AddOwner(typeof(Control));
-
-        /// <summary>
-        /// Identifies the <see cref="TextDirection"/> text property.
-        /// </summary>
-        /// <value>The identifier for the <see cref="TextDirection"/> dependency property.</value>
-        public static readonly DependencyProperty TextDirectionProperty = TextElement.TextDirectionProperty.AddOwner(typeof(Control));
 
         /// <summary>
         /// Identifies the <see cref="TextScript"/> text property.

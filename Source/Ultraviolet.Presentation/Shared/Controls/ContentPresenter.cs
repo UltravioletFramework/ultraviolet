@@ -493,9 +493,10 @@ namespace Ultraviolet.Presentation.Controls
 
                     var options = containingControl.TextIsShaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalAlignment, VerticalAlignment);
+                    var direction = containingControl.FlowDirection == FlowDirection.RightToLeft ? TextDirection.RightToLeft : TextDirection.LeftToRight;
                     var settings = new TextLayoutSettings(font,
                         (Int32)Math.Ceiling(availableSizeInPixels.Width),
-                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, options, containingControl.TextDirection, containingControl.FontStyle, null, containingControl.TextLanguage);
+                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, options, direction, containingControl.FontStyle, null, containingControl.TextLanguage);
 
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                     View.Resources.TextRenderer.UpdateCursor(textLayoutCommands, cursorpos);
