@@ -3,8 +3,8 @@
   <View>
     <Grid Class="scrollviewer-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="{{ComputedColumn0Width}}"/>
+        <ColumnDefinition Width="{{ComputedColumn1Width}}"/>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
@@ -12,6 +12,8 @@
       </Grid.RowDefinitions>
 
       <Border
+        Grid.Row="0"
+        Grid.Column="{{ComputedContentColumn}}"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
 
@@ -37,7 +39,7 @@
       </Border>
       <HScrollBar Name="PART_HScroll"
                   Class="scrollviewer-hscroll"
-                  Grid.Column="0"
+                  Grid.Column="{{ComputedContentColumn}}"
                   Grid.Row="1"
                   Visibility="{{ComputedHorizontalScrollBarVisibility}}"
                   HorizontalAlignment="Stretch"
@@ -49,7 +51,7 @@
                   ViewportSize="{{ViewportWidth}}"/>
       <VScrollBar Name="PART_VScroll"
                   Class="scrollviewer-vscroll"
-                  Grid.Column="1"
+                  Grid.Column="{{ComputedScrollBarColumn}}"
                   Grid.Row="0"
                   Visibility="{{ComputedVerticalScrollBarVisibility}}"
                   VerticalAlignment="Stretch"
@@ -61,7 +63,7 @@
                   ViewportSize="{{ViewportHeight}}"/>
       <Rectangle Class="scrollviewer-rect"
                  FillColor="{{Background}}"
-                 Grid.Column="1"
+                 Grid.Column="{{ComputedScrollBarColumn}}"
                  Grid.Row="1"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"/>
