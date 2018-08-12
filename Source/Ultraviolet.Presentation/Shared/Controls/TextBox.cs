@@ -22,6 +22,11 @@ namespace Ultraviolet.Presentation.Controls
         {
             EventManager.RegisterClassHandler(typeof(TextBox), ScrollViewer.ScrollChangedEvent, new UpfScrollChangedEventHandler(HandleScrollChanged));
 
+            HorizontalAlignmentProperty.OverrideMetadata(typeof(TextBox),
+                new PropertyMetadata<HorizontalAlignment>(HorizontalAlignment.Left, HandleHorizontalAlignmentChanged));
+            FlowDirectionProperty.OverrideMetadata(typeof(TextBox),
+                new PropertyMetadata<FlowDirection>(FlowDirection.LeftToRight, HandleFlowDirectionChanged));
+
             HorizontalScrollBarVisibilityProperty.OverrideMetadata(typeof(TextBox),
                 new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Hidden, null, CoerceHorizontalScrollBarVisibility));
 
@@ -506,7 +511,7 @@ namespace Ultraviolet.Presentation.Controls
                     TextEditor.SelectionLength = value;
             }
         }
-        
+
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
@@ -562,6 +567,19 @@ namespace Ultraviolet.Presentation.Controls
         /// <value>The identifier for the <see cref="MaxLines"/> dependency property.</value>
         public static readonly DependencyProperty MaxLinesProperty = DependencyProperty.Register("MaxLines", typeof(Int32), typeof(TextBox),
             new PropertyMetadata<Int32>(Int32.MaxValue, PropertyMetadataOptions.AffectsMeasure));
+
+        /// <summary>
+        /// The private access key for the ComputedHorizontalEditorAlignment read-only dependency property.
+        /// </summary>
+        /// <value>The private access key for the ComputedHorizontalEditorAlignment dependency property.</value>
+        private static readonly DependencyPropertyKey ComputedHorizontalEditorAlignmentPropertyKey = DependencyProperty.RegisterReadOnly("ComputedHorizontalEditorAlignment", typeof(HorizontalAlignment), typeof(TextBox),
+            new PropertyMetadata<HorizontalAlignment>(HorizontalAlignment.Left));
+
+        /// <summary>
+        /// Identifies the ComputedHorizontalEditorAlignment dependency property.
+        /// </summary>
+        /// <value>The identifier for the ComputedHorizontalEditorAlignment dependency property.</value>
+        public static readonly DependencyProperty ComputedHorizontalEditorAlignmentProperty = ComputedHorizontalEditorAlignmentPropertyKey.DependencyProperty;
 
         /// <inheritdoc/>
         internal override void LineUpInternal()
@@ -865,6 +883,24 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <summary>
+        /// Occurs when the value of the <see cref="FrameworkElement.HorizontalAlignment"/> dependency property changes.
+        /// </summary>
+        private static void HandleHorizontalAlignmentChanged(DependencyObject dobj, HorizontalAlignment oldValue, HorizontalAlignment newValue)
+        {
+            var textBox = dobj as TextBox;
+            textBox?.RecomputeEditorAlignment();
+        }
+
+        /// <summary>
+        /// Occurs when the value of the <see cref="FrameworkElement.FlowDirection"/> dependency property changes.
+        /// </summary>
+        private static void HandleFlowDirectionChanged(DependencyObject dobj, FlowDirection oldValue, FlowDirection newValue)
+        {
+            var textBox = dobj as TextBox;
+            textBox?.RecomputeEditorAlignment();
+        }
+
+        /// <summary>
         /// Coerces the value of the <see cref="Primitives.TextBoxBase.HorizontalScrollBarVisibility"/> property to force the scroll bar
         /// to a disabled state when wrapping is enabled.
         /// </summary>
@@ -958,6 +994,28 @@ namespace Ultraviolet.Presentation.Controls
             var service = SoftwareKeyboardService.Create();
             service.TextInputRegion = clear ? (Ultraviolet.Rectangle?)null :
                 (Ultraviolet.Rectangle)Display.DipsToPixels(CalculateTransformedVisualBounds());
-        }        
+        }
+
+        /// <summary>
+        /// Recomputes the actual alignment of the text box's editor.
+        /// </summary>
+        private void RecomputeEditorAlignment()
+        {
+            var align = HorizontalAlignment;
+            if (FlowDirection == FlowDirection.RightToLeft)
+            {
+                switch (align)
+                {
+                    case HorizontalAlignment.Left:
+                        align = HorizontalAlignment.Right;
+                        break;
+
+                    case HorizontalAlignment.Right:
+                        align = HorizontalAlignment.Left;
+                        break;
+                }
+            }
+            SetValue(ComputedHorizontalEditorAlignmentPropertyKey, align);
+        }
     }
 }
