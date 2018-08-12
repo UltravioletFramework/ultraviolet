@@ -492,6 +492,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var substr = token.Text.Substring(start);
 
             shaper.Clear();
+            shaper.SetScript(settings.Script);
             shaper.SetLanguage(settings.Language);
             shaper.SetDirection(settings.Direction);
             shaper.Append(substr);
@@ -506,6 +507,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void ShapeMeasuredText(UltravioletFontFace font, StringSegment text, ref TextLayoutSettings settings)
         {
             shaper.Clear();
+            shaper.SetScript(settings.Script);
             shaper.SetLanguage(settings.Language);
             shaper.SetDirection(settings.Direction);
             shaper.Append(text);
@@ -523,6 +525,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var text = CreateStringSegmentFromCurrentSource(start, length);
 
             shaper.Clear();
+            shaper.SetScript(settings.Script);
             shaper.SetLanguage(settings.Language);
             shaper.SetDirection(settings.Direction);
             shaper.Append(text);
@@ -1146,6 +1149,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     substringAvailableWidth -= font.MeasureGlyph('-').Width;
 
                 shaper.Clear();
+                shaper.SetScript(settings.Script);
                 shaper.SetLanguage(settings.Language);
                 shaper.SetDirection(settings.Direction);
 
