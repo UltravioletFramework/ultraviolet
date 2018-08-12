@@ -129,7 +129,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretRight(true);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretLeft(true);
+            else
+                textEditor.MoveCaretRight(true);
         }
 
         /// <summary>
@@ -141,7 +144,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretLeft(true);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretRight(true);
+            else
+                textEditor.MoveCaretLeft(true);
         }
 
         /// <summary>
@@ -153,7 +159,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretToNextWord(true);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretToPreviousWord(true);
+            else
+                textEditor.MoveCaretToNextWord(true);
         }
 
         /// <summary>
@@ -165,7 +174,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretToPreviousWord(true);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretToNextWord(true);
+            else
+                textEditor.MoveCaretToPreviousWord(true);
         }
 
         /// <summary>
@@ -273,7 +285,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretRight(false);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretLeft(false);
+            else
+                textEditor.MoveCaretRight(false);
         }
 
         /// <summary>
@@ -285,7 +300,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretLeft(false);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretRight(false);
+            else
+                textEditor.MoveCaretLeft(false);
         }
 
         /// <summary>
@@ -297,7 +315,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretToNextWord(false);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretToPreviousWord(false);
+            else
+                textEditor.MoveCaretToNextWord(false);
         }
 
         /// <summary>
@@ -309,7 +330,10 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             if (textEditor == null || (textEditor.IsReadOnly && !textEditor.IsReadOnlyCaretVisible) || !textEditor.IsEnabled)
                 return;
 
-            textEditor.MoveCaretToPreviousWord(false);
+            if (textEditor.IsRightToLeft())
+                textEditor.MoveCaretToNextWord(false);
+            else
+                textEditor.MoveCaretToPreviousWord(false);
         }
 
         /// <summary>
