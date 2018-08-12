@@ -6,6 +6,7 @@ using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Input;
 using Ultraviolet.Presentation.Input;
+using Ultraviolet.Presentation.Media;
 
 namespace Ultraviolet.Presentation.Controls.Primitives
 {
@@ -2095,9 +2096,13 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                     break;
             }
 
-            var options = TextLayoutOptions.None;
-            var direction = IsRightToLeft() ? TextDirection.RightToLeft : TextDirection.LeftToRight;
-            var settings = new TextLayoutSettings(owner.Font, layoutWidth, layoutHeight, textFlags, options, direction, UltravioletFontStyle.Regular);
+            var textRenderingMode = TextRenderingMode.Auto;
+            var textLanguage = (owner == null) ? TextOptions.GetTextLanguage(this) : TextOptions.GetTextLanguage(owner);
+            var textScript = (owner == null) ? TextOptions.GetTextScript(this) : TextOptions.GetTextScript(owner);
+            var textDirection = IsRightToLeft() ? TextDirection.RightToLeft : TextDirection.LeftToRight;
+
+            var options = (textRenderingMode == TextRenderingMode.Shaped) ? TextLayoutOptions.Shape : TextLayoutOptions.None;
+            var settings = new TextLayoutSettings(owner.Font, layoutWidth, layoutHeight, textFlags, options, textDirection, textScript, UltravioletFontStyle.Regular, null, textLanguage);
             View.Resources.TextRenderer.CalculateLayout(textParserStream, textLayoutStream, settings);
 
             UpdateSelectionAndCaret();
