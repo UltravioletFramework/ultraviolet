@@ -14,8 +14,7 @@
                     HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
                     VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
 
-        <TextEditor Name="PART_Editor"
-                    HorizontalAlignment="{{ComputedHorizontalEditorAlignment}}"/>
+        <TextEditor Name="PART_Editor"/>
       
       </ScrollViewer>
       <Image Class="textbox-focus-image"
