@@ -25,7 +25,6 @@ namespace Ultraviolet.Presentation.Controls
         static ScrollViewer()
         {
             // Dependency property overrides
-            FlowDirectionProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<FlowDirection>(FlowDirection.LeftToRight, HandleFlowDirectionChanged));
             KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<KeyboardNavigationMode>(KeyboardNavigationMode.Local));
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(typeof(ScrollViewer), new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False));
 
@@ -732,59 +731,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="ContentVerticalOffset"/> dependency property.</value>
         public static readonly DependencyProperty ContentVerticalOffsetProperty = ContentVerticalOffsetPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// The private access key for the ComputedColumn0Width read-only dependency property.
-        /// </summary>
-        /// <value>The private access key for the ComputedColumn0Width dependency property.</value>
-        private static readonly DependencyPropertyKey ComputedColumn0WidthPropertyKey = DependencyProperty.RegisterReadOnly("ComputedColumn0Width", typeof(GridLength), typeof(ScrollViewer),
-            new PropertyMetadata<GridLength>(new GridLength(1.0, GridUnitType.Star), PropertyMetadataOptions.AffectsArrange));
-
-        /// <summary>
-        /// Identifies the ComputedColumn0Width dependency property.
-        /// </summary>
-        /// <value>The identifier for the ComputedColumn0Width dependency property.</value>
-        public static readonly DependencyProperty ComputedColumn0WidthProperty = ComputedColumn0WidthPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// The private access key for the ComputedColumn1Width read-only dependency property.
-        /// </summary>
-        /// <value>The private access key for the ComputedColumn1Width dependency property.</value>
-        private static readonly DependencyPropertyKey ComputedColumn1WidthPropertyKey = DependencyProperty.RegisterReadOnly("ComputedColumn1Width", typeof(GridLength), typeof(ScrollViewer),
-            new PropertyMetadata<GridLength>(GridLength.Auto, PropertyMetadataOptions.AffectsArrange));
-
-        /// <summary>
-        /// Identifies the ComputedColumn1Width dependency property.
-        /// </summary>
-        /// <value>The identifier for the ComputedColumn1Width dependency property.</value>
-        public static readonly DependencyProperty ComputedColumn1WidthProperty = ComputedColumn1WidthPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// The private access key for the ComputedScrollBarColumn read-only dependency property.
-        /// </summary>
-        /// <value>The private access key for the ComputedScrollBarColumn dependency property.</value>
-        private static readonly DependencyPropertyKey ComputedScrollBarColumnPropertyKey = DependencyProperty.RegisterReadOnly("ComputedScrollBarColumn", typeof(Int32), typeof(ScrollViewer),
-            new PropertyMetadata<Int32>(1, PropertyMetadataOptions.AffectsArrange));
-
-        /// <summary>
-        /// Identifies the ComputedScrollBarColumn dependency property.
-        /// </summary>
-        /// <value>The identifier for the ComputedScrollBarColumn dependency property.</value>
-        public static readonly DependencyProperty ComputedScrollBarColumnProperty = ComputedScrollBarColumnPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// The private access key for the ComputedContentColumn read-only dependency property.
-        /// </summary>
-        /// <value>The private access key for the ComputedContentColumn dependency property.</value>
-        private static readonly DependencyPropertyKey ComputedContentColumnPropertyKey = DependencyProperty.RegisterReadOnly("ComputedContentColumn", typeof(Int32), typeof(ScrollViewer),
-            new PropertyMetadata<Int32>(0, PropertyMetadataOptions.AffectsArrange));
-
-        /// <summary>
-        /// Identifies the ComputedContentColumnProperty dependency property.
-        /// </summary>
-        /// <value>The identifier for the ComputedContentColumnProperty dependency property.</value>
-        public static readonly DependencyProperty ComputedContentColumnProperty = ComputedContentColumnPropertyKey.DependencyProperty;
-
+        
         /// <summary>
         /// Identifies the <see cref="ScrollChanged"/> event.
         /// </summary>
@@ -1184,15 +1131,6 @@ namespace Ultraviolet.Presentation.Controls
             var scrollViewer = (ScrollViewer)element;
             if (scrollViewer.PART_ContentPresenter != null)
                 scrollViewer.PART_ContentPresenter.Clip();
-        }
-
-        /// <summary>
-        /// Occurs when the value of the <see cref="FlowDirection"/> dependency property changes.
-        /// </summary>
-        private static void HandleFlowDirectionChanged(DependencyObject element, FlowDirection oldValue, FlowDirection newValue)
-        {
-            var scrollViewer = element as ScrollViewer;
-            scrollViewer?.RecomputeScrollBarPositions();
         }
 
         /// <summary>
@@ -1620,27 +1558,6 @@ namespace Ultraviolet.Presentation.Controls
                 ContentVerticalOffset = value;
                 if (PART_VScroll != null)
                     PART_VScroll.Value = value;
-            }
-        }
-
-        /// <summary>
-        /// Recomputes the positioning of the vertical scroll bar.
-        /// </summary>
-        private void RecomputeScrollBarPositions()
-        {
-            if (FlowDirection == FlowDirection.RightToLeft)
-            {
-                SetValue(ComputedScrollBarColumnPropertyKey, 0);
-                SetValue(ComputedContentColumnPropertyKey, 1);
-                SetValue(ComputedColumn0WidthPropertyKey, GridLength.Auto);
-                SetValue(ComputedColumn1WidthPropertyKey, new GridLength(1.0, GridUnitType.Star));
-            }
-            else
-            {
-                SetValue(ComputedScrollBarColumnPropertyKey, 1);
-                SetValue(ComputedContentColumnPropertyKey, 0);
-                SetValue(ComputedColumn0WidthPropertyKey, new GridLength(1.0, GridUnitType.Star));
-                SetValue(ComputedColumn1WidthPropertyKey, GridLength.Auto);
             }
         }
 
