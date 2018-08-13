@@ -379,9 +379,9 @@ namespace Ultraviolet.Presentation.Controls
                 var childElement = cell.Element;
 
                 var childColumn = ColumnDefinitions[cell.ColumnIndex];
-                var childRow    = RowDefinitions[cell.RowIndex];
+                var childRow = RowDefinitions[cell.RowIndex];
 
-                var childArea = new RectangleD(childColumn.Position, childRow.Position, 
+                var childArea = new RectangleD(childColumn.Position, childRow.Position,
                     Math.Max(0, CalculateSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan)),
                     Math.Max(0, CalculateSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan)));
 
@@ -392,15 +392,32 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            if (!HitTestUtil.IsPotentialHit(this, point))
+                return null;
+
+            var childMatch = HitTestChildren(point);
+            if (childMatch != null)
+            {
+                return childMatch;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override Visual HitTestChildren(Point2D point)
         {
             var col = GetColumnAtPoint(point);
             var row = GetRowAtPoint(point);
+            if (row < 0 || col < 0)
+                return null;
 
             for (int i = Children.Count - 1; i >= 0; i--)
             {
                 var child = Children.GetByZOrder(i);
-                
+
                 var childCol = GetColumn(child);
                 var childColSpan = GetColumnSpan(child);
 
@@ -487,7 +504,7 @@ namespace Ultraviolet.Presentation.Controls
                 position += width;
             }
 
-            return 0;
+            return -1;
         }
 
         /// <summary>
@@ -509,7 +526,7 @@ namespace Ultraviolet.Presentation.Controls
                 position += height;
             }
 
-            return 0;
+            return -1;
         }
 
         /// <summary>
