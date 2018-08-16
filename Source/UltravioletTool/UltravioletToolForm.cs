@@ -21,6 +21,7 @@ namespace SAFE_PROJECT_NAME
         /// </summary>
         public UltravioletToolForm()
         {
+            IsFixedTimeStep = false;
             InitializeComponent();
         }
 
@@ -121,18 +122,14 @@ namespace SAFE_PROJECT_NAME
         /// <param name="e">An EventArgs that contains the event data.</param>
         private void ultravioletPanel1_Drawing(Object sender, EventArgs e)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Matrix.CreateRotationZ(foo));
+            spriteBatch.Begin();
 
             var size = Ultraviolet.GetPlatform().Windows.GetCurrent().Compositor.Size;
             var settings = new TextLayoutSettings(spriteFont, size.Width, size.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle);
             textRenderer.Draw(spriteBatch, "Welcome to the |c:FFFF00C0|Ultraviolet Framework|c|!", Vector2.Zero, Color.White, settings);
 
             spriteBatch.End();
-
-            foo += 0.05f;
         }
-
-        private Single foo;
 
         /// <summary>
         /// Handles the Drawing event for ultravioletPanel2.
