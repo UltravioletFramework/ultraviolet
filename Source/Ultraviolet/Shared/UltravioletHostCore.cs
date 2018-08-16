@@ -29,7 +29,10 @@ namespace Ultraviolet
         public void ResetElapsed()
         {
             tickTimer.Restart();
-            frameTimer.Restart();
+            if (!IsFixedTimeStep)
+            {
+                forceElapsedTimeToZero = true;
+            }
         }
 
         /// <summary>
@@ -42,7 +45,7 @@ namespace Ultraviolet
             UpdateSystemTimerResolution();
 
             uv.UpdateSuspended();
-            if (InactiveSleepTime.TotalMilliseconds > 0)
+            if (InactiveSleepTime.Ticks > 0)
             {
                 Thread.Sleep(InactiveSleepTime);
             }
@@ -55,111 +58,92 @@ namespace Ultraviolet
         {
             var uv = host.Ultraviolet;
 
+            if (SynchronizationContext.Current is UltravioletSynchronizationContext syncContext)
+                syncContext.ProcessWorkItems();
+
             UpdateSystemTimerResolution();
 
-            if (!host.IsActive && InactiveSleepTime.TotalMilliseconds > 0)
+            if (InactiveSleepTime.Ticks > 0 && !host.IsActive)
                 Thread.Sleep(InactiveSleepTime);
 
-            var syncContext = SynchronizationContext.Current as UltravioletSynchronizationContext;
-            if (syncContext != null)
-                syncContext.ProcessWorkItems();
+            var elapsedTicks = tickTimer.Elapsed.Ticks;
+            tickTimer.Restart();
+
+            accumulatedElapsedTime += elapsedTicks;
+            if (accumulatedElapsedTime > MaxElapsedTime.Ticks)
+                accumulatedElapsedTime = MaxElapsedTime.Ticks;
+
+            var gameTicksToRun = 0;
+            var timeDeltaDraw = default(TimeSpan);
+            var timeDeltaUpdate = default(TimeSpan);
 
             if (IsFixedTimeStep)
             {
-                if (tickTimer.Elapsed.TotalMilliseconds >= targetElapsedTime.TotalMilliseconds)
+                gameTicksToRun = (Int32)(accumulatedElapsedTime / TargetElapsedTime.Ticks);
+                if (gameTicksToRun > 0)
                 {
-                    tickTimer.Restart();
-                    tickElapsed -= targetElapsedTime.TotalMilliseconds * (int)(tickElapsed / targetElapsedTime.TotalMilliseconds);
+                    lagFrames += (gameTicksToRun == 1) ? -1 : Math.Max(0, gameTicksToRun - 1);
 
-                    uv.HandleFrameStart();
+                    if (lagFrames == 0)
+                        runningSlowly = false;
+                    if (lagFrames > 5)
+                        runningSlowly = true;
 
-                    const Double CatchUpThreshold = 1.05;
-                    if (frameElapsed > 0 && frameElapsed > targetElapsedTime.TotalMilliseconds * CatchUpThreshold)
-                    {
-                        const Int32 RunningSlowlyFrameCount = 5;
-                        runningSlowlyFrames = RunningSlowlyFrameCount;
-                        isRunningSlowly = true;
-
-                        const Int32 CatchUpFrameLimit = 10;
-                        var catchUpUpdates = Math.Min(CatchUpFrameLimit, (int)(frameElapsed / targetElapsedTime.TotalMilliseconds));
-
-                        for (int i = 0; i < catchUpUpdates; i++)
-                        {
-                            timeTrackerUpdate.Increment(targetElapsedTime, isRunningSlowly);
-                            timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
-                            if (!UpdateContext(uv, timeTrackerUpdate.Time))
-                            {
-                                return;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (isRunningSlowly)
-                        {
-                            runningSlowlyFrames--;
-                            if (runningSlowlyFrames == 0)
-                            {
-                                isRunningSlowly = false;
-                            }
-                        }
-                    }
-
-                    frameTimer.Restart();
-
-                    var uvTimeUpdate = timeTrackerUpdate.Increment(targetElapsedTime, isRunningSlowly);
-                    if (!UpdateContext(uv, uvTimeUpdate))
-                    {
-                        return;
-                    }
-
-                    if (!host.IsSuspended)
-                    {
-                        var uvTimeDraw = timeTrackerDraw.Increment(targetElapsedTime, isRunningSlowly);
-                        using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
-                        {
-                            uv.Draw(uvTimeDraw);
-                        }
-                    }
-
-                    uv.HandleFrameEnd();
-
-                    frameElapsed = frameTimer.Elapsed.TotalMilliseconds;
+                    timeDeltaUpdate = TargetElapsedTime;
+                    timeDeltaDraw = TimeSpan.FromTicks(gameTicksToRun * TargetElapsedTime.Ticks);
+                    accumulatedElapsedTime -= gameTicksToRun * TargetElapsedTime.Ticks;
                 }
                 else
                 {
-                    var frameDelay = (int)(targetElapsedTime.TotalMilliseconds - tickTimer.Elapsed.TotalMilliseconds);
+                    var frameDelay = (Int32)(TargetElapsedTime.TotalMilliseconds - tickTimer.Elapsed.TotalMilliseconds);
                     if (frameDelay >= 1 + systemTimerPeriod)
                     {
                         Thread.Sleep(frameDelay - 1);
                     }
+                    return;
                 }
             }
             else
             {
-                var time = tickTimer.Elapsed.TotalMilliseconds;
-                tickTimer.Restart();
+                gameTicksToRun = 1;
+                if (forceElapsedTimeToZero)
+                {
+                    timeDeltaUpdate = TimeSpan.Zero;
+                    forceElapsedTimeToZero = false;
+                }
+                else
+                {
+                    timeDeltaUpdate = TimeSpan.FromTicks(elapsedTicks);
+                    timeDeltaDraw = timeDeltaUpdate;
+                }
+                accumulatedElapsedTime = 0;
+                runningSlowly = false;
+            }
 
-                uv.HandleFrameStart();
+            if (gameTicksToRun == 0)
+                return;
 
-                var uvTimeDelta  = TimeSpan.FromTicks((long)(time * TimeSpan.TicksPerMillisecond));
-                var uvTimeUpdate = timeTrackerUpdate.Increment(uvTimeDelta, false);
-                if (!UpdateContext(uv, uvTimeUpdate))
+            uv.HandleFrameStart();
+
+            for (var i = 0; i < gameTicksToRun; i++)
+            {
+                var updateTime = timeTrackerUpdate.Increment(timeDeltaUpdate, runningSlowly);
+                if (!UpdateContext(uv, updateTime))
                 {
                     return;
                 }
-
-                if (!host.IsSuspended)
-                {
-                    var uvTimeDraw = uvTimeUpdate;
-                    using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
-                    {
-                        uv.Draw(uvTimeDraw);
-                    }
-                }
-
-                uv.HandleFrameEnd();
             }
+
+            if (!host.IsSuspended)
+            {
+                var drawTime = timeTrackerDraw.Increment(timeDeltaDraw, runningSlowly);
+                using (UltravioletProfiler.Section(UltravioletProfilerSections.Draw))
+                {
+                    uv.Draw(drawTime);
+                }
+            }
+
+            uv.HandleFrameEnd();
         }
 
         /// <summary>
@@ -179,26 +163,17 @@ namespace Ultraviolet
         /// <summary>
         /// Gets the default value for TargetElapsedTime.
         /// </summary>
-        public static TimeSpan DefaultTargetElapsedTime
-        {
-            get { return defaultTargetElapsedTime; }
-        }
+        public static TimeSpan DefaultTargetElapsedTime { get; } = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 60);
 
         /// <summary>
         /// Gets the default value for InactiveSleepTime.
         /// </summary>
-        public static TimeSpan DefaultInactiveSleepTime
-        {
-            get { return defaultInactiveSleepTime; }
-        }
+        public static TimeSpan DefaultInactiveSleepTime { get; } = TimeSpan.FromMilliseconds(20);
 
         /// <summary>
         /// Gets the default value for IsFixedTimeStep.
         /// </summary>
-        public static Boolean DefaultIsFixedTimeStep
-        {
-            get { return defaultIsFixedTimeStep; }
-        }
+        public static Boolean DefaultIsFixedTimeStep { get; } = true;
 
         /// <summary>
         /// Gets the Ultraviolet context.
@@ -211,30 +186,18 @@ namespace Ultraviolet
         /// <summary>
         /// Gets or sets the target time between frames when the application is running on a fixed time step.
         /// </summary>
-        public TimeSpan TargetElapsedTime
-        {
-            get { return targetElapsedTime; }
-            set { targetElapsedTime = value; }
-        }
+        public TimeSpan TargetElapsedTime { get; set; } = DefaultTargetElapsedTime;
 
         /// <summary>
         /// Gets or sets the amount of time to sleep every frame when
         /// the application's primary window is inactive.
         /// </summary>
-        public TimeSpan InactiveSleepTime
-        {
-            get { return inactiveSleepTime; }
-            set { inactiveSleepTime = value; }
-        }
+        public TimeSpan InactiveSleepTime { get; set; } = DefaultInactiveSleepTime;
 
         /// <summary>
         /// Gets or sets a value indicating whether the application is running on a fixed time step.
         /// </summary>
-        public Boolean IsFixedTimeStep
-        {
-            get { return isFixedTimeStep; }
-            set { isFixedTimeStep = value; }
-        }
+        public Boolean IsFixedTimeStep { get; set; } = DefaultIsFixedTimeStep;
 
         /// <summary>
         /// Updates the specified context.
@@ -279,24 +242,16 @@ namespace Ultraviolet
         // The Ultraviolet host.
         private readonly IUltravioletHost host;
 
-        // Default values.
-        private static readonly TimeSpan defaultTargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 60);
-        private static readonly TimeSpan defaultInactiveSleepTime = TimeSpan.FromMilliseconds(20);
-        private static readonly Boolean defaultIsFixedTimeStep = true;
-
         // Current tick state.
+        private static readonly TimeSpan MaxElapsedTime = TimeSpan.FromMilliseconds(500);
         private readonly UltravioletTimeTracker timeTrackerUpdate = new UltravioletTimeTracker();
         private readonly UltravioletTimeTracker timeTrackerDraw = new UltravioletTimeTracker();
         private readonly Stopwatch tickTimer = new Stopwatch();
-        private readonly Stopwatch frameTimer = new Stopwatch();
-        private Double tickElapsed;
-        private Double frameElapsed;
-        private TimeSpan targetElapsedTime = defaultTargetElapsedTime;
-        private TimeSpan inactiveSleepTime = defaultInactiveSleepTime;
-        private Boolean isFixedTimeStep = defaultIsFixedTimeStep;
-        private Boolean isRunningSlowly = false;
-        private Int32 runningSlowlyFrames;
-
+        private Int64 accumulatedElapsedTime;
+        private Int32 lagFrames;
+        private Boolean runningSlowly;
+        private Boolean forceElapsedTimeToZero;
+ 
         // Current system timer resolution.
         private UInt32 systemTimerPeriod;
     }
