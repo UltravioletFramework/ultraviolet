@@ -77,9 +77,9 @@ namespace Ultraviolet.OpenGL
                 InitializeDebugOutput(configuration);
             }
             
-            this.capabilities = new OpenGLGraphicsCapabilities(configuration);
+            this.Capabilities = new OpenGLGraphicsCapabilities(configuration);
 
-            if (capabilities.SrgbEncodingEnabled && gl.IsFramebufferSrgbAvailable)
+            if (Capabilities.SrgbEncodingEnabled && gl.IsFramebufferSrgbAvailable)
             {
                 gl.Enable(gl.GL_FRAMEBUFFER_SRGB);
                 gl.ThrowIfError();
@@ -88,7 +88,7 @@ namespace Ultraviolet.OpenGL
             this.maxTextureStages = gl.GetInteger(gl.GL_MAX_TEXTURE_IMAGE_UNITS);
             this.textures = new Texture[maxTextureStages];
             this.samplerStates = new SamplerState[maxTextureStages];
-            this.samplerObjects = capabilities.SupportsIndependentSamplerState ? new OpenGLSamplerObject[maxTextureStages] : null;
+            this.samplerObjects = Capabilities.SupportsIndependentSamplerState ? new OpenGLSamplerObject[maxTextureStages] : null;
             this.backBufferRenderTargetUsage = configuration.BackBufferRenderTargetUsage;
 
             if (samplerObjects != null)
@@ -380,7 +380,7 @@ namespace Ultraviolet.OpenGL
                         textdyn.Flush();
                 }
 
-                if (!capabilities.SupportsIndependentSamplerState)
+                if (!Capabilities.SupportsIndependentSamplerState)
                 {
                     var samplerState = (OpenGLSamplerState)(GetSamplerState(sampler) ?? SamplerState.LinearClamp);
                     for (int i = 0; i < samplerStates.Length; i++)
@@ -516,7 +516,7 @@ namespace Ultraviolet.OpenGL
 
             if (this.samplerStates[sampler] != state)
             {
-                if (capabilities.SupportsIndependentSamplerState)
+                if (Capabilities.SupportsIndependentSamplerState)
                 {
                     var samplerObject = this.samplerObjects[sampler];
                     samplerObject.ApplySamplerState(state);
@@ -719,22 +719,36 @@ namespace Ultraviolet.OpenGL
             }
         }
 
-        /// <inheritdoc/>
-        public void UpdateFrameRate()
+        /// <summary>
+        /// Updates the graphics device's frame count.
+        /// </summary>
+        public void UpdateFrameCount()
         {
-            frameRateDelta = (frameRateDelta * frameRateSmoothing) + (frameRateTimer.Elapsed.TotalMilliseconds * (1.0 - frameRateSmoothing));
-            frameRate = Math.Round(1000.0 / frameRateDelta, 0);
-            frameRateTimer.Restart();
+            frameCounter++;
+        }
+
+        /// <summary>
+        /// Updates the graphics device's calculated frame rate.
+        /// </summary>
+        /// <param name="time">Time elapsed since the last update.</param>
+        public void UpdateFrameRate(UltravioletTime time)
+        {
+            Contract.Require(time, nameof(time));
+
+            frameCounterElapsed += time.ElapsedTime;
+            if (frameCounterElapsed > TimeSpan.FromSeconds(1))
+            {
+                frameCounterElapsed -= TimeSpan.FromSeconds(1);
+                frameRate = frameCounter;
+                frameCounter = 0;
+            }
         }
 
         /// <inheritdoc/>
-        public Single FrameRate => (Single)frameRate;
+        public Single FrameRate => frameRate;
 
         /// <inheritdoc/>
-        public GraphicsCapabilities Capabilities
-        {
-            get { return capabilities; }
-        }
+        public GraphicsCapabilities Capabilities { get; private set; }
 
         /// <inheritdoc/>
         public Boolean CurrentRenderTargetIsSrgbEncoded => 
@@ -1043,13 +1057,10 @@ namespace Ultraviolet.OpenGL
             }
         }
 
-        // Property values.
-        private readonly GraphicsCapabilities capabilities;
-
         // Device state.
         private IntPtr context;
-        private OpenGLRenderTarget2D renderTarget;
         private Viewport viewport;
+        private OpenGLRenderTarget2D renderTarget;
         private OpenGLGeometryStream geometryStream;
         private OpenGLBlendState blendState;
         private OpenGLDepthStencilState depthStencilState;
@@ -1058,10 +1069,9 @@ namespace Ultraviolet.OpenGL
         private RenderTargetUsage backBufferRenderTargetUsage;
 
         // Frame rate counter.
-        private Stopwatch frameRateTimer = new Stopwatch();
-        private Double frameRateSmoothing = 0.9;
-        private Double frameRateDelta;
-        private Double frameRate;
+        private TimeSpan frameCounterElapsed;
+        private Int32 frameCounter;
+        private Int32 frameRate;
 
         // Current textures.
         private readonly Int32 maxTextureStages;
