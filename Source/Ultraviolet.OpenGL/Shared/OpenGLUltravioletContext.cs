@@ -94,14 +94,22 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <inheritdoc/>
+        public override void Update(UltravioletTime time)
+        {
+            if (graphics is OpenGLUltravioletGraphics oglgfx)
+                oglgfx.UpdateFrameRate(time);
+
+            base.Update(time);
+        }
+
+        /// <inheritdoc/>
         public override void Draw(UltravioletTime time)
         {
             Contract.EnsureNotDisposed(this, Disposed);
 
             OnDrawing(time);
 
-            var oglgfx = graphics as OpenGLUltravioletGraphics;
-            if (oglgfx != null)
+            if (graphics is OpenGLUltravioletGraphics oglgfx)
             {
                 var glcontext = oglgfx.OpenGLContext;
                 var windowInfo = (SDL2UltravioletWindowInfoOpenGL)platform.Windows;
@@ -127,7 +135,7 @@ namespace Ultraviolet.OpenGL
                 windowInfo.DesignateCurrent(null, glcontext);
 
                 oglgfx.SetRenderTargetToBackBuffer();
-                oglgfx.UpdateFrameRate();
+                oglgfx.UpdateFrameCount();
             }
 
             base.Draw(time);
@@ -154,7 +162,7 @@ namespace Ultraviolet.OpenGL
         /// <summary>
         /// Gets the assembly that implements the audio subsystem.
         /// </summary>
-        public Assembly AudioSubsystemAssembly => audioSubsystemAssembly;
+        public Assembly AudioSubsystemAssembly { get; private set; }
 
         /// <summary>
         /// Initializes the context's audio subsystem.
@@ -171,7 +179,7 @@ namespace Ultraviolet.OpenGL
             {
                 asm = Assembly.Load(configuration.AudioSubsystemAssembly);
                 InitializeFactoryMethodsInAssembly(asm);
-                audioSubsystemAssembly = asm;
+                AudioSubsystemAssembly = asm;
             }
             catch (Exception e)
             {
@@ -307,8 +315,5 @@ namespace Ultraviolet.OpenGL
         private readonly IUltravioletAudio audio;
         private readonly IUltravioletInput input;
         private readonly IUltravioletUI ui;
-
-        // Property values.
-        private Assembly audioSubsystemAssembly;
     }
 }
