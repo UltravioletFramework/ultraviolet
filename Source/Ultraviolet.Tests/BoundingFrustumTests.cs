@@ -450,11 +450,16 @@ namespace Ultraviolet.Tests
             var view = Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up);
             var proj = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 4f / 3f, 1f, 1000f);
             var frustum = new BoundingFrustum(view * proj);
+            var matrix = frustum.Matrix;
 
             var json = JsonConvert.SerializeObject(frustum, 
                 UltravioletJsonSerializerSettings.Instance);
 
-            TheResultingString(json).ShouldBe(@"{""matrix"":[1.81066,0.0,0.0,0.0,0.0,2.41421342,0.0,0.0,0.0,0.0,-1.001001,-1.0,0.0,0.0,4.004004,5.0]}");
+            TheResultingString(json).ShouldBe(@"{""matrix"":[" + 
+                matrix.M11.ToString("r") + ",0.0,0.0,0.0,0.0," + 
+                matrix.M22.ToString("r") + ",0.0,0.0,0.0,0.0," + 
+                matrix.M33.ToString("r") + ",-1.0,0.0,0.0," + 
+                matrix.M43.ToString("r") + ",5.0]}");
         }
 
         [Test]
