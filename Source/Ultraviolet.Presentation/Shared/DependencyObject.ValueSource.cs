@@ -45,7 +45,7 @@
             /// <summary>
             /// The dependency property is currently exposing its coerced value.
             /// </summary>
-            CoervedValue,
+            CoercedValue,
         }
     }
 }
