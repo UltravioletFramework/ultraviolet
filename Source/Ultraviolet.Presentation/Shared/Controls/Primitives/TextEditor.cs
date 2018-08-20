@@ -496,7 +496,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             BeginTrackingSelectionChanges();
 
-            var positionPixs = (Point2)Display.DipsToPixels(position);
+            var positionPixs = (Point2)Display.DipsToPixels(position) - new Point2(textOffsetX, textOffsetY);
 
             caretBlinkTimer = 0;
             caretPosition = View.Resources.TextRenderer.GetInsertionPointAtPosition(textLayoutStream, positionPixs);
@@ -2107,6 +2107,14 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             var settings = new TextLayoutSettings(owner.Font, layoutWidth, layoutHeight, textFlags, options, textDirection, textScript, UltravioletFontStyle.Regular, null, textLanguage);
             View.Resources.TextRenderer.CalculateLayout(textParserStream, textLayoutStream, settings);
 
+            textOffsetX = 0;
+            textOffsetY = 0;
+
+            if (IsRightToLeft())
+            {
+                textOffsetX = Math.Max(0, (Int32)Display.DipsToPixels(RenderSize.Width) - (textLayoutStream.ActualWidth + GetDefaultSizeOfInsertionCaret().Width));
+            }
+
             UpdateSelectionAndCaret();
         }
 
@@ -2131,7 +2139,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             var selectionColor = isActive ? SelectionColor : InactiveSelectionColor;
 
             // Draw the first line
-            var selectionTopDips = Display.PixelsToDips(selectionTop);
+            var selectionTopOffset = global::Ultraviolet.Rectangle.Offset(selectionTop, textOffsetX, textOffsetY);
+            var selectionTopDips = Display.PixelsToDips(selectionTopOffset);
             DrawImage(dc, SelectionImage, selectionTopDips, selectionColor, true);
 
             // Draw the middle
@@ -2145,7 +2154,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 {
                     textLayoutStream.GetNextLineInfoRef(ref lineInfo, out lineInfo);
 
-                    var lineBounds = new Ultraviolet.Rectangle(lineInfo.X, lineInfo.Y, lineInfo.Width, lineInfo.Height);
+                    var lineBounds = new Ultraviolet.Rectangle(lineInfo.X + textOffsetX, lineInfo.Y + textOffsetY, lineInfo.Width, lineInfo.Height);
                     var lineBoundsDips = Display.PixelsToDips(lineBounds);
                     DrawImage(dc, SelectionImage, lineBoundsDips, selectionColor, true);
                 }
@@ -2156,7 +2165,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             // Draw the last line
             if (selectionLineCount > 1)
             {
-                var selectionBottomDips = Display.PixelsToDips(selectionBottom);
+                var selectionBottomOffset = global::Ultraviolet.Rectangle.Offset(selectionBottom, textOffsetX, textOffsetY);
+                var selectionBottomDips = Display.PixelsToDips(selectionBottomOffset);
                 DrawImage(dc, SelectionImage, selectionBottomDips, selectionColor, true);
             }
         }
@@ -2173,8 +2183,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             var foreground = (owner == null) ? Color.White : owner.Foreground;
 
             var positionRaw = Display.DipsToPixels(UntransformedAbsolutePosition);
-            var positionX = dc.IsTransformed ? positionRaw.X : Math.Floor(positionRaw.X);
-            var positionY = dc.IsTransformed ? positionRaw.Y : Math.Floor(positionRaw.Y);
+            var positionX = dc.IsTransformed ? (textOffsetX + positionRaw.X) : Math.Floor(textOffsetX + positionRaw.X);
+            var positionY = dc.IsTransformed ? (textOffsetY + positionRaw.Y) : Math.Floor(textOffsetY + positionRaw.Y);
             var position = new Vector2((Single)positionX, (Single)positionY);
             View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutStream, position, foreground * dc.Opacity);
         }
@@ -2201,7 +2211,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             var isCaretVisible = ((Int32)(caretBlinkTimer / 500.0) % 2 == 0);
             if (isCaretVisible)
             {
-                var caretBoundsDips = Display.PixelsToDips(caretRenderBounds);
+                var caretBoundsOffset = global::Ultraviolet.Rectangle.Offset(caretRenderBounds, textOffsetX, textOffsetY);
+                var caretBoundsDips = Display.PixelsToDips(caretBoundsOffset);
                 var caretImage = (actualInsertionMode == CaretMode.Insert) ? CaretInsertImage : CaretOverwriteImage;
                 var caretColor = (actualInsertionMode == CaretMode.Insert) ? CaretInsertColor : CaretOverwriteColor;
                 DrawImage(dc, caretImage, caretBoundsDips, caretColor, true);
@@ -3045,6 +3056,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         // State values.
         private readonly TextParserTokenStream textParserStream = new TextParserTokenStream();
         private readonly TextLayoutCommandStream textLayoutStream = new TextLayoutCommandStream();
+        private Int32 textOffsetX;
+        private Int32 textOffsetY;
         private Boolean pendingTextLayout = true;
         private Boolean pendingScrollToCaret;
         private PendingScrollState pendingScrollState;
