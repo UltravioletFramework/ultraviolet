@@ -35,6 +35,9 @@
     <Ultraviolet_NETCore_Solution Include="Source/Ultraviolet.NETCore.sln">
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_NETCore_Solution>
+    <Ultraviolet_Tools_Solution Include="Source/Ultraviolet.Tools.sln">
+      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+    </Ultraviolet_Tools_Solution>
   </ItemGroup>
   
   <!-- DESKTOP -->	
@@ -62,33 +65,45 @@
     <Exec Condition="'$(OS)'=='Unix'" 
       Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_NETCore_Solution)&quot;"/>
   </Target>
+  <Target Name="RestoreTools">
+    <Exec Condition="'$(OS)'=='Windows_NT'" 
+      Command="&quot;Packages/nuget.exe&quot; restore &quot;@(Ultraviolet_Tools_Solution)&quot;"/>
+    <Exec Condition="'$(OS)'=='Unix'" 
+      Command="mono Packages/nuget.exe restore &quot;@(Ultraviolet_Tools_Solution)&quot;"/>
+  </Target>
   
   <Target Name="CleanWindows" Condition="'$(OS)' == 'Windows_NT'">
     <RemoveDir Directories="Binaries/AnyCPU"/>
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)" Targets="Clean"/>
+    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildWindows" Condition="'$(OS)' == 'Windows_NT'">
     <CallTarget Targets="RestoreWindows"/>
     <MSBuild Projects="@(Ultraviolet_Windows_Solution)"/>
+    <MSBuild Projects="@(Ultraviolet_Tools_Solution)"/>
     <CallTarget Targets="CopyWindowsBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
   <Target Name="CleanLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
     <RemoveDir Directories="Binaries/AnyCPU"/>
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)" Targets="Clean"/>
+    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildLinux" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'false' ">
     <CallTarget Targets="RestoreLinux"/>
     <MSBuild Projects="@(Ultraviolet_Desktop_Solution)"/>
+    <MSBuild Projects="@(Ultraviolet_Tools_Solution)"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
   <Target Name="CleanMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <RemoveDir Directories="Binaries/AnyCPU"/>
     <MSBuild Projects="@(Ultraviolet_MacOS_Solution)" Targets="Clean"/>
+    <MSBuild Projects="@(Ultraviolet_Tools_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildMacOS" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <CallTarget Targets="RestoreMacOS"/>
     <MSBuild Projects="@(Ultraviolet_MacOS_Solution)"/>
+    <MSBuild Projects="@(Ultraviolet_Tools_Solution)"/>
     <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
@@ -107,7 +122,7 @@
     <MSBuild Projects="@(Ultraviolet_NETCore_Solution)"/>
     <CallTarget Targets="CopyNETCoreBinaries"/>
   </Target>
-  
+
   <Target Name="CopyDesktopBinaries">
     <CreateItem Include="Source/Ultraviolet.Core/Desktop/bin/$(Configuration)/Newtonsoft.Json.*">
         <Output TaskParameter="Include" ItemName="Newtonsoft_Json_Desktop"/>
