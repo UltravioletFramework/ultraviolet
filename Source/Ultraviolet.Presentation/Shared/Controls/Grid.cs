@@ -368,20 +368,23 @@ namespace Ultraviolet.Presentation.Controls
         /// <inheritdoc/>
         protected override Size2D ArrangeOverride(Size2D finalSize, ArrangeOptions options)
         {
+            var rtl = (FlowDirection == FlowDirection.RightToLeft);
+
             PrepareForArrange(ColumnDefinitions);
             PrepareForArrange(RowDefinitions);
 
-            FinalizeDimension(ColumnDefinitions, finalSize.Width);
-            FinalizeDimension(RowDefinitions, finalSize.Height);
+            FinalizeDimension(ColumnDefinitions, finalSize.Width, FlowDirection == FlowDirection.RightToLeft);
+            FinalizeDimension(RowDefinitions, finalSize.Height, false);
 
             foreach (var cell in virtualCells)
             {
+                var flowedColumnIndex = cell.ColumnIndex + (rtl ? cell.ColumnSpan - 1 : 0);
+
                 var childElement = cell.Element;
+                var childColumn = ColumnDefinitions[flowedColumnIndex];
+                var childRow = RowDefinitions[cell.RowIndex];
 
-                var childColumn = ColumnDefinitions[cell.ColumnIndex];
-                var childRow    = RowDefinitions[cell.RowIndex];
-
-                var childArea = new RectangleD(childColumn.Position, childRow.Position, 
+                var childArea = new RectangleD(childColumn.Position, childRow.Position,
                     Math.Max(0, CalculateSpanDimension(ColumnDefinitions, cell.ColumnIndex, cell.ColumnSpan)),
                     Math.Max(0, CalculateSpanDimension(RowDefinitions, cell.RowIndex, cell.RowSpan)));
 
@@ -392,15 +395,32 @@ namespace Ultraviolet.Presentation.Controls
         }
 
         /// <inheritdoc/>
+        protected override Visual HitTestCore(Point2D point)
+        {
+            if (!HitTestUtil.IsPotentialHit(this, point))
+                return null;
+
+            var childMatch = HitTestChildren(point);
+            if (childMatch != null)
+            {
+                return childMatch;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override Visual HitTestChildren(Point2D point)
         {
             var col = GetColumnAtPoint(point);
             var row = GetRowAtPoint(point);
+            if (row < 0 || col < 0)
+                return null;
 
             for (int i = Children.Count - 1; i >= 0; i--)
             {
                 var child = Children.GetByZOrder(i);
-                
+
                 var childCol = GetColumn(child);
                 var childColSpan = GetColumnSpan(child);
 
@@ -475,19 +495,34 @@ namespace Ultraviolet.Presentation.Controls
         /// <returns>The index of the column at the specified point in element space.</returns>
         private Int32 GetColumnAtPoint(Point2D point)
         {
-            var position = 0.0;
-
-            for (int i = 0; i < ColumnDefinitions.Count; i++)
+            var rtl = (FlowDirection == FlowDirection.RightToLeft);
+            if (rtl)
             {
-                var width = ColumnDefinitions[i].ActualWidth;
-                if (point.X >= position && point.X < position + width)
+                var position = RenderSize.Width;
+                for (int i = 0; i < ColumnDefinitions.Count; i++)
                 {
-                    return i;
+                    var width = ColumnDefinitions[i].ActualWidth;
+                    if (point.X >= position - width && point.X < position + width)
+                    {
+                        return i;
+                    }
+                    position -= width;
                 }
-                position += width;
             }
-
-            return 0;
+            else
+            {
+                var position = 0.0;
+                for (int i = 0; i < ColumnDefinitions.Count; i++)
+                {
+                    var width = ColumnDefinitions[i].ActualWidth;
+                    if (point.X >= position && point.X < position + width)
+                    {
+                        return i;
+                    }
+                    position += width;
+                }
+            }
+            return -1;
         }
 
         /// <summary>
@@ -509,7 +544,7 @@ namespace Ultraviolet.Presentation.Controls
                 position += height;
             }
 
-            return 0;
+            return -1;
         }
 
         /// <summary>
@@ -924,17 +959,30 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         /// <param name="dimension">The collection of row or column definitions to finalize.</param>
         /// <param name="definitions">The grid's final arranged dimension.</param>
-        private void FinalizeDimension(IDefinitionBaseCollection definitions, Double dimension)
+        /// <param name="reverse">A value indicating whether to reverse the order of the rows/columns.</param>
+        private void FinalizeDimension(IDefinitionBaseCollection definitions, Double dimension, Boolean reverse)
         {
             FinalizeStars(definitions, dimension);
 
-            var position = 0.0;
-
-            for (int i = 0; i < definitions.Count; i++)
+            if (reverse)
             {
-                var def = definitions[i];
-                def.Position = position;
-                position += def.ActualDimension;
+                var position = dimension;
+                for (int i = 0; i < definitions.Count; i++)
+                {
+                    var def = definitions[i];
+                    position -= def.ActualDimension;
+                    def.Position = position;
+                }
+            }
+            else
+            {
+                var position = 0.0;
+                for (int i = 0; i < definitions.Count; i++)
+                {
+                    var def = definitions[i];
+                    def.Position = position;
+                    position += def.ActualDimension;
+                }
             }
         }
         

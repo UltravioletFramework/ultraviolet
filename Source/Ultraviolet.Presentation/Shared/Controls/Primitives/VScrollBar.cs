@@ -36,8 +36,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 null);
 
             // Commands - track
-            CommandManager.RegisterClassBindings(typeof(VScrollBar), Track.IncreaseCommand, ExecutedPageDownCommand, CanExecuteScrollCommand);
-            CommandManager.RegisterClassBindings(typeof(VScrollBar), Track.DecreaseCommand, ExecutedPageUpCommand, CanExecuteScrollCommand);
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), Track.IncreaseCommand, ExecutedTrackIncreaseCommand, CanExecuteTrackCommand);
+            CommandManager.RegisterClassBindings(typeof(VScrollBar), Track.DecreaseCommand, ExecutedTrackDecreaseCommand, CanExecuteTrackCommand);
         }
 
         /// <summary>
@@ -203,11 +203,37 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         }
 
         /// <summary>
+        /// Executes the <see cref="Track.IncreaseCommand"/> command.
+        /// </summary>
+        private static void ExecutedTrackIncreaseCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
+        {
+            if (element is FrameworkElement fe)
+                ScrollBar.PageDownCommand.Execute(fe.View, null, fe);
+        }
+
+        /// <summary>
+        /// Executes the <see cref="Track.DecreaseCommand"/> command.
+        /// </summary>
+        private static void ExecutedTrackDecreaseCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
+        {
+            if (element is FrameworkElement fe)
+                ScrollBar.PageUpCommand.Execute(fe.View, null, fe);
+        }
+
+        /// <summary>
         /// Determines whether a scroll command can execute.
         /// </summary>
         private static void CanExecuteScrollCommand(DependencyObject element, ICommand command, Object paramter, CanExecuteRoutedEventData data)
         {
             data.CanExecute = !((VScrollBar)element).IsPartOfScrollViewer;
+        }
+
+        /// <summary>
+        /// Determines whether a track command can execute.
+        /// </summary>
+        private static void CanExecuteTrackCommand(DependencyObject element, ICommand command, Object parameter, CanExecuteRoutedEventData data)
+        {
+            data.CanExecute = true;
         }
 
         /// <summary>
