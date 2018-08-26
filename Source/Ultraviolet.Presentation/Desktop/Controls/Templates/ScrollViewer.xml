@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ComponentTemplate>
   <View>
-    <Grid Class="scrollviewer-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Class="scrollviewer-component" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FlowDirection="{{FlowDirection}}">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="Auto"/>
@@ -44,7 +44,7 @@
                   SmallChange="16"
                   LargeChange="{{ViewportWidth}}"
                   Value="{{HorizontalOffset}}"
-                  Minimum="0" 
+                  Minimum="0"
                   Maximum="{{ScrollableWidth}}"
                   ViewportSize="{{ViewportWidth}}"/>
       <VScrollBar Name="PART_VScroll"

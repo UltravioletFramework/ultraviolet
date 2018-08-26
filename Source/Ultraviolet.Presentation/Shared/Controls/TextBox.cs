@@ -506,7 +506,7 @@ namespace Ultraviolet.Presentation.Controls
                     TextEditor.SelectionLength = value;
             }
         }
-        
+
         /// <summary>
         /// Identifies the <see cref="Text"/> dependency property.
         /// </summary>
@@ -958,6 +958,6 @@ namespace Ultraviolet.Presentation.Controls
             var service = SoftwareKeyboardService.Create();
             service.TextInputRegion = clear ? (Ultraviolet.Rectangle?)null :
                 (Ultraviolet.Rectangle)Display.DipsToPixels(CalculateTransformedVisualBounds());
-        }        
+        }
     }
 }

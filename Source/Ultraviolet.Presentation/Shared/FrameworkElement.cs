@@ -279,6 +279,15 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Gets or sets the direction in which the element flows its content.
+        /// </summary>
+        public FlowDirection FlowDirection
+        {
+            get { return GetValue<FlowDirection>(FlowDirectionProperty); }
+            set { SetValue(FlowDirectionProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the transformation which is applied to this element during layout.
         /// </summary>
         public Transform LayoutTransform
@@ -411,6 +420,13 @@ namespace Ultraviolet.Presentation
         /// <remarks>The styling name of this dependency property is 'valign'.</remarks>
         public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.Register("VerticalAlignment", "valign",
             typeof(VerticalAlignment), typeof(FrameworkElement), new PropertyMetadata<VerticalAlignment>(PresentationBoxedValues.VerticalAlignment.Stretch, PropertyMetadataOptions.AffectsArrange));
+
+        /// <summary>
+        /// Identifies the <see cref="FlowDirection"/> dependency property.
+        /// </summary>
+        /// <remarks>The styling name of this dependency property is 'flow-direction'.</remarks>
+        public static readonly DependencyProperty FlowDirectionProperty = DependencyProperty.RegisterAttached("FlowDirection", typeof(FlowDirection), typeof(FrameworkElement),
+            new PropertyMetadata<FlowDirection>(FlowDirection.LeftToRight, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
         /// Identifies the <see cref="LayoutTransform"/> dependency property.

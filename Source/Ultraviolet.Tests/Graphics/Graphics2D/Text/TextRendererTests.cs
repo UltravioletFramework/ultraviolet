@@ -1424,7 +1424,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var window = uv.GetPlatform().Windows.GetPrimary();
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.Font, window.Compositor.Width / 4, window.Compositor.Height, 
-                            TextFlags.AlignTop | TextFlags.AlignRight, TextLayoutOptions.Hyphenate, TextDirection.RightToLeft));
+                            TextFlags.AlignTop | TextFlags.AlignRight, TextLayoutOptions.Hyphenate, TextDirection.RightToLeft, TextScript.Latin));
 
                     content.SpriteBatch.Begin();
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);

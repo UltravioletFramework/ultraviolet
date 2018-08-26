@@ -208,7 +208,7 @@ namespace Ultraviolet.Presentation.Controls
         {
             ScrollToHorizontalOffset(ContentHorizontalOffset + ViewportWidth);
         }
-        
+
         /// <summary>
         /// Scrolls the viewer to the top of its content.
         /// </summary>
@@ -366,7 +366,7 @@ namespace Ultraviolet.Presentation.Controls
             get { return GetValue<Boolean>(ContentClippedProperty); }
             set { SetValue(ContentClippedProperty, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether the scroll viewer should defer
         /// scrolling until after the user is finished dragging the thumb.
@@ -376,7 +376,7 @@ namespace Ultraviolet.Presentation.Controls
             get { return GetValue<Boolean>(IsDeferredScrollingEnabledProperty); }
             set { SetValue(IsDeferredScrollingEnabledProperty, value); }
         }
-        
+
         /// <summary>
         /// Gets the width of the content which is being displayed by the scroll viewer.
         /// </summary>
@@ -497,7 +497,7 @@ namespace Ultraviolet.Presentation.Controls
             add { AddHandler(ScrollChangedEvent, value); }
             remove { RemoveHandler(ScrollChangedEvent, value); }
         }
-        
+
         /// <summary>
         /// The private access key for the <see cref="ComputedHorizontalScrollBarVisibility"/> read-only dependency property.
         /// </summary>
@@ -565,7 +565,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.RegisterAttached("VerticalScrollBarVisibility", "vscrollbar-visibility", typeof(ScrollBarVisibility), typeof(ScrollViewer),
             new PropertyMetadata<ScrollBarVisibility>(ScrollBarVisibility.Visible, PropertyMetadataOptions.AffectsMeasure));
-        
+
         /// <summary>
         /// Identifies the <see cref="ContentMargin"/> dependency property.
         /// </summary>
@@ -601,7 +601,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty IsDeferredScrollingEnabledProperty = DependencyProperty.RegisterAttached("IsDeferredScrollingEnabled", typeof(Boolean), typeof(ScrollViewer),
             new PropertyMetadata<Boolean>(CommonBoxedValues.Boolean.False, PropertyMetadataOptions.None));
-        
+
         /// <summary>
         /// The private access key for the <see cref="ExtentWidth"/> read-only dependency property.
         /// </summary>
@@ -679,7 +679,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         /// <value>The identifier for the <see cref="ViewportHeight"/> dependency property.</value>
         public static readonly DependencyProperty ViewportHeightProperty = ViewportHeightPropertyKey.DependencyProperty;
-        
+
         /// <summary>
         /// The private access key for the <see cref="HorizontalOffset"/> read-only dependency property.
         /// </summary>
@@ -688,9 +688,9 @@ namespace Ultraviolet.Presentation.Controls
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// The private access key for the <see cref="HorizontalOffset"/> read-only dependency property.
+        /// Identifies the <see cref="HorizontalOffset"/> dependency property.
         /// </summary>
-        /// <value>The private access key for the <see cref="HorizontalOffset"/> dependency property.</value>
+        /// <value>The identifier for the <see cref="HorizontalOffset"/> dependency property.</value>
         public static readonly DependencyProperty HorizontalOffsetProperty = HorizontalOffsetPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -701,9 +701,9 @@ namespace Ultraviolet.Presentation.Controls
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.None));
 
         /// <summary>
-        /// The private access key for the <see cref="VerticalOffset"/> read-only dependency property.
+        /// Identifies the <see cref="VerticalOffset"/> dependency property.
         /// </summary>
-        /// <value>The private access key for the <see cref="VerticalOffset"/> dependency property.</value>
+        /// <value>The identifier for the <see cref="VerticalOffset"/> dependency property.</value>
         public static readonly DependencyProperty VerticalOffsetProperty = VerticalOffsetPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -714,9 +714,9 @@ namespace Ultraviolet.Presentation.Controls
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
-        /// The private access key for the <see cref="ContentHorizontalOffset"/> read-only dependency property.
+        /// Identifies the <see cref="ContentHorizontalOffset"/> dependency property.
         /// </summary>
-        /// <value>The private access key for the <see cref="ContentHorizontalOffset"/> dependency property.</value>
+        /// <value>The identifier for the <see cref="ContentHorizontalOffset"/> dependency property.</value>
         public static readonly DependencyProperty ContentHorizontalOffsetProperty = ContentHorizontalOffsetPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -727,18 +727,18 @@ namespace Ultraviolet.Presentation.Controls
             new PropertyMetadata<Double>(CommonBoxedValues.Double.Zero, PropertyMetadataOptions.AffectsArrange));
 
         /// <summary>
-        /// The private access key for the <see cref="ContentVerticalOffset"/> read-only dependency property.
+        /// Identifies the <see cref="ContentVerticalOffset"/> dependency property.
         /// </summary>
-        /// <value>The private access key for the <see cref="ContentVerticalOffset"/> dependency property.</value>
+        /// <value>The identifier for the <see cref="ContentVerticalOffset"/> dependency property.</value>
         public static readonly DependencyProperty ContentVerticalOffsetProperty = ContentVerticalOffsetPropertyKey.DependencyProperty;
         
         /// <summary>
         /// Identifies the <see cref="ScrollChanged"/> event.
         /// </summary>
         /// <value>The identifier for the <see cref="ScrollChanged"/> routed event.</value>
-        public static readonly RoutedEvent ScrollChangedEvent = EventManager.RegisterRoutedEvent("ScrollChanged", RoutingStrategy.Bubble, 
+        public static readonly RoutedEvent ScrollChangedEvent = EventManager.RegisterRoutedEvent("ScrollChanged", RoutingStrategy.Bubble,
             typeof(UpfScrollChangedEventHandler), typeof(ScrollViewer));
-        
+
         /// <inheritdoc/>
         protected override Size2D MeasureOverride(Size2D availableSize)
         {
@@ -760,7 +760,7 @@ namespace Ultraviolet.Presentation.Controls
             var vAuto = (vVisibility == ScrollBarVisibility.Auto);
 
             PART_ContentPresenter.CanScrollHorizontally = (hVisibility != ScrollBarVisibility.Disabled);
-            PART_ContentPresenter.CanScrollVertically   = (vVisibility != ScrollBarVisibility.Disabled);
+            PART_ContentPresenter.CanScrollVertically = (vVisibility != ScrollBarVisibility.Disabled);
 
             var availableSizeSansMargins = availableSize - Margin;
             child.DigestImmediately();
@@ -903,7 +903,7 @@ namespace Ultraviolet.Presentation.Controls
 
             base.CleanupOverride();
         }
-
+        
         /// <inheritdoc/>
         protected override void OnMouseWheel(MouseDevice device, Double x, Double y, RoutedEventData data)
         {
@@ -930,10 +930,10 @@ namespace Ultraviolet.Presentation.Controls
             {
                 HandleKeyInput(key, modifiers, data);
             }
-            
+
             base.OnKeyDown(device, key, modifiers, data);
         }
-        
+
         /// <inheritdoc/>
         protected override void OnGamePadButtonDown(GamePadDevice device, GamePadButton button, Boolean repeat, RoutedEventData data)
         {
@@ -1001,7 +1001,7 @@ namespace Ultraviolet.Presentation.Controls
         {
             get { return true; }
         }
-        
+
         /// <summary>
         /// Occurs when an element requests that it be brought into view.
         /// </summary>
@@ -1022,7 +1022,7 @@ namespace Ultraviolet.Presentation.Controls
             if (presenter == null)
                 return;
 
-            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset, 
+            var boundsViewport = new RectangleD(scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset,
                 scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
             var boundsRequester = RectangleD.TransformAxisAligned(requester.Bounds, requester.GetTransformToAncestorMatrix(scrollViewer));
             boundsRequester = RectangleD.Offset(boundsRequester, scrollViewer.ContentHorizontalOffset, scrollViewer.ContentVerticalOffset);
@@ -1089,7 +1089,7 @@ namespace Ultraviolet.Presentation.Controls
 
             data.Handled = true;
         }
-        
+
         /// <summary>
         /// Occurs when the user stops dragging one of the viewer's scroll thumbs.
         /// </summary>
@@ -1201,7 +1201,7 @@ namespace Ultraviolet.Presentation.Controls
         /// </summary>
         private static void ExecutedDeferScrollToVerticalOffsetCommand(DependencyObject element, ICommand command, Object parameter, ExecutedRoutedEventData data)
         {
-            if (!(parameter is Double) && data.CommandValueParameter == null) 
+            if (!(parameter is Double) && data.CommandValueParameter == null)
                 return;
 
             var pvalue = data.CommandValueParameter.HasValue ? data.CommandValueParameter.Value.AsDouble() : (Double)parameter;
@@ -1210,7 +1210,7 @@ namespace Ultraviolet.Presentation.Controls
             if (scrollViewer != null)
                 scrollViewer.ChangeVerticalOffset(pvalue, true);
         }
-        
+
         /// <summary>
         /// Exeuctes the <see cref="ScrollBar.LineRightCommand"/> command.
         /// </summary>
@@ -1526,7 +1526,7 @@ namespace Ultraviolet.Presentation.Controls
 
             var vOffset = ClampVerticalOffset(VerticalOffset);
             if (vOffset != VerticalOffset)
-                ChangeVerticalOffset(vOffset, false);            
+                ChangeVerticalOffset(vOffset, false);
         }
 
         /// <summary>

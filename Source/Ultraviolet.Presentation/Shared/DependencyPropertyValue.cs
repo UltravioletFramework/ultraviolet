@@ -1149,7 +1149,7 @@ namespace Ultraviolet.Presentation
                     return ValueSource.DefaultValue;
 
                 if (IsCoerced)
-                    return ValueSource.CoervedValue;
+                    return ValueSource.CoercedValue;
 
                 if (IsAnimated)
                     return ValueSource.AnimatedValue;

@@ -15,7 +15,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="height">The height of the layout area.</param>
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags)
-            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, UltravioletFontStyle.Regular, null)
+            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, TextScript.Unknown, UltravioletFontStyle.Regular, null)
         {
 
         }
@@ -29,7 +29,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="fontStyle">The initial font style.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, UltravioletFontStyle fontStyle)
-            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, fontStyle, null)
+            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, TextScript.Unknown, fontStyle, null)
         {
 
         }
@@ -43,7 +43,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, String initialLayoutStyle)
-            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, UltravioletFontStyle.Regular, initialLayoutStyle)
+            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, TextScript.Unknown, UltravioletFontStyle.Regular, initialLayoutStyle)
         {
 
         }
@@ -58,7 +58,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, UltravioletFontStyle fontStyle, String initialLayoutStyle)
-            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, fontStyle, initialLayoutStyle)
+            : this(font, width, height, flags, TextLayoutOptions.None, TextDirection.LeftToRight, TextScript.Unknown, fontStyle, initialLayoutStyle)
         {
 
         }
@@ -72,7 +72,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options)
-            : this(font, width, height, flags, options, TextDirection.LeftToRight, UltravioletFontStyle.Regular, null)
+            : this(font, width, height, flags, options, TextDirection.LeftToRight, TextScript.Unknown, UltravioletFontStyle.Regular, null)
         {
 
         }
@@ -86,8 +86,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
-        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction)
-            : this(font, width, height, flags, options, direction, UltravioletFontStyle.Regular, null)
+        /// <param name="script">A value specifying which script is used to draw the text.</param>
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, TextScript script)
+            : this(font, width, height, flags, options, direction, script, UltravioletFontStyle.Regular, null)
         {
 
         }
@@ -102,7 +103,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="fontStyle">The initial font style.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, UltravioletFontStyle fontStyle)
-            : this(font, width, height, flags, options, TextDirection.LeftToRight, fontStyle, null)
+            : this(font, width, height, flags, options, TextDirection.LeftToRight, TextScript.Unknown, fontStyle, null)
         {
 
         }
@@ -116,9 +117,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
+        /// <param name="script">A value specifying which script is used to draw the text.</param>
         /// <param name="fontStyle">The initial font style.</param>
-        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, UltravioletFontStyle fontStyle)
-            : this(font, width, height, flags, options, direction, fontStyle, null)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, TextScript script, UltravioletFontStyle fontStyle)
+            : this(font, width, height, flags, options, direction, script, fontStyle, null)
         {
 
         }
@@ -133,7 +135,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, String initialLayoutStyle)
-            : this(font, width, height, flags, options, TextDirection.LeftToRight, UltravioletFontStyle.Regular, initialLayoutStyle)
+            : this(font, width, height, flags, options, TextDirection.LeftToRight, TextScript.Unknown, UltravioletFontStyle.Regular, initialLayoutStyle)
         {
 
         }
@@ -147,10 +149,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
+        /// <param name="script">A value specifying which script is used to draw the text.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
         /// <param name="language">The ISO 639 name of the text language.</param>
-        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, String initialLayoutStyle, String language = "en")
-            : this(font, width, height, flags, options, direction, UltravioletFontStyle.Regular, initialLayoutStyle, language)
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, TextScript script, String initialLayoutStyle, String language = "en")
+            : this(font, width, height, flags, options, direction, script, UltravioletFontStyle.Regular, initialLayoutStyle, language)
         {
 
         }
@@ -166,7 +169,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
         public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, UltravioletFontStyle fontStyle, String initialLayoutStyle)
-            : this(font, width, height, flags, options, TextDirection.LeftToRight, fontStyle, initialLayoutStyle)
+            : this(font, width, height, flags, options, TextDirection.LeftToRight, TextScript.Unknown, fontStyle, initialLayoutStyle)
         {
 
         }
@@ -180,10 +183,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="flags">A set of flags that specify how to render and align the text.</param>
         /// <param name="options">A set of options which can be used to modify the behavior of the layout engine.</param>
         /// <param name="direction">A value indicating the direction in which the text should be laid out.</param>
+        /// <param name="script">A value specifying which script is used to draw the text.</param>
         /// <param name="fontStyle">The initial font style.</param>
         /// <param name="initialLayoutStyle">The name of the initial layout style, or <see langword="null"/> to use no initial layout style.</param>
         /// <param name="language">The ISO 639 name of the text language.</param>
-        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, UltravioletFontStyle fontStyle, String initialLayoutStyle, String language = "en")
+        public TextLayoutSettings(UltravioletFont font, Int32? width, Int32? height, TextFlags flags, TextLayoutOptions options, TextDirection direction, TextScript script, UltravioletFontStyle fontStyle, String initialLayoutStyle, String language = "en")
         {
             if (direction == TextDirection.TopToBottom || direction == TextDirection.BottomToTop)
                 throw new NotSupportedException(UltravioletStrings.UnsupportedTextDirection);
@@ -194,6 +198,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             this.Flags = (flags == 0) ? TextFlags.Standard : flags;
             this.Style = fontStyle;
             this.Direction = direction;
+            this.Script = script;
             this.Options = options;
             this.InitialLayoutStyle = initialLayoutStyle;
             this.Language = language;
@@ -233,6 +238,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the direction in which text is laid out.
         /// </summary>
         public TextDirection Direction { get; }
+
+        /// <summary>
+        /// Gets the text script.
+        /// </summary>
+        public TextScript Script { get; }
 
         /// <summary>
         /// Gets the name of the text's initial layout style.

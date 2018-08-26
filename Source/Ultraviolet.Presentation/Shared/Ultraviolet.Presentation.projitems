@@ -44,8 +44,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TickBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TickBarPlacement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Primitives\TickPlacement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FlowDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapperUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Media\TextOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Media\TextRenderingMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Compilation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Diagnostics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Layout.cs" />
