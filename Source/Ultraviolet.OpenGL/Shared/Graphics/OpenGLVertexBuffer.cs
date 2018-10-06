@@ -45,9 +45,13 @@ namespace Ultraviolet.OpenGL.Graphics
         public override void SetData<T>(T[] data)
         {
             Contract.Require(data, nameof(data));
-            Contract.Ensure(data.Length <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
 
-            SetDataInternal(data, 0, data.Length * vdecl.VertexStride, SetDataOptions.None);
+            var inputElemSize = Marshal.SizeOf(typeof(T));
+            var inputSizeInBytes = inputElemSize * data.Length;
+            if (inputSizeInBytes > size.ToInt32())
+                throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
+
+            SetDataInternal(data, 0, inputSizeInBytes, SetDataOptions.None);
         }
         
         /// <inheritdoc/>
@@ -56,9 +60,13 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.Require(data, nameof(data));
             Contract.EnsureRange(count > 0, nameof(count));
             Contract.EnsureRange(offset >= 0 && offset + count <= data.Length, nameof(offset));
-            Contract.Ensure(count <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
 
-            SetDataInternal(data, offset * vdecl.VertexStride, count * vdecl.VertexStride, options);
+            var inputElemSize = Marshal.SizeOf(typeof(T));
+            var inputSizeInBytes = inputElemSize * count;
+            if (inputSizeInBytes > size.ToInt32())
+                throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
+
+            SetDataInternal(data, offset * inputElemSize, inputSizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -68,9 +76,13 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(dataCount > 0, nameof(dataCount));
             Contract.EnsureRange(dataOffset >= 0 && dataOffset + dataCount <= data.Length, nameof(dataOffset));
             Contract.EnsureRange(bufferOffset >= 0, nameof(bufferOffset));
-            Contract.Ensure(dataCount <= VertexCount, OpenGLStrings.DataTooLargeForBuffer);
 
-            bufferSize = vdecl.VertexStride * dataCount;
+            var inputElemSize = Marshal.SizeOf(typeof(T));
+            var inputSizeInBytes = inputElemSize * dataCount;
+            if (inputSizeInBytes > size.ToInt32())
+                throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
+
+            bufferSize = inputSizeInBytes;
 
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
@@ -108,8 +120,8 @@ namespace Ultraviolet.OpenGL.Graphics
                                 (IntPtr)bufferOffset, (IntPtr)bufferSize, bufferRangeAccess);
                             gl.ThrowIfError();
 
-                            var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * vdecl.VertexStride);
-                            var sourceSizeInBytes = dataCount * vdecl.VertexStride;
+                            var sourceRangePtr = (Byte*)handle.AddrOfPinnedObject() + (dataOffset * inputElemSize);
+                            var sourceSizeInBytes = dataCount * inputElemSize;
 
                             for (int i = 0; i < sourceSizeInBytes; i++)
                                 *bufferRangePtr++ = *sourceRangePtr++;
@@ -120,7 +132,7 @@ namespace Ultraviolet.OpenGL.Graphics
                         else
                         {
                             gl.NamedBufferSubData(buffer, gl.GL_ARRAY_BUFFER,
-                                (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * vdecl.VertexStride));
+                                (IntPtr)bufferOffset, (IntPtr)bufferSize, (Byte*)handle.AddrOfPinnedObject().ToPointer() + (dataOffset * inputElemSize));
                             gl.ThrowIfError();
                         }
                     }
