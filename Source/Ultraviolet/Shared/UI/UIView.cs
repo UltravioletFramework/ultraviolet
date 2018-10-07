@@ -24,7 +24,7 @@ namespace Ultraviolet.UI
     public delegate UIView UIViewFactory(UltravioletContext uv, UIPanel uiPanel, UIPanelDefinition uiPanelDefinition, UIViewModelFactory vmfactory);
     
     /// <summary>
-    /// Represents a 
+    /// Represents the graphical user interface of a <see cref="UIPanel"/> instance, which can optionally be bound to a view model.
     /// </summary>
     public abstract class UIView : UltravioletResource
     {

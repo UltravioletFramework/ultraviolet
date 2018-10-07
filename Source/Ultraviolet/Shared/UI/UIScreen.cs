@@ -8,7 +8,7 @@ using Ultraviolet.Graphics.Graphics2D;
 namespace Ultraviolet.UI
 {
     /// <summary>
-    /// Represents a user interface screen.
+    /// Represents a fullscreen container for user interface elements.
     /// </summary>
     public abstract class UIScreen : UIPanel
     {
