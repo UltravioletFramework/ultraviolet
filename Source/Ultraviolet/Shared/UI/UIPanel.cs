@@ -29,7 +29,7 @@ namespace Ultraviolet.UI
     public delegate void UIPanelDrawEventHandler(UIPanel panel, UltravioletTime time, SpriteBatch spriteBatch);
 
     /// <summary>
-    /// Represents a user interface panel.
+    /// Represents a container for user interface elements which occupies a portion of the screen.
     /// </summary>
     public abstract class UIPanel : UltravioletResource
     {
