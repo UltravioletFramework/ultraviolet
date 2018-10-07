@@ -68,6 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceShapedStringCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
