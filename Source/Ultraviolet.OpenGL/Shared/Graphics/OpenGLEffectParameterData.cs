@@ -1,5 +1,4 @@
 ﻿using System;
-using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
 namespace Ultraviolet.OpenGL.Graphics
@@ -18,93 +17,13 @@ namespace Ultraviolet.OpenGL.Graphics
         }
         
         /// <summary>
-        /// Gets a value indicating whether this instance contains the same data as the specified instance.
-        /// </summary>
-        /// <param name="other">The instance to compare to this instance.</param>
-        /// <returns><see langword="true"/> if both instances contain the same data; otherwise, <see langword="false"/>.</returns>
-        public Boolean ContainsSameData(OpenGLEffectParameterData other)
-        {
-            Contract.Require(other, nameof(other));
-
-            if (other.DataType != this.DataType)
-                return false;
-
-            switch (DataType)
-            {
-                case OpenGLEffectParameterDataType.None:
-                    return true;
-
-                case OpenGLEffectParameterDataType.Boolean:
-                    return this.valData[0] == other.valData[0];
-
-                case OpenGLEffectParameterDataType.Int32:
-                case OpenGLEffectParameterDataType.UInt32:
-                case OpenGLEffectParameterDataType.Single:
-                case OpenGLEffectParameterDataType.Color:
-                    return
-                        this.valData[0] == other.valData[0] &&
-                        this.valData[1] == other.valData[1] &&
-                        this.valData[2] == other.valData[2] &&
-                        this.valData[3] == other.valData[3];
-
-                case OpenGLEffectParameterDataType.Double:
-                case OpenGLEffectParameterDataType.Vector2:
-                    for (int i = 0; i < sizeof(Vector2); i++)
-                    {
-                        if (this.valData[i] != other.valData[i])
-                            return false;
-                    }
-                    return true;
-
-                case OpenGLEffectParameterDataType.Vector3:
-                    for (int i = 0; i < sizeof(Vector3); i++)
-                    {
-                        if (this.valData[i] != other.valData[i])
-                            return false;
-                    }
-                    return true;
-
-                case OpenGLEffectParameterDataType.Vector4:
-                    for (int i = 0; i < sizeof(Vector4); i++)
-                    {
-                        if (this.valData[i] != other.valData[i])
-                            return false;
-                    }
-                    return true;
-
-                case OpenGLEffectParameterDataType.Matrix:
-                    for (int i = 0; i < sizeof(Matrix); i++)
-                    {
-                        if (this.valData[i] != other.valData[i])
-                            return false;
-                    }
-                    return true;
-
-                case OpenGLEffectParameterDataType.Int32Array:
-                case OpenGLEffectParameterDataType.UInt32Array:
-                case OpenGLEffectParameterDataType.SingleArray:
-                case OpenGLEffectParameterDataType.DoubleArray:
-                case OpenGLEffectParameterDataType.Vector2Array:
-                case OpenGLEffectParameterDataType.Vector3Array:
-                case OpenGLEffectParameterDataType.Vector4Array:
-                case OpenGLEffectParameterDataType.ColorArray:
-                case OpenGLEffectParameterDataType.MatrixArray:
-                case OpenGLEffectParameterDataType.Texture2D:
-                case OpenGLEffectParameterDataType.Texture3D:
-                    return this.refData == other.refData;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
         /// Clears the data buffer.
         /// </summary>
         public void Clear()
         {
-            dataType = OpenGLEffectParameterDataType.None;
+            DataType = OpenGLEffectParameterDataType.None;
             refData = null;
+            Version++;
         }
 
         /// <summary>
@@ -113,10 +32,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Boolean value)
         {
-            dataType = OpenGLEffectParameterDataType.Boolean;
             fixed (Byte* pValData = valData)
             {
-                *((Boolean*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Boolean || *(Boolean*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Boolean;
+                    Version++;
+
+                    *(Boolean*)pValData = value;
+                }
             }
         }
 
@@ -126,10 +50,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Int32 value)
         {
-            dataType = OpenGLEffectParameterDataType.Int32;
             fixed (Byte* pValData = valData)
             {
-                *((Int32*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Int32 || *(Int32*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Int32;
+                    Version++;
+
+                    *(Int32*)pValData = value;
+                }
             }
         }
 
@@ -139,8 +68,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Int32[] value)
         {
-            dataType = OpenGLEffectParameterDataType.Int32Array;
+            DataType = OpenGLEffectParameterDataType.Int32Array;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -149,10 +79,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(UInt32 value)
         {
-            dataType = OpenGLEffectParameterDataType.UInt32;
             fixed (Byte* pValData = valData)
             {
-                *((UInt32*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.UInt32 || *(UInt32*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.UInt32;
+                    Version++;
+
+                    *(UInt32*)pValData = value;
+                }
             }
         }
 
@@ -162,8 +97,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(UInt32[] value)
         {
-            dataType = OpenGLEffectParameterDataType.UInt32Array;
+            DataType = OpenGLEffectParameterDataType.UInt32Array;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -172,10 +108,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Single value)
         {
-            dataType = OpenGLEffectParameterDataType.Single;
             fixed (Byte* pValData = valData)
             {
-                *((Single*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Single || *(Single*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Single;
+                    Version++;
+
+                    *(Single*)pValData = value;
+                }
             }
         }
 
@@ -185,8 +126,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Single[] value)
         {
-            dataType = OpenGLEffectParameterDataType.SingleArray;
+            DataType = OpenGLEffectParameterDataType.SingleArray;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -195,10 +137,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Double value)
         {
-            dataType = OpenGLEffectParameterDataType.Double;
             fixed (Byte* pValData = valData)
             {
-                *((Double*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Double || *(Double*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Double;
+                    Version++;
+
+                    *(Double*)pValData = value;
+                }
             }
         }
 
@@ -208,8 +155,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Double[] value)
         {
-            dataType = OpenGLEffectParameterDataType.DoubleArray;
+            DataType = OpenGLEffectParameterDataType.DoubleArray;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -218,10 +166,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector2 value)
         {
-            dataType = OpenGLEffectParameterDataType.Vector2;
             fixed (Byte* pValData = valData)
             {
-                *((Vector2*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Vector2 || *(Vector2*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Vector2;
+                    Version++;
+
+                    *(Vector2*)pValData = value;
+                }
             }
         }
 
@@ -231,8 +184,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector2[] value)
         {
-            dataType = OpenGLEffectParameterDataType.Vector2Array;
+            DataType = OpenGLEffectParameterDataType.Vector2Array;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -241,10 +195,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector3 value)
         {
-            dataType = OpenGLEffectParameterDataType.Vector3;
             fixed (Byte* pValData = valData)
             {
-                *((Vector3*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Vector3 || *(Vector3*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Vector3;
+                    Version++;
+
+                    *(Vector3*)pValData = value;
+                }
             }
         }
 
@@ -254,8 +213,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector3[] value)
         {
-            dataType = OpenGLEffectParameterDataType.Vector3Array;
+            DataType = OpenGLEffectParameterDataType.Vector3Array;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -264,10 +224,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector4 value)
         {
-            dataType = OpenGLEffectParameterDataType.Vector4;
             fixed (Byte* pValData = valData)
             {
-                *((Vector4*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Vector4 || *(Vector4*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Vector4;
+                    Version++;
+
+                    *(Vector4*)pValData = value;
+                }
             }
         }
 
@@ -277,8 +242,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Vector4[] value)
         {
-            dataType = OpenGLEffectParameterDataType.Vector4Array;
+            DataType = OpenGLEffectParameterDataType.Vector4Array;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -287,10 +253,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Color value)
         {
-            dataType = OpenGLEffectParameterDataType.Color;
             fixed (Byte* pValData = valData)
             {
-                *((Color*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Color || *(Color*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Color;
+                    Version++;
+
+                    *(Color*)pValData = value;
+                }
             }
         }
 
@@ -300,8 +271,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Color[] value)
         {
-            dataType = OpenGLEffectParameterDataType.ColorArray;
+            DataType = OpenGLEffectParameterDataType.ColorArray;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -310,10 +282,15 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Matrix value)
         {
-            dataType = OpenGLEffectParameterDataType.Matrix;
             fixed (Byte* pValData = valData)
             {
-                *((Matrix*)pValData) = value;
+                if (DataType != OpenGLEffectParameterDataType.Matrix || *(Matrix*)pValData != value)
+                {
+                    DataType = OpenGLEffectParameterDataType.Matrix;
+                    Version++;
+
+                    *((Matrix*)pValData) = value;
+                }
             }
         }
 
@@ -323,8 +300,9 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Matrix[] value)
         {
-            dataType = OpenGLEffectParameterDataType.MatrixArray;
+            DataType = OpenGLEffectParameterDataType.MatrixArray;
             refData = value;
+            Version++;
         }
 
         /// <summary>
@@ -333,8 +311,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Texture2D value)
         {
-            dataType = OpenGLEffectParameterDataType.Texture2D;
-            refData = value;
+            if (DataType != OpenGLEffectParameterDataType.Texture2D || refData != value)
+            {
+                DataType = OpenGLEffectParameterDataType.Texture2D;
+                Version++;
+
+                refData = value;
+            }
         }
 
         /// <summary>
@@ -343,8 +326,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="value">The value to set.</param>
         public void Set(Texture3D value)
         {
-            dataType = OpenGLEffectParameterDataType.Texture3D;
-            refData = value;
+            if (DataType != OpenGLEffectParameterDataType.Texture3D || refData != value)
+            {
+                DataType = OpenGLEffectParameterDataType.Texture3D;
+                Version++;
+
+                refData = value;
+            }
         }
 
         /// <summary>
@@ -353,10 +341,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Boolean GetBoolean()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Boolean);
 
-            if (dataType == OpenGLEffectParameterDataType.Boolean)
+            if (DataType == OpenGLEffectParameterDataType.Boolean)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -373,10 +361,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Int32 GetInt32()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Int32);
 
-            if (dataType == OpenGLEffectParameterDataType.Int32)
+            if (DataType == OpenGLEffectParameterDataType.Int32)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -393,10 +381,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Int32[] GetInt32Array()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.Int32Array)
+            if (DataType == OpenGLEffectParameterDataType.Int32Array)
                 return (Int32[])refData;
             
             throw new InvalidCastException();
@@ -408,10 +396,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public UInt32 GetUInt32()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(UInt32);
 
-            if (dataType == OpenGLEffectParameterDataType.UInt32)
+            if (DataType == OpenGLEffectParameterDataType.UInt32)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -428,10 +416,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public UInt32[] GetUInt32Array()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.UInt32Array)
+            if (DataType == OpenGLEffectParameterDataType.UInt32Array)
                 return (UInt32[])refData;
 
             throw new InvalidCastException();
@@ -443,10 +431,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Single GetSingle()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Single);
 
-            if (dataType == OpenGLEffectParameterDataType.Single)
+            if (DataType == OpenGLEffectParameterDataType.Single)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -463,10 +451,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Single[] GetSingleArray()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.SingleArray)
+            if (DataType == OpenGLEffectParameterDataType.SingleArray)
                 return (Single[])refData;
 
             throw new InvalidCastException();
@@ -478,10 +466,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Double GetDouble()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Double);
 
-            if (dataType == OpenGLEffectParameterDataType.Double)
+            if (DataType == OpenGLEffectParameterDataType.Double)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -498,10 +486,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Double[] GetDoubleArray()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.DoubleArray)
+            if (DataType == OpenGLEffectParameterDataType.DoubleArray)
                 return (Double[])refData;
             
             throw new InvalidCastException();
@@ -513,10 +501,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector2 GetVector2()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Vector2);
 
-            if (dataType == OpenGLEffectParameterDataType.Vector2)
+            if (DataType == OpenGLEffectParameterDataType.Vector2)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -533,10 +521,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector2[] GetVector2Array()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.Vector2Array)
+            if (DataType == OpenGLEffectParameterDataType.Vector2Array)
                 return (Vector2[])refData;
             
             throw new InvalidCastException();
@@ -548,10 +536,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector3 GetVector3()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Vector3);
 
-            if (dataType == OpenGLEffectParameterDataType.Vector3)
+            if (DataType == OpenGLEffectParameterDataType.Vector3)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -568,10 +556,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector3[] GetVector3Array()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.Vector3Array)
+            if (DataType == OpenGLEffectParameterDataType.Vector3Array)
                 return (Vector3[])refData;
 
             throw new InvalidCastException();
@@ -583,10 +571,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector4 GetVector4()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Vector4);
 
-            if (dataType == OpenGLEffectParameterDataType.Vector4)
+            if (DataType == OpenGLEffectParameterDataType.Vector4)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -603,10 +591,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Vector4[] GetVector4Array()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.Vector4Array)
+            if (DataType == OpenGLEffectParameterDataType.Vector4Array)
                 return (Vector4[])refData;
 
             throw new InvalidCastException();
@@ -618,10 +606,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Color GetColor()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Color);
 
-            if (dataType == OpenGLEffectParameterDataType.Color)
+            if (DataType == OpenGLEffectParameterDataType.Color)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -638,10 +626,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Color[] GetColorArray()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.ColorArray)
+            if (DataType == OpenGLEffectParameterDataType.ColorArray)
                 return (Color[])refData;
 
             throw new InvalidCastException();
@@ -653,10 +641,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Matrix GetMatrix()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return default(Matrix);
 
-            if (dataType == OpenGLEffectParameterDataType.Matrix)
+            if (DataType == OpenGLEffectParameterDataType.Matrix)
             {
                 fixed (Byte* pValData = valData)
                 {
@@ -673,10 +661,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Matrix[] GetMatrixArray()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.MatrixArray)
+            if (DataType == OpenGLEffectParameterDataType.MatrixArray)
                 return (Matrix[])refData;
 
             throw new InvalidCastException();
@@ -688,10 +676,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Texture2D GetTexture2D()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.Texture2D)
+            if (DataType == OpenGLEffectParameterDataType.Texture2D)
                 return (Texture2D)refData;
 
             throw new InvalidCastException();
@@ -703,10 +691,10 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>The value that is set into the buffer.</returns>
         public Texture3D GetTexture3D()
         {
-            if (dataType == OpenGLEffectParameterDataType.None)
+            if (DataType == OpenGLEffectParameterDataType.None)
                 return null;
 
-            if (dataType == OpenGLEffectParameterDataType.Texture3D)
+            if (DataType == OpenGLEffectParameterDataType.Texture3D)
                 return (Texture3D)refData;
 
             throw new InvalidCastException();
@@ -715,13 +703,12 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Gets the type of data currently stored in this buffer.
         /// </summary>
-        public OpenGLEffectParameterDataType DataType
-        {
-            get { return dataType; }
-        }
+        public OpenGLEffectParameterDataType DataType { get; private set; }
 
-        // Property values.
-        private OpenGLEffectParameterDataType dataType;
+        /// <summary>
+        /// Gets the version number of this data.
+        /// </summary>
+        public Int64 Version { get; private set; } = 1;
 
         // State values.
         private Byte[] valData;
