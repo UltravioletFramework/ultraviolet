@@ -25,9 +25,9 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.Require(name, nameof(name));
 
             this.uv = uv;
-            this.name = name ?? String.Empty;
-            this.type = type;
-            this.program = program;
+            this.Name = name ?? String.Empty;
+            this.Type = type;
+            this.Program = program;
             this.location = location;
             this.sampler = sampler;
         }
@@ -40,7 +40,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (source == null)
                 throw new InvalidOperationException(OpenGLStrings.ShaderUniformHasNoSource);
 
-            if (cache.ContainsSameData(source))
+            if (source.Version == version)
             {
                 switch (source.DataType)
                 {
@@ -57,8 +57,9 @@ namespace Ultraviolet.OpenGL.Graphics
                     default:
                         return;
                 }
-            }            
+            }
 
+            version = source.Version;
             switch (source.DataType)
             {
                 case OpenGLEffectParameterDataType.None:
@@ -162,6 +163,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.Require(source, nameof(source));
 
             this.source = source;
+            this.version = 0;
         }
 
         /// <summary>
@@ -172,8 +174,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1i(location, value ? 1 : 0);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -184,8 +184,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1i(location, value);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -207,8 +205,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -219,8 +215,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1ui(location, value);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -242,8 +236,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -254,8 +246,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1f(location, value);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -277,8 +267,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -289,8 +277,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform1d(location, value);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -312,8 +298,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -324,8 +308,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform2f(location, value.X, value.Y);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -347,8 +329,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -359,8 +339,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform3f(location, value.X, value.Y, value.Z);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -382,8 +360,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -394,8 +370,6 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.Uniform4f(location, value.X, value.Y, value.Z, value.W);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -417,8 +391,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -432,7 +404,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var nb = value.B / (float)Byte.MaxValue;
             var na = value.A / (float)Byte.MaxValue;
 
-            if (type == gl.GL_FLOAT_VEC3)
+            if (Type == gl.GL_FLOAT_VEC3)
             {
                 gl.Uniform3f(location, nr, ng, nb);
             }
@@ -441,8 +413,6 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.Uniform4f(location, nr, ng, nb, na);
             }
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -453,7 +423,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             if (value == null)
             {
-                if (type == gl.GL_FLOAT_VEC3)
+                if (Type == gl.GL_FLOAT_VEC3)
                 {
                     gl.Uniform3fv(location, 0, null);
                     gl.ThrowIfError();
@@ -466,7 +436,7 @@ namespace Ultraviolet.OpenGL.Graphics
             }
             else
             {
-                if (type == gl.GL_FLOAT_VEC3)
+                if (Type == gl.GL_FLOAT_VEC3)
                 {
                     var normalized = stackalloc float[3 * value.Length];
                     for (int i = 0; i < value.Length; i++)
@@ -494,8 +464,6 @@ namespace Ultraviolet.OpenGL.Graphics
                     gl.ThrowIfError();
                 }
             }
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -510,8 +478,6 @@ namespace Ultraviolet.OpenGL.Graphics
 
             gl.UniformMatrix4fv(location, 1, transpose, (float*)&value);
             gl.ThrowIfError();
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -539,8 +505,6 @@ namespace Ultraviolet.OpenGL.Graphics
                 for (int i = 0; i < value.Length; i++)
                     Matrix.Transpose(ref value[i], out value[i]);
             }
-            
-            cache.Set(value);
         }
 
         /// <summary>
@@ -553,8 +517,6 @@ namespace Ultraviolet.OpenGL.Graphics
             gl.ThrowIfError();
 
             uv.GetGraphics().SetTexture(sampler, value);
-
-            cache.Set(value);
         }
 
         /// <summary>
@@ -567,44 +529,28 @@ namespace Ultraviolet.OpenGL.Graphics
             gl.ThrowIfError();
 
             uv.GetGraphics().SetTexture(sampler, value);
-
-            cache.Set(value);
         }
 
         /// <summary>
         /// Gets the shader uniform's name.
         /// </summary>
-        public String Name
-        {
-            get { return name; }
-        }
+        public String Name { get; }
 
         /// <summary>
         /// Gets the shader uniform's type.
         /// </summary>
-        public UInt32 Type
-        {
-            get { return type; }
-        }
+        public UInt32 Type { get; }
 
         /// <summary>
         /// Gets the shader program identifier.
         /// </summary>
-        public UInt32 Program
-        {
-            get { return program; }
-        }
-
-        // Property values.
-        private readonly String name;
-        private readonly UInt32 type;
-        private readonly UInt32 program;
+        public UInt32 Program { get; }
 
         // State values.
         private readonly UltravioletContext uv;
         private readonly Int32 location;
         private readonly Int32 sampler;
         private OpenGLEffectParameterData source;
-        private OpenGLEffectParameterData cache = new OpenGLEffectParameterData();
+        private Int64 version;
     }
 }
