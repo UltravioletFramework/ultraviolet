@@ -1,4 +1,6 @@
-﻿namespace Ultraviolet.Graphics
+﻿using System;
+
+namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Represents a vertex containing 3D position, normal, and texture coordinate data.
