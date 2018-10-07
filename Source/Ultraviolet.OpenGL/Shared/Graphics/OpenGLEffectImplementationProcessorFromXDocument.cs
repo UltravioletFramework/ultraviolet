@@ -12,6 +12,15 @@ namespace Ultraviolet.OpenGL.Graphics
     [ContentProcessor]
     public sealed class OpenGLEffectImplementationProcessorFromXDocument : EffectImplementationProcessor<XDocument>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLEffectImplementationProcessorFromXDocument"/> class.
+        /// </summary>
+        public OpenGLEffectImplementationProcessorFromXDocument()
+        {
+            this.v1 = new OpenGLEffectImplementationProcessorFromXDocumentV1(this);
+            this.v2 = new OpenGLEffectImplementationProcessorFromXDocumentV2(this);
+        }
+
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
@@ -103,9 +112,7 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         // Implementations for handling different file versions
-        private readonly OpenGLEffectImplementationProcessorFromXDocumentV1 v1 =
-            new OpenGLEffectImplementationProcessorFromXDocumentV1();
-        private readonly OpenGLEffectImplementationProcessorFromXDocumentV2 v2 = 
-            new OpenGLEffectImplementationProcessorFromXDocumentV2();
+        private readonly OpenGLEffectImplementationProcessorFromXDocumentV1 v1;
+        private readonly OpenGLEffectImplementationProcessorFromXDocumentV2 v2;
     }
 }

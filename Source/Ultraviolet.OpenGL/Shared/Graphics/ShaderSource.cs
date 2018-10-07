@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ultraviolet.Content;
+using Ultraviolet.Core;
 using Ultraviolet.OpenGL.Bindings;
 
 namespace Ultraviolet.OpenGL.Graphics
@@ -33,41 +35,50 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <returns>A <see cref="ShaderSource"/> object that represents the processed shader source.</returns>
         public static ShaderSource ProcessRawSource(ContentManager manager, IContentProcessorMetadata metadata, String source)
         {
-            var output = new StringBuilder();
-            var line = default(String);
             var ssmd = new ShaderSourceMetadata();
 
-            using (var reader = new StringReader(source))
+            return ProcessInternal(ssmd, source, (line, output) =>
             {
-                var insideComment = false;
+                if (ProcessIncludeDirective(manager, metadata, line, output, ssmd))
+                    return true;
 
-                while ((line = reader.ReadLine()) != null)
-                {
-                    TrackComments(line, ref insideComment);
+                if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd))
+                    return true;
 
-                    if (!insideComment)
-                    {
-                        if (ProcessIncludeDirective(manager, metadata, line, output, ssmd))
-                            continue;
+                if (ProcessIfVerDirective(manager, metadata, line, output, ssmd))
+                    return true;
 
-                        if (ProcessIncludeResourceDirective(manager, metadata, line, output, ssmd))
-                            continue;
+                if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
+                    return true;
 
-                        if (ProcessIfVerDirective(manager, metadata, line, output, ssmd))
-                            continue;
+                if (ProcessParamDirective(manager, metadata, line, output, ssmd))
+                    return true;
 
-                        if (ProcessSamplerDirective(manager, metadata, line, output, ssmd))
-                            continue;
+                return false;
+            });
+        }
 
-                        if (ProcessParamDirective(manager, metadata, line, output, ssmd))
-                            continue;
-                    }
-                    
-                    output.AppendLine(line);
-                }
-            }
+        /// <summary>
+        /// Processes a <see cref="ShaderSource"/> instance to produce a new <see cref="ShaderSource"/> instance
+        /// with expanded #extern definitions.
+        /// </summary>
+        /// <param name="source">The source instance to process.</param>
+        /// <param name="externs">The collection of defined extern values.</param>
+        /// <returns>A new <see cref="ShaderSource"/> instance with expanded #extern definitions.</returns>
+        public static ShaderSource ProcessExterns(ShaderSource source, Dictionary<String, String> externs)
+        {
+            Contract.Require(source, nameof(source));
 
-            return new ShaderSource(output.ToString(), ssmd);
+            if (externs == null)
+                return source;
+
+            return ProcessInternal(source.Metadata, source.Source, (line, output) =>
+            {
+                if (ProcessExternDirective(line, output, source.Metadata, externs))
+                    return true;
+
+                return false;
+            });
         }
 
         /// <summary>
@@ -85,6 +96,35 @@ namespace Ultraviolet.OpenGL.Graphics
         /// Gets the metadata for this shader.
         /// </summary>
         public ShaderSourceMetadata Metadata { get; }
+
+        /// <summary>
+        /// Performs line-by-line processing of raw shader source code.
+        /// </summary>
+        private static ShaderSource ProcessInternal(ShaderSourceMetadata ssmd, String source, Func<String, StringBuilder, Boolean> processor)
+        {
+            var output = new StringBuilder();
+            var line = default(String);
+
+            using (var reader = new StringReader(source))
+            {
+                var insideComment = false;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    TrackComments(line, ref insideComment);
+
+                    if (!insideComment)
+                    {
+                        if (processor(line, output))
+                            continue;
+                    }
+
+                    output.AppendLine(line);
+                }
+            }
+
+            return new ShaderSource(output.ToString(), ssmd);
+        }
 
         /// <summary>
         /// Parses a line of GLSL for comments and keeps track of whether we're
@@ -124,6 +164,28 @@ namespace Ultraviolet.OpenGL.Graphics
                 line = line.Substring(0, ixCStyleStartToken);
                 insideComment = true;
             }
+        }
+
+        /// <summary>
+        /// Processes #extern directives.
+        /// </summary>
+        private static Boolean ProcessExternDirective(String line, StringBuilder output, ShaderSourceMetadata ssmd, Dictionary<String, String> externs)
+        {
+            var externMatch = regexExternDirective.Match(line);
+            if (externMatch.Success)
+            {
+                var externName = externMatch.Groups["name"].Value;
+                if (String.IsNullOrWhiteSpace(externName))
+                    throw new InvalidOperationException(OpenGLStrings.ShaderExternHasInvalidName);
+
+                var externValue = String.Empty;
+                if (!externs.TryGetValue(externName, out externValue))
+                    throw new InvalidOperationException(OpenGLStrings.ShaderExternNotDefined.Format(externName));
+
+                output.AppendLine($"#define {externName} {externValue}");
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -278,6 +340,8 @@ namespace Ultraviolet.OpenGL.Graphics
         // Regular expressions used to identify directives
         private static readonly Regex regexCStyleComment =
             new Regex(@"/\*.*?\*/", RegexOptions.Compiled);
+        private static readonly Regex regexExternDirective =
+            new Regex(@"^\s*#extern(\s+(?<name>.*)\s*)?$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexIncludeDirective =
             new Regex(@"^\s*#include\s+""(?<file>.*)""\s*$", RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex regexincludeResourceDirective =

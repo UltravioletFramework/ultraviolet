@@ -260,4 +260,14 @@
       <Variant>Implicit effects must be loaded from either *.frag or *.vert files; asset "{0}" is neither.</Variant>
     </en-US>
   </String>
+  <String Key="SHADER_EXTERN_HAS_INVALID_NAME">
+    <en-US>
+      <Variant>Shader extern has a name which is missing or invalid.</Variant>
+    </en-US>
+  </String>
+  <String Key="SHADER_EXTERN_NOT_DEFINED">
+    <en-US>
+      <Variant>Shader extern '{0}' is defined, but was not provided with a value.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
