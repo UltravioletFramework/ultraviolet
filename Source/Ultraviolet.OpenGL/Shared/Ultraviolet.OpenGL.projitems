@@ -63,6 +63,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromShaderSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectProcessorFromXDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectSourceAssetType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectSourceProcessorFromJObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectSourceProcessorFromShaderSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectSourceProcessorFromXDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectTechnique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLEffectTechniqueCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\OpenGLFragmentShader.cs.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
@@ -11,6 +12,11 @@ namespace Ultraviolet.OpenGL.Graphics
     /// <typeparam name="TInput">The type of input being processed.</typeparam>
     public abstract class EffectImplementationProcessor<TInput> : ContentProcessor<TInput, EffectImplementation>
     {
+        /// <summary>
+        /// Gets or sets the collection of externs which are provided to the effect upon compilation.
+        /// </summary>
+        public Dictionary<String, String> Externs { get; set; }
+
         /// <summary>
         /// Gets the version of the specified shader which is appropriate for the current platform.
         /// </summary>

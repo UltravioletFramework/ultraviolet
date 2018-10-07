@@ -24,9 +24,12 @@ namespace Ultraviolet.OpenGL.Graphics
             var vertShaderFilePath = isFragShader ? Path.ChangeExtension(metadata.AssetPath, "vert") : metadata.AssetPath;
             var fragShaderFilePath = isFragShader ? metadata.AssetPath : Path.ChangeExtension(metadata.AssetPath, "frag");
             metadata.AddAssetDependency(isFragShader ? vertShaderFilePath : fragShaderFilePath);
-            
-            var vertShader = manager.Load<OpenGLVertexShader>(vertShaderFilePath);
-            var fragShader = manager.Load<OpenGLFragmentShader>(fragShaderFilePath);
+
+            var vertShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(vertShaderFilePath), Externs);
+            var vertShader = new OpenGLVertexShader(manager.Ultraviolet, new[] { vertShaderSource });
+
+            var fragShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(fragShaderFilePath), Externs);
+            var fragShader = new OpenGLFragmentShader(manager.Ultraviolet, new[] { fragShaderSource });
 
             var parameters = new HashSet<String>();
 

@@ -13,6 +13,15 @@ namespace Ultraviolet.OpenGL.Graphics
     /// </summary>
     internal sealed class OpenGLEffectImplementationProcessorFromXDocumentV2 : EffectImplementationProcessor<XDocument>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OpenGLEffectImplementationProcessorFromXDocumentV2"/> class.
+        /// </summary>
+        /// <param name="parent">The processor's parent instance.</param>
+        public OpenGLEffectImplementationProcessorFromXDocumentV2(OpenGLEffectImplementationProcessorFromXDocument parent)
+        {
+            this.parent = parent;
+        }
+
         /// <inheritdoc/>
         public override void ExportPreprocessed(ContentManager manager, IContentProcessorMetadata metadata, BinaryWriter writer, XDocument input, Boolean delete)
         {
@@ -107,8 +116,11 @@ namespace Ultraviolet.OpenGL.Graphics
                     fragPath = ResolveDependencyAssetPath(metadata, fragPath);
                     metadata.AddAssetDependency(fragPath);
 
-                    var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
-                    var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
+                    var vertShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(vertPath), Externs);
+                    var vertShader = new OpenGLVertexShader(manager.Ultraviolet, new[] { vertShaderSource });
+
+                    var fragShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(fragPath), Externs);
+                    var fragShader = new OpenGLFragmentShader(manager.Ultraviolet, new[] { fragShaderSource });
 
                     var programs = new[] { new OpenGLShaderProgram(manager.Ultraviolet, vertShader, fragShader, false) };
                     passes.Add(new OpenGLEffectPass(manager.Ultraviolet, passName, programs));
@@ -156,8 +168,11 @@ namespace Ultraviolet.OpenGL.Graphics
                     fragPath = ResolveDependencyAssetPath(metadata, fragPath);
                     metadata.AddAssetDependency(fragPath);
 
-                    var vertShader = manager.Load<OpenGLVertexShader>(vertPath);
-                    var fragShader = manager.Load<OpenGLFragmentShader>(fragPath);
+                    var vertShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(vertPath), Externs);
+                    var vertShader = new OpenGLVertexShader(manager.Ultraviolet, new[] { vertShaderSource });
+
+                    var fragShaderSource = ShaderSource.ProcessExterns(manager.Load<ShaderSource>(fragPath), Externs);
+                    var fragShader = new OpenGLFragmentShader(manager.Ultraviolet, new[] { fragShaderSource });
 
                     foreach (var hint in vertShader.ShaderSourceMetadata.ParameterHints)
                         parameters.Add(hint);
@@ -232,6 +247,9 @@ namespace Ultraviolet.OpenGL.Graphics
             effect.Techniques = techniques;
 
             return effect;
-        }      
+        }
+
+        // State values.
+        private readonly OpenGLEffectImplementationProcessorFromXDocument parent;
     }
 }

@@ -246,7 +246,6 @@
     <Compile Include="BoundingSphereTests.cs" />
     <Content Include="Content\Fonts\Noto-LICENSE.txt" />
     <Compile Include="Graphics\ColorEncoding.cs" />
-    <Compile Include="Graphics\EffectTests.ShaderSourceProcessor.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
     <Compile Include="Graphics\Graphics2D\FontKind.cs" />
     <Compile Include="Graphics\Graphics2D\FreeTypeFontTests.cs" />
@@ -407,6 +406,12 @@
     <Compile Include="CircleTests.cs" />
     <Compile Include="Size2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Content\Effects\ExternDirectiveInvalid.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Effects\ExternDirective.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\UI\Presentation\UPF_View_DrawsShapedTextCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

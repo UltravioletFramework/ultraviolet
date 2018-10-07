@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Ultraviolet.Content;
 using Ultraviolet.Graphics;
@@ -25,6 +26,15 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <inheritdoc/>
         public override Boolean SupportsPreprocessing => true;
+
+        /// <summary>
+        /// Gets or sets the collection of externs which are provided to the effect upon compilation.
+        /// </summary>
+        public Dictionary<String, String> Externs
+        {
+            get => implProcessor.Externs;
+            set => implProcessor.Externs = value;
+        }
 
         // State values.
         private readonly OpenGLEffectImplementationProcessorFromShaderSource implProcessor =
