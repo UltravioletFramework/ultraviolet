@@ -145,7 +145,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="builder">The <see cref="ShapedStringBuilder"/> instance to which to append this shaper's contents.</param>
         /// <param name="fontFace">The font face with which to shape the string.</param>
-        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace);
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
+        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Appends the contents of a subset of this shaping buffer to the specified <see cref="ShapedStringBuilder"/> instance.
@@ -154,7 +155,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontFace">The font face with which to shape the string.</param>
         /// <param name="start">The offset of the character in the original string which corresponds to the beginning of the shaped substring.</param>
         /// <param name="length">The number of characters in the raw substring from which to create the shaped substring.</param>
-        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length);
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
+        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Creates a new <see cref="ShapedString"/> instance from the current contents of the shaping buffer.
