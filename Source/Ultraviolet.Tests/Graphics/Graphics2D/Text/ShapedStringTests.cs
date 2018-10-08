@@ -23,7 +23,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstr = textShaper.CreateShapedString(font.Regular);
@@ -50,7 +50,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstr = textShaper.CreateShapedString(font.Regular, 7, 5);
@@ -77,7 +77,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstr = textShaper.CreateShapedString(font.Regular);
@@ -91,6 +91,10 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             var glyphIndices = chars.Select(x => x.GlyphIndex).ToArray();
             TheResultingCollection(glyphIndices)
                 .ShouldBeExactly(111, 412, 514, 514, 555, 2122, 3, 696, 555, 609, 514, 393, 2125);
+
+            var sourceIndices = chars.Select(x => x.SourceIndex).ToArray();
+            TheResultingCollection(sourceIndices)
+                .ShouldBeExactly(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
             var advances = chars.Select(x => x.Advance).ToArray();
             TheResultingCollection(advances)
@@ -120,7 +124,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraGO-Regular");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("ar");
+                        textShaper.SetUnicodeProperties(TextDirection.RightToLeft, TextScript.Arabic, "ar");
                         textShaper.Append("مرحبا بالعالم");
 
                         sstr = textShaper.CreateShapedString(font.Regular);
@@ -134,6 +138,10 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             var glyphIndices = chars.Select(x => x.GlyphIndex).ToArray();
             TheResultingCollection(glyphIndices)
                 .ShouldBeExactly(2531, 2513, 2150, 2392, 2513, 2150, 2173, 3, 2150, 2172, 2243, 2288, 2533);
+
+            var sourceIndices = chars.Select(x => x.SourceIndex).ToArray();
+            TheResultingCollection(sourceIndices)
+                .ShouldBeExactly(12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
 
             var advances = chars.Select(x => x.Advance).ToArray();
             TheResultingCollection(advances)
@@ -152,6 +160,43 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
         [Test]
         [Category("Content")]
+        public void ShapedString_ProvidesCorrectSourceIndices()
+        {
+            var sstr = default(ShapedString);
+
+            GivenAnUltravioletApplicationWithNoWindow()
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(content =>
+                {
+                    var font = content.Load<UltravioletFont>("Fonts/NotoColorEmoji");
+                    using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
+                    {
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
+                        textShaper.Append("Hello ");
+                        textShaper.Append("👨");
+                        textShaper.Append("\u200D");
+                        textShaper.Append("👩");
+                        textShaper.Append("\u200D");
+                        textShaper.Append("👧");
+                        textShaper.Append("\u200D");
+                        textShaper.Append("👦");
+                        textShaper.Append("!");
+
+                        sstr = textShaper.CreateShapedString(font.Regular);
+                    }
+                })
+                .RunForOneFrame();
+
+            var chars = new ShapedChar[sstr.Length];
+            sstr.CopyTo(0, chars, 0, sstr.Length);
+
+            var sourceIndices = chars.Select(x => x.SourceIndex).ToArray();
+            TheResultingCollection(sourceIndices)
+                .ShouldBeExactly(0, 1, 2, 3, 4, 5, 6, 17);
+        }
+
+        [Test]
+        [Category("Content")]
         public void ShapedString_CombinesLigatures()
         {
             var sstr = default(ShapedString);
@@ -163,7 +208,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/NotoColorEmoji");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("👨");
                         textShaper.Append("\u200D");
                         textShaper.Append("👩");

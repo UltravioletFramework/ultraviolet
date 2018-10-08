@@ -43,9 +43,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public abstract void Clear();
 
         /// <summary>
-        /// Attempts to guess the script, language, and direction of the buffer based on its current contents.
+        /// Sets the buffer's Unicode properties.
         /// </summary>
-        public abstract void GuessUnicodeProperties();
+        /// <param name="direction">The buffer's layout direction.</param>
+        /// <param name="script">The buffer's script type.</param>
+        /// <param name="language">The buffer's language.</param>
+        public abstract void SetUnicodeProperties(TextDirection direction, TextScript script, String language);
 
         /// <summary>
         /// Sets the buffer's layout direction.
@@ -64,6 +67,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="language">An ISO 639 language code which identifies the buffer's language.</param>
         public abstract void SetLanguage(String language);
+
+        /// <summary>
+        /// Gets the buffer's Unicode properties.
+        /// </summary>
+        /// <param name="direction">The buffer's layout direction.</param>
+        /// <param name="script">The buffer's script type.</param>
+        /// <param name="language">The buffer's language.</param>
+        public abstract void GetUnicodeProperties(out TextDirection direction, out TextScript script, out String language);
 
         /// <summary>
         /// Gets the buffer's layout direction.
@@ -162,8 +173,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length);
 
         /// <summary>
-        /// Gets or sets the number of glyphs in the text builder.
+        /// Gets the length of the raw string data which is currently contained by the shaper.
         /// </summary>
-        public abstract Int32 Length { get; set; }
+        public abstract Int32 RawLength { get; }
     }
 }
