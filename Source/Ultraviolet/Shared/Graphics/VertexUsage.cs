@@ -1,10 +1,12 @@
-﻿
+using System;
+
 namespace Ultraviolet.Graphics
 {
     /// <summary>
     /// Provides usage hints as to the intended purpose of a vertex element.
     /// </summary>
-    public enum VertexUsage
+    [Flags]
+    public enum VertexUsage : ulong
     {
         /// <summary>
         /// The element provides vertex position data.
@@ -25,5 +27,10 @@ namespace Ultraviolet.Graphics
         /// The element provides normal data.
         /// </summary>
         Normal,
+
+        /// <summary>
+        /// The element provides skinning data.
+        /// </summary>
+        BlendWeight,
     }
 }
