@@ -160,8 +160,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Creates a new <see cref="ShapedString"/> instance from the current contents of the shaping buffer.
         /// </summary>
         /// <param name="fontFace">The font face with which to shape the string.</param>
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
         /// <returns>A new shaped string instance.</returns>
-        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace);
+        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Creates a new <see cref="ShapedString"/> instance from a subset of the current contents of the shaping buffer.
@@ -169,8 +170,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontFace">The font face with which to shape the string.</param>
         /// <param name="start">The offset of the character in the original string which corresponds to the beginning of the shaped substring.</param>
         /// <param name="length">The number of characters in the raw substring from which to create the shaped substring.</param>
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
         /// <returns>A new shaped string instance.</returns>
-        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length);
+        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Gets the length of the raw string data which is currently contained by the shaper.
