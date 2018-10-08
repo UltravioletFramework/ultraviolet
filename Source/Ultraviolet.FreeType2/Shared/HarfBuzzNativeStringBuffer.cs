@@ -27,15 +27,15 @@ namespace Ultraviolet.FreeType2
         /// </summary>
         ~HarfBuzzNativeStringBuffer()
         {
-            if (buffer != IntPtr.Zero)
+            if (Native != IntPtr.Zero)
             {
-                Marshal.FreeHGlobal(buffer);
-                buffer = IntPtr.Zero;
+                Marshal.FreeHGlobal(Native);
+                Native = IntPtr.Zero;
             }
         }
 
         /// <inheritdoc/>
-        public override String ToString() => (Length == 0) ? String.Empty : Marshal.PtrToStringUni(buffer);
+        public override String ToString() => (Length == 0) ? String.Empty : Marshal.PtrToStringUni(Native);
 
         /// <summary>
         /// Clears the buffer's contents.
@@ -43,6 +43,7 @@ namespace Ultraviolet.FreeType2
         public void Clear()
         {
             Length = 0;
+            Version++;
         }
 
         /// <summary>
@@ -53,9 +54,10 @@ namespace Ultraviolet.FreeType2
         {
             EnsureCapacity(length + 1);
 
-            ((Char*)buffer)[length] = c;
-            ((Char*)buffer)[length + 1] = '\0';
+            ((Char*)Native)[length] = c;
+            ((Char*)Native)[length + 1] = '\0';
             length++;
+            Version++;
         }
 
         /// <summary>
@@ -93,11 +95,12 @@ namespace Ultraviolet.FreeType2
 
             for (int i = 0; i < str.Length; i++)
             {
-                ((Char*)buffer)[length + i] = str[i];
+                ((Char*)Native)[length + i] = str[i];
             }
             length = length + str.Length;
+            Version++;
 
-            ((Char*)buffer)[length] = '\0';
+            ((Char*)Native)[length] = '\0';
         }
 
         /// <summary>
@@ -112,9 +115,14 @@ namespace Ultraviolet.FreeType2
                 if (ix < 0 || ix > length)
                     throw new ArgumentOutOfRangeException(nameof(ix));
 
-                return ((Char*)buffer)[ix];
+                return ((Char*)Native)[ix];
             }
         }
+
+        /// <summary>
+        /// Gets a version number which is incremented every time the buffer's content is changed.
+        /// </summary>
+        public Int64 Version { get; private set; } = 1;
 
         /// <summary>
         /// Gets the total capacity of the native buffer in characters.
@@ -129,16 +137,16 @@ namespace Ultraviolet.FreeType2
                 var newbuf = Marshal.AllocHGlobal(capacity * sizeof(Char));
                 ((Char*)newbuf)[capacity - 1] = '\0';
 
-                if (buffer != IntPtr.Zero)
+                if (Native != IntPtr.Zero)
                 {
                     if (Length > 0)
                     {
-                        Buffer.MemoryCopy((void*)buffer, (void*)newbuf, capacity * sizeof(Char), length * sizeof(Char));
+                        Buffer.MemoryCopy((void*)Native, (void*)newbuf, capacity * sizeof(Char), length * sizeof(Char));
                     }
-                    Marshal.FreeHGlobal(buffer);
+                    Marshal.FreeHGlobal(Native);
                 }
 
-                buffer = newbuf;
+                Native = newbuf;
             }
         }
 
@@ -156,14 +164,14 @@ namespace Ultraviolet.FreeType2
                     EnsureCapacity(value);
                     for (int i = 0; i < change; i++)
                     {
-                        ((Char*)buffer)[length + i] = '\0';
+                        ((Char*)Native)[length + i] = '\0';
                     }
                 }
                 else
                 {
                     if (value > 0)
                     {
-                        ((Char*)buffer)[value] = '\0';
+                        ((Char*)Native)[value] = '\0';
                     }
                 }
                 length = value;
@@ -173,15 +181,15 @@ namespace Ultraviolet.FreeType2
         /// <summary>
         /// Gets the pointer to the native buffer.
         /// </summary>
-        public IntPtr Native => buffer;
+        public IntPtr Native { get; private set; }
 
         /// <inheritdoc/>
         protected override void Dispose(Boolean disposing)
         {
-            if (buffer != IntPtr.Zero)
+            if (Native != IntPtr.Zero)
             {
-                Marshal.FreeHGlobal(buffer);
-                buffer = IntPtr.Zero;
+                Marshal.FreeHGlobal(Native);
+                Native = IntPtr.Zero;
             }
             base.Dispose(disposing);
         }
@@ -200,8 +208,6 @@ namespace Ultraviolet.FreeType2
             Capacity = Math.Max(desiredCapacityInChars, (2 * capacity) / 3);
         }
 
-        // The native string buffer.
-        private IntPtr buffer;
         private Int32 capacity;
         private Int32 length;
     }

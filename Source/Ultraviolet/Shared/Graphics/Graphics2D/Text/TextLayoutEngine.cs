@@ -492,9 +492,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var substr = token.Text.Substring(start);
 
             shaper.Clear();
-            shaper.SetScript(settings.Script);
-            shaper.SetLanguage(settings.Language);
-            shaper.SetDirection(settings.Direction);
+            shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(substr);
 
             shapedTokenBuffer.Clear();
@@ -507,9 +505,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void ShapeMeasuredText(UltravioletFontFace font, StringSegment text, ref TextLayoutSettings settings)
         {
             shaper.Clear();
-            shaper.SetScript(settings.Script);
-            shaper.SetLanguage(settings.Language);
-            shaper.SetDirection(settings.Direction);
+            shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(text);
 
             shapedMeasureBuffer.Clear();
@@ -525,9 +521,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var text = CreateStringSegmentFromCurrentSource(start, length);
 
             shaper.Clear();
-            shaper.SetScript(settings.Script);
-            shaper.SetLanguage(settings.Language);
-            shaper.SetDirection(settings.Direction);
+            shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(text);
             shaper.AppendTo(buffer, font);
         }
@@ -1149,9 +1143,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     substringAvailableWidth -= font.MeasureGlyph('-').Width;
 
                 shaper.Clear();
-                shaper.SetScript(settings.Script);
-                shaper.SetLanguage(settings.Language);
-                shaper.SetDirection(settings.Direction);
+                shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
 
                 for (var i = 0; i < tokenText.Length - 1; i++)
                 {
