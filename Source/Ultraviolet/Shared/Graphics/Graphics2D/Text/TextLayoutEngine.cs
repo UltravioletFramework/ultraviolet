@@ -496,7 +496,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             shaper.Append(substr);
 
             shapedTokenBuffer.Clear();
-            shaper.AppendTo(shapedTokenBuffer, font);
+            shaper.AppendTo(shapedTokenBuffer, font, start);
         }
 
         /// <summary>
@@ -523,7 +523,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             shaper.Clear();
             shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(text);
-            shaper.AppendTo(buffer, font);
+            shaper.AppendTo(buffer, font, start);
         }
 
         /// <summary>
