@@ -189,11 +189,11 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace) =>
-            AppendTo(builder, fontFace, 0, rawstr.Length);
+        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 sourceIndexOffset = 0) =>
+            AppendTo(builder, fontFace, 0, rawstr.Length, sourceIndexOffset);
 
         /// <inheritdoc/>
-        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length)
+        public override void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length, Int32 sourceIndexOffset = 0)
         {
             Contract.Require(builder, nameof(builder));
             Contract.Require(fontFace, nameof(fontFace));
@@ -214,7 +214,7 @@ namespace Ultraviolet.FreeType2
                         if (cluster >= end)
                             break;
 
-                        CreateShapedChar(glyphInfo, glyphPosition, cluster, out var sc);
+                        CreateShapedChar(glyphInfo, glyphPosition, sourceIndexOffset + cluster, out var sc);
                         builder.Append(sc);
                     }
                     glyphInfo++;
