@@ -224,11 +224,11 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override ShapedString CreateShapedString(UltravioletFontFace fontFace) =>
-            CreateShapedString(fontFace, 0, rawstr.Length);
+        public override ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 sourceIndexOffset = 0) =>
+            CreateShapedString(fontFace, 0, rawstr.Length, sourceIndexOffset);
 
         /// <inheritdoc/>
-        public override ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length)
+        public override ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length, Int32 sourceIndexOffset = 0)
         {
             Contract.Require(fontFace, nameof(fontFace));
             Contract.EnsureRange(start >= 0 && start < rawstr.Length, nameof(start));
@@ -253,15 +253,15 @@ namespace Ultraviolet.FreeType2
                         switch (rawstr[cluster])
                         {
                             case '\n':
-                                chars[i] = new ShapedChar('\n', cluster, Int16.MaxValue, Int16.MaxValue, Int16.MaxValue);
+                                chars[i] = new ShapedChar('\n', sourceIndexOffset + cluster, Int16.MaxValue, Int16.MaxValue, Int16.MaxValue);
                                 break;
 
                             case '\t':
-                                chars[i] = new ShapedChar('\t', cluster, Int16.MaxValue, Int16.MaxValue, Int16.MaxValue);
+                                chars[i] = new ShapedChar('\t', sourceIndexOffset + cluster, Int16.MaxValue, Int16.MaxValue, Int16.MaxValue);
                                 break;
 
                             default:
-                                CreateShapedChar(glyphInfo, glyphPosition, cluster, out chars[i]);
+                                CreateShapedChar(glyphInfo, glyphPosition, sourceIndexOffset + cluster, out chars[i]);
                                 break;
                         }
                         charsCount++;
