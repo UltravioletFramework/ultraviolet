@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +21,7 @@ namespace Ultraviolet.Graphics
 
             this.elements = elements.ToList();
             this.stride = CalculateStride();
+            this.mask = BuildMask();
         }
 
         /// <summary>
@@ -110,10 +111,31 @@ namespace Ultraviolet.Graphics
             return value;
         }
 
+        /// <summary>
+        /// Build the mask of the vertex usages
+        /// </summary>
+        /// <returns>The mask of the vertex usages</returns>
+        private UInt64 BuildMask()
+        {
+            var value = 0UL;
+            foreach (var element in elements)
+            {
+                value |= (ulong) element.Usage;
+            }
+
+            return value;
+        }
+
+        // Mask
+        private UInt64 mask;
+        
         // Property values.
         private readonly Int32 stride;
 
         // State values.
         private readonly List<VertexElement> elements;
+
+        // Get the mask
+        public UInt64 Mask => mask;
     }
 }
