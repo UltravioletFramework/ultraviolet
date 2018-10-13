@@ -73,9 +73,11 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 
             this.TextLayoutResult = new TextLayoutCommandStream();
             this.TextLayoutEngine = new TextLayoutEngine();
+            this.TextLayoutEngine.RegisterTextShaper(TextShaper.Create());
             this.TextLayoutEngine.RegisterIcon("test", this.TextIcons["test"], descender: -3);
 
             this.TextRenderer = new TextRenderer();
+            this.TextRenderer.RegisterTextShaper(TextShaper.Create());
             this.TextRenderer.RegisterIcon("test", this.TextIcons["test"]);
 
             this.BlankTexture = Texture2D.CreateTexture(1, 1);
