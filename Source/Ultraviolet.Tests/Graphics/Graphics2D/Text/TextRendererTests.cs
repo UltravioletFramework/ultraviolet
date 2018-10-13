@@ -1,5 +1,7 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
@@ -1441,6 +1443,75 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 TheResultingImage(result)
                     .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB).png");
             }
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Foo")]
+        public void TextRenderer_AssignsCorrectSourceIndicesToShapedText()
+        {
+            var content = new TextRendererTestContent(
+                "Hello, world! |c:ffff0000|This|c| is a test of source indices!");
+            var recombined = String.Empty;
+            
+            var result = GivenAnUltravioletApplication()
+                .WithConfiguration(config =>
+                {
+                    config.SrgbBuffersEnabled = true;
+                    config.SrgbDefaultForTexture2D = true;
+                    config.SrgbDefaultForRenderBuffer2D = true;
+                })
+                .WithPlugin(new FreeTypeFontPlugin())
+                .WithContent(manager => content.Load(manager, FontKind.FreeType2))
+                .Render(uv =>
+                {
+                    uv.GetGraphics().Clear(Color.CornflowerBlue);
+
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
+                        new TextLayoutSettings(content.Font, window.Compositor.Width / 4, window.Compositor.Height, 
+                            TextFlags.AlignCenter | TextFlags.AlignMiddle, TextLayoutOptions.Shape));
+
+                    var sourceIndices = new List<Int32>();
+                    unsafe
+                    {
+                        var source = content.TextLayoutResult.GetSourceShapedStringBuilder(0);
+
+                        content.TextLayoutResult.AcquirePointers();
+                        content.TextLayoutResult.Seek(0);
+                        for (int i = 0; i < content.TextLayoutResult.Count; i++)
+                        {
+                            var cmd = *(TextLayoutCommandType*)content.TextLayoutResult.Data;
+                            if (cmd == TextLayoutCommandType.Text)
+                            {
+                                var textCmd = (TextLayoutTextCommand*)content.TextLayoutResult.Data;
+                                var textOffset = textCmd->TextOffset;
+                                var textLength = textCmd->TextLength;
+                                var text = source.CreateShapedStringSegmentFromSubstring(textOffset, textLength);
+                                for (int j = 0; j < text.Length; j++)
+                                {
+                                    var sourceIndex = text[j].SourceIndex;
+                                    sourceIndices.Add(sourceIndex);
+                                }
+                            }
+                            content.TextLayoutResult.SeekNextCommand();
+                        }
+                        content.TextLayoutResult.ReleasePointers();
+                    }
+                    recombined = String.Join(String.Empty, sourceIndices.Select(x => content.Text[x]));
+
+                    content.SpriteBatch.Begin();
+                    content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
+                    content.SpriteBatch.End();
+                });
+
+            TheResultingString(recombined).ShouldBe(
+                "Hello, world!" +
+                "This is a test of" + 
+                "source indices!");
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_AssignsCorrectSourceIndicesToShapedText.png");
         }
 
         protected static LineInfoResult TheResultingValue(LineInfo obj)
