@@ -132,17 +132,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             SeekNextCommand();
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
             var linePosition = 0;
+            var lineSourceStart = 0;
             var lineGlyphStart = 0;
             for (int i = 0; i < index; i++)
             {
+                // TODO: These probably don't always lead to accurate offsets!!
                 linePosition += lineInfo->LineHeight;
+                lineSourceStart += lineInfo->LengthInSource;
                 lineGlyphStart += lineInfo->LengthInGlyphs;
                 Seek(1 + StreamPositionInObjects + lineInfo->LengthInCommands);
                 lineInfo = (TextLayoutLineInfoCommand*)Data;
             }
 
-            var result = new LineInfo(this, index, StreamPositionInObjects, lineGlyphStart, lineInfo->Offset, blockOffset + linePosition, 
-                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
+            var result = new LineInfo(this, index, StreamPositionInObjects, lineSourceStart, lineGlyphStart, lineInfo->Offset, blockOffset + linePosition, 
+                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
 
             if (acquiredPointers)
                 ReleasePointers();
@@ -190,9 +193,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Seek(1 + StreamPositionInObjects + ((TextLayoutLineInfoCommand*)Data)->LengthInCommands);
 
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
-            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects, previous.OffsetInGlyphs + previous.LengthInGlyphs,
+            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects, 
+                previous.OffsetInSource + previous.LengthInSource,
+                previous.OffsetInGlyphs + previous.LengthInGlyphs,
                 lineInfo->Offset, previous.Y + previous.Height, lineInfo->LineWidth, 
-                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
+                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
             
             if (acquiredPointers)
                 ReleasePointers();
@@ -579,7 +584,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Bounds = default(Rectangle);
             ActualWidth = 0;
             ActualHeight = 0;
-            TotalLength = 0;
+            TotalGlyphLength = 0;
             LineCount = 0;
 
             HasMultipleFontStyles = false;
@@ -1128,9 +1133,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the total length of the text which was laid out.
+        /// Gets the total length of the laid-out text in source characters.
         /// </summary>
-        public Int32 TotalLength
+        public Int32 TotalSourceLength
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total length of the laid-out text in glyphs.
+        /// </summary>
+        public Int32 TotalGlyphLength
         {
             get;
             internal set;

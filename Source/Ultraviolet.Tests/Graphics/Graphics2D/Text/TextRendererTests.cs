@@ -167,7 +167,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
+            TheResultingValue(content.TextLayoutResult.TotalSourceLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksOnNonBreakingSpace_WhenNoBreakingSpaceIsAvailable.png");
@@ -203,7 +203,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
+            TheResultingValue(content.TextLayoutResult.TotalSourceLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksVeryLongWordsIntoMultipleLines.png");
@@ -239,7 +239,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe(content.Text.Length);
+            TheResultingValue(content.TextLayoutResult.TotalSourceLength).ShouldBe(content.Text.Length);
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_BreaksVeryLongWordsIntoMultipleLines_WithHyphens.png");
@@ -275,7 +275,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
+            TheResultingValue(content.TextLayoutResult.TotalGlyphLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(0, 0)
@@ -329,7 +329,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
+            TheResultingValue(content.TextLayoutResult.TotalGlyphLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(108, 0)
@@ -383,7 +383,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingValue(content.TextLayoutResult.TotalLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
+            TheResultingValue(content.TextLayoutResult.TotalGlyphLength).ShouldBe("Hello! This is a Xtesttesttesttest of the line breaking algorithm.".Length);
 
             TheResultingValue(content.TextLayoutResult.GetLineInfo(0))
                 .ShouldHavePosition(54, 0)
@@ -816,7 +816,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var glyph27Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 27);
                     var glyph53Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 53);
                     var glyph54Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 54);
-                    var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
+                    var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalGlyphLength - 1);
                     content.TextLayoutResult.ReleasePointers();
 
                     // Glyph 26 is a line break and therefore invisible, so check it manually
@@ -892,7 +892,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var glyph26Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 26);
                     var glyph52Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 52);
                     var glyph53Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 53);
-                    var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalLength - 1);
+                    var glyphLastBounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, content.TextLayoutResult.TotalGlyphLength - 1);
                     content.TextLayoutResult.ReleasePointers();
 
                     content.SpriteBatch.Begin();
