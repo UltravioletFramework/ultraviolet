@@ -566,47 +566,58 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
+        [TestCase(false, TestName = "TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph")]
+        [TestCase(true, TestName = "TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph(Shaped)")]
         [Category("Rendering")]
         [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions inside of a glyph.")]
-        public void TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph()
+        public void TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph(Boolean shaped)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
-            var lines = default(Int32?[]);
-            var glyphs = default(Int32?[]);
+            var glyphPositions = shaped ?
+                new[] { new Point2(7, 6), new Point2(37, 13), new Point2(73, 35), new Point2(46, 69), new Point2(122, 91) } :
+                new[] { new Point2(7, 6), new Point2(49, 10), new Point2(88, 33), new Point2(55, 55), new Point2(146, 77) };
+
+            var glyphIndices = new Int32?[glyphPositions.Length];
+            var glyphLines = new Int32?[glyphPositions.Length];
 
             var result = GivenAnUltravioletApplication()
-                .WithContent(content.Load)
+                .WithConfiguration(config =>
+                {
+                    if (shaped)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
+                .WithPlugin(shaped ? new FreeTypeFontPlugin() : null)
+                .WithContent(manager => content.Load(manager, shaped ? FontKind.FreeType2 : FontKind.SpriteFont))
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
+                    var options = shaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop, options));
 
                     content.TextLayoutResult.AcquirePointers();
-                    lines = new Int32?[5];
-                    glyphs = new[]
-                    {
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 7, 6, out lines[0]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 49, 10, out lines[1]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 88, 33, out lines[2]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 55, 55, out lines[3]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 146, 77, out lines[4]),
-                    };
+
+                    for (int i = 0; i < glyphPositions.Length; i++)
+                        glyphIndices[i] = content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, glyphPositions[i], out glyphLines[i]);
+
                     content.TextLayoutResult.ReleasePointers();
 
                     content.SpriteBatch.Begin();
-
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
                     var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow, Color.Purple };
-                    for (int i = 0; i < glyphs.Length; i++)
+                    for (int i = 0; i < glyphIndices.Length; i++)
                     {
-                        var glyph = glyphs[i];
+                        var glyph = glyphIndices[i];
                         if (glyph.HasValue)
                         {
                             var bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, glyph.Value);
@@ -617,55 +628,78 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png");
+            if (shaped)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph(Shaped).png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph.png");
+            }
 
-            TheResultingCollection(glyphs).ShouldBeExactly(0, 4, 37, 51, 82);
-            TheResultingCollection(lines).ShouldBeExactly(0, 0, 1, 2, 3);
+            TheResultingCollection(glyphIndices).ShouldBeExactly(0, 4, 37, 51, 82);
+            TheResultingCollection(glyphLines).ShouldBeExactly(0, 0, 1, 2, 3);
         }
 
         [Test]
+        [TestCase(false, TestName = "TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph")]
+        [TestCase(true, TestName = "TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph(Shaped)")]
         [Category("Rendering")]
         [Description("Ensures that the GetGlyphAtPosition() method on TextRenderer returns the correct result for positions outside of a glyph.")]
-        public void TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph()
+        public void TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph(Boolean shaped)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
                 "The |i|quick|i| brown |i|fox|i|\njumps over the |b||i|lazy dog|i||b|");
 
+            var glyphPositions = shaped ?
+                new[] { new Point2(169, 32), new Point2(178, 122), new Point2(472, 8), new Point2(114, 203), new Point2(391, 217) } :
+                new[] { new Point2(169, 32), new Point2(178, 122), new Point2(472, 8), new Point2(114, 203), new Point2(391, 217) };
+
+            var glyphIndices = new Int32?[glyphPositions.Length];
+            var glyphLines = new Int32?[glyphPositions.Length];
+
             var result = GivenAnUltravioletApplication()
-                .WithContent(content.Load)
+                .WithConfiguration(config =>
+                {
+                    if (shaped)
+                    {
+                        config.SrgbBuffersEnabled = true;
+                        config.SrgbDefaultForTexture2D = true;
+                        config.SrgbDefaultForRenderBuffer2D = true;
+                    }
+                })
+                .WithPlugin(shaped ? new FreeTypeFontPlugin() : null)
+                .WithContent(manager => content.Load(manager, shaped ? FontKind.FreeType2 : FontKind.SpriteFont))
                 .Render(uv =>
                 {
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
+                    var options = shaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignLeft | TextFlags.AlignTop, options));
 
                     content.TextLayoutResult.AcquirePointers();
-                    var lines = new Int32?[5];
-                    var glyphs = new[]
-                    {
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 169, 32, out lines[0]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 178, 122, out lines[1]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 472, 8, out lines[2]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 114, 203, out lines[3]),
-                        content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, 391, 217, out lines[4]),
-                    };
+
+                    for (int i = 0; i < glyphPositions.Length; i++)
+                        glyphIndices[i] = content.TextRenderer.GetGlyphAtPosition(content.TextLayoutResult, glyphPositions[i], out glyphLines[i]);
+
                     content.TextLayoutResult.ReleasePointers();
 
-                    TheResultingCollection(glyphs).ShouldBeExactly(null, null, null, null, null);
-                    TheResultingCollection(lines).ShouldBeExactly(1, null, 0, null, null);
+                    TheResultingCollection(glyphIndices).ShouldBeExactly(null, null, null, null, null);
+                    TheResultingCollection(glyphLines).ShouldBeExactly(1, null, 0, null, null);
 
                     content.SpriteBatch.Begin();
 
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
 
                     var colors = new[] { Color.Red, Color.Lime, Color.Blue, Color.Yellow, Color.Purple };
-                    for (int i = 0; i < glyphs.Length; i++)
+                    for (int i = 0; i < glyphIndices.Length; i++)
                     {
-                        var glyph = glyphs[i];
+                        var glyph = glyphIndices[i];
                         if (glyph.HasValue)
                         {
                             var bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, glyph.Value);
@@ -676,8 +710,16 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     content.SpriteBatch.End();
                 });
 
-            TheResultingImage(result)
-                .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png");
+            if (shaped)
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph(Shaped).png");
+            }
+            else
+            {
+                TheResultingImage(result)
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph.png");
+            }
         }
 
         [Test]
@@ -787,11 +829,12 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
-        [TestCase(FontKind.SpriteFont)]
-        [TestCase(FontKind.FreeType2)]
+        [TestCase(FontKind.SpriteFont, false, TestName = "TextRenderer_CalculatesCorrectGlyphBounds(SpriteFont)")]
+        [TestCase(FontKind.FreeType2, false, TestName = "TextRenderer_CalculatesCorrectGlyphBounds(FreeType2)")]
+        [TestCase(FontKind.FreeType2, true, TestName = "TextRenderer_CalculatesCorrectGlyphBounds(FreeType2,Shaped)")]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds().")]
-        public void TextRenderer_CalculatesCorrectGlyphBounds(FontKind fontKind)
+        public void TextRenderer_CalculatesCorrectGlyphBounds(FontKind fontKind, Boolean shaped)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -805,8 +848,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
+                    var options = shaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle, options));
 
                     content.TextLayoutResult.AcquirePointers();
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
@@ -858,17 +902,26 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             }
             else
             {
-                TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds(FreeType2).png");
+                if (shaped)
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds(FreeType2,Shaped).png");
+                }
+                else
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds(FreeType2).png");
+                }
             }
         }
 
         [Test]
-        [TestCase(FontKind.SpriteFont)]
-        [TestCase(FontKind.FreeType2)]
+        [TestCase(FontKind.SpriteFont, false, TestName = "TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(SpriteFont)")]
+        [TestCase(FontKind.FreeType2, false, TestName = "TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FreeType2)")]
+        [TestCase(FontKind.FreeType2, true, TestName = "TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FreeType2,Shaped)")]
         [Category("Rendering")]
         [Description("Ensures that the TextRenderer class returns the correct value from GetGlyphBounds() when layout commands are disabled.")]
-        public void TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FontKind fontKind)
+        public void TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FontKind fontKind, Boolean shaped)
         {
             var content = new TextRendererTestContent(
                 "The |b||icon:test|quick brown fox|b| jumps\nover the |c:ffff0000|lazy dog.|c|\n" +
@@ -882,8 +935,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.CornflowerBlue);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
+                    var options = shaped ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
-                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle));
+                        new TextLayoutSettings(content.Font, window.Compositor.Width, window.Compositor.Height, TextFlags.AlignCenter | TextFlags.AlignMiddle, options));
 
                     content.TextLayoutResult.AcquirePointers();
                     var glyph0Bounds = content.TextRenderer.GetGlyphBounds(content.TextLayoutResult, 0);
@@ -917,8 +971,16 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             }
             else
             {
-                TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FreeType2).png");
+                if (shaped)
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FreeType2,Shaped).png");
+                }
+                else
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(FreeType2).png");
+                }
             }
         }
 
