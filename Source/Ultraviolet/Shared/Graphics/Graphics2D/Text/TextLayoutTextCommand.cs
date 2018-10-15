@@ -10,18 +10,22 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="TextLayoutTextCommand"/> structure.
         /// </summary>
-        /// <param name="textOffset">The offset from the beginning of the source string to the beginning of the
-        /// substring which will be rendered by this command.</param>
-        /// <param name="textLength">The number of glyphs that will be rendered by this command.</param>
+        /// <param name="glyphOffset">The offset of the text within the glyph buffer (or the source string if the text is not shaped).</param>
+        /// <param name="glyphLength">The length of the text within the glyph buffer (or the source string if the text is not shaped).</param>
+        /// <param name="sourceOffset">The offset of the text within the source string.</param>
+        /// <param name="sourceLength">The length of the text within the source string.</param>
         /// <param name="textX">The x-coordinate of the top-left corner of the text relative to its layout area.</param>
         /// <param name="textY">The y-coordinate of the top-left corner of the text relative to its layout area.</param>
         /// <param name="textWidth">The width of the text in pixels.</param>
         /// <param name="textHeight">The height of the text in pixels.</param>
-        public TextLayoutTextCommand(Int32 textOffset, Int32 textLength, Int32 textX, Int32 textY, Int16 textWidth, Int16 textHeight)
+        public TextLayoutTextCommand(Int32 glyphOffset, Int32 glyphLength, Int32 sourceOffset, Int32 sourceLength, 
+            Int32 textX, Int32 textY, Int16 textWidth, Int16 textHeight)
         {
             this.CommandType = TextLayoutCommandType.Text;
-            this.TextOffset = textOffset;
-            this.TextLength = textLength;
+            this.GlyphOffset = glyphOffset;
+            this.GlyphLength = glyphLength;
+            this.SourceOffset = sourceOffset;
+            this.SourceLength = sourceLength;
             this.TextX = textX;
             this.TextY = textY;
             this.TextWidth = textWidth;
@@ -91,15 +95,24 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
-        /// Gets the offset from the beginning of the source string to the beginning of the substring
-        /// which will be rendered by this command.
+        /// Gets the offset of the text within the glyph buffer (or the source string if the text is not shaped).
         /// </summary>
-        public Int32 TextOffset { get; internal set; }
+        public Int32 GlyphOffset { get; internal set; }
 
         /// <summary>
-        /// Gets the number of glyphs that will be rendered by this command.
+        /// Gets the length of the text within the glyph buffer (or the source string if the text is not shaped).
         /// </summary>
-        public Int32 TextLength { get; internal set; }
+        public Int32 GlyphLength { get; internal set; }
+
+        /// <summary>
+        /// Gets the offset of the text within the source string.
+        /// </summary>
+        public Int32 SourceOffset { get; internal set; }
+
+        /// <summary>
+        /// Gets the length of the text in the source string.
+        /// </summary>
+        public Int32 SourceLength { get; internal set; }
 
         /// <summary>
         /// Gets the x-coordinate of the top-left corner of the text relative to its layout area.

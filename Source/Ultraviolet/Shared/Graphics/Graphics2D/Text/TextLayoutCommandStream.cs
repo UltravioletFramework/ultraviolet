@@ -71,7 +71,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.Text:
                         {
                             var cmd = (TextLayoutTextCommand*)Data;
-                            glyphsSeen += cmd->TextLength;                            
+                            glyphsSeen += cmd->SourceLength;                            
                         }
                         break;
                         
@@ -84,9 +84,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.LineBreak:
                         {
                             var cmd = (TextLayoutLineBreakCommand*)Data;
-                            if (cmd->Length > 0)
+                            if (cmd->SourceLength > 0)
                             {
-                                glyphsSeen += cmd->Length;
+                                glyphsSeen += cmd->SourceLength;
                             }
                         }
                         break;

@@ -1485,9 +1485,9 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                             if (cmd == TextLayoutCommandType.Text)
                             {
                                 var textCmd = (TextLayoutTextCommand*)content.TextLayoutResult.Data;
-                                var textOffset = textCmd->TextOffset;
-                                var textLength = textCmd->TextLength;
-                                var text = source.CreateShapedStringSegmentFromSubstring(textOffset, textLength);
+                                var glyphOffset = textCmd->GlyphOffset;
+                                var glyphLength = textCmd->GlyphLength;
+                                var text = source.CreateShapedStringSegmentFromSubstring(glyphOffset, glyphLength);
                                 for (int j = 0; j < text.Length; j++)
                                 {
                                     var sourceIndex = text[j].SourceIndex;

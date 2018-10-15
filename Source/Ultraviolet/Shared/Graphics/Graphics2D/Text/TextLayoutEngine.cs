@@ -1006,7 +1006,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var overflowingToken = input[index];
                 if (overflowingToken.IsWhiteSpace && !overflowingToken.IsNonBreakingSpace)
                 {
-                    output.WriteLineBreak(new TextLayoutLineBreakCommand(1));
+                    output.WriteLineBreak(new TextLayoutLineBreakCommand(1, 0));
                     state.AdvanceLineToNextCommand(0, 0, 1, 1, isLineBreak: true);
                     state.AdvanceLayoutToNextLine(output, ref settings);
 
@@ -1103,23 +1103,26 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Adds a <see cref="TextLayoutCommandType.Text"/> command to the output stream if the specified span of text has a non-zero length.
         /// </summary>
         private Boolean EmitTextIfNecessary(UltravioletFontFace font, TextLayoutCommandStream output, 
-            Int32 start, Int32 length, ref Rectangle bounds, ref LayoutState state, ref TextLayoutSettings settings)
+            Int32 sourceOffset, Int32 sourceLength, ref Rectangle bounds, ref LayoutState state, ref TextLayoutSettings settings)
         {
-            if (length == 0)
+            if (sourceLength == 0)
                 return false;
+
+            var glyphOffset = sourceOffset;
+            var glyphLength = sourceLength;
 
             var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
             if (shape)
             {
                 var shapedBuffer = output.GetShapedStringBuilder();
                 var shapedStart = shapedBuffer.Length;
-                ShapeEmittedText(font, ref settings, start, length, output);
+                ShapeEmittedText(font, ref settings, sourceOffset, sourceLength, output);
 
-                start = shapedStart;
-                length = shapedBuffer.Length - shapedStart;
+                glyphOffset = shapedStart;
+                glyphLength = shapedBuffer.Length - shapedStart;
             }
 
-            output.WriteText(new TextLayoutTextCommand(start, length, 
+            output.WriteText(new TextLayoutTextCommand(glyphOffset, glyphLength, sourceOffset, sourceLength, 
                 bounds.X, bounds.Y, (Int16)bounds.Width, (Int16)bounds.Height));
 
             state.LineLengthInCommands++;

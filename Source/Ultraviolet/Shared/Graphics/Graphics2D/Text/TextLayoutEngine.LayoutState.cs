@@ -137,7 +137,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 if (lineHeightCurrent == 0)
                     lineHeightCurrent = lineSpacing;
 
-                output.WriteLineBreak(new TextLayoutLineBreakCommand(length));
+                output.WriteLineBreak(new TextLayoutLineBreakCommand(1, length));
                 AdvanceLineToNextCommand(0, lineHeightCurrent, 1, length, isLineBreak: true);
 
                 AdvanceLayoutToNextLine(output, ref settings);
@@ -220,8 +220,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var sizeBeforeBreak = brokenTextSizeBeforeBreak.Value;
                 var sizeAfterBreak = brokenTextSizeAfterBreak.Value;
                 var brokenCommandSize = Size2.Zero;
-                var brokenCommandOffset = 0;
-                var brokenCommandLength = 0;
+                var brokenCommandGlyphOffset = 0;
+                var brokenCommandGlyphLength = 0;
+                var brokenCommandSourceOffset = 0;
+                var brokenCommandSourceLength = 0;
 
                 var newLineHeight = sizeAfterBreak.Height;
                 if (newLineHeight == 0)
@@ -232,28 +234,37 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 unsafe
                 {
                     var cmd = (TextLayoutTextCommand*)output.Data;
+                    var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
 
-                    brokenCommandOffset = cmd->TextOffset;
-                    brokenCommandLength = cmd->TextLength;
+                    brokenCommandGlyphOffset = cmd->GlyphOffset;
+                    brokenCommandGlyphLength = cmd->GlyphLength;
+                    brokenCommandSourceOffset = cmd->SourceOffset;
+                    brokenCommandSourceLength = cmd->SourceLength;
                     brokenCommandSize = cmd->Bounds.Size;
 
-                    var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
+                    // TODO: Figure out how RTL interacts with source/glyph stuff
                     if (shape && settings.Direction == TextDirection.RightToLeft)
                     {
-                        cmd->TextOffset = cmd->TextOffset + (brokenCommandLength - lineBreakOffsetOutput.Value);
+                        cmd->GlyphOffset = cmd->GlyphOffset + (brokenCommandGlyphLength - LineBreakOffsetOutput.Value);
+                        cmd->SourceOffset = cmd->SourceOffset + (brokenCommandSourceLength - LineBreakOffsetInput.Value);
                     }
+                    cmd->GlyphLength = LineBreakOffsetOutput.Value;
+                    cmd->SourceLength = LineBreakOffsetInput.Value;
 
-                    cmd->TextLength = lineBreakOffsetOutput.Value;
                     cmd->TextWidth = (Int16)sizeBeforeBreak.Width;
                     cmd->TextHeight = (Int16)sizeBeforeBreak.Height;
                 }
                 output.SeekNextCommand();
 
                 // Insert a line break, a new line, and the second half of the truncated text.
-                var part1Length = lineBreakOffsetOutput.Value;
-                var part2Offset = brokenCommandOffset + (lineBreakOffsetOutput.Value + 1);
-                var part2Length = brokenCommandLength - (part1Length + 1);
-                var part2IsNotDegenerate = (part2Length > 0);
+                var part1GlyphLength = LineBreakOffsetOutput.Value;
+                var part1SourceLength = LineBreakOffsetInput.Value;
+
+                var part2GlyphOffset = brokenCommandGlyphOffset + (LineBreakOffsetOutput.Value + 1);
+                var part2GlyphLength = brokenCommandGlyphLength - (part1GlyphLength + 1);
+                var part2SourceOffset = brokenCommandSourceOffset + (LineBreakOffsetInput.Value + 1);
+                var part2SourceLength = brokenCommandSourceLength - (part1SourceLength + 1);
+                var part2IsNotDegenerate = (part2GlyphLength > 0);
 
                 var numberOfObjects = part2IsNotDegenerate ? 3 : 2;
                 var numberOfBytes =
@@ -265,7 +276,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 output.InternalObjectStream.ReserveInsert(numberOfObjects, numberOfBytes);
 
-                *(TextLayoutLineBreakCommand*)output.Data = new TextLayoutLineBreakCommand(1);
+                *(TextLayoutLineBreakCommand*)output.Data = new TextLayoutLineBreakCommand(1, 1);
                 output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutLineBreakCommand));
 
                 *(TextLayoutCommandType*)output.Data = TextLayoutCommandType.LineInfo;
@@ -273,10 +284,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
                 if (part2IsNotDegenerate)
                 {
-                    var textOffset = part2Offset;
-                    var textLength = part2Length;
+                    var glyphOffset = part2GlyphOffset;
+                    var glyphLength = part2GlyphLength;
+                    var sourceOffset = part2SourceOffset;
+                    var sourceLength = part2SourceLength;
 
-                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(textOffset, textLength,
+                    // TODO: Split glyph values
+                    *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(
+                        glyphOffset, glyphLength, sourceOffset, sourceLength, 
                         0, positionY + lineHeight, (Int16)sizeAfterBreak.Width, (Int16)sizeAfterBreak.Height);
                     output.InternalObjectStream.FinalizeObject(sizeof(TextLayoutTextCommand));
                 }
@@ -302,7 +317,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 var cmd = (TextLayoutTextCommand*)output.Data;
                                 brokenLineWidth += cmd->TextWidth;
                                 brokenLineHeight = Math.Max(brokenLineHeight, cmd->TextHeight);
-                                brokenLineLengthInGlyphs += cmd->TextLength;
+                                brokenLineLengthInGlyphs += cmd->SourceLength;
                             }
                             break;
 
@@ -318,7 +333,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         case TextLayoutCommandType.LineBreak:
                             {
                                 var cmd = (TextLayoutLineBreakCommand*)output.Data;
-                                brokenLineLengthInGlyphs += cmd->Length;
+                                brokenLineLengthInGlyphs += cmd->SourceLength;
                             }
                             break;
                     }
@@ -351,7 +366,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                                 width = cmd->TextWidth;
                                 height = cmd->TextHeight;
                                 lengthInCommands = 1;
-                                lengthInText = cmd->TextLength;
+                                lengthInText = cmd->SourceLength;
                                 cmd->TextX = PositionX;
                                 cmd->TextY = PositionY;
                             }
@@ -372,7 +387,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         case TextLayoutCommandType.LineBreak:
                             {
                                 var cmd = (TextLayoutLineBreakCommand*)output.Data;
-                                lengthInText += cmd->Length;
+                                lengthInText += cmd->SourceLength;
                             }
                             break;
                     }
