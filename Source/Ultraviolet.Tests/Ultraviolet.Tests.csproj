@@ -411,6 +411,18 @@
     <Compile Include="CircleTests.cs" />
     <Compile Include="Size2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2,Shaped%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28FreeType2,Shaped%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionOutsideGlyph%28Shaped%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetsCorrectGlyphAtPosition_ForPositionInsideGlyph%28Shaped%29.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_AssignsCorrectSourceIndicesToShapedText.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
