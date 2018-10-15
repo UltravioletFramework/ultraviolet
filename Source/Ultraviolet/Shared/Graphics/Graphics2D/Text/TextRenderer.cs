@@ -205,7 +205,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             input.Seek(0);
 
             var line = default(Int32?);
-            var glyph = GetGlyphOrInsertionPointAtPosition(input, x, y, out line, GlyphSearchMode.SearchGlyphs);
+            var glyph = GetGlyphOrInsertionPointAtPosition(input, x, y, out line, InsertionPointSearchMode.BeforeGlyph);
 
             if (glyph != null)
                 linkIndex = linkStack.Count > 0 ? linkStack.Peek() : (Int16?)null;
@@ -434,7 +434,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 input.AcquirePointers();
 
             var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPosition, 
-                snapToLine ? GlyphSearchMode.SearchGlyphsSnapToLine : GlyphSearchMode.SearchGlyphs);
+                snapToLine ? InsertionPointSearchMode.SnapToLine : InsertionPointSearchMode.BeforeGlyph);
 
             if (acquiredPointers)
                 input.ReleasePointers();
@@ -532,7 +532,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 input.AcquirePointers();
 
             var lineAtPositionTemp = default(Int32?);
-            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPositionTemp, GlyphSearchMode.SearchInsertionPoints) ?? 0;
+            var result = GetGlyphOrInsertionPointAtPosition(input, x, y, out lineAtPositionTemp, InsertionPointSearchMode.BeforeOrAfterGlyph) ?? 0;
 
             lineAtPosition = lineAtPositionTemp ?? 0;
 
@@ -2171,10 +2171,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Gets the index of the glyph or insertion point which is closest to the specified position in layout-relative space.
         /// </summary>
-        private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, GlyphSearchMode searchMode)
+        private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, InsertionPointSearchMode searchMode)
         {
-            var searchInsertionPoints = (searchMode == GlyphSearchMode.SearchInsertionPoints);
-            var searchSnapToLine = (searchMode == GlyphSearchMode.SearchGlyphsSnapToLine);
+            var searchInsertionPoints = (searchMode == InsertionPointSearchMode.BeforeOrAfterGlyph);
+            var searchSnapToLine = (searchMode == InsertionPointSearchMode.SnapToLine);
 
             lineAtPosition = searchInsertionPoints ? 0 : (Int32?)null;
 
