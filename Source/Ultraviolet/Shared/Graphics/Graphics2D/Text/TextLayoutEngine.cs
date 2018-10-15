@@ -561,8 +561,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
                 return false;
 
+            var sourceOffset = token.SourceOffset;
+            var sourceLength = token.SourceLength;
+
             output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY,
-                (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender));
+                (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender, sourceOffset, sourceLength));
             state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
             index++;
 
