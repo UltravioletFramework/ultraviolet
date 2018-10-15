@@ -246,13 +246,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
             if (shape)
             {
-                PrepareShapingBuffers();
-
-                var shapedStringBuilder = output.GetShapedStringBuilder();
-                var shapedStringBuilderIx = output.RegisterSourceShapedStringBuilder(shapedStringBuilder);
-                shapedStringBuilder.Clear();
-
-                output.WriteChangeSourceShapedStringBuilder(new TextLayoutSourceShapedStringBuilderCommand(shapedStringBuilderIx));
+                PrepareShapingBuffers(output, ref state);
             }
 
             var bold = (settings.Style == UltravioletFontStyle.Bold || settings.Style == UltravioletFontStyle.BoldItalic);
@@ -472,7 +466,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Prepares the engine's shaping buffers for use.
         /// </summary>
-        private void PrepareShapingBuffers()
+        private void PrepareShapingBuffers(TextLayoutCommandStream output, ref LayoutState state)
         {
             if (shaper == null)
                 throw new InvalidOperationException(UltravioletStrings.TextShaperNotRegistered);
@@ -482,6 +476,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             if (shapedMeasureBuffer == null)
                 shapedMeasureBuffer = new ShapedStringBuilder();
+
+            var shapedStringBuilder = output.GetShapedStringBuilder();
+            var shapedStringBuilderIx = output.RegisterSourceShapedStringBuilder(shapedStringBuilder);
+            shapedStringBuilder.Clear();
+
+            EmitShapedStringSource(output, shapedStringBuilderIx, ref state);
         }
 
         /// <summary>
@@ -1065,6 +1065,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 return segment.SourceString == sourceString;
 
             return segment.SourceStringBuilder == sourceStringBuilder;
+        }
+
+        /// <summary>
+        /// Emits the command which specifies the source for shaped text.
+        /// </summary>
+        private Boolean EmitShapedStringSource(TextLayoutCommandStream output, Int16 index, ref LayoutState state)
+        {
+            output.WriteChangeSourceShapedStringBuilder(new TextLayoutSourceShapedStringBuilderCommand(index));
+            state.AdvanceLineToNextCommand();
+            return true;
         }
 
         /// <summary>
