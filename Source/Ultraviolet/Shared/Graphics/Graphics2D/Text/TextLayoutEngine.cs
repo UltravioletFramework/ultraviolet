@@ -566,7 +566,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY,
                 (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender, sourceOffset, sourceLength));
-            state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
+            state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, sourceLength, 1);
             index++;
 
             return true;
@@ -963,7 +963,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 accumulatedOutputLength = accumulatedOutputLength + tokenLengthOutput;
                 accumulatedCount++;
 
-                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenLengthOutput);
+                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenLengthInput, tokenLengthOutput);
                 state.ParserTokenOffset = tokenIsComplete ? 0 : tokenStartIx + tokenLengthInput;
                 state.LineLengthInCommands--;
 
@@ -1007,7 +1007,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 if (overflowingToken.IsWhiteSpace && !overflowingToken.IsNonBreakingSpace)
                 {
                     output.WriteLineBreak(new TextLayoutLineBreakCommand(1, 0));
-                    state.AdvanceLineToNextCommand(0, 0, 1, 1, isLineBreak: true);
+                    state.AdvanceLineToNextCommand(0, 0, 1, 0, 1, isLineBreak: true);
                     state.AdvanceLayoutToNextLine(output, ref settings);
 
                     if (overflowingToken.Text.Length > 1)
@@ -1031,11 +1031,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         tokenText.Start, tokenLengthInput, ref overflowingTokenBounds, ref state, ref settings);
                     if (overflowingTextEmitted)
                     {
-                        state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenLengthInput);
+                        state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenLengthInput, tokenLengthOutput);
                         if (hyphenate)
                         {
                             output.WriteHyphen();
-                            state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                            state.AdvanceLineToNextCommand(0, 0, 1, 0, 1);
                         }
                     }
 
