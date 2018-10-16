@@ -132,19 +132,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             SeekNextCommand();
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
             var linePosition = 0;
-            var lineSourceStart = 0;
-            var lineGlyphStart = 0;
+            var lineOffsetInSource = 0;
+            var lineOffsetInGlyphs = 0;
             for (int i = 0; i < index; i++)
             {
-                // TODO: These probably don't always lead to accurate offsets!!
                 linePosition += lineInfo->LineHeight;
-                lineSourceStart += lineInfo->LengthInSource;
-                lineGlyphStart += lineInfo->LengthInGlyphs;
+                lineOffsetInSource += lineInfo->LengthInSource;
+                lineOffsetInGlyphs += lineInfo->LengthInGlyphs;
                 Seek(1 + StreamPositionInObjects + lineInfo->LengthInCommands);
                 lineInfo = (TextLayoutLineInfoCommand*)Data;
             }
 
-            var result = new LineInfo(this, index, StreamPositionInObjects, lineSourceStart, lineGlyphStart, lineInfo->Offset, blockOffset + linePosition, 
+            var result = new LineInfo(this, index, StreamPositionInObjects, lineOffsetInSource, lineOffsetInGlyphs, lineInfo->Offset, blockOffset + linePosition, 
                 lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
 
             if (acquiredPointers)

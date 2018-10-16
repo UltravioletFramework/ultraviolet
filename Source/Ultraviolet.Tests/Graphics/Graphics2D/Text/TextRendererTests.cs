@@ -1457,14 +1457,27 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         }
 
         [Test]
-        [TestCase(ColorEncoding.Linear)]
-        [TestCase(ColorEncoding.Srgb)]
+        [TestCase(ColorEncoding.Linear, false, TestName = "TextRenderer_CorrectlyPerformsRightToLeftLayout(Linear)")]
+        [TestCase(ColorEncoding.Linear, true, TestName = "TextRenderer_CorrectlyPerformsRightToLeftLayout(Linear,Shaped)")]
+        [TestCase(ColorEncoding.Srgb, false, TestName = "TextRenderer_CorrectlyPerformsRightToLeftLayout(Srgb)")]
+        [TestCase(ColorEncoding.Srgb, true, TestName = "TextRenderer_CorrectlyPerformsRightToLeftLayout(Srgb,Shaped)")]
         [Category("Rendering")]
-        [Description("Ensures that the TextRenderer class correctly renders text which makes use of fallback fonts.")]
-        public void TextRenderer_CorrectlyPerformsRightToLeftLayout(ColorEncoding encoding)
+        [Description("Ensures that the TextRenderer class correctly lays out right-to-left text.")]
+        public void TextRenderer_CorrectlyPerformsRightToLeftLayout(ColorEncoding encoding, Boolean shaped)
         {
             var content = new TextRendererTestContent(
                 "Hello, |c:ffff0000|world|c|! This is a |c:ff00ff00|test of RTL text|c| rendering in the |c:ff0000ff|layout engine|c|! Supercalifragilisticexpialidocious", TextParserOptions.None);
+
+            var sourceStringsActual = new List<String>();
+            var sourceStringsExpected = new List<String> {
+                "Hello, ", "world", "!",
+                "This is a ", "test of",
+                "RTL text", String.Empty,
+                "rendering in the",
+                "layout engine", "!",
+                "Supercalifragili",
+                "sticexpialidoci",
+                "ous"  };
 
             var result = GivenAnUltravioletApplication()
                 .WithConfiguration(config =>
@@ -1486,27 +1499,65 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     uv.GetGraphics().Clear(Color.Black);
 
                     var window = uv.GetPlatform().Windows.GetPrimary();
+                    var options = TextLayoutOptions.Hyphenate | (shaped ? TextLayoutOptions.Shape : TextLayoutOptions.None);
                     content.TextLayoutEngine.CalculateLayout(content.TextParserResult, content.TextLayoutResult,
                         new TextLayoutSettings(content.Font, window.Compositor.Width / 4, window.Compositor.Height, 
-                            TextFlags.AlignTop | TextFlags.AlignRight, TextLayoutOptions.Hyphenate, TextDirection.RightToLeft, TextScript.Latin));
+                            TextFlags.AlignTop | TextFlags.AlignRight, options, TextDirection.RightToLeft, TextScript.Latin));
 
                     content.SpriteBatch.Begin();
                     content.TextRenderer.Draw(content.SpriteBatch, content.TextLayoutResult, Vector2.Zero, Color.White);
                     content.SpriteBatch.End();
+
+                    content.TextLayoutResult.AcquirePointers();
+                    content.TextLayoutResult.SeekBeginning();
+                    unsafe
+                    {
+                        for (int i = 0; i < content.TextLayoutResult.Count; i++)
+                        {
+                            var cmdType = *(TextLayoutCommandType*)content.TextLayoutResult.Data;
+                            if (cmdType == TextLayoutCommandType.Text)
+                            {
+                                var cmd = (TextLayoutTextCommand*)content.TextLayoutResult.Data;
+                                var cmdText = content.Text.Substring(cmd->SourceOffset, cmd->SourceLength);
+                                sourceStringsActual.Add(cmdText);
+                            }
+                            content.TextLayoutResult.SeekNextCommand();
+                        }
+                    }
+                    content.TextLayoutResult.ReleasePointers();
+
+                    TheResultingCollection(sourceStringsActual)
+                        .ShouldBeExactly(sourceStringsExpected);
                 });
 
             if (encoding == ColorEncoding.Linear)
             {
-                TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout.png");
+                if (shaped)
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(Shaped).png");
+                }
+                else
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout.png");
+                }
             }
             else
             {
-                TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB).png");
+                if (shaped)
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB,Shaped).png");
+                }
+                else
+                {
+                    TheResultingImage(result)
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB).png");
+                }
             }
         }
-
+        
         [Test]
         [Category("Rendering")]
         [Description("Foo")]
