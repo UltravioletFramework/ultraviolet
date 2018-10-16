@@ -250,11 +250,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     brokenCommandSourceLength = cmd->SourceLength;
                     brokenCommandSize = cmd->Bounds.Size;
 
-                    // TODO: Figure out how RTL interacts with source/glyph stuff
                     if (shape && settings.Direction == TextDirection.RightToLeft)
                     {
                         cmd->GlyphOffset = cmd->GlyphOffset + (brokenCommandGlyphLength - LineBreakOffsetOutput.Value);
-                        cmd->SourceOffset = cmd->SourceOffset + (brokenCommandSourceLength - LineBreakOffsetInput.Value);
                     }
                     cmd->GlyphLength = LineBreakOffsetOutput.Value;
                     cmd->SourceLength = LineBreakOffsetInput.Value;
