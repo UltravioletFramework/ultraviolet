@@ -69,6 +69,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\ShapedStringSegment.Source.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceShapedStringBuilderCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextLayoutSourceShapedStringCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextDrawState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextRenderer.TextSeekState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\TextureOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
