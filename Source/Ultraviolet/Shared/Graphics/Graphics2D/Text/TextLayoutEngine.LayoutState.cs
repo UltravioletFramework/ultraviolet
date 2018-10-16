@@ -294,10 +294,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 {
                     var glyphOffset = part2GlyphOffset;
                     var glyphLength = part2GlyphLength;
+
                     var sourceOffset = part2SourceOffset;
                     var sourceLength = part2SourceLength;
 
-                    // TODO: Split glyph values
                     *(TextLayoutTextCommand*)output.InternalObjectStream.Data = new TextLayoutTextCommand(
                         glyphOffset, glyphLength, sourceOffset, sourceLength, 
                         0, PositionY + LineHeight, (Int16)sizeAfterBreak.Width, (Int16)sizeAfterBreak.Height);
