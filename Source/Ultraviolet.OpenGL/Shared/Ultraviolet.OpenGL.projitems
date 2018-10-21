@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedCapability.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearDepth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedStencilMask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedClearStencil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedColorMask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Caching\CachedCulledFace.cs" />
