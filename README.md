@@ -1,3 +1,5 @@
+_For questions and discussion, check out our [Gitter](https://gitter.im/ultraviolet-framework/Lobby)._
+
 ### Builds
 | Branch       | Integration | Release |
 |--------------|-------------|---------|
