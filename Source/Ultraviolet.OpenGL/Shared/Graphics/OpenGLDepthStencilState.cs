@@ -43,7 +43,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             var state = new OpenGLDepthStencilState(uv);
             state.DepthBufferEnable = true;
-            state.DepthBufferWriteEnable = true;
+            state.DepthBufferWriteEnable = false;
             state.MakeImmutable();
             return state;
         }
