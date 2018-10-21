@@ -701,7 +701,7 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 gl.BindTexture(gl.GL_TEXTURE_3D, newGL_TEXTURE_BINDING_3D);
                 gl.ThrowIfError();
-                
+
                 oldGL_TEXTURE_BINDING_3D = GL_TEXTURE_BINDING_3D.Update(newGL_TEXTURE_BINDING_3D);
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = newGL_TEXTURE_BINDING_3D;
             }
@@ -999,7 +999,7 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             gl.ActiveTexture(oldGL_ACTIVE_TEXTURE);
             gl.ThrowIfError();
-            
+
             glTextureBinding2DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out var tb2d);
             glTextureBinding3DByTextureUnit.TryGetValue(oldGL_ACTIVE_TEXTURE, out var tb3d);
 
@@ -1026,7 +1026,7 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
                 gl.ThrowIfError();
-                
+
                 GL_TEXTURE_BINDING_2D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
@@ -1138,7 +1138,7 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 gl.BindTexture(gl.GL_TEXTURE_3D, oldGL_TEXTURE_BINDING_3D);
                 gl.ThrowIfError();
-                
+
                 GL_TEXTURE_BINDING_3D.Update(oldGL_TEXTURE_BINDING_3D);
                 glTextureBinding3DByTextureUnit[GL_ACTIVE_TEXTURE] = oldGL_TEXTURE_BINDING_3D;
             }
@@ -1263,7 +1263,7 @@ namespace Ultraviolet.OpenGL.Graphics
             get { return cachedStencilFuncFront; }
             set { CachedStencilFunc.TryUpdate(gl.GL_FRONT, ref cachedStencilFuncFront, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets the back stencil function.
         /// </summary>
@@ -1298,6 +1298,15 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             get { return cachedStencilOpBack; }
             set { CachedStencilOp.TryUpdate(gl.GL_BACK, ref cachedStencilOpBack, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the stencil mask.
+        /// </summary>
+        public static UInt32 StencilMask
+        {
+            get { return (UInt32)cachedStencilMask; }
+            set { CachedStencilMask.TryUpdate(ref cachedStencilMask, value); }
         }
 
         /// <summary>
@@ -1497,6 +1506,7 @@ namespace Ultraviolet.OpenGL.Graphics
         private static CachedStencilFunc cachedStencilFuncBack;
         private static CachedStencilOp cachedStencilOpFront;
         private static CachedStencilOp cachedStencilOpBack;
+        private static CachedStencilMask cachedStencilMask;
         private static CachedCapability cachedBlendEnabled;
         private static CachedBlendColor cachedBlendColor;
         private static CachedBlendEquation cachedBlendEquation;

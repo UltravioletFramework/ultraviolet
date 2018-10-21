@@ -72,11 +72,12 @@ namespace Ultraviolet.OpenGL.Graphics
             OpenGLState.DepthFunc = GetCompareFunctionGL(DepthBufferFunction);
 
             OpenGLState.StencilTestEnabled = StencilEnable;
+            OpenGLState.StencilMask = (UInt32)StencilWriteMask;
 
             if (TwoSidedStencilMode)
             {
                 OpenGLState.StencilFuncFront = new CachedStencilFunc(GetCompareFunctionGL(StencilFunction), ReferenceStencil, StencilMask);
-                OpenGLState.StencilFuncBack = new CachedStencilFunc(GetCompareFunctionGL(StencilFunction), ReferenceStencil, StencilMask);
+                OpenGLState.StencilFuncBack = new CachedStencilFunc(GetCompareFunctionGL(CounterClockwiseStencilFunction), ReferenceStencil, StencilMask);
                 OpenGLState.StencilOpFront = new CachedStencilOp(
                     GetStencilOpGL(StencilFail), 
                     GetStencilOpGL(StencilDepthBufferFail),
