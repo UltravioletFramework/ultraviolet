@@ -71,9 +71,10 @@ namespace Ultraviolet
         /// to an instance of the <see cref="Vector4"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator Vector4(System.Numerics.Vector4 value)
+        public static unsafe implicit operator Vector4(System.Numerics.Vector4 value)
         {
-            unsafe { return *(Vector4*)&value; }
+            var x = (Vector4*)&value;
+            return *x;
         }
 
         /// <summary>
@@ -81,9 +82,10 @@ namespace Ultraviolet
         /// to an instance of the <see cref="System.Numerics.Vector4"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator System.Numerics.Vector4(Vector4 value)
+        public static unsafe implicit operator System.Numerics.Vector4(Vector4 value)
         {
-            unsafe { return *(System.Numerics.Vector4*)&value; }
+            var x = (System.Numerics.Vector4*)&value;
+            return *x;
         }
 
         /// <summary>

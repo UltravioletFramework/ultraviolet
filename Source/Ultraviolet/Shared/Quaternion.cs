@@ -45,9 +45,10 @@ namespace Ultraviolet
         /// to an instance of the <see cref="Quaternion"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator Quaternion(System.Numerics.Quaternion value)
+        public static unsafe implicit operator Quaternion(System.Numerics.Quaternion value)
         {
-            unsafe { return *(Quaternion*)&value; }
+            var x = (Quaternion*)&value;
+            return *x;
         }
 
         /// <summary>
@@ -55,9 +56,10 @@ namespace Ultraviolet
         /// to an instance of the <see cref="System.Numerics.Quaternion"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator System.Numerics.Quaternion(Quaternion value)
+        public static unsafe implicit operator System.Numerics.Quaternion(Quaternion value)
         {
-            unsafe { return *(System.Numerics.Quaternion*)&value; }
+            var x = (System.Numerics.Quaternion*)&value;
+            return *x;
         }
 
         /// <summary>

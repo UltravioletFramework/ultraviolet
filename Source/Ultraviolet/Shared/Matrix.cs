@@ -62,9 +62,10 @@ namespace Ultraviolet
         /// to an instance of the <see cref="Matrix"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator Matrix(System.Numerics.Matrix4x4 value)
+        public static unsafe implicit operator Matrix(System.Numerics.Matrix4x4 value)
         {
-            unsafe { return *(Matrix*)&value; }
+            var x = (Matrix*)&value;
+            return *x;
         }
 
         /// <summary>
@@ -72,9 +73,10 @@ namespace Ultraviolet
         /// to an instance of the <see cref="System.Numerics.Matrix4x4"/> structure.
         /// </summary>
         /// <param name="value">The value to convert.</param>
-        public static implicit operator System.Numerics.Matrix4x4(Matrix value)
+        public static unsafe implicit operator System.Numerics.Matrix4x4(Matrix value)
         {
-            unsafe { return *(System.Numerics.Matrix4x4*)&value; }
+            var x = (System.Numerics.Matrix4x4*)&value;
+            return *x;
         }
 
         /// <summary>
