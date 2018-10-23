@@ -27,6 +27,12 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <Import Project="..\Shared\Ultraviolet.Presentation.Compiler.projitems" Label="Shared" />
 
   <ItemGroup>
