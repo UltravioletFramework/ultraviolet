@@ -57,10 +57,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.NETStandar
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{DC20CD66-F490-47DF-9873-42E8B4E3547D}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
