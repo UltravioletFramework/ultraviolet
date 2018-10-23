@@ -859,5 +859,25 @@ namespace Ultraviolet.Tests
             TheResultingValue(vector2.HasValue)
                 .ShouldBe(false);
         }
+
+        [Test]
+        public void Vector2_ConvertsFromSystemNumericsCorrectly()
+        {
+            var vector1 = new Vector2(1.2f, 3.4f);
+            System.Numerics.Vector2 vector2 = vector1;
+
+            TheResultingValue(vector1.X).ShouldBe(vector2.X);
+            TheResultingValue(vector1.Y).ShouldBe(vector2.Y);
+        }
+
+        [Test]
+        public void Vector2_ConvertsToSystemNumericsCorrectly()
+        {
+            var vector1 = new System.Numerics.Vector2(1.2f, 3.4f);
+            Vector2 vector2 = vector1;
+
+            TheResultingValue(vector1.X).ShouldBe(vector2.X);
+            TheResultingValue(vector1.Y).ShouldBe(vector2.Y);
+        }
     }
 }
