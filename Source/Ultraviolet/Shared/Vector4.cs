@@ -67,6 +67,26 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Implicitly converts an instance of the <see cref="System.Numerics.Vector4"/> structure
+        /// to an instance of the <see cref="Vector4"/> structure.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator Vector4(System.Numerics.Vector4 value)
+        {
+            unsafe { return *(Vector4*)&value; }
+        }
+
+        /// <summary>
+        /// Implicitly converts an instance of the <see cref="Vector4"/> structure
+        /// to an instance of the <see cref="System.Numerics.Vector4"/> structure.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator System.Numerics.Vector4(Vector4 value)
+        {
+            unsafe { return *(System.Numerics.Vector4*)&value; }
+        }
+
+        /// <summary>
         /// Adds two vectors.
         /// </summary>
         /// <param name="vector1">The <see cref="Vector4"/> to the left of the addition operator.</param>

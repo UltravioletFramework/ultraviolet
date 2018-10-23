@@ -46,7 +46,27 @@ namespace Ultraviolet
             this.Y = vector.Y;
             this.Z = z;
         }
-        
+
+        /// <summary>
+        /// Implicitly converts an instance of the <see cref="System.Numerics.Vector3"/> structure
+        /// to an instance of the <see cref="Vector3"/> structure.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator Vector3(System.Numerics.Vector3 value)
+        {
+            unsafe { return *(Vector3*)&value; }
+        }
+
+        /// <summary>
+        /// Implicitly converts an instance of the <see cref="Vector3"/> structure
+        /// to an instance of the <see cref="System.Numerics.Vector3"/> structure.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator System.Numerics.Vector3(Vector3 value)
+        {
+            unsafe { return *(System.Numerics.Vector3*)&value; }
+        }
+
         /// <summary>
         /// Adds two vectors.
         /// </summary>

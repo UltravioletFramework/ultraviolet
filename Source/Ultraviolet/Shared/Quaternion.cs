@@ -39,7 +39,27 @@ namespace Ultraviolet
             this.Z = vector.Z;
             this.W = scalar;
         }
-        
+
+        /// <summary>
+        /// Implicitly converts an instance of the <see cref="System.Numerics.Quaternion"/> structure
+        /// to an instance of the <see cref="Quaternion"/> structure.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator Quaternion(System.Numerics.Quaternion value)
+        {
+            unsafe { return *(Quaternion*)&value; }
+        }
+
+        /// <summary>
+        /// Implicitly converts an instance of the <see cref="Quaternion"/> structure
+        /// to an instance of the <see cref="System.Numerics.Quaternion"/> structure.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        public static implicit operator System.Numerics.Quaternion(Quaternion value)
+        {
+            unsafe { return *(System.Numerics.Quaternion*)&value; }
+        }
+
         /// <summary>
         /// Adds two quaternions.
         /// </summary>

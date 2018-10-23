@@ -1259,5 +1259,59 @@ namespace Ultraviolet.Tests
             TheResultingValue(matrix2.HasValue)
                 .ShouldBe(false);
         }
+
+        [Test]
+        public void Matrix_ConvertsFromSystemNumericsCorrectly()
+        {
+            var matrix1 = new Matrix(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f);
+            System.Numerics.Matrix4x4 matrix2 = matrix1;
+
+            TheResultingValue(matrix1.M11).ShouldBe(matrix2.M11);
+            TheResultingValue(matrix1.M12).ShouldBe(matrix2.M12);
+            TheResultingValue(matrix1.M13).ShouldBe(matrix2.M13);
+            TheResultingValue(matrix1.M14).ShouldBe(matrix2.M14);
+
+            TheResultingValue(matrix1.M21).ShouldBe(matrix2.M21);
+            TheResultingValue(matrix1.M22).ShouldBe(matrix2.M22);
+            TheResultingValue(matrix1.M23).ShouldBe(matrix2.M23);
+            TheResultingValue(matrix1.M24).ShouldBe(matrix2.M24);
+
+            TheResultingValue(matrix1.M31).ShouldBe(matrix2.M31);
+            TheResultingValue(matrix1.M32).ShouldBe(matrix2.M32);
+            TheResultingValue(matrix1.M33).ShouldBe(matrix2.M33);
+            TheResultingValue(matrix1.M34).ShouldBe(matrix2.M34);
+
+            TheResultingValue(matrix1.M41).ShouldBe(matrix2.M41);
+            TheResultingValue(matrix1.M42).ShouldBe(matrix2.M42);
+            TheResultingValue(matrix1.M43).ShouldBe(matrix2.M43);
+            TheResultingValue(matrix1.M44).ShouldBe(matrix2.M44);
+        }
+
+        [Test]
+        public void Matrix_ConvertsToSystemNumericsCorrectly()
+        {
+            var matrix1 = new System.Numerics.Matrix4x4(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f);
+            Matrix matrix2 = matrix1;
+
+            TheResultingValue(matrix1.M11).ShouldBe(matrix2.M11);
+            TheResultingValue(matrix1.M12).ShouldBe(matrix2.M12);
+            TheResultingValue(matrix1.M13).ShouldBe(matrix2.M13);
+            TheResultingValue(matrix1.M14).ShouldBe(matrix2.M14);
+
+            TheResultingValue(matrix1.M21).ShouldBe(matrix2.M21);
+            TheResultingValue(matrix1.M22).ShouldBe(matrix2.M22);
+            TheResultingValue(matrix1.M23).ShouldBe(matrix2.M23);
+            TheResultingValue(matrix1.M24).ShouldBe(matrix2.M24);
+
+            TheResultingValue(matrix1.M31).ShouldBe(matrix2.M31);
+            TheResultingValue(matrix1.M32).ShouldBe(matrix2.M32);
+            TheResultingValue(matrix1.M33).ShouldBe(matrix2.M33);
+            TheResultingValue(matrix1.M34).ShouldBe(matrix2.M34);
+
+            TheResultingValue(matrix1.M41).ShouldBe(matrix2.M41);
+            TheResultingValue(matrix1.M42).ShouldBe(matrix2.M42);
+            TheResultingValue(matrix1.M43).ShouldBe(matrix2.M43);
+            TheResultingValue(matrix1.M44).ShouldBe(matrix2.M44);
+        }
     }
 }

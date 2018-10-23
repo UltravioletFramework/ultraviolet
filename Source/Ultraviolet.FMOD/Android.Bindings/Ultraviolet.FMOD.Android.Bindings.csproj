@@ -12,7 +12,6 @@
     <RootNamespace>Ultraviolet.FMOD.Android.Bindings</RootNamespace>
     <AssemblyName>Ultraviolet.FMOD.Android.Bindings</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

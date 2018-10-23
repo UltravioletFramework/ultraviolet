@@ -603,5 +603,29 @@ namespace Ultraviolet.Tests
             TheResultingValue(quaternion2.HasValue)
                 .ShouldBe(false);
         }
+
+        [Test]
+        public void Quaternion_ConvertsFromSystemNumericsCorrectly()
+        {
+            var quaternion1 = new Quaternion(1.2f, 3.4f, 5.6f, 7.8f);
+            System.Numerics.Quaternion quaternion2 = quaternion1;
+
+            TheResultingValue(quaternion1.X).ShouldBe(quaternion2.X);
+            TheResultingValue(quaternion1.Y).ShouldBe(quaternion2.Y);
+            TheResultingValue(quaternion1.Z).ShouldBe(quaternion2.Z);
+            TheResultingValue(quaternion1.W).ShouldBe(quaternion2.W);
+        }
+
+        [Test]
+        public void Quaternion_ConvertsToSystemNumericsCorrectly()
+        {
+            var quaternion1 = new System.Numerics.Quaternion(1.2f, 3.4f, 5.6f, 7.8f);
+            Quaternion quaternion2 = quaternion1;
+
+            TheResultingValue(quaternion1.X).ShouldBe(quaternion2.X);
+            TheResultingValue(quaternion1.Y).ShouldBe(quaternion2.Y);
+            TheResultingValue(quaternion1.Z).ShouldBe(quaternion2.Z);
+            TheResultingValue(quaternion1.W).ShouldBe(quaternion2.W);
+        }
     }
 }
