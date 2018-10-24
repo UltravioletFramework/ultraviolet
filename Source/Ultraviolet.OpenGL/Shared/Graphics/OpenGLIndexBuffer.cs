@@ -40,10 +40,7 @@ namespace Ultraviolet.OpenGL.Graphics
             this.buffer = buffer;
         }
 
-        /// <summary>
-        /// Sets the data contained by the index buffer.
-        /// </summary>
-        /// <param name="data">An array containing the data to set in the index buffer.</param>
+        /// <inheritdoc/>
         public override void SetData<T>(T[] data)
         {
             Contract.Require(data, nameof(data));
@@ -53,16 +50,15 @@ namespace Ultraviolet.OpenGL.Graphics
             if (inputSizeInBytes > size.ToInt32())
                 throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
 
-            SetDataInternal(data, 0, inputSizeInBytes, SetDataOptions.None);
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                SetDataInternal(handle.AddrOfPinnedObject(), 0, inputSizeInBytes, SetDataOptions.None);
+            }
+            finally { handle.Free(); }
         }
 
-        /// <summary>
-        /// Sets the data contained by the index buffer.
-        /// </summary>
-        /// <param name="data">An array containing the data to set in the index buffer.</param>
-        /// <param name="offset">The offset into <paramref name="data"/> at which to begin setting elements into the buffer.</param>
-        /// <param name="count">The number of elements from <paramref name="data"/> to set into the buffer.</param>
-        /// <param name="options">A hint to the underlying driver indicating whether data will be overwritten by this operation.</param>
+        /// <inheritdoc/>
         public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOptions options)
         {
             Contract.Require(data, nameof(data));
@@ -74,7 +70,22 @@ namespace Ultraviolet.OpenGL.Graphics
             if (inputSizeInBytes > size.ToInt32())
                 throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
 
-            SetDataInternal(data, offset * inputElemSize, inputSizeInBytes, options);
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try
+            {
+                SetDataInternal(handle.AddrOfPinnedObject() + (offset * inputElemSize), 0, inputSizeInBytes, options);
+            }
+            finally { handle.Free(); }
+        }
+
+        /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 sizeInBytes, SetDataOptions options)
+        {
+            Contract.EnsureRange(srcOffsetInBytes >= 0, nameof(srcOffsetInBytes));
+            Contract.EnsureRange(dstOffsetInBytes >= 0, nameof(dstOffsetInBytes));
+            Contract.EnsureRange(sizeInBytes >= 0, nameof(sizeInBytes));
+
+            SetDataInternal(data + srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -203,31 +214,23 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the data contained by the vertex buffer.
         /// </summary>
-        private void SetDataInternal<T>(T[] data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        private void SetDataInternal(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
         {
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            try
+            using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
             {
-                using (OpenGLState.ScopedBindElementArrayBuffer(buffer))
+                var isPartialUpdate = (offsetInBytes > 0 || countInBytes < SizeInBytes);
+                var isDiscarding = (options == SetDataOptions.Discard);
+                if (isDiscarding || !isPartialUpdate)
                 {
-                    var isPartialUpdate = (offsetInBytes > 0 || countInBytes < SizeInBytes);
-                    var isDiscarding = (options == SetDataOptions.Discard);
-                    if (isDiscarding || !isPartialUpdate)
-                    {
-                        gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : handle.AddrOfPinnedObject().ToPointer(), usage);
-                        gl.ThrowIfError();
-                    }
-
-                    if (isPartialUpdate)
-                    {
-                        gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, handle.AddrOfPinnedObject().ToPointer());
-                        gl.ThrowIfError();
-                    }
+                    gl.NamedBufferData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, this.size, isPartialUpdate ? null : (void*)data, usage);
+                    gl.ThrowIfError();
                 }
-            }
-            finally
-            {
-                handle.Free();
+
+                if (isPartialUpdate)
+                {
+                    gl.NamedBufferSubData(buffer, gl.GL_ELEMENT_ARRAY_BUFFER, (IntPtr)offsetInBytes, (IntPtr)countInBytes, (void*)data);
+                    gl.ThrowIfError();
+                }
             }
         }
 
