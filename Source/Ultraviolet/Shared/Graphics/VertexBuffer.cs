@@ -82,6 +82,16 @@ namespace Ultraviolet.Graphics
         public abstract void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOptions options) where T : struct;
 
         /// <summary>
+        /// Sets the vertex buffer's data from the data at the specified pointer.
+        /// </summary>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="srcOffsetInBytes">The offset from the beginning of the source data, in bytes, at which to begin copying.</param>
+        /// <param name="dstOffsetInBytes">The offset from the beginning of the vertex buffer, in bytes, at which to begin copying.</param>
+        /// <param name="sizeInBytes">The number of bytes to copy.</param>
+        /// <param name="options">A hint to the underlying driver indicating whether data will be overwritten by this operation.</param>
+        public abstract void SetRawData(IntPtr data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 sizeInBytes, SetDataOptions options);
+
+        /// <summary>
         /// Sets the data contained by the vertex buffer, allowing the driver to align the data in such a way as to
         /// optimize the speed of the operation, perhaps at the cost of video memory.
         /// </summary>
