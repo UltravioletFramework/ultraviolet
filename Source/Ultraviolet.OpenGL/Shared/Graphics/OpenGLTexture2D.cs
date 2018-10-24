@@ -169,7 +169,11 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.Require(data, nameof(data));
             Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
 
-            SetDataInternal<T>(0, null, data, startIndex, elementCount);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = elementCount * sizeInBytesPerElement;
+            var offsetInBytes = startIndex * sizeInBytesPerElement;
+
+            SetDataInternal(0, null, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -180,7 +184,32 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(level >= 0, nameof(level));
             Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
 
-            SetDataInternal<T>(level, rect, data, startIndex, elementCount);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = elementCount * sizeInBytesPerElement;
+            var offsetInBytes = startIndex * sizeInBytesPerElement;
+
+            SetDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
+
+            SetDataInternal(0, null, data, offsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
+        public override void SetRawData(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(level >= 0, nameof(level));
+            Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
+
+            SetDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -193,7 +222,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
             var nativesurf = ((SDL2.Graphics.SDL2Surface2D)surface).NativePtr;
-            SetDataInternal<Color>(0, null, (IntPtr)nativesurf->pixels, 0, Width * Height);
+            SetDataInternal(0, null, (IntPtr)nativesurf->pixels, 0, Width * Height * nativesurf->format->BytesPerPixel);
         }
 
         /// <inheritdoc/>
@@ -382,19 +411,17 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the texture's data from native memory.
         /// </summary>
-        private unsafe void SetDataInternal<T>(Int32 level, Rectangle? rect, IntPtr data, Int32 startIndex, Int32 elementCount)
+        private unsafe void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
         {
-            var elementSizeInBytes = Marshal.SizeOf(typeof(T));
-
             var region = rect ?? new Rectangle(0, 0, width, height);
             var regionWidth = region.Width;
             var regionHeight = region.Height;
 
             var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
-            if (pixelSizeInBytes * width * height != elementSizeInBytes * elementCount)
+            if (pixelSizeInBytes * width * height != sizeInBytes)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
-            Upload(level, region, data, startIndex, elementSizeInBytes)?.Wait();
+            Upload(level, region, data, offsetInBytes)?.Wait();
         }
 
         /// <summary>
@@ -432,13 +459,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Uploads texture data to the graphics device.
         /// </summary>
-        private unsafe Task Upload(Int32 level, Rectangle region, IntPtr ldata, Int32 startIndex, Int32 elementSizeInBytes)
+        private unsafe Task Upload(Int32 level, Rectangle region, IntPtr ldata, Int32 offsetInBytes)
         {
             if (Ultraviolet.IsExecutingOnCurrentThread)
             {
                 using (OpenGLState.ScopedBindTexture2D(OpenGLName))
                 {
-                    var pData = ldata + (startIndex * elementSizeInBytes);
+                    var pData = ldata + offsetInBytes;
                     gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
                         region.Width, region.Height, format, type, (void*)pData);
                     gl.ThrowIfError();
@@ -450,7 +477,7 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 return Ultraviolet.QueueWorkItem(state => 
                 {
-                    Upload(level, region, ldata, startIndex, elementSizeInBytes);
+                    Upload(level, region, ldata, offsetInBytes);
                 });
             }
         }
