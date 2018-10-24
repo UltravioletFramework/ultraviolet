@@ -192,6 +192,24 @@ namespace Ultraviolet.Graphics
         public abstract void SetData<T>(Int32 level, Rectangle? rect, IntPtr data, Int32 startIndex, Int32 elementCount) where T : struct;
 
         /// <summary>
+        /// Sets the texture's data from the data at the specified pointer.
+        /// </summary>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="offsetInBytes">The offset from the start of <paramref name="data"/>, in bytes, at which to begin copying data.</param>
+        /// <param name="sizeInBytes">The number of bytes to copy.</param>
+        public abstract void SetRawData(IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes);
+
+        /// <summary>
+        /// Sets the texture's data from the data at the specified pointer.
+        /// </summary>
+        /// <param name="level">The mipmap level to set.</param>
+        /// <param name="rect">A bounding box that defines the position and location (in pixels) of the data.</param>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="offsetInBytes">The offset from the start of <paramref name="data"/>, in bytes, at which to begin copying data.</param>
+        /// <param name="sizeInBytes">The number of bytes to copy.</param>
+        public abstract void SetRawData(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes);
+
+        /// <summary>
         /// Sets the texture's data.
         /// </summary>
         /// <param name="surface">The <see cref="Surface2D"/> which contains the data to set.</param>

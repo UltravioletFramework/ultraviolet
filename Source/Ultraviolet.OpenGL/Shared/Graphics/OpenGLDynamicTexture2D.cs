@@ -53,6 +53,14 @@ namespace Ultraviolet.OpenGL.Graphics
             texture.SetData<T>(level, rect, data, startIndex, elementCount);
 
         /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 startIndex, Int32 elementCount) =>
+            texture.SetRawData(data, startIndex, elementCount);
+
+        /// <inheritdoc/>
+        public override void SetRawData(Int32 level, Rectangle? rect, IntPtr data, Int32 startIndex, Int32 elementCount) =>
+            texture.SetRawData(level, rect, data, startIndex, elementCount);
+
+        /// <inheritdoc/>
         public override void SetData(Surface2D surface) =>
             texture.SetData(surface);
 

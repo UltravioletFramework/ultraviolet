@@ -150,6 +150,24 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
+            texture.SetRawData(data, offsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
+        public override void SetRawData(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            if (willNotBeSampled)
+                throw new NotSupportedException(OpenGLStrings.RenderBufferWillNotBeSampled);
+
+            texture.SetRawData(level, rect, data, offsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
         public override void SetData(Surface2D surface)
         {
             if (willNotBeSampled)
