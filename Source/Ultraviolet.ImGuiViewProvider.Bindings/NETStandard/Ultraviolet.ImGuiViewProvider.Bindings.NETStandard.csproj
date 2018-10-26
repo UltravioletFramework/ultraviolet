@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;Signed</Configurations>
+    <AssemblyName>Ultraviolet.ImGuiViewProvider.Bindings</AssemblyName>
+    <RootNamespace>Ultraviolet.ImGuiViewProvider.Bindings</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
+    <DefineConstants>TRACE;SIGNED</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="..\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>  
+    </Compile>
+    <Compile Include="..\Desktop\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+  </ItemGroup>
+
+</Project>
