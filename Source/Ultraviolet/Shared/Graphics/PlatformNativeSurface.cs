@@ -95,6 +95,15 @@ namespace Ultraviolet.Graphics
         public abstract void SetData(Color[] data, Rectangle region);
 
         /// <summary>
+        /// Sets the surface's data from the data at the specified pointer.
+        /// </summary>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="srcOffsetInBytes">The offset from the beginning of the source data, in bytes, at which to begin copying.</param>
+        /// <param name="dstOffsetInBytes">The offset from the beginning of the surface, in bytes, at which to begin copying.</param>
+        /// <param name="sizeInBytes">The number of bytes to copy.</param>
+        public abstract void SetRawData(IntPtr data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 sizeInBytes);
+
+        /// <summary>
         /// Creates a copy of the surface.
         /// </summary>
         /// <returns>A new surface that is a copy of this surface.</returns>

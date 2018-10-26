@@ -141,6 +141,17 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 sizeInBytes)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(srcOffsetInBytes >= 0, nameof(srcOffsetInBytes));
+            Contract.EnsureRange(dstOffsetInBytes >= 0, nameof(dstOffsetInBytes));
+            Contract.EnsureRange(sizeInBytes >= 0, nameof(sizeInBytes));
+
+            nativesurf.SetRawData(data, srcOffsetInBytes, dstOffsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
         public override void Blit(Surface2D dst)
         {
             Contract.EnsureNotDisposed(this, Disposed);
