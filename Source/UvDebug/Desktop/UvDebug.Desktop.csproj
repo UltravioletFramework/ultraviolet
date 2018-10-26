@@ -60,9 +60,22 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ImGui.NET, Version=1.65.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImGui.NET.1.65.0-beta1\lib\netstandard2.0\ImGui.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -169,6 +182,9 @@
     <None Include="Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
@@ -182,6 +198,10 @@
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj">
       <Project>{1213f9af-5e16-46e9-a7d0-80b9564e6345}</Project>
       <Name>Ultraviolet.FreeType2.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Desktop\Ultraviolet.ImGuiViewProvider.Desktop.csproj">
+      <Project>{b4f47385-b462-4826-809e-117603f24cf9}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Desktop</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.Shims.Desktop\Ultraviolet.Shims.Desktop.csproj">
       <Project>{073cafc1-86cb-414d-a71e-46440e25a3f4}</Project>
@@ -366,6 +386,13 @@
     </None>
     <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll">
       <Link>x86\win32nt\libpng16.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="cimgui.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="uv.ico" />

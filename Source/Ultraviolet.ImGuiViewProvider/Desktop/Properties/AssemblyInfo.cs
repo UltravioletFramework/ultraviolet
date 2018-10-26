@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ultraviolet.ImGui.Desktop")]
+[assembly: AssemblyTitle("Ultraviolet.ImGuiViewProvider.Desktop")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Ultraviolet.ImGui.Desktop")]
+[assembly: AssemblyProduct("Ultraviolet.ImGuiViewProvider.Desktop")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("949a42af-1c67-4239-aa4e-b476a55fe199")]
+[assembly: Guid("b4f47385-b462-4826-809e-117603f24cf9")]
 
 // Version information for an assembly consists of the following four values:
 //
