@@ -9,9 +9,67 @@
     <Import_RootNamespace>Ultraviolet.ImGuiViewProvider.Bindings</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ImGui.NET.csproj" />
     <None Include="$(MSBuildThisFileDirectory)LICENSE.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Generated\" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bool8.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\CustomRect.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\GlyphRangesBuilder.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImColor.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawChannel.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawCmd.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawCornerFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawData.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawList.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawListFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImDrawVert.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImFont.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImFontAtlas.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImFontAtlasFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImFontConfig.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImFontGlyph.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGui.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiBackendFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiCol.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiColorEditFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiComboFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiCond.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiConfigFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiDataType.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiDir.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiDragDropFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiFocusedFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiHoveredFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiInputTextCallbackData.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiInputTextFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiIO.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiKey.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiListClipper.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiMouseCursor.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNative.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNavInput.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiOnceUponAFrame.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiPayload.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiSelectableFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiSizeCallbackData.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiStorage.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiStyle.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiStyleVar.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiTextBuffer.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiTextFilter.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiTreeNodeFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiWindowFlags.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\TextRange.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImDrawData.Manual.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImDrawList.Manual.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGui.Manual.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGuiSizeCallback.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImGuiTextEditCallback.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NullTerminatedString.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pair.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RangeAccessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
   </ItemGroup>
 </Project>
