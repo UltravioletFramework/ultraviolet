@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.OpenGL.Bindings", "Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.shproj", "{F2660B00-B04A-4301-9DFB-226DD9D0798B}"
 EndProject
@@ -23,39 +23,43 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvDebug", "UvDebug\Shared\U
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Uvss", "Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.shproj", "{2DEF7217-0B35-423C-9085-EC46260682C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.NETStandard", "Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj", "{F71F1466-A263-452F-9FBC-531612B9F0CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.NETStandard", "Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj", "{F71F1466-A263-452F-9FBC-531612B9F0CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.NETStandard", "Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj", "{73509D4F-064E-4783-9E2D-32135279E808}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.BASS.NETStandard", "Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj", "{73509D4F-064E-4783-9E2D-32135279E808}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.NETStandard", "Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj", "{9EC9A1EB-F595-4E3A-9FBB-780B78ECB8D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Core.NETStandard", "Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj", "{9EC9A1EB-F595-4E3A-9FBB-780B78ECB8D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.NETStandard", "Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj", "{DC769004-F62A-4442-B3CC-186588D54952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.Bindings.NETStandard", "Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj", "{DC769004-F62A-4442-B3CC-186588D54952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.NETStandard", "Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj", "{3C92B2CF-EBA2-4A67-B78B-6DEF5B4F0D7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.NETStandard", "Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj", "{3C92B2CF-EBA2-4A67-B78B-6DEF5B4F0D7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{716BA81D-4D4A-4BB5-9757-D2D70132D21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{716BA81D-4D4A-4BB5-9757-D2D70132D21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.NETStandard", "Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj", "{3E85C9F2-1965-4484-9A02-616B4ABE0262}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.SDL2.NETStandard", "Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj", "{3E85C9F2-1965-4484-9A02-616B4ABE0262}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebug.NETCore", "UvDebug\NETCore\UvDebug.NETCore.csproj", "{5A13C977-1DAF-4039-915D-75B200A18AC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvDebug.NETCore", "UvDebug\NETCore\UvDebug.NETCore.csproj", "{5A13C977-1DAF-4039-915D-75B200A18AC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{6AD030D7-A7E6-41E4-AE16-39F4455B9F41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{6AD030D7-A7E6-41E4-AE16-39F4455B9F41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.NETCore", "Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj", "{5FAEFB02-3B9E-4649-8865-9296B02F731A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Shims.NETCore", "Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj", "{5FAEFB02-3B9E-4649-8865-9296B02F731A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltravioletGame.NETCore", "UltravioletGame\NETCore\UltravioletGame.NETCore.csproj", "{7975D912-A507-432B-B029-D18AFBDEC851}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltravioletGame.NETCore", "UltravioletGame\NETCore\UltravioletGame.NETCore.csproj", "{7975D912-A507-432B-B029-D18AFBDEC851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Compiler.NETStandard", "Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj", "{6FEF3081-9847-4983-B5F0-FBFFDCB89979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Compiler.NETStandard", "Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj", "{6FEF3081-9847-4983-B5F0-FBFFDCB89979}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Compiler", "Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.shproj", "{D27AB499-F06F-47EA-8645-285CF2315EC2}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.shproj", "{9C6D1468-B7A7-4FB9-B7EF-088803A62B89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{F9B694CC-FE2C-4D1B-92C2-F87F9AE5FC31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{F9B694CC-FE2C-4D1B-92C2-F87F9AE5FC31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{D8985952-2958-464B-B696-33B444652F46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{D8985952-2958-464B-B696-33B444652F46}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider", "Ultraviolet.ImGuiViewProvider\Shared\Ultraviolet.ImGuiViewProvider.shproj", "{76FFE46F-869E-4BDE-8122-CEB21B7FF07F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.ImGuiViewProvider.NETStandard", "Ultraviolet.ImGuiViewProvider\NETStandard\Ultraviolet.ImGuiViewProvider.NETStandard.csproj", "{BD22FD35-F741-45BE-84FF-DF60D27DE375}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -63,6 +67,7 @@ Global
 		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
+		Ultraviolet.ImGuiViewProvider\Shared\Ultraviolet.ImGuiViewProvider.projitems*{76ffe46f-869e-4bde-8122-ceb21b7ff07f}*SharedItemsImports = 13
 		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
 		Ultraviolet.SDL2\Shared\Ultraviolet.SDL2.projitems*{97309779-3045-4d98-8de0-5f40a8dc1c5b}*SharedItemsImports = 13
 		Ultraviolet\Shared\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
@@ -70,6 +75,7 @@ Global
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
+		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{f6fe0208-9ca4-41c6-88a2-bbf5b25b3977}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -353,6 +359,24 @@ Global
 		{D8985952-2958-464B-B696-33B444652F46}.Signed|x64.Build.0 = Signed|Any CPU
 		{D8985952-2958-464B-B696-33B444652F46}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{D8985952-2958-464B-B696-33B444652F46}.Signed|x86.Build.0 = Signed|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Debug|x64.Build.0 = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Debug|x86.Build.0 = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Release|x64.ActiveCfg = Release|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Release|x64.Build.0 = Release|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Release|x86.ActiveCfg = Release|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Release|x86.Build.0 = Release|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x64.ActiveCfg = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x64.Build.0 = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x86.ActiveCfg = Debug|Any CPU
+		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

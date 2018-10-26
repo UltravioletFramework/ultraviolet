@@ -118,6 +118,9 @@
     <None Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml" Link="Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml" Link="UI\Controls\Templates\TriangleColorSelector.xml" />
   </ItemGroup>
 
@@ -125,6 +128,7 @@
     <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard\Ultraviolet.ImGuiViewProvider.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj" />
