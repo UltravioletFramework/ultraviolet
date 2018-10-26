@@ -61,8 +61,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.ImGuiViewProvider.NETStandard", "Ultraviolet.ImGuiViewProvider\NETStandard\Ultraviolet.ImGuiViewProvider.NETStandard.csproj", "{BD22FD35-F741-45BE-84FF-DF60D27DE375}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider.Bindings", "Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.shproj", "{11742F76-15D2-47B2-A36D-81C9F5699E81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.Bindings.NETStandard", "Ultraviolet.ImGuiViewProvider.Bindings\NETStandard\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard.csproj", "{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems*{11742f76-15d2-47b2-a36d-81c9f5699e81}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
@@ -377,6 +382,24 @@ Global
 		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x64.Build.0 = Debug|Any CPU
 		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x86.ActiveCfg = Debug|Any CPU
 		{BD22FD35-F741-45BE-84FF-DF60D27DE375}.Signed|x86.Build.0 = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Debug|x64.Build.0 = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Debug|x86.Build.0 = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Release|x64.ActiveCfg = Release|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Release|x64.Build.0 = Release|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Release|x86.ActiveCfg = Release|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Release|x86.Build.0 = Release|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Signed|x64.ActiveCfg = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Signed|x64.Build.0 = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Signed|x86.ActiveCfg = Debug|Any CPU
+		{CEA5B092-B070-4F1E-8B83-AA02EEA169E0}.Signed|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
