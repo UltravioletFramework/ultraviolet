@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Ultraviolet.Core;
@@ -16,7 +17,8 @@ namespace Ultraviolet.Content
         /// </summary>
         internal ContentImporterRegistry()
         {
-
+            this.internalByteArrayImporter = new InternalByteArrayImporter();
+            this.internalMemoryStreamImporter = new InternalMemoryStreamImporter();
         }
 
         /// <summary>
@@ -58,8 +60,8 @@ namespace Ultraviolet.Content
         /// <returns>The content importer for the specified file extension, or <see langword="null"/> if no appropriate importer could be found.</returns>
         public IContentImporter FindImporter(String extension)
         {
-            Type outputType;
-            return FindImporter(extension, out outputType);
+            var outputType = default(Type);
+            return FindImporter(extension, ref outputType);
         }
 
         /// <summary>
@@ -68,12 +70,17 @@ namespace Ultraviolet.Content
         /// <param name="extension">The file extension for which to find a content importer.</param>
         /// <param name="outputType">The importer's output type.</param>
         /// <returns>The content importer for the specified file extension, or <see langword="null"/> if no appropriate importer could be found.</returns>
-        public IContentImporter FindImporter(String extension, out Type outputType)
+        public IContentImporter FindImporter(String extension, ref Type outputType)
         {
             Contract.RequireNotEmpty(extension, nameof(extension));
 
-            RegistryEntry entry;
-            if (registeredImporters.TryGetValue(extension, out entry))
+            if (outputType == typeof(Byte[]))
+                return internalByteArrayImporter;
+
+            if (outputType == typeof(MemoryStream))
+                return internalMemoryStreamImporter;
+
+            if (registeredImporters.TryGetValue(extension, out var entry))
             {
                 outputType = entry.OutputType;
             }
@@ -150,6 +157,10 @@ namespace Ultraviolet.Content
             }
             return (IContentImporter)ctor.Invoke(null);
         }
+
+        // Internal importers.
+        private readonly InternalByteArrayImporter internalByteArrayImporter;
+        private readonly InternalMemoryStreamImporter internalMemoryStreamImporter;
 
         // The content importer registry.
         private readonly Dictionary<String, RegistryEntry> registeredImporters = 

@@ -897,7 +897,8 @@ namespace Ultraviolet.Content
             var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-            return (TOutput)ImportInternal(Path.Combine(paths), primaryDisplayDensity, false, out var outputType);
+            var outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(Path.Combine(paths), primaryDisplayDensity, false, ref outputType);
         }
 
         /// <summary>
@@ -917,7 +918,8 @@ namespace Ultraviolet.Content
             var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, out var outputType);
+            var outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, ref outputType);
         }
 
         /// <summary>
@@ -935,7 +937,8 @@ namespace Ultraviolet.Content
             var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-            return (TOutput)ImportInternal(asset, primaryDisplayDensity, false, out outputType);
+            outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(asset, primaryDisplayDensity, false, ref outputType);
         }
 
         /// <summary>
@@ -956,7 +959,8 @@ namespace Ultraviolet.Content
             var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay?.DensityBucket ?? ScreenDensityBucket.Desktop;
 
-            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, out outputType);
+            outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(asset, primaryDisplayDensity, fromsln, ref outputType);
         }
 
         /// <summary>
@@ -974,7 +978,8 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (TOutput)ImportInternal(asset, density, false, out var outputType);
+            var outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(asset, density, false, ref outputType);
         }
 
         /// <summary>
@@ -990,7 +995,8 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (TOutput)ImportInternal(asset, density, false, out outputType);
+            outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(asset, density, false, ref outputType);
         }
 
         /// <summary>
@@ -1009,7 +1015,8 @@ namespace Ultraviolet.Content
             Contract.RequireNotEmpty(asset, nameof(asset));
             Contract.EnsureNotDisposed(this, Disposed);
 
-            return (TOutput)ImportInternal(asset, density, fromsln, out outputType);
+            outputType = typeof(TOutput);
+            return (TOutput)ImportInternal(asset, density, fromsln, ref outputType);
         }
 
         /// <summary>
@@ -1073,8 +1080,8 @@ namespace Ultraviolet.Content
             var primaryDisplayDensity = primaryDisplay.DensityBucket;
 
             var path = String.Format("__STREAM.{0}", extension);
-            var importerOutputType = default(Type);
-            var importer = FindContentImporter(path, out importerOutputType);
+            var importerOutputType = typeof(TOutput);
+            var importer = FindContentImporter(path, ref importerOutputType);
 
             return (TOutput)importer.Import(AssetMetadata.CreateStreamMetadata(primaryDisplayDensity), stream);
         }
@@ -1093,8 +1100,8 @@ namespace Ultraviolet.Content
             Contract.EnsureNotDisposed(this, Disposed);
             
             var path = String.Format("__STREAM.{0}", extension);
-            var importerOutputType = default(Type);
-            var importer = FindContentImporter(path, out importerOutputType);
+            var importerOutputType = typeof(TOutput);
+            var importer = FindContentImporter(path, ref importerOutputType);
 
             return (TOutput)importer.Import(AssetMetadata.CreateStreamMetadata(density), stream);
         }
@@ -1624,7 +1631,7 @@ namespace Ultraviolet.Content
         /// <param name="asset">The asset for which to find an importer.</param>
         /// <param name="outputType">The importer's output type.</param>
         /// <returns>The importer for the specified asset.</returns>
-        private IContentImporter FindContentImporter(String asset, out Type outputType)
+        private IContentImporter FindContentImporter(String asset, ref Type outputType)
         {
             var extension = Path.GetExtension(asset);
             if (String.IsNullOrEmpty(extension))
@@ -1632,7 +1639,7 @@ namespace Ultraviolet.Content
                 throw new InvalidOperationException(UltravioletStrings.ImporterNeedsExtension.Format(asset));
             }
 
-            var importer = Ultraviolet.GetContent().Importers.FindImporter(extension, out outputType);
+            var importer = Ultraviolet.GetContent().Importers.FindImporter(extension, ref outputType);
             if (importer == null)
             {
                 throw new InvalidOperationException(UltravioletStrings.NoValidImporter.Format(asset));
@@ -1957,10 +1964,10 @@ namespace Ultraviolet.Content
         /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
-        private Object ImportInternal(String asset, ScreenDensityBucket density, Boolean fromsln, out Type outputType)
+        private Object ImportInternal(String asset, ScreenDensityBucket density, Boolean fromsln, ref Type outputType)
         {
             var metadata = GetAssetMetadata(asset, density, false, true, fromsln);
-            var importer = FindContentImporter(metadata.AssetFilePath, out outputType);
+            var importer = FindContentImporter(metadata.AssetFilePath, ref outputType);
 
             using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
             {
@@ -1974,8 +1981,8 @@ namespace Ultraviolet.Content
         private Object LoadInternalFromStream(Type type, Stream stream, String extension, ScreenDensityBucket density)
         {
             var filename = String.Format("__STREAM.{0}", extension);
-            var importerOutputType = default(Type);
-            var importer = FindContentImporter(filename, out importerOutputType);
+            var importerOutputType = type;
+            var importer = FindContentImporter(filename, ref importerOutputType);
 
             var intermediate = importer.Import(AssetMetadata.CreateStreamMetadata(density, null, null), stream);
             try
@@ -2002,7 +2009,8 @@ namespace Ultraviolet.Content
         /// </summary>
         private Object LoadInternalRaw(Type type, String asset, AssetMetadata metadata, ScreenDensityBucket density, out IContentImporter importer, out IContentProcessor processor)
         {
-            importer = FindContentImporter(metadata.AssetFilePath, out var importerOutputType);
+            var importerOutputType = type;
+            importer = FindContentImporter(metadata.AssetFilePath, ref importerOutputType);
 
             var intermediate = default(Object);
             try
