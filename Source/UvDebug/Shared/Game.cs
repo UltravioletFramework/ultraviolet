@@ -67,8 +67,11 @@ namespace UvDebug
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             configuration.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());
+#if IMGUI
             configuration.Plugins.Add(new Ultraviolet.ImGuiViewProvider.ImGuiPlugin());
-            //configuration.Plugins.Add(new PresentationFoundationPlugin());
+#else
+            configuration.Plugins.Add(new PresentationFoundationPlugin());
+#endif
             PopulateConfiguration(configuration);
 
 #if DEBUG
@@ -104,9 +107,9 @@ namespace UvDebug
 
             if (Ultraviolet.IsRunningInServiceMode)
             {
-                //LoadPresentation();
+                LoadPresentation();
                 CompileContent();
-                //CompileBindingExpressions();
+                CompileBindingExpressions();
                 Environment.Exit(0);
             }
             else
@@ -115,15 +118,17 @@ namespace UvDebug
                 LoadLocalizationDatabases();
                 LoadInputBindings();
                 LoadContentManifests();
-                //LoadPresentation();
+                LoadPresentation();
                
                 this.screenService = new UIScreenService(content);
 
-                var surface = content.Load<Ultraviolet.Graphics.Surface3D>("Textures/test_0");
-
                 GC.Collect(2);
-                
+
+#if IMGUI
                 var screen = screenService.Get<ImGuiScreen>();
+#else
+                var screen = screenService.Get<GameMenuScreen>();
+#endif
                 Ultraviolet.GetUI().GetScreens().Open(screen);
             }
             
@@ -198,6 +203,7 @@ namespace UvDebug
         /// </summary>
         protected void LoadPresentation()
         {
+#if !IMGUI
             var upf = Ultraviolet.GetUI().GetPresentationFoundation();
             upf.RegisterKnownTypes(GetType().Assembly);
 
@@ -211,6 +217,7 @@ namespace UvDebug
                 CompileBindingExpressions();
                 upf.LoadCompiledExpressions();
             }
+#endif
         }
 
         /// <summary>
@@ -325,6 +332,7 @@ namespace UvDebug
         /// </summary>
         private void CompileBindingExpressions()
         {
+#if !IMGUI
             if (ShouldCompileBindingExpressions())
             {
                 var upf = Ultraviolet.GetUI().GetPresentationFoundation();
@@ -342,6 +350,7 @@ namespace UvDebug
                 sw.Stop();
                 Console.WriteLine(sw.Elapsed);
             }
+#endif
         }        
         
         // The global content manager.  Manages any content that should remain loaded for the duration of the game's execution.

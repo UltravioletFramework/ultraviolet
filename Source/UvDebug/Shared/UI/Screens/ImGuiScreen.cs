@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if IMGUI
+using System;
 using Ultraviolet.Graphics;
 using Ultraviolet;
 using Ultraviolet.Content;
@@ -73,3 +74,4 @@ namespace UvDebug.UI.Screens
         protected override Object CreateViewModel(UIView view) => new ImGuiViewModel(this);
     }
 }
+#endif

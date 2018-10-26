@@ -4,7 +4,6 @@
     <IsMac>false</IsMac>
     <IsMac Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</IsMac>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AssemblyName>UvDebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
   </PropertyGroup>
@@ -331,7 +330,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -1,4 +1,5 @@
-﻿using Ultraviolet.Core;
+﻿#if IMGUI
+using Ultraviolet.Core;
 
 namespace UvDebug.UI.Screens
 {
@@ -22,3 +23,4 @@ namespace UvDebug.UI.Screens
         private readonly ImGuiScreen owner;        
     }
 }
+#endif
