@@ -18,6 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.DialogScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Dialogs\EscMenuDialog.DialogScreenVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\ImGuiViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\ImGuiScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GamePlayScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameMenuScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GamePlayViewModel.cs" />

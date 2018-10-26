@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizedStrings>
+  <String Key="VIEW_MODEL_TYPE_NOT_FOUND">
+    <en-US>
+      <Variant>The specified view model type '{0}' could not be found.</Variant>
+    </en-US>
+  </String>
+  <String Key="IMGUI_CONTEXT_IS_NOT_CURRENT">
+    <en-US>
+      <Variant>Operation is invalid because the ImGui context associated with this object is not the current context.</Variant>
+    </en-US>
+  </String>
+  <String Key="REGISTRY_IS_LOCKED">
+    <en-US>
+      <Variant>The registry is locked and cannot be modified.</Variant>
+    </en-US>
+  </String>
+</LocalizedStrings>

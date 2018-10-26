@@ -23,6 +23,7 @@ namespace UvDebug.UI
 
             Register(new GameMenuScreen(globalContent, this));
             Register(new GamePlayScreen(globalContent, this));
+            Register(new ImGuiScreen(globalContent, this));
         }
 
         /// <summary>

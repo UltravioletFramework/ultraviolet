@@ -67,7 +67,8 @@ namespace UvDebug
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
             configuration.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());
-            configuration.Plugins.Add(new PresentationFoundationPlugin());
+            configuration.Plugins.Add(new Ultraviolet.ImGuiViewProvider.ImGuiPlugin());
+            //configuration.Plugins.Add(new PresentationFoundationPlugin());
             PopulateConfiguration(configuration);
 
 #if DEBUG
@@ -103,9 +104,9 @@ namespace UvDebug
 
             if (Ultraviolet.IsRunningInServiceMode)
             {
-                LoadPresentation();
+                //LoadPresentation();
                 CompileContent();
-                CompileBindingExpressions();
+                //CompileBindingExpressions();
                 Environment.Exit(0);
             }
             else
@@ -114,15 +115,15 @@ namespace UvDebug
                 LoadLocalizationDatabases();
                 LoadInputBindings();
                 LoadContentManifests();
-                LoadPresentation();
-
+                //LoadPresentation();
+               
                 this.screenService = new UIScreenService(content);
 
                 var surface = content.Load<Ultraviolet.Graphics.Surface3D>("Textures/test_0");
 
                 GC.Collect(2);
                 
-                var screen = screenService.Get<GameMenuScreen>();
+                var screen = screenService.Get<ImGuiScreen>();
                 Ultraviolet.GetUI().GetScreens().Open(screen);
             }
             
