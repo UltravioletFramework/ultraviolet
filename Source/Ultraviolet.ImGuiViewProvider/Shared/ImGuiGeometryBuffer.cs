@@ -32,8 +32,6 @@ namespace Ultraviolet.ImGuiViewProvider
             if (drawDataPtr.CmdListsCount == 0)
                 return;
 
-            EnsureBuffers(ref drawDataPtr);
-            PopulateBuffers(ref drawDataPtr);
             DrawBuffers(ref drawDataPtr);            
         }
 
@@ -69,8 +67,14 @@ namespace Ultraviolet.ImGuiViewProvider
         private void EnsureBuffers(ref ImDrawDataPtr drawDataPtr)
         {
             var dirty = false;
-            var vtxCount = drawDataPtr.TotalVtxCount;
-            var idxCount = drawDataPtr.TotalIdxCount;
+            var vtxCount = 0;
+            var idxCount = 0;
+            for (var i = 0; i < drawDataPtr.CmdListsCount; i++)
+            {
+                var cmd = drawDataPtr.CmdListsRange[i];
+                vtxCount = Math.Max(vtxCount, cmd.VtxBuffer.Size);
+                idxCount = Math.Max(idxCount, cmd.IdxBuffer.Size);
+            }
 
             if (vertexBuffer == null || vertexBuffer.VertexCount < vtxCount)
             {
@@ -99,35 +103,12 @@ namespace Ultraviolet.ImGuiViewProvider
         }
 
         /// <summary>
-        /// Populates the vertex and index buffer with data.
-        /// </summary>
-        private void PopulateBuffers(ref ImDrawDataPtr drawDataPtr)
-        {
-            var vtxOffset = 0;
-            var idxOffset = 0;
-
-            var setDataOptions = SetDataOptions.Discard;
-            for (var i = 0; i < drawDataPtr.CmdListsCount; i++)
-            {
-                var cmdList = drawDataPtr.CmdListsRange[i];
-
-                this.vertexBuffer.SetRawData(cmdList.VtxBuffer.Data, 0, vtxOffset * sizeof(ImGuiVertex),
-                    cmdList.VtxBuffer.Size * sizeof(ImGuiVertex), setDataOptions);
-                vtxOffset += cmdList.VtxBuffer.Size;
-
-                this.indexBuffer.SetRawData(cmdList.IdxBuffer.Data, 0, idxOffset * sizeof(UInt16),
-                    cmdList.IdxBuffer.Size * sizeof(UInt16), setDataOptions);
-                idxOffset += cmdList.IdxBuffer.Size;
-
-                setDataOptions = SetDataOptions.NoOverwrite;
-            }
-        }
-
-        /// <summary>
         /// Draws the contents of the vertex and index buffer.
         /// </summary>
         private void DrawBuffers(ref ImDrawDataPtr drawDataPtr)
         {
+            EnsureBuffers(ref drawDataPtr);
+
             var gfx = Ultraviolet.GetGraphics();
             gfx.SetGeometryStream(geometryStream);
             gfx.SetBlendState(BlendState.NonPremultiplied);
@@ -135,12 +116,18 @@ namespace Ultraviolet.ImGuiViewProvider
             gfx.SetRasterizerState(RasterizerState.CullNone);
             gfx.SetSamplerState(0, SamplerState.LinearClamp);
 
-            var vtxOffset = 0;
-            var idxOffset = 0;
-
             for (var i = 0; i < drawDataPtr.CmdListsCount; i++)
             {
                 var cmdList = drawDataPtr.CmdListsRange[i];
+
+                this.vertexBuffer.SetRawData(cmdList.VtxBuffer.Data, 0, 0,
+                    cmdList.VtxBuffer.Size * sizeof(ImGuiVertex), SetDataOptions.Discard);
+
+                this.indexBuffer.SetRawData(cmdList.IdxBuffer.Data, 0, 0,
+                    cmdList.IdxBuffer.Size * sizeof(UInt16), SetDataOptions.Discard);
+
+                var idxOffset = 0;
+
                 for (int j = 0; j < cmdList.CmdBuffer.Size; j++)
                 {
                     var cmd = cmdList.CmdBuffer[j];
@@ -164,13 +151,12 @@ namespace Ultraviolet.ImGuiViewProvider
                         foreach (var pass in effect.CurrentTechnique.Passes)
                         {
                             pass.Apply();
-                            gfx.DrawIndexedPrimitives(PrimitiveType.TriangleList, vtxOffset, idxOffset, (Int32)cmd.ElemCount / 3);
+                            gfx.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, idxOffset, (Int32)cmd.ElemCount / 3);
                         }
                     }
 
                     idxOffset += (Int32)cmd.ElemCount;
                 }
-                vtxOffset += cmdList.VtxBuffer.Size * vertexBuffer.VertexDeclaration.VertexStride;
             }
 
             Ultraviolet.GetGraphics().SetGeometryStream(null);
