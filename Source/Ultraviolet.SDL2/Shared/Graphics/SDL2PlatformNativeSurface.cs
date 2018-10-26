@@ -242,6 +242,31 @@ namespace Ultraviolet.SDL2.Graphics
         }
 
         /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 sizeInBytes)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.EnsureRange(srcOffsetInBytes >= 0, nameof(srcOffsetInBytes));
+            Contract.EnsureRange(dstOffsetInBytes >= 0, nameof(dstOffsetInBytes));
+            Contract.EnsureRange(sizeInBytes >= 0, nameof(sizeInBytes));
+
+            var copied = 0;
+
+            var pSrc = (UInt32*)data.ToPointer();
+            for (int sy = 0; sy < ptr->h; sy++)
+            {
+                var pDst = (UInt32*)((Byte*)ptr->pixels + (sy * Pitch));
+                for (int sx = 0; sx < ptr->w; sx++)
+                {
+                    if (copied >= sizeInBytes)
+                        return;
+
+                    *pDst++ = *pSrc++;
+                    copied++;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public override PlatformNativeSurface CreateCopy()
         {
             Contract.EnsureNotDisposed(this, Disposed);
