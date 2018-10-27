@@ -177,6 +177,10 @@ namespace Ultraviolet.OpenGL.Graphics
             {
                 if (!Ultraviolet.Disposed)
                 {
+                    var gfx = Ultraviolet.GetGraphics();
+                    if (gfx.GetGeometryStream() == this)
+                        gfx.SetGeometryStream(null);
+
                     var glname = vao;
                     if (glname != 0)
                     {

@@ -189,6 +189,9 @@ namespace Ultraviolet.OpenGL.Graphics
 
             if (disposing)
             {
+                if (OpenGLState.GL_ARRAY_BUFFER_BINDING == buffer)
+                    OpenGLState.GL_ARRAY_BUFFER_BINDING.Update(0);
+
                 var glname = buffer;
                 if (glname != 0 && !Ultraviolet.Disposed)
                 {
