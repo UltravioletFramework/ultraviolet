@@ -60,6 +60,14 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.iOS", "Ultraviolet.FreeType2\iOS\Ultraviolet.FreeType2.iOS.csproj", "{215DE724-06CC-46AF-A2A8-F124782AC0EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.iOS", "Ultraviolet.ImGuiViewProvider\iOS\Ultraviolet.ImGuiViewProvider.iOS.csproj", "{43C59813-6900-4C44-B32E-BFD3BEA68007}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider", "Ultraviolet.ImGuiViewProvider\Shared\Ultraviolet.ImGuiViewProvider.shproj", "{76FFE46F-869E-4BDE-8122-CEB21B7FF07F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider.Bindings", "Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.shproj", "{11742F76-15D2-47B2-A36D-81C9F5699E81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.Bindings.iOS", "Ultraviolet.ImGuiViewProvider.Bindings\iOS\Ultraviolet.ImGuiViewProvider.Bindings.iOS.csproj", "{2A0392FD-D427-4C6D-92F5-13F5B324891A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		UvDebug\Shared\UvDebug.projitems*{00dfa15e-9cb3-4ebb-91c1-4837335b083c}*SharedItemsImports = 4
@@ -290,6 +298,30 @@ Global
 		{215DE724-06CC-46AF-A2A8-F124782AC0EB}.Signed|iPhone.Build.0 = Signed|Any CPU
 		{215DE724-06CC-46AF-A2A8-F124782AC0EB}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{215DE724-06CC-46AF-A2A8-F124782AC0EB}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Release|iPhone.Build.0 = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Signed|iPhone.ActiveCfg = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Signed|iPhone.Build.0 = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{43C59813-6900-4C44-B32E-BFD3BEA68007}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhone.Build.0 = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhone.ActiveCfg = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhone.Build.0 = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

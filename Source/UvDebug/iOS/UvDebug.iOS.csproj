@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;DEBUG;IOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;DEBUG;IOS;IMGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -193,6 +193,9 @@
     <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
       <Link>Content\Fonts\Inconsolata.uvmeta</Link>
     </BundleResource>
+    <BundleResource Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
+      <Link>Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -201,6 +204,7 @@
     <Reference Include="Ultraviolet.Presentation.CompiledExpressions">
       <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -247,6 +251,14 @@
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\iOS\Ultraviolet.FreeType2.iOS.csproj">
       <Project>{215DE724-06CC-46AF-A2A8-F124782AC0EB}</Project>
       <Name>Ultraviolet.FreeType2.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\iOS\Ultraviolet.ImGuiViewProvider.iOS.csproj">
+      <Project>{43C59813-6900-4C44-B32E-BFD3BEA68007}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\iOS\Ultraviolet.ImGuiViewProvider.Bindings.iOS.csproj">
+      <Project>{2A0392FD-D427-4C6D-92F5-13F5B324891A}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Bindings.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
