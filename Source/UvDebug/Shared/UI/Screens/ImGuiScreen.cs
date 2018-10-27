@@ -59,6 +59,8 @@ namespace UvDebug.UI.Screens
                 ImGui.SliderInt("Slider", ref v, 0, 100, "what");
             }
             ImGui.End();
+
+            ImGui.PopFont();
         }
         private Byte[] buf = new byte[256];
         private Boolean checkbox;
