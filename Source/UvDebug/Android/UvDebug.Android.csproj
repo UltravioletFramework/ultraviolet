@@ -29,7 +29,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ANDROID;IMGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
@@ -45,7 +45,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <DefineConstants>TRACE;ANDROID;IMGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Signed|AnyCPU'">
     <OutputPath>bin\Signed\</OutputPath>
-    <DefineConstants>TRACE;ANDROID SIGNED</DefineConstants>
+    <DefineConstants>TRACE;ANDROID;SIGNED;IMGUI</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -71,6 +71,9 @@
     <MandroidI18n />
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -80,6 +83,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="Ultraviolet.Presentation.CompiledExpressions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Presentation\Ultraviolet.Presentation.CompiledExpressions.dll</HintPath>
@@ -181,6 +185,14 @@
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\Android\Ultraviolet.FreeType2.Android.csproj">
       <Project>{39f2c819-57d5-419e-aa90-bc92d55f0749}</Project>
       <Name>Ultraviolet.FreeType2.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Android\Ultraviolet.ImGuiViewProvider.Bindings.Android.csproj">
+      <Project>{f4acde7a-ffc9-4fdf-beaa-5e5b24debda3}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Bindings.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Android\Ultraviolet.ImGuiViewProvider.Android.csproj">
+      <Project>{094943c7-04b2-461c-aa72-04b105a31193}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\Android\Ultraviolet.OpenGL.Bindings.Android.csproj">
       <Project>{49a66667-2355-4755-a3ad-4ef9ca638534}</Project>
@@ -330,7 +342,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
+      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
