@@ -51,14 +51,9 @@ namespace Ultraviolet.OpenGL.Graphics
             if (inputSizeInBytes > size.ToInt32())
                 throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
 
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            try
-            {
-                SetDataInternal(handle.AddrOfPinnedObject(), 0, inputSizeInBytes, SetDataOptions.None);
-            }
-            finally { handle.Free(); }
+            SetDataInternal(data, 0, 0, inputSizeInBytes, SetDataOptions.None);
         }
-        
+
         /// <inheritdoc/>
         public override void SetData<T>(T[] data, Int32 offset, Int32 count, SetDataOptions options)
         {
@@ -71,12 +66,7 @@ namespace Ultraviolet.OpenGL.Graphics
             if (inputSizeInBytes > size.ToInt32())
                 throw new InvalidOperationException(OpenGLStrings.DataTooLargeForBuffer);
 
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            try
-            {
-                SetDataInternal(handle.AddrOfPinnedObject() + (offset * inputElemSize), 0, inputSizeInBytes, options);
-            }
-            finally { handle.Free(); }
+            SetDataInternal(data, (offset * inputElemSize), 0, inputSizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -86,7 +76,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(dstOffsetInBytes >= 0, nameof(dstOffsetInBytes));
             Contract.EnsureRange(sizeInBytes >= 0, nameof(sizeInBytes));
 
-            SetDataInternal(data + srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
+            SetDataInternal(data, srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -216,9 +206,55 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Sets the data contained by the vertex buffer.
+        /// Sets the buffer's data from native memory.
+        /// </summary>
+        private void SetDataInternal(Object data, Int32 srcOffsetInBytes, Int32 dstOffsetInBytes, Int32 countInBytes, SetDataOptions options)
+        {
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+            {
+                var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    Upload(pData.AddrOfPinnedObject() + srcOffsetInBytes, dstOffsetInBytes, countInBytes, options);
+                }
+                finally { pData.Free(); }
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem(state =>
+                {
+                    var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    try
+                    {
+                        Upload(pData.AddrOfPinnedObject() + srcOffsetInBytes, dstOffsetInBytes, countInBytes, options);
+                    }
+                    finally { pData.Free(); }
+                }, null, WorkItemOptions.ForceAsynchronousExecution)?.Wait();
+            }
+        }
+
+        /// <summary>
+        /// Sets the buffer's data from native memory.
         /// </summary>
         private void SetDataInternal(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        {
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+            {
+                Upload(data, offsetInBytes, countInBytes, options);
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem(state =>
+                {
+                    Upload(data, offsetInBytes, countInBytes, options);
+                }, null, WorkItemOptions.ForceAsynchronousExecution)?.Wait();
+            }
+        }
+
+        /// <summary>
+        /// Uploads buffer data to the graphics device.
+        /// </summary>
+        private void Upload(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
         {
             using (OpenGLState.ScopedBindArrayBuffer(buffer))
             {
