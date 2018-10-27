@@ -225,7 +225,7 @@ namespace Ultraviolet
                 return false;
             }
 
-            var requiredTimerPeriod = Math.Max(1u, host.IsActive ? (IsFixedTimeStep ? 1u: 15u) : (UInt32)InactiveSleepTime.TotalMilliseconds);
+            var requiredTimerPeriod = Math.Max(1u, host.IsActive ? (IsFixedTimeStep ? 1u : 15u) : (UInt32)InactiveSleepTime.TotalMilliseconds);
             if (requiredTimerPeriod != systemTimerPeriod)
             {
                 if (systemTimerPeriod > 0)
@@ -251,7 +251,7 @@ namespace Ultraviolet
         private Int32 lagFrames;
         private Boolean runningSlowly;
         private Boolean forceElapsedTimeToZero;
- 
+
         // Current system timer resolution.
         private UInt32 systemTimerPeriod;
     }

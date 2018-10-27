@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.Desktop", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.Desktop", "Ultraviolet.BASS\Desktop\Ultraviolet.BASS.Desktop.csproj", "{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Tooling", "Ultraviolet.Tooling\Ultraviolet.Tooling.csproj", "{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Desktop", "Ultraviolet.Presentation\Desktop\Ultraviolet.Presentation.Desktop.csproj", "{7379D9E1-BB01-4B05-B4F7-5D39B393348F}"
 EndProject
@@ -47,35 +47,43 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvArchive", "UvArchive\UvAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvFont", "UvFont\UvFont.csproj", "{F224C80E-2D2F-403D-AB1A-29FE13AF726B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.NETStandard", "Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj", "{F4E7215F-B079-4E55-86CD-3A842BD6B517}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.NETStandard", "Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj", "{F4E7215F-B079-4E55-86CD-3A842BD6B517}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.BASS.NETStandard", "Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj", "{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.BASS.NETStandard", "Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj", "{4E37DDB9-9A37-4B4F-A0BD-0F8308826114}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Core.NETStandard", "Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj", "{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Core.NETStandard", "Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj", "{2E9875EA-59D4-4C5F-8D7E-C4E1FB5A9838}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{A702B8D1-C3CE-44FE-890D-CB3460820785}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.NETStandard", "Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj", "{A702B8D1-C3CE-44FE-890D-CB3460820785}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.OpenGL.Bindings.NETStandard", "Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj", "{DF514C84-FAA8-4403-9881-10282FC06EAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.OpenGL.Bindings.NETStandard", "Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj", "{DF514C84-FAA8-4403-9881-10282FC06EAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.NETStandard", "Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj", "{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.NETStandard", "Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj", "{AA71C2EF-E060-48A4-8F2D-3A9806C29BAB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Presentation.Uvss.NETStandard", "Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj", "{BE0B4B3A-42C8-4D15-A6CC-5A83B5ED6AC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.SDL2.NETStandard", "Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj", "{DEF6CD7F-9865-467A-8425-3CBE578C0433}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.SDL2.NETStandard", "Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj", "{DEF6CD7F-9865-467A-8425-3CBE578C0433}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{17E4A8C5-1956-41F9-A62B-2E0E15D09C8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.NETStandard", "Ultraviolet.FMOD\NETStandard\Ultraviolet.FMOD.NETStandard.csproj", "{17E4A8C5-1956-41F9-A62B-2E0E15D09C8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FMOD.Desktop", "Ultraviolet.FMOD\Desktop\Ultraviolet.FMOD.Desktop.csproj", "{CE4B6F6F-6542-4CA6-B21C-DA4B053B585F}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FreeType2", "Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.shproj", "{9C6D1468-B7A7-4FB9-B7EF-088803A62B89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.NETStandard", "Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj", "{1FC4FB91-1E56-4405-825C-85FC0AABB0D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Desktop", "Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj", "{1213F9AF-5E16-46E9-A7D0-80B9564E6345}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvAssetList", "UvAssetList\UvAssetList.csproj", "{7F71C120-2F97-4EDD-B809-99E2F340390E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider.Bindings", "Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.shproj", "{11742F76-15D2-47B2-A36D-81C9F5699E81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.Bindings.Desktop", "Ultraviolet.ImGuiViewProvider.Bindings\Desktop\Ultraviolet.ImGuiViewProvider.Bindings.Desktop.csproj", "{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider", "Ultraviolet.ImGuiViewProvider\Shared\Ultraviolet.ImGuiViewProvider.shproj", "{76FFE46F-869E-4BDE-8122-CEB21B7FF07F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.Desktop", "Ultraviolet.ImGuiViewProvider\Desktop\Ultraviolet.ImGuiViewProvider.Desktop.csproj", "{B4F47385-B462-4826-809E-117603F24CF9}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -582,6 +590,42 @@ Global
 		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x64.Build.0 = Release|Any CPU
 		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x86.ActiveCfg = Release|Any CPU
 		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x86.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x64.Build.0 = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x86.Build.0 = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x64.ActiveCfg = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x64.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x86.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x64.Build.0 = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x86.Build.0 = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x64.Build.0 = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x86.Build.0 = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x64.ActiveCfg = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x64.Build.0 = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x86.Build.0 = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x64.Build.0 = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x86.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
