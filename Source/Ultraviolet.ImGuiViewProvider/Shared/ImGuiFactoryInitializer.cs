@@ -1,7 +1,4 @@
-﻿using System;
-using Ultraviolet.UI;
-using System.Collections.Generic;
-using System.Text;
+﻿using Ultraviolet.UI;
 
 namespace Ultraviolet.ImGuiViewProvider
 {

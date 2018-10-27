@@ -1,7 +1,7 @@
-﻿using ImGuiNET;
-using System;
+﻿using System;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.ImGuiViewProvider.Bindings;
 
 namespace Ultraviolet.ImGuiViewProvider
 {
