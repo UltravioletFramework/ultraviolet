@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.ImGuiViewProvider.Bindings;
@@ -67,12 +68,12 @@ namespace Ultraviolet.ImGuiViewProvider
                 throw new InvalidOperationException(ImGuiStrings.ImGuiContextIsNotCurrent);
 
             var data = content.Import<Byte[]>(asset, true);
+            var native = Marshal.AllocHGlobal(data.Length);
+            Marshal.Copy(data, 0, native, data.Length);
+
             unsafe
             {
-                fixed (Byte* pdata = data)
-                {
-                    return ImGui.GetIO().Fonts.AddFontFromMemoryTTF((IntPtr)pdata, data.Length, sizeInPixels);
-                }
+                return ImGui.GetIO().Fonts.AddFontFromMemoryTTF(native, data.Length, sizeInPixels);
             }
         }
 
@@ -91,12 +92,12 @@ namespace Ultraviolet.ImGuiViewProvider
                 throw new InvalidOperationException(ImGuiStrings.ImGuiContextIsNotCurrent);
 
             var data = content.Import<Byte[]>(asset, true);
+            var native = Marshal.AllocHGlobal(data.Length);
+            Marshal.Copy(data, 0, native, data.Length);
+
             unsafe
             {
-                fixed (Byte* pdata = data)
-                {
-                    return ImGui.GetIO().Fonts.AddFontFromMemoryTTF((IntPtr)pdata, data.Length, sizeInPixels);
-                }
+                return ImGui.GetIO().Fonts.AddFontFromMemoryTTF(native, data.Length, sizeInPixels);
             }
         }
 
