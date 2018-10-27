@@ -76,7 +76,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(dstOffsetInBytes >= 0, nameof(dstOffsetInBytes));
             Contract.EnsureRange(sizeInBytes >= 0, nameof(sizeInBytes));
 
-            SetDataInternal(data, srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
+            SetRawDataInternal(data + srcOffsetInBytes, dstOffsetInBytes, sizeInBytes, options);
         }
 
         /// <inheritdoc/>
@@ -236,7 +236,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the buffer's data from native memory.
         /// </summary>
-        private void SetDataInternal(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
+        private void SetRawDataInternal(IntPtr data, Int32 offsetInBytes, Int32 countInBytes, SetDataOptions options)
         {
             if (Ultraviolet.IsExecutingOnCurrentThread)
             {
