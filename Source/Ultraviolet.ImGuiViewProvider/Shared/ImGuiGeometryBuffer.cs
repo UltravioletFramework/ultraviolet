@@ -157,8 +157,6 @@ namespace Ultraviolet.ImGuiViewProvider
                     idxOffset += (Int32)cmd.ElemCount;
                 }
             }
-
-            Ultraviolet.GetGraphics().SetGeometryStream(null);
         }
 
         // The view which owns the geometry buffer.
