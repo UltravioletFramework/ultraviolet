@@ -183,7 +183,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var sizeInBytes = elementCount * sizeInBytesPerElement;
             var offsetInBytes = startIndex * sizeInBytesPerElement;
 
-            SetDataInternal(0, null, data, offsetInBytes, sizeInBytes);
+            SetRawDataInternal(0, null, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -198,7 +198,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var sizeInBytes = elementCount * sizeInBytesPerElement;
             var offsetInBytes = startIndex * sizeInBytesPerElement;
 
-            SetDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
+            SetRawDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -208,7 +208,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.Require(data, nameof(data));
             Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
 
-            SetDataInternal(0, null, data, offsetInBytes, sizeInBytes);
+            SetRawDataInternal(0, null, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -219,7 +219,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(level >= 0, nameof(level));
             Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
 
-            SetDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
+            SetRawDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -232,7 +232,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
             var nativesurf = ((SDL2.Graphics.SDL2Surface2D)surface).NativePtr;
-            SetDataInternal(0, null, (IntPtr)nativesurf->pixels, 0, Width * Height * nativesurf->format->BytesPerPixel);
+            SetRawDataInternal(0, null, (IntPtr)nativesurf->pixels, 0, Width * Height * nativesurf->format->BytesPerPixel);
         }
 
         /// <inheritdoc/>
@@ -428,7 +428,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
                 {
-                    SetDataInternal(level, rect, pData.AddrOfPinnedObject(), offsetInBytes, sizeInBytes);
+                    SetRawDataInternal(level, rect, pData.AddrOfPinnedObject(), offsetInBytes, sizeInBytes);
                 }
                 finally { pData.Free(); }
             }
@@ -439,7 +439,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
                     try
                     {
-                        SetDataInternal(level, rect, pData.AddrOfPinnedObject(), 0, sizeInBytes);
+                        SetRawDataInternal(level, rect, pData.AddrOfPinnedObject(), 0, sizeInBytes);
                     }
                     finally { pData.Free(); }
                 }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
@@ -449,7 +449,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the texture's data from native memory.
         /// </summary>
-        private unsafe void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        private unsafe void SetRawDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
         {
             var region = rect ?? new Rectangle(0, 0, width, height);
             var regionWidth = region.Width;

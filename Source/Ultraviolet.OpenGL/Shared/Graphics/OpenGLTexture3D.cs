@@ -223,7 +223,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.Require(data, nameof(data));
             Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
 
-            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, offsetInBytes, sizeInBytes);
+            SetRawDataInternal(0, 0, 0, Width, Height, 0, Depth, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -234,7 +234,7 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(level >= 0, nameof(level));
             Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
 
-            SetDataInternal(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
+            SetRawDataInternal(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -505,7 +505,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
                 try
                 {
-                    SetDataInternal(level, left, top, right, bottom, front, back, pData.AddrOfPinnedObject(), offsetInBytes, sizeInBytes);
+                    SetRawDataInternal(level, left, top, right, bottom, front, back, pData.AddrOfPinnedObject(), offsetInBytes, sizeInBytes);
                 }
                 finally { pData.Free(); }
             }
@@ -516,7 +516,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
                     try
                     {
-                        SetDataInternal(level, left, top, right, bottom, front, back, pData.AddrOfPinnedObject(), 0, sizeInBytes);
+                        SetRawDataInternal(level, left, top, right, bottom, front, back, pData.AddrOfPinnedObject(), 0, sizeInBytes);
                     }
                     finally { pData.Free(); }
                 }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
@@ -526,7 +526,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Sets the texture's data from native memory.
         /// </summary>
-        private void SetDataInternal(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        private void SetRawDataInternal(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
         {
             var width = right - left;
             var height = bottom - top;
