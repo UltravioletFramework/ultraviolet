@@ -56,6 +56,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
@@ -65,6 +67,26 @@
     <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
     </None>
+  </ItemGroup>  
+    <ItemGroup>
+    <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Version.tt">
+      <Link>Properties\Version.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FMODUltravioletAudio.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\Android\Ultraviolet.Core.Android.csproj">
