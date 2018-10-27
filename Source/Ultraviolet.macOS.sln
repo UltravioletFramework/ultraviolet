@@ -63,6 +63,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.FreeType2.Deskt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvAssetList", "UvAssetList\UvAssetList.csproj", "{7F71C120-2F97-4EDD-B809-99E2F340390E}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider.Bindings", "Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.shproj", "{11742F76-15D2-47B2-A36D-81C9F5699E81}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.ImGuiViewProvider", "Ultraviolet.ImGuiViewProvider\Shared\Ultraviolet.ImGuiViewProvider.shproj", "{76FFE46F-869E-4BDE-8122-CEB21B7FF07F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.Bindings.Desktop", "Ultraviolet.ImGuiViewProvider.Bindings\Desktop\Ultraviolet.ImGuiViewProvider.Bindings.Desktop.csproj", "{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.ImGuiViewProvider.Desktop", "Ultraviolet.ImGuiViewProvider\Desktop\Ultraviolet.ImGuiViewProvider.Desktop.csproj", "{B4F47385-B462-4826-809E-117603F24CF9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{08b2b8d5-152f-45fb-b4eb-8c09010a9908}*SharedItemsImports = 4
@@ -410,6 +418,42 @@ Global
 		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x64.Build.0 = Signed|Any CPU
 		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x86.ActiveCfg = Signed|Any CPU
 		{7F71C120-2F97-4EDD-B809-99E2F340390E}.Signed|x86.Build.0 = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x64.Build.0 = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Debug|x86.Build.0 = Debug|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x64.ActiveCfg = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x64.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Release|x86.Build.0 = Release|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x64.Build.0 = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}.Signed|x86.Build.0 = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x64.Build.0 = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Debug|x86.Build.0 = Debug|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x64.ActiveCfg = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x64.Build.0 = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Release|x86.Build.0 = Release|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x64.ActiveCfg = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x64.Build.0 = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x86.ActiveCfg = Signed|Any CPU
+		{B4F47385-B462-4826-809E-117603F24CF9}.Signed|x86.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
