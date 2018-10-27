@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using Ultraviolet.OpenGL.Bindings;
@@ -136,7 +135,10 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(data, nameof(data));
 
-            SetDataInternal(0, null, data, 0, data.Length);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = data.Length * sizeInBytesPerElement;
+
+            SetDataInternal(0, null, data, 0, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -147,7 +149,11 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
             Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
 
-            SetDataInternal(0, null, data, startIndex, elementCount);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = elementCount * sizeInBytesPerElement;
+            var offsetInBytes = startIndex * sizeInBytesPerElement;
+
+            SetDataInternal(0, null, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -159,7 +165,11 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
             Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
 
-            SetDataInternal(level, rect, data, startIndex, elementCount);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = elementCount * sizeInBytesPerElement;
+            var offsetInBytes = startIndex * sizeInBytesPerElement;
+
+            SetDataInternal(level, rect, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -409,6 +419,34 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
+        /// Sets the texture's data from managed memory.
+        /// </summary>
+        private unsafe void SetDataInternal(Int32 level, Rectangle? rect, Object data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+            {
+                var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    SetDataInternal(level, rect, pData.AddrOfPinnedObject(), offsetInBytes, sizeInBytes);
+                }
+                finally { pData.Free(); }
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem(state =>
+                {
+                    var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    try
+                    {
+                        SetDataInternal(level, rect, pData.AddrOfPinnedObject(), 0, sizeInBytes);
+                    }
+                    finally { pData.Free(); }
+                }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
+            }
+        }
+
+        /// <summary>
         /// Sets the texture's data from native memory.
         /// </summary>
         private unsafe void SetDataInternal(Int32 level, Rectangle? rect, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
@@ -421,64 +459,30 @@ namespace Ultraviolet.OpenGL.Graphics
             if (pixelSizeInBytes * width * height != sizeInBytes)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
-            Upload(level, region, data, offsetInBytes)?.Wait();
-        }
-
-        /// <summary>
-        /// Sets the texture's data from managed memory.
-        /// </summary>
-        private unsafe void SetDataInternal<T>(Int32 level, Rectangle? rect, T[] data, Int32 startIndex, Int32 elementCount) where T : struct
-        {
-            var elementSizeInBytes = Marshal.SizeOf(typeof(T));
-
-            var region = rect ?? new Rectangle(0, 0, width, height);
-            var regionWidth = region.Width;
-            var regionHeight = region.Height;
-
-            var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
-            if (pixelSizeInBytes * width * height != elementSizeInBytes * elementCount)
-                throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
-
-            Ultraviolet.QueueWorkItem(state =>
+            if (Ultraviolet.IsExecutingOnCurrentThread)
             {
-                var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-                try
+                Upload(level, region, data, offsetInBytes);
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem(state =>
                 {
-                    using (OpenGLState.ScopedBindTexture2D(OpenGLName))
-                    {
-                        var pData = dataHandle.AddrOfPinnedObject() + (startIndex * elementSizeInBytes);
-                        gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
-                            region.Width, region.Height, format, type, (void*)pData);
-                        gl.ThrowIfError();
-                    }
-                }
-                finally { dataHandle.Free(); }
-            }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
+                    Upload(level, region, data, offsetInBytes);
+                }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
+            }
         }
 
         /// <summary>
         /// Uploads texture data to the graphics device.
         /// </summary>
-        private unsafe Task Upload(Int32 level, Rectangle region, IntPtr ldata, Int32 offsetInBytes)
+        private void Upload(Int32 level, Rectangle region, IntPtr ldata, Int32 offsetInBytes)
         {
-            if (Ultraviolet.IsExecutingOnCurrentThread)
+            using (OpenGLState.ScopedBindTexture2D(OpenGLName))
             {
-                using (OpenGLState.ScopedBindTexture2D(OpenGLName))
-                {
-                    var pData = ldata + offsetInBytes;
-                    gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
-                        region.Width, region.Height, format, type, (void*)pData);
-                    gl.ThrowIfError();
-                }
-
-                return null;
-            }
-            else
-            {
-                return Ultraviolet.QueueWorkItem(state => 
-                {
-                    Upload(level, region, ldata, offsetInBytes);
-                });
+                var pData = ldata + offsetInBytes;
+                gl.TextureSubImage2D(OpenGLName, gl.GL_TEXTURE_2D, level, region.X, region.Y,
+                    region.Width, region.Height, format, type, (void*)pData);
+                gl.ThrowIfError();
             }
         }
 

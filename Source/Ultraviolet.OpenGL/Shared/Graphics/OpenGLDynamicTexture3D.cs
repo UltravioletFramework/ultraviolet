@@ -46,6 +46,14 @@ namespace Ultraviolet.OpenGL.Graphics
             texture.SetData(level, left, top, right, bottom, front, back, data, startIndex, elementCount);
 
         /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes) =>
+            texture.SetRawData(data, offsetInBytes, sizeInBytes);
+
+        /// <inheritdoc/>
+        public override void SetRawData(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes) =>
+            texture.SetRawData(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
+
+        /// <inheritdoc/>
         public void BindRead() =>
             texture.BindRead();
 

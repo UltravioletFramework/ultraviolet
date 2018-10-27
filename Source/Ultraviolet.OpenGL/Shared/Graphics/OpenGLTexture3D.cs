@@ -180,7 +180,10 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureNotDisposed(this, Disposed);
             Contract.Require(data, nameof(data));
 
-            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, 0, data.Length);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = data.Length * sizeInBytesPerElement;
+
+            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, 0, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -191,7 +194,11 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
             Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
 
-            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, startIndex, elementCount);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = elementCount * sizeInBytesPerElement;
+            var offsetInBytes = startIndex * sizeInBytesPerElement;
+
+            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -202,7 +209,32 @@ namespace Ultraviolet.OpenGL.Graphics
             Contract.EnsureRange(startIndex >= 0, nameof(startIndex));
             Contract.EnsureRange(elementCount >= 0 && startIndex + elementCount <= data.Length, nameof(elementCount));
 
-            SetDataInternal(level, left, top, right, bottom, front, back, data, startIndex, elementCount);
+            var sizeInBytesPerElement = Marshal.SizeOf(typeof(T));
+            var sizeInBytes = elementCount * sizeInBytesPerElement;
+            var offsetInBytes = startIndex * sizeInBytesPerElement;
+
+            SetDataInternal(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
+        public override void SetRawData(IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
+
+            SetDataInternal(0, 0, 0, Width, Height, 0, Depth, data, offsetInBytes, sizeInBytes);
+        }
+
+        /// <inheritdoc/>
+        public override void SetRawData(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(data, nameof(data));
+            Contract.EnsureRange(level >= 0, nameof(level));
+            Contract.EnsureRange(offsetInBytes >= 0, nameof(offsetInBytes));
+
+            SetDataInternal(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
         }
 
         /// <inheritdoc/>
@@ -464,34 +496,71 @@ namespace Ultraviolet.OpenGL.Graphics
         }
 
         /// <summary>
-        /// Sets the texture's data.
+        /// Sets the texture's data from managed memory.
         /// </summary>
-        private void SetDataInternal<T>(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, T[] data, Int32 startIndex, Int32 elementCount) where T : struct
+        private void SetDataInternal(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, Object data, Int32 offsetInBytes, Int32 sizeInBytes)
         {
-            var elementSizeInBytes = Marshal.SizeOf(typeof(T));
+            if (Ultraviolet.IsExecutingOnCurrentThread)
+            {
+                var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    SetDataInternal(level, left, top, right, bottom, front, back, pData.AddrOfPinnedObject(), offsetInBytes, sizeInBytes);
+                }
+                finally { pData.Free(); }
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem(state =>
+                {
+                    var pData = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    try
+                    {
+                        SetDataInternal(level, left, top, right, bottom, front, back, pData.AddrOfPinnedObject(), 0, sizeInBytes);
+                    }
+                    finally { pData.Free(); }
+                }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
+            }
+        }
+
+        /// <summary>
+        /// Sets the texture's data from native memory.
+        /// </summary>
+        private void SetDataInternal(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
             var width = right - left;
             var height = bottom - top;
             var depth = back - front;
 
             var pixelSizeInBytes = (format == gl.GL_RGB || format == gl.GL_BGR) ? 3 : 4;
-            if (pixelSizeInBytes * width * height * depth != elementSizeInBytes * elementCount)
+            if (pixelSizeInBytes * width * height * depth != sizeInBytes)
                 throw new ArgumentException(UltravioletStrings.BufferIsWrongSize);
 
-            Ultraviolet.QueueWorkItem(state =>
+            if (Ultraviolet.IsExecutingOnCurrentThread)
             {
-                var dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-                try
+                Upload(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
+            }
+            else
+            {
+                Ultraviolet.QueueWorkItem(state =>
                 {
-                    using (OpenGLState.ScopedBindTexture3D(OpenGLName))
-                    {
-                        var pData = dataHandle.AddrOfPinnedObject() + (startIndex * elementSizeInBytes);
-                        gl.TextureSubImage3D(OpenGLName, gl.GL_TEXTURE_3D, level, left, top, front,
-                            right - left, bottom - top, back - front, format, type, (void*)pData);
-                        gl.ThrowIfError();
-                    }
-                }
-                finally { dataHandle.Free(); }
-            }).Wait();
+                    Upload(level, left, top, right, bottom, front, back, data, offsetInBytes, sizeInBytes);
+                }, null, WorkItemOptions.ReturnNullOnSynchronousExecution)?.Wait();
+            }
+        }
+
+        /// <summary>
+        /// Uploads texture data to the graphics device.
+        /// </summary>
+        private void Upload(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes)
+        {
+            using (OpenGLState.ScopedBindTexture3D(OpenGLName))
+            {
+                var pData = data + offsetInBytes;
+                gl.TextureSubImage3D(OpenGLName, gl.GL_TEXTURE_3D, level, left, top, front,
+                    right - left, bottom - top, back - front, format, type, (void*)pData);
+                gl.ThrowIfError();
+            }
         }
 
         // Property values.

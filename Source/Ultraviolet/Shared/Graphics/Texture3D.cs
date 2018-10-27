@@ -157,6 +157,29 @@ namespace Ultraviolet.Graphics
         public abstract void SetData<T>(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, T[] data, Int32 startIndex, Int32 elementCount) where T : struct;
 
         /// <summary>
+        /// Sets the texture's data from the data at the specified pointer.
+        /// </summary>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="offsetInBytes">The offset from the start of <paramref name="data"/>, in bytes, at which to begin copying data.</param>
+        /// <param name="sizeInBytes">The number of bytes to copy.</param>
+        public abstract void SetRawData(IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes);
+
+        /// <summary>
+        /// Sets the texture's data from the data at the specified pointer.
+        /// </summary>
+        /// <param name="level">The mipmap level to set.</param>
+        /// <param name="left">The x-coordinate of the left face of the 3D bounding cube.</param>
+        /// <param name="top">The y-coordinate of the top face of the 3D bounding cube.</param>
+        /// <param name="right">The x-coordinate of the right face of the 3D bounding cube.</param>
+        /// <param name="bottom">The y-coordinate of the bottom face of the 3D bounding cube.</param>
+        /// <param name="front">The z-coordinate of the front face of the 3D bounding cube.</param>
+        /// <param name="back">The z-coordinate of the back face of the 3D bounding cube.</param>
+        /// <param name="data">A pointer to the data to set.</param>
+        /// <param name="offsetInBytes">The offset from the start of <paramref name="data"/>, in bytes, at which to begin copying data.</param>
+        /// <param name="sizeInBytes">The number of bytes to copy.</param>
+        public abstract void SetRawData(Int32 level, Int32 left, Int32 top, Int32 right, Int32 bottom, Int32 front, Int32 back, IntPtr data, Int32 offsetInBytes, Int32 sizeInBytes);
+
+        /// <summary>
         /// Gets a value indicating whether this is an SRGB encoded texture.
         /// </summary>
         public abstract Boolean SrgbEncoded { get; }
