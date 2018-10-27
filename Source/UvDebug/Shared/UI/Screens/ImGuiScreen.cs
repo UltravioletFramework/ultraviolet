@@ -1,11 +1,10 @@
 ﻿#if IMGUI
 using System;
-using Ultraviolet.Graphics;
 using Ultraviolet;
 using Ultraviolet.Content;
 using Ultraviolet.ImGuiViewProvider;
+using Ultraviolet.ImGuiViewProvider.Bindings;
 using Ultraviolet.UI;
-using ImGuiNET;
 
 namespace UvDebug.UI.Screens
 {

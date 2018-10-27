@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using ImGuiNET;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
+using Ultraviolet.ImGuiViewProvider.Bindings;
 
 namespace Ultraviolet.ImGuiViewProvider
 {

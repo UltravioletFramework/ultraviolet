@@ -128,6 +128,7 @@
     <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\NETStandard\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard\Ultraviolet.ImGuiViewProvider.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
@@ -140,16 +141,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\..\Dependencies\ImGui\x64\osx\cimgui.dylib" Link="x64\osx\cimgui.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\Dependencies\ImGui\x64\unix\cimgui.so" Link="x64\unix\cimgui.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass.so" Link="x64\unix\libbass.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass_fx.so" Link="x64\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x64\win32nt\cimgui.dll" Link="x64\win32nt\cimgui.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
@@ -221,12 +231,30 @@
     <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" Link="x86\win32nt\libpng16.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\Dependencies\ImGui\x86\unix\cimgui.so" Link="x86\unix\cimgui.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x86\win32nt\cimgui.dll" Link="x86\win32nt\cimgui.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
 
   </ItemGroup>
 
   <PropertyGroup>
     <RunCreateSymbolicLinksToFreeType2Dependencies>false</RunCreateSymbolicLinksToFreeType2Dependencies>
     <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And !Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;IMGUI</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;IMGUI</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
+    <DefineConstants>TRACE;IMGUI</DefineConstants>
   </PropertyGroup>
   <Target Name="CreateSymbolicLinksToDependencies_x86" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies)' == 'true' " AfterTargets="AfterBuild">
     <Exec Command="ln -sf &quot;$(TargetDir)/x86/unix/libfreetype.so.6.16.0&quot; &quot;$(TargetDir)/x86/unix/libfreetype.so.6&quot;" />
