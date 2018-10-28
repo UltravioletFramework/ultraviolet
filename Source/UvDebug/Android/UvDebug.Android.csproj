@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
     <Debugger>Xamarin</Debugger>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AotAssemblies>false</AotAssemblies>
@@ -99,12 +99,6 @@
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so">
       <Link>lib\armeabi-v7a\libbass_fx.so</Link>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi\libbass.so">
-      <Link>lib\armeabi\libbass.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi\libbass_fx.so">
-      <Link>lib\armeabi\libbass_fx.so</Link>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
     </AndroidNativeLibrary>
@@ -113,9 +107,6 @@
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
       <Link>lib\armeabi-v7a\libSDL2.so</Link>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi\libSDL2.so">
-      <Link>lib\armeabi\libSDL2.so</Link>
     </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
       <Link>lib\x86\libSDL2.so</Link>
@@ -175,6 +166,12 @@
       <Link>Content\Fonts\Inconsolata.uvmeta</Link>
     </AndroidAsset>
     <EmbeddedResource Include="AndroidAssets.aalist" />
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so">
+      <Link>lib\armeabi-v7a\libcimgui.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\x86\libcimgui.so">
+      <Link>lib\x86\libcimgui.so</Link>
+    </AndroidNativeLibrary>
     <None Include="app.config" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
@@ -338,11 +335,16 @@
       <Link>Content\Cursors\CursorsImage.png</Link>
     </AndroidAsset>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
+      <Link>Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml</Link>
+    </AndroidAsset>
+  </ItemGroup>
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="a8c85c23-03c2-41c6-8331-48835d257634" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

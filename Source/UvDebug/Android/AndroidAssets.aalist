@@ -25,6 +25,7 @@ F:Content/UI/Screens/GameMenuScreen:GameMenuScreenStyles.uvss
 F:Content/UI/Screens/GameMenuScreen:GameMenuScreen.xml
 D:Content/UI/Screens:GameMenuScreen
 D:Content/UI/Screens:GamePlayScreen
+D:Content/UI/Screens:ImGuiScreen
 F:Content/UI/Screens/GamePlayScreen:GamePlayScreenStyles.uvss
 F:Content/UI/Screens/GamePlayScreen:GamePlayScreen.xml
 F:Content/Sprites:InterfaceIcons.sprite
@@ -46,3 +47,4 @@ F:Content/SoundEffects:rollover3.wav
 F:Content/Localization:GameStrings.xml
 F:Content/Cursors:Cursors.xml
 F:Content/Cursors:CursorsImage.png
+F:Content/UI/Screens/ImGuiScreen:ImGuiScreen.xml
