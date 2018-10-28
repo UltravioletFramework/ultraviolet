@@ -160,6 +160,12 @@
     <CreateItem Include="Source/Ultraviolet.SDL2/Desktop/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Desktop"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/Desktop/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Desktop"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/Desktop/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_Desktop"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation/Desktop/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Desktop"/>
     </CreateItem>
@@ -199,6 +205,8 @@
     <Copy SourceFiles="@(Ultraviolet_FMOD_Desktop)" DestinationFiles="@(Ultraviolet_FMOD_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Desktop)" DestinationFiles="@(Ultraviolet_OpenGL_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_Desktop)" DestinationFiles="@(Ultraviolet_SDL2_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Desktop)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProver_Bindings_Desktop)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Compiler_Desktop)" DestinationFiles="@(Ultraviolet_Presentation_Compiler_Desktop->'Binaries/AnyCPU/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -246,6 +254,12 @@
     <CreateItem Include="Source/Ultraviolet.SDL2/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_NETStandard"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.ImGuiViewProvider.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_NETStandard"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.ImGuiViewProvider.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_NETStandard"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation/NETStandard/bin/$(Configuration)/netstandard2.0/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_NETStandard"/>
     </CreateItem>
@@ -270,6 +284,8 @@
     <Copy SourceFiles="@(Ultraviolet_FMOD_NETStandard)" DestinationFiles="@(Ultraviolet_FMOD_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_NETStandard)" DestinationFiles="@(Ultraviolet_OpenGL_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_NETStandard)" DestinationFiles="@(Ultraviolet_SDL2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_NETStandard)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProver_Bindings_NETStandard)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_NETStandard)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_FreeType2_NETStandard)" DestinationFiles="@(Ultraviolet_FreeType2_NETStandard->'Binaries/netstandard2.0/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -354,6 +370,12 @@
     <CreateItem Include="Source/Ultraviolet.SDL2/Android/bin/$(Configuration)/Ultraviolet.SDL2.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_Android"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/Android/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Android"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/Android/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_Android"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation/Android/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Android"/>
     </CreateItem>
@@ -376,6 +398,8 @@
     <Copy SourceFiles="@(Ultraviolet_FMOD_Android_Bindings)" DestinationFiles="@(Ultraviolet_FMOD_Android_Bindings->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_OpenGL_Android)" DestinationFiles="@(Ultraviolet_OpenGL_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_Android)" DestinationFiles="@(Ultraviolet_SDL2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Android)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_Android)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Android)" DestinationFiles="@(Ultraviolet_Presentation_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_Android)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_FreeType2_Android)" DestinationFiles="@(Ultraviolet_FreeType2_Android->'Binaries/Android/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
@@ -447,6 +471,12 @@
     <CreateItem Include="Source/Ultraviolet.SDL2.UIKit_iOS/bin/$(Configuration)/Ultraviolet.SDL2.UIKit.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2_UIKit_iOS"/>
     </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/iOS/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_iOS"/>
+    </CreateItem>
+    <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/iOS/bin/$(Configuration)/Ultraviolet.ImGuiViewProvider.Bindings.*">
+        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings_iOS"/>
+    </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation/iOS/bin/$(Configuration)/Ultraviolet.Presentation.*">
         <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_iOS"/>
     </CreateItem>
@@ -470,6 +500,8 @@
     <Copy SourceFiles="@(Ultraviolet_OpenGL_iOS)" DestinationFiles="@(Ultraviolet_OpenGL_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_iOS)" DestinationFiles="@(Ultraviolet_SDL2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_SDL2_UIKit_iOS)" DestinationFiles="@(Ultraviolet_SDL2_UIKit_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_iOS)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_iOS)" DestinationFiles="@(Ultraviolet_ImGuiViewProvider_Bindings_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_iOS)" DestinationFiles="@(Ultraviolet_Presentation_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_Presentation_Uvss_iOS)" DestinationFiles="@(Ultraviolet_Presentation_Uvss_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet_FreeType2_iOS)" DestinationFiles="@(Ultraviolet_FreeType2_iOS->'Binaries/iOS/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
