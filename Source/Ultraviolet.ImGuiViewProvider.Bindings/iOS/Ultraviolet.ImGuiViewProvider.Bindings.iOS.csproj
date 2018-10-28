@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;DEBUG;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -23,7 +23,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;IOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Signed</OutputPath>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -59,10 +67,11 @@
     <BundleResource Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\..\Dependencies\ImGui\iOS\cimgui.a">
+    <NativeReference Include="..\..\..\Dependencies\ImGui\iOS\libcimgui.a">
       <Kind>Static</Kind>
-      <SmartLink>False</SmartLink>
       <ForceLoad>True</ForceLoad>
+      <IsCxx>True</IsCxx>
+      <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems')" />
