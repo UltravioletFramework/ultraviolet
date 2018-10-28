@@ -18,6 +18,7 @@
     <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;DEBUG;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Ultraviolet.ImGuiViewProvider.xml</DocumentationFile>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -36,6 +37,7 @@
     <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Ultraviolet.ImGuiViewProvider.xml</DocumentationFile>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -50,6 +52,7 @@
     <DefineConstants>__IOS__;__MOBILE__;__UNIFIED__;IOS;SIGNED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Signed\Ultraviolet.ImGuiViewProvider.xml</DocumentationFile>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchLink>SdkOnly</MtouchLink>
