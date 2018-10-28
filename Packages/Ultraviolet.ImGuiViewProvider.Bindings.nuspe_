@@ -27,20 +27,26 @@ Quick start guides for development using the Ultraviolet Framework are available
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
       <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />    
+      <dependency id="System.Numerics.Vectors" version="4.5.0" />
+      <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.2" />
     </group>
     <group targetFramework="netstandard2.0">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
       <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />    
+      <dependency id="System.Numerics.Vectors" version="4.5.0" />
+      <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.2" />
     </group>
     <group targetFramework="MonoAndroid80">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
       <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
+      <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.2" />
     </group>
     <group targetFramework="Xamarin.iOS10">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
+      <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.5.2" />
     </group>
   </dependencies>
   </metadata>
