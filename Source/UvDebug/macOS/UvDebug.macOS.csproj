@@ -231,8 +231,8 @@
     <BundleResource Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
       <Link>Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml</Link>
     </BundleResource>
-    <BundleResource Include="..\..\..\Dependencies\ImGui\x64\osx\cimgui.dylib">
-      <Link>x64\osx\cimgui.dylib</Link>
+    <BundleResource Include="..\..\..\Dependencies\ImGui\x64\osx\libcimgui.dylib">
+      <Link>x64\osx\libcimgui.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
   </ItemGroup>

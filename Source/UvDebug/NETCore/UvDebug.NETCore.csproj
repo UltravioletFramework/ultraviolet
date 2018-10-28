@@ -100,6 +100,10 @@
       <Link>x64\osx\libpng16.16.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\Dependencies\ImGui\x64\osx\libcimgui.dylib">
+      <Link>x64\osx\libcimgui.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -153,9 +157,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\Dependencies\ImGui\x64\osx\cimgui.dylib" Link="x64\osx\cimgui.dylib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

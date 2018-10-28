@@ -15,9 +15,10 @@ namespace Ultraviolet.ImGuiViewProvider.Bindings
 #elif IOS
         const String LIBRARY = "__Internal";
 #else
-        private static readonly NativeLibrary lib = new NativeLibrary("cimgui");
+        private static readonly NativeLibrary lib = new NativeLibrary (
+            UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "cimgui" : "libcimgui");
 #endif
-        
+
 #if ANDROID || IOS
         [DllImport(LIBRARY, CallingConvention = CallingConvention.Cdecl)]
         public static extern float igGetFrameHeight();
