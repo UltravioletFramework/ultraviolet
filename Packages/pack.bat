@@ -88,6 +88,14 @@ powershell -Command "(gc Ultraviolet.FreeType2.nuspe_) -replace 'UV_VERSION', '%
 nuget pack Ultraviolet.FreeType2.nuspec -Symbols
 @if %errorlevel% neq 0 @exit /b %errorlevel%
 
+powershell -Command "(gc Ultraviolet.ImGuiViewProvider.Native.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.ImGuiViewProvider.Native.nuspec"
+nuget pack Ultraviolet.ImGuiViewProvider.Native.nuspec
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
+powershell -Command "(gc Ultraviolet.ImGuiViewProvider.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.ImGuiViewProvider.nuspec"
+nuget pack Ultraviolet.ImGuiViewProvider.nuspec -Symbols
+@if %errorlevel% neq 0 @exit /b %errorlevel%
+
 powershell -Command "(gc Ultraviolet.Tools.nuspe_) -replace 'UV_VERSION', '%UV_VERSION%' | sc Ultraviolet.Tools.nuspec"
 nuget pack Ultraviolet.Tools.nuspec
 @if %errorlevel% neq 0 @exit /b %errorlevel%
