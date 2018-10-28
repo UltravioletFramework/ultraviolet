@@ -88,6 +88,18 @@
     <None Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib">
+      <Link>x64\osx\libfreetype.6.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib">
+      <Link>x64\osx\libharfbuzz.0.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib">
+      <Link>x64\osx\libpng16.16.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -243,6 +255,8 @@
   <PropertyGroup>
     <RunCreateSymbolicLinksToFreeType2Dependencies>false</RunCreateSymbolicLinksToFreeType2Dependencies>
     <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And !Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
+    <RunCreateSymbolicLinksToFreeType2Dependencies_osx>false</RunCreateSymbolicLinksToFreeType2Dependencies_osx>
+    <RunCreateSymbolicLinksToFreeType2Dependencies_osx Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies_osx>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -273,6 +287,12 @@
     <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16.34.0&quot; &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot;" />
     <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so.16&quot; &quot;$(TargetDir)/x64/unix/libpng16.so&quot;" />
     <Exec Command="ln -sf &quot;$(TargetDir)/x64/unix/libpng16.so&quot; &quot;$(TargetDir)/x64/unix/libpng.so&quot;" />
+  </Target>
+  <Target Name="CreateSymbolicLinksToDependencies_osx" Condition=" '$(RunCreateSymbolicLinksToFreeType2Dependencies_osx)' == 'true' " AfterTargets="AfterBuild">
+    <Exec Command="ln -sf &quot;$(TargetDir)x64/osx/libfreetype.6.dylib&quot; &quot;$(TargetDir)x64/osx/libfreetype.dylib&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)x64/osx/libharfbuzz.0.dylib&quot; &quot;$(TargetDir)x64/osx/libharfbuzz.dylib&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)x64/osx/libpng16.16.dylib&quot; &quot;$(TargetDir)x64/osx/libpng16.dylib&quot;" />
+    <Exec Command="ln -sf &quot;$(TargetDir)x64/osx/libpng16.dylib&quot; &quot;$(TargetDir)x64/osx/libpng.dylib&quot;" />
   </Target>
 
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />

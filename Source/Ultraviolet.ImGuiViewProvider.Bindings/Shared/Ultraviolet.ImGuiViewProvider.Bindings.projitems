@@ -9,7 +9,6 @@
     <Import_RootNamespace>Ultraviolet.ImGuiViewProvider.Bindings</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)ImGui.NET.csproj" />
     <None Include="$(MSBuildThisFileDirectory)LICENSE.md" />
   </ItemGroup>
   <ItemGroup>
