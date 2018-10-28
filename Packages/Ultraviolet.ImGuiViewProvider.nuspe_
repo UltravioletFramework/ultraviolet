@@ -14,41 +14,43 @@
 
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
-  <dependencies>
-    <group>
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
-    </group>
-    <group targetFramework="net461">
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
-      <dependency id="System.Numerics.Vectors" version="4.5.0" />
-    </group>
-    <group targetFramework="netstandard2.0">
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />    
-      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
-      <dependency id="System.Numerics.Vectors" version="4.5.0" />
-    </group>
-    <group targetFramework="MonoAndroid80">
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
-      <dependency id="System.Numerics" version="2.0.5.0" />
-    </group>
-    <group targetFramework="Xamarin.iOS10">
-      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
-      <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
-      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
-      <dependency id="System.Numerics" version="2.0.5.0" />
-    </group>
-  </dependencies>
+    <dependencies>
+      <group>
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
+      </group>
+      <group targetFramework="net461">
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
+        <dependency id="System.Numerics.Vectors" version="4.5.0" />
+      </group>
+      <group targetFramework="netstandard2.0">
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />    
+        <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
+        <dependency id="System.Numerics.Vectors" version="4.5.0" />
+      </group>
+      <group targetFramework="MonoAndroid80">
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly targetFramework="MonoAndroid80" assemblyName="System.Numerics" />
+      <frameworkAssembly targetFramework="Xamarin.iOS10" assemblyName="System.Numerics" />
+    </frameworkAssemblies>
   </metadata>
   <files>
     <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.ImGuiViewProvider.dll" target="lib\net461\"/>
