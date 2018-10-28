@@ -259,13 +259,13 @@ namespace Ultraviolet.ImGuiViewProvider
             var keyboard = Ultraviolet.GetInput().GetKeyboard();
             if (keyboard != null)
             {
-                io.KeyAlt = IsAltDown(keyboard);
-                io.KeyCtrl = IsCtrlDown(keyboard);
-                io.KeyShift = keyboard.IsButtonDown(Scancode.LeftShift) || keyboard.IsButtonDown(Scancode.RightShift);
-                io.KeySuper = IsSuperDown(keyboard);
+                io.KeyAlt = new Bool8(IsAltDown(keyboard));
+                io.KeyCtrl = new Bool8(IsCtrlDown(keyboard));
+                io.KeyShift = new Bool8(IsShiftDown(keyboard));
+                io.KeySuper = new Bool8(IsSuperDown(keyboard));
 
                 for (int i = 0; i < (Int32)ImGuiKey.COUNT; i++)
-                    io.KeysDown[(Int32)ScancodeMap[i]] = keyboard.IsButtonDown(ScancodeMap[i]);
+                    io.KeysDown[(Int32)ScancodeMap[i]] = new Bool8(keyboard.IsButtonDown(ScancodeMap[i]));
 
                 for (int i = 0; i < textBuffer.Length; i++)
                     io.AddInputCharacter(textBuffer[i]);
@@ -277,9 +277,9 @@ namespace Ultraviolet.ImGuiViewProvider
             if (mouse != null)
             {
                 io.MousePos = (Vector2)mouse.Position;
-                io.MouseDown[0] = mouse.IsButtonDown(MouseButton.Left);
-                io.MouseDown[1] = mouse.IsButtonDown(MouseButton.Right);
-                io.MouseDown[2] = mouse.IsButtonDown(MouseButton.Middle);
+                io.MouseDown[0] = new Bool8(mouse.IsButtonDown(MouseButton.Left));
+                io.MouseDown[1] = new Bool8(mouse.IsButtonDown(MouseButton.Right));
+                io.MouseDown[2] = new Bool8(mouse.IsButtonDown(MouseButton.Middle));
             }
         }
 
