@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Ultraviolet.ImGuiViewProvider.Bindings</id>
+    <version>UV_VERSION</version>
+    <authors>Cole Campbell</authors>
+    <owners>Cole Campbell</owners>
+    <licenseUrl>http://ultraviolet.tl/licenses</licenseUrl>
+    <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
+    <iconUrl>http://www.ultraviolet.tl/s/uv.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains bindings for Dear ImGui's native libraries.</summary>
+    <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains bindings for Dear ImGui's native libraries. 
+
+This package is based on ImGui.NET by Eric Mellino, available on GitHub at https://github.com/mellinoe/ImGui.NET.
+
+This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the Ultraviolet.ImGuiViewProvider package.
+
+Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
+    <tags>ultraviolet gamedev</tags>	
+  <dependencies>
+    <group>
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+    </group>
+    <group targetFramework="net461">
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />    
+    </group>
+    <group targetFramework="netstandard2.0">
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />    
+    </group>
+    <group targetFramework="MonoAndroid80">
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+      <dependency id="Ultraviolet.ImGuiViewProvider.Native" version="UV_VERSION" />
+    </group>
+    <group targetFramework="Xamarin.iOS10">
+      <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+      <dependency id="Ultraviolet" version="UV_VERSION" />
+    </group>
+  </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.ImGuiViewProvider.Bindings.dll" target="lib\net461\"/>
+    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.ImGuiViewProvider.Bindings.pdb" target="lib\net461\"/>
+
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.ImGuiViewProvider.Bindings.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.ImGuiViewProvider.Bindings.pdb" target="lib\netstandard2.0\"/>
+    
+    <file src="..\Binaries\Android\Signed\Ultraviolet.ImGuiViewProvider.Bindings.dll" target="lib\MonoAndroid80\"/>
+    <file src="..\Binaries\Android\Signed\Ultraviolet.ImGuiViewProvider.Bindings.pdb" target="lib\MonoAndroid80\"/>
+
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.ImGuiViewProvider.Bindings.dll" target="lib\Xamarin.iOS10\"/>
+    <file src="..\Binaries\iOS\Signed\Ultraviolet.ImGuiViewProvider.Bindings.pdb" target="lib\Xamarin.iOS10\"/>
+  </files>  
+</package>
