@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;MACOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;DEBUG;MACOS;IMGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -65,7 +65,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>MACOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;IMGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -87,7 +87,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants>__UNIFIED__;MACOS</DefineConstants>
+    <DefineConstants>__MACOS__;__UNIFIED__;MACOS;IMGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -108,6 +108,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="Xamarin.Mac" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,14 @@
       <Project>{1213F9AF-5E16-46E9-A7D0-80B9564E6345}</Project>
       <Name>Ultraviolet.FreeType2.Desktop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\Desktop\Ultraviolet.ImGuiViewProvider.Bindings.Desktop.csproj">
+      <Project>{4F421CDB-E9D0-485F-86B3-FF57B4F1E459}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Bindings.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\Desktop\Ultraviolet.ImGuiViewProvider.Desktop.csproj">
+      <Project>{B4F47385-B462-4826-809E-117603F24CF9}</Project>
+      <Name>Ultraviolet.ImGuiViewProvider.Desktop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
@@ -218,6 +227,13 @@
     </BundleResource>
     <BundleResource Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta">
       <Link>Content\Fonts\Inconsolata.uvmeta</Link>
+    </BundleResource>
+    <BundleResource Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
+      <Link>Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml</Link>
+    </BundleResource>
+    <BundleResource Include="..\..\..\Dependencies\ImGui\x64\osx\cimgui.dylib">
+      <Link>x64\osx\cimgui.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </BundleResource>
   </ItemGroup>
   <ItemGroup>    
