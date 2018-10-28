@@ -163,9 +163,6 @@
     <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\ImGui\x64\unix\cimgui.so" Link="x64\unix\cimgui.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass.so" Link="x64\unix\libbass.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -244,10 +241,14 @@
     <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" Link="x86\win32nt\libpng16.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\ImGui\x86\unix\cimgui.so" Link="x86\unix\cimgui.so">
+    <None Include="..\..\..\Dependencies\ImGui\x86\win32nt\cimgui.dll" Link="x86\win32nt\cimgui.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\ImGui\x86\win32nt\cimgui.dll" Link="x86\win32nt\cimgui.dll">
+    <None Include="..\..\..\Dependencies\ImGui\x86\unix\libcimgui.so" Link="x86\unix\libcimgui.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x64\unix\libcimgui.so">
+      <Link>x64\unix\libcimgui.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
 
