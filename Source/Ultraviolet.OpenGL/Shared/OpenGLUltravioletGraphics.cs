@@ -24,9 +24,27 @@ namespace Ultraviolet.OpenGL
         /// <param name="uv">The Ultraviolet context.</param>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
         /// <param name="versionRequested">The OpenGL context version which is requested by the application.</param>
-        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested)
+        /// <param name="versionRequired">The OpenGL context version which is required by the Ultraviolet Framework.</param>
+        public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested, Version versionRequired)
             : base(uv)
         {
+            var initialVersionMajor = 0;
+            var initialVersionMinor = 0;
+            if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &initialVersionMajor) < 0)
+                throw new SDL2Exception();
+            if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &initialVersionMinor) < 0)
+                throw new SDL2Exception();
+            
+            var initialVersion = new Version(initialVersionMajor, initialVersionMinor);
+            if (initialVersion < versionRequired)
+            {
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionRequired.Major) < 0)
+                    throw new SDL2Exception();
+
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionRequired.Minor) < 0)
+                    throw new SDL2Exception();
+            }
+
             var masterptr = ((SDL2UltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
             if (!TryInitializeGLContext(masterptr, configuration))
             {

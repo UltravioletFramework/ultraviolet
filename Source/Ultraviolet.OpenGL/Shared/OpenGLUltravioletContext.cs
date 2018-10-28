@@ -74,7 +74,7 @@ namespace Ultraviolet.OpenGL
             }
             else
             {
-                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested ?? versionRequired);
+                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested ?? versionRequired, versionRequired);
                 ((OpenGLUltravioletGraphics)this.graphics).ResetDeviceStates();
                 this.audio = InitializeAudioSubsystem(configuration);
                 this.input = new SDL2UltravioletInput(this);
