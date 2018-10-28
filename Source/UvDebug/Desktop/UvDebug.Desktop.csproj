@@ -85,10 +85,6 @@
       <Link>x86\unix\libbass_fx.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\ImGui\x64\osx\cimgui.dylib">
-      <Link>x64\osx\cimgui.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\ImGui\x64\unix\cimgui.so">
       <Link>x64\unix\cimgui.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -393,6 +389,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="..\..\..\Dependencies\ImGui\x64\osx\libcimgui.dylib">
+      <Link>x64/osx/libcimgui.dylib</Link>
+    </Content>
     <Content Include="..\..\..\Dependencies\ImGui\x64\win32nt\cimgui.dll">
       <Link>x64\win32nt\cimgui.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
