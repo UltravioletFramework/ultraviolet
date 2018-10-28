@@ -545,12 +545,12 @@ Global
 		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhone.Build.0 = Release|Any CPU
 		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|Any CPU.Build.0 = Debug|Any CPU
-		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhone.ActiveCfg = Debug|Any CPU
-		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhone.Build.0 = Debug|Any CPU
-		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhone.ActiveCfg = Signed|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhone.Build.0 = Signed|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhoneSimulator.ActiveCfg = Signed|Any CPU
+		{2A0392FD-D427-4C6D-92F5-13F5B324891A}.Signed|iPhoneSimulator.Build.0 = Signed|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
