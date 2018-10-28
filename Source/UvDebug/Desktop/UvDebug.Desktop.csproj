@@ -85,14 +85,6 @@
       <Link>x86\unix\libbass_fx.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\Dependencies\ImGui\x64\unix\cimgui.so">
-      <Link>x64\unix\cimgui.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\..\Dependencies\ImGui\x86\unix\cimgui.so">
-      <Link>x86\unix\cimgui.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\Dependencies\SDL2\x64\unix\libSDL2.so">
       <Link>x64\unix\libSDL2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -392,10 +384,18 @@
     <Content Include="..\..\..\Dependencies\ImGui\x64\osx\libcimgui.dylib">
       <Link>x64/osx/libcimgui.dylib</Link>
     </Content>
+    <None Include="..\..\..\Dependencies\ImGui\x64\unix\libcimgui.so">
+      <Link>x64/unix/libcimgui.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="..\..\..\Dependencies\ImGui\x64\win32nt\cimgui.dll">
       <Link>x64\win32nt\cimgui.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="..\..\..\Dependencies\ImGui\x86\unix\libcimgui.so">
+      <Link>x86/unix/libcimgui.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="..\..\..\Dependencies\ImGui\x86\win32nt\cimgui.dll">
       <Link>x86\win32nt\cimgui.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
