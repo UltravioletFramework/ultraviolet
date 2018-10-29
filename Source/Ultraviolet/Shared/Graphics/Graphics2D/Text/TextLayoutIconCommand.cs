@@ -17,7 +17,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="iconHeight">The icon's height in pixels.</param>
         /// <param name="iconAscender">The icon's ascender value in pixels.</param>
         /// <param name="iconDescender">The icon's descender value in pixels. Negative values are below the baseline.</param>
-        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight, Int16 iconAscender, Int16 iconDescender)
+        /// <param name="sourceOffset">The icon's offset within the source string.</param>
+        /// <param name="sourceLength">The icon's length within the source string.</param>
+        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight, Int16 iconAscender, Int16 iconDescender, Int32 sourceOffset, Int32 sourceLength)
         {
             this.CommandType = TextLayoutCommandType.Icon;
             this.IconIndex = iconIndex;
@@ -27,6 +29,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             this.IconHeight = iconHeight;
             this.IconAscender = iconAscender;
             this.IconDescender = iconDescender;
+            this.SourceOffset = sourceOffset;
+            this.SourceLength = sourceLength;
         }
 
         /// <summary>
@@ -122,6 +126,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the icon's descender value in pixels. Negative values are below the baseline.
         /// </summary>
         public Int16 IconDescender { get; internal set; }
+
+        /// <summary>
+        /// Gets the icon's offset within the source string.
+        /// </summary>
+        public Int32 SourceOffset { get; internal set; }
+
+        /// <summary>
+        /// Gets the icon's length within the source string.
+        /// </summary>
+        public Int32 SourceLength { get; internal set; }
 
         /// <summary>
         /// Gets the bounds of the icon drawn by this command relative to the layout area.

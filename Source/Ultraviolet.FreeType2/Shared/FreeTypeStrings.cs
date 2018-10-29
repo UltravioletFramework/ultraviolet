@@ -34,6 +34,9 @@ namespace Ultraviolet.FreeType2
         public static readonly StringResource NoMatchingPixelSize                   = new StringResource(StringDatabase, "NO_MATCHING_PIXEL_SIZE");
         public static readonly StringResource InvalidAtlasParameters                = new StringResource(StringDatabase, "INVALID_ATLAS_PARAMETERS");
         public static readonly StringResource TextShaperRequiresFreeTypeFont        = new StringResource(StringDatabase, "TEXT_SHAPER_REQUIRES_FREE_TYPE_FONT");
+        public static readonly StringResource InvalidBufferDirection                = new StringResource(StringDatabase, "INVALID_BUFFER_DIRECTION");
+        public static readonly StringResource InvalidBufferScript                   = new StringResource(StringDatabase, "INVALID_BUFFER_SCRIPT");
+        public static readonly StringResource InvalidBufferLanguage                 = new StringResource(StringDatabase, "INVALID_BUFFER_LANGUAGE");
 #pragma warning restore 1591
     }
 }

@@ -246,13 +246,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
             if (shape)
             {
-                PrepareShapingBuffers();
-
-                var shapedStringBuilder = output.GetShapedStringBuilder();
-                var shapedStringBuilderIx = output.RegisterSourceShapedStringBuilder(shapedStringBuilder);
-                shapedStringBuilder.Clear();
-
-                output.WriteChangeSourceShapedStringBuilder(new TextLayoutSourceShapedStringBuilderCommand(shapedStringBuilderIx));
+                PrepareShapingBuffers(output, ref state);
             }
 
             var bold = (settings.Style == UltravioletFontStyle.Bold || settings.Style == UltravioletFontStyle.BoldItalic);
@@ -472,7 +466,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Prepares the engine's shaping buffers for use.
         /// </summary>
-        private void PrepareShapingBuffers()
+        private void PrepareShapingBuffers(TextLayoutCommandStream output, ref LayoutState state)
         {
             if (shaper == null)
                 throw new InvalidOperationException(UltravioletStrings.TextShaperNotRegistered);
@@ -482,6 +476,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
 
             if (shapedMeasureBuffer == null)
                 shapedMeasureBuffer = new ShapedStringBuilder();
+
+            var shapedStringBuilder = output.GetShapedStringBuilder();
+            var shapedStringBuilderIx = output.RegisterSourceShapedStringBuilder(shapedStringBuilder);
+            shapedStringBuilder.Clear();
+
+            EmitShapedStringSource(output, shapedStringBuilderIx, ref state);
         }
 
         /// <summary>
@@ -492,13 +492,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var substr = token.Text.Substring(start);
 
             shaper.Clear();
-            shaper.SetScript(settings.Script);
-            shaper.SetLanguage(settings.Language);
-            shaper.SetDirection(settings.Direction);
+            shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(substr);
 
             shapedTokenBuffer.Clear();
-            shaper.AppendTo(shapedTokenBuffer, font);
+            shaper.AppendTo(shapedTokenBuffer, font, start);
         }
 
         /// <summary>
@@ -507,9 +505,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         private void ShapeMeasuredText(UltravioletFontFace font, StringSegment text, ref TextLayoutSettings settings)
         {
             shaper.Clear();
-            shaper.SetScript(settings.Script);
-            shaper.SetLanguage(settings.Language);
-            shaper.SetDirection(settings.Direction);
+            shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(text);
 
             shapedMeasureBuffer.Clear();
@@ -525,11 +521,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             var text = CreateStringSegmentFromCurrentSource(start, length);
 
             shaper.Clear();
-            shaper.SetScript(settings.Script);
-            shaper.SetLanguage(settings.Language);
-            shaper.SetDirection(settings.Direction);
+            shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
             shaper.Append(text);
-            shaper.AppendTo(buffer, font);
+            shaper.AppendTo(buffer, font, start);
         }
 
         /// <summary>
@@ -567,9 +561,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             if (state.PositionY + iconSize.Height > (settings.Height ?? Int32.MaxValue))
                 return false;
 
+            var sourceOffset = token.SourceOffset;
+            var sourceLength = token.SourceLength;
+
             output.WriteIcon(new TextLayoutIconCommand(iconIndex, state.PositionX, state.PositionY,
-                (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender));
-            state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, 1);
+                (Int16)iconSize.Width, (Int16)iconSize.Height, (Int16)icon.Ascender, (Int16)icon.Descender, sourceOffset, sourceLength));
+            state.AdvanceLineToNextCommand(iconSize.Width, iconSize.Height, 1, sourceLength, 1);
             index++;
 
             return true;
@@ -966,7 +963,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 accumulatedOutputLength = accumulatedOutputLength + tokenLengthOutput;
                 accumulatedCount++;
 
-                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenLengthOutput);
+                state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 1, tokenLengthInput, tokenLengthOutput);
                 state.ParserTokenOffset = tokenIsComplete ? 0 : tokenStartIx + tokenLengthInput;
                 state.LineLengthInCommands--;
 
@@ -1009,8 +1006,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var overflowingToken = input[index];
                 if (overflowingToken.IsWhiteSpace && !overflowingToken.IsNonBreakingSpace)
                 {
-                    output.WriteLineBreak(new TextLayoutLineBreakCommand(1));
-                    state.AdvanceLineToNextCommand(0, 0, 1, 1, isLineBreak: true);
+                    output.WriteLineBreak(new TextLayoutLineBreakCommand(1, 0));
+                    state.AdvanceLineToNextCommand(0, 0, 1, 0, 1, isLineBreak: true);
                     state.AdvanceLayoutToNextLine(output, ref settings);
 
                     if (overflowingToken.Text.Length > 1)
@@ -1034,11 +1031,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                         tokenText.Start, tokenLengthInput, ref overflowingTokenBounds, ref state, ref settings);
                     if (overflowingTextEmitted)
                     {
-                        state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenLengthInput);
+                        state.AdvanceLineToNextCommand(tokenSize.Width, tokenSize.Height, 0, tokenLengthInput, tokenLengthOutput);
                         if (hyphenate)
                         {
                             output.WriteHyphen();
-                            state.AdvanceLineToNextCommand(0, 0, 1, 0);
+                            state.AdvanceLineToNextCommand(0, 0, 1, 0, 1);
                         }
                     }
 
@@ -1068,6 +1065,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 return segment.SourceString == sourceString;
 
             return segment.SourceStringBuilder == sourceStringBuilder;
+        }
+
+        /// <summary>
+        /// Emits the command which specifies the source for shaped text.
+        /// </summary>
+        private Boolean EmitShapedStringSource(TextLayoutCommandStream output, Int16 index, ref LayoutState state)
+        {
+            output.WriteChangeSourceShapedStringBuilder(new TextLayoutSourceShapedStringBuilderCommand(index));
+            state.AdvanceLineToNextCommand();
+            return true;
         }
 
         /// <summary>
@@ -1106,23 +1113,26 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Adds a <see cref="TextLayoutCommandType.Text"/> command to the output stream if the specified span of text has a non-zero length.
         /// </summary>
         private Boolean EmitTextIfNecessary(UltravioletFontFace font, TextLayoutCommandStream output, 
-            Int32 start, Int32 length, ref Rectangle bounds, ref LayoutState state, ref TextLayoutSettings settings)
+            Int32 sourceOffset, Int32 sourceLength, ref Rectangle bounds, ref LayoutState state, ref TextLayoutSettings settings)
         {
-            if (length == 0)
+            if (sourceLength == 0)
                 return false;
+
+            var glyphOffset = sourceOffset;
+            var glyphLength = sourceLength;
 
             var shape = (settings.Options & TextLayoutOptions.Shape) == TextLayoutOptions.Shape;
             if (shape)
             {
                 var shapedBuffer = output.GetShapedStringBuilder();
                 var shapedStart = shapedBuffer.Length;
-                ShapeEmittedText(font, ref settings, start, length, output);
+                ShapeEmittedText(font, ref settings, sourceOffset, sourceLength, output);
 
-                start = shapedStart;
-                length = shapedBuffer.Length - shapedStart;
+                glyphOffset = shapedStart;
+                glyphLength = shapedBuffer.Length - shapedStart;
             }
 
-            output.WriteText(new TextLayoutTextCommand(start, length, 
+            output.WriteText(new TextLayoutTextCommand(glyphOffset, glyphLength, sourceOffset, sourceLength, 
                 bounds.X, bounds.Y, (Int16)bounds.Width, (Int16)bounds.Height));
 
             state.LineLengthInCommands++;
@@ -1149,9 +1159,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     substringAvailableWidth -= font.MeasureGlyph('-').Width;
 
                 shaper.Clear();
-                shaper.SetScript(settings.Script);
-                shaper.SetLanguage(settings.Language);
-                shaper.SetDirection(settings.Direction);
+                shaper.SetUnicodeProperties(settings.Direction, settings.Script, settings.Language);
 
                 for (var i = 0; i < tokenText.Length - 1; i++)
                 {

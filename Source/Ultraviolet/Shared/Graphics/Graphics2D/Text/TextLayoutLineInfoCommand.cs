@@ -14,15 +14,17 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="lineWidth">The width of the line in pixels.</param>
         /// <param name="lineHeight">The height of the line in pixels.</param>
         /// <param name="lengthInCommands">The length of the line of text in commands.</param>
-        /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>
+        /// <param name="lengthInSource">The length of the line in source characters.</param>
+        /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>"
         /// <param name="terminatedByLineBreak">A value indicating whether this line is terminated by a line break.</param>
-        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInGlyphs, Boolean terminatedByLineBreak)
+        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInSource, Int32 lengthInGlyphs, Boolean terminatedByLineBreak)
         {
             this.CommandType = TextLayoutCommandType.LineInfo;
             this.Offset = offset;
             this.LineWidth = lineWidth;
             this.LineHeight = lineHeight;
             this.LengthInCommands = lengthInCommands;
+            this.LengthInSource = lengthInSource;
             this.LengthInGlyphs = lengthInGlyphs;
             this.TerminatedByLineBreak = terminatedByLineBreak;
         }
@@ -51,6 +53,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the length of the line of text in commands.
         /// </summary>
         public Int32 LengthInCommands { get; internal set; }
+
+        /// <summary>
+        /// Gets the length of the line of text in source characters.
+        /// </summary>
+        public Int32 LengthInSource { get; internal set; }
 
         /// <summary>
         /// Gets the length of the line of text in glyphs.

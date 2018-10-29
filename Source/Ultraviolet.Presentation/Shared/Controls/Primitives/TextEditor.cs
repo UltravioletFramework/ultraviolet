@@ -151,7 +151,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
-            return bufferText.ToString(lineInfo.OffsetInGlyphs, lineInfo.LengthInGlyphs);
+            return bufferText.ToString(lineInfo.OffsetInSource, lineInfo.LengthInSource);
         }
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             stringBuilder.Length = 0;
 
-            for (int i = 0; i < lineInfo.LengthInGlyphs; i++)
-                stringBuilder.Append(bufferText[lineInfo.OffsetInGlyphs + i]);
+            for (int i = 0; i < lineInfo.LengthInSource; i++)
+                stringBuilder.Append(bufferText[lineInfo.OffsetInSource + i]);
         }
 
         /// <summary>
@@ -235,8 +235,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <param name="length">The number of characters to select.</param>
         public void Select(Int32 start, Int32 length)
         {
-            Contract.EnsureRange(start >= 0 && start <= textLayoutStream.TotalLength, nameof(start));
-            Contract.EnsureRange(length >= 0 && start + length <= textLayoutStream.TotalLength, nameof(length));
+            Contract.EnsureRange(start >= 0 && start <= textLayoutStream.TotalGlyphLength, nameof(start));
+            Contract.EnsureRange(length >= 0 && start + length <= textLayoutStream.TotalGlyphLength, nameof(length));
 
             BeginTrackingSelectionChanges();
             
@@ -257,7 +257,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// </summary>
         public void SelectAll()
         {
-            Select(0, textLayoutStream.TotalLength);
+            Select(0, textLayoutStream.TotalGlyphLength);
         }
         
         /// <summary>
@@ -536,7 +536,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             BeginTrackingSelectionChanges();
 
-            var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
+            var movementAllowed = (caretPosition < textLayoutStream.TotalGlyphLength);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Right, moveSelection))
             {
                 caretBlinkTimer = 0;
@@ -668,11 +668,11 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             BeginTrackingSelectionChanges();
 
-            var movementAllowed = (caretPosition > 0 && textLayoutStream.TotalLength > 0);
+            var movementAllowed = (caretPosition > 0 && textLayoutStream.TotalGlyphLength > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.Home, moveSelection))
             {
                 caretBlinkTimer = 0;
-                caretPosition = moveToBeginningOfText ? 0 : textLayoutStream.GetLineInfo(caretLineIndex).OffsetInGlyphs;
+                caretPosition = moveToBeginningOfText ? 0 : textLayoutStream.GetLineInfo(caretLineIndex).OffsetInSource;
 
                 UpdateSelectionAndCaret();
                 ScrollToCaret(true, false, false);
@@ -690,18 +690,18 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             BeginTrackingSelectionChanges();
 
-            var movementAllowed = (caretPosition < textLayoutStream.TotalLength && textLayoutStream.TotalLength > 0);
+            var movementAllowed = (caretPosition < textLayoutStream.TotalGlyphLength && textLayoutStream.TotalGlyphLength > 0);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.End, moveSelection))
             {
                 caretBlinkTimer = 0;
                 if (moveToEndOfText)
                 {
-                    caretPosition = textLayoutStream.TotalLength;
+                    caretPosition = textLayoutStream.TotalGlyphLength;
                 }
                 else
                 {
                     var lineInfo = textLayoutStream.GetLineInfo(caretLineIndex);
-                    caretPosition = lineInfo.OffsetInGlyphs + lineInfo.LengthInGlyphs;
+                    caretPosition = lineInfo.OffsetInSource + lineInfo.LengthInSource;
 
                     if (IsLineBreak(caretPosition - 1, false))
                         caretPosition = AdjustCaretToAvoidInvalidPositions(caretPosition - 1, false);
@@ -722,7 +722,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         {
             BeginTrackingSelectionChanges();
 
-            var movementAllowed = (caretPosition < textLayoutStream.TotalLength);
+            var movementAllowed = (caretPosition < textLayoutStream.TotalGlyphLength);
             if (!HandleSelectionMovement(movementAllowed, CaretNavigationDirection.NextWord, moveSelection))
             {
                 var wordStart = 0;
@@ -789,7 +789,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 return 0;
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
-            return lineInfo.OffsetInGlyphs;
+            return lineInfo.OffsetInSource;
         }
 
         /// <summary>
@@ -883,24 +883,24 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <returns>The index of the line of text that contains the specified character.</returns>
         public Int32 GetLineIndexFromCharacterIndex(Int32 charIndex)
         {
-            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, nameof(charIndex));
+            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalGlyphLength, nameof(charIndex));
 
             var lineInfo = textLayoutStream.GetLineInfo(0);
             var charCount = 0;
 
-            if (charIndex < lineInfo.LengthInGlyphs)
+            if (charIndex < lineInfo.LengthInSource)
                 return 0;
 
-            charCount += lineInfo.LengthInGlyphs;
+            charCount += lineInfo.LengthInSource;
 
             for (int i = 1; i < textLayoutStream.LineCount; i++)
             {
                 textLayoutStream.GetNextLineInfoRef(ref lineInfo, out lineInfo);
 
-                if (charIndex < charCount + lineInfo.LengthInGlyphs)
+                if (charIndex < charCount + lineInfo.LengthInSource)
                     return i;
 
-                charCount += lineInfo.LengthInGlyphs;
+                charCount += lineInfo.LengthInSource;
             }
 
             return textLayoutStream.LineCount - 1;
@@ -917,7 +917,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             var lineInfo = textLayoutStream.GetLineInfo(lineIndex);
 
-            return lineInfo.LengthInGlyphs;
+            return lineInfo.LengthInSource;
         }
 
         /// <summary>
@@ -940,7 +940,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// or <see cref="RectangleD.Empty"/> if the bounding rectangle cannot be determined.</returns>
         public RectangleD GetRectFromCharacterIndex(Int32 charIndex, Boolean trailingEdge)
         {
-            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalLength, nameof(charIndex));
+            Contract.EnsureRange(charIndex >= 0 && charIndex < textLayoutStream.TotalGlyphLength, nameof(charIndex));
 
             if (View == null)
                 return RectangleD.Empty;
@@ -1003,8 +1003,8 @@ namespace Ultraviolet.Presentation.Controls.Primitives
             {
                 Contract.EnsureRange(value >= 0, nameof(value));
 
-                var boundedStart = Math.Min(value, textLayoutStream.TotalLength);
-                var boundedLength = Math.Min(SelectionLength, textLayoutStream.TotalLength - value);
+                var boundedStart = Math.Min(value, textLayoutStream.TotalGlyphLength);
+                var boundedLength = Math.Min(SelectionLength, textLayoutStream.TotalGlyphLength - value);
                 Select(boundedStart, boundedLength);
             }
         }
@@ -1027,7 +1027,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 Contract.EnsureRange(value >= 0, nameof(value));
 
                 var boundedStart = SelectionStart;
-                var boundedLength = Math.Min(SelectionLength, textLayoutStream.TotalLength - boundedStart);
+                var boundedLength = Math.Min(SelectionLength, textLayoutStream.TotalGlyphLength - boundedStart);
                 Select(boundedStart, boundedLength);
             }
         }
@@ -2309,7 +2309,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             BeginTrackingSelectionChanges();
 
-            if (!DeleteSelection(true) && caretPosition < textLayoutStream.TotalLength)
+            if (!DeleteSelection(true) && caretPosition < textLayoutStream.TotalGlyphLength)
             {
                 var isCRLF = IsStartOfCRLFOrSurrogatePair(caretPosition);
 
@@ -2674,7 +2674,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 var caretWidth = caretDefaultSize.Width;
                 var caretHeight = caretDefaultSize.Height;
                 
-                if (textLayoutStream.TotalLength > 0)
+                if (textLayoutStream.TotalGlyphLength > 0)
                 {
                     var glyphLineInfo = default(LineInfo);
                     var glyphBounds = View.Resources.TextRenderer.GetGlyphBounds(textLayoutStream, caretPosition, out glyphLineInfo, true);
@@ -2707,7 +2707,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                 var caretWidth = caretDefaultSize.Width;
                 var caretHeight = caretDefaultSize.Height;
                 
-                if (textLayoutStream.TotalLength > 0)
+                if (textLayoutStream.TotalGlyphLength > 0)
                 {
                     var insertLineInfo = default(LineInfo);
                     var insertGlyphBounds = default(Ultraviolet.Rectangle?);

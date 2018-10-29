@@ -24,8 +24,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.Clear();
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstrb = new ShapedStringBuilder(textShaper.CreateShapedString(font), 128);
@@ -50,7 +49,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         textShaper.AppendTo(sstrb, font.Regular, 7, 5);
@@ -74,8 +73,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.Clear();
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstrb = new ShapedStringBuilder(textShaper.CreateShapedString(font), 128);
@@ -101,8 +99,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.Clear();
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstrb = new ShapedStringBuilder(textShaper.CreateShapedString(font));
@@ -140,14 +137,13 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.Clear();
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstrb.Append(textShaper, font);
-
                         textShaper.Clear();
-                        textShaper.SetLanguage("en");
+
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append(" Goodbye, world!");
 
                         sstrb.Append(textShaper, font);
@@ -173,8 +169,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                     var font = content.Load<UltravioletFont>("Fonts/FiraSans");
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.Clear();
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         sstrb.Append(textShaper, font);

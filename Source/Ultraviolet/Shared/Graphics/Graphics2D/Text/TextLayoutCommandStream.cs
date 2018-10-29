@@ -71,7 +71,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.Text:
                         {
                             var cmd = (TextLayoutTextCommand*)Data;
-                            glyphsSeen += cmd->TextLength;                            
+                            glyphsSeen += cmd->SourceLength;                            
                         }
                         break;
                         
@@ -84,9 +84,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                     case TextLayoutCommandType.LineBreak:
                         {
                             var cmd = (TextLayoutLineBreakCommand*)Data;
-                            if (cmd->Length > 0)
+                            if (cmd->SourceLength > 0)
                             {
-                                glyphsSeen += cmd->Length;
+                                glyphsSeen += cmd->SourceLength;
                             }
                         }
                         break;
@@ -132,17 +132,19 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             SeekNextCommand();
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
             var linePosition = 0;
-            var lineGlyphStart = 0;
+            var lineOffsetInSource = 0;
+            var lineOffsetInGlyphs = 0;
             for (int i = 0; i < index; i++)
             {
                 linePosition += lineInfo->LineHeight;
-                lineGlyphStart += lineInfo->LengthInGlyphs;
+                lineOffsetInSource += lineInfo->LengthInSource;
+                lineOffsetInGlyphs += lineInfo->LengthInGlyphs;
                 Seek(1 + StreamPositionInObjects + lineInfo->LengthInCommands);
                 lineInfo = (TextLayoutLineInfoCommand*)Data;
             }
 
-            var result = new LineInfo(this, index, StreamPositionInObjects, lineGlyphStart, lineInfo->Offset, blockOffset + linePosition, 
-                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
+            var result = new LineInfo(this, index, StreamPositionInObjects, lineOffsetInSource, lineOffsetInGlyphs, lineInfo->Offset, blockOffset + linePosition, 
+                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
 
             if (acquiredPointers)
                 ReleasePointers();
@@ -190,9 +192,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Seek(1 + StreamPositionInObjects + ((TextLayoutLineInfoCommand*)Data)->LengthInCommands);
 
             var lineInfo = (TextLayoutLineInfoCommand*)Data;
-            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects, previous.OffsetInGlyphs + previous.LengthInGlyphs,
+            next = new LineInfo(this, previous.LineIndex + 1, StreamPositionInObjects, 
+                previous.OffsetInSource + previous.LengthInSource,
+                previous.OffsetInGlyphs + previous.LengthInGlyphs,
                 lineInfo->Offset, previous.Y + previous.Height, lineInfo->LineWidth, 
-                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInGlyphs);
+                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
             
             if (acquiredPointers)
                 ReleasePointers();
@@ -579,7 +583,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Bounds = default(Rectangle);
             ActualWidth = 0;
             ActualHeight = 0;
-            TotalLength = 0;
+            TotalGlyphLength = 0;
             LineCount = 0;
 
             HasMultipleFontStyles = false;
@@ -1128,9 +1132,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         }
 
         /// <summary>
-        /// Gets the total length of the text which was laid out.
+        /// Gets the total length of the laid-out text in source characters.
         /// </summary>
-        public Int32 TotalLength
+        public Int32 TotalSourceLength
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total length of the laid-out text in glyphs.
+        /// </summary>
+        public Int32 TotalGlyphLength
         {
             get;
             internal set;

@@ -43,9 +43,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public abstract void Clear();
 
         /// <summary>
-        /// Attempts to guess the script, language, and direction of the buffer based on its current contents.
+        /// Sets the buffer's Unicode properties.
         /// </summary>
-        public abstract void GuessUnicodeProperties();
+        /// <param name="direction">The buffer's layout direction.</param>
+        /// <param name="script">The buffer's script type.</param>
+        /// <param name="language">The buffer's language.</param>
+        public abstract void SetUnicodeProperties(TextDirection direction, TextScript script, String language);
 
         /// <summary>
         /// Sets the buffer's layout direction.
@@ -64,6 +67,14 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="language">An ISO 639 language code which identifies the buffer's language.</param>
         public abstract void SetLanguage(String language);
+
+        /// <summary>
+        /// Gets the buffer's Unicode properties.
+        /// </summary>
+        /// <param name="direction">The buffer's layout direction.</param>
+        /// <param name="script">The buffer's script type.</param>
+        /// <param name="language">The buffer's language.</param>
+        public abstract void GetUnicodeProperties(out TextDirection direction, out TextScript script, out String language);
 
         /// <summary>
         /// Gets the buffer's layout direction.
@@ -134,7 +145,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         /// <param name="builder">The <see cref="ShapedStringBuilder"/> instance to which to append this shaper's contents.</param>
         /// <param name="fontFace">The font face with which to shape the string.</param>
-        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace);
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
+        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Appends the contents of a subset of this shaping buffer to the specified <see cref="ShapedStringBuilder"/> instance.
@@ -143,14 +155,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontFace">The font face with which to shape the string.</param>
         /// <param name="start">The offset of the character in the original string which corresponds to the beginning of the shaped substring.</param>
         /// <param name="length">The number of characters in the raw substring from which to create the shaped substring.</param>
-        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length);
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
+        public abstract void AppendTo(ShapedStringBuilder builder, UltravioletFontFace fontFace, Int32 start, Int32 length, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Creates a new <see cref="ShapedString"/> instance from the current contents of the shaping buffer.
         /// </summary>
         /// <param name="fontFace">The font face with which to shape the string.</param>
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
         /// <returns>A new shaped string instance.</returns>
-        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace);
+        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 sourceIndexOffset = 0);
 
         /// <summary>
         /// Creates a new <see cref="ShapedString"/> instance from a subset of the current contents of the shaping buffer.
@@ -158,12 +172,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="fontFace">The font face with which to shape the string.</param>
         /// <param name="start">The offset of the character in the original string which corresponds to the beginning of the shaped substring.</param>
         /// <param name="length">The number of characters in the raw substring from which to create the shaped substring.</param>
+        /// <param name="sourceIndexOffset">The offset which is applied to the source indices assigned to shaped characters in the resulting string.</param>
         /// <returns>A new shaped string instance.</returns>
-        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length);
+        public abstract ShapedString CreateShapedString(UltravioletFontFace fontFace, Int32 start, Int32 length, Int32 sourceIndexOffset = 0);
 
         /// <summary>
-        /// Gets or sets the number of glyphs in the text builder.
+        /// Gets the length of the raw string data which is currently contained by the shaper.
         /// </summary>
-        public abstract Int32 Length { get; set; }
+        public abstract Int32 RawLength { get; }
     }
 }
