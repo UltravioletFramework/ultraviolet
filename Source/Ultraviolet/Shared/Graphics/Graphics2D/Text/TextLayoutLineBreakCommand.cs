@@ -10,11 +10,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="TextLayoutLineBreakCommand"/> structure.
         /// </summary>
-        /// <param name="length">The number of glyphs in the line break.</param>
-        public TextLayoutLineBreakCommand(Int32 length)
+        /// <param name="glyphLength">The length of the line break in glyphs.</param>
+        /// <param name="sourceLength">The length of the line break in the source text.</param>
+        public TextLayoutLineBreakCommand(Int32 glyphLength, Int32 sourceLength)
         {
             this.CommandType = TextLayoutCommandType.LineBreak;
-            this.Length = length;
+            this.GlyphLength = glyphLength;
+            this.SourceLength = sourceLength;
         }
 
         /// <summary>
@@ -23,8 +25,13 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public TextLayoutCommandType CommandType { get; private set; }
 
         /// <summary>
-        /// Gets the number of glyphs in the line break.
+        /// Gets the length of the line break in glyphs.
         /// </summary>
-        public Int32 Length { get; private set; }
+        public Int32 GlyphLength { get; private set; }
+
+        /// <summary>
+        /// Gets the length of the line break in the source text.
+        /// </summary>
+        public Int32 SourceLength { get; private set; }
     }
 }

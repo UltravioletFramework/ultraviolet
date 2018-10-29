@@ -24,7 +24,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
 
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         var str = textShaper.CreateShapedString(freetypeFont.Regular);
@@ -53,7 +53,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
 
                     using (var textShaper = new HarfBuzzTextShaper(content.Ultraviolet))
                     {
-                        textShaper.SetLanguage("en");
+                        textShaper.SetUnicodeProperties(TextDirection.LeftToRight, TextScript.Latin, "en");
                         textShaper.Append("Hello, world!");
 
                         var str = new ShapedStringBuilder();

@@ -75,6 +75,17 @@ namespace Ultraviolet.TestFramework.Graphics.Graphics2D.Text
         }
 
         /// <summary>
+        /// Asserts that the line should have the specified length in source characters.
+        /// </summary>
+        /// <param name="length">The expected length of the line in source characters.</param>
+        /// <returns>The result object.</returns>
+        public LineInfoResult ShouldHaveLengthInSource(Int32 length)
+        {
+            Assert.AreEqual(length, value.LengthInSource, "Length in source characters does not match.");
+            return this;
+        }
+
+        /// <summary>
         /// Asserts that the line should have the specified length in glyphs.
         /// </summary>
         /// <param name="length">The expected length of the line in glyphs.</param>

@@ -198,7 +198,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
 
                     using (var textShaper = TextShaper.Create())
                     {
-                        textShaper.SetLanguage("ar");
+                        textShaper.SetUnicodeProperties(TextDirection.RightToLeft, TextScript.Arabic, "ar");
                         textShaper.Append("مرحبا بالعالم");
 
                         sstr = textShaper.CreateShapedString(spriteFont.Regular);
