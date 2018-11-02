@@ -171,6 +171,8 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         private static Boolean ProcessExternDirective(String line, StringBuilder output, ShaderSourceMetadata ssmd, Dictionary<String, String> externs)
         {
+            if (externs.Count == 0) return false;
+            
             var externMatch = regexExternDirective.Match(line);
             if (externMatch.Success)
             {
