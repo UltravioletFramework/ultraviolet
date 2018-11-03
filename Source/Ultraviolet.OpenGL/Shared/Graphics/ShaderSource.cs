@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -69,16 +69,15 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             Contract.Require(source, nameof(source));
 
-            if (externs == null)
-                return source;
+            var noExterns = externs == null || externs.Count == 0;
 
             return ProcessInternal(source.Metadata, source.Source, (line, output) =>
             {
-                if (ProcessExternDirective(line, output, source.Metadata, externs))
+                if (!noExterns && ProcessExternDirective(line, output, source.Metadata, externs))
                     return true;
 
                 return false;
-            });
+            }, externs == null || externs.Count == 0);
         }
 
         /// <summary>
@@ -100,7 +99,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <summary>
         /// Performs line-by-line processing of raw shader source code.
         /// </summary>
-        private static ShaderSource ProcessInternal(ShaderSourceMetadata ssmd, String source, Func<String, StringBuilder, Boolean> processor)
+        private static ShaderSource ProcessInternal(ShaderSourceMetadata ssmd, String source, Func<String, StringBuilder, Boolean> processor, Boolean cleanExterns = false)
         {
             var output = new StringBuilder();
             var line = default(String);
@@ -115,6 +114,10 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     if (!insideComment)
                     {
+                        if(cleanExterns)
+                            if(line.StartsWith("#extern"))
+                                continue;
+                        
                         if (processor(line, output))
                             continue;
                     }
@@ -171,8 +174,6 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         private static Boolean ProcessExternDirective(String line, StringBuilder output, ShaderSourceMetadata ssmd, Dictionary<String, String> externs)
         {
-            if (externs.Count == 0) return false;
-            
             var externMatch = regexExternDirective.Match(line);
             if (externMatch.Success)
             {
