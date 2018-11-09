@@ -69,17 +69,20 @@ namespace Ultraviolet.OpenGL.Graphics
         {
             Contract.Require(source, nameof(source));
 
-            var noExterns = externs == null || externs.Count == 0;
+            if (externs == null)
+                return CleanExterns(source);
 
-            return ProcessInternal(source.Metadata, source.Source, (line, output) =>
+            var ret =  ProcessInternal(source.Metadata, source.Source, (line, output) =>
             {
-                if (!noExterns && ProcessExternDirective(line, output, source.Metadata, externs))
+                if (ProcessExternDirective(line, output, source.Metadata, externs))
                     return true;
 
                 return false;
-            }, externs == null || externs.Count == 0);
-        }
+            });
 
+            return CleanExterns(ret);
+        }
+        
         /// <summary>
         /// Implicitly converts a <see cref="String"/> object to a new <see cref="ShaderSource"/> instance.
         /// </summary>
@@ -97,9 +100,39 @@ namespace Ultraviolet.OpenGL.Graphics
         public ShaderSourceMetadata Metadata { get; }
 
         /// <summary>
+        /// Clean the source from its externs
+        /// </summary>
+        /// <param name="other">ShaderSource to clean</param>
+        /// <returns></returns>
+        private static ShaderSource CleanExterns(ShaderSource other)
+        {
+            var line = default(String);
+            var output = new StringBuilder();
+
+            using (var reader = new StringReader(other.Source))
+            {
+                var insideComment = false;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    TrackComments(line, ref insideComment);
+
+                    if (!insideComment)
+                    {
+                        if (line.StartsWith("#extern"))
+                            continue;
+                    }
+
+                    output.AppendLine(line);
+                }
+            }
+            return new ShaderSource(output.ToString(), other.Metadata);
+        }
+
+        /// <summary>
         /// Performs line-by-line processing of raw shader source code.
         /// </summary>
-        private static ShaderSource ProcessInternal(ShaderSourceMetadata ssmd, String source, Func<String, StringBuilder, Boolean> processor, Boolean cleanExterns = false)
+        private static ShaderSource ProcessInternal(ShaderSourceMetadata ssmd, String source, Func<String, StringBuilder, Boolean> processor)
         {
             var output = new StringBuilder();
             var line = default(String);
@@ -114,10 +147,6 @@ namespace Ultraviolet.OpenGL.Graphics
 
                     if (!insideComment)
                     {
-                        if(cleanExterns)
-                            if(line.StartsWith("#extern"))
-                                continue;
-                        
                         if (processor(line, output))
                             continue;
                     }
@@ -183,8 +212,11 @@ namespace Ultraviolet.OpenGL.Graphics
 
                 var externValue = String.Empty;
                 if (!externs.TryGetValue(externName, out externValue))
-                    throw new InvalidOperationException(OpenGLStrings.ShaderExternNotDefined.Format(externName));
-
+                {
+                    Console.WriteLine($"WUUUUT: {externName}");
+                    return true;
+                }
+                
                 output.AppendLine($"#define {externName} {externValue}");
                 return true;
             }
