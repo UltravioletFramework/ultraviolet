@@ -213,7 +213,7 @@ namespace Ultraviolet.OpenGL.Graphics
                 var externValue = String.Empty;
                 if (!externs.TryGetValue(externName, out externValue))
                 {
-                    Console.WriteLine($"WUUUUT: {externName}");
+                    // just skip, no need to throw an exception
                     return true;
                 }
                 
