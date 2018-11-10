@@ -60,7 +60,7 @@ namespace Ultraviolet.Tests.Graphics
 
         [Test]
         [Category("Content")]
-        [Description("Ensures that #extern directives in GLSL shader source are correctly processed.")]
+        [Description("Ensures that #extern directives in GLSL shader source cause an exception to be thrown if they have an invalid name.")]
         public void Effect_GLSLExternDirectivesThrowException_WhenExternHasInvalidName()
         {
             GivenAnUltravioletApplicationWithNoWindow()
@@ -85,24 +85,48 @@ namespace Ultraviolet.Tests.Graphics
 
         [Test]
         [Category("Content")]
-        [Description("Ensures that #extern directives in GLSL shader source are correctly processed.")]
-        public void Effect_GLSLExternDirectivesThrowException_WhenValueIsNotProvided()
+        [Description("Ensures that #extern directives in GLSL shader source are excluded from the output if no value is provided.")]
+        public void Effect_GLSLExternDirectivesAreRemovedFromSource_WhenValueIsNotProvided()
         {
             GivenAnUltravioletApplicationWithNoWindow()
                 .WithContent(content =>
                 {
                     var externs = new Dictionary<String, String>
                     {
-                        { "FOO", "123" },
+                        { "BAZ", "456" },
                     };
 
-                    Assert.That(() =>
-                    {
-                        ShaderSource shaderSource;
-                        shaderSource = content.Load<ShaderSource>("Effects/ExternDirective");
-                        shaderSource = ShaderSource.ProcessExterns(shaderSource, externs);
-                    },
-                    Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo("Shader extern 'BAZ' is defined, but was not provided with a value."));
+                    ShaderSource shaderSource;
+                    shaderSource = content.Load<ShaderSource>("Effects/ExternDirective");
+                    shaderSource = ShaderSource.ProcessExterns(shaderSource, externs);
+
+                    TheResultingString(shaderSource.Source)
+                        .ShouldBe(
+                            @"/*" + Environment.NewLine +
+                            @"#extern BAR" + Environment.NewLine +
+                            @"*/" + Environment.NewLine +
+                            @"#define BAZ 456" + Environment.NewLine);
+                })
+                .RunForOneFrame();
+        }
+
+        [Test]
+        [Category("Content")]
+        [Description("Ensures that #extern directives in GLSL shader source are excluded from the output if no value dictionary is provided.")]
+        public void Effect_GLSLExternDirectivesAreRemovedFromSource_WhenDictionaryIsNotProvided()
+        {
+            GivenAnUltravioletApplicationWithNoWindow()
+                .WithContent(content =>
+                {
+                    ShaderSource shaderSource;
+                    shaderSource = content.Load<ShaderSource>("Effects/ExternDirective");
+                    shaderSource = ShaderSource.ProcessExterns(shaderSource, null);
+
+                    TheResultingString(shaderSource.Source)
+                        .ShouldBe(
+                            @"/*" + Environment.NewLine +
+                            @"#extern BAR" + Environment.NewLine +
+                            @"*/" + Environment.NewLine);
                 })
                 .RunForOneFrame();
         }

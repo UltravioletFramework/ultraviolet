@@ -60,17 +60,15 @@ namespace Ultraviolet.OpenGL.Graphics
 
         /// <summary>
         /// Processes a <see cref="ShaderSource"/> instance to produce a new <see cref="ShaderSource"/> instance
-        /// with expanded #extern definitions.
+        /// with expanded #extern definitions. Externs which do not exist in <paramref name="externs"/> are removed from
+        /// the shader source entirely, and if <paramref name="externs"/> is <see langword="null"/>, all externs are removed.
         /// </summary>
         /// <param name="source">The source instance to process.</param>
-        /// <param name="externs">The collection of defined extern values.</param>
+        /// <param name="externs">The collection of defined extern values, or <see langword="null"/>.</param>
         /// <returns>A new <see cref="ShaderSource"/> instance with expanded #extern definitions.</returns>
         public static ShaderSource ProcessExterns(ShaderSource source, Dictionary<String, String> externs)
         {
             Contract.Require(source, nameof(source));
-
-            if (externs == null)
-                return source;
 
             return ProcessInternal(source.Metadata, source.Source, (line, output) =>
             {
@@ -179,10 +177,10 @@ namespace Ultraviolet.OpenGL.Graphics
                     throw new InvalidOperationException(OpenGLStrings.ShaderExternHasInvalidName);
 
                 var externValue = String.Empty;
-                if (!externs.TryGetValue(externName, out externValue))
-                    throw new InvalidOperationException(OpenGLStrings.ShaderExternNotDefined.Format(externName));
-
-                output.AppendLine($"#define {externName} {externValue}");
+                if (externs?.TryGetValue(externName, out externValue) ?? false)
+                {
+                    output.AppendLine($"#define {externName} {externValue}");
+                }
                 return true;
             }
             return false;
