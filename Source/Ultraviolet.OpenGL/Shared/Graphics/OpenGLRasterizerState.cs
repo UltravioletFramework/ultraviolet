@@ -73,6 +73,10 @@ namespace Ultraviolet.OpenGL.Graphics
                 gl.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
                 OpenGLState.PolygonMode = GetFillModeGL(FillMode);
             }
+            else
+            {
+                OpenGLState.PolygonMode = GetFillModeGL(FillMode);
+            }
 
             OpenGLState.ScissorTestEnabled = ScissorTestEnable;
 
