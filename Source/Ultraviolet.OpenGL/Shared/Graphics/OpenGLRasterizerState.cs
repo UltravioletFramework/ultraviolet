@@ -64,16 +64,13 @@ namespace Ultraviolet.OpenGL.Graphics
         /// </summary>
         internal void Apply()
         {
+            if (FillMode != FillMode.Solid)
+                gl.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
+
             OpenGLState.CullingEnabled = (CullMode != CullMode.None);
             OpenGLState.CulledFace = gl.GL_BACK;
             OpenGLState.FrontFace = GetFrontFaceGL(CullMode);
-
-            if (FillMode != FillMode.Solid)
-            {
-                gl.ThrowIfGLES(OpenGLStrings.UnsupportedFillModeGLES);
-                OpenGLState.PolygonMode = GetFillModeGL(FillMode);
-            }
-
+            OpenGLState.PolygonMode = GetFillModeGL(FillMode);            
             OpenGLState.ScissorTestEnabled = ScissorTestEnable;
 
             if (DepthBias != 0f && SlopeScaleDepthBias != 0f)
