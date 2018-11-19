@@ -34,6 +34,7 @@
     <LinkMode>None</LinkMode>
     <XamMacArch></XamMacArch>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -55,6 +56,7 @@
     <XamMacArch>x86_64</XamMacArch>
     <PackageSigningKey>Developer ID Installer</PackageSigningKey>
     <MonoBundlingExtraArgs>--ignore-native-library=SDL2 --ignore-native-library=bass -ignore-native-library=bass_fx --ignore-native-library=odbc32.dll</MonoBundlingExtraArgs>
+    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
