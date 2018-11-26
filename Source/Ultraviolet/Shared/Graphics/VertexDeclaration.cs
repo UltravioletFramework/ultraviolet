@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +23,30 @@ namespace Ultraviolet.Graphics
             this.stride = CalculateStride();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VertexDeclaration"/> class.
+        /// Empty by default, use <<see cref="Add"/> to add VertexElements
+        /// </summary>
+        public VertexDeclaration()
+        {
+            this.elements = new List<VertexElement>();
+        }
+
+        /// <summary>
+        /// Append a VertexElement, auto-calculate the stride
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="usage"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public VertexDeclaration Add(VertexFormat format, VertexUsage usage, Int32 index)
+        {
+            var element = new VertexElement(stride, format, usage, index);
+            elements.Add(element);
+            this.stride = CalculateStride();
+            return this;
+        }
+        
         /// <summary>
         /// Returns an enumerator that iterates through the vertex declaration.
         /// </summary>
@@ -111,7 +135,7 @@ namespace Ultraviolet.Graphics
         }
 
         // Property values.
-        private readonly Int32 stride;
+        private Int32 stride;
 
         // State values.
         private readonly List<VertexElement> elements;
