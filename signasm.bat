@@ -13,6 +13,7 @@ ECHO Strong naming assemblies...
 
 IF "%1"=="sign_android" GOTO sign_android
 IF "%1"=="sign_ios" GOTO sign_ios
+IF "%1"=="sign_uvdebug" GOTO sign_uvdebug
 IF "%1"=="sign_netcore" GOTO sign_netcore
 IF "%1"=="test_nucleus" GOTO test_nucleus
 IF "%1"=="test_ultraviolet" GOTO test_ultraviolet
