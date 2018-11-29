@@ -108,7 +108,6 @@ sn.exe -R "Ultraviolet.FreeType2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.OpenGL.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.SDL2.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.BASS.dll" "%TLSN%"
-sn.exe -R "Ultraviolet.FMOD.dll" "%TLSN%"
 sn.exe -R "Ultraviolet.Shims.Desktop.dll" "%TLSN%"
 GOTO :eof
 
