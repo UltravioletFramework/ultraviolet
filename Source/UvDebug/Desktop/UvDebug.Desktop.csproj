@@ -180,6 +180,10 @@
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>Ultraviolet.BASS.Desktop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.FMOD\Desktop\Ultraviolet.FMOD.Desktop.csproj">
+      <Project>{ce4b6f6f-6542-4ca6-b21c-da4b053b585f}</Project>
+      <Name>Ultraviolet.FMOD.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj">
       <Project>{1213f9af-5e16-46e9-a7d0-80b9564e6345}</Project>
       <Name>Ultraviolet.FreeType2.Desktop</Name>
@@ -402,6 +406,7 @@
     </Content>
     <Content Include="uv.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <PropertyGroup>
     <RunCreateSymbolicLinksToFreeType2Dependencies>false</RunCreateSymbolicLinksToFreeType2Dependencies>
