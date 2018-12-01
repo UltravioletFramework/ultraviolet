@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle(@"Platform Compatibility Shim for macOS")]
 [assembly: AssemblyDescription(
-    @"Provides Ultraviolet type implementations which are specific to the macOS platform.")]
+    @"Provides Ultraviolet type implementations which are specific to the Xamarin.Mac Full framework.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -20,4 +20,4 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("54bf4e4a-678c-44d4-b04b-c770b13b550f")]
+[assembly: Guid("eb374783-5b89-4046-bbbd-539398454211")]
