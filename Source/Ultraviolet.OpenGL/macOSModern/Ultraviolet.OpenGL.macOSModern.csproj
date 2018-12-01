@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2B22B67F-2B54-4973-A579-1714EE1297A9}</ProjectGuid>
+    <ProjectGuid>{3F66959F-0749-4A98-AFEA-9E0EFDE9A68B}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Ultraviolet.Core.macOS</RootNamespace>
-    <AssemblyName>Ultraviolet.Core</AssemblyName>
+    <RootNamespace>Ultraviolet.OpenGL</RootNamespace>
+    <AssemblyName>Ultraviolet.OpenGL</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -17,9 +17,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;DEBUG;MACOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;VERIFY_OPENGL_CACHE;MACOS;MACOS_MODERN;DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableCodeSigning>false</EnableCodeSigning>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -28,16 +29,19 @@
     <HttpClientHandler></HttpClientHandler>
     <LinkMode></LinkMode>
     <XamMacArch></XamMacArch>
-    <DelaySign>false</DelaySign>
     <AOTMode>None</AOTMode>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;MACOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;MACOS_MODERN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableCodeSigning>false</EnableCodeSigning>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -46,26 +50,9 @@
     <HttpClientHandler></HttpClientHandler>
     <LinkMode></LinkMode>
     <XamMacArch></XamMacArch>
+    <AOTMode>None</AOTMode>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DelaySign>false</DelaySign>
-    <AOTMode>None</AOTMode>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;SIGNED</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <EnableCodeSigning>false</EnableCodeSigning>
-    <CreatePackage>false</CreatePackage>
-    <EnablePackageSigning>false</EnablePackageSigning>
-    <IncludeMonoRuntime>false</IncludeMonoRuntime>
-    <UseSGen>false</UseSGen>
-    <HttpClientHandler></HttpClientHandler>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
-    <AOTMode>None</AOTMode>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
@@ -74,26 +61,15 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Xamarin.Mac" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.DotNet.PlatformAbstractions">
-      <HintPath>..\..\packages\Microsoft.DotNet.PlatformAbstractions.2.0.4\lib\netstandard1.3\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyModel">
-      <HintPath>..\..\packages\Microsoft.Extensions.DependencyModel.2.0.4\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <UseSGen>false</UseSGen>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;MACOS_MODERN;SIGNED</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AOTMode>None</AOTMode>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\Ultraviolet.Public.snk">
       <Link>Ultraviolet.Public.snk</Link>
@@ -112,13 +88,38 @@
     <Compile Include="..\Desktop\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+  </ItemGroup>    
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Mac" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
-      <Link>Resources\Strings.xml</Link>
-    </EmbeddedResource>
+    <ProjectReference Include="..\..\Ultraviolet.Core\macOSModern\Ultraviolet.Core.macOSModern.csproj">
+      <Project>{2B22B67F-2B54-4973-A579-1714EE1297A9}</Project>
+      <Name>Ultraviolet.Core.macOSModern</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet\macOSModern\Ultraviolet.macOSModern.csproj">
+      <Project>{1005CE63-D332-465D-8AC0-579EF73ADA8B}</Project>
+      <Name>Ultraviolet.macOSModern</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\macOSModern\Ultraviolet.OpenGL.Bindings.macOSModern.csproj">
+      <Project>{9DD94439-5D7A-4133-BBD7-B0969D4864BF}</Project>
+      <Name>Ultraviolet.OpenGL.Bindings.macOSModern</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\macOSModern\Ultraviolet.SDL2.macOSModern.csproj">
+      <Project>{E6282419-93BB-4A8A-9EBC-603A3F635DE6}</Project>
+      <Name>Ultraviolet.SDL2.macOSModern</Name>
+    </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Shared\Ultraviolet.Core.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.Core.projitems')" />
+  <Import Project="..\Shared\Ultraviolet.OpenGL.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.OpenGL.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

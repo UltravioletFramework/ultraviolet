@@ -17,9 +17,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;DEBUG;MACOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;CODE_GEN_ENABLED;DEBUG;MACOS;MACOS_MODERN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableCodeSigning>false</EnableCodeSigning>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -33,11 +34,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;MACOS</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;MACOS_MODERN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableCodeSigning>false</EnableCodeSigning>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -51,11 +55,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Signed</OutputPath>
-    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;SIGNED</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;MACOS_MODERN;SIGNED</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableCodeSigning>false</EnableCodeSigning>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -120,9 +127,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Core\macOS\Ultraviolet.Core.macOS.csproj">
+    <ProjectReference Include="..\..\Ultraviolet.Core\macOSModern\Ultraviolet.Core.macOSModern.csproj">
       <Project>{2B22B67F-2B54-4973-A579-1714EE1297A9}</Project>
-      <Name>Ultraviolet.Core.macOS</Name>
+      <Name>Ultraviolet.Core.macOSModern</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.projitems')" />
