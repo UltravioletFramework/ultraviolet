@@ -1,0 +1,10 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <BundleResource Include="$(MSBuildThisFileDirectory)x64\osx\libbass.dylib">
+      <Link>x64\osx\libbass.dylib</Link>
+    </BundleResource>
+    <BundleResource Include="$(MSBuildThisFileDirectory)x64\osx\libbass_fx.dylib">
+      <Link>x64\osx\libbass_fx.dylib</Link>
+    </BundleResource>  
+  </ItemGroup>
+</Project>
