@@ -28,6 +28,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,8 +44,8 @@
     <OutputPath>bin\Signed\</OutputPath>
     <DefineConstants>TRACE;SIGNED;DESKTOP</DefineConstants>
     <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <DocumentationFile>bin\Signed\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
