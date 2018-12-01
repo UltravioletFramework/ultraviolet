@@ -6,8 +6,8 @@
     <ProjectGuid>{1005CE63-D332-465D-8AC0-579EF73ADA8B}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Ultraviolet.macOS</RootNamespace>
-    <AssemblyName>Ultraviolet.macOS</AssemblyName>
+    <RootNamespace>Ultraviolet</RootNamespace>
+    <AssemblyName>Ultraviolet</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
