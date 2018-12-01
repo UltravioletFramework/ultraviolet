@@ -111,6 +111,7 @@
   <Target Name="BuildMacOSBamboo" Condition="'$(OS)' == 'Unix' And '$(IsMac)' == 'true' ">
     <CallTarget Targets="RestoreMacOS"/>
     <MSBuild Projects="@(Ultraviolet_MacOS_Bamboo_Solution)"/>
+    <CallTarget Targets="CopyMacOSModernBinaries"/>
     <CallTarget Targets="CopyMacOSBinaries"/>
     <CallTarget Targets="CopyDesktopBinaries"/>
   </Target>
