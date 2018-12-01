@@ -50,19 +50,30 @@
     <AOTMode>None</AOTMode>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Signed</OutputPath>
+    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;MACOS_MODERN;SIGNED</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>false</UseSGen>
+    <HttpClientHandler></HttpClientHandler>
+    <LinkMode></LinkMode>
+    <XamMacArch></XamMacArch>
+    <AOTMode>None</AOTMode>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Signed|AnyCPU' ">
-    <UseSGen>false</UseSGen>
-    <Optimize>true</Optimize>
-    <DefineConstants>__UNIFIED__;__MACOS__;MACOS;MACOS_MODERN</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\Ultraviolet.Public.snk">
