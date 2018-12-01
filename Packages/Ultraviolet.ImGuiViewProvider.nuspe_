@@ -45,10 +45,16 @@ Quick start guides for development using the Ultraviolet Framework are available
         <dependency id="Ultraviolet" version="UV_VERSION" />
         <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
       </group>
+      <group targetFramework="Xamarin.Mac20">
+        <dependency id="Ultraviolet.Core" version="UV_VERSION" />
+        <dependency id="Ultraviolet" version="UV_VERSION" />
+        <dependency id="Ultraviolet.ImGuiViewProvider.Bindings" version="UV_VERSION" />
+      </group>
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly targetFramework="MonoAndroid80" assemblyName="System.Numerics" />
       <frameworkAssembly targetFramework="Xamarin.iOS10" assemblyName="System.Numerics" />
+      <frameworkAssembly targetFramework="Xamarin.Mac20" assemblyName="System.Numerics" />
     </frameworkAssemblies>
   </metadata>
   <files>
@@ -67,5 +73,9 @@ Quick start guides for development using the Ultraviolet Framework are available
     <file src="..\Binaries\iOS\Signed\Ultraviolet.ImGuiViewProvider.dll" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.ImGuiViewProvider.XML" target="lib\Xamarin.iOS10\"/>
     <file src="..\Binaries\iOS\Signed\Ultraviolet.ImGuiViewProvider.pdb" target="lib\Xamarin.iOS10\"/>
+
+    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.ImGuiViewProvider.dll" target="lib\Xamarin.Mac20\"/>
+    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.ImGuiViewProvider.XML" target="lib\Xamarin.Mac20\"/>
+    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.ImGuiViewProvider.pdb" target="lib\Xamarin.Mac20\"/>
   </files>  
 </package>
