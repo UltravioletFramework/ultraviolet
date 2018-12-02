@@ -44,7 +44,6 @@ Quick start guides for development using the Ultraviolet Framework are available
     <group targetFramework="Xamarin.Mac20">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.SDL2.UIKit" version="UV_VERSION" />
     </group>
   </dependencies>
   </metadata>
