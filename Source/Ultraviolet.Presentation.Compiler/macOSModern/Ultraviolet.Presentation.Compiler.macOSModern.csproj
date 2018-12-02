@@ -144,6 +144,14 @@
       <Name>Ultraviolet.Presentation.Uvss.macOSModern</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.Presentation.Compiler.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.Presentation.Compiler.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

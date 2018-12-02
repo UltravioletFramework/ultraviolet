@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\macOSModern\Ultraviolet.Core.macOSModern.csproj">
@@ -128,6 +129,11 @@
       <Project>{F28B4652-8747-49FD-90B7-5A80EE57DD3F}</Project>
       <Name>Ultraviolet.ImGuiViewProvider.Bindings.macOSModern</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.ImGuiViewProvider.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.ImGuiViewProvider.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />

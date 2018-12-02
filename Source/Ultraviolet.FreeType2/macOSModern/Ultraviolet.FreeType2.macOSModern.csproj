@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\macOSModern\Ultraviolet.Core.macOSModern.csproj">
@@ -129,6 +130,11 @@
       <Project>{1005CE63-D332-465D-8AC0-579EF73ADA8B}</Project>
       <Name>Ultraviolet.macOSModern</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.FreeType2.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.FreeType2.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />

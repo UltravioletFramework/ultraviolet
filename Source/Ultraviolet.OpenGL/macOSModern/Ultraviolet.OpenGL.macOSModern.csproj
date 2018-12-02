@@ -135,6 +135,125 @@
       <Name>Ultraviolet.SDL2.macOSModern</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffect.frag">
+      <Link>Resources\BasicEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffect.vert">
+      <Link>Resources\BasicEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColored.frag">
+      <Link>Resources\BasicEffectColored.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColored.vert">
+      <Link>Resources\BasicEffectColored.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColoredES.frag">
+      <Link>Resources\BasicEffectColoredES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColoredES.vert">
+      <Link>Resources\BasicEffectColoredES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColoredTextured.frag">
+      <Link>Resources\BasicEffectColoredTextured.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColoredTextured.vert">
+      <Link>Resources\BasicEffectColoredTextured.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColoredTexturedES.frag">
+      <Link>Resources\BasicEffectColoredTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectColoredTexturedES.vert">
+      <Link>Resources\BasicEffectColoredTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectES.frag">
+      <Link>Resources\BasicEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectES.vert">
+      <Link>Resources\BasicEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectTextured.frag">
+      <Link>Resources\BasicEffectTextured.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectTextured.vert">
+      <Link>Resources\BasicEffectTextured.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectTexturedES.frag">
+      <Link>Resources\BasicEffectTexturedES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BasicEffectTexturedES.vert">
+      <Link>Resources\BasicEffectTexturedES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffect.frag">
+      <Link>Resources\BlurEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectES.frag">
+      <Link>Resources\BlurEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius1.frag">
+      <Link>Resources\BlurEffectRadius1.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius1ES.frag">
+      <Link>Resources\BlurEffectRadius1ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius3.frag">
+      <Link>Resources\BlurEffectRadius3.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius3ES.frag">
+      <Link>Resources\BlurEffectRadius3ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius5.frag">
+      <Link>Resources\BlurEffectRadius5.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius5ES.frag">
+      <Link>Resources\BlurEffectRadius5ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius7.frag">
+      <Link>Resources\BlurEffectRadius7.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius7ES.frag">
+      <Link>Resources\BlurEffectRadius7ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius9.frag">
+      <Link>Resources\BlurEffectRadius9.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectRadius9ES.frag">
+      <Link>Resources\BlurEffectRadius9ES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\BlurEffectUnrolledES.frag">
+      <Link>Resources\BlurEffectUnrolledES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\HeaderES.fragh">
+      <Link>Resources\HeaderES.fragh</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\HeaderES.verth">
+      <Link>Resources\HeaderES.verth</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\SpriteBatchEffect.frag">
+      <Link>Resources\SpriteBatchEffect.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\SpriteBatchEffect.vert">
+      <Link>Resources\SpriteBatchEffect.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\SpriteBatchEffectES.frag">
+      <Link>Resources\SpriteBatchEffectES.frag</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\SpriteBatchEffectES.vert">
+      <Link>Resources\SpriteBatchEffectES.vert</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\SrgbConversion.verth">
+      <Link>Resources\SrgbConversion.verth</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\uv64.png">
+      <Link>Resources\uv64.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.OpenGL.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.OpenGL.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>
