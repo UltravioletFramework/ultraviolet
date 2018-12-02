@@ -22,6 +22,7 @@
     <WarningsAsErrors></WarningsAsErrors>
     <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -30,6 +31,7 @@
     <WarningsAsErrors />
     <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
@@ -38,6 +40,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
+    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
