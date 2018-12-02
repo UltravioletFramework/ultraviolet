@@ -108,12 +108,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\macOSModern\Ultraviolet.Core.macOSModern.csproj">
       <Project>{2B22B67F-2B54-4973-A579-1714EE1297A9}</Project>
       <Name>Ultraviolet.Core.macOSModern</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.OpenGL.Bindings.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.OpenGL.Bindings.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />

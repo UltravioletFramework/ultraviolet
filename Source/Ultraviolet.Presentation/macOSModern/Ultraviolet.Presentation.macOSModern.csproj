@@ -130,6 +130,32 @@
       <Name>Ultraviolet.Presentation.Uvss.macOSModern</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Resources\Content\" />
+    <Folder Include="Resources\Content\Fonts\" />
+    <Folder Include="Resources\Content\UI\" />
+    <Folder Include="Resources\Content\UI\Screens\" />
+    <Folder Include="Resources\Content\UI\Screens\MessageBoxScreen\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Desktop\Resources\Content\Fonts\SegoeUITexture.png">
+      <Link>Resources\Content\Fonts\SegoeUITexture.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\Commands.xml">
+      <Link>Resources\Commands.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml">
+      <Link>Resources\Strings.xml</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
+      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Desktop\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml">
+      <Link>Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\Shared\Ultraviolet.Presentation.projitems" Label="Shared" Condition="Exists('..\Shared\Ultraviolet.Presentation.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>
