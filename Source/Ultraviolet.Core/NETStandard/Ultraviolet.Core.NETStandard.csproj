@@ -15,17 +15,20 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.Core.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.Core.xml</DocumentationFile>
+    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
   </PropertyGroup>
 
   <Import Project="..\Shared\Ultraviolet.Core.projitems" Label="Shared" />

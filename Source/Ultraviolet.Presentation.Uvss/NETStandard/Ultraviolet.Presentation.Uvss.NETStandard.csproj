@@ -41,18 +41,21 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
+    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.Presentation.Uvss.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
   
   <Import Project="..\Shared\Ultraviolet.Presentation.Uvss.projitems" Label="Shared" />
