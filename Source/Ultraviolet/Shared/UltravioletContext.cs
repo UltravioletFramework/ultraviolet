@@ -936,7 +936,7 @@ namespace Ultraviolet
                             break;
 
                         case UltravioletPlatform.macOS:
-#if MAC_MODERN
+#if MACOS_MODERN
                             shim = Assembly.Load("Ultraviolet.Shims.macOSModern");
 #else
                             shim = Assembly.Load("Ultraviolet.Shims.macOS");
