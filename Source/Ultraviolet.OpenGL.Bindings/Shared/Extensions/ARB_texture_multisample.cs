@@ -9,7 +9,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glTexImage2DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, [MarshalAs(UnmanagedType.I1)] bool fixedsamplelocations);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
-        private static readonly glTexImage2DMultisampleDelegate glTexImage2DMultisample = null;
+        private static glTexImage2DMultisampleDelegate glTexImage2DMultisample = null;
 
         public static void TexImage2DMultisample(uint target, int samples, uint internalformat, int width, int height, bool fixedsamplelocations)
         {
@@ -19,7 +19,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glTexImage3DMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height, int depth, [MarshalAs(UnmanagedType.I1)] bool fixedsamplelocations);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
-        private static readonly glTexImage3DMultisampleDelegate glTexImage3DMultisample = null;
+        private static glTexImage3DMultisampleDelegate glTexImage3DMultisample = null;
 
         public static void TexImage3DMultisample(uint target, int samples, uint internalformat, int width, int height, int depth, bool fixedsamplelocations)
         {
@@ -29,7 +29,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetMultisamplefvDelegate(uint pname, uint index, IntPtr val);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
-        private static readonly glGetMultisamplefvDelegate glGetMultisamplefv = null;
+        private static glGetMultisamplefvDelegate glGetMultisamplefv = null;
 
         public static void GetMultisamplefv(uint pname, uint index, float* val)
         {
@@ -46,7 +46,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glSampleMaskiDelegate(uint index, uint mask);
         [Require(MinVersion = "4.5", Extension = "GL_ARB_texture_multisample")]
-        private static readonly glSampleMaskiDelegate glSampleMaski = null;
+        private static glSampleMaskiDelegate glSampleMaski = null;
 
         public static void SampleMaski(uint index, uint mask)
         {

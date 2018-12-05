@@ -11,97 +11,97 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedBufferDataEXT")]
-        private static readonly glNamedBufferDataDelegate glNamedBufferData = null;
+        private static glNamedBufferDataDelegate glNamedBufferData = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glNamedBufferSubDataDelegate(uint buffer, IntPtr offset, IntPtr size, IntPtr data);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedBufferSubDataEXT")]
-        private static readonly glNamedBufferSubDataDelegate glNamedBufferSubData = null;
+        private static glNamedBufferSubDataDelegate glNamedBufferSubData = null;
 
         [MonoNativeFunctionWrapper]
         private delegate uint glCheckNamedFramebufferStatusDelegate(uint framebuffer, uint target);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glCheckNamedFramebufferStatusEXT")]
-        private static readonly glCheckNamedFramebufferStatusDelegate glCheckNamedFramebufferStatus = null;
+        private static glCheckNamedFramebufferStatusDelegate glCheckNamedFramebufferStatus = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glNamedFramebufferTextureDelegate(uint framebuffer, uint attachment, uint texture, int level);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedFramebufferTextureEXT")]
-        private static readonly glNamedFramebufferTextureDelegate glNamedFramebufferTexture = null;
+        private static glNamedFramebufferTextureDelegate glNamedFramebufferTexture = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glNamedFramebufferRenderbufferDelegate(uint framebuffer, uint attachment, uint renderbuffertarget, uint renderbuffer);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glNamedFramebufferRenderbufferEXT")]
-        private static readonly glNamedFramebufferRenderbufferDelegate glNamedFramebufferRenderbuffer = null;
+        private static glNamedFramebufferRenderbufferDelegate glNamedFramebufferRenderbuffer = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glNamedFramebufferDrawBufferDelegate(uint framebuffer, uint mode);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glFramebufferDrawBufferEXT")]
-        private static readonly glNamedFramebufferDrawBufferDelegate glNamedFramebufferDrawBuffer = null;
+        private static glNamedFramebufferDrawBufferDelegate glNamedFramebufferDrawBuffer = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glNamedFramebufferDrawBuffersDelegate(uint framebuffer, int size, IntPtr bufs);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glFramebufferDrawBuffersEXT")]
-        private static readonly glNamedFramebufferDrawBuffersDelegate glNamedFramebufferDrawBuffers = null;
+        private static glNamedFramebufferDrawBuffersDelegate glNamedFramebufferDrawBuffers = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureParameteriDelegate(uint texture, uint pname, int param);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         /* NOTE: Different signature in GL_EXT_direct_state_access */
-        private static readonly glTextureParameteriDelegate glTextureParameteri = null;
+        private static glTextureParameteriDelegate glTextureParameteri = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureSubImage2DDelegate(uint texture, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, IntPtr pixels);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         /* NOTE: Different signature in GL_EXT_direct_state_access */
-        private static readonly glTextureSubImage2DDelegate glTextureSubImage2D = null;
+        private static glTextureSubImage2DDelegate glTextureSubImage2D = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureSubImage3DDelegate(uint texture, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, IntPtr pixels);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         /* NOTE: Different signature in GL_EXT_direct_state_access */
-        private static readonly glTextureSubImage3DDelegate glTextureSubImage3D = null;
+        private static glTextureSubImage3DDelegate glTextureSubImage3D = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage1DDelegate(uint texture, int levels, uint internalformat, int width);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         /* NOTE: Different signature in GL_EXT_direct_state_access */
-        private static readonly glTextureStorage1DDelegate glTextureStorage1D = null;
+        private static glTextureStorage1DDelegate glTextureStorage1D = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage2DDelegate(uint texture, int levels, uint internalformat, int width, int height);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         /* NOTE: Different signature in GL_EXT_direct_state_access */
-        private static readonly glTextureStorage2DDelegate glTextureStorage2D = null;
+        private static glTextureStorage2DDelegate glTextureStorage2D = null;
                 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureStorage3DDelegate(uint texture, int levels, uint internalformat, int width, int height, int depth);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         /* NOTE: Different signature in GL_EXT_direct_state_access */
-        private static readonly glTextureStorage3DDelegate glTextureStorage3D = null;
+        private static glTextureStorage3DDelegate glTextureStorage3D = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glCreateBuffersDelegate(int n, IntPtr buffers);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        private static readonly glCreateBuffersDelegate glCreateBuffers = null;
+        private static glCreateBuffersDelegate glCreateBuffers = null;
 
         public static void CreateBuffers(int n, uint* buffers)
         {
@@ -122,7 +122,7 @@ namespace Ultraviolet.OpenGL.Bindings
         private delegate void glCreateTexturesDelegate(uint target, int n, IntPtr textures);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        private static readonly glCreateTexturesDelegate glCreateTextures = null;
+        private static glCreateTexturesDelegate glCreateTextures = null;
 
         public static void CreateTextures(uint target, int n, uint* textures)
         {
@@ -143,7 +143,7 @@ namespace Ultraviolet.OpenGL.Bindings
         private delegate void glCreateFramebuffersDelegate(int n, IntPtr ids);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        private static readonly glCreateFramebuffersDelegate glCreateFramebuffers = null;
+        private static glCreateFramebuffersDelegate glCreateFramebuffers = null;
 
         public static void CreateFramebuffers(int n, uint* ids)
         {
@@ -164,7 +164,7 @@ namespace Ultraviolet.OpenGL.Bindings
         private delegate void glCreateRenderbuffersDelegate(int n, IntPtr renderbuffers);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        private static readonly glCreateRenderbuffersDelegate glCreateRenderbuffers = null;
+        private static glCreateRenderbuffersDelegate glCreateRenderbuffers = null;
 
         public static void CreateRenderbuffers(int n, uint* renderbuffers)
         {
@@ -186,14 +186,14 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glMapNamedBufferEXT")]
-        private static readonly glMapNamedBufferDelegate glMapNamedBuffer = null;
+        private static glMapNamedBufferDelegate glMapNamedBuffer = null;
 
         [MonoNativeFunctionWrapper]
         private delegate IntPtr glMapNamedBufferRangeDelegate(uint buffer, IntPtr offset, IntPtr length, uint access);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glMapNamedBufferRangeEXT")]
-        private static readonly glMapNamedBufferRangeDelegate glMapNamedBufferRange = null;
+        private static glMapNamedBufferRangeDelegate glMapNamedBufferRange = null;
 
         [MonoNativeFunctionWrapper]
         [return: MarshalAs(UnmanagedType.I1)]
@@ -201,41 +201,41 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glUnmapNamedBufferEXT")]
-        private static readonly glUnmapNamedBufferDelegate glUnmapNamedBuffer = null;
+        private static glUnmapNamedBufferDelegate glUnmapNamedBuffer = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glFlushMappedNamedBufferRangeDelegate(uint buffer, IntPtr offset, IntPtr length);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glFlushMappedNamedBufferRangeEXT")]
-        private static readonly glFlushMappedNamedBufferRangeDelegate glFlushMappedNamedBufferRange = null;
+        private static glFlushMappedNamedBufferRangeDelegate glFlushMappedNamedBufferRange = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetNamedBufferParameterivDelegate(uint buffer, uint pname, IntPtr @params);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glGetNamedBufferParameterivEXT")]
-        private static readonly glGetNamedBufferParameterivDelegate glGetNamedBufferParameteriv = null;
+        private static glGetNamedBufferParameterivDelegate glGetNamedBufferParameteriv = null;
         
         [MonoNativeFunctionWrapper]
         private delegate void glGetNamedBufferPointervDelegate(uint buffer, uint pname, IntPtr @params);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glGetNamedBufferPointervEXT")]
-        private static readonly glGetNamedBufferPointervDelegate glGetNamedBufferPointerv = null;
+        private static glGetNamedBufferPointervDelegate glGetNamedBufferPointerv = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetNamedBufferSubDataDelegate(uint buffer, IntPtr offset, IntPtr size, IntPtr data);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glGetNamedBufferSubDataEXT")]
-        private static readonly glGetNamedBufferSubDataDelegate glGetNamedBufferSubData = null;
+        private static glGetNamedBufferSubDataDelegate glGetNamedBufferSubData = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glCreateVertexArraysDelegate(int n, IntPtr arrays);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        private static readonly glCreateVertexArraysDelegate glCreateVertexArrays = null;
+        private static glCreateVertexArraysDelegate glCreateVertexArrays = null;
 
         public static void CreateVertexArrays(int n, uint* arrays)
         {
@@ -257,19 +257,19 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glEnableVertexArrayAttribEXT")]
-        private static readonly glEnableVertexArrayAttribDelegate glEnableVertexArrayAttrib = null;
+        private static glEnableVertexArrayAttribDelegate glEnableVertexArrayAttrib = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glDisableVertexArrayAttribDelegate(uint vaobj, uint index);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
         [Require(Extension = "GL_EXT_direct_state_access", ExtensionFunction = "glDisableVertexArrayAttribEXT")]
-        private static readonly glDisableVertexArrayAttribDelegate glDisableVertexArrayAttrib = null;
+        private static glDisableVertexArrayAttribDelegate glDisableVertexArrayAttrib = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glInvalidateNamedFramebufferDataDelegate(UInt32 framebuffer, Int32 numAttachments, IntPtr attachments);
         [Require(MinVersion = "4.5")]
         [Require(Extension = "GL_ARB_direct_state_access")]
-        private static readonly glInvalidateNamedFramebufferDataDelegate glInvalidateNamedFramebufferData = null;
+        private static glInvalidateNamedFramebufferDataDelegate glInvalidateNamedFramebufferData = null;
     }
 }

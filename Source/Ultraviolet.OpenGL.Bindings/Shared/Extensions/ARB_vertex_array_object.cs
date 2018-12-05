@@ -9,7 +9,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGenVertexArraysDelegate(int n, IntPtr arrays);
         [Require(MinVersion = "3.0", Extension = "GL_ARB_vertex_array_object")]
-        private static readonly glGenVertexArraysDelegate glGenVertexArrays = null;
+        private static glGenVertexArraysDelegate glGenVertexArrays = null;
 
         public static void GenVertexArrays(int n, uint* arrays) { glGenVertexArrays(n, (IntPtr)arrays); }
 
@@ -31,7 +31,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteVertexArraysDelegate(int n, IntPtr arrays);
         [Require(MinVersion = "3.0", Extension = "GL_ARB_vertex_array_object")]
-        private static readonly glDeleteVertexArraysDelegate glDeleteVertexArrays = null;
+        private static glDeleteVertexArraysDelegate glDeleteVertexArrays = null;
 
         public static void DeleteVertexArrays(int n, uint* arrays) { glDeleteVertexArrays(n, (IntPtr)arrays); }
 
@@ -51,7 +51,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glBindVertexArrayDelegate(uint array);
         [Require(MinVersion = "3.0", Extension = "GL_ARB_vertex_array_object")]
-        private static readonly glBindVertexArrayDelegate glBindVertexArray = null;
+        private static glBindVertexArrayDelegate glBindVertexArray = null;
 
         public static void BindVertexArray(uint array) { glBindVertexArray(array); }
 
@@ -59,7 +59,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsVertexArrayDelegate(uint array);
         [Require(MinVersion = "3.0", Extension = "GL_ARB_vertex_array_object")]
-        private static readonly glIsVertexArrayDelegate glIsVertexArray = null;
+        private static glIsVertexArrayDelegate glIsVertexArray = null;
 
         public static bool IsVertexArray(uint array) { return glIsVertexArray(array); }
 

@@ -12,7 +12,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDiscardFramebufferEXTDelegate(UInt32 target, Int32 numAttachments, IntPtr attachments);
         [Require(Extension = "GL_EXT_discard_framebuffer")]
-        private static readonly glDiscardFramebufferEXTDelegate glDiscardFramebufferEXT = null;
+        private static glDiscardFramebufferEXTDelegate glDiscardFramebufferEXT = null;
 
         public static void DiscardFramebufferEXT(UInt32 target, Int32 numAttachments, IntPtr attachments)
         {

@@ -10,7 +10,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(MinVersion = "3.0", MinVersionES = "3.0")]
         [Require(Extension = "GL_ARB_map_buffer_range")]
         [Require(Extension = "GL_EXT_map_buffer_range", ExtensionFunction = "glMapBufferRangeEXT")]
-        private static readonly glMapBufferRangeDelegate glMapBufferRange = null;
+        private static glMapBufferRangeDelegate glMapBufferRange = null;
 
         public static void* MapBufferRange(uint target, int* offset, uint* length, uint access)
         { return glMapBufferRange(target, (IntPtr)offset, (IntPtr)length, access).ToPointer(); }
@@ -20,7 +20,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [Require(MinVersion = "3.0", MinVersionES = "3.0")]
         [Require(Extension = "GL_ARB_map_buffer_range")]
         [Require(Extension = "GL_EXT_map_buffer_range", ExtensionFunction = "glFlushMappedBufferRangeEXT")]
-        private static readonly glFlushMappedBufferRangeDelegate glFlushMappedBufferRange = null;
+        private static glFlushMappedBufferRangeDelegate glFlushMappedBufferRange = null;
 
         public static void FlushMappedBufferRange(uint target, int* offset, uint* length)
         { glFlushMappedBufferRange(target, (IntPtr)offset, (IntPtr)length); }

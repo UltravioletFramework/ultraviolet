@@ -11,14 +11,14 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDebugMessageCallbackDelegate(DebugProc callback, IntPtr userParam);
         [Require(Extension = "GL_ARB_debug_output", ExtensionFunction = "glDebugMessageCallbackARB")]
-        private static readonly glDebugMessageCallbackDelegate glDebugMessageCallback = null;
+        private static glDebugMessageCallbackDelegate glDebugMessageCallback = null;
 
         public static void DebugMessageCallback(DebugProc callback, IntPtr userParam) { glDebugMessageCallback(callback, userParam); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDebugMessageControlDelegate(uint source, uint type, uint severity, int count, IntPtr ids, [MarshalAs(UnmanagedType.I1)] bool enabled);
         [Require(Extension = "GL_ARB_debug_output", ExtensionFunction = "glDebugMessageControlARB")]
-        private static readonly glDebugMessageControlDelegate glDebugMessageControl = null;
+        private static glDebugMessageControlDelegate glDebugMessageControl = null;
 
         public static void DebugMessageControl(uint source, uint type, uint severity, int count, IntPtr ids, bool enabled)
         { glDebugMessageControl(source, type, severity, count, ids, enabled); }
@@ -26,7 +26,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDebugMessageInsertDelegate(uint source, uint type, uint id, uint severity, int length, IntPtr buf);
         [Require(Extension = "GL_ARB_debug_output", ExtensionFunction = "glDebugMessageInsertARB")]
-        private static readonly glDebugMessageInsertDelegate glDebugMessageInsert = null;
+        private static glDebugMessageInsertDelegate glDebugMessageInsert = null;
 
         public static void DebugMessageInsert(uint source, uint type, uint id, uint severity, string message)
         {

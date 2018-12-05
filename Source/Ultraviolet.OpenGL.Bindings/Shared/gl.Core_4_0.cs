@@ -8,35 +8,35 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glMinSampleShadingDelegate(float value);
         [Require(MinVersion = "4.0")]
-        private static readonly glMinSampleShadingDelegate glMinSampleShading = null;
+        private static glMinSampleShadingDelegate glMinSampleShading = null;
 
         public static void MinSampleShading(float value) { glMinSampleShading(value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBlendEquationSeparateiDelegate(uint buf, uint modeRGB, uint modeAlpha);
         [Require(MinVersion = "4.0")]
-        private static readonly glBlendEquationSeparateiDelegate glBlendEquationSeparatei = null;
+        private static glBlendEquationSeparateiDelegate glBlendEquationSeparatei = null;
 
         public static void BlendEquationSeparatei(uint buf, uint modeRGB, uint modeAlpha) { glBlendEquationSeparatei(buf, modeRGB, modeAlpha); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBlendEquationiDelegate(uint buf, uint mode);
         [Require(MinVersion = "4.0")]
-        private static readonly glBlendEquationiDelegate glBlendEquationi = null;
+        private static glBlendEquationiDelegate glBlendEquationi = null;
 
         public static void BlendEquationi(uint buf, uint mode) { glBlendEquationi(buf, mode); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBlendFuncSeparateiDelegate(uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha);
         [Require(MinVersion = "4.0")]
-        private static readonly glBlendFuncSeparateiDelegate glBlendFuncSeparatei = null;
+        private static glBlendFuncSeparateiDelegate glBlendFuncSeparatei = null;
 
         public static void BlendFuncSeparatei(uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha) { glBlendFuncSeparatei(buf, srcRGB, dstRGB, srcAlpha, dstAlpha); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBlendFunciDelegate(uint buf, uint src, uint dst);
         [Require(MinVersion = "4.0")]
-        private static readonly glBlendFunciDelegate glBlendFunci = null;
+        private static glBlendFunciDelegate glBlendFunci = null;
 
         public static void BlendFunci(uint buf, uint src, uint dst) { glBlendFunci(buf, src, dst); }
 

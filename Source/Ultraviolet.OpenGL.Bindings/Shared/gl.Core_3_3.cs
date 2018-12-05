@@ -8,7 +8,7 @@ namespace Ultraviolet.OpenGL.Bindings
 		[MonoNativeFunctionWrapper]
 		private delegate void glVertexAttribDivisorDelegate(uint index, uint divisor);
 		[Require(MinVersion = "3.3")]
-		private static readonly glVertexAttribDivisorDelegate glVertexAttribDivisor = null;
+		private static glVertexAttribDivisorDelegate glVertexAttribDivisor = null;
 
 		public static void VertexAttribDivisor(uint index, uint divisor) { glVertexAttribDivisor(index, divisor); }
 
