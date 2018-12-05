@@ -9,42 +9,42 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix2x3fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.1")]
-        private static readonly glUniformMatrix2x3fvDelegate glUniformMatrix2x3fv = null;
+        private static glUniformMatrix2x3fvDelegate glUniformMatrix2x3fv = null;
 
         public static void UniformMatrix2x3fv(int location, int count, bool transpose, float* value) { glUniformMatrix2x3fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix3x2fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.1")]
-        private static readonly glUniformMatrix3x2fvDelegate glUniformMatrix3x2fv = null;
+        private static glUniformMatrix3x2fvDelegate glUniformMatrix3x2fv = null;
 
         public static void UniformMatrix3x2fv(int location, int count, bool transpose, float* value) { glUniformMatrix3x2fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix2x4fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.1")]
-        private static readonly glUniformMatrix2x4fvDelegate glUniformMatrix2x4fv = null;
+        private static glUniformMatrix2x4fvDelegate glUniformMatrix2x4fv = null;
 
         public static void UniformMatrix2x4fv(int location, int count, bool transpose, float* value) { glUniformMatrix2x4fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix4x2fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.1")]
-        private static readonly glUniformMatrix4x2fvDelegate glUniformMatrix4x2fv = null;
+        private static glUniformMatrix4x2fvDelegate glUniformMatrix4x2fv = null;
 
         public static void UniformMatrix4x2fv(int location, int count, bool transpose, float* value) { glUniformMatrix4x2fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix3x4fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.1")]
-        private static readonly glUniformMatrix3x4fvDelegate glUniformMatrix3x4fv = null;
+        private static glUniformMatrix3x4fvDelegate glUniformMatrix3x4fv = null;
 
         public static void UniformMatrix3x4fv(int location, int count, bool transpose, float* value) { glUniformMatrix3x4fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix4x3fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.1")]
-        private static readonly glUniformMatrix4x3fvDelegate glUniformMatrix4x3fv = null;
+        private static glUniformMatrix4x3fvDelegate glUniformMatrix4x3fv = null;
 
         public static void UniformMatrix4x3fv(int location, int count, bool transpose, float* value) { glUniformMatrix4x3fv(location, count, transpose, (IntPtr)value); }
 

@@ -9,35 +9,35 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glBindFramebufferDelegate(uint target, uint framebuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glBindFramebufferDelegate glBindFramebuffer = null;
+        private static glBindFramebufferDelegate glBindFramebuffer = null;
 
         public static void BindFramebuffer(uint target, uint framebuffer) { glBindFramebuffer(target, framebuffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBindRenderbufferDelegate(uint target, uint renderbuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glBindRenderbufferDelegate glBindRenderbuffer = null;
+        private static glBindRenderbufferDelegate glBindRenderbuffer = null;
 
         public static void BindRenderbuffer(uint target, uint renderbuffer) { glBindRenderbuffer(target, renderbuffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBlitFramebufferDelegate(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, uint filter);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glBlitFramebufferDelegate glBlitFramebuffer = null;
+        private static glBlitFramebufferDelegate glBlitFramebuffer = null;
 
         public static void BlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, uint filter) { glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter); }
 
         [MonoNativeFunctionWrapper]
         private delegate uint glCheckFramebufferStatusDelegate(uint target);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glCheckFramebufferStatusDelegate glCheckFramebufferStatus = null;
+        private static glCheckFramebufferStatusDelegate glCheckFramebufferStatus = null;
 
         public static uint CheckFramebufferStatus(uint target) { return glCheckFramebufferStatus(target); }
         
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteFramebuffersDelegate(int n, IntPtr framebuffers);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glDeleteFramebuffersDelegate glDeleteFramebuffers = null;
+        private static glDeleteFramebuffersDelegate glDeleteFramebuffers = null;
 
         public static void DeleteFramebuffers(int n, uint* framebuffers) { glDeleteFramebuffers(n, (IntPtr)framebuffers); }
 
@@ -57,7 +57,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteRenderbuffersDelegate(int n, IntPtr renderbuffers);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glDeleteRenderbuffersDelegate glDeleteRenderbuffers = null;
+        private static glDeleteRenderbuffersDelegate glDeleteRenderbuffers = null;
 
         public static void DeleteRenderBuffers(int n, uint* renderbuffers) { glDeleteRenderbuffers(n, (IntPtr)renderbuffers); }
 
@@ -77,42 +77,42 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glFramebufferRenderbufferDelegate(uint target, uint attachment, uint renderbuffertarget, uint renderbuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glFramebufferRenderbufferDelegate glFramebufferRenderbuffer = null;
+        private static glFramebufferRenderbufferDelegate glFramebufferRenderbuffer = null;
 
         public static void FramebufferRenderbuffer(uint target, uint attachment, uint renderbuffertarget, uint renderbuffer) { glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glFramebufferTexture1DDelegate(uint target, uint attachment, uint textarget, uint texture, int level);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glFramebufferTexture1DDelegate glFramebufferTexture1D = null;
+        private static glFramebufferTexture1DDelegate glFramebufferTexture1D = null;
 
         public static void FramebufferTexture1D(uint target, uint attachment, uint textarget, uint texture, int level) { glFramebufferTexture1D(target, attachment, textarget, texture, level); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glFramebufferTexture2DDelegate(uint target, uint attachment, uint textarget, uint texture, int level);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glFramebufferTexture2DDelegate glFramebufferTexture2D = null;
+        private static glFramebufferTexture2DDelegate glFramebufferTexture2D = null;
 
         public static void FramebufferTexture2D(uint target, uint attachment, uint textarget, uint texture, int level) { glFramebufferTexture2D(target, attachment, textarget, texture, level); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glFramebufferTexture3DDelegate(uint target, uint attachment, uint textarget, uint texture, int level, int layer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glFramebufferTexture3DDelegate glFramebufferTexture3D = null;
+        private static glFramebufferTexture3DDelegate glFramebufferTexture3D = null;
 
         public static void FramebufferTexture3D(uint target, uint attachment, uint textarget, uint texture, int level, int layer) { glFramebufferTexture3D(target, attachment, textarget, texture, level, layer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glFramebufferTextureLayerDelegate(uint target, uint attachment, uint texture, int level, int layer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glFramebufferTextureLayerDelegate glFramebufferTextureLayer = null;
+        private static glFramebufferTextureLayerDelegate glFramebufferTextureLayer = null;
 
         public static void FramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer) { glFramebufferTextureLayer(target, attachment, texture, level, layer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGenFramebuffersDelegate(int n, IntPtr framebuffers);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glGenFramebuffersDelegate glGenFramebuffers = null;
+        private static glGenFramebuffersDelegate glGenFramebuffers = null;
 
         public static void GenFramebuffers(int n, uint* framebuffers) { glGenFramebuffers(n, (IntPtr)framebuffers); }
 
@@ -134,7 +134,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGenRenderbuffersDelegate(int n, IntPtr renderbuffers);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glGenRenderbuffersDelegate glGenRenderbuffers = null;
+        private static glGenRenderbuffersDelegate glGenRenderbuffers = null;
 
         public static void GenRenderbuffers(int n, uint* renderbuffers) { glGenRenderbuffers(n, (IntPtr)renderbuffers); }
 
@@ -156,21 +156,21 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGenerateMipmapDelegate(uint target);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glGenerateMipmapDelegate glGenerateMipmap = null;
+        private static glGenerateMipmapDelegate glGenerateMipmap = null;
 
         public static void GenerateMipmap(uint target) { glGenerateMipmap(target); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetFramebufferAttachmentParameterivDelegate(uint target, uint attachment, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glGetFramebufferAttachmentParameterivDelegate glGetFramebufferAttachmentParameteriv = null;
+        private static glGetFramebufferAttachmentParameterivDelegate glGetFramebufferAttachmentParameteriv = null;
 
         public static void GetFramebufferAttachmentParameteriv(uint target, uint attachment, uint pname, int* @params) { glGetFramebufferAttachmentParameteriv(target, attachment, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetRenderbufferParameterivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glGetRenderbufferParameterivDelegate glGetRenderbufferParameteriv = null;
+        private static glGetRenderbufferParameterivDelegate glGetRenderbufferParameteriv = null;
 
         public static void GetRenderbufferParameteriv(uint target, uint pname, int* @params) { glGetRenderbufferParameteriv(target, pname, (IntPtr)@params); }
 
@@ -178,7 +178,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsFramebufferDelegate(uint framebuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glIsFramebufferDelegate glIsFramebuffer = null;
+        private static glIsFramebufferDelegate glIsFramebuffer = null;
 
         public static bool IsFramebuffer(uint framebuffer) { return glIsFramebuffer(framebuffer); }
 
@@ -186,21 +186,21 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsRenderbufferDelegate(uint renderbuffer);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glIsRenderbufferDelegate glIsRenderbuffer = null;
+        private static glIsRenderbufferDelegate glIsRenderbuffer = null;
 
         public static bool IsRenderbuffer(uint renderbuffer) { return glIsRenderbuffer(renderbuffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glRenderbufferStorageDelegate(uint target, uint internalformat, int width, int height);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glRenderbufferStorageDelegate glRenderbufferStorage = null;
+        private static glRenderbufferStorageDelegate glRenderbufferStorage = null;
 
         public static void RenderbufferStorage(uint target, uint internalformat, int width, int height) { glRenderbufferStorage(target, internalformat, width, height); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glRenderbufferStorageMultisampleDelegate(uint target, int samples, uint internalformat, int width, int height);
         [Require(MinVersion = "3.0", MinVersionES = "2.0", Extension = "GL_ARB_framebuffer_object")]
-        private static readonly glRenderbufferStorageMultisampleDelegate glRenderbufferStorageMultisample = null;
+        private static glRenderbufferStorageMultisampleDelegate glRenderbufferStorageMultisample = null;
 
         public static void RenderbufferStorageMultisample(uint target, int samples, uint internalformat, int width, int height) { glRenderbufferStorageMultisample(target, samples, internalformat, width, height); }
 

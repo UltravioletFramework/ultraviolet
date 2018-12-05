@@ -9,7 +9,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGenQueriesDelegate(int n, IntPtr ids);
         [Require(MinVersion = "1.5")]
-        private static readonly glGenQueriesDelegate glGenQueries = null;
+        private static glGenQueriesDelegate glGenQueries = null;
 
         public static void GenQueries(int n, uint* ids) { glGenQueries(n, (IntPtr)ids); }
 
@@ -31,7 +31,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteQueriesDelegate(int n, IntPtr ids);
         [Require(MinVersion = "1.5")]
-        private static readonly glDeleteQueriesDelegate glDeleteQueries = null;
+        private static glDeleteQueriesDelegate glDeleteQueries = null;
 
         public static void DeleteQueries(int n, uint* ids) { glDeleteQueries(n, (IntPtr)ids); }
 
@@ -52,56 +52,56 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsQueryDelegate(uint id);
         [Require(MinVersion = "1.5")]
-        private static readonly glIsQueryDelegate glIsQuery = null;
+        private static glIsQueryDelegate glIsQuery = null;
 
         public static bool IsQuery(uint id) { return glIsQuery(id); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBeginQueryDelegate(uint target, uint id);
         [Require(MinVersion = "1.5")]
-        private static readonly glBeginQueryDelegate glBeginQuery = null;
+        private static glBeginQueryDelegate glBeginQuery = null;
 
         public static void BeginQuery(uint target, uint id) { glBeginQuery(target, id); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glEndQueryDelegate(uint target);
         [Require(MinVersion = "1.5")]
-        private static readonly glEndQueryDelegate glEndQuery = null;
+        private static glEndQueryDelegate glEndQuery = null;
 
         public static void EndQuery(uint target) { glEndQuery(target); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetQueryivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
-        private static readonly glGetQueryivDelegate glGetQueryiv = null;
+        private static glGetQueryivDelegate glGetQueryiv = null;
 
         public static void GetQueryiv(uint target, uint pname, int* @params) { glGetQueryiv(target, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetQueryObjectivDelegate(uint id, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
-        private static readonly glGetQueryObjectivDelegate glGetQueryObjectiv = null;
+        private static glGetQueryObjectivDelegate glGetQueryObjectiv = null;
 
         public static void GetQueryObjectiv(uint id, uint pname, int* @params) { glGetQueryObjectiv(id, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetQueryObjectuivDelegate(uint id, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
-        private static readonly glGetQueryObjectuivDelegate glGetQueryObjectuiv = null;
+        private static glGetQueryObjectuivDelegate glGetQueryObjectuiv = null;
 
         public static void GetQueryObjectuiv(uint id, uint pname, uint* @params) { glGetQueryObjectuiv(id, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBindBufferDelegate(uint target, uint buffer);
         [Require(MinVersion = "1.5")]
-        private static readonly glBindBufferDelegate glBindBuffer = null;
+        private static glBindBufferDelegate glBindBuffer = null;
 
         public static void BindBuffer(uint target, uint buffer) { glBindBuffer(target, buffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteBuffersDelegate(int n, IntPtr buffers);
         [Require(MinVersion = "1.5")]
-        private static readonly glDeleteBuffersDelegate glDeleteBuffers = null;
+        private static glDeleteBuffersDelegate glDeleteBuffers = null;
 
         public static void DeleteBuffers(int n, uint* buffers) { glDeleteBuffers(n, (IntPtr)buffers); }
 
@@ -121,7 +121,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGenBuffersDelegate(int n, IntPtr buffers);
         [Require(MinVersion = "1.5")]
-        private static readonly glGenBuffersDelegate glGenBuffers = null;
+        private static glGenBuffersDelegate glGenBuffers = null;
 
         public static void GenBuffers(int n, uint* buffers) { glGenBuffers(n, (IntPtr)buffers); }
 
@@ -144,35 +144,35 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsBufferDelegate(uint buffer);
         [Require(MinVersion = "1.5")]
-        private static readonly glIsBufferDelegate glIsBuffer = null;
+        private static glIsBufferDelegate glIsBuffer = null;
 
         public static bool IsBuffer(uint buffer) { return glIsBuffer(buffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBufferDataDelegate(uint target, IntPtr size, IntPtr data, uint usage);
         [Require(MinVersion = "1.5")]
-        private static readonly glBufferDataDelegate glBufferData = null;
+        private static glBufferDataDelegate glBufferData = null;
 
         public static void BufferData(uint target, IntPtr size, void* data, uint usage) { glBufferData(target, size, (IntPtr)data, usage); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBufferSubDataDelegate(uint target, IntPtr offset, IntPtr size, IntPtr data);
         [Require(MinVersion = "1.5")]
-        private static readonly glBufferSubDataDelegate glBufferSubData = null;
+        private static glBufferSubDataDelegate glBufferSubData = null;
 
         public static void BufferSubData(uint target, IntPtr offset, IntPtr size, void* data) { glBufferSubData(target, offset, size, (IntPtr)data); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetBufferSubDataDelegate(uint target, IntPtr offset, IntPtr size, IntPtr data);
         [Require(MinVersion = "1.5")]
-        private static readonly glGetBufferSubDataDelegate glGetBufferSubData = null;
+        private static glGetBufferSubDataDelegate glGetBufferSubData = null;
 
         public static void GetBufferSubData(uint target, IntPtr offset, IntPtr size, void* data) { glGetBufferSubData(target, offset, size, (IntPtr)data); }
 
         [MonoNativeFunctionWrapper]
         private delegate IntPtr glMapBufferDelegate(uint target, uint access);
         [Require(MinVersion = "1.5")]
-        private static readonly glMapBufferDelegate glMapBuffer = null;
+        private static glMapBufferDelegate glMapBuffer = null;
 
         public static void* MapBuffer(uint target, uint access) { return glMapBuffer(target, access).ToPointer(); }
 
@@ -180,21 +180,21 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glUnmapBufferDelegate(uint target);
         [Require(MinVersion = "1.5")]
-        private static readonly glUnmapBufferDelegate glUnmapBuffer = null;
+        private static glUnmapBufferDelegate glUnmapBuffer = null;
 
         public static bool UnmapBuffer(uint target) { return glUnmapBuffer(target); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetBufferParameterivDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
-        private static readonly glGetBufferParameterivDelegate glGetBufferParameteriv = null;
+        private static glGetBufferParameterivDelegate glGetBufferParameteriv = null;
 
         public static void GetBufferParameteriv(uint target, uint pname, int* @params) { glGetBufferParameteriv(target, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetBufferPointervDelegate(uint target, uint pname, IntPtr @params);
         [Require(MinVersion = "1.5")]
-        private static readonly glGetBufferPointervDelegate glGetBufferPointerv = null;
+        private static glGetBufferPointervDelegate glGetBufferPointerv = null;
 
         public static void GetBufferPointerv(uint target, uint pname, void** @params) { glGetBufferPointerv(target, pname, (IntPtr)@params); }
 

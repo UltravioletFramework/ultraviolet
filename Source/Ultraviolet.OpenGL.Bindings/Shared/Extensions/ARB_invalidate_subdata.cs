@@ -9,7 +9,7 @@ namespace Ultraviolet.OpenGL.Bindings
         private delegate void glInvalidateFramebufferDelegate(UInt32 target, Int32 numAttachments, IntPtr attachments);
         [Require(MinVersion = "4.3", MinVersionES = "3.0")]
         [Require(Extension = "GL_ARB_invalidate_subdata")]
-        private static readonly glInvalidateFramebufferDelegate glInvalidateFramebuffer = null;
+        private static glInvalidateFramebufferDelegate glInvalidateFramebuffer = null;
 
         public static void InvalidateFramebuffer(UInt32 target, Int32 numAttachments, IntPtr attachments)
         {

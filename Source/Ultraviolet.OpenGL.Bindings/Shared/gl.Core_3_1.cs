@@ -8,28 +8,28 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDrawArraysInstancedDelegate(uint mode, int first, int count, int primcount);
         [Require(MinVersion = "3.1")]
-        private static readonly glDrawArraysInstancedDelegate glDrawArraysInstanced = null;
+        private static glDrawArraysInstancedDelegate glDrawArraysInstanced = null;
 
         public static void DrawArraysInstanced(uint mode, int first, int count, int primcount) { glDrawArraysInstanced(mode, first, count, primcount); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDrawElementsInstancedDelegate(uint mode, int count, uint type, IntPtr indices, int primcount);
         [Require(MinVersion = "3.1")]
-        private static readonly glDrawElementsInstancedDelegate glDrawElementsInstanced = null;
+        private static glDrawElementsInstancedDelegate glDrawElementsInstanced = null;
 
         public static void DrawElementsInstanced(uint mode, int count, uint type, void* indices, int primcount) { glDrawElementsInstanced(mode, count, type, (IntPtr)indices, primcount); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glTexBufferDelegate(uint target, uint internalFormat, uint buffer);
         [Require(MinVersion = "3.1")]
-        private static readonly glTexBufferDelegate glTexBuffer = null;
+        private static glTexBufferDelegate glTexBuffer = null;
 
         public static void TexBuffer(uint target, uint internalFormat, uint buffer) { glTexBuffer(target, internalFormat, buffer); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glPrimitiveRestartIndexDelegate(uint index);
         [Require(MinVersion = "3.1")]
-        private static readonly glPrimitiveRestartIndexDelegate glPrimitiveRestartIndex = null;
+        private static glPrimitiveRestartIndexDelegate glPrimitiveRestartIndex = null;
 
         public static void PrimitiveRestartIndex(uint index) { glPrimitiveRestartIndex(index); }
 

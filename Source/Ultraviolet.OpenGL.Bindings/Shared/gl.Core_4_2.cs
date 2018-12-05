@@ -8,7 +8,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glDrawElementsInstancedBaseInstanceDelegate(uint mode, int count, uint type, IntPtr indices, int primcount, uint baseinstance);
         [Require(MinVersion = "4.2", Extension = "GL_ARB_base_instance")]
-        private static readonly glDrawElementsInstancedBaseInstanceDelegate glDrawElementsInstancedBaseInstance = null;
+        private static glDrawElementsInstancedBaseInstanceDelegate glDrawElementsInstancedBaseInstance = null;
 
         public static void DrawElementsInstancedBaseInstance(uint mode, int count, uint type, void* indices, int primcount, uint baseinstance) =>
             glDrawElementsInstancedBaseInstance(mode, count, type, (IntPtr)indices, primcount, baseinstance);

@@ -10,26 +10,26 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glTextureParameteriEXTDelegate(uint texture, uint target, uint pname, int param);
         [Require(Extension = "GL_EXT_direct_state_access")]
-        private static readonly glTextureParameteriEXTDelegate glTextureParameteriEXT = null;
+        private static glTextureParameteriEXTDelegate glTextureParameteriEXT = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureImage2DEXTDelegate(uint texture, uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, IntPtr pixels);
         [Require(Extension = "GL_EXT_direct_state_access")]
-        private static readonly glTextureImage2DEXTDelegate glTextureImage2DEXT = null;
+        private static glTextureImage2DEXTDelegate glTextureImage2DEXT = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureImage3DEXTDelegate(uint texture, uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, IntPtr pixels);
         [Require(Extension = "GL_EXT_direct_state_access")]
-        private static readonly glTextureImage3DEXTDelegate glTextureImage3DEXT = null;
+        private static glTextureImage3DEXTDelegate glTextureImage3DEXT = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureSubImage2DEXTDelegate(uint texture, uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, IntPtr pixels);
         [Require(Extension = "GL_EXT_direct_state_access")]
-        private static readonly glTextureSubImage2DEXTDelegate glTextureSubImage2DEXT = null;
+        private static glTextureSubImage2DEXTDelegate glTextureSubImage2DEXT = null;
 
         [MonoNativeFunctionWrapper]
         private delegate void glTextureSubImage3DEXTDelegate(uint texture, uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, IntPtr pixels);
         [Require(Extension = "GL_EXT_direct_state_access")]
-        private static readonly glTextureSubImage3DEXTDelegate glTextureSubImage3DEXT = null;
+        private static glTextureSubImage3DEXTDelegate glTextureSubImage3DEXT = null;
     }
 }

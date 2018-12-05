@@ -9,112 +9,112 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glBlendEquationSeparateDelegate(uint modeRGB, uint modeAlpha);
         [Require(MinVersion = "2.0")]
-        private static readonly glBlendEquationSeparateDelegate glBlendEquationSeparate = null;
+        private static glBlendEquationSeparateDelegate glBlendEquationSeparate = null;
 
         public static void BlendEquationSeparate(uint modeRGB, uint modeAlpha) { glBlendEquationSeparate(modeRGB, modeAlpha); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDrawBuffersDelegate(int n, IntPtr bufs);
         [Require(MinVersion = "2.0", MinVersionES = "3.0", Extension = "GL_ARB_draw_buffers", ExtensionFunction = "DrawBuffersARB")]
-        private static readonly glDrawBuffersDelegate glDrawBuffers = null;
+        private static glDrawBuffersDelegate glDrawBuffers = null;
 
         public static void DrawBuffers(int n, uint* bufs) { glDrawBuffers(n, (IntPtr)bufs); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glStencilOpSeparateDelegate(uint face, uint sfail, uint dpfail, uint dppass);
         [Require(MinVersion = "2.0")]
-        private static readonly glStencilOpSeparateDelegate glStencilOpSeparate = null;
+        private static glStencilOpSeparateDelegate glStencilOpSeparate = null;
 
         public static void StencilOpSeparate(uint face, uint sfail, uint dpfail, uint dppass) { glStencilOpSeparate(face, sfail, dpfail, dppass); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glStencilFuncSeparateDelegate(uint face, uint func, int @ref, uint mask);
         [Require(MinVersion = "2.0")]
-        private static readonly glStencilFuncSeparateDelegate glStencilFuncSeparate = null;
+        private static glStencilFuncSeparateDelegate glStencilFuncSeparate = null;
 
         public static void StencilFuncSeparate(uint face, uint func, int @ref, uint mask) { glStencilFuncSeparate(face, func, @ref, mask); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glStencilMaskSeparateDelegate(uint face, uint mask);
         [Require(MinVersion = "2.0")]
-        private static readonly glStencilMaskSeparateDelegate glStencilMaskSeparate = null;
+        private static glStencilMaskSeparateDelegate glStencilMaskSeparate = null;
 
         public static void StencilMaskSeparate(uint face, uint mask) { glStencilMaskSeparate(face, mask); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glAttachShaderDelegate(uint program, uint shader);
         [Require(MinVersion = "2.0")]
-        private static readonly glAttachShaderDelegate glAttachShader = null;
+        private static glAttachShaderDelegate glAttachShader = null;
 
         public static void AttachShader(uint program, uint shader) { glAttachShader(program, shader); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glBindAttribLocationDelegate(uint program, uint index, IntPtr name);
         [Require(MinVersion = "2.0")]
-        private static readonly glBindAttribLocationDelegate glBindAttribLocation = null;
+        private static glBindAttribLocationDelegate glBindAttribLocation = null;
 
         public static void BindAttribLocation(uint program, uint index, sbyte* name) { glBindAttribLocation(program, index, (IntPtr)name); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glCompileShaderDelegate(uint shader);
         [Require(MinVersion = "2.0")]
-        private static readonly glCompileShaderDelegate glCompileShader = null;
+        private static glCompileShaderDelegate glCompileShader = null;
 
         public static void CompileShader(uint shader) { glCompileShader(shader); }
 
         [MonoNativeFunctionWrapper]
         private delegate uint glCreateProgramDelegate();
         [Require(MinVersion = "2.0")]
-        private static readonly glCreateProgramDelegate glCreateProgram = null;
+        private static glCreateProgramDelegate glCreateProgram = null;
 
         public static uint CreateProgram() { return glCreateProgram(); }
 
         [MonoNativeFunctionWrapper]
         private delegate uint glCreateShaderDelegate(uint type);
         [Require(MinVersion = "2.0")]
-        private static readonly glCreateShaderDelegate glCreateShader = null;
+        private static glCreateShaderDelegate glCreateShader = null;
 
         public static uint CreateShader(uint type) { return glCreateShader(type); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteProgramDelegate(uint program);
         [Require(MinVersion = "2.0")]
-        private static readonly glDeleteProgramDelegate glDeleteProgram = null;
+        private static glDeleteProgramDelegate glDeleteProgram = null;
 
         public static void DeleteProgram(uint program) { glDeleteProgram(program); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDeleteShaderDelegate(uint shader);
         [Require(MinVersion = "2.0")]
-        private static readonly glDeleteShaderDelegate glDeleteShader = null;
+        private static glDeleteShaderDelegate glDeleteShader = null;
 
         public static void DeleteShader(uint shader) { glDeleteShader(shader); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDetachShaderDelegate(uint program, uint shader);
         [Require(MinVersion = "2.0")]
-        private static readonly glDetachShaderDelegate glDetachShader = null;
+        private static glDetachShaderDelegate glDetachShader = null;
 
         public static void DetachShader(uint program, uint shader) { glDetachShader(program, shader); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glDisableVertexAttribArrayDelegate(uint index);
         [Require(MinVersion = "2.0")]
-        private static readonly glDisableVertexAttribArrayDelegate glDisableVertexAttribArray = null;
+        private static glDisableVertexAttribArrayDelegate glDisableVertexAttribArray = null;
 
         public static void DisableVertexAttribArray(uint index) { glDisableVertexAttribArray(index); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glEnableVertexAttribArrayDelegate(uint index);
         [Require(MinVersion = "2.0")]
-        private static readonly glEnableVertexAttribArrayDelegate glEnableVertexAttribArray = null;
+        private static glEnableVertexAttribArrayDelegate glEnableVertexAttribArray = null;
 
         public static void EnableVertexAttribArray(uint index) { glEnableVertexAttribArray(index); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetActiveAttribDelegate(uint program, uint index, int maxLength, IntPtr length, IntPtr size, IntPtr type, IntPtr name);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetActiveAttribDelegate glGetActiveAttrib = null;
+        private static glGetActiveAttribDelegate glGetActiveAttrib = null;
 
         public static void GetActiveAttrib(uint program, uint index, int maxLength, int* length, int* size, uint* type, sbyte* name) =>
             glGetActiveAttrib(program, index, maxLength, (IntPtr)length, (IntPtr)size, (IntPtr)type, (IntPtr)name);
@@ -122,7 +122,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetActiveUniformDelegate(uint program, uint index, int maxLength, IntPtr length, IntPtr size, IntPtr type, IntPtr name);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetActiveUniformDelegate glGetActiveUniform = null;
+        private static glGetActiveUniformDelegate glGetActiveUniform = null;
 
         public static void GetActiveUniform(uint program, uint index, int maxLength, int* length, int* size, uint* type, sbyte* name) =>
             glGetActiveUniform(program, index, maxLength, (IntPtr)length, (IntPtr)size, (IntPtr)type, (IntPtr)name);
@@ -150,14 +150,14 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetAttachedShadersDelegate(uint program, int maxCount, IntPtr count, IntPtr shaders);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetAttachedShadersDelegate glGetAttachedShaders = null;
+        private static glGetAttachedShadersDelegate glGetAttachedShaders = null;
 
         public static void GetAttachedShaders(uint program, int maxCount, int* count, uint* shaders) { glGetAttachedShaders(program, maxCount, (IntPtr)count, (IntPtr)shaders); }
 
         [MonoNativeFunctionWrapper]
         private delegate int glGetAttribLocationDelegate(uint program, IntPtr name);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetAttribLocationDelegate glGetAttribLocation = null;
+        private static glGetAttribLocationDelegate glGetAttribLocation = null;
 
         public static int GetAttribLocation(uint program, string name) 
         {
@@ -175,7 +175,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetProgramivDelegate(uint program, uint pname, IntPtr param);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetProgramivDelegate glGetProgramiv = null;
+        private static glGetProgramivDelegate glGetProgramiv = null;
 
         public static void GetProgramiv(uint program, uint pname, int* param) { glGetProgramiv(program, pname, (IntPtr)param); }
 
@@ -189,7 +189,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetProgramInfoLogDelegate(uint program, int bufSize, IntPtr length, IntPtr infoLog);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetProgramInfoLogDelegate glGetProgramInfoLog = null;
+        private static glGetProgramInfoLogDelegate glGetProgramInfoLog = null;
 
         public static void GetProgramInfoLog(uint program, int bufSize, int* length, sbyte* infoLog) { glGetProgramInfoLog(program, bufSize, (IntPtr)length, (IntPtr)infoLog); }
 
@@ -216,7 +216,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetShaderivDelegate(uint shader, uint pname, IntPtr param);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetShaderivDelegate glGetShaderiv = null;
+        private static glGetShaderivDelegate glGetShaderiv = null;
 
         public static void GetShaderiv(uint shader, uint pname, int* param) { glGetShaderiv(shader, pname, (IntPtr)param); }
 
@@ -230,7 +230,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetShaderInfoLogDelegate(uint shader, int bufSize, IntPtr length, IntPtr infoLog);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetShaderInfoLogDelegate glGetShaderInfoLog = null;
+        private static glGetShaderInfoLogDelegate glGetShaderInfoLog = null;
 
         public static void GetShaderInfoLog(uint shader, int bufSize, int* length, sbyte* infoLog) { glGetShaderInfoLog(shader, bufSize, (IntPtr)length, (IntPtr)infoLog); }
 
@@ -259,14 +259,14 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glShaderSourceDelegate(uint shader, int count, IntPtr @string, IntPtr length);
         [Require(MinVersion = "2.0")]
-        private static readonly glShaderSourceDelegate glShaderSource = null;
+        private static glShaderSourceDelegate glShaderSource = null;
 
         public static void ShaderSource(uint shader, int count, sbyte** @string, int* length) { glShaderSource(shader, count, (IntPtr)@string, (IntPtr)length); }
 
         [MonoNativeFunctionWrapper]
         private delegate int glGetUniformLocationDelegate(uint program, IntPtr name);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetUniformLocationDelegate glGetUniformLocation = null;
+        private static glGetUniformLocationDelegate glGetUniformLocation = null;
 
         public static int GetUniformLocation(uint program, sbyte* name) { return glGetUniformLocation(program, (IntPtr)name); }
 
@@ -286,42 +286,42 @@ namespace Ultraviolet.OpenGL.Bindings
         [MonoNativeFunctionWrapper]
         private delegate void glGetUniformfvDelegate(uint program, int location, IntPtr @params);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetUniformfvDelegate glGetUniformfv = null;
+        private static glGetUniformfvDelegate glGetUniformfv = null;
 
         public static void GetUniformfv(uint program, int location, float* @params) { glGetUniformfv(program, location, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetUniformivDelegate(uint program, int location, IntPtr @params);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetUniformivDelegate glGetUniformiv = null;
+        private static glGetUniformivDelegate glGetUniformiv = null;
 
         public static void GetUniformiv(uint program, int location, int* @params) { glGetUniformiv(program, location, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetVertexAttribdvDelegate(uint index, uint pname, IntPtr @params);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetVertexAttribdvDelegate glGetVertexAttribdv = null;
+        private static glGetVertexAttribdvDelegate glGetVertexAttribdv = null;
 
         public static void GetVertexAttribdv(uint index, uint pname, double* @params) { glGetVertexAttribdv(index, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetVertexAttribfvDelegate(uint index, uint pname, IntPtr @params);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetVertexAttribfvDelegate glGetVertexAttribfv = null;
+        private static glGetVertexAttribfvDelegate glGetVertexAttribfv = null;
 
         public static void GetVertexAttribfv(uint index, uint pname, float* @params) { glGetVertexAttribfv(index, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetVertexAttribivDelegate(uint index, uint pname, IntPtr @params);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetVertexAttribivDelegate glGetVertexAttribiv = null;
+        private static glGetVertexAttribivDelegate glGetVertexAttribiv = null;
 
         public static void GetVertexAttribiv(uint index, uint pname, int* @params) { glGetVertexAttribiv(index, pname, (IntPtr)@params); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetVertexAttribPointervDelegate(uint index, uint pname, IntPtr pointer);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetVertexAttribPointervDelegate glGetVertexAttribPointerv = null;
+        private static glGetVertexAttribPointervDelegate glGetVertexAttribPointerv = null;
 
         public static void GetVertexAttribPointerv(uint index, uint pname, void** pointer) { glGetVertexAttribPointerv(index, pname, (IntPtr)pointer); }
 
@@ -329,7 +329,7 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsProgramDelegate(uint program);
         [Require(MinVersion = "2.0")]
-        private static readonly glIsProgramDelegate glIsProgram = null;
+        private static glIsProgramDelegate glIsProgram = null;
 
         public static bool IsProgram(uint program) { return glIsProgram(program); }
 
@@ -337,427 +337,427 @@ namespace Ultraviolet.OpenGL.Bindings
         [return: MarshalAs(UnmanagedType.I1)]
         private delegate bool glIsShaderDelegate(uint shader);
         [Require(MinVersion = "2.0")]
-        private static readonly glIsShaderDelegate glIsShader = null;
+        private static glIsShaderDelegate glIsShader = null;
 
         public static bool IsShader(uint shader) { return glIsShader(shader); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glLinkProgramDelegate(uint program);
         [Require(MinVersion = "2.0")]
-        private static readonly glLinkProgramDelegate glLinkProgram = null;
+        private static glLinkProgramDelegate glLinkProgram = null;
 
         public static void LinkProgram(uint program) { glLinkProgram(program); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glGetShaderSourceDelegate(uint obj, int maxLength, IntPtr length, IntPtr source);
         [Require(MinVersion = "2.0")]
-        private static readonly glGetShaderSourceDelegate glGetShaderSource = null;
+        private static glGetShaderSourceDelegate glGetShaderSource = null;
 
         public static void GetShaderSource(uint obj, int maxLength, int* length, sbyte* source) { glGetShaderSource(obj, maxLength, (IntPtr)length, (IntPtr)source); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUseProgramDelegate(uint program);
         [Require(MinVersion = "2.0")]
-        private static readonly glUseProgramDelegate glUseProgram = null;
+        private static glUseProgramDelegate glUseProgram = null;
 
         public static void UseProgram(uint program) { glUseProgram(program); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform1fDelegate(int location, float v0);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform1fDelegate glUniform1f = null;
+        private static glUniform1fDelegate glUniform1f = null;
 
         public static void Uniform1f(int location, float v0) { glUniform1f(location, v0); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform1fvDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform1fvDelegate glUniform1fv = null;
+        private static glUniform1fvDelegate glUniform1fv = null;
 
         public static void Uniform1fv(int location, int count, float* value) { glUniform1fv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform1iDelegate(int location, int v0);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform1iDelegate glUniform1i = null;
+        private static glUniform1iDelegate glUniform1i = null;
 
         public static void Uniform1i(int location, int v0) { glUniform1i(location, v0); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform1ivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform1ivDelegate glUniform1iv = null;
+        private static glUniform1ivDelegate glUniform1iv = null;
 
         public static void Uniform1iv(int location, int count, int* value) { glUniform1iv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform2fDelegate(int location, float v0, float v1);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform2fDelegate glUniform2f = null;
+        private static glUniform2fDelegate glUniform2f = null;
 
         public static void Uniform2f(int location, float v0, float v1) { glUniform2f(location, v0, v1); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform2fvDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform2fvDelegate glUniform2fv = null;
+        private static glUniform2fvDelegate glUniform2fv = null;
 
         public static void Uniform2fv(int location, int count, float* value) { glUniform2fv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform2iDelegate(int location, int v0, int v1);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform2iDelegate glUniform2i = null;
+        private static glUniform2iDelegate glUniform2i = null;
 
         public static void Uniform2i(int location, int v0, int v1) { glUniform2i(location, v0, v1); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform2ivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform2ivDelegate glUniform2iv = null;
+        private static glUniform2ivDelegate glUniform2iv = null;
 
         public static void Uniform2iv(int location, int count, int* value) { glUniform2iv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform3fDelegate(int location, float v0, float v1, float v2);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform3fDelegate glUniform3f = null;
+        private static glUniform3fDelegate glUniform3f = null;
 
         public static void Uniform3f(int location, float v0, float v1, float v2) { glUniform3f(location, v0, v1, v2); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform3fvDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform3fvDelegate glUniform3fv = null;
+        private static glUniform3fvDelegate glUniform3fv = null;
 
         public static void Uniform3fv(int location, int count, float* value) { glUniform3fv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform3iDelegate(int location, int v0, int v1, int v2);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform3iDelegate glUniform3i = null;
+        private static glUniform3iDelegate glUniform3i = null;
 
         public static void Uniform3i(int location, int v0, int v1, int v2) { glUniform3i(location, v0, v1, v2); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform3ivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform3ivDelegate glUniform3iv = null;
+        private static glUniform3ivDelegate glUniform3iv = null;
 
         public static void Uniform3iv(int location, int count, int* value) { glUniform3iv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform4fDelegate(int location, float v0, float v1, float v2, float v3);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform4fDelegate glUniform4f = null;
+        private static glUniform4fDelegate glUniform4f = null;
 
         public static void Uniform4f(int location, float v0, float v1, float v2, float v3) { glUniform4f(location, v0, v1, v2, v3); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform4fvDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform4fvDelegate glUniform4fv = null;
+        private static glUniform4fvDelegate glUniform4fv = null;
 
         public static void Uniform4fv(int location, int count, float* value) { glUniform4fv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform4iDelegate(int location, int v0, int v1, int v2, int v3);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform4iDelegate glUniform4i = null;
+        private static glUniform4iDelegate glUniform4i = null;
 
         public static void Uniform4i(int location, int v0, int v1, int v2, int v3) { glUniform4i(location, v0, v1, v2, v3); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniform4ivDelegate(int location, int count, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniform4ivDelegate glUniform4iv = null;
+        private static glUniform4ivDelegate glUniform4iv = null;
 
         public static void Uniform4iv(int location, int count, int* value) { glUniform4iv(location, count, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix2fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniformMatrix2fvDelegate glUniformMatrix2fv = null;
+        private static glUniformMatrix2fvDelegate glUniformMatrix2fv = null;
 
         public static void UniformMatrix2fv(int location, int count, bool transpose, float* value) { glUniformMatrix2fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix3fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniformMatrix3fvDelegate glUniformMatrix3fv = null;
+        private static glUniformMatrix3fvDelegate glUniformMatrix3fv = null;
 
         public static void UniformMatrix3fv(int location, int count, bool transpose, float* value) { glUniformMatrix3fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glUniformMatrix4fvDelegate(int location, int count, [MarshalAs(UnmanagedType.I1)] bool transpose, IntPtr value);
         [Require(MinVersion = "2.0")]
-        private static readonly glUniformMatrix4fvDelegate glUniformMatrix4fv = null;
+        private static glUniformMatrix4fvDelegate glUniformMatrix4fv = null;
 
         public static void UniformMatrix4fv(int location, int count, bool transpose, float* value) { glUniformMatrix4fv(location, count, transpose, (IntPtr)value); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glValidateProgramDelegate(uint program);
         [Require(MinVersion = "2.0")]
-        private static readonly glValidateProgramDelegate glValidateProgram = null;
+        private static glValidateProgramDelegate glValidateProgram = null;
 
         public static void ValidateProgram(uint program) { glValidateProgram(program); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib1dDelegate(uint index, double x);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib1dDelegate glVertexAttrib1d = null;
+        private static glVertexAttrib1dDelegate glVertexAttrib1d = null;
 
         public static void VertexAttrib1d(uint index, double x) { glVertexAttrib1d(index, x); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib1dvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib1dvDelegate glVertexAttrib1dv = null;
+        private static glVertexAttrib1dvDelegate glVertexAttrib1dv = null;
 
         public static void VertexAttrib1dv(uint index, double* v) { glVertexAttrib1dv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib1fDelegate(uint index, float x);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib1fDelegate glVertexAttrib1f = null;
+        private static glVertexAttrib1fDelegate glVertexAttrib1f = null;
 
         public static void VertexAttrib1f(uint index, float x) { glVertexAttrib1f(index, x); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib1fvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib1fvDelegate glVertexAttrib1fv = null;
+        private static glVertexAttrib1fvDelegate glVertexAttrib1fv = null;
 
         public static void VertexAttrib1fv(uint index, float* v) { glVertexAttrib1fv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib1sDelegate(uint index, short x);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib1sDelegate glVertexAttrib1s = null;
+        private static glVertexAttrib1sDelegate glVertexAttrib1s = null;
 
         public static void VertexAttrib1s(uint index, short x) { glVertexAttrib1s(index, x); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib1svDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib1svDelegate glVertexAttrib1sv = null;
+        private static glVertexAttrib1svDelegate glVertexAttrib1sv = null;
 
         public static void VertexAttrib1sv(uint index, short* v) { glVertexAttrib1sv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib2dDelegate(uint index, double x, double y);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib2dDelegate glVertexAttrib2d = null;
+        private static glVertexAttrib2dDelegate glVertexAttrib2d = null;
 
         public static void VertexAttrib2d(uint index, double x, double y) { glVertexAttrib2d(index, x, y); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib2dvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib2dvDelegate glVertexAttrib2dv = null;
+        private static glVertexAttrib2dvDelegate glVertexAttrib2dv = null;
 
         public static void VertexAttrib2dv(uint index, double* v) { glVertexAttrib2dv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib2fDelegate(uint index, float x, float y);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib2fDelegate glVertexAttrib2f = null;
+        private static glVertexAttrib2fDelegate glVertexAttrib2f = null;
 
         public static void VertexAttrib2f(uint index, float x, float y) { glVertexAttrib2f(index, x, y); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib2fvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib2fvDelegate glVertexAttrib2fv = null;
+        private static glVertexAttrib2fvDelegate glVertexAttrib2fv = null;
 
         public static void VertexAttrib2fv(uint index, float* v) { glVertexAttrib2fv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib2sDelegate(uint index, short x, short y);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib2sDelegate glVertexAttrib2s = null;
+        private static glVertexAttrib2sDelegate glVertexAttrib2s = null;
 
         public static void VertexAttrib2s(uint index, short x, short y) { glVertexAttrib2s(index, x, y); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib2svDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib2svDelegate glVertexAttrib2sv = null;
+        private static glVertexAttrib2svDelegate glVertexAttrib2sv = null;
 
         public static void VertexAttrib2sv(uint index, short* v) { glVertexAttrib2sv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib3dDelegate(uint index, double x, double y, double z);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib3dDelegate glVertexAttrib3d = null;
+        private static glVertexAttrib3dDelegate glVertexAttrib3d = null;
 
         public static void VertexAttrib3d(uint index, double x, double y, double z) { glVertexAttrib3d(index, x, y, z); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib3dvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib3dvDelegate glVertexAttrib3dv = null;
+        private static glVertexAttrib3dvDelegate glVertexAttrib3dv = null;
 
         public static void VertexAttrib3dv(uint index, double* v) { glVertexAttrib3dv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib3fDelegate(uint index, float x, float y, float z);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib3fDelegate glVertexAttrib3f = null;
+        private static glVertexAttrib3fDelegate glVertexAttrib3f = null;
 
         public static void VertexAttrib3f(uint index, float x, float y, float z) { glVertexAttrib3f(index, x, y, z); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib3fvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib3fvDelegate glVertexAttrib3fv = null;
+        private static glVertexAttrib3fvDelegate glVertexAttrib3fv = null;
 
         public static void VertexAttrib3fv(uint index, float* v) { glVertexAttrib3fv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib3sDelegate(uint index, short x, short y, short z);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib3sDelegate glVertexAttrib3s = null;
+        private static glVertexAttrib3sDelegate glVertexAttrib3s = null;
 
         public static void VertexAttrib3s(uint index, short x, short y, short z) { glVertexAttrib3s(index, x, y, z); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib3svDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib3svDelegate glVertexAttrib3sv = null;
+        private static glVertexAttrib3svDelegate glVertexAttrib3sv = null;
 
         public static void VertexAttrib3sv(uint index, short* v) { glVertexAttrib3sv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NbvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NbvDelegate glVertexAttrib4Nbv = null;
+        private static glVertexAttrib4NbvDelegate glVertexAttrib4Nbv = null;
 
         public static void VertexAttrib4Nbv(uint index, sbyte* v) { glVertexAttrib4Nbv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NivDelegate glVertexAttrib4Niv = null;
+        private static glVertexAttrib4NivDelegate glVertexAttrib4Niv = null;
 
         public static void VertexAttrib4Niv(uint index, int* v) { glVertexAttrib4Niv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NsvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NsvDelegate glVertexAttrib4Nsv = null;
+        private static glVertexAttrib4NsvDelegate glVertexAttrib4Nsv = null;
 
         public static void VertexAttrib4Nsv(uint index, short* v) { glVertexAttrib4Nsv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NubDelegate(uint index, byte x, byte y, byte z, byte w);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NubDelegate glVertexAttrib4Nub = null;
+        private static glVertexAttrib4NubDelegate glVertexAttrib4Nub = null;
 
         public static void VertexAttrib4Nub(uint index, byte x, byte y, byte z, byte w) { glVertexAttrib4Nub(index, x, y, z, w); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NubvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NubvDelegate glVertexAttrib4Nubv = null;
+        private static glVertexAttrib4NubvDelegate glVertexAttrib4Nubv = null;
 
         public static void VertexAttrib4Nubv(uint index, byte* v) { glVertexAttrib4Nubv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NuivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NuivDelegate glVertexAttrib4Nuiv = null;
+        private static glVertexAttrib4NuivDelegate glVertexAttrib4Nuiv = null;
 
         public static void VertexAttrib4Nuiv(uint index, uint* v) { glVertexAttrib4Nuiv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4NusvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4NusvDelegate glVertexAttrib4Nusv = null;
+        private static glVertexAttrib4NusvDelegate glVertexAttrib4Nusv = null;
 
         public static void VertexAttrib4Nusv(uint index, ushort* v) { glVertexAttrib4Nusv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4bvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4bvDelegate glVertexAttrib4bv = null;
+        private static glVertexAttrib4bvDelegate glVertexAttrib4bv = null;
 
         public static void VertexAttrib4bv(uint index, sbyte* v) { glVertexAttrib4bv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4dDelegate(uint index, double x, double y, double z, double w);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4dDelegate glVertexAttrib4d = null;
+        private static glVertexAttrib4dDelegate glVertexAttrib4d = null;
 
         public static void VertexAttrib4d(uint index, double x, double y, double z, double w) { glVertexAttrib4d(index, x, y, z, w); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4dvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4dvDelegate glVertexAttrib4dv = null;
+        private static glVertexAttrib4dvDelegate glVertexAttrib4dv = null;
 
         public static void VertexAttrib4dv(uint index, double* v) { glVertexAttrib4dv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4fDelegate(uint index, float x, float y, float z, float w);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4fDelegate glVertexAttrib4f = null;
+        private static glVertexAttrib4fDelegate glVertexAttrib4f = null;
 
         public static void VertexAttrib4f(uint index, float x, float y, float z, float w) { glVertexAttrib4f(index, x, y, z, w); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4fvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4fvDelegate glVertexAttrib4fv = null;
+        private static glVertexAttrib4fvDelegate glVertexAttrib4fv = null;
 
         public static void VertexAttrib4fv(uint index, float* v) { glVertexAttrib4fv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4ivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4ivDelegate glVertexAttrib4iv = null;
+        private static glVertexAttrib4ivDelegate glVertexAttrib4iv = null;
 
         public static void VertexAttrib4iv(uint index, int* v) { glVertexAttrib4iv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4sDelegate(uint index, short x, short y, short z, short w);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4sDelegate glVertexAttrib4s = null;
+        private static glVertexAttrib4sDelegate glVertexAttrib4s = null;
 
         public static void VertexAttrib4s(uint index, short x, short y, short z, short w) { glVertexAttrib4s(index, x, y, z, w); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4svDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4svDelegate glVertexAttrib4sv = null;
+        private static glVertexAttrib4svDelegate glVertexAttrib4sv = null;
 
         public static void VertexAttrib4sv(uint index, short* v) { glVertexAttrib4sv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4ubvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4ubvDelegate glVertexAttrib4ubv = null;
+        private static glVertexAttrib4ubvDelegate glVertexAttrib4ubv = null;
 
         public static void VertexAttrib4ubv(uint index, byte* v) { glVertexAttrib4ubv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4uivDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4uivDelegate glVertexAttrib4uiv = null;
+        private static glVertexAttrib4uivDelegate glVertexAttrib4uiv = null;
 
         public static void VertexAttrib4uiv(uint index, uint* v) { glVertexAttrib4uiv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttrib4usvDelegate(uint index, IntPtr v);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttrib4usvDelegate glVertexAttrib4usv = null;
+        private static glVertexAttrib4usvDelegate glVertexAttrib4usv = null;
 
         public static void VertexAttrib4usv(uint index, ushort* v) { glVertexAttrib4usv(index, (IntPtr)v); }
 
         [MonoNativeFunctionWrapper]
         private delegate void glVertexAttribPointerDelegate(uint index, int size, uint type, [MarshalAs(UnmanagedType.I1)] bool normalized, int stride, IntPtr pointer);
         [Require(MinVersion = "2.0")]
-        private static readonly glVertexAttribPointerDelegate glVertexAttribPointer = null;
+        private static glVertexAttribPointerDelegate glVertexAttribPointer = null;
 
         public static void VertexAttribPointer(uint index, int size, uint type, bool normalized, int stride, void* pointer) { glVertexAttribPointer(index, size, type, normalized, stride, (IntPtr)pointer); }
 
