@@ -4,7 +4,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Represents the supported formats for vertex data.
     /// </summary>
-    public enum VertexFormat
+    public enum VertexElementFormat
     {
         /// <summary>
         /// 32-bit floating point with one component.

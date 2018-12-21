@@ -37,9 +37,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// The vertex declaration.
         /// </summary>
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new[] {
-            new VertexElement(0, VertexFormat.Vector2, VertexUsage.Position, 0),
-            new VertexElement(sizeof(Single) * 2, VertexFormat.Color, VertexUsage.Color, 0),
-            new VertexElement(sizeof(Single) * 2 + sizeof(Byte) * 4, VertexFormat.UnsignedShort2, VertexUsage.TextureCoordinate, 0),
+            new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
+            new VertexElement(sizeof(Single) * 2, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+            new VertexElement(sizeof(Single) * 2 + sizeof(Byte) * 4, VertexElementFormat.UnsignedShort2, VertexElementUsage.TextureCoordinate, 0),
         });
 
         /// <summary>

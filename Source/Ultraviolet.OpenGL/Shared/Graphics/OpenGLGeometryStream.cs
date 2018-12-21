@@ -18,7 +18,7 @@ namespace Ultraviolet.OpenGL.Graphics
         static OpenGLGeometryStream()
         {
             vertexAttributeNames =
-                (from name in Enum.GetNames(typeof(VertexUsage))
+                (from name in Enum.GetNames(typeof(VertexElementUsage))
                  from index in Enumerable.Range(0, VertexElement.UsageIndexCount)
                  select String.Format("uv_{0}{1}", name, index)).ToArray();
         }
@@ -210,83 +210,83 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="stride">The vertex stride in bytes.</param>
         /// <param name="normalize">A value indicating whether to normalize the attribute's values.</param>
         /// <returns>The converted vertex format.</returns>
-        private static UInt32 GetVertexFormatGL(VertexFormat format, out Int32 size, out Int32 stride, out Boolean normalize)
+        private static UInt32 GetVertexFormatGL(VertexElementFormat format, out Int32 size, out Int32 stride, out Boolean normalize)
         {
             switch (format)
             {
-                case VertexFormat.Single:
+                case VertexElementFormat.Single:
                     size = 1;
                     stride = size * sizeof(float);
                     normalize = false;
                     return gl.GL_FLOAT;
 
-                case VertexFormat.Vector2:
+                case VertexElementFormat.Vector2:
                     size = 2;
                     stride = size * sizeof(float);
                     normalize = false;
                     return gl.GL_FLOAT;
 
-                case VertexFormat.Vector3:
+                case VertexElementFormat.Vector3:
                     size = 3;
                     stride = size * sizeof(float);
                     normalize = false;
                     return gl.GL_FLOAT;
 
-                case VertexFormat.Vector4:
+                case VertexElementFormat.Vector4:
                     size = 4;
                     stride = size * sizeof(float);
                     normalize = false;
                     return gl.GL_FLOAT;
 
-                case VertexFormat.Color:
+                case VertexElementFormat.Color:
                     size = 4;
                     stride = size * sizeof(byte);
                     normalize = true;
                     return gl.GL_UNSIGNED_BYTE;
 
-                case VertexFormat.NormalizedShort2:
+                case VertexElementFormat.NormalizedShort2:
                     size = 2;
                     stride = size * sizeof(short);
                     normalize = true;
                     return gl.GL_SHORT;
 
-                case VertexFormat.NormalizedShort4:
+                case VertexElementFormat.NormalizedShort4:
                     size = 4;
                     stride = size * sizeof(short);
                     normalize = true;
                     return gl.GL_SHORT;
 
-                case VertexFormat.NormalizedUnsignedShort2:
+                case VertexElementFormat.NormalizedUnsignedShort2:
                     size = 2;
                     stride = size * sizeof(ushort);
                     normalize = true;
                     return gl.GL_UNSIGNED_SHORT;
 
-                case VertexFormat.NormalizedUnsignedShort4:
+                case VertexElementFormat.NormalizedUnsignedShort4:
                     size = 4;
                     stride = size * sizeof(ushort);
                     normalize = true;
                     return gl.GL_UNSIGNED_SHORT;
 
-                case VertexFormat.Short2:
+                case VertexElementFormat.Short2:
                     size = 2;
                     stride = size * sizeof(short);
                     normalize = false;
                     return gl.GL_SHORT;
 
-                case VertexFormat.Short4:
+                case VertexElementFormat.Short4:
                     size = 4;
                     stride = size * sizeof(short);
                     normalize = false;
                     return gl.GL_SHORT;
 
-                case VertexFormat.UnsignedShort2:
+                case VertexElementFormat.UnsignedShort2:
                     size = 2;
                     stride = size * sizeof(ushort);
                     normalize = false;
                     return gl.GL_UNSIGNED_SHORT;
 
-                case VertexFormat.UnsignedShort4:
+                case VertexElementFormat.UnsignedShort4:
                     size = 4;
                     stride = size * sizeof(ushort);
                     normalize = false;
@@ -303,7 +303,7 @@ namespace Ultraviolet.OpenGL.Graphics
         /// <param name="usage">The vertex usage for which to retrieve a name.</param>
         /// <param name="index">The vertex usage index for which to retrieve a name.</param>
         /// <returns>The name of the specified shader attribute.</returns>
-        private static String GetVertexAttributeNameFromUsage(VertexUsage usage, Int32 index)
+        private static String GetVertexAttributeNameFromUsage(VertexElementUsage usage, Int32 index)
         {
             return vertexAttributeNames[((int)usage * VertexElement.UsageIndexCount) + index];
         }
@@ -403,7 +403,7 @@ namespace Ultraviolet.OpenGL.Graphics
             var position = offset ?? this.offset;
             foreach (var element in vbuffer.VertexDeclaration)
             {
-                var name = GetVertexAttributeNameFromUsage(element.Usage, element.Index);
+                var name = element.Name ?? GetVertexAttributeNameFromUsage(element.Usage, element.Index);
                 var size = 0;
                 var stride = 0;
                 var normalize = false;
@@ -486,7 +486,7 @@ namespace Ultraviolet.OpenGL.Graphics
                     var position = 0u;
                     foreach (var element in vbuffer.VertexDeclaration)
                     {
-                        var name = GetVertexAttributeNameFromUsage(element.Usage, element.Index);
+                        var name = element.Name ?? GetVertexAttributeNameFromUsage(element.Usage, element.Index);
                         var size = 0;
                         var stride = 0;
                         var normalize = false;

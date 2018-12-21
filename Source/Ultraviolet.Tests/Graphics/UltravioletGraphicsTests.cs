@@ -257,7 +257,7 @@ namespace Ultraviolet.Tests.Graphics
                     spriteBatch.Draw(spriteTexture, new RectangleF(16, 16, 16, 16), null, Color.DarkGray,
                         Radians.FromDegrees(45), new Vector2(8, 8), SpriteEffects.OriginRelativeToDestination, 0f);
                     spriteBatch.End();
-                    
+
                     window.Compositor.BeginContext(CompositionContext.Scene);
 
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
@@ -317,14 +317,14 @@ namespace Ultraviolet.Tests.Graphics
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, null, null, spriteEffect);
                     spriteBatch.Draw(spriteTexture, new RectangleF(viewport.Width / 3, 0, spriteTexture.Width, spriteTexture.Height), Color.White);
                     spriteBatch.End();
-                    
+
                     spriteEffect.Parameters["ColorGradingLUT"].SetValue(lutPosterize);
 
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp, null, null, spriteEffect);
                     spriteBatch.Draw(spriteTexture, new RectangleF(2 * viewport.Width / 3, 0, spriteTexture.Width, spriteTexture.Height), Color.White);
                     spriteBatch.End();
                 });
-            
+
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRender3DTextures.png");
         }
@@ -359,7 +359,7 @@ namespace Ultraviolet.Tests.Graphics
                     var lutPosterizePath = CreateMachineSpecificAssetCopy(content, "Textures\\ColorGradingPosterize");
                     if (!content.Preprocess<Texture3D>(lutPosterizePath))
                         Assert.Fail("Failed to preprocess asset.");
-                    
+
                     lutIdentity = content.Load<Texture3D>(lutIdentityPath + ".uvc");
                     lutShifted = content.Load<Texture3D>(lutShiftedPath + ".uvc");
                     lutPosterize = content.Load<Texture3D>(lutPosterizePath + ".uvc");
@@ -393,6 +393,65 @@ namespace Ultraviolet.Tests.Graphics
 
             TheResultingImage(result)
                 .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRender3DTextures_FromPreprocessedAsset.png");
-        }        
+        }
+
+        [Test]
+        [Category("Rendering")]
+        [Description("Ensures that the Graphics subsystem correctly handles custom vertex element names.")]
+        public void UltravioletGraphics_CanRenderSprites_WhenUsingCustomVertexElementNames()
+        {
+            var effect = default(Effect);
+            var vertexDeclaration = default(VertexDeclaration);
+            var vertexBuffer = default(VertexBuffer);
+            var geometryStream = default(GeometryStream);
+
+            var result = GivenAnUltravioletApplication()
+                .WithContent(content =>
+                {
+                    effect = content.Load<Effect>("Effects\\NamedVertexElements.vert");
+
+                    vertexDeclaration = new VertexDeclaration(new[] {
+                        new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0, "my_position"),
+                        new VertexElement(sizeof(Single) * 3, VertexElementFormat.Color, VertexElementUsage.Color, 0, "my_color")
+                    });
+
+                    vertexBuffer = VertexBuffer.Create(vertexDeclaration, 3);
+                    vertexBuffer.SetData(new[]
+                    {
+                        new VertexPositionColor(new Vector3(0, 1, 0), Color.Red),
+                        new VertexPositionColor(new Vector3(1, -1, 0), Color.Lime),
+                        new VertexPositionColor(new Vector3(-1, -1, 0), Color.Blue),
+                    });
+
+                    geometryStream = GeometryStream.Create();
+                    geometryStream.Attach(vertexBuffer);
+                })
+                .Render(uv =>
+                {
+                    var gfx = uv.GetGraphics();
+                    var window = uv.GetPlatform().Windows.GetPrimary();
+                    var viewport = new Viewport(0, 0, window.Compositor.Width, window.Compositor.Height);
+                    var aspectRatio = viewport.Width / (float)viewport.Height;
+
+                    gfx.SetViewport(viewport);
+
+                    effect.Parameters["World"].SetValue(Matrix.Identity);
+                    effect.Parameters["View"].SetValue(Matrix.CreateLookAt(new Vector3(0, 0, 5), Vector3.Zero, Vector3.Up));
+                    effect.Parameters["Projection"].SetValue(Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 4f, aspectRatio, 1f, 1000f));
+                    effect.Parameters["DiffuseColor"].SetValue(Color.White);
+
+                    foreach (var pass in effect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+
+                        gfx.SetRasterizerState(RasterizerState.CullNone);
+                        gfx.SetGeometryStream(geometryStream);
+                        gfx.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+                    }
+                });
+
+            TheResultingImage(result)
+                .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderSprites_WhenUsingCustomVertexElementNames.png");
+        }
     }
 }

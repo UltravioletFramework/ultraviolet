@@ -4,7 +4,7 @@ namespace Ultraviolet.Graphics
     /// <summary>
     /// Provides usage hints as to the intended purpose of a vertex element.
     /// </summary>
-    public enum VertexUsage
+    public enum VertexElementUsage
     {
         /// <summary>
         /// The element provides vertex position data.
