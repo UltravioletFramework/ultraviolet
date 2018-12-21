@@ -69,37 +69,37 @@ namespace Ultraviolet.Graphics
             {
                 switch (element.Format)
                 {
-                    case VertexFormat.Single:
+                    case VertexElementFormat.Single:
                         value += sizeof(Single);
                         break;
 
-                    case VertexFormat.Vector2:
+                    case VertexElementFormat.Vector2:
                         value += sizeof(Single) * 2;
                         break;
 
-                    case VertexFormat.Vector3:
+                    case VertexElementFormat.Vector3:
                         value += sizeof(Single) * 3;
                         break;
 
-                    case VertexFormat.Vector4:
+                    case VertexElementFormat.Vector4:
                         value += sizeof(Single) * 4;
                         break;
 
-                    case VertexFormat.Color:
+                    case VertexElementFormat.Color:
                         value += sizeof(Byte) * 4;
                         break;
 
-                    case VertexFormat.Short2:
-                    case VertexFormat.UnsignedShort2:
-                    case VertexFormat.NormalizedShort2:
-                    case VertexFormat.NormalizedUnsignedShort2:
+                    case VertexElementFormat.Short2:
+                    case VertexElementFormat.UnsignedShort2:
+                    case VertexElementFormat.NormalizedShort2:
+                    case VertexElementFormat.NormalizedUnsignedShort2:
                         value += sizeof(Int16) * 2;
                         break;
 
-                    case VertexFormat.Short4:
-                    case VertexFormat.UnsignedShort4:
-                    case VertexFormat.NormalizedShort4:
-                    case VertexFormat.NormalizedUnsignedShort4:
+                    case VertexElementFormat.Short4:
+                    case VertexElementFormat.UnsignedShort4:
+                    case VertexElementFormat.NormalizedShort4:
+                    case VertexElementFormat.NormalizedUnsignedShort4:
                         value += sizeof(Int16) * 4;
                         break;
 

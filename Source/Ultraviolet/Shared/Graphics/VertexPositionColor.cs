@@ -30,8 +30,8 @@ namespace Ultraviolet.Graphics
         /// The vertex declaration.
         /// </summary>
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(new[] {
-            new VertexElement(0, VertexFormat.Vector3, VertexUsage.Position, 0),
-            new VertexElement(sizeof(Single) * 3, VertexFormat.Color, VertexUsage.Color, 0)
+            new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+            new VertexElement(sizeof(Single) * 3, VertexElementFormat.Color, VertexElementUsage.Color, 0)
         });
 
         /// <summary>

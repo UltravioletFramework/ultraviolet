@@ -402,12 +402,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexElement.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexElementFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPosition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionColor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionColorTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionTexture.cs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexUsage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexElementUsage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Viewport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IInterpolatable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonState.cs" />

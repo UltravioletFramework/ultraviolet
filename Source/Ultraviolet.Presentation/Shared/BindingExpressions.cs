@@ -599,10 +599,10 @@ namespace Ultraviolet.Presentation
             comparerRegistry[typeof(TextureAddressMode?)] = new DataBindingComparer<TextureAddressMode?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextureFilter)] = new DataBindingComparer<TextureFilter>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(TextureFilter?)] = new DataBindingComparer<TextureFilter?>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(VertexFormat)] = new DataBindingComparer<VertexFormat>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(VertexFormat?)] = new DataBindingComparer<VertexFormat?>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(VertexUsage)] = new DataBindingComparer<VertexUsage>((v1, v2) => v1 == v2);
-            comparerRegistry[typeof(VertexUsage?)] = new DataBindingComparer<VertexUsage?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexElementFormat)] = new DataBindingComparer<VertexElementFormat>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexElementFormat?)] = new DataBindingComparer<VertexElementFormat?>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexElementUsage)] = new DataBindingComparer<VertexElementUsage>((v1, v2) => v1 == v2);
+            comparerRegistry[typeof(VertexElementUsage?)] = new DataBindingComparer<VertexElementUsage?>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Viewport)] = new DataBindingComparer<Viewport>((v1, v2) => v1 == v2);
             comparerRegistry[typeof(Viewport?)] = new DataBindingComparer<Viewport?>((v1, v2) => v1 == v2);
 
