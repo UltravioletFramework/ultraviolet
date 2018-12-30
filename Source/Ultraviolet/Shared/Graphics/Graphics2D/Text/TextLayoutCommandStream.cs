@@ -583,6 +583,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Bounds = default(Rectangle);
             ActualWidth = 0;
             ActualHeight = 0;
+            TotalSourceLength = 0;
             TotalGlyphLength = 0;
             LineCount = 0;
 
