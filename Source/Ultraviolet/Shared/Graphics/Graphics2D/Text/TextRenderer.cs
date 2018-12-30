@@ -2233,24 +2233,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// </summary>
         private Int32? GetGlyphOrInsertionPointAtPosition(TextLayoutCommandStream input, Int32 x, Int32 y, out Int32? lineAtPosition, InsertionPointSearchMode searchMode)
         {
-            var searchInsertionPoints = (searchMode == InsertionPointSearchMode.BeforeOrAfterGlyph);
-            var searchSnapToLine = (searchMode == InsertionPointSearchMode.SnapToLine);
+            var searchInsertionPoints = 
+                (searchMode == InsertionPointSearchMode.BeforeOrAfterGlyph);
+            var searchSnapToLine = 
+                (searchMode == InsertionPointSearchMode.SnapToLine);
 
             lineAtPosition = searchInsertionPoints ? 0 : (Int32?)null;
 
             if (input.Count == 0)
                 return searchInsertionPoints ? 0 : (Int32?)null;
 
-            if (searchInsertionPoints)
-            {
-                if (y < 0 || input.Count == 0)
-                    return 0;
-            }
-            else
-            {
-                if (x < 0 || y < 0 || input.Count == 0)
-                    return null;
-            }
+            if (y < 0)
+                return searchInsertionPoints ? 0 : (Int32?)null;
+            if (x < 0 && !searchInsertionPoints)
+                return null;
 
             var isSurrogatePair = false;
             var sourceCountSeen = 0;
@@ -2279,15 +2275,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             // If our search point comes before the start of the block, then
             // the only possible answer is the first glyph in the block.
             if (y < blockOffset)
-            {
-                if (searchInsertionPoints)
-                {
-                    lineAtPosition = 0;
-                    return 0;
-                }
-                lineAtPosition = null;
-                return null;
-            }
+                return searchInsertionPoints ? 0 : (Int32?)null;
 
             // If our search point comes after the end of the block, then
             // the only possible answer is the last glyph in the block.
