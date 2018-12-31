@@ -125,11 +125,11 @@ namespace Ultraviolet.Graphics.Graphics2D
                 GlyphTexture = glyphRenderInfo.Texture;
                 GlyphTextureRegion = glyphRenderInfo.TextureRegion;
                 GlyphPosition.X = TextIsFlippedHorizontally ?
-                    (TextRenderPosition.X - glyphRenderInfo.OffsetX) - GlyphTextureRegion.Width :
-                    (TextRenderPosition.X + glyphRenderInfo.OffsetX);
+                    (TextRenderPosition.X - (glyphRenderInfo.OffsetX + GlyphOffset.X)) - GlyphTextureRegion.Width :
+                    (TextRenderPosition.X + (glyphRenderInfo.OffsetX + GlyphOffset.X));
                 GlyphPosition.Y = TextIsFlippedVertically ?
-                    (TextRenderPosition.Y - glyphRenderInfo.OffsetY + GlyphKerning.Y) - GlyphTextureRegion.Height :
-                    (TextRenderPosition.Y + glyphRenderInfo.OffsetY + GlyphKerning.Y);
+                    (TextRenderPosition.Y - (glyphRenderInfo.OffsetY - GlyphOffset.Y) + GlyphKerning.Y) - GlyphTextureRegion.Height :
+                    (TextRenderPosition.Y + (glyphRenderInfo.OffsetY - GlyphOffset.Y) + GlyphKerning.Y);
                 GlyphOrigin = new Vector2(GlyphTextureRegion.Width / 2, GlyphTextureRegion.Height / 2);
             }
             
