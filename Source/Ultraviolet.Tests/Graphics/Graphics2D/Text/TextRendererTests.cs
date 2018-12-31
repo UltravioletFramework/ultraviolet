@@ -1560,7 +1560,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
         
         [Test]
         [Category("Rendering")]
-        [Description("Foo")]
+        [Description("Ensures that the text renderer assigns correct source indices to shaped text characters.")]
         public void TextRenderer_AssignsCorrectSourceIndicesToShapedText()
         {
             var content = new TextRendererTestContent(
