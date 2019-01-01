@@ -15,9 +15,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="lineHeight">The height of the line in pixels.</param>
         /// <param name="lengthInCommands">The length of the line of text in commands.</param>
         /// <param name="lengthInSource">The length of the line in source characters.</param>
-        /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>"
-        /// <param name="terminatedByLineBreak">A value indicating whether this line is terminated by a line break.</param>
-        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, Int32 lengthInCommands, Int32 lengthInSource, Int32 lengthInGlyphs, Boolean terminatedByLineBreak)
+        /// <param name="lengthInShaped">The length of the line in shaped characters.</param>
+        /// <param name="lengthInGlyphs">The length of the line in glyphs.</param>
+        /// <param name="terminatingLineBreakLength">The source length of the line break which terminates this line, if there is one.</param>
+        public TextLayoutLineInfoCommand(Int32 offset, Int32 lineWidth, Int32 lineHeight, 
+            Int32 lengthInCommands, Int32 lengthInSource, Int32 lengthInShaped, Int32 lengthInGlyphs, Int32 terminatingLineBreakLength)
         {
             this.CommandType = TextLayoutCommandType.LineInfo;
             this.Offset = offset;
@@ -25,8 +27,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             this.LineHeight = lineHeight;
             this.LengthInCommands = lengthInCommands;
             this.LengthInSource = lengthInSource;
+            this.LengthInShaped = lengthInShaped;
             this.LengthInGlyphs = lengthInGlyphs;
-            this.TerminatedByLineBreak = terminatedByLineBreak;
+            this.TerminatingLineBreakSourceLength = terminatingLineBreakLength;
         }
 
         /// <summary>
@@ -60,13 +63,18 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public Int32 LengthInSource { get; internal set; }
 
         /// <summary>
+        /// Gets the length of the line in shaped characters.
+        /// </summary>
+        public Int32 LengthInShaped { get; internal set; }
+
+        /// <summary>
         /// Gets the length of the line of text in glyphs.
         /// </summary>
         public Int32 LengthInGlyphs { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether this line is terminated by a line break.
+        /// Gets the source length of the line break which terminates this line, if there is one.
         /// </summary>
-        public Boolean TerminatedByLineBreak { get; internal set; }
+        public Int32 TerminatingLineBreakSourceLength { get; internal set; }
     }
 }

@@ -45,6 +45,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             public Int32 LineLengthInSource;
 
             /// <summary>
+            /// Gets the length of the line being searched in shaped characters.
+            /// </summary>
+            public Int32 LineLengthInShaped;
+
+            /// <summary>
             /// Gets the length of the line being searched in glyphs.
             /// </summary>
             public Int32 LineLengthInGlyphs;
@@ -60,6 +65,11 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             public Int32 LineStartInSource;
 
             /// <summary>
+            /// Gets the index of the first shaped character on the line.
+            /// </summary>
+            public Int32 LineStartInShaped;
+
+            /// <summary>
             /// Gets the index of the first glyph on the line.
             /// </summary>
             public Int32 LineStartInGlyphs;
@@ -70,14 +80,19 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             public Int32 NumberOfSourceCharactersSeen;
 
             /// <summary>
+            /// The number of shaped characters that have been seen while searching through lines.
+            /// </summary>
+            public Int32 NumberOfShapedCharactersSeen;
+
+            /// <summary>
             /// The number of glyphs that have been seen while searching through lines.
             /// </summary>
             public Int32 NumberOfGlyphsSeen;
 
             /// <summary>
-            /// A value indicating whether the line is terminated by a line break.
+            /// The source length of the line break which terminates the line, if there is one.
             /// </summary>
-            public Boolean LineIsTerminatedByLineBreak;
+            public Int32 TerminatingLineBreakLength;
         }
     }
 }
