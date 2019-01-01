@@ -17,9 +17,12 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// <param name="iconHeight">The icon's height in pixels.</param>
         /// <param name="iconAscender">The icon's ascender value in pixels.</param>
         /// <param name="iconDescender">The icon's descender value in pixels. Negative values are below the baseline.</param>
+        /// <param name="glyphOffset">The offset of the text within the stream of rendered glyphs.</param>
+        /// <param name="glyphLength">The length of the text when represented as rendered glyphs.</param>
         /// <param name="sourceOffset">The icon's offset within the source string.</param>
         /// <param name="sourceLength">The icon's length within the source string.</param>
-        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight, Int16 iconAscender, Int16 iconDescender, Int32 sourceOffset, Int32 sourceLength)
+        public TextLayoutIconCommand(Int16 iconIndex, Int32 iconX, Int32 iconY, Int16 iconWidth, Int16 iconHeight, Int16 iconAscender, Int16 iconDescender,
+            Int32 glyphOffset, Int32 glyphLength, Int32 sourceOffset, Int32 sourceLength)
         {
             this.CommandType = TextLayoutCommandType.Icon;
             this.IconIndex = iconIndex;
@@ -29,6 +32,8 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             this.IconHeight = iconHeight;
             this.IconAscender = iconAscender;
             this.IconDescender = iconDescender;
+            this.GlyphOffset = glyphOffset;
+            this.GlyphLength = glyphLength;
             this.SourceOffset = sourceOffset;
             this.SourceLength = sourceLength;
         }
@@ -126,6 +131,16 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the icon's descender value in pixels. Negative values are below the baseline.
         /// </summary>
         public Int16 IconDescender { get; internal set; }
+
+        /// <summary>
+        /// Gets the offset of the text within the glyph buffer (or the source string if the text is not shaped).
+        /// </summary>
+        public Int32 GlyphOffset { get; internal set; }
+
+        /// <summary>
+        /// Gets the length of the text within the glyph buffer (or the source string if the text is not shaped).
+        /// </summary>
+        public Int32 GlyphLength { get; internal set; }
 
         /// <summary>
         /// Gets the icon's offset within the source string.

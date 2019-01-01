@@ -190,27 +190,27 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedString text) =>
+        public override Size2 MeasureShapedString(ShapedString text, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count) =>
+        public override Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedStringBuilder text) =>
+        public override Size2 MeasureShapedString(ShapedStringBuilder text, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count) =>
+        public override Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString<TSource>(ref TSource text) =>
+        public override Size2 MeasureShapedString<TSource>(ref TSource text, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count) =>
+        public override Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
@@ -297,15 +297,15 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph(ShapedString text, Int32 ix) =>
+        public override Size2 MeasureShapedGlyph(ShapedString text, Int32 ix, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix) =>
+        public override Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix) =>
+        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
@@ -341,7 +341,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2) =>
+        public override Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
@@ -372,7 +372,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix) =>
+        public override Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
@@ -453,7 +453,7 @@ namespace Ultraviolet.Graphics.Graphics2D
             throw new NotSupportedException();
 
         /// <inheritdoc/>
-        public override Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2) =>
+        public override Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>
@@ -477,7 +477,7 @@ namespace Ultraviolet.Graphics.Graphics2D
         }
 
         /// <inheritdoc/>
-        public override Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2) =>
+        public override Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2, Boolean rtl = false) =>
             throw new NotSupportedException();
 
         /// <inheritdoc/>

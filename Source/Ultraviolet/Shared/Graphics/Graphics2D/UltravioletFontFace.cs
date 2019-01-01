@@ -111,8 +111,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// Measures the size of the specified string of shaped text when rendered using this font.
         /// </summary>
         /// <param name="text">The shaped text to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified string of shaped text when rendered using this font.</returns>
-        public abstract Size2 MeasureShapedString(ShapedString text);
+        public abstract Size2 MeasureShapedString(ShapedString text, Boolean rtl = false);
 
         /// <summary>
         /// Measures the size of the specified substring of shaped text when rendered using this font.
@@ -120,15 +121,17 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The shaped text to measure.</param>
         /// <param name="start">The index of the first character of the substring to measure.</param>
         /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified substring of shaped text when rendered using this font.</returns>
-        public abstract Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count);
+        public abstract Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count, Boolean rtl = false);
 
         /// <summary>
         /// Measures the size of the specified string of shaped text when rendered using this font.
         /// </summary>
         /// <param name="text">The shaped text to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified string of shaped text when rendered using this font.</returns>
-        public abstract Size2 MeasureShapedString(ShapedStringBuilder text);
+        public abstract Size2 MeasureShapedString(ShapedStringBuilder text, Boolean rtl = false);
 
         /// <summary>
         /// Measures the size of the specified substring of shaped text when rendered using this font.
@@ -136,16 +139,18 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The shaped text to measure.</param>
         /// <param name="start">The index of the first character of the substring to measure.</param>
         /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified substring of shaped text when rendered using this font.</returns>
-        public abstract Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count);
+        public abstract Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count, Boolean rtl = false);
 
         /// <summary>
         /// Measures the size of the specified string of shaped text when rendered using this font.
         /// </summary>
         /// <typeparam name="TSource">The type of string source which represents the shaped text to measure.</typeparam>
         /// <param name="text">The shaped text to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified string of shaped text when rendered using this font.</returns>
-        public abstract Size2 MeasureShapedString<TSource>(ref TSource text)
+        public abstract Size2 MeasureShapedString<TSource>(ref TSource text, Boolean rtl = false)
             where TSource : IStringSource<ShapedChar>;
 
         /// <summary>
@@ -155,8 +160,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The shaped text to measure.</param>
         /// <param name="start">The index of the first character of the substring to measure.</param>
         /// <param name="count">The number of characters in the substring to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified substring of shaped text when rendered using this font.</returns>
-        public abstract Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count)
+        public abstract Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count, Boolean rtl = false)
             where TSource : IStringSource<ShapedChar>;
 
         /// <summary>
@@ -214,16 +220,18 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// </summary>
         /// <param name="text">The shaped text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureShapedGlyph(ShapedString text, Int32 ix);
+        public abstract Size2 MeasureShapedGlyph(ShapedString text, Int32 ix, Boolean rtl = false);
 
         /// <summary>
         /// Measures the specified glyph in a shaped string, taking kerning into account.
         /// </summary>
         /// <param name="text">The shaped text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix);
+        public abstract Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix, Boolean rtl = false);
 
         /// <summary>
         /// Measures the specified glyph in a shaped string, taking kerning into account.
@@ -231,8 +239,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <typeparam name="TSource">The type of string source which represents the shaped text to measure.</typeparam>
         /// <param name="source">The shaped text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix)
+        public abstract Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix, Boolean rtl = false)
             where TSource : IStringSource<ShapedChar>;
 
         /// <summary>
@@ -262,8 +271,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
         /// <param name="glyphIndex2">The glyph index of the glyph that comes immediately after the glyph being measured.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2)
+        public abstract Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2, Boolean rtl = false)
             where TSource : IStringSource<ShapedChar>;
 
         /// <summary>
@@ -290,8 +300,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <typeparam name="TSource">The type of string source which represents the shaped text to measure.</typeparam>
         /// <param name="text">The shaped text that contains the glyph to measure.</param>
         /// <param name="ix">The index of the glyph to measure.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The size of the specified glyph.</returns>
-        public abstract Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix)
+        public abstract Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix, Boolean rtl = false)
             where TSource : IStringSource<ShapedChar>;
 
         /// <summary>
@@ -371,8 +382,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="ix1">The index of the first glyph in the pair to evaluate.</param>
         /// <param name="text2">The shaped string source that contains the second glyph in the pair.</param>
         /// <param name="ix2">The index of the second glyph in the pair to evaluate.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The kerning offset for the specified glyph pair.</returns>
-        public abstract Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2)
+        public abstract Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2, Boolean rtl = false)
             where TSource1 : IStringSource<ShapedChar>
             where TSource2 : IStringSource<ShapedChar>;
 
@@ -403,8 +415,9 @@ namespace Ultraviolet.Graphics.Graphics2D
         /// <param name="text">The shaped string source that contains the glyph pair.</param>
         /// <param name="ix">The index of the first glyph in the pair to evaluate.</param>
         /// <param name="glyphIndex2">The glyph index of the second glyph in the pair to evaluate.</param>
+        /// <param name="rtl">A value indicating whether to reverse the order in which glyphs are accessed.</param>
         /// <returns>The kerning offset for the specified glyph pair.</returns>
-        public abstract Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2)
+        public abstract Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2, Boolean rtl = false)
             where TSource : IStringSource<ShapedChar>;
 
         /// <summary>

@@ -194,27 +194,27 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedString text) =>
-            MeasureShapedString(ref text, 0, text.Length);
+        public override Size2 MeasureShapedString(ShapedString text, Boolean rtl = false) =>
+            MeasureShapedString(ref text, 0, text.Length, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count) =>
-            MeasureShapedString(ref text, start, count);
+        public override Size2 MeasureShapedString(ShapedString text, Int32 start, Int32 count, Boolean rtl = false) =>
+            MeasureShapedString(ref text, start, count, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedStringBuilder text) =>
-            MeasureShapedString(ref text, 0, text.Length);
+        public override Size2 MeasureShapedString(ShapedStringBuilder text, Boolean rtl = false) =>
+            MeasureShapedString(ref text, 0, text.Length, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count) =>
-            MeasureShapedString(ref text, start, count);
+        public override Size2 MeasureShapedString(ShapedStringBuilder text, Int32 start, Int32 count, Boolean rtl = false) =>
+            MeasureShapedString(ref text, start, count, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString<TSource>(ref TSource text) =>
-            MeasureShapedString(ref text, 0, text.Length);
+        public override Size2 MeasureShapedString<TSource>(ref TSource text, Boolean rtl = false) =>
+            MeasureShapedString(ref text, 0, text.Length, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count)
+        public override Size2 MeasureShapedString<TSource>(ref TSource text, Int32 start, Int32 count, Boolean rtl = false)
         {
             if (count == 0)
                 return Size2.Zero;
@@ -228,7 +228,7 @@ namespace Ultraviolet.FreeType2
 
             for (var i = 0; i < count; i++)
             {
-                var sc = text[i];
+                var sc = text[rtl ? (text.Length - 1) - i : i];
                 switch (sc.GetSpecialCharacter())
                 {
                     case '\n':
@@ -303,17 +303,17 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph(ShapedString text, Int32 ix) =>
-            MeasureShapedGlyph(ref text, ix);
+        public override Size2 MeasureShapedGlyph(ShapedString text, Int32 ix, Boolean rtl = false) =>
+            MeasureShapedGlyph(ref text, ix, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix) =>
-            MeasureShapedGlyph(ref text, ix);
+        public override Size2 MeasureShapedGlyph(ShapedStringBuilder text, Int32 ix, Boolean rtl = false) =>
+            MeasureShapedGlyph(ref text, ix, rtl);
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix)
+        public override Size2 MeasureShapedGlyph<TSource>(ref TSource source, Int32 ix, Boolean rtl = false)
         {
-            var sc = source[ix];
+            var sc = source[rtl ? (source.Length - 1) - ix : ix];
             switch (sc.GetSpecialCharacter())
             {
                 case '\n':
@@ -346,8 +346,8 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2) =>
-            new Size2(text[ix].Advance, totalDesignHeight);
+        public override Size2 MeasureShapedGlyphWithHypotheticalKerning<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2, Boolean rtl = false) =>
+            new Size2(text[rtl ? (text.Length - 1) - ix : ix].Advance, totalDesignHeight);
 
         /// <inheritdoc/>
         public override Size2 MeasureGlyphWithoutKerning(ref StringSegment text, Int32 ix)
@@ -367,8 +367,8 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix) =>
-            new Size2(text[ix].Advance, totalDesignHeight);
+        public override Size2 MeasureShapedGlyphWithoutKerning<TSource>(ref TSource text, Int32 ix, Boolean rtl = false) =>
+            new Size2(text[rtl ? (text.Length - 1) - ix : ix].Advance, totalDesignHeight);
 
         /// <inheritdoc/>
         public override Size2 GetKerningInfoByGlyphIndex(Int32 glyphIndex1, Int32 glyphIndex2)
@@ -481,7 +481,7 @@ namespace Ultraviolet.FreeType2
         public override Size2 GetShapedKerningInfo<TSource>(ref TSource text, Int32 ix) => Size2.Zero;
 
         /// <inheritdoc/>
-        public override Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2) => Size2.Zero;
+        public override Size2 GetShapedKerningInfo<TSource1, TSource2>(ref TSource1 text1, Int32 ix1, ref TSource2 text2, Int32 ix2, Boolean rtl = false) => Size2.Zero;
 
         /// <inheritdoc/>
         public override Size2 GetHypotheticalKerningInfo(ref StringSegment text, Int32 ix, Int32 c2)
@@ -498,7 +498,7 @@ namespace Ultraviolet.FreeType2
         }
 
         /// <inheritdoc/>
-        public override Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2) => Size2.Zero;
+        public override Size2 GetHypotheticalShapedKerningInfo<TSource>(ref TSource text, Int32 ix, Int32 glyphIndex2, Boolean rtl = false) => Size2.Zero;
 
         /// <inheritdoc/>
         public override Boolean ContainsGlyph(Int32 c) =>

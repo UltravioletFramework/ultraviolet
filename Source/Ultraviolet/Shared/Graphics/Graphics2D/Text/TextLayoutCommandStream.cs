@@ -144,7 +144,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             }
 
             var result = new LineInfo(this, index, StreamPositionInObjects, lineOffsetInSource, lineOffsetInGlyphs, lineInfo->Offset, blockOffset + linePosition, 
-                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
+                lineInfo->LineWidth, lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs, lineInfo->TerminatingLineBreakSourceLength);
 
             if (acquiredPointers)
                 ReleasePointers();
@@ -196,7 +196,7 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 previous.OffsetInSource + previous.LengthInSource,
                 previous.OffsetInGlyphs + previous.LengthInGlyphs,
                 lineInfo->Offset, previous.Y + previous.Height, lineInfo->LineWidth, 
-                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs);
+                lineInfo->LineHeight, lineInfo->LengthInCommands, lineInfo->LengthInSource, lineInfo->LengthInGlyphs, lineInfo->TerminatingLineBreakSourceLength);
             
             if (acquiredPointers)
                 ReleasePointers();
@@ -249,6 +249,20 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         public void SeekEnd()
         {
             Seek(Count);
+        }
+
+        /// <summary>
+        /// Moves the stream to the previous command.
+        /// </summary>
+        /// <returns><see langword="true"/> if the stream was able to seek to the previous command; otherwise, <see langword="false"/>.</returns>
+        public Boolean SeekPreviousCommand()
+        {
+            if (InternalObjectStream.PositionInObjects > 0)
+            {
+                InternalObjectStream.RawSeekBackward();
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -583,8 +597,9 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
             Bounds = default(Rectangle);
             ActualWidth = 0;
             ActualHeight = 0;
-            TotalSourceLength = 0;
             TotalGlyphLength = 0;
+            TotalSourceLength = 0;
+            TotalShapedLength = 0;
             LineCount = 0;
 
             HasMultipleFontStyles = false;
@@ -1136,6 +1151,15 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
         /// Gets the total length of the laid-out text in source characters.
         /// </summary>
         public Int32 TotalSourceLength
+        {
+            get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the total length of the laid-out text in shaped characters.
+        /// </summary>
+        public Int32 TotalShapedLength
         {
             get;
             internal set;
