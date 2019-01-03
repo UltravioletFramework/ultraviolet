@@ -8,6 +8,7 @@ namespace Ultraviolet.Presentation.Documents
     /// <summary>
     /// Represents an element which draws text.
     /// </summary>
+    [UvmlKnownType]
     public abstract class TextElement : FrameworkElement
     {
         /// <summary>
@@ -98,28 +99,28 @@ namespace Ultraviolet.Presentation.Documents
         /// </summary>
         /// <value>The identifier for the <see cref="Font"/> dependency property.</value>
         public static readonly DependencyProperty FontProperty = DependencyProperty.RegisterAttached("Font", typeof(SourcedResource<UltravioletFont>), typeof(TextElement),
-            new PropertyMetadata<SourcedResource<UltravioletFont>>(null, PropertyMetadataOptions.AffectsMeasure, HandleFontChanged));
+            new PropertyMetadata<SourcedResource<UltravioletFont>>(null, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.Inherits, HandleFontChanged));
 
         /// <summary>
         /// Identifies the <see cref="FontStyle"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="FontStyle"/> dependency property.</value>
         public static readonly DependencyProperty FontStyleProperty = DependencyProperty.RegisterAttached("FontStyle", typeof(UltravioletFontStyle), typeof(TextElement),
-           new PropertyMetadata<UltravioletFontStyle>(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure));
+           new PropertyMetadata<UltravioletFontStyle>(UltravioletBoxedValues.SpriteFontStyle.Regular, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// Identifies the <see cref="Background"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Background"/> dependency property.</value>
         public static readonly DependencyProperty BackgroundProperty = DependencyProperty.RegisterAttached("Background", typeof(Color), typeof(TextElement),
-            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White));
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.White, PropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// Identifies the <see cref="Foreground"/> dependency property.
         /// </summary>
         /// <value>The identifier for the <see cref="Foreground"/> dependency property.</value>
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.RegisterAttached("Foreground", typeof(Color), typeof(TextElement),
-            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black));
+            new PropertyMetadata<Color>(UltravioletBoxedValues.Color.Black, PropertyMetadataOptions.Inherits));
 
         /// <inheritdoc/>
         protected override void ReloadContentOverride(Boolean recursive)

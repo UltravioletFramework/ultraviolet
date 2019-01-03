@@ -2,6 +2,7 @@
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
 using Ultraviolet.Input;
+using Ultraviolet.Presentation.Documents;
 using Ultraviolet.Presentation.Input;
 using Ultraviolet.Presentation.Media;
 
@@ -196,8 +197,6 @@ namespace Ultraviolet.Presentation.Controls
         /// <inheritdoc/>
         protected override void CacheLayoutParametersOverride()
         {
-            containingControl = FindContainingControl();
-
             DigestDataBoundContentProperties();
 
             base.CacheLayoutParametersOverride();
@@ -206,7 +205,8 @@ namespace Ultraviolet.Presentation.Controls
         /// <inheritdoc/>
         protected override void UpdateOverride(UltravioletTime time)
         {
-            if (textLayoutCommands != null && textLayoutCommands.Settings.Font != (UltravioletFont)containingControl?.Font)
+            var font = GetValue<SourcedResource<UltravioletFont>>(TextElement.FontProperty);
+            if (textLayoutCommands != null && textLayoutCommands.Settings.Font != font.Resource?.Value)
             {
                 InvalidateMeasure();
             }
@@ -216,13 +216,14 @@ namespace Ultraviolet.Presentation.Controls
         /// <inheritdoc/>
         protected override void DrawOverride(UltravioletTime time, DrawingContext dc)
         {
-            if (textLayoutCommands != null && textLayoutCommands.Count > 0 && containingControl != null)
+            if (textLayoutCommands != null && textLayoutCommands.Count > 0)
             {
+                var foreground = GetValue<Color>(TextElement.ForegroundProperty);
                 var positionRaw = Display.DipsToPixels(UntransformedAbsolutePosition + ContentOffset);
                 var positionX = dc.IsTransformed ? positionRaw.X : Math.Floor(positionRaw.X);
                 var positionY = dc.IsTransformed ? positionRaw.Y : Math.Floor(positionRaw.Y);
                 var position = new Vector2((Single)positionX, (Single)positionY);
-                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, position, containingControl.Foreground * dc.Opacity);
+                View.Resources.TextRenderer.Draw((SpriteBatch)dc, textLayoutCommands, position, foreground * dc.Opacity);
             }
 
             base.DrawOverride(time, dc);
@@ -256,9 +257,10 @@ namespace Ultraviolet.Presentation.Controls
             {
                 if (textParserResult == null || textParserResult.Count == 0)
                 {
-                    if (containingControl != null && containingControl.Font.IsLoaded)
+                    var font = GetValue<SourcedResource<UltravioletFont>>(TextElement.FontProperty);
+                    if (font.IsLoaded)
                     {
-                        var lineSpacing = containingControl.Font.Resource.Value.Regular.LineSpacing;
+                        var lineSpacing = font.Resource.Value.Regular.LineSpacing;
                         return new Size2D(0, Math.Min(availableSize.Height, Display.PixelsToDips(lineSpacing)));
                     }
                     return Size2D.Zero;
@@ -403,31 +405,7 @@ namespace Ultraviolet.Presentation.Controls
             presenter.Position(presenter.MostRecentPositionOffset);
             presenter.PositionChildren();
         }
-
-        /// <summary>
-        /// Finds the <see cref="Control"/> which contains the content presenter - either the template parent, if
-        /// it has one, or the nearest ancestor in the logical tree of type <see cref="Control"/>.
-        /// </summary>
-        private Control FindContainingControl()
-        {
-            var container = TemplatedParent as Control;
-            if (containingControl == null)
-            {
-                var current = LogicalTreeHelper.GetParent(this);
-                while (current != null)
-                {
-                    var control = current as Control;
-                    if (control != null)
-                    {
-                        container = control;
-                        break;
-                    }
-                    current = LogicalTreeHelper.GetParent(current);
-                }
-            }
-            return container;
-        }
-
+        
         /// <summary>
         /// Updates the cache which contains the element's parsed text.
         /// </summary>
@@ -473,7 +451,7 @@ namespace Ultraviolet.Presentation.Controls
             if (textLayoutCommands != null)
                 textLayoutCommands.Clear();
 
-            if (View == null || containingControl == null)
+            if (View == null)
                 return;
 
             var content = Content;
@@ -484,23 +462,24 @@ namespace Ultraviolet.Presentation.Controls
                 if (textLayoutCommands == null)
                     textLayoutCommands = new TextLayoutCommandStream();
 
-                var font = containingControl.Font;
+                var font = GetValue<SourcedResource<UltravioletFont>>(TextElement.FontProperty);
+                var fontStyle = GetValue<UltravioletFontStyle>(TextElement.FontStyleProperty);
                 if (font.IsLoaded)
                 {
                     var availableSizeInPixels = Display.DipsToPixels(availableSize);
 
                     var cursorpos = textLayoutCommands.CursorPosition;
 
-                    var textRenderingMode = TextOptions.GetTextRenderingMode(containingControl);
-                    var textScript = TextOptions.GetTextScript(containingControl);
-                    var textLanguage = TextOptions.GetTextLanguage(containingControl);
-                    var textDirection = containingControl.FlowDirection == FlowDirection.RightToLeft ? TextDirection.RightToLeft : TextDirection.LeftToRight;
+                    var textRenderingMode = TextOptions.GetTextRenderingMode(this);
+                    var textScript = TextOptions.GetTextScript(this);
+                    var textLanguage = TextOptions.GetTextLanguage(this);
+                    var textDirection = FlowDirection == FlowDirection.RightToLeft ? TextDirection.RightToLeft : TextDirection.LeftToRight;
 
                     var options = (textRenderingMode == TextRenderingMode.Shaped) ? TextLayoutOptions.Shape : TextLayoutOptions.None;
                     var flags = LayoutUtil.ConvertAlignmentsToTextFlags(HorizontalAlignment, VerticalAlignment);
                     var settings = new TextLayoutSettings(font,
                         (Int32)Math.Ceiling(availableSizeInPixels.Width),
-                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, options, textDirection, textScript, containingControl.FontStyle, null, textLanguage);
+                        (Int32)Math.Ceiling(availableSizeInPixels.Height), flags, options, textDirection, textScript, fontStyle, null, textLanguage);
 
                     View.Resources.TextRenderer.CalculateLayout(textParserResult, textLayoutCommands, settings);
                     View.Resources.TextRenderer.UpdateCursor(textLayoutCommands, cursorpos);
@@ -520,9 +499,6 @@ namespace Ultraviolet.Presentation.Controls
 
         // Cached parser/layout results for content text.
         private TextParserTokenStream textParserResult;
-        private TextLayoutCommandStream textLayoutCommands;
-
-        // Cached layout parameters.
-        private Control containingControl;
+        private TextLayoutCommandStream textLayoutCommands;        
     }
 }

@@ -14,10 +14,10 @@ View
 // GLOBAL SETTINGS
 // ============================================================================
  
-*
+document
 {
-    font: #Global:Fonts:DefaultUI;
-    foreground: #ffffffff;
+    TextElement.font: #Global:Fonts:DefaultUI;
+    TextElement.foreground: #ffffffff;
 }
 
 // ============================================================================
