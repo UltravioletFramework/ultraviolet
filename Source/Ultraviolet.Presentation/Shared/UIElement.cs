@@ -828,6 +828,7 @@ namespace Ultraviolet.Presentation
                 if (parent != value)
                 {
                     parent = value;
+                    InvalidateInheritanceCache();
                     OnLogicalParentChanged();
                 }
             }

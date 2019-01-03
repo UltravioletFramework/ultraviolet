@@ -350,6 +350,36 @@ namespace Ultraviolet.Presentation
         }
 
         /// <summary>
+        /// Invalidates the cached inherited values for all of this object's dependency properties.
+        /// </summary>
+        public void InvalidateInheritanceCache()
+        {
+            foreach (var dp in dependencyPropertyValues)
+                dp.InvalidateInheritanceCache();
+
+            Media.VisualTreeHelper.ForEachChild(this, null, (child, state) =>
+            {
+                child.InvalidateInheritanceCache();
+            });
+        }
+
+        /// <summary>
+        /// Invalidates the cached inherited values for the specified dependency property.
+        /// </summary>
+        /// <param name="dp">A <see cref="DependencyProperty"/> instance that identifies the dependency property to invalidate.</param>
+        public void InvalidateInheritanceCache(DependencyProperty dp)
+        {
+            var dpValue = GetDependencyPropertyValue(dp, dp.PropertyType, false);
+            if (dpValue != null)
+                dpValue.InvalidateInheritanceCache();
+
+            Media.VisualTreeHelper.ForEachChild(this, dp, (child, state) =>
+            {
+                child.InvalidateInheritanceCache((DependencyProperty)state);
+            });
+        }
+
+        /// <summary>
         /// Gets the value of the specified dependency property, without regard for its type.
         /// </summary>
         /// <param name="dp">A <see cref="DependencyProperty"/> instance which identifies the dependency property for which to retrieve a value.</param>
