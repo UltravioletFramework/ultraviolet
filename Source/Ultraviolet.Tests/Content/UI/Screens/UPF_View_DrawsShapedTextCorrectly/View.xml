@@ -1,36 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_View_DrawsShapedTextCorrectly_VM, Ultraviolet.Tests">
+  <View FlowDirection="RightToLeft" ViewModelType="Ultraviolet.Tests.UI.Presentation.Screens.UPF_View_DrawsShapedTextCorrectly_VM, Ultraviolet.Tests">
 
-    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Text="مرحبا بالعالم" FlowDirection="RightToLeft">
+    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Text="مرحبا بالعالم">
       <TextBlock.Font>#Global:FreeTypeFonts:FiraGO</TextBlock.Font>
       <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
       <TextOptions.TextScript>Arabic</TextOptions.TextScript>
       <TextOptions.TextLanguage>ar</TextOptions.TextLanguage>
     </TextBlock>
 
-    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Text="مرحبا بالعالم" FlowDirection="RightToLeft">
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Text="مرحبا بالعالم">
       <TextBlock.Font>#Global:FreeTypeFonts:FiraGO</TextBlock.Font>
       <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
       <TextOptions.TextScript>Arabic</TextOptions.TextScript>
       <TextOptions.TextLanguage>ar</TextOptions.TextLanguage>
     </TextBlock>
 
-    <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="مرحبا بالعالم" FlowDirection="RightToLeft">
+    <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="مرحبا بالعالم">
       <Button.Font>#Global:FreeTypeFonts:FiraGO</Button.Font>
       <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
       <TextOptions.TextScript>Arabic</TextOptions.TextScript>
       <TextOptions.TextLanguage>ar</TextOptions.TextLanguage>
     </Button>
 
-    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="مرحبا بالعالم" FlowDirection="RightToLeft">
+    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="مرحبا بالعالم">
       <TextBlock.Font>#Global:FreeTypeFonts:FiraGO</TextBlock.Font>
       <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
       <TextOptions.TextScript>Arabic</TextOptions.TextScript>
       <TextOptions.TextLanguage>ar</TextOptions.TextLanguage>
     </TextBlock>
 
-    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="مرحبا بالعالم" FlowDirection="RightToLeft">
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="مرحبا بالعالم">
       <TextBlock.Font>#Global:FreeTypeFonts:FiraGO</TextBlock.Font>
       <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
       <TextOptions.TextScript>Arabic</TextOptions.TextScript>
