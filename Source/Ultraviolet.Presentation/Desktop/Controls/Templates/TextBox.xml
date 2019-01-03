@@ -10,7 +10,6 @@
       <ScrollViewer Class="textbox-scrollviewer"
                     ContentMargin="{{Padding}}"
                     ContentClipped="true"
-                    FlowDirection="{{FlowDirection}}"
                     HorizontalScrollBarVisibility="{{HorizontalScrollBarVisibility}}"
                     VerticalScrollBarVisibility="{{VerticalScrollBarVisibility}}">
 

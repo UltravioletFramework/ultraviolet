@@ -426,7 +426,7 @@ namespace Ultraviolet.Presentation
         /// </summary>
         /// <remarks>The styling name of this dependency property is 'flow-direction'.</remarks>
         public static readonly DependencyProperty FlowDirectionProperty = DependencyProperty.RegisterAttached("FlowDirection", typeof(FlowDirection), typeof(FrameworkElement),
-            new PropertyMetadata<FlowDirection>(FlowDirection.LeftToRight, PropertyMetadataOptions.AffectsArrange));
+            new PropertyMetadata<FlowDirection>(FlowDirection.LeftToRight, PropertyMetadataOptions.AffectsArrange | PropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// Identifies the <see cref="LayoutTransform"/> dependency property.
