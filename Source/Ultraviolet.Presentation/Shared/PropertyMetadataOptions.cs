@@ -14,7 +14,7 @@ namespace Ultraviolet.Presentation
         None = 0,
 
         /// <summary>
-        /// The dependency property's value is inherited from its container.
+        /// The dependency property's value is inherited from its ancestors.
         /// </summary>
         Inherits = 1,
 

@@ -29,7 +29,7 @@ namespace Ultraviolet.Presentation
                 this.owner = owner;
                 this.property = property;
                 this.comparer = BindingExpressions.GetComparisonFunction(typeof(T));
-                this.metadata = property.GetMetadataForOwner(owner.GetType());                
+                this.metadata = property.GetMetadataForOwner(owner.GetType());
                 this.flags = DependencyPropertyValueFlags.None;
                 this.defaultValue = (T)(metadata.DefaultValue ?? default(T));
 
@@ -39,6 +39,9 @@ namespace Ultraviolet.Presentation
                     flags |= DependencyPropertyValueFlags.IsReferenceType;
                 if (typeof(T).IsValueType)
                     flags |= DependencyPropertyValueFlags.IsValueType;
+
+                if (metadata.IsInherited)
+                    this.useDefaultValue = false;
 
                 if (metadata.HasDefaultValue && IsCoerced)
                 {
@@ -259,6 +262,12 @@ namespace Ultraviolet.Presentation
             }
 
             /// <inheritdoc/>
+            public void InvalidateInheritanceCache()
+            {
+                useCachedInheritedValue = false;
+            }
+
+            /// <inheritdoc/>
             public void ClearAnimation()
             {
                 var oldValue = GetValue();
@@ -290,7 +299,7 @@ namespace Ultraviolet.Presentation
                 HasLocalValue = false;
 
                 UpdateRequiresDigest(oldValue);
-                
+
                 this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
@@ -302,7 +311,7 @@ namespace Ultraviolet.Presentation
                 HasStyledValue = false;
 
                 UpdateRequiresDigest(oldValue);
-                
+
                 this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
@@ -315,7 +324,7 @@ namespace Ultraviolet.Presentation
                 triggeredValueSource = null;
 
                 UpdateRequiresDigest(oldValue);
-                
+
                 this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
@@ -328,7 +337,7 @@ namespace Ultraviolet.Presentation
                     return;
 
                 ClearTriggeredValue();
-                
+
                 this.useDefaultValue = GetValueSource() == ValueSource.DefaultValue;
             }
 
@@ -346,7 +355,7 @@ namespace Ultraviolet.Presentation
             {
                 return GetValue();
             }
-            
+
             /// <summary>
             /// Sets the dependency property's value.
             /// </summary>
@@ -424,7 +433,7 @@ namespace Ultraviolet.Presentation
             public T DefaultValue
             {
                 get { return defaultValue; }
-                set 
+                set
                 {
                     var oldValue = GetValue();
 
@@ -526,6 +535,12 @@ namespace Ultraviolet.Presentation
             public Boolean IsCoerced
             {
                 get { return metadata.CoerceValueCallback != null; }
+            }
+
+            /// <inheritdoc/>
+            public Boolean IsInherited
+            {
+                get { return metadata.IsInherited; }
             }
 
             /// <inheritdoc/>
@@ -758,6 +773,9 @@ namespace Ultraviolet.Presentation
             /// <param name="newValue">The dependency property's new value.</param>
             private void HandleChanged(T oldValue, T newValue)
             {
+                if (IsInherited)
+                    Owner?.InvalidateInheritanceCache(property);
+
                 if (IsDeferringChangeEvents())
                 {
                     IsPendingChangeEvent = true;
@@ -1118,9 +1136,38 @@ namespace Ultraviolet.Presentation
                     return styledValue;
 
                 if (metadata.IsInherited && Owner.DependencyContainer != null)
-                    return Owner.DependencyContainer.GetValue<T>(Property);
+                {
+                    if (FindInheritedValue(out var inheritedValue))
+                    {
+                        useCachedInheritedValue = true;
+                        inheritedValueCache = inheritedValue;
+                        return inheritedValue;
+                    }
+                }
 
                 return defaultValue;
+            }
+
+            /// <summary>
+            /// Gets the value of an inherited property.
+            /// </summary>
+            private Boolean FindInheritedValue(out T value)
+            {
+                if (useCachedInheritedValue)
+                {
+                    value = inheritedValueCache;
+                    return true;
+                }
+
+                var current = LogicalTreeHelper.GetParent(Owner);
+                while (current != null)
+                {
+                    value = current.GetValue<T>(property);
+                    return true;
+                }
+
+                value = default(T);
+                return false;
             }
 
             /// <summary>
@@ -1166,7 +1213,7 @@ namespace Ultraviolet.Presentation
                 if (HasStyledValue)
                     return ValueSource.StyledValue;
 
-                if (metadata.IsInherited && Owner.DependencyContainer != null)
+                if (IsInherited)
                     return ValueSource.InheritedValue;
 
                 return ValueSource.DefaultValue;
@@ -1178,6 +1225,7 @@ namespace Ultraviolet.Presentation
             private readonly PropertyMetadata metadata;
             private DependencyPropertyValueFlags flags;
             private Boolean useDefaultValue = true;
+            private Boolean useCachedInheritedValue;
             private Int64 lastChangedDigestCycleID;
             private T localValue;
             private T styledValue;
@@ -1185,6 +1233,7 @@ namespace Ultraviolet.Presentation
             private T previousValue;
             private T coercedValue;
             private T triggeredValue;
+            private T inheritedValueCache;
             private Object wrappedResource;
             private SetTriggerAction triggeredValueSource;
 

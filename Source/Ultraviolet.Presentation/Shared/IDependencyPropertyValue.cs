@@ -88,6 +88,11 @@ namespace Ultraviolet.Presentation
         void InvalidateDisplayCache();
 
         /// <summary>
+        /// Invalidates the cached inherited value of the dependency property.
+        /// </summary>
+        void InvalidateInheritanceCache();
+
+        /// <summary>
         /// Removes the property's current animation, if it has one.
         /// </summary>
         void ClearAnimation();
@@ -213,6 +218,14 @@ namespace Ultraviolet.Presentation
         /// Gets a value indicating whether the dependency property is being coerced.
         /// </summary>
         Boolean IsCoerced
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the dependency property is inherited.
+        /// </summary>
+        Boolean IsInherited
         {
             get;
         }
