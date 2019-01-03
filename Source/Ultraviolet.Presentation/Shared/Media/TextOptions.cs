@@ -98,12 +98,12 @@ namespace Ultraviolet.Presentation.Media
         /// <dprop>
         ///     <dpropField><see cref="TextRenderingModeProperty"/></dpropField>
         ///     <dpropStylingName>text-rendering-mode</dpropStylingName>
-        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.AffectsArrange"/>, <see cref="PropertyMetadataOptions.Inherits"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty TextRenderingModeProperty = DependencyProperty.RegisterAttached("TextRenderingMode", typeof(TextRenderingMode), typeof(TextOptions),
-            new PropertyMetadata<TextRenderingMode>(TextRenderingMode.Auto, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.AffectsArrange));
+            new PropertyMetadata<TextRenderingMode>(TextRenderingMode.Auto, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.AffectsArrange | PropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// Identifies the <see cref="P:Ultraviolet.Presentation.FrameworkElement.TextScript"/>
@@ -121,12 +121,12 @@ namespace Ultraviolet.Presentation.Media
         /// <dprop>
         ///     <dpropField><see cref="TextScriptProperty"/></dpropField>
         ///     <dpropStylingName>text-script</dpropStylingName>
-        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.AffectsArrange"/>, <see cref="PropertyMetadataOptions.Inherits"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty TextScriptProperty = DependencyProperty.RegisterAttached("TextScript", typeof(TextScript), typeof(TextOptions),
-            new PropertyMetadata<String>(TextScript.Latin, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.AffectsArrange));
+            new PropertyMetadata<String>(TextScript.Latin, PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.AffectsArrange | PropertyMetadataOptions.Inherits));
 
         /// <summary>
         /// Identifies the <see cref="P:Ultraviolet.Presentation.FrameworkElement.TextLanguage"/>
@@ -144,11 +144,11 @@ namespace Ultraviolet.Presentation.Media
         /// <dprop>
         ///     <dpropField><see cref="TextLanguageProperty"/></dpropField>
         ///     <dpropStylingName>text-language</dpropStylingName>
-        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.AffectsArrange"/></dpropMetadata>
+        ///     <dpropMetadata><see cref="PropertyMetadataOptions.AffectsMeasure"/>, <see cref="PropertyMetadataOptions.AffectsArrange"/>, <see cref="PropertyMetadataOptions.Inherits"/></dpropMetadata>
         /// </dprop>
         /// </remarks>
         /// </AttachedPropertyComments>
         public static readonly DependencyProperty TextLanguageProperty = DependencyProperty.RegisterAttached("TextLanguage", typeof(String), typeof(TextOptions),
-            new PropertyMetadata<String>("en", PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.AffectsArrange));
+            new PropertyMetadata<String>("en", PropertyMetadataOptions.AffectsMeasure | PropertyMetadataOptions.AffectsArrange | PropertyMetadataOptions.Inherits));
     }
 }
