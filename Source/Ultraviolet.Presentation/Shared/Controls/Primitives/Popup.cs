@@ -508,7 +508,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
                     popup.UpdatePopupStyle(popup.MostRecentStyleSheet);
                     popup.UpdatePopupMeasure();
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
         /// <param name="styleSheet">The style sheet to apply to the popup content.</param>
         private void UpdatePopupStyle(UvssDocument styleSheet)
         {
-            if (!IsOpen || styleSheet == null)
+            if (styleSheet == null)
             {
                 stylesNeedUpdate = true;
                 return;
@@ -602,6 +602,7 @@ namespace Ultraviolet.Presentation.Controls.Primitives
 
             root.InvalidateStyle(true);
             root.Style(MostRecentStyleSheet);
+            root.InvalidateInheritanceCache();
 
             stylesNeedUpdate = false;
         }
