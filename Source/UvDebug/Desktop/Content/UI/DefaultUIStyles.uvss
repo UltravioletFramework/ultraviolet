@@ -14,10 +14,10 @@ View
 // GLOBAL SETTINGS
 // ============================================================================
  
-*
+document
 {
-    font: #Global:FreeTypeFonts:Inconsolata;
-    foreground: #ffffffff;
+    TextElement.font: #Global:FreeTypeFonts:Inconsolata;
+    TextElement.foreground: #ffffffff;
 }
 
 // ============================================================================
