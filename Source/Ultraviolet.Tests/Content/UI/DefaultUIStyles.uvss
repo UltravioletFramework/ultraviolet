@@ -588,9 +588,9 @@ ComboBox! >> ContentPresenter!
 
 @combobox-to-open
 {
-    target Control (*:storyboard-root)
+    target Control (*:storyboard-root >> .combobox-content)
     {	
-        animation foreground
+        animation TextElement.foreground
         {
             keyframe 0 { #ffacb3bf }
         }
@@ -598,9 +598,9 @@ ComboBox! >> ContentPresenter!
 }
 @combobox-to-closed
 {
-    target Control (*:storyboard-root)
+    target Control (*:storyboard-root >> .combobox-content)
     {	
-        animation foreground
+        animation TextElement.foreground
         {
             keyframe 0 { }
         }
