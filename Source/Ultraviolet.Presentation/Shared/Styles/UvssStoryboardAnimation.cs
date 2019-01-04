@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ultraviolet.Presentation.Styles
+﻿namespace Ultraviolet.Presentation.Styles
 {
     /// <summary>
     /// Represents an Ultraviolet Style Sheet document's representation of a storyboard animation.
@@ -13,40 +11,26 @@ namespace Ultraviolet.Presentation.Styles
         /// <param name="animatedProperty">The name of the animated property.</param>
         /// <param name="navigationExpression">The animated property's navigation expression.</param>
         /// <param name="keyframes">The animation's collection of keyframes.</param>
-        internal UvssStoryboardAnimation(String animatedProperty, UvssNavigationExpression navigationExpression, UvssStoryboardKeyframeCollection keyframes)
+        internal UvssStoryboardAnimation(DependencyName animatedProperty, UvssNavigationExpression navigationExpression, UvssStoryboardKeyframeCollection keyframes)
         {
-            this.animatedProperty     = animatedProperty;
-            this.navigationExpression = navigationExpression;
-            this.keyframes            = keyframes;
+            this.AnimatedProperty = animatedProperty;
+            this.NavigationExpression = navigationExpression;
+            this.Keyframes = keyframes;
         }
-
+        
         /// <summary>
         /// Gets the name of the animated dependency property.
         /// </summary>
-        public String AnimatedProperty
-        {
-            get { return animatedProperty; }
-        }
+        public DependencyName AnimatedProperty { get; }
 
         /// <summary>
         /// Gets the animation's navigation expression, if it has one.
         /// </summary>
-        public UvssNavigationExpression NavigationExpression
-        {
-            get { return navigationExpression; }
-        }
+        public UvssNavigationExpression NavigationExpression { get; }
 
         /// <summary>
         /// Gets the animation's collection of keyframes.
         /// </summary>
-        public UvssStoryboardKeyframeCollection Keyframes
-        {
-            get { return keyframes; }
-        }
-
-        // Property values.
-        private readonly String animatedProperty;
-        private readonly UvssNavigationExpression navigationExpression;
-        private readonly UvssStoryboardKeyframeCollection keyframes;
+        public UvssStoryboardKeyframeCollection Keyframes { get; }
     }
 }

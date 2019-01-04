@@ -539,7 +539,7 @@ namespace Ultraviolet.Presentation.Styles
         private static UvssStoryboardAnimation CompileStoryboardAnimation(UvssAnimationSyntax node, CultureInfo culture)
         {
             var animatedProperty =
-                GetPropertyName(node.PropertyName);
+                new DependencyName(GetPropertyName(node.PropertyName));
             
             var navigationExpression = node.NavigationExpression == null ? null :
                 CompileNavigationExpression(node.NavigationExpression);

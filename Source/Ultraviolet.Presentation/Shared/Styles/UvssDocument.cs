@@ -342,8 +342,25 @@ namespace Ultraviolet.Presentation.Styles
 
             foreach (var animationDefinition in targetDefinition.Animations)
             {
-                var animatedPropertyName = animationDefinition.AnimatedProperty;
-                var animatedPropertyType = ResolvePropertyTypeFromFilter(Ultraviolet, targetDefinition.Filter, ref animatedPropertyName);
+                var ownerType = default(Type);
+                if (animationDefinition.AnimatedProperty.IsAttached)
+                    PresentationFoundation.Instance.GetKnownType(animationDefinition.AnimatedProperty.Owner, out ownerType);
+
+                var animatedPropertyName = animationDefinition.AnimatedProperty.Name;
+                var animatedPropertyType = default(Type);
+                if (animationDefinition.AnimatedProperty.IsAttached)
+                {
+                    var dp = DependencyPropertySystem.FindByStylingName(animatedPropertyName, ownerType);
+                    if (dp != null)
+                    {
+                        animatedPropertyType = dp.PropertyType;
+                        animatedPropertyName = dp.Name;
+                    }
+                }
+                else
+                {
+                    animatedPropertyType = ResolvePropertyTypeFromFilter(Ultraviolet, targetDefinition.Filter, ref animatedPropertyName);
+                }
 
                 var navigationExpression = default(NavigationExpression?);
                 var navigationExpressionDef = animationDefinition.NavigationExpression;
@@ -355,7 +372,9 @@ namespace Ultraviolet.Presentation.Styles
                     navigationExpression = NavigationExpression.FromUvssNavigationExpression(Ultraviolet, navigationExpressionDef);
                 }
 
-                var animationKey = new StoryboardTargetAnimationKey(new DependencyName(animatedPropertyName), navigationExpression);
+                var animationDependencyName = new DependencyName(animationDefinition.AnimatedProperty.IsAttached ? 
+                    $"{animationDefinition.AnimatedProperty.Owner}.{animatedPropertyName}" : animatedPropertyName);
+                var animationKey = new StoryboardTargetAnimationKey(animationDependencyName, navigationExpression);
                 var animation = InstantiateStoryboardAnimation(animationDefinition, animatedPropertyType);
                 if (animation != null)
                 {
