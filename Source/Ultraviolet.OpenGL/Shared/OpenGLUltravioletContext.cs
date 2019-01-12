@@ -231,8 +231,17 @@ namespace Ultraviolet.OpenGL
             if (versionRequested != null && versionRequested < versionRequired)
                 versionRequested = versionRequired;
 
-            if (versionRequested == null && isGLES)
-                versionRequested = Platform == UltravioletPlatform.Android ? new Version(2, 0) : new Version(3, 0);
+            if (versionRequested == null)
+            {
+                if (isGLES)
+                {
+                    versionRequested = Platform == UltravioletPlatform.Android ? new Version(2, 0) : new Version(3, 0);
+                }
+                else
+                {
+                    versionRequested = new Version(4, 5);
+                }
+            }
         }
 
         /// <summary>
