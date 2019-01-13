@@ -46,13 +46,10 @@ namespace Ultraviolet.OpenGL
             if (!InitSDL(configuration))
                 throw new SDL2Exception();
 
-            var isGLEs = false;
-            var versionRequested = default(Version);
-            var versionRequired = default(Version);
-            InitOpenGLVersion(configuration, out versionRequested, out versionRequired, out isGLEs);
+            InitOpenGLVersion(configuration, out var versionRequested, out var versionRequired, out var isGLEs);
 
             if (!configuration.EnableServiceMode)
-                InitOpenGLAttributes(configuration, versionRequested, versionRequired, isGLEs);
+                InitOpenGLAttributes(configuration, isGLEs);
 
             var sdlAssembly = typeof(SDLNative).Assembly;
             InitializeFactoryMethodsInAssembly(sdlAssembly);
@@ -74,7 +71,7 @@ namespace Ultraviolet.OpenGL
             }
             else
             {
-                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested ?? versionRequired, versionRequired);
+                this.graphics = new OpenGLUltravioletGraphics(this, configuration, versionRequested, versionRequired);
                 ((OpenGLUltravioletGraphics)this.graphics).ResetDeviceStates();
                 this.audio = InitializeAudioSubsystem(configuration);
                 this.input = new SDL2UltravioletInput(this);
@@ -228,45 +225,20 @@ namespace Ultraviolet.OpenGL
 
             versionRequired = isGLES ? new Version(2, 0) : new Version(3, 1);
             versionRequested = isGLES ? configuration.MinimumOpenGLESVersion : configuration.MinimumOpenGLVersion;
+
             if (versionRequested != null && versionRequested < versionRequired)
                 versionRequested = versionRequired;
-
-            if (versionRequested == null)
-            {
-                if (isGLES)
-                {
-                    versionRequested = Platform == UltravioletPlatform.Android ? new Version(2, 0) : new Version(3, 0);
-                }
-                else
-                {
-                    versionRequested = new Version(4, 5);
-                }
-            }
         }
 
         /// <summary>
         /// Sets the SDL2 attributes which correspond to the application's OpenGL settings.
         /// </summary>
-        private void InitOpenGLAttributes(OpenGLUltravioletConfiguration configuration, 
-            Version versionRequested, Version versionRequired, Boolean isGLES)
+        private void InitOpenGLAttributes(OpenGLUltravioletConfiguration configuration, Boolean isGLES)
         {
             var profile = isGLES ? SDL_GL_CONTEXT_PROFILE_ES : SDL_GL_CONTEXT_PROFILE_CORE;
 
             if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, (Int32)profile) < 0)
                 throw new SDL2Exception();
-
-            // NOTE: Asking for an ES 3.0 context in the emulator will return a valid
-            // context pointer, but actually using it will cause segfaults. It seems like
-            // the best thing to do on Android is just not ask for a specific version,
-            // and trust the OS to give you the highest version it supports.
-            if (Platform != UltravioletPlatform.Android && versionRequested != null)
-            {
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionRequested.Major) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionRequested.Minor) < 0)
-                    throw new SDL2Exception();
-            }
 
             if (SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, configuration.BackBufferDepthSize) < 0)
                 throw new SDL2Exception();

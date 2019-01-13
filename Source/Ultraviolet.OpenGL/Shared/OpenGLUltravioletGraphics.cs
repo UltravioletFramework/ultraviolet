@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Ultraviolet.Core;
@@ -28,50 +29,30 @@ namespace Ultraviolet.OpenGL
         public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested, Version versionRequired)
             : base(uv)
         {
-            var initialVersionMajor = 0;
-            var initialVersionMinor = 0;
-            if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &initialVersionMajor) < 0)
-                throw new SDL2Exception();
-            if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &initialVersionMinor) < 0)
-                throw new SDL2Exception();
-            
-            var initialVersion = new Version(initialVersionMajor, initialVersionMinor);
-            if (initialVersion < versionRequired)
-            {
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionRequired.Major) < 0)
-                    throw new SDL2Exception();
+            var isGLES = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
 
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionRequired.Minor) < 0)
-                    throw new SDL2Exception();
-            }
+            if (configuration.Debug)
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, (int)SDL_GL_CONTEXT_DEBUG_FLAG);
 
             var masterptr = ((SDL2UltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
-            if (!TryInitializeGLContext(masterptr, configuration))
+            var versionArray = isGLES ? KnownOpenGLESVersions : KnownOpenGLVersions;
+            var versionMin = versionRequested ?? versionRequired;
+            var versionCurrent = versionRequested ?? versionArray[0];
+            var versionCurrentIndex = Array.IndexOf(versionArray, versionCurrent);
+            do
             {
-                var attemptedVersionMajor = 0;
-                var attemptedVersionMinor = 0;
+                if (versionCurrent < versionMin)
+                    throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(versionMin.Major, versionMin.Minor));
 
-                if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &attemptedVersionMajor) < 0)
-                    throw new SDL2Exception();
-                if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &attemptedVersionMinor) < 0)
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionCurrent.Major) < 0)
                     throw new SDL2Exception();
 
-                var attemptedVersion = new Version(attemptedVersionMajor, attemptedVersionMinor, 0, 0);
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionCurrent.Minor) < 0)
+                    throw new SDL2Exception();
 
-                var isGLES = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
-                if (isGLES && attemptedVersion >= new Version(3, 0) && (configuration.MinimumOpenGLESVersion ?? new Version(2, 0)) <= new Version(2, 0))
-                {
-                    if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2) < 0)
-                        throw new SDL2Exception();
-
-                    if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0) < 0)
-                        throw new SDL2Exception();
-
-                    if (!TryInitializeGLContext(masterptr, configuration))
-                        throw new SDL2Exception();
-                }
-                else throw new SDL2Exception();
+                versionCurrent = versionArray[++versionCurrentIndex];
             }
+            while ((this.context = SDL_GL_CreateContext(masterptr)) == IntPtr.Zero);
 
             if (SDL_GL_SetSwapInterval(1) < 0 && uv.Platform != UltravioletPlatform.iOS)
                 throw new SDL2Exception();
@@ -82,7 +63,7 @@ namespace Ultraviolet.OpenGL
             }
             gl.Initialize(new OpenGLInitializer());
             
-            if (!gl.IsVersionAtLeast(versionRequested))
+            if (!gl.IsVersionAtLeast(versionRequested ?? versionRequired))
                 throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(gl.MajorVersion, gl.MinorVersion, versionRequested.Major, versionRequested.Minor));
             
             OpenGLState.ResetCache();
@@ -934,29 +915,6 @@ namespace Ultraviolet.OpenGL
         }
 
         /// <summary>
-        /// Attempts to initialize the OpenGL context with the specified configuration.
-        /// </summary>
-        private Boolean TryInitializeGLContext(IntPtr masterptr, OpenGLUltravioletConfiguration configuration)
-        {
-            if (configuration.Debug)
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, (int)SDL_GL_CONTEXT_DEBUG_FLAG);
-
-            if ((this.context = SDL_GL_CreateContext(masterptr)) == IntPtr.Zero)
-            {
-                if (configuration.Debug)
-                {
-                    if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0) < 0)
-                        throw new SDL2Exception();
-
-                    if ((this.context = SDL_GL_CreateContext(masterptr)) != IntPtr.Zero)
-                        return true;
-                }
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Initializes debug output for this context.
         /// </summary>
         /// <param name="configuration">The Ultraviolet Framework configuration settings for the current context.</param>
@@ -1074,6 +1032,31 @@ namespace Ultraviolet.OpenGL
                 }
             }
         }
+
+        // Known versions of OpenGL in descending order.
+        private static readonly Version[] KnownOpenGLVersions = new[]
+        {
+            new Version(4, 6),
+            new Version(4, 5),
+            new Version(4, 4),
+            new Version(4, 3),
+            new Version(4, 2),
+            new Version(4, 1),
+            new Version(4, 0),
+            new Version(3, 3),
+            new Version(3, 2),
+            new Version(3, 1),
+            new Version(1, 0),
+        };
+
+        // Known versions of OpenGL ES in descending order.
+        private static readonly Version[] KnownOpenGLESVersions = new[]
+        {
+            new Version(3, 1),
+            new Version(3, 0),
+            new Version(2, 0),
+            new Version(1, 0),
+        };
 
         // Device state.
         private IntPtr context;
