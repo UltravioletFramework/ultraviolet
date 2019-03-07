@@ -2,7 +2,7 @@
 
 namespace Ultraviolet
 {
-    partial class UltravioletHostCore
+    partial class UltravioletTimingLogic
     {
         private static class Win32Native
         {

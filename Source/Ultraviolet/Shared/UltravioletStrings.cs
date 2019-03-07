@@ -153,6 +153,7 @@ namespace Ultraviolet
         public static readonly StringResource EncodingSpecifiedForNonColorBuffer   = new StringResource(StringDatabase, "ENCODING_SPECIFIED_FOR_NON_COLOR_BUFFER");
         public static readonly StringResource UnsupportedTextDirection             = new StringResource(StringDatabase, "UNSUPPORTED_TEXT_DIRECTION");
         public static readonly StringResource TextShaperNotRegistered              = new StringResource(StringDatabase, "TEXT_SHAPER_NOT_REGISTERED");
+        public static readonly StringResource InvalidTimingLogic                   = new StringResource(StringDatabase, "INVALID_TIMING_LOGIC");
 #pragma warning restore 1591
     }
 }

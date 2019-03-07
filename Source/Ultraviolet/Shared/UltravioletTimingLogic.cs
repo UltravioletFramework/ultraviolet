@@ -8,13 +8,13 @@ namespace Ultraviolet
     /// <summary>
     /// Contains core functionality for Ultraviolet host processes.
     /// </summary>
-    public sealed partial class UltravioletHostCore : IUltravioletComponent
+    public sealed partial class UltravioletTimingLogic : IUltravioletTimingLogic
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UltravioletHostCore"/> class.
+        /// Initializes a new instance of the <see cref="UltravioletTimingLogic"/> class.
         /// </summary>
         /// <param name="host">The Ultraviolet host.</param>
-        public UltravioletHostCore(IUltravioletHost host)
+        public UltravioletTimingLogic(IUltravioletHost host)
         {
             Contract.Require(host, nameof(host));
 
@@ -22,10 +22,7 @@ namespace Ultraviolet
             this.tickTimer.Start();
         }
 
-        /// <summary>
-        /// Resets the timers used to determine how much time has passed since the last calls
-        /// to <see cref="UltravioletContext.Draw"/> and <see cref="UltravioletContext.Update"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void ResetElapsed()
         {
             tickTimer.Restart();
@@ -35,9 +32,7 @@ namespace Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Advances the application state while the application is suspended.
-        /// </summary>
+        /// <inheritdoc/>
         public void RunOneTickSuspended()
         {
             var uv = host.Ultraviolet;
@@ -51,9 +46,7 @@ namespace Ultraviolet
             }
         }
 
-        /// <summary>
-        /// Advances the application state by one tick.
-        /// </summary>
+        /// <inheritdoc/>
         public void RunOneTick()
         {
             var uv = host.Ultraviolet;
@@ -146,9 +139,7 @@ namespace Ultraviolet
             uv.HandleFrameEnd();
         }
 
-        /// <summary>
-        /// Cleans up any state after the application has finished its run loop.
-        /// </summary>
+        /// <inheritdoc/>
         public void Cleanup()
         {
             if (Ultraviolet.Platform == UltravioletPlatform.Windows)
@@ -175,28 +166,19 @@ namespace Ultraviolet
         /// </summary>
         public static Boolean DefaultIsFixedTimeStep { get; } = true;
 
-        /// <summary>
-        /// Gets the Ultraviolet context.
-        /// </summary>
+        /// <inheritdoc/>
         public UltravioletContext Ultraviolet
         {
             get { return host.Ultraviolet; }
         }
 
-        /// <summary>
-        /// Gets or sets the target time between frames when the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan TargetElapsedTime { get; set; } = DefaultTargetElapsedTime;
 
-        /// <summary>
-        /// Gets or sets the amount of time to sleep every frame when
-        /// the application's primary window is inactive.
-        /// </summary>
+        /// <inheritdoc/>
         public TimeSpan InactiveSleepTime { get; set; } = DefaultInactiveSleepTime;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the application is running on a fixed time step.
-        /// </summary>
+        /// <inheritdoc/>
         public Boolean IsFixedTimeStep { get; set; } = DefaultIsFixedTimeStep;
 
         /// <summary>
