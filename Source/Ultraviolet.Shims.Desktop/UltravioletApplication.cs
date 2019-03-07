@@ -71,16 +71,16 @@ namespace Ultraviolet
             {
                 if (IsSuspended)
                 {
-                    hostcore.RunOneTickSuspended();
+                    timingLogic.RunOneTickSuspended();
                 }
                 else
                 {
-                    hostcore.RunOneTick();
+                    timingLogic.RunOneTick();
                 }
                 Thread.Yield();
             }
 
-            hostcore.Cleanup();
+            timingLogic.Cleanup();
 
             uv.WaitForPendingTasks(true);
         }
@@ -183,9 +183,9 @@ namespace Ultraviolet
                 Contract.EnsureNotDisposed(this, disposed);
 
                 this.isFixedTimeStep = value;
-                if (hostcore != null)
+                if (timingLogic != null)
                 {
-                    hostcore.IsFixedTimeStep = value;
+                    timingLogic.IsFixedTimeStep = value;
                 }
             }
         }
@@ -205,9 +205,9 @@ namespace Ultraviolet
                 Contract.EnsureRange(value.TotalMilliseconds >= 0, nameof(value));
 
                 this.targetElapsedTime = value;
-                if (hostcore != null)
+                if (timingLogic != null)
                 {
-                    hostcore.TargetElapsedTime = value;
+                    timingLogic.TargetElapsedTime = value;
                 }
             }
         }
@@ -226,9 +226,9 @@ namespace Ultraviolet
                 Contract.EnsureNotDisposed(this, disposed);
 
                 this.inactiveSleepTime = value;
-                if (hostcore != null)
+                if (timingLogic != null)
                 {
-                    hostcore.InactiveSleepTime = value;
+                    timingLogic.InactiveSleepTime = value;
                 }
             }
         }
@@ -268,7 +268,7 @@ namespace Ultraviolet
                         uv.WindowDrawing -= uv_WindowDrawing;
                         uv.WindowDrawn -= uv_WindowDrawn;
 
-                        hostcore = null;
+                        timingLogic = null;
                     }
                     disposed = true;
                 }
@@ -422,7 +422,7 @@ namespace Ultraviolet
             }
             else if (type == UltravioletMessages.ApplicationResumed)
             {
-                hostcore?.ResetElapsed();
+                timingLogic?.ResetElapsed();
 
                 lock (stateSyncObject)
                     suspended = false;
@@ -444,6 +444,18 @@ namespace Ultraviolet
                     running = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates the timing logic for this host process.
+        /// </summary>
+        protected virtual IUltravioletTimingLogic CreateTimingLogic()
+        {
+            var timingLogic = new UltravioletTimingLogic(this);
+            timingLogic.IsFixedTimeStep = this.IsFixedTimeStep;
+            timingLogic.TargetElapsedTime = this.TargetElapsedTime;
+            timingLogic.InactiveSleepTime = this.InactiveSleepTime;
+            return timingLogic;
         }
 
         /// <summary>
@@ -579,7 +591,9 @@ namespace Ultraviolet
 
             ApplySettings();
 
-            CreateUltravioletHostCore();
+            this.timingLogic = CreateTimingLogic();
+            if (this.timingLogic == null)
+                throw new InvalidOperationException(UltravioletStrings.InvalidTimingLogic);
 
             this.uv.Messages.Subscribe(this, 
                 UltravioletMessages.ApplicationTerminating,
@@ -601,17 +615,6 @@ namespace Ultraviolet
             this.created = true;
 
             InitializeContext();
-        }
-
-        /// <summary>
-        /// Creates the Ultraviolet host core for this host process.
-        /// </summary>
-        private void CreateUltravioletHostCore()
-        {
-            hostcore = new UltravioletHostCore(this);
-            hostcore.IsFixedTimeStep = this.IsFixedTimeStep;
-            hostcore.TargetElapsedTime = this.TargetElapsedTime;
-            hostcore.InactiveSleepTime = this.InactiveSleepTime;
         }
 
         /// <summary>
@@ -720,7 +723,7 @@ namespace Ultraviolet
 
         // State values.
         private readonly Object stateSyncObject = new Object();
-        private UltravioletHostCore hostcore;
+        private IUltravioletTimingLogic timingLogic;
         private Boolean created;
         private Boolean running;
         private Boolean suspended;
@@ -728,9 +731,9 @@ namespace Ultraviolet
         private IUltravioletWindow primary;
 
         // The application's tick state.
-        private Boolean isFixedTimeStep = UltravioletHostCore.DefaultIsFixedTimeStep;
-        private TimeSpan targetElapsedTime = UltravioletHostCore.DefaultTargetElapsedTime;
-        private TimeSpan inactiveSleepTime = UltravioletHostCore.DefaultInactiveSleepTime;
+        private Boolean isFixedTimeStep = UltravioletTimingLogic.DefaultIsFixedTimeStep;
+        private TimeSpan targetElapsedTime = UltravioletTimingLogic.DefaultTargetElapsedTime;
+        private TimeSpan inactiveSleepTime = UltravioletTimingLogic.DefaultInactiveSleepTime;
 
         // The application's name.
         private String company;

@@ -635,4 +635,9 @@
       <Variant>Text shaping was requested, but no text shaper is registered with this layout engine.</Variant>
     </en-US>
   </String>
+  <String Key="INVALID_TIMING_LOGIC">
+    <en-US>
+      <Variant>The Ultraviolet host provided invalid timing logic. Make sure the CreateTimingLogic() method returns a non-null value.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>
