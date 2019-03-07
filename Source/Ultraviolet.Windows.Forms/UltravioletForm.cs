@@ -133,9 +133,9 @@ namespace Ultraviolet.Windows.Forms
                 Contract.EnsureNotDisposed(this, IsDisposed);
 
                 this.isFixedTimeStep = value;
-                if (hostcore != null)
+                if (timingLogic != null)
                 {
-                    hostcore.IsFixedTimeStep = value;
+                    timingLogic.IsFixedTimeStep = value;
                 }
             }
         }
@@ -155,9 +155,9 @@ namespace Ultraviolet.Windows.Forms
                 Contract.EnsureRange(value.TotalMilliseconds >= 0, nameof(value));
 
                 this.targetElapsedTime = value;
-                if (hostcore != null)
+                if (timingLogic != null)
                 {
-                    hostcore.TargetElapsedTime = value;
+                    timingLogic.TargetElapsedTime = value;
                 }
             }
         }
@@ -176,9 +176,9 @@ namespace Ultraviolet.Windows.Forms
                 Contract.EnsureNotDisposed(this, IsDisposed);
 
                 this.inactiveSleepTime = value;
-                if (hostcore != null)
+                if (timingLogic != null)
                 {
-                    hostcore.InactiveSleepTime = value;
+                    timingLogic.InactiveSleepTime = value;
                 }
             }
         }
@@ -243,7 +243,7 @@ namespace Ultraviolet.Windows.Forms
             {
                 Application.Idle -= Application_Idle;
 
-                hostcore.Cleanup();
+                timingLogic.Cleanup();
 
                 if (uv != null)
                     uv.WaitForPendingTasks(true);
@@ -262,7 +262,7 @@ namespace Ultraviolet.Windows.Forms
                 SafeDispose.Dispose(components);
                 SafeDispose.Dispose(uv);
 
-                hostcore = null;
+                timingLogic = null;
             }
             base.Dispose(disposing);
         }
@@ -281,7 +281,9 @@ namespace Ultraviolet.Windows.Forms
             if (uv == null)
                 throw new InvalidOperationException(UltravioletStrings.ContextNotCreated);
 
-            InitializeUltravioletHostCore();
+            this.timingLogic = CreateTimingLogic();
+            if (this.timingLogic == null)
+                throw new InvalidOperationException(UltravioletStrings.InvalidTimingLogic);
 
             uv.Updating += uv_Updating;
             uv.Shutdown += uv_Shutdown;
@@ -296,12 +298,13 @@ namespace Ultraviolet.Windows.Forms
         /// <summary>
         /// Creates the Ultraviolet host core for this host process.
         /// </summary>
-        private void InitializeUltravioletHostCore()
+        protected virtual IUltravioletTimingLogic CreateTimingLogic()
         {
-            hostcore = new UltravioletHostCore(this);
-            hostcore.IsFixedTimeStep = this.IsFixedTimeStep;
-            hostcore.TargetElapsedTime = this.TargetElapsedTime;
-            hostcore.InactiveSleepTime = this.InactiveSleepTime;
+            var timingLogic = new UltravioletTimingLogic(this);
+            timingLogic.IsFixedTimeStep = this.IsFixedTimeStep;
+            timingLogic.TargetElapsedTime = this.TargetElapsedTime;
+            timingLogic.InactiveSleepTime = this.InactiveSleepTime;
+            return timingLogic;
         }
 
         /// <summary>
@@ -326,7 +329,7 @@ namespace Ultraviolet.Windows.Forms
         /// </summary>
         private void Tick()
         {
-            hostcore.RunOneTick();
+            timingLogic.RunOneTick();
         }
 
         /// <summary>
@@ -349,11 +352,11 @@ namespace Ultraviolet.Windows.Forms
 
         // The Ultraviolet context.
         private UltravioletContext uv;
-        private UltravioletHostCore hostcore;
+        private IUltravioletTimingLogic timingLogic;
 
         // The application's tick state.
-        private Boolean isFixedTimeStep = UltravioletHostCore.DefaultIsFixedTimeStep;
-        private TimeSpan targetElapsedTime = UltravioletHostCore.DefaultTargetElapsedTime;
-        private TimeSpan inactiveSleepTime = UltravioletHostCore.DefaultInactiveSleepTime;
+        private Boolean isFixedTimeStep = UltravioletTimingLogic.DefaultIsFixedTimeStep;
+        private TimeSpan targetElapsedTime = UltravioletTimingLogic.DefaultTargetElapsedTime;
+        private TimeSpan inactiveSleepTime = UltravioletTimingLogic.DefaultInactiveSleepTime;
     }
 }
