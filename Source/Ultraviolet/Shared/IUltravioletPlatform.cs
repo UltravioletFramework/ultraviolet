@@ -18,37 +18,29 @@ namespace Ultraviolet
         void ShowMessageBox(MessageBoxType type, String title, String message, IUltravioletWindow parent = null);
 
         /// <summary>
+        /// Gets or sets a value indicating whether the mouse cursor is visible.
+        /// </summary>
+        Boolean IsCursorVisible { get; set; }
+
+        /// <summary>
         /// Gets or sets the current cursor.
         /// </summary>
         /// <remarks>Setting this property to <see langword="null"/> will restore the default cursor.</remarks>
-        Cursor Cursor
-        {
-            get;
-            set;
-        }
+        Cursor Cursor { get; set; }
 
         /// <summary>
         /// Gets the system clipboard manager.
         /// </summary>
-        ClipboardService Clipboard
-        {
-            get;
-        }
+        ClipboardService Clipboard { get; }
 
         /// <summary>
         /// Gets the window information manager.
         /// </summary>
-        IUltravioletWindowInfo Windows
-        {
-            get;
-        }
+        IUltravioletWindowInfo Windows { get; }
 
         /// <summary>
         /// Gets the display information manager.
         /// </summary>
-        IUltravioletDisplayInfo Displays
-        {
-            get;
-        }
+        IUltravioletDisplayInfo Displays { get; }
     }
 }

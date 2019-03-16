@@ -31,6 +31,10 @@ namespace Ultraviolet.SDL2.Native
         private static readonly NativeLibrary lib = new NativeLibrary(
             UltravioletPlatformInfo.CurrentPlatform == UltravioletPlatform.Windows ? "SDL2" : "libSDL2");
 #endif
+
+        public const Int32 SDL_QUERY = -1;
+        public const Int32 SDL_DISABLE = 0;
+        public const Int32 SDL_ENABLE = 1;
                 
 #if ANDROID || IOS
         [DllImport(LIBRARY, EntryPoint="SDL_GetError", CallingConvention = CallingConvention.Cdecl)]
