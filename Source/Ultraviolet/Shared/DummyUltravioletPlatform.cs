@@ -36,6 +36,13 @@ namespace Ultraviolet
         }
 
         /// <inheritdoc/>
+        public Boolean IsCursorVisible
+        {
+            get { return false; }
+            set { }
+        }
+
+        /// <inheritdoc/>
         public Cursor Cursor
         {
             get { return null; }

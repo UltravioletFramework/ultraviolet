@@ -25,6 +25,7 @@ namespace Ultraviolet.SDL2
             this.messageBoxService = MessageBoxService.Create();
             this.windows = new SDL2UltravioletWindowInfoOpenGL(uv, uvconfig, sdlconfig);
             this.displays = new SDL2UltravioletDisplayInfo(uv);
+            this.isCursorVisible = SDL_ShowCursor(SDL_QUERY) != 0;
         }
 
         /// <inheritdoc/>
@@ -48,6 +49,23 @@ namespace Ultraviolet.SDL2
 
             var window = (parent == null) ? IntPtr.Zero : (IntPtr)((SDL2UltravioletWindow)parent);
             messageBoxService.ShowMessageBox(type, title, message, window);
+        }
+
+        /// <inheritdoc/>
+        public Boolean IsCursorVisible
+        {
+            get { return isCursorVisible; }
+            set
+            {
+                if (value != isCursorVisible)
+                {
+                    var result = SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
+                    if (result < 0)
+                        throw new SDL2Exception();
+
+                    isCursorVisible = SDL_ShowCursor(SDL_QUERY) != 0;
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -105,6 +123,7 @@ namespace Ultraviolet.SDL2
             Updating?.Invoke(this, time);
 
         // Property values.
+        private Boolean isCursorVisible = true;
         private Cursor cursor;
         private readonly ClipboardService clipboard;
         private readonly MessageBoxService messageBoxService;
