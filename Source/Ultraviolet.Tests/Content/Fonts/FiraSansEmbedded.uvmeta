@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AssetMetadata>
+  <Asset>Fonts/FiraSans-Regular.ttf</Asset>
+  <ImporterMetadata>
+    <BoldFace>FiraSans-Bold.ttf</BoldFace>
+    <ItalicFace>FiraSans-Italic.ttf</ItalicFace>
+    <BoldItalicFace>FiraSans-BoldItalic.ttf</BoldItalicFace>
+  </ImporterMetadata>
+  <ProcessorMetadata>
+    <SizeInPoints>32</SizeInPoints>
+  </ProcessorMetadata>
+</AssetMetadata>

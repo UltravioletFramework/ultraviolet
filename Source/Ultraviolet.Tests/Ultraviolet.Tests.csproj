@@ -168,6 +168,7 @@
     <Compile Include="BoundingBoxTests.cs" />
     <Compile Include="BoundingSphereTests.cs" />
     <Content Include="Content\Fonts\Noto-LICENSE.txt" />
+    <Compile Include="Content\ContentManagerTests.cs" />
     <Compile Include="Graphics\ColorEncoding.cs" />
     <Compile Include="Graphics\EffectTests.cs" />
     <Compile Include="Graphics\Graphics2D\FontKind.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="CircleTests.cs" />
     <Compile Include="Size2Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Content\Fonts\FiraSansEmbedded.uvmeta" />
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderSprites_WhenUsingCustomVertexElementNames.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
