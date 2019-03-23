@@ -69,7 +69,7 @@ namespace Ultraviolet.Presentation.Compiler
             var dir = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             var exe = Path.Combine(dir, "nuget.exe");
 
-            var args = String.IsNullOrEmpty(version) ? $"install {packageID}" : $"install {packageID} -Version {version}";
+            var args = String.IsNullOrEmpty(version) ? $"install {packageID} -Source nuget.org" : $"install {packageID} -Source nuget.org -Version {version}";
             var proc = new Process()
             {
                 StartInfo = new ProcessStartInfo()
@@ -83,11 +83,11 @@ namespace Ultraviolet.Presentation.Compiler
                 }
             };
             proc.Start();
-            proc.WaitForExit();
+            var exited = proc.WaitForExit((Int32)TimeSpan.FromMinutes(5).TotalSeconds);
 
             Debug.WriteLine("done.");
 
-            return proc.ExitCode == 0;
+            return exited && proc.ExitCode == 0;
         }
 
         /// <summary>
