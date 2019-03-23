@@ -63,7 +63,7 @@ namespace Ultraviolet.Content
             if (dependency == null)
                 return null;
 
-            if (metadata.AssetPath == null)
+            if (metadata.AssetFilePath == null)
                 return dependency;
 
             return ContentManager.NormalizeAssetPath(Path.Combine(Path.GetDirectoryName(metadata.AssetFilePath), dependency));

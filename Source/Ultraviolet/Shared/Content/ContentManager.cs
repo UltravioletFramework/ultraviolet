@@ -1079,11 +1079,13 @@ namespace Ultraviolet.Content
             var primaryDisplay = Ultraviolet.GetPlatform().Displays.PrimaryDisplay;
             var primaryDisplayDensity = primaryDisplay.DensityBucket;
 
-            var path = String.Format("__STREAM.{0}", extension);
+            var filename = GetStreamFakeFilename(extension);
+            var metadata = CreateMetadataFromStream(ref stream, filename, null, false, true, false, primaryDisplayDensity);
+            
             var importerOutputType = typeof(TOutput);
-            var importer = FindContentImporter(path, ref importerOutputType);
+            var importer = FindContentImporter(metadata.AssetFileName, ref importerOutputType);
 
-            return (TOutput)importer.Import(AssetMetadata.CreateStreamMetadata(primaryDisplayDensity), stream);
+            return (TOutput)ImportFromStreamOrFile(importer, metadata, stream);
         }
 
         /// <summary>
@@ -1098,12 +1100,14 @@ namespace Ultraviolet.Content
         {
             Contract.Require(stream, nameof(stream));
             Contract.EnsureNotDisposed(this, Disposed);
-            
-            var path = String.Format("__STREAM.{0}", extension);
-            var importerOutputType = typeof(TOutput);
-            var importer = FindContentImporter(path, ref importerOutputType);
 
-            return (TOutput)importer.Import(AssetMetadata.CreateStreamMetadata(density), stream);
+            var filename = GetStreamFakeFilename(extension);
+            var metadata = CreateMetadataFromStream(ref stream, filename, null, false, true, false, density);
+
+            var importerOutputType = typeof(TOutput);
+            var importer = FindContentImporter(metadata.AssetFileName, ref importerOutputType);
+
+            return (TOutput)ImportFromStreamOrFile(importer, metadata, stream);
         }
 
         /// <summary>
@@ -1962,12 +1966,31 @@ namespace Ultraviolet.Content
         }
 
         /// <summary>
+        /// Imports the contents of the specified stream, if given; otherwise, imports the contents
+        /// of the file at the path represented by the specified asset metadata.
+        /// </summary>
+        private Object ImportFromStreamOrFile(IContentImporter importer, AssetMetadata metadata, Stream stream)
+        {
+            if (stream != null)
+            {
+                return importer.Import(metadata, stream);
+            }
+            else
+            {
+                using (stream = fileSystemService.OpenRead(metadata.AssetFilePath))
+                {
+                    return importer.Import(metadata, stream);
+                }
+            }
+        }
+
+        /// <summary>
         /// Imports the specified asset, but does not process it.
         /// </summary>
         private Object ImportInternal(String asset, ScreenDensityBucket density, Boolean fromsln, ref Type outputType)
         {
             var metadata = GetAssetMetadata(asset, density, false, true, fromsln);
-            var importer = FindContentImporter(metadata.AssetFilePath, ref outputType);
+            var importer = FindContentImporter(metadata.AssetFileName, ref outputType);
 
             using (var stream = fileSystemService.OpenRead(metadata.AssetFilePath))
             {
@@ -1980,19 +2003,20 @@ namespace Ultraviolet.Content
         /// </summary>
         private Object LoadInternalFromStream(Type type, Stream stream, String extension, ScreenDensityBucket density)
         {
-            var filename = String.Format("__STREAM.{0}", extension);
-            var importerOutputType = type;
-            var importer = FindContentImporter(filename, ref importerOutputType);
+            var filename = GetStreamFakeFilename(extension);
+            var metadata = CreateMetadataFromStream(ref stream, filename, null, false, true, false, density);
 
-            var intermediate = importer.Import(AssetMetadata.CreateStreamMetadata(density, null, null), stream);
+            var importerOutputType = type;
+            var importer = FindContentImporter(metadata.AssetFileName, ref importerOutputType);
+            var intermediate = ImportFromStreamOrFile(importer, metadata, stream);
+
             try
             {
                 if (intermediate == null)
                     throw new InvalidOperationException(UltravioletStrings.ImporterOutputInvalid.Format(filename));
 
-                var processor = FindContentProcessor(filename, importerOutputType, type);
-
-                return processor.Process(this, AssetMetadata.CreateStreamMetadata(density, null, null), intermediate);
+                var processor = FindContentProcessor(metadata.AssetFileName, importerOutputType, type);
+                return processor.Process(this, metadata, intermediate);
             }
             finally
             {
@@ -2010,7 +2034,7 @@ namespace Ultraviolet.Content
         private Object LoadInternalRaw(Type type, String asset, AssetMetadata metadata, ScreenDensityBucket density, out IContentImporter importer, out IContentProcessor processor)
         {
             var importerOutputType = type;
-            importer = FindContentImporter(metadata.AssetFilePath, ref importerOutputType);
+            importer = FindContentImporter(metadata.AssetFileName, ref importerOutputType);
 
             var intermediate = default(Object);
             try
@@ -2212,12 +2236,20 @@ namespace Ultraviolet.Content
         /// <returns><see langword="true"/> if the specified file contains asset metadata; otherwise, <see langword="false"/>.</returns>
         private Boolean IsMetadataFile(String filename, out String extension)
         {
-            extension = Path.GetExtension(filename);
+            extension = Path.GetExtension(filename)?.ToLowerInvariant();
             return
                 extension == MetadataFileExtensionXml ||
                 extension == MetadataFileExtensionJson;
         }
-        
+
+        /// <summary>
+        /// Gets the fake filename which is appears in the metadata object for a stream.
+        /// </summary>
+        private String GetStreamFakeFilename(String extension)
+        {
+            return extension?[0] == '.' ? $"__STREAM{extension}" : $"__STREAM.{extension}";
+        }
+
         /// <summary>
         /// Attempts to find the directory that contains the application solution file, if 
         /// we have reason to believe that we're running in debug mode.
@@ -2477,10 +2509,31 @@ namespace Ultraviolet.Content
         /// </summary>
         private AssetMetadata CreateMetadataFromFile(String asset, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln, ScreenDensityBucket density)
         {
-            String extension;
-            if (IsMetadataFile(filename, out extension) && includeDetailedMetadata)
+            var source = (Object)asset;
+            return CreateMetadataFromSource(ref source, filename, rootdir, overridden, includeDetailedMetadata, fromsln, density);
+        }
+
+        /// <summary>
+        /// Creates an asset metadata object from the specified stream.
+        /// </summary>
+        private AssetMetadata CreateMetadataFromStream(ref Stream stream, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln, ScreenDensityBucket density)
+        {
+            var source = (Object)stream;
+            var result = CreateMetadataFromSource(ref source, filename, rootdir, overridden, includeDetailedMetadata, fromsln, density);
+            stream = (Stream)source;
+            return result;
+        }
+
+        /// <summary>
+        /// Creates an asset metadata object from the specified source object.
+        /// </summary>
+        private AssetMetadata CreateMetadataFromSource(ref Object source, String filename, String rootdir, Boolean overridden, Boolean includeDetailedMetadata, Boolean fromsln, ScreenDensityBucket density)
+        {
+            var isStream = (source is Stream);
+
+            if (IsMetadataFile(filename, out var extension) && includeDetailedMetadata)
             {
-                var isJson = false;
+                var isJson = (extension == MetadataFileExtensionJson);
 
                 var wrappedFilename = default(String);
                 var wrappedAssetPath = default(String);
@@ -2488,36 +2541,54 @@ namespace Ultraviolet.Content
                 var importerMetadata = default(Object);
                 var processorMetadata = default(Object);
 
-                if (extension == MetadataFileExtensionXml)
+                if (isJson)
+                {
+                    var json = default(JObject);
+                    if (isStream)
+                    {
+                        using (var sreader = new StreamReader((Stream)source, Encoding.UTF8, false, 1024, true))
+                        using (var jreader = new JsonTextReader(sreader))
+                        {
+                            json = (JObject)JToken.ReadFrom(jreader);
+                        }
+                    }
+                    else
+                    {
+                        using (var stream = fileSystemService.OpenRead(filename))
+                        using (var sreader = new StreamReader(stream))
+                        using (var jreader = new JsonTextReader(sreader))
+                        {
+                            json = (JObject)JToken.ReadFrom(jreader);
+                        }
+                    }
+
+                    wrappedFilename = json["asset"].Value<String>();
+                    importerMetadata = (JObject)json["importerMetadata"];
+                    processorMetadata = (JObject)json["processorMetadata"];
+                }
+                else
                 {
                     var xml = default(XDocument);
-                    using (var stream = fileSystemService.OpenRead(filename))
-                        xml = XDocument.Load(stream);
+                    if (isStream)
+                    {
+                        xml = XDocument.Load((Stream)source);
+                    }
+                    else
+                    {
+                        using (var stream = fileSystemService.OpenRead(filename))
+                            xml = XDocument.Load(stream);
+                    }
 
                     wrappedFilename = xml.Root.ElementValueString("Asset");
                     importerMetadata = xml.Root.Element("ImporterMetadata");
                     processorMetadata = xml.Root.Element("ProcessorMetadata");
-                }
-                else
-                {
-                    using (var stream = fileSystemService.OpenRead(filename))
-                    using (var sreader = new StreamReader(stream))
-                    using (var jreader = new JsonTextReader(sreader))
-                    {
-                        var json = (JObject)JToken.ReadFrom(jreader);
-                        isJson = true;
-
-                        wrappedFilename = json["asset"].Value<String>();
-                        importerMetadata = (JObject)json["importerMetadata"];
-                        processorMetadata = (JObject)json["processorMetadata"];
-                    }
                 }
 
                 if (String.IsNullOrWhiteSpace(wrappedFilename) || String.IsNullOrWhiteSpace(Path.GetExtension(wrappedFilename)))
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataHasInvalidFilename);
 
                 var directory = Path.GetDirectoryName(filename);
-                var relative = fileSystemService.GetRelativePath(RootDirectory, Path.Combine(directory, wrappedFilename));
+                var relative = isStream ? wrappedFilename : fileSystemService.GetRelativePath(RootDirectory, Path.Combine(directory, wrappedFilename));
 
                 var wrappedAssetDirectory = String.Empty;
                 var wrappedAssetOverridden = false;
@@ -2526,10 +2597,12 @@ namespace Ultraviolet.Content
                 if (String.IsNullOrEmpty(wrappedAssetPath) || !fileSystemService.FileExists(wrappedAssetPath))
                     throw new InvalidDataException(UltravioletStrings.AssetMetadataFileNotFound);
 
+                source = null;
+
                 return new AssetMetadata(wrappedAssetOverridden ? wrappedAssetDirectory : null,
-                    asset, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson, fromsln, density);
+                    source as String, wrappedAssetPath, importerMetadata, processorMetadata, true, false, isJson, fromsln, density);
             }
-            return new AssetMetadata(overridden ? rootdir : null, asset, filename, null, null, true, false, false, fromsln, density);
+            return new AssetMetadata(overridden ? rootdir : null, source as String, filename, null, null, true, false, false, fromsln, density);
         }
 
         /// <summary>
