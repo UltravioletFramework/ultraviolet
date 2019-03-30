@@ -1849,8 +1849,10 @@ namespace Ultraviolet.Graphics.Graphics2D.Text
                 var iconSprite = icon.Icon;
                 var iconController = iconSprite.Controller;
                 var iconFrame = iconController.GetFrame();
-
-                spriteBatch.DrawSprite(iconController, iconPosition + iconFrame.Origin, iconWidth, iconHeight, color, iconRotation);
+                if (iconFrame != null)
+                {
+                    spriteBatch.DrawSprite(iconController, iconPosition + iconFrame.Origin, iconWidth, iconHeight, color, iconRotation);
+                }
             }
 
             glyphsSeen += cmd->GlyphLength;
