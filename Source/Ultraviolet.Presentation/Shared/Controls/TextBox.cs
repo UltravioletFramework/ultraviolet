@@ -616,7 +616,7 @@ namespace Ultraviolet.Presentation.Controls
             {
                 if (TextEditor?.Cursor.Resource != null)
                 {
-                    data.Cursor = TextEditor?.Cursor.Resource.Cursor ?? data.Cursor;
+                    data.Cursor = TextEditor?.Cursor.Resource?.Cursor ?? data.Cursor;
                 }
                 data.Handled = true;
             }
