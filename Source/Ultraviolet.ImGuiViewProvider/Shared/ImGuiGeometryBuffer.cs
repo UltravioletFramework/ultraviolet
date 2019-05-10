@@ -57,6 +57,11 @@ namespace Ultraviolet.ImGuiViewProvider
                 effect.Dispose();
                 effect = null;
             }
+            if (rasterizerState != null)
+            {
+                rasterizerState.Dispose();
+                rasterizerState = null;
+            }
             base.Dispose(disposing);
         }
 
@@ -93,6 +98,12 @@ namespace Ultraviolet.ImGuiViewProvider
                 dirty = true;
             }
 
+            if (rasterizerState == null)
+            {
+                rasterizerState = RasterizerState.Create();
+                rasterizerState.ScissorTestEnable = true;
+            }
+
             if (geometryStream == null || dirty)
             {
                 this.geometryStream = GeometryStream.Create();
@@ -112,7 +123,7 @@ namespace Ultraviolet.ImGuiViewProvider
             gfx.SetGeometryStream(geometryStream);
             gfx.SetBlendState(BlendState.NonPremultiplied);
             gfx.SetDepthStencilState(DepthStencilState.None);
-            gfx.SetRasterizerState(RasterizerState.CullNone);
+            gfx.SetRasterizerState(rasterizerState);
             gfx.SetSamplerState(0, SamplerState.LinearClamp);
 
             for (var i = 0; i < drawDataPtr.CmdListsCount; i++)
@@ -157,6 +168,8 @@ namespace Ultraviolet.ImGuiViewProvider
                     idxOffset += (Int32)cmd.ElemCount;
                 }
             }
+
+            gfx.SetRasterizerState(RasterizerState.CullCounterClockwise);
         }
 
         // The view which owns the geometry buffer.
@@ -167,5 +180,6 @@ namespace Ultraviolet.ImGuiViewProvider
         private DynamicVertexBuffer vertexBuffer;
         private DynamicIndexBuffer indexBuffer;
         private SpriteBatchEffect effect;
+        private RasterizerState rasterizerState;
     }
 }

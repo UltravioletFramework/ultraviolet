@@ -73,6 +73,9 @@ namespace Ultraviolet.ImGuiViewProvider
         {
             if (imGuiContext != IntPtr.Zero)
             {
+                var spriteBatchState = spriteBatch.GetCurrentState();
+                spriteBatch.End();
+
                 ImGui.SetCurrentContext(imGuiContext);
                 ImGui.Render();
 
@@ -80,6 +83,8 @@ namespace Ultraviolet.ImGuiViewProvider
                 imGuiGeometry.Draw(ref drawDataPtr);
 
                 (Panel as IImGuiPanel)?.ImGuiDraw(time);
+
+                spriteBatch.Begin(spriteBatchState);
             }
         }
 
