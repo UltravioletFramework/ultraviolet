@@ -19,6 +19,7 @@ Quick start guides for development using the Ultraviolet Framework are available
     <dependencies/>
   </metadata>
   <files>
+    <file src="..\Binaries\AnyCPU\Signed\Newtonsoft.Json.dll" target="tools\Newtonsoft.Json.dll"/>
 	  <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Core.dll" target="tools\Ultraviolet.Core.dll"/>
 	  <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Tooling.dll" target="tools\Ultraviolet.Tooling.dll"/>
     <file src="..\Binaries\AnyCPU\Signed\uvarchive.exe" target="tools\uvarchive.exe"/>
