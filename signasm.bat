@@ -113,6 +113,8 @@ GOTO :eof
 
 :test_nucleus
 sn.exe -R "Ultraviolet.Core.dll" "%TLSN%" 
+sn.exe -R "Ultraviolet.Core.TestFramework.dll" "%TLSN%"
+sn.exe -R "Ultraviolet.Core.Tests.dll" "%TLSN%"
 GOTO :eof
 
 :test_ultraviolet
