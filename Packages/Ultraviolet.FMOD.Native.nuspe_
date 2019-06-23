@@ -38,7 +38,6 @@ Quick start guides for development using the Ultraviolet Framework are available
     
     <file src="Ultraviolet.FMOD.Native\build\MonoAndroid80\Ultraviolet.FMOD.Native.targets" target="build\MonoAndroid80\Ultraviolet.FMOD.Native.targets"/>
     <file src="..\Dependencies\FMOD\Android\armeabi-v7a\libfmod.so" target="build\MonoAndroid80\lib\armeabi-v7a\libfmod.so"/>
-    <file src="..\Dependencies\FMOD\Android\armeabi\libfmod.so" target="build\MonoAndroid80\lib\armeabi\libfmod.so"/>
     <file src="..\Dependencies\FMOD\Android\x86\libfmod.so" target="build\MonoAndroid80\lib\x86\libfmod.so"/>
   </files>  
 </package>

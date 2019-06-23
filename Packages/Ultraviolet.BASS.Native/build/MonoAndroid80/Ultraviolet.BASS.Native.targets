@@ -8,14 +8,6 @@
       <Link>lib\armeabi-v7a\libbass_fx.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\armeabi\libbass.so">
-      <Link>lib\armeabi\libbass.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidNativeLibrary>
-    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\armeabi\libbass_fx.so">
-      <Link>lib\armeabi\libbass_fx.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidNativeLibrary>
     <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86\libbass.so">
       <Link>lib\x86\libbass.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -26,6 +18,6 @@
     </AndroidNativeLibrary>
   </ItemGroup>
   <PropertyGroup>  
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
 </Project>
