@@ -13,6 +13,12 @@
   <PropertyGroup Condition="'$(iOSPlatform)' == ''">
     <iOSPlatform>iPhoneSimulator</iOSPlatform>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(AndroidSdkDirectory)' == ''">
+    <AndroidSdkDirectory>$(ANDROID_HOME)</AndroidSdkDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'($JavaSdkDirectory)' = ''">
+    <JavaSdkDirectory>$(JAVA_HOME)</JavaSdkDirectory>
+  </PropertyGroup>
 
   <ItemGroup>
     <Ultraviolet_Windows_Solution Include="Source/Ultraviolet.Windows.sln">
@@ -28,7 +34,7 @@
       <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
     </Ultraviolet_MacOS_Bamboo_Solution>
     <Ultraviolet_Android_Solution Include="Source/Ultraviolet.Android.sln">
-      <Properties>Configuration=$(Configuration);Platform=$(Platform)</Properties>
+      <Properties>Configuration=$(Configuration);Platform=$(Platform);AndroidSdkDirectory=$(AndroidSdkDirectory);JavaSdkDirectory=$(JavaSdkDirectory)</Properties>
     </Ultraviolet_Android_Solution>
     <Ultraviolet_iOS_Bamboo_Solution Include="Source/Ultraviolet.iOS.Bamboo.sln"/>
     <Ultraviolet_iOS_Solution Include="Source/Ultraviolet.iOS.sln"/>
