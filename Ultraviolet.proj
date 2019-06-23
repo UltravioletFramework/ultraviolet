@@ -16,7 +16,7 @@
   <PropertyGroup Condition="'$(AndroidSdkDirectory)' == ''">
     <AndroidSdkDirectory>$(ANDROID_HOME)</AndroidSdkDirectory>
   </PropertyGroup>
-  <PropertyGroup Condition="'($JavaSdkDirectory)' = ''">
+  <PropertyGroup Condition="'($JavaSdkDirectory)' == ''">
     <JavaSdkDirectory>$(JAVA_HOME)</JavaSdkDirectory>
   </PropertyGroup>
 
