@@ -130,6 +130,14 @@ namespace Ultraviolet.SDL2.Platform
         }
 
         /// <inheritdoc/>
+        public void WarpMouseWithinWindow(Int32 x, Int32 y)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            SDL_WarpMouseInWindow(ptr, x, y);
+        }
+
+        /// <inheritdoc/>
         public void SetFullscreenDisplayMode(DisplayMode displayMode)
         {
             Contract.EnsureNotDisposed(this, Disposed);

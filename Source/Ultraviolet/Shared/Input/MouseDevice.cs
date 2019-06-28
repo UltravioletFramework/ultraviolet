@@ -49,6 +49,32 @@ namespace Ultraviolet.Input
         }
 
         /// <summary>
+        /// Sets the mouse cursor's position to the specified point within the specified window.
+        /// </summary>
+        /// <param name="window">The window within which to place the mouse cursor.</param>
+        /// <param name="x">The x-coordinate within <paramref name="window"/> at which to position the cursor.</param>
+        /// <param name="y">The y-coordinate within <paramref name="window"/> at which to position the cursor.</param>
+        public abstract void WarpToWindow(IUltravioletWindow window, Int32 x, Int32 y);
+
+        /// <summary>
+        /// Sets the mouse cursor's position to the center of the specified window.
+        /// </summary>
+        /// <param name="window">The window within which to place the mouse cursor.</param>
+        public abstract void WarpToWindowCenter(IUltravioletWindow window);
+
+        /// <summary>
+        /// Sets the mouse cursor's position to the specified point within the application's primary window.
+        /// </summary>
+        /// <param name="x">The x-coordinate within the primary window at which to position the cursor.</param>
+        /// <param name="y">The y-coordinate within the primary window at which to position the cursor.</param>
+        public abstract void WarpToPrimaryWindow(Int32 x, Int32 y);
+
+        /// <summary>
+        /// Sets the mouse cursor's position to the center of the application's primary window.
+        /// </summary>
+        public abstract void WarpToPrimaryWindowCenter();
+
+        /// <summary>
         /// Gets the mouse cursor's position within the specified window.
         /// </summary>
         /// <param name="window">The window to evaluate.</param>
@@ -69,6 +95,21 @@ namespace Ultraviolet.Input
         /// <param name="button">The <see cref="MouseButton"/> value that represents the button to evaluate.</param>
         /// <returns><see langword="true"/> if the button was double clicked this frame; otherwise, <see langword="false"/>.</returns>
         public abstract Boolean IsButtonDoubleClicked(MouseButton button);
+
+        /// <summary>
+        /// Gets a value indicating whether relative mouse mode is currently enabled.
+        /// </summary>
+        /// <returns><see langword="true"/> if relative mouse mode is currently enabled; otherwise, <see langword="false"/>.</returns>
+        public abstract Boolean GetIsRelativeModeEnabled();
+
+        /// <summary>
+        /// Enables or disables relative mouse mode. In relative mode, the cursor is hidden, and the driver will try
+        /// to report continuous motion in the current window. Only relative motion events will be delivered, and
+        /// the mouse position will not change.
+        /// </summary>
+        /// <param name="enabled"><see langword="true"/> to enable relative mode; otherwise, <see langword="false"/>.</param>
+        /// <returns><see langword="true"/> if relative mode was enabled or disabled; <see langword="false"/> if relative mode is not supported.</returns>
+        public abstract Boolean SetIsRelativeModeEnabled(Boolean enabled);
 
         /// <summary>
         /// Gets the window that currently contains the mouse cursor.

@@ -96,7 +96,10 @@ namespace Ultraviolet.SDL2
                 SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS;
 
             if (Platform == UltravioletPlatform.Windows)
-                SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
+            {
+                if (!SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1"))
+                    throw new SDL2Exception();
+            }
 
             return SDL_Init(sdlFlags) == 0;
         }

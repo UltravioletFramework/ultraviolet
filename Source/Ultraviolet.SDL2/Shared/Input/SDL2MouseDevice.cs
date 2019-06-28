@@ -110,12 +110,51 @@ namespace Ultraviolet.SDL2.Input
 
         }
 
-        /// <summary>
-        /// Gets the mouse cursor's position within the specified window.
-        /// </summary>
-        /// <param name="window">The window to evaluate.</param>
-        /// <returns>The cursor's compositor-space position within the specified 
-        /// window, or <see langword="null"/> if the cursor is outside of the window.</returns>
+        /// <inheritdoc/>
+        public override void WarpToWindow(IUltravioletWindow window, Int32 x, Int32 y)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(window, nameof(window));
+
+            window.WarpMouseWithinWindow(x, y);
+        }
+
+        /// <inheritdoc/>
+        public override void WarpToWindowCenter(IUltravioletWindow window)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+            Contract.Require(window, nameof(window));
+
+            var size = window.ClientSize;
+            window.WarpMouseWithinWindow(size.Width / 2, size.Height / 2);
+        }
+
+        /// <inheritdoc/>
+        public override void WarpToPrimaryWindow(Int32 x, Int32 y)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
+            if (primary == null)
+                throw new InvalidOperationException(UltravioletStrings.NoPrimaryWindow);
+
+            primary.WarpMouseWithinWindow(x, y);
+        }
+
+        /// <inheritdoc/>
+        public override void WarpToPrimaryWindowCenter()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var primary = Ultraviolet.GetPlatform().Windows.GetPrimary();
+            if (primary == null)
+                throw new InvalidOperationException(UltravioletStrings.NoPrimaryWindow);
+
+            var size = primary.ClientSize;
+            primary.WarpMouseWithinWindow(size.Width / 2, size.Height / 2);
+        }
+
+        /// <inheritdoc/>
         public override Point2? GetPositionInWindow(IUltravioletWindow window)
         {
             Contract.Require(window, nameof(window));
@@ -175,6 +214,30 @@ namespace Ultraviolet.SDL2.Input
             Contract.EnsureNotDisposed(this, Disposed);
 
             return (buttonStateDoubleClicks & SDL_BUTTON(button)) != 0;
+        }
+
+        /// <inheritdoc/>
+        public override Boolean GetIsRelativeModeEnabled()
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            return SDL_GetRelativeMouseMode();
+        }
+
+        /// <inheritdoc/>
+        public override Boolean SetIsRelativeModeEnabled(Boolean enabled)
+        {
+            Contract.EnsureNotDisposed(this, Disposed);
+
+            var result = SDL_SetRelativeMouseMode(enabled);
+            if (result == -1)
+                return false;
+
+            if (result < 0)
+                throw new SDL2Exception();
+
+            relativeMode = enabled;
+            return true;
         }
 
         /// <inheritdoc/>
@@ -284,8 +347,16 @@ namespace Ultraviolet.SDL2.Input
             if (!Ultraviolet.GetInput().EmulateMouseWithTouchInput && evt.which == SDL_TOUCH_MOUSEID)
                 return;
 
-            SetMousePosition(evt.windowID, evt.x, evt.y);
-            OnMoved(window, evt.x, evt.y, evt.xrel, evt.yrel);
+            if (relativeMode)
+            {
+                SetMousePosition(evt.windowID, evt.x, evt.y);
+                OnMoved(window, evt.x, evt.y, evt.xrel, evt.yrel);
+            }
+            else
+            {
+                SetMousePosition(evt.windowID, evt.x, evt.y);
+                OnMoved(window, evt.x, evt.y, evt.xrel, evt.yrel);
+            }
         }
 
         /// <summary>
@@ -404,5 +475,6 @@ namespace Ultraviolet.SDL2.Input
         private UInt32 buttonStateClicks;
         private UInt32 buttonStateDoubleClicks;
         private Boolean ignoredFirstMouseMotionEvent;
+        private Boolean relativeMode;
     }
 }

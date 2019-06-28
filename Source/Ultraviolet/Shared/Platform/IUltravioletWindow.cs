@@ -22,6 +22,13 @@ namespace Ultraviolet.Platform
     public interface IUltravioletWindow
     {
         /// <summary>
+        /// Warps the cursor to the specified position within this window.
+        /// </summary>
+        /// <param name="x">The x-coordinate within the window to which the mouse will be warped.</param>
+        /// <param name="y">The y-coordinate within the window to which the mouse will be warped.</param>
+        void WarpMouseWithinWindow(Int32 x, Int32 y);
+
+        /// <summary>
         /// Sets the window's fullscreen display mode.
         /// </summary>
         /// <param name="displayMode">The <see cref="DisplayMode"/> to use when the window is in fullscreen mode,
