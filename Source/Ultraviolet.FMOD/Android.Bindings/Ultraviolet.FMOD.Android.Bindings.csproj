@@ -80,15 +80,18 @@
     <Folder Include="Additions\" />
   </ItemGroup>
   <ItemGroup>
-    <InputJar Include="..\..\..\Dependencies\FMOD\Android\fmod.jar">
+    <InputJar Include="$(FMOD_JAR)" Condition=" '$(FMOD_JAR)' != '' ">
       <Link>Jars\fmod.jar</Link>
     </InputJar>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
+  !-->
   <Target Name="BeforeBuild">
+    <Error Text="Cannot find fmod.jar. Define an environment variable called FMOD_JAR which points to this file." Condition=" '$(FMOD_JAR)' == '' "/>
   </Target>
+  <!-->
   <Target Name="AfterBuild">
   </Target>
   -->
