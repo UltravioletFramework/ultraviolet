@@ -445,10 +445,6 @@
       <Project>{EA948CF3-AD34-480A-B8CE-E7EC5CAA4D77}</Project>
       <Name>Ultraviolet.BASS.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.FMOD\Desktop\Ultraviolet.FMOD.Desktop.csproj">
-      <Project>{ce4b6f6f-6542-4ca6-b21c-da4b053b585f}</Project>
-      <Name>Ultraviolet.FMOD.Desktop</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ultraviolet.FreeType2\Desktop\Ultraviolet.FreeType2.Desktop.csproj">
       <Project>{1213f9af-5e16-46e9-a7d0-80b9564e6345}</Project>
       <Name>Ultraviolet.FreeType2.Desktop</Name>
@@ -1140,14 +1136,6 @@
     </None>
     <None Include="..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll">
       <Link>x86\win32nt\SDL2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Dependencies\FMOD\x64\win32nt\fmod.dll">
-      <Link>x64\win32nt\fmod.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\Dependencies\FMOD\x86\win32nt\fmod.dll">
-      <Link>x86\win32nt\fmod.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Dependencies\FreeType2\x86\win32nt\freetype.dll">

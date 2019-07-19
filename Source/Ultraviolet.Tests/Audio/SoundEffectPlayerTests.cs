@@ -10,7 +10,6 @@ namespace Ultraviolet.Tests.Audio
     {
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_PlaySetsVolumePitchAndPan(AudioImplementation audioImplementation)
         {
@@ -40,7 +39,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_PlayResetsVolumePitchAndPanWhenNotSpecified(AudioImplementation audioImplementation)
         {
@@ -72,7 +70,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_SlidesVolumeCorrectly(AudioImplementation audioImplementation)
         {
@@ -104,7 +101,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_SlidesPitchCorrectly(AudioImplementation audioImplementation)
         {
@@ -136,7 +132,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_SlidesPanCorrectly(AudioImplementation audioImplementation)
         {
@@ -168,7 +163,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_ThrowsExceptionIfVolumeSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
@@ -195,7 +189,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_ThrowsExceptionIfPitchSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
@@ -222,7 +215,6 @@ namespace Ultraviolet.Tests.Audio
 
         [Test]
         [TestCase(AudioImplementation.BASS)]
-        [TestCase(AudioImplementation.FMOD)]
         [Category("Audio")]
         public void SoundEffectPlayer_ThrowsExceptionIfPanSetWhileNotPlaying(AudioImplementation audioImplementation)
         {
