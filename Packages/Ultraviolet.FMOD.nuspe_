@@ -14,6 +14,8 @@
 
 This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the appropriate Ultraviolet.Game.* package for your target platform.
 
+For licensing reasons, Ultraviolet does not include FMOD's native libraries. You will need to provide those yourself.
+
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
@@ -24,17 +26,14 @@ Quick start guides for development using the Ultraviolet Framework are available
     <group targetFramework="net461">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.FMOD.Native" version="UV_VERSION" />    
     </group>
     <group targetFramework="netstandard2.0">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.FMOD.Native" version="UV_VERSION" />    
     </group>
     <group targetFramework="MonoAndroid80">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
       <dependency id="Ultraviolet" version="UV_VERSION" />
-      <dependency id="Ultraviolet.FMOD.Native" version="UV_VERSION" />
     </group>
     <group targetFramework="Xamarin.iOS10">
       <dependency id="Ultraviolet.Core" version="UV_VERSION" />
