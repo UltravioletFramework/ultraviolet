@@ -177,11 +177,11 @@ namespace Ultraviolet.Presentation.Compiler
         {
             Parallel.ForEach(models, model =>
             {
-                referencedAssemblies.Add(model.DataSourceType.Assembly.Location);
+                for (var dataSourceType = model.DataSourceType; dataSourceType != null; dataSourceType = dataSourceType.BaseType)
+                    referencedAssemblies.Add(dataSourceType.Assembly.Location);
+
                 foreach (var reference in model.References)
-                {
                     referencedAssemblies.Add(reference);
-                }
 
                 foreach (var expression in model.Expressions)
                 {
