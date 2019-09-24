@@ -155,7 +155,17 @@ namespace Ultraviolet.Presentation.Compiler
         {
             Parallel.ForEach(models, model =>
             {
-                referencedAssemblies.Add(model.DataSourceType.Assembly.Location);
+                var lastSeenDataSourceAssembly = default(Assembly);
+                for (var dataSourceType = model.DataSourceType; dataSourceType != null; dataSourceType = dataSourceType.BaseType)
+                {
+                    var dataSourceAssembly = dataSourceType.Assembly;
+                    if (dataSourceAssembly != lastSeenDataSourceAssembly)
+                    {
+                        lastSeenDataSourceAssembly = dataSourceAssembly;
+                        referencedAssemblies.Add(dataSourceAssembly.Location);
+                    }
+                }
+
                 foreach (var reference in model.References)
                 {
                     referencedAssemblies.Add(reference);
