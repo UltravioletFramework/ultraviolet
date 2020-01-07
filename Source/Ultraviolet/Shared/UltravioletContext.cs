@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -474,6 +475,11 @@ namespace Ultraviolet
         public UltravioletContextProperties Properties { get; }
 
         /// <summary>
+        /// Gets the version of the runtime on which this context is running.
+        /// </summary>
+        public Version RuntimeVersion => UltravioletPlatformInfo.CurrentRuntimeVersion;
+
+        /// <summary>
         /// Gets the runtime on which this context is running.
         /// </summary>
         public UltravioletRuntime Runtime => UltravioletPlatformInfo.CurrentRuntime;
@@ -924,7 +930,16 @@ namespace Ultraviolet
 
                 if (Runtime == UltravioletRuntime.CoreCLR)
                 {
-                    shim = Assembly.Load("Ultraviolet.Shims.NETCore");
+                    switch (RuntimeVersion?.Major ?? 0)
+                    {
+                        case 2:
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore2");
+                            break;
+
+                        case 3:
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore3");
+                            break;
+                    }
                 }
                 else
                 {

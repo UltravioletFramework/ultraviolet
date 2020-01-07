@@ -1,0 +1,110 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Configurations>Debug;Release;Signed</Configurations>
+    <AssemblyName>Ultraviolet.Presentation</AssemblyName>
+    <RootNamespace>Ultraviolet.Presentation</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs" Link="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
+      <DependentUpon>MessageBoxScreen.tt</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Resources\Content\Fonts\SegoeUITexture.png" Link="Resources\Content\Fonts\SegoeUITexture.png" />
+    <EmbeddedResource Include="..\Shared\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" Link="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\HScrollBar.xml" Link="Controls\Primitives\Templates\HScrollBar.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\ScrollBar.xml" Link="Controls\Primitives\Templates\ScrollBar.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\Thumb.xml" Link="Controls\Primitives\Templates\Thumb.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\ToggleButton.xml" Link="Controls\Primitives\Templates\ToggleButton.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\VScrollBar.xml" Link="Controls\Primitives\Templates\VScrollBar.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\Button.xml" Link="Controls\Templates\Button.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\CheckBox.xml" Link="Controls\Templates\CheckBox.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ComboBox.xml" Link="Controls\Templates\ComboBox.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ComboBoxItem.xml" Link="Controls\Templates\ComboBoxItem.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\HSlider.xml" Link="Controls\Templates\HSlider.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ListBox.xml" Link="Controls\Templates\ListBox.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ListBoxItem.xml" Link="Controls\Templates\ListBoxItem.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\NumericUpDown.xml" Link="Controls\Templates\NumericUpDown.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\PasswordBox.xml" Link="Controls\Templates\PasswordBox.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ProgressBar.xml" Link="Controls\Templates\ProgressBar.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\RadioButton.xml" Link="Controls\Templates\RadioButton.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\RepeatButton.xml" Link="Controls\Templates\RepeatButton.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ScrollViewer.xml" Link="Controls\Templates\ScrollViewer.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\Slider.xml" Link="Controls\Templates\Slider.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\TabControl.xml" Link="Controls\Templates\TabControl.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\TabItem.xml" Link="Controls\Templates\TabItem.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\TextBox.xml" Link="Controls\Templates\TextBox.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\ToolTip.xml" Link="Controls\Templates\ToolTip.xml" />
+    <EmbeddedResource Include="..\Shared\Controls\Templates\VSlider.xml" Link="Controls\Templates\VSlider.xml" />
+    <EmbeddedResource Include="..\Shared\Resources\Commands.xml" Link="Resources\Commands.xml" />
+    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\Primitives\Templates\" />
+    <Folder Include="Controls\Templates\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Resources\Content\Fonts\" />
+    <Folder Include="Resources\Content\UI\Screens\MessageBoxScreen\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>  
+    </Compile>
+    <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt" Link="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard21\Ultraviolet.Presentation.Uvss.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
+    <DocumentationFile>bin\Signed\netstandard2.1\Ultraviolet.Presentation.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.1\Ultraviolet.Presentation.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.1\Ultraviolet.Presentation.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="..\Shared\Ultraviolet.Presentation.projitems" Label="Shared" />
+  
+</Project>

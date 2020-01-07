@@ -181,6 +181,9 @@ namespace Ultraviolet.Presentation.Compiler
                 for (var dataSourceType = model.DataSourceType; dataSourceType != null; dataSourceType = dataSourceType.BaseType)
                 {
                     var dataSourceAssembly = dataSourceType.Assembly;
+                    if (dataSourceAssembly.FullName.StartsWith("System."))
+                        break;
+
                     if (dataSourceAssembly != lastSeenDataSourceAssembly)
                     {
                         lastSeenDataSourceAssembly = dataSourceAssembly;
@@ -304,7 +307,7 @@ namespace Ultraviolet.Presentation.Compiler
                 Directory.CreateDirectory(state.GetWorkingDirectory());
 
                 DependencyFinder.DownloadNuGetExecutable();
-                DependencyFinder.InstallNuGetPackage(state, "NETStandard.Library", "2.0.1");
+                DependencyFinder.InstallNuGetPackage(state, "NETStandard.Library", "2.0.3");
 
                 netStandardRefAsmDir = DependencyFinder.GetNetStandardLibraryDirFromWorkingDir(state.GetWorkingDirectory());
             }

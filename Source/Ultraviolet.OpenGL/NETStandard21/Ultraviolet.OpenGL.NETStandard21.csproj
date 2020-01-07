@@ -1,0 +1,202 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Configurations>Debug;Release;Signed</Configurations>
+    <AssemblyName>Ultraviolet.OpenGL</AssemblyName>
+    <RootNamespace>Ultraviolet.OpenGL</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DocumentationFile>bin\Signed\netstandard2.1\Ultraviolet.OpenGL.xml</DocumentationFile>
+    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.1\Ultraviolet.OpenGL.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.1\Ultraviolet.OpenGL.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
+    <EmbeddedResource Include="..\Shared\Resources\uv64.png" Link="Resources\uv64.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <EmbeddedResource Include="..\Shared\Resources\SrgbConversion.verth" Link="Resources\SrgbConversion.verth" />
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>  
+    </Compile>
+    <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffect.frag" Link="Resources\BasicEffect.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffect.vert" Link="Resources\BasicEffect.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColored.frag" Link="Resources\BasicEffectColored.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColored.vert" Link="Resources\BasicEffectColored.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColoredES.frag" Link="Resources\BasicEffectColoredES.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColoredES.vert" Link="Resources\BasicEffectColoredES.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColoredTextured.frag" Link="Resources\BasicEffectColoredTextured.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColoredTextured.vert" Link="Resources\BasicEffectColoredTextured.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColoredTexturedES.frag" Link="Resources\BasicEffectColoredTexturedES.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectColoredTexturedES.vert" Link="Resources\BasicEffectColoredTexturedES.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectES.frag" Link="Resources\BasicEffectES.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectES.vert" Link="Resources\BasicEffectES.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectTextured.frag" Link="Resources\BasicEffectTextured.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectTextured.vert" Link="Resources\BasicEffectTextured.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectTexturedES.frag" Link="Resources\BasicEffectTexturedES.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BasicEffectTexturedES.vert" Link="Resources\BasicEffectTexturedES.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffect.frag" Link="Resources\BlurEffect.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectES.frag" Link="Resources\BlurEffectES.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius1.frag" Link="Resources\BlurEffectRadius1.frag">
+      <DependentUpon>BlurEffectRadius1.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius1.tt" Link="Resources\BlurEffectRadius1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius1.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius1ES.frag" Link="Resources\BlurEffectRadius1ES.frag">
+      <DependentUpon>BlurEffectRadius1ES.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius1ES.tt" Link="Resources\BlurEffectRadius1ES.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius1ES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius3.frag" Link="Resources\BlurEffectRadius3.frag">
+      <DependentUpon>BlurEffectRadius3.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius3.tt" Link="Resources\BlurEffectRadius3.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius3.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius3ES.frag" Link="Resources\BlurEffectRadius3ES.frag">
+      <DependentUpon>BlurEffectRadius3ES.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius3ES.tt" Link="Resources\BlurEffectRadius3ES.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius3ES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius5.frag" Link="Resources\BlurEffectRadius5.frag">
+      <DependentUpon>BlurEffectRadius5.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius5.tt" Link="Resources\BlurEffectRadius5.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius5.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius5ES.frag" Link="Resources\BlurEffectRadius5ES.frag">
+      <DependentUpon>BlurEffectRadius5ES.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius5ES.tt" Link="Resources\BlurEffectRadius5ES.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius5ES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius7.frag" Link="Resources\BlurEffectRadius7.frag">
+      <DependentUpon>BlurEffectRadius7.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius7.tt" Link="Resources\BlurEffectRadius7.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius7.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius7ES.frag" Link="Resources\BlurEffectRadius7ES.frag">
+      <DependentUpon>BlurEffectRadius7ES.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius7ES.tt" Link="Resources\BlurEffectRadius7ES.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius7ES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius9.frag" Link="Resources\BlurEffectRadius9.frag">
+      <DependentUpon>BlurEffectRadius9.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius9.tt" Link="Resources\BlurEffectRadius9.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius9.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius9ES.frag" Link="Resources\BlurEffectRadius9ES.frag">
+      <DependentUpon>BlurEffectRadius9ES.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectRadius9ES.tt" Link="Resources\BlurEffectRadius9ES.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectRadius9ES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="..\Shared\Resources\BlurEffectUnrolled.frag" Link="Resources\BlurEffectUnrolled.frag">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlurEffectUnrolled.tt</DependentUpon>
+    </None>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectUnrolled.tt" Link="Resources\BlurEffectUnrolled.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectUnrolled.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\BlurEffectUnrolledES.tt" Link="Resources\BlurEffectUnrolledES.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BlurEffectUnrolledES.frag</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Shared\Resources\HeaderES.fragh" Link="Resources\HeaderES.fragh" />
+    <EmbeddedResource Include="..\Shared\Resources\HeaderES.verth" Link="Resources\HeaderES.verth" />
+    <EmbeddedResource Include="..\Shared\Resources\SpriteBatchEffect.frag" Link="Resources\SpriteBatchEffect.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\SpriteBatchEffect.vert" Link="Resources\SpriteBatchEffect.vert" />
+    <EmbeddedResource Include="..\Shared\Resources\SpriteBatchEffectES.frag" Link="Resources\SpriteBatchEffectES.frag" />
+    <EmbeddedResource Include="..\Shared\Resources\SpriteBatchEffectES.vert" Link="Resources\SpriteBatchEffectES.vert" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard21\Ultraviolet.OpenGL.Bindings.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard21\Ultraviolet.SDL2.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  
+  <Import Project="..\Shared\Ultraviolet.OpenGL.projitems" Label="Shared" />
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+</Project>
