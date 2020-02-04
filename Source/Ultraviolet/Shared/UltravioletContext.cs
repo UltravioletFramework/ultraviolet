@@ -945,19 +945,6 @@ namespace Ultraviolet
                 {
                     switch (Platform)
                     {
-                        case UltravioletPlatform.Windows:
-                        case UltravioletPlatform.Linux:
-                            shim = Assembly.Load("Ultraviolet.Shims.Desktop");
-                            break;
-
-                        case UltravioletPlatform.macOS:
-#if MACOS_MODERN
-                            shim = Assembly.Load("Ultraviolet.Shims.macOSModern");
-#else
-                            shim = Assembly.Load("Ultraviolet.Shims.macOS");
-#endif
-                            break;
-
                         case UltravioletPlatform.Android:
                             shim = Assembly.Load("Ultraviolet.Shims.Android.dll");
                             break;
