@@ -63,15 +63,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)MathUtilTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\LocalMessageQueueTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SetUpFixture.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\DictionaryExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\HashSetExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\LinkedListExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ListExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ObservableDictionaryExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ObservableListExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\PooledLinkedListExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\QueueExtensionsTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\StackExtensionsTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationTest.FrenchLanguagePlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringFormatterTest.cs" />

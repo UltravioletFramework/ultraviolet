@@ -114,16 +114,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlatformInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PreserveAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SafeDispose.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\NamespaceDoc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\StackExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\QueueExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\HashSetExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ObservableDictionaryExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\DictionaryExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ObservableListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\PooledLinkedListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\LinkedListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Splinq\ListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\ILocalizationPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\Localization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\LocalizationDatabase.cs" />
