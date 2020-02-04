@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet.Core
@@ -12,6 +13,7 @@ namespace Ultraviolet.Core
     /// values; this means that the size of a masked 32-bit integer is 2 bytes in the best case and 5 bytes in the worst case.</remarks>
     [CLSCompliant(false)]
     [JsonConverter(typeof(CoreJsonConverter))]
+    [TypeConverter(typeof(MaskedUInt32TypeConverter))]
     public partial struct MaskedUInt32 : IEquatable<MaskedUInt32>, IEquatable<UInt32>
     {
         /// <summary>
