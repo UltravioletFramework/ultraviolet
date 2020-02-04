@@ -18,7 +18,8 @@ namespace Ultraviolet
         /// <returns>An XML element that represents the specified audio settings.</returns>
         public static XElement Save(UltravioletActivityAudioSettings settings)
         {
-            Contract.Require(settings, nameof(settings));
+            if (settings == null)
+                return null;
 
             return new XElement("Audio",
                 new XElement(nameof(PlaybackDeviceName), settings.PlaybackDeviceName),

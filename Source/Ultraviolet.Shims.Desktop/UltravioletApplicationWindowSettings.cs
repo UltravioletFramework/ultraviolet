@@ -19,7 +19,8 @@ namespace Ultraviolet
         /// <returns>An XML element that represents the specified window settings.</returns>
         public static XElement Save(UltravioletApplicationWindowSettings settings)
         {
-            Contract.Require(settings, nameof(settings));
+            if (settings == null)
+                return null;
 
             var pos = settings.WindowedPosition;
 
