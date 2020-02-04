@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -12,6 +13,7 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(UltravioletJsonConverter))]
+    [TypeConverter(typeof(ColorTypeConverter))]
     public partial struct Color : IEquatable<Color>, IInterpolatable<Color>
     {
         /// <summary>

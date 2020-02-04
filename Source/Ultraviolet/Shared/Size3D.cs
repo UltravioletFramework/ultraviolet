@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -7,6 +8,7 @@ namespace Ultraviolet
     /// Represents a three-dimensional size with double-precision floating point components.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(Size3DTypeConverter))]
     public partial struct Size3D : IEquatable<Size3D>, IInterpolatable<Size3D>
     {
         /// <summary>

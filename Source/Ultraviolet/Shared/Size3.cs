@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -7,6 +8,7 @@ namespace Ultraviolet
     /// Represents a three-dimensional size with integer components.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(Size3TypeConverter))]
     public partial struct Size3 : IEquatable<Size3>, IInterpolatable<Size3>
     {
         /// <summary>

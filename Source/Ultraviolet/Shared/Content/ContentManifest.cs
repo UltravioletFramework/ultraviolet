@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -13,6 +14,7 @@ namespace Ultraviolet.Content
     /// <summary>
     /// Represents a manifest containing a list of related content assets.
     /// </summary>
+    [TypeConverter(typeof(ContentManifestTypeConverter))]
     public sealed class ContentManifest : UltravioletNamedCollection<ContentManifestGroup>
     {
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using Newtonsoft.Json;
 
@@ -8,6 +9,7 @@ namespace Ultraviolet
     /// Represents an angle in radians.
     /// </summary>
     [JsonConverter(typeof(UltravioletJsonConverter))]
+    [TypeConverter(typeof(RadiansTypeConverter))]
     public partial struct Radians : IEquatable<Radians>, IComparable<Radians>, IComparable<Single>, IInterpolatable<Radians>
     {
         /// <summary>

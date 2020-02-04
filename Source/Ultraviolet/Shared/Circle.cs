@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -7,6 +8,7 @@ namespace Ultraviolet
     /// Represents a circle with integer radius and position.
     /// </summary>
     [Serializable]
+    [TypeConverter(typeof(CircleTypeConverter))]
     public partial struct Circle : IEquatable<Circle>, IInterpolatable<Circle>
     {
         /// <summary>
