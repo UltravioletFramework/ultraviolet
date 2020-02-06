@@ -103,6 +103,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.Tests.NETStandard21", "Ultraviolet.Presentation.Uvss.Tests\NETStandard21\Ultraviolet.Presentation.Uvss.Tests.NETStandard21.csproj", "{8753DC73-94B4-4DA2-85F4-FE8E73BE774F}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.FMOD", "Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.shproj", "{F6FE0208-9CA4-41C6-88A2-BBF5B25B3977}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard20", "Ultraviolet.FMOD\NETStandard20\Ultraviolet.FMOD.NETStandard20.csproj", "{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.FMOD.NETStandard21", "Ultraviolet.FMOD\NETStandard21\Ultraviolet.FMOD.NETStandard21.csproj", "{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
@@ -121,6 +127,7 @@ Global
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
+		Ultraviolet.FMOD\Shared\Ultraviolet.FMOD.projitems*{f6fe0208-9ca4-41c6-88a2-bbf5b25b3977}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +339,18 @@ Global
 		{8753DC73-94B4-4DA2-85F4-FE8E73BE774F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8753DC73-94B4-4DA2-85F4-FE8E73BE774F}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
 		{8753DC73-94B4-4DA2-85F4-FE8E73BE774F}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}.Signed|Any CPU.ActiveCfg = Signed|Any CPU
+		{1F722FBD-8E0C-4D3F-AFB5-8D8B0C8A7102}.Signed|Any CPU.Build.0 = Signed|Any CPU
+		{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D9F99FD-93EE-4D9E-8EC9-718E6C67595E}.Signed|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

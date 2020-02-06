@@ -19,22 +19,26 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.BASS.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.BASS.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
-    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
     <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.BASS.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  

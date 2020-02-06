@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Ultraviolet.FMOD</AssemblyName>
-    <RootNamespace>Ultraviolet.FMOD</RootNamespace>
-    <Configurations>Debug;Release;Signed</Configurations>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release;Signed</Configurations>
   </PropertyGroup>
 
-  <Import Project="..\Shared\Ultraviolet.FMOD.projitems" Label="Shared" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Ultraviolet.FMOD</AssemblyName>
+    <RootNamespace>Ultraviolet.FMOD</RootNamespace>
+  </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
@@ -19,50 +20,52 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors></WarningsAsErrors>
-    <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.1\Ultraviolet.FMOD.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.1\Ultraviolet.FMOD.xml</DocumentationFile>
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Signed\netstandard2.1\Ultraviolet.FMOD.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.FMOD.xml</DocumentationFile>
     <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  
     </Compile>
-    <Compile Include="..\Desktop\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="..\Desktop\Resources\Strings.xml" Link="Resources\Strings.xml" />
+    <Folder Include="Properties\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="..\..\Version.tt" Link="Properties\Version.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
+  
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>
+
+  <Import Project="..\Shared\Ultraviolet.FMOD.projitems" Label="Shared" />
 
 </Project>
