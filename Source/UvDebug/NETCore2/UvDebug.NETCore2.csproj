@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <Configurations>Debug;Release;Signed</Configurations>
     <AssemblyName>UvDebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
@@ -13,79 +13,79 @@
     <None Include="..\..\..\Packages\nuget.exe" Link="nuget.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Cursors\Cursors.xml" Link="Content\Cursors\Cursors.xml">
+    <None Include="..\Shared\Content\Cursors\Cursors.xml" Link="Content\Cursors\Cursors.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Cursors\CursorsImage.png" Link="Content\Cursors\CursorsImage.png">
+    <None Include="..\Shared\Content\Cursors\CursorsImage.png" Link="Content\Cursors\CursorsImage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Fonts\Inconsolata-Regular.ttf" Link="Content\Fonts\Inconsolata-Regular.ttf">
+    <None Include="..\Shared\Content\Fonts\Inconsolata-Regular.ttf" Link="Content\Fonts\Inconsolata-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Fonts\Inconsolata-Bold.ttf" Link="Content\Fonts\Inconsolata-Bold.ttf">
+    <None Include="..\Shared\Content\Fonts\Inconsolata-Bold.ttf" Link="Content\Fonts\Inconsolata-Bold.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Fonts\Inconsolata.uvmeta" Link="Content\Fonts\Inconsolata.uvmeta">
+    <None Include="..\Shared\Content\Fonts\Inconsolata.uvmeta" Link="Content\Fonts\Inconsolata.uvmeta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Fonts\SegoeUI.xml" Link="Content\Fonts\SegoeUI.xml">
+    <None Include="..\Shared\Content\Fonts\SegoeUI.xml" Link="Content\Fonts\SegoeUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Fonts\SegoeUITexture.png" Link="Content\Fonts\SegoeUITexture.png">
+    <None Include="..\Shared\Content\Fonts\SegoeUITexture.png" Link="Content\Fonts\SegoeUITexture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Localization\GameStrings.xml" Link="Content\Localization\GameStrings.xml">
+    <None Include="..\Shared\Content\Localization\GameStrings.xml" Link="Content\Localization\GameStrings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\SoundEffects\Click1.wav" Link="Content\SoundEffects\Click1.wav">
+    <None Include="..\Shared\Content\SoundEffects\Click1.wav" Link="Content\SoundEffects\Click1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\SoundEffects\rollover1.wav" Link="Content\SoundEffects\rollover1.wav">
+    <None Include="..\Shared\Content\SoundEffects\rollover1.wav" Link="Content\SoundEffects\rollover1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\SoundEffects\rollover2.wav" Link="Content\SoundEffects\rollover2.wav">
+    <None Include="..\Shared\Content\SoundEffects\rollover2.wav" Link="Content\SoundEffects\rollover2.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\SoundEffects\rollover3.wav" Link="Content\SoundEffects\rollover3.wav">
+    <None Include="..\Shared\Content\SoundEffects\rollover3.wav" Link="Content\SoundEffects\rollover3.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Textures\Logo-mdpi.png" Link="Content\Textures\Logo-mdpi.png">
+    <None Include="..\Shared\Content\Textures\Logo-mdpi.png" Link="Content\Textures\Logo-mdpi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Textures\Logo.png" Link="Content\Textures\Logo.png">
+    <None Include="..\Shared\Content\Textures\Logo.png" Link="Content\Textures\Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Textures\test_0.png" Link="Content\Textures\test_0.png">
+    <None Include="..\Shared\Content\Textures\test_0.png" Link="Content\Textures\test_0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Textures\test_1.png" Link="Content\Textures\test_1.png">
+    <None Include="..\Shared\Content\Textures\test_1.png" Link="Content\Textures\test_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Textures\test_2.png" Link="Content\Textures\test_2.png">
+    <None Include="..\Shared\Content\Textures\test_2.png" Link="Content\Textures\test_2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUI-mdpi.png" Link="Content\UI\DefaultUI-mdpi.png">
+    <None Include="..\Shared\Content\UI\DefaultUI-mdpi.png" Link="Content\UI\DefaultUI-mdpi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUI.png" Link="Content\UI\DefaultUI.png">
+    <None Include="..\Shared\Content\UI\DefaultUI.png" Link="Content\UI\DefaultUI.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUIBackground.png" Link="Content\UI\DefaultUIBackground.png">
+    <None Include="..\Shared\Content\UI\DefaultUIBackground.png" Link="Content\UI\DefaultUIBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUIFont-mdpi.xml" Link="Content\UI\DefaultUIFont-mdpi.xml">
+    <None Include="..\Shared\Content\UI\DefaultUIFont-mdpi.xml" Link="Content\UI\DefaultUIFont-mdpi.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUIFont.xml" Link="Content\UI\DefaultUIFont.xml">
+    <None Include="..\Shared\Content\UI\DefaultUIFont.xml" Link="Content\UI\DefaultUIFont.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml" Link="Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
+    <None Include="..\Shared\Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml" Link="Content\UI\Dialogs\EscMenuDialog\EscMenuDialog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
+    <Content Include="..\Shared\Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
+    <None Include="..\Shared\Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib">
@@ -107,53 +107,53 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\Desktop\Content\Manifests\Global.manifest" Link="Content\Manifests\Global.manifest">
+    <None Include="..\Shared\Content\Manifests\Global.manifest" Link="Content\Manifests\Global.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\Sprites\InterfaceIcons.sprite" Link="Content\Sprites\InterfaceIcons.sprite">
+    <None Include="..\Shared\Content\Sprites\InterfaceIcons.sprite" Link="Content\Sprites\InterfaceIcons.sprite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUIStyles-mdpi.uvss" Link="Content\UI\DefaultUIStyles-mdpi.uvss">
+    <None Include="..\Shared\Content\UI\DefaultUIStyles-mdpi.uvss" Link="Content\UI\DefaultUIStyles-mdpi.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\DefaultUIStyles.uvss" Link="Content\UI\DefaultUIStyles.uvss">
+    <None Include="..\Shared\Content\UI\DefaultUIStyles.uvss" Link="Content\UI\DefaultUIStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss" Link="Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
+    <None Include="..\Shared\Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss" Link="Content\UI\Dialogs\EscMenuDialog\EscMenuDialogStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\GameStyles.uvss" Link="Content\UI\GameStyles.uvss">
+    <None Include="..\Shared\Content\UI\GameStyles.uvss" Link="Content\UI\GameStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
+    <None Include="..\Shared\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles-mdpi.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
+    <None Include="..\Shared\Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss" Link="Content\UI\Screens\GameMenuScreen\GameMenuScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
+    <None Include="..\Shared\Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss" Link="Content\UI\Screens\GamePlayScreen\GamePlayScreenStyles.uvss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Desktop\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml" Link="Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
+    <None Include="..\Shared\Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml" Link="Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="..\Desktop\UI\Controls\Templates\TriangleColorSelector.xml" Link="UI\Controls\Templates\TriangleColorSelector.xml" />
+    <EmbeddedResource Include="..\Shared\UI\Controls\Templates\TriangleColorSelector.xml" Link="UI\Controls\Templates\TriangleColorSelector.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard\Ultraviolet.BASS.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard\Ultraviolet.Core.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard\Ultraviolet.FreeType2.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\NETStandard\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard\Ultraviolet.ImGuiViewProvider.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard\Ultraviolet.OpenGL.Bindings.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard\Ultraviolet.OpenGL.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard\Ultraviolet.Presentation.Compiler.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard\Ultraviolet.Presentation.Uvss.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard\Ultraviolet.Presentation.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard\Ultraviolet.SDL2.NETStandard.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore\Ultraviolet.Shims.NETCore.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet\NETStandard\Ultraviolet.NETStandard.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard20\Ultraviolet.BASS.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard20\Ultraviolet.FreeType2.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider.Bindings\NETStandard20\Ultraviolet.ImGuiViewProvider.Bindings.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.ImGuiViewProvider\NETStandard20\Ultraviolet.ImGuiViewProvider.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL.Bindings\NETStandard20\Ultraviolet.OpenGL.Bindings.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard20\Ultraviolet.OpenGL.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard20\Ultraviolet.Presentation.Compiler.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard20\Ultraviolet.Presentation.Uvss.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard20\Ultraviolet.Presentation.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard20\Ultraviolet.SDL2.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore2\Ultraviolet.Shims.NETCore2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -259,6 +259,7 @@
     <RunCreateSymbolicLinksToFreeType2Dependencies Condition="'$(OS)' == 'Unix' And !Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies>
     <RunCreateSymbolicLinksToFreeType2Dependencies_osx>false</RunCreateSymbolicLinksToFreeType2Dependencies_osx>
     <RunCreateSymbolicLinksToFreeType2Dependencies_osx Condition="'$(OS)' == 'Unix' And Exists('/Library/Frameworks')">true</RunCreateSymbolicLinksToFreeType2Dependencies_osx>
+    <StartupObject>UvDebug.Game</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
