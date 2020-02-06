@@ -52,17 +52,6 @@
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\Shared\Resources\DataObjectRegistryData.json" Link="Resources\DataObjectRegistryData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Shared\Resources\DataObjectRegistryData.xml" Link="Resources\DataObjectRegistryData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <EmbeddedResource Include="..\Shared\Resources\LocalizedStrings.json" Link="Resources\LocalizedStrings.json" />
-    <EmbeddedResource Include="..\Shared\Resources\LocalizedStrings.xml" Link="Resources\LocalizedStrings.xml" />
-  </ItemGroup>
-
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
     <SignAssembly>true</SignAssembly>
     <DelaySign>true</DelaySign>

@@ -46,11 +46,7 @@
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Version.tt" Link="Properties\Version.tt">

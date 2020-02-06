@@ -90,4 +90,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromJObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromXDocument.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

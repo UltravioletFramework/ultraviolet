@@ -164,4 +164,7 @@
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\LocalizedStringVariantCollection.json" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\Core\Text\StringResource.json" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

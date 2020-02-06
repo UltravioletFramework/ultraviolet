@@ -34,7 +34,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  
     </Compile>

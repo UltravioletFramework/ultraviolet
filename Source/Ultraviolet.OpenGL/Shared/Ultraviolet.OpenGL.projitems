@@ -115,4 +115,7 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

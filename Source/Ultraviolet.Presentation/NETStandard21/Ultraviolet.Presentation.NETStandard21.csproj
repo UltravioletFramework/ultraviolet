@@ -44,8 +44,6 @@
     <EmbeddedResource Include="..\Shared\Controls\Templates\TextBox.xml" Link="Controls\Templates\TextBox.xml" />
     <EmbeddedResource Include="..\Shared\Controls\Templates\ToolTip.xml" Link="Controls\Templates\ToolTip.xml" />
     <EmbeddedResource Include="..\Shared\Controls\Templates\VSlider.xml" Link="Controls\Templates\VSlider.xml" />
-    <EmbeddedResource Include="..\Shared\Resources\Commands.xml" Link="Resources\Commands.xml" />
-    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
   </ItemGroup>
 
   <ItemGroup>

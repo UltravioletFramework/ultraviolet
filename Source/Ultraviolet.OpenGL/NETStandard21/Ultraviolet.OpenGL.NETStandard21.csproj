@@ -30,7 +30,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
     <EmbeddedResource Include="..\Shared\Resources\uv64.png" Link="Resources\uv64.png" />
   </ItemGroup>
 

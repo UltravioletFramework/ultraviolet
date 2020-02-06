@@ -106,4 +106,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxTrivia.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

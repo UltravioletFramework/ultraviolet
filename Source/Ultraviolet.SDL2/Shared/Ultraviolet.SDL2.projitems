@@ -115,4 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SDL2UltravioletPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SDLFactoryInitializer.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

@@ -40,10 +40,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  
     </Compile>
@@ -52,7 +48,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>

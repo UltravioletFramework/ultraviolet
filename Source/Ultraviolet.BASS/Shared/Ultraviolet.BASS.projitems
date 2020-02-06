@@ -43,4 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\BASS_SAMPLE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\TAG_ID3.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>

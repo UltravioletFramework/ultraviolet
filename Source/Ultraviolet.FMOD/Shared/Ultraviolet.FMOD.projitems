@@ -43,4 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SOUND_TYPE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_SOUND_FORMAT.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
 </Project>
