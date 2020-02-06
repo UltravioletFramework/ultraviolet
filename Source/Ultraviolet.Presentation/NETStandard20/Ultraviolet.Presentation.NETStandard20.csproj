@@ -9,49 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs" Link="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
-      <DependentUpon>MessageBoxScreen.tt</DependentUpon>
-    </EmbeddedResource>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Resources\Content\Fonts\SegoeUITexture.png" Link="Resources\Content\Fonts\SegoeUITexture.png" />
-    <EmbeddedResource Include="..\Shared\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" Link="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\HScrollBar.xml" Link="Controls\Primitives\Templates\HScrollBar.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\ScrollBar.xml" Link="Controls\Primitives\Templates\ScrollBar.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\Thumb.xml" Link="Controls\Primitives\Templates\Thumb.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\ToggleButton.xml" Link="Controls\Primitives\Templates\ToggleButton.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Primitives\Templates\VScrollBar.xml" Link="Controls\Primitives\Templates\VScrollBar.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\Button.xml" Link="Controls\Templates\Button.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\CheckBox.xml" Link="Controls\Templates\CheckBox.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ComboBox.xml" Link="Controls\Templates\ComboBox.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ComboBoxItem.xml" Link="Controls\Templates\ComboBoxItem.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\HSlider.xml" Link="Controls\Templates\HSlider.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ListBox.xml" Link="Controls\Templates\ListBox.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ListBoxItem.xml" Link="Controls\Templates\ListBoxItem.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\NumericUpDown.xml" Link="Controls\Templates\NumericUpDown.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\PasswordBox.xml" Link="Controls\Templates\PasswordBox.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ProgressBar.xml" Link="Controls\Templates\ProgressBar.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\RadioButton.xml" Link="Controls\Templates\RadioButton.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\RepeatButton.xml" Link="Controls\Templates\RepeatButton.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ScrollViewer.xml" Link="Controls\Templates\ScrollViewer.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\Slider.xml" Link="Controls\Templates\Slider.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\TabControl.xml" Link="Controls\Templates\TabControl.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\TabItem.xml" Link="Controls\Templates\TabItem.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\TextBox.xml" Link="Controls\Templates\TextBox.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\ToolTip.xml" Link="Controls\Templates\ToolTip.xml" />
-    <EmbeddedResource Include="..\Shared\Controls\Templates\VSlider.xml" Link="Controls\Templates\VSlider.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\Primitives\Templates\" />
-    <Folder Include="Controls\Templates\" />
     <Folder Include="Properties\" />
-    <Folder Include="Resources\Content\Fonts\" />
-    <Folder Include="Resources\Content\UI\Screens\MessageBoxScreen\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,15 +29,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="..\Shared\Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt" Link="Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard20\Ultraviolet.Presentation.Uvss.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">

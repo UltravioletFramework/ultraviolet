@@ -54,6 +54,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Layout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Types.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPlugin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
+      <DependentUpon>MessageBoxScreen.tt</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\CompositeUvssDocumentChild.cs" />
@@ -509,5 +512,45 @@
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Commands.xml" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Content\Fonts\SegoeUITexture.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)BindingExpressionCompilerTemplate.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\HScrollBar.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\ScrollBar.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\Thumb.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\ToggleButton.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Primitives\Templates\VScrollBar.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\Button.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\CheckBox.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ComboBox.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ComboBoxItem.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\HSlider.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ListBox.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ListBoxItem.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\NumericUpDown.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\PasswordBox.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ProgressBar.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\RadioButton.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\RepeatButton.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ScrollViewer.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\Slider.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\TabControl.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\TabItem.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\TextBox.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\ToolTip.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\Templates\VSlider.xml" />
   </ItemGroup>
 </Project>

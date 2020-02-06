@@ -1,0 +1,34 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\Ultraviolet.Core.dll" #>
+<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\Ultraviolet.dll" #>
+<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\Ultraviolet.Desktop.dll" #>
+<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\Ultraviolet.Presentation.dll" #>
+<#@ assembly name="$(SolutionDir)\Binaries\AnyCPU\$(ConfigurationName)\Ultraviolet.Presentation.Compiler.dll" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.CodeDom.Compiler" #>
+<#@ import namespace="Ultraviolet.Presentation" #>
+<#@ import namespace="Ultraviolet.Presentation.Compiler" #>
+<#@ output extension=".cs" #>
+<#+ private string GenerateSourceCodeForViewModel(String @namespace, String name, String path)
+{
+	var compiler = new Ultraviolet.Presentation.Compiler.ExpressionCompiler();
+
+	var options = new BindingExpressionCompilerOptions();
+	options.WorkInTemporaryDirectory = true;
+	options.Input = File.ReadAllText(Host.ResolvePath(path));
+	options.RequestedViewModelNamespace = @namespace;
+	options.RequestedViewModelName = name;
+
+	var result = compiler.CompileSingleView(null, options);
+	if (result.Failed)
+	{
+		Host.LogErrors(new CompilerErrorCollection(
+			result.Errors.Select(x => new CompilerError(x.Filename, x.Line, x.Column, x.ErrorNumber, x.ErrorText)).ToArray()));
+
+		return "// An error occurred while compiling the view model.";
+	}
+
+	return options.Output;
+}#>
