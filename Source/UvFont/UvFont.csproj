@@ -61,8 +61,8 @@
     <DelaySign>true</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -93,20 +93,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ultraviolet.Core\Desktop\Ultraviolet.Core.Desktop.csproj">
-      <Project>{7DA6158B-A0B9-4100-904E-22FD86949608}</Project>
-      <Name>Ultraviolet.Core.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet.Tooling\Ultraviolet.Tooling.csproj">
-      <Project>{6AAB1EDC-67E5-4F64-9633-50CECB8D9254}</Project>
-      <Name>Ultraviolet.Tooling</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ultraviolet\Desktop\Ultraviolet.Desktop.csproj">
-      <Project>{F071ABE3-05E5-4DF9-A929-CF71B01EC50A}</Project>
-      <Name>Ultraviolet.Desktop</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\Version.tt">
       <Link>Properties\Version.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -115,6 +101,20 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj">
+      <Project>{355bcccb-b923-46e3-af96-d1919051f422}</Project>
+      <Name>Ultraviolet.Core.NETStandard20</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet.Tooling\NETStandard20\Ultraviolet.Tooling.NETStandard20.csproj">
+      <Project>{240702c2-02c9-4081-b346-2fc8f68e8455}</Project>
+      <Name>Ultraviolet.Tooling.NETStandard20</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj">
+      <Project>{a7ab9f81-42aa-4575-9371-4e6ba4aec1dd}</Project>
+      <Name>Ultraviolet.NETStandard20</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
