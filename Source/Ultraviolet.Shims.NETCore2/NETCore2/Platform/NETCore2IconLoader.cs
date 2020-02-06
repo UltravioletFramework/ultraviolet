@@ -24,7 +24,7 @@ namespace Ultraviolet.Shims.NETCore3.Platform
 
             var iconStream = 
                 asmEntry.GetManifestResourceStream(asmResourceIcon) ??
-                asmLoader.GetManifestResourceStream($"Ultraviolet.Shims.NETCore.icon.ico");
+                asmLoader.GetManifestResourceStream($"Ultraviolet.Shims.NETCore2.icon.ico");
 
             if (iconStream != null)
             {
