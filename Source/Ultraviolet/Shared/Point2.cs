@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,7 +7,6 @@ namespace Ultraviolet
     /// Represents a point in two-dimensional space.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(Point2TypeConverter))]
     public partial struct Point2 : IEquatable<Point2>, IInterpolatable<Point2>
     {
         /// <summary>

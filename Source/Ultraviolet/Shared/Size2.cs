@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,7 +7,6 @@ namespace Ultraviolet
     /// Represents a two-dimensional size with integer components.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(Size2TypeConverter))]
     public partial struct Size2 : IEquatable<Size2>, IInterpolatable<Size2>
     {
         /// <summary>

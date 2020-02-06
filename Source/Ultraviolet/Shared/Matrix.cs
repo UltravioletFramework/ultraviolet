@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 using Ultraviolet.Core;
 
@@ -10,7 +9,6 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    [TypeConverter(typeof(MatrixTypeConverter))]
     public partial struct Matrix : IEquatable<Matrix>, IInterpolatable<Matrix>
     {
         /// <summary>

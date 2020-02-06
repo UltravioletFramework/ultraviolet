@@ -67,10 +67,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\NamespaceDoc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt32.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt32TypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt64.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MaskedUInt64TypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MathUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\IMessageQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\IMessageSubscriber.cs" />
@@ -103,7 +101,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Text\IStringSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringBuilderSource.Equality.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Text\StringResourceTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSegmentSource.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Text\StringSource.cs" />

@@ -13,7 +13,6 @@ namespace Ultraviolet
     /// </summary>
     [Serializable]
     [JsonConverter(typeof(UltravioletJsonConverter))]
-    [TypeConverter(typeof(ColorTypeConverter))]
     public partial struct Color : IEquatable<Color>, IInterpolatable<Color>
     {
         /// <summary>

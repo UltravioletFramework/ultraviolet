@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,7 +7,6 @@ namespace Ultraviolet
     /// Represents a rectangle with double-precision floating point components.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(RectangleDTypeConverter))]
     public partial struct RectangleD : IEquatable<RectangleD>, IInterpolatable<RectangleD>
     {
         /// <summary>

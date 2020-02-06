@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,7 +7,6 @@ namespace Ultraviolet
     /// Represents a two-dimensional area with double-precision floating point components.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(Size2DTypeConverter))]
     public partial struct Size2D : IEquatable<Size2D>, IInterpolatable<Size2D>
     {
         /// <summary>

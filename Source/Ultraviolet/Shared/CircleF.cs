@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,7 +7,6 @@ namespace Ultraviolet
     /// Represents a circle with single-precision floating point radius and position.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(CircleFTypeConverter))]
     public partial struct CircleF : IEquatable<CircleF>, IInterpolatable<CircleF>
     {
         /// <summary>

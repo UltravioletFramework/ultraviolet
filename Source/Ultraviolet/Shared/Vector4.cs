@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// Represents a four-dimensional vector.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(Vector4TypeConverter))]
     public partial struct Vector4 : IEquatable<Vector4>, IInterpolatable<Vector4>
     {
         /// <summary>

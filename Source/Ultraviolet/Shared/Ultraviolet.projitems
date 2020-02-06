@@ -36,15 +36,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)CircleD.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleF.Parsing.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CircleDTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CircleFTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CircleTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ColorTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContainmentType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetCacheVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetDependencyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcher.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManifestTypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetDependencyList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\IAssetWatcherCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Content\AssetWatcherCollection.cs" />
@@ -81,27 +76,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletTimingLogic.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MatrixTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Point2TypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Point2FTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RadiansTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RectangleDTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RectangleFTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RectangleTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Point2DTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Size2DTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Size2FTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Size2TypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Size3DTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Size3FTypeConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Size3TypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextShaper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\TextScript.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletExpandableObjectConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletTimingLogic.Win32Native.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletJsonContractResolver.cs" />
@@ -177,10 +157,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletPluginCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector2.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector2.Parsing.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Vector2TypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3.Parsing.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Vector3TypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleD.cs" />
@@ -557,7 +535,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Vector2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Vector4TypeConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WorkItemOptions.cs" />
   </ItemGroup>
   <ItemGroup>

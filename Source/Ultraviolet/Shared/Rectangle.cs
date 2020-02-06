@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Ultraviolet
@@ -8,7 +7,6 @@ namespace Ultraviolet
     /// Represents a rectangle with integer components.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(RectangleTypeConverter))]
     public partial struct Rectangle : IEquatable<Rectangle>, IInterpolatable<Rectangle>
     {
         /// <summary>

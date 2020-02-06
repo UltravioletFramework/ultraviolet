@@ -8,7 +8,6 @@ namespace Ultraviolet
     /// Represents a rectangle with single-precision floating point components.
     /// </summary>
     [Serializable]
-    [TypeConverter(typeof(RectangleFTypeConverter))]
     public partial struct RectangleF : IEquatable<RectangleF>, IInterpolatable<RectangleF>
     {
         /// <summary>
