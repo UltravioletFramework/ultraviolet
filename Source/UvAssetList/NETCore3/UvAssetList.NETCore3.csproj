@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>uvassetlist</AssemblyName>
+    <RootNamespace>UvAssetList</RootNamespace>
   </PropertyGroup>
 
   <Import Project="..\Shared\UvAssetList.projitems" Label="Shared" />

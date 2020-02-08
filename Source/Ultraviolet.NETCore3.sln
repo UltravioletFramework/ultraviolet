@@ -145,6 +145,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvAssetList.NETCore3", "UvA
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvAssetList", "UvAssetList\Shared\UvAssetList.shproj", "{33752A23-FDD9-493A-A5CE-76F4E953D49D}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Windows.Forms", "Ultraviolet.Windows.Forms\Shared\Ultraviolet.Windows.Forms.shproj", "{C2514552-D592-46CE-A8AD-42970A787F80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Windows.Forms.NETCore3", "Ultraviolet.Windows.Forms\NETCore3\Ultraviolet.Windows.Forms.NETCore3.csproj", "{40C09D4D-7656-406A-A03B-2A22454AD9F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Windows.Forms.NETFramework472", "Ultraviolet.Windows.Forms\NETFramework471\Ultraviolet.Windows.Forms.NETFramework472.csproj", "{3E510F02-5EB5-45F1-8628-0DD662B10289}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
@@ -152,6 +158,7 @@ Global
 		Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems*{11742f76-15d2-47b2-a36d-81c9f5699e81}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		UvAssetList\Shared\UvAssetList.projitems*{33752a23-fdd9-493a-a5ce-76f4e953d49d}*SharedItemsImports = 13
+		Ultraviolet.Windows.Forms\Shared\Ultraviolet.Windows.Forms.projitems*{3e510f02-5eb5-45f1-8628-0dd662b10289}*SharedItemsImports = 4
 		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
@@ -164,6 +171,7 @@ Global
 		Ultraviolet\Shared\Ultraviolet.projitems*{979effae-5cdf-4ca8-90d0-e3dbf091de0a}*SharedItemsImports = 13
 		Ultraviolet.FreeType2\Shared\Ultraviolet.FreeType2.projitems*{9c6d1468-b7a7-4fb9-b7ef-088803a62b89}*SharedItemsImports = 13
 		Ultraviolet.Core.TestFramework\Shared\Ultraviolet.Core.TestFramework.projitems*{c0ef7ba7-4f67-4063-84f7-8c04e4fcc632}*SharedItemsImports = 13
+		Ultraviolet.Windows.Forms\Shared\Ultraviolet.Windows.Forms.projitems*{c2514552-d592-46ce-a8ad-42970a787f80}*SharedItemsImports = 13
 		Ultraviolet.Tooling\Shared\Ultraviolet.Tooling.projitems*{c2d3ac48-2ae7-4da8-9ed2-e591a8218b3b}*SharedItemsImports = 13
 		Ultraviolet.TestFramework\Shared\Ultraviolet.TestFramework.projitems*{d223f1a9-3445-47fe-b82f-f7aa334f0549}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
@@ -460,6 +468,18 @@ Global
 		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Signed|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

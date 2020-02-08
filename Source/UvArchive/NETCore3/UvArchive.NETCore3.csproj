@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>uvarchive</AssemblyName>
+    <RootNamespace>UvArchive</RootNamespace>
   </PropertyGroup>
 
   <Import Project="..\Shared\UvArchive.projitems" Label="Shared" />

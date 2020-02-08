@@ -1,17 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AssemblyName>uvfont</AssemblyName>
-    <RootNamespace>UvFont</RootNamespace>
+    <AssemblyName>Ultraviolet.Windows.Forms</AssemblyName>
+    <RootNamespace>Ultraviolet.Windows.Forms</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="..\Shared\UvFont.projitems" Label="Shared" />
+  <Import Project="..\Shared\Ultraviolet.Windows.Forms.projitems" Label="Shared" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Tooling\NETStandard21\Ultraviolet.Tooling.NETStandard21.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>
 
@@ -20,20 +19,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>  
     </Compile>
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-  </ItemGroup>
 
 </Project>

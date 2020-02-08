@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Configurations>Debug;Release;Signed</Configurations>
-    <AssemblyName>UvDebug</AssemblyName>
+    <AssemblyName>uvdebug</AssemblyName>
     <RootNamespace>UvDebug</RootNamespace>
     <ApplicationIcon></ApplicationIcon>
   </PropertyGroup>
