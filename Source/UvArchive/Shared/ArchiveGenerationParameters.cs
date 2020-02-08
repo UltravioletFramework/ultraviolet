@@ -25,16 +25,16 @@ namespace UvArchive
 
             switch (args.First().ToLowerInvariant())
             {
-                case "-pack": 
+                case "-pack":
                     Command = ArchiveGenerationCommand.Pack;
                     ProcessPackParameters(args, parser);
                     break;
 
-                case "-list": 
+                case "-list":
                     Command = ArchiveGenerationCommand.List;
                     ProcessListParameters(args, parser);
                     break;
-                
+
                 default:
                     throw new InvalidCommandLineException();
             }
@@ -67,7 +67,7 @@ namespace UvArchive
         /// <param name="parser">The command line argument parser.</param>
         private void ProcessPackParameters(String[] args, CommandLineParser parser)
         {
-            PackOutput      = args.Skip(1).Take(1).Single();
+            PackOutput = args.Skip(1).Take(1).Single();
             PackDirectories = args.Skip(2).ToList();
         }
 

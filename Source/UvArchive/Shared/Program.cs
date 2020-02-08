@@ -53,9 +53,9 @@ namespace UvArchive
 
         private static void PackArchive(ArchiveGenerationParameters parameters)
         {
-            var dirs   = parameters.PackDirectories;
-            var output = parameters.PackOutput; 
-            
+            var dirs = parameters.PackDirectories;
+            var output = parameters.PackOutput;
+
             var invalidInputs = dirs.Where(x => !Directory.Exists(x));
             if (invalidInputs.Any())
             {

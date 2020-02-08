@@ -1,5 +1,4 @@
-﻿
-namespace UvArchive
+﻿namespace UvArchive
 {
     /// <summary>
     /// Represents the commands which can be passed to the archive generation tool.
