@@ -137,6 +137,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvArchive", "UvArchive\Shar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvArchive.NETCore3", "UvArchive\NETCore3\UvArchive.NETCore3.csproj", "{099981E0-206B-4E1E-A806-87761B1D238D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvFont.NETCore3", "UvFont\NETCore3\UvFont.NETCore3.csproj", "{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvFont", "UvFont\Shared\UvFont.shproj", "{7342634B-B04C-4FA0-840E-BE26DBBEB430}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
@@ -147,6 +151,7 @@ Global
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss.Tests\Shared\Ultraviolet.Presentation.Uvss.Tests.projitems*{7122e830-c550-488a-bc17-a5542ff5dd17}*SharedItemsImports = 13
+		UvFont\Shared\UvFont.projitems*{7342634b-b04c-4fa0-840e-be26dbbeb430}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss.TestFramework\Shared\Ultraviolet.Presentation.Uvss.TestFramework.projitems*{75265ef0-dd07-4895-8c6b-18593a370b04}*SharedItemsImports = 13
 		Ultraviolet.ImGuiViewProvider\Shared\Ultraviolet.ImGuiViewProvider.projitems*{76ffe46f-869e-4bde-8122-ceb21b7ff07f}*SharedItemsImports = 13
 		Ultraviolet.Core\Shared\Ultraviolet.Core.projitems*{803b586b-cbac-4e46-a787-bdf837e1ef46}*SharedItemsImports = 13
@@ -438,6 +443,12 @@ Global
 		{099981E0-206B-4E1E-A806-87761B1D238D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{099981E0-206B-4E1E-A806-87761B1D238D}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
 		{099981E0-206B-4E1E-A806-87761B1D238D}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Signed|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
