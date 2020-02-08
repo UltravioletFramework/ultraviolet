@@ -141,12 +141,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvFont.NETCore3", "UvFont\N
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvFont", "UvFont\Shared\UvFont.shproj", "{7342634B-B04C-4FA0-840E-BE26DBBEB430}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvAssetList.NETCore3", "UvAssetList\NETCore3\UvAssetList.NETCore3.csproj", "{AC122D65-34DB-4577-BEDF-07A4736DD6B7}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UvAssetList", "UvAssetList\Shared\UvAssetList.shproj", "{33752A23-FDD9-493A-A5CE-76F4E953D49D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
 		Ultraviolet.Tests\Shared\Ultraviolet.Tests.projitems*{084c6292-2de5-4f12-a40f-6b9bdd6154f5}*SharedItemsImports = 13
 		Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems*{11742f76-15d2-47b2-a36d-81c9f5699e81}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
+		UvAssetList\Shared\UvAssetList.projitems*{33752a23-fdd9-493a-a5ce-76f4e953d49d}*SharedItemsImports = 13
 		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
@@ -449,6 +454,12 @@ Global
 		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E35D7B2-7901-4A74-8A1A-0C836D1F8E03}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC122D65-34DB-4577-BEDF-07A4736DD6B7}.Signed|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
