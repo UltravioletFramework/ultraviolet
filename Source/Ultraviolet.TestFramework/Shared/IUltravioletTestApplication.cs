@@ -13,15 +13,15 @@ namespace Ultraviolet.TestFramework
         /// <summary>
         /// Specifies the application's Audio subsystem implementation.
         /// </summary>
-        /// <param name="impl">A <see cref="AudioImplementation"/> value corresponding to one of 
+        /// <param name="audioImplementation">A <see cref="AudioImplementation"/> value corresponding to one of 
         /// the Ultraviolet Framework's Audio subsystem implementations.</param>
         /// <returns>The Ultraviolet test application.</returns>
         IUltravioletTestApplication WithAudioImplementation(AudioImplementation audioImplementation);
 
         /// <summary>
-        /// Specifies that a plugin should be added to the list which is loaded by Ultraviolet.
+        /// Specifies that a modification should be made to the application's configuration.
         /// </summary>
-        /// <param name="plugin">The plugin to load.</param>
+        /// <param name="configurer">An action which performs the configuration change.</param>
         /// <returns>The Ultraviolet test application.</returns>
         IUltravioletTestApplication WithConfiguration(Action<UltravioletConfiguration> configurer);
 

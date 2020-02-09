@@ -3,31 +3,30 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Debug;Release;Signed</Configurations>
     <AssemblyName>Ultraviolet.OpenGL</AssemblyName>
     <RootNamespace>Ultraviolet.OpenGL</RootNamespace>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.OpenGL.xml</DocumentationFile>
-    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.OpenGL.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
-    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.OpenGL.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
@@ -50,19 +49,7 @@
     <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard20\Ultraviolet.SDL2.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-  
-  <Import Project="..\Shared\Ultraviolet.OpenGL.projitems" Label="Shared" />
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
+    
   <ItemGroup>
     <EmbeddedResource Update="C:\Dev\Repositories\Git\ultraviolet\Source\Ultraviolet.OpenGL\Shared\Resources\BlurEffectUnrolledES.frag">
       <DesignTime>True</DesignTime>
@@ -70,5 +57,7 @@
       <DependentUpon>BlurEffectUnrolledES.tt</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Import Project="..\Shared\Ultraviolet.OpenGL.projitems" Label="Shared" />
 
 </Project>

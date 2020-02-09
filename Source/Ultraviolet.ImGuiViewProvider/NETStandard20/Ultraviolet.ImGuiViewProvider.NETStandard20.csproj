@@ -3,35 +3,30 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Configurations>Debug;Release;Signed</Configurations>
     <AssemblyName>Ultraviolet.ImGuiViewProvider</AssemblyName>
     <RootNamespace>Ultraviolet.ImGuiViewProvider</RootNamespace>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.ImGuiViewProvider.xml</DocumentationFile>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.ImGuiViewProvider.xml</DocumentationFile>
-    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.ImGuiViewProvider.xml</DocumentationFile>
-    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.Public.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
-  <Import Project="..\Shared\Ultraviolet.ImGuiViewProvider.projitems" Label="Shared" />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
@@ -50,8 +45,6 @@
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <Import Project="..\Shared\Ultraviolet.ImGuiViewProvider.projitems" Label="Shared" />
 
 </Project>

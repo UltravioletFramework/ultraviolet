@@ -1,33 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Ultraviolet.FreeType2</AssemblyName>
     <RootNamespace>Ultraviolet.FreeType2</RootNamespace>
-    <Configurations>Debug;Release;Signed</Configurations>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\netstandard2.0\Ultraviolet.FreeType2.xml</DocumentationFile>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\netstandard2.0\Ultraviolet.FreeType2.xml</DocumentationFile>
-    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Signed|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DocumentationFile>bin\Signed\netstandard2.0\Ultraviolet.FreeType2.xml</DocumentationFile>
-    <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
-  </PropertyGroup>
-
-  <Import Project="..\Shared\Ultraviolet.FreeType2.projitems" Label="Shared" />
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
@@ -48,5 +43,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
+
+  <Import Project="..\Shared\Ultraviolet.FreeType2.projitems" Label="Shared" />
 
 </Project>

@@ -1,13 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <AssemblyName>Ultraviolet.Presentation.Uvss.Tests</AssemblyName>
-    <RootNamespace>Ultraviolet.Presentation.Uvss.Tests</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Ultraviolet.Presentation.Uvss.TestFramework</AssemblyName>
+    <RootNamespace>Ultraviolet.Presentation.Uvss.TestFramework</RootNamespace>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
@@ -19,7 +27,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DelaySign>false</DelaySign>
-    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+    <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup>
@@ -29,7 +37,10 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETStandard20\Ultraviolet.Core.TestFramework.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss.TestFramework\NETStandard20\Ultraviolet.Presentation.Uvss.TestFramework.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard20\Ultraviolet.Presentation.Uvss.NETStandard20.csproj" />
   </ItemGroup>
   
   <Import Project="..\Shared\Ultraviolet.Presentation.Uvss.Tests.projitems" Label="Shared" />

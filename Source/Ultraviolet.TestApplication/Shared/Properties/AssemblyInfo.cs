@@ -2,14 +2,14 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle(@"Platform Compatibility Shim for Android")]
+[assembly: AssemblyTitle(@"Ultraviolet Test Application Framework")]
 [assembly: AssemblyDescription(
-    @"Provides Ultraviolet type implementations which are specific to the Android platform.")]
+    @"Provides the default implementation of the IUltravioletTestApplication interface for use in Ultraviolet rendering tests.")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -20,4 +20,4 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("c95daec3-ec8e-4037-b1fc-cc3dd48de30b")]
+[assembly: Guid("1324376e-a739-4f1b-aa72-b6cf9e2818d0")]
