@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
-using Ultraviolet.TestFramework;
+using Ultraviolet.TestApplication;
 
 namespace Ultraviolet.Tests.Graphics.Graphics2D
 {

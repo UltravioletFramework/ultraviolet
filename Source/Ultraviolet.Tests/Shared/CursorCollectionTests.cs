@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Ultraviolet.TestFramework;
+using Ultraviolet.TestApplication;
 
 namespace Ultraviolet.Tests
 {

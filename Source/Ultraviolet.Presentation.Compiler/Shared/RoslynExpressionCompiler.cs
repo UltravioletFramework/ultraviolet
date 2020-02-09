@@ -313,7 +313,17 @@ namespace Ultraviolet.Presentation.Compiler
             }
 
             if (netStandardRefAsmDir == null)
-                throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssemblies);
+            {
+                if (UltravioletPlatformInfo.CurrentRuntime == UltravioletRuntime.CoreCLR &&
+                    UltravioletPlatformInfo.CurrentRuntimeVersion.Major > 2)
+                {
+                    throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssembliesCore3);
+                }
+                else
+                {
+                    throw new InvalidOperationException(CompilerStrings.CouldNotLocateReferenceAssemblies);
+                }
+            }
 
             var refDllFiles = Directory.GetFiles(netStandardRefAsmDir, "*.dll");
             foreach (var refDllFile in refDllFiles)

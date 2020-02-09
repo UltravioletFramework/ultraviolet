@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Ultraviolet.OpenGL.Graphics;
-using Ultraviolet.TestFramework;
+using Ultraviolet.TestApplication;
 
 namespace Ultraviolet.Tests.Graphics
 {

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Ultraviolet.TestApplication</AssemblyName>
+    <RootNamespace>Ultraviolet.TestApplication</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\Shared\Ultraviolet.TestApplication.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard21\Ultraviolet.OpenGL.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard21\Ultraviolet.TestFramework.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
+  </ItemGroup>
+
+</Project>

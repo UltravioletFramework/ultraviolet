@@ -2,8 +2,8 @@
 using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics;
 using Ultraviolet.Graphics.Graphics2D;
-using Ultraviolet.TestFramework;
 using Ultraviolet.Graphics.Graphics2D.Text;
+using Ultraviolet.TestApplication;
 
 namespace Ultraviolet.Tests.Graphics.Graphics2D
 {

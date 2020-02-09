@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Ultraviolet.TestApplication</AssemblyName>
+    <RootNamespace>Ultraviolet.TestApplication</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\Shared\Ultraviolet.TestApplication.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard20\Ultraviolet.OpenGL.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore2\Ultraviolet.Shims.NETCore2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard20\Ultraviolet.TestFramework.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
+  </ItemGroup>
+
+</Project>

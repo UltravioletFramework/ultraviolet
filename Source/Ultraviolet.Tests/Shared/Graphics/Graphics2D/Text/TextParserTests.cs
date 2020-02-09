@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Ultraviolet.Graphics.Graphics2D.Text;
-using Ultraviolet.TestFramework;
+using Ultraviolet.TestApplication;
 
 namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 {

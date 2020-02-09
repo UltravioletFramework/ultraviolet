@@ -74,6 +74,7 @@
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard20\Ultraviolet.Presentation.Compiler.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard20\Ultraviolet.Presentation.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore2\Ultraviolet.Shims.NETCore2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.TestApplication\NETCore2\Ultraviolet.TestApplication.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard20\Ultraviolet.TestFramework.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
@@ -84,5 +85,7 @@
   </ItemGroup>
 
   <Import Project="..\Shared\Ultraviolet.Tests.projitems" Label="Shared" />
+
+  <Import Project="..\..\Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.projitems" Label="Shared" />
 
 </Project>

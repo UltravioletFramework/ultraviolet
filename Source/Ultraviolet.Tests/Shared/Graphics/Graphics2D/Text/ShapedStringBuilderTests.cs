@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Ultraviolet.FreeType2;
 using Ultraviolet.Graphics.Graphics2D;
 using Ultraviolet.Graphics.Graphics2D.Text;
-using Ultraviolet.TestFramework;
+using Ultraviolet.TestApplication;
 
 namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
 {

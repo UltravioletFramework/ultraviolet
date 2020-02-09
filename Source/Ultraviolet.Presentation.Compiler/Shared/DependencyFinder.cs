@@ -268,7 +268,7 @@ namespace Ultraviolet.Presentation.Compiler
             {
                 case UltravioletPlatform.Windows:
                     {
-                        refFolderDir = new DirectoryInfo(Path.Combine(Environment.GetEnvironmentVariable("PROGRAMFILES"), "dotnet", "packs", "NETStandard.Library.Ref"));
+                        refFolderDir = new DirectoryInfo(Path.Combine(Environment.GetEnvironmentVariable("PROGRAMW6432"), "dotnet", "packs", "NETStandard.Library.Ref"));
                     }
                     break;
 

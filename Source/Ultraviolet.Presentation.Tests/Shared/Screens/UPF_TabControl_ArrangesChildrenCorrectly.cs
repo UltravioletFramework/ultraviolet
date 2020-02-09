@@ -1,0 +1,13 @@
+﻿using Ultraviolet.Content;
+
+namespace Ultraviolet.Presentation.Tests.Screens
+{
+    public class UPF_TabControl_ArrangesChildrenCorrectly : TestScreenBase<UPF_TabControl_ArrangesChildrenCorrectly_VM>
+    {
+        public UPF_TabControl_ArrangesChildrenCorrectly(ContentManager globalContent)
+            : base("Content/UI/Screens/UPF_TabControl_ArrangesChildrenCorrectly", "View", globalContent)
+        {
+
+        }
+    }
+}

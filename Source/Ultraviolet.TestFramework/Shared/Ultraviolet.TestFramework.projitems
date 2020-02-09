@@ -9,7 +9,6 @@
     <Import_RootNamespace>Ultraviolet.TestFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BitmapResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingBoxResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphereResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleDResult.cs" />
@@ -18,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ColorResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Graphics2D\Text\LineInfoResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ITestFrameworkCompositor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IUltravioletTestApplication.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MatrixResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaneResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Point2DResult.cs" />
@@ -35,7 +35,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Size3DResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Size3FResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Size3Result.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UltravioletApplicationTestFramework.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletTestFramework.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector2Result.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector3Result.cs" />
