@@ -131,78 +131,6 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BasicEffectTexturedES.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffect.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectES.frag" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1.frag">
-      <DependentUpon>BlurEffectRadius1.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1ES.frag">
-      <DependentUpon>BlurEffectRadius1ES.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1ES.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3.frag">
-      <DependentUpon>BlurEffectRadius3.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3ES.frag">
-      <DependentUpon>BlurEffectRadius3ES.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3ES.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5.frag">
-      <DependentUpon>BlurEffectRadius5.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5ES.frag">
-      <DependentUpon>BlurEffectRadius5ES.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5ES.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7.frag">
-      <DependentUpon>BlurEffectRadius7.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7ES.frag">
-      <DependentUpon>BlurEffectRadius7ES.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7ES.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9.frag">
-      <DependentUpon>BlurEffectRadius9.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9ES.frag">
-      <DependentUpon>BlurEffectRadius9ES.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9ES.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectUnrolled.frag">
-      <DependentUpon>BlurEffectUnrolled.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectUnrolled.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectUnrolledES.frag">
-      <DependentUpon>BlurEffectUnrolledES.tt</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectUnrolledES.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderES.fragh" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderES.verth" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffect.frag" />
@@ -210,6 +138,18 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffectES.frag" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SpriteBatchEffectES.vert" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SrgbConversion.verth" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius1ES.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius3ES.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius5ES.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius7ES.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9.frag" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\BlurEffectRadius9ES.frag" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffect.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\Generate-BlurEffectES.ps1" />
     <None Include="$(MSBuildThisFileDirectory)Schema\Ultraviolet\OpenGL\Graphics\Effect.json" />
   </ItemGroup>
   <ItemGroup>
