@@ -80,7 +80,6 @@
       <Link>Properties\Version.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="AndroidFactoryInitializer.cs" />
     <Compile Include="Graphics\AndroidSurfaceSource.cs" />
@@ -107,13 +106,6 @@
       <Project>{0b17931c-1595-4ada-9086-f26e5f5a387d}</Project>
       <Name>Ultraviolet.Android</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Version.tt">
-      <Link>Properties\Version.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Version.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

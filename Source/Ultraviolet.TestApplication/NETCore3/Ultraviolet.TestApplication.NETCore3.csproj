@@ -4,8 +4,22 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Ultraviolet.TestApplication</AssemblyName>
     <RootNamespace>Ultraviolet.TestApplication</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
+  </ItemGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DelaySign>false</DelaySign>
+    <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+  
   <Import Project="..\Shared\Ultraviolet.TestApplication.projitems" Label="Shared" />
 
   <ItemGroup>

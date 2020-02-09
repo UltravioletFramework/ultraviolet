@@ -107,11 +107,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Version.tt">
-      <Link>Properties\Version.tt</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.Core\iOS\Ultraviolet.Core.iOS.csproj">
       <Project>{4628DF73-2C5C-4CD1-AB2C-197F6233504F}</Project>
       <Name>Ultraviolet.Core.iOS</Name>

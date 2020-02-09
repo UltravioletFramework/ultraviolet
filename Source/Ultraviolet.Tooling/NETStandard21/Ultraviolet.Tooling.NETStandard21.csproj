@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Configurations>Debug;Release;Signed</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Ultraviolet.Tooling</AssemblyName>
     <RootNamespace>Ultraviolet.Tooling</RootNamespace>
+    <Configurations>Debug;Release;Signed</Configurations>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
@@ -40,20 +37,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
-      <DependentUpon>Version.tt</DependentUpon>  
-    </Compile>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

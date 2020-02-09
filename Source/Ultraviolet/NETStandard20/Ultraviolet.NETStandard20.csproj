@@ -41,9 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
-      <DependentUpon>Version.tt</DependentUpon>  
-    </Compile>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
     <Compile Include="..\Shared\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
@@ -54,11 +52,6 @@
   <ItemGroup>
     <Folder Include="Properties\" />
     <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />

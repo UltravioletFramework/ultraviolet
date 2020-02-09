@@ -15,12 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
-      <DependentUpon>Version.tt</DependentUpon>  
-    </Compile>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">

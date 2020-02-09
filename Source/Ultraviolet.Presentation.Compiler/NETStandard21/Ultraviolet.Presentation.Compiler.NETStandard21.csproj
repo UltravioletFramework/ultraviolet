@@ -15,12 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\Version.tt" Link="Properties\Version.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs">
-      <DependentUpon>Version.tt</DependentUpon>  
-    </Compile>
+    <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(Configuration)' == 'Signed'">
@@ -33,7 +28,6 @@
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;NETSTANDARD;SIGNED</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
@@ -42,6 +36,7 @@
     <DelaySign>false</DelaySign>
     <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
   </PropertyGroup>
+  
   <Import Project="..\Shared\Ultraviolet.Presentation.Compiler.projitems" Label="Shared" />
 
   <ItemGroup>
