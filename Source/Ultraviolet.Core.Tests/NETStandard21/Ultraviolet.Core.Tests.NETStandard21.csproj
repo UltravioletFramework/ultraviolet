@@ -3,7 +3,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Ultraviolet.Core.Testsk</AssemblyName>
+    <AssemblyName>Ultraviolet.Core.Tests.NETStandard21</AssemblyName>
     <RootNamespace>Ultraviolet.Core.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

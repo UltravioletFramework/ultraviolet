@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_Grid_ArrangesChildrenCorrectly2_VM, Ultraviolet.Presentation.Tests">
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_Grid_ArrangesChildrenCorrectly2_VM, Ultraviolet.Presentation.Tests.ViewModels">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"/>
       <ColumnDefinition Width="*"/>

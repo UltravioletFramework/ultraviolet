@@ -376,10 +376,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetIDTests.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManagerTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Content\UI\DefaultUIBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

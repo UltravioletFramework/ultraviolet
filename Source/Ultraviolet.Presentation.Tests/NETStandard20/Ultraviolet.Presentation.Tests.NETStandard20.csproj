@@ -3,7 +3,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Ultraviolet.Presentation.Tests</AssemblyName>
+    <AssemblyName>Ultraviolet.Presentation.Tests.NETStandard20</AssemblyName>
     <RootNamespace>Ultraviolet.Presentation.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -28,15 +28,20 @@
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard20\Ultraviolet.BASS.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard20\Ultraviolet.FreeType2.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard20\Ultraviolet.Presentation.Compiler.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Tests.ViewModels\NETStandard20\Ultraviolet.Presentation.Tests.ViewModels.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard20\Ultraviolet.Presentation.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore2\Ultraviolet.Shims.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.TestApplication\NETCore2\Ultraviolet.TestApplication.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard20\Ultraviolet.TestFramework.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
 
   <ItemGroup>

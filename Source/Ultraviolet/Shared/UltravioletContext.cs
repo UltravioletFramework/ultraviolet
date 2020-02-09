@@ -924,6 +924,9 @@ namespace Ultraviolet
         /// </summary>
         private void InitializeFactoryMethodsInCompatibilityShim()
         {
+            var publicKeyString = String.Join(String.Empty,
+                typeof(UltravioletContext).Assembly.GetName().GetPublicKey().Select(x => x.ToString("x2")));
+
             try
             {
                 var shim = default(Assembly);
@@ -933,11 +936,11 @@ namespace Ultraviolet
                     switch (RuntimeVersion?.Major ?? 0)
                     {
                         case 2:
-                            shim = Assembly.Load("Ultraviolet.Shims.NETCore2");
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore2, PublicKey=" + publicKeyString);
                             break;
 
                         case 3:
-                            shim = Assembly.Load("Ultraviolet.Shims.NETCore3");
+                            shim = Assembly.Load("Ultraviolet.Shims.NETCore3, PublicKey=" + publicKeyString);
                             break;
                     }
                 }

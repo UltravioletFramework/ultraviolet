@@ -19,6 +19,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CircleFTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ColorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\AssetIDTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Content\ContentManagerTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CursorCollectionTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\ColorEncoding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\CustomCompositor.cs" />

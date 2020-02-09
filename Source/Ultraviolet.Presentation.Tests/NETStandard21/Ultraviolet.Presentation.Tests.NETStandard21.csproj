@@ -3,7 +3,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Ultraviolet.Presentation.Tests</AssemblyName>
+    <AssemblyName>Ultraviolet.Presentation.Tests.NETStandard21</AssemblyName>
     <RootNamespace>Ultraviolet.Presentation.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -33,10 +33,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard21\Ultraviolet.BASS.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard21\Ultraviolet.FreeType2.NETStandard21.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard21\Ultraviolet.Presentation.Compiler.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Tests.ViewModels\NETStandard21\Ultraviolet.Presentation.Tests.ViewModels.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard21\Ultraviolet.Presentation.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.TestApplication\NETCore2\Ultraviolet.TestApplication.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard21\Ultraviolet.TestFramework.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>
 
   <ItemGroup>

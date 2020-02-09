@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform_VM, Ultraviolet.Presentation.Tests">
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_UIElement_ArrangesCorrectly_WithLayoutAndRenderTransform_VM, Ultraviolet.Presentation.Tests.ViewModels">
 
     <Image Source="#Global:Textures:DefaultUIBackground 0 0 1161 685" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 

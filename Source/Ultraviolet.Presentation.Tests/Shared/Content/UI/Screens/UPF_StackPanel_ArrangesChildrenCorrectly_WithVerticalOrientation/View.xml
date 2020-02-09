@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM, Ultraviolet.Presentation.Tests">
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_StackPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM, Ultraviolet.Presentation.Tests.ViewModels">
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 

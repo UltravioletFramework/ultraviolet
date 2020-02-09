@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_DirNav_Once_VM, Ultraviolet.Presentation.Tests" View.Opening="HandleViewOpening">
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_DirNav_Once_VM, Ultraviolet.Presentation.Tests.ViewModels" View.Opening="HandleViewOpening">
 
     <Button Name="btnL" Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Center" Content="L"/>
     <Button Name="btnR" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Content="R"/>

@@ -3,8 +3,8 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Ultraviolet.Presentation.Uvss.TestFramework</AssemblyName>
-    <RootNamespace>Ultraviolet.Presentation.Uvss.TestFramework</RootNamespace>
+    <AssemblyName>Ultraviolet.Presentation.Uvss.Tests.NETStandard20</AssemblyName>
+    <RootNamespace>Ultraviolet.Presentation.Uvss.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

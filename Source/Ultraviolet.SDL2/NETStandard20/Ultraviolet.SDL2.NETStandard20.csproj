@@ -3,8 +3,8 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Presentation.SDL2</AssemblyName>
-    <RootNamespace>Ultraviolet.Presentation.SDL2</RootNamespace>
+    <AssemblyName>Ultraviolet.SDL2</AssemblyName>
+    <RootNamespace>Ultraviolet.SDL2</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

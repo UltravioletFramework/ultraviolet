@@ -1,4 +1,5 @@
 ﻿using Ultraviolet.Content;
+using Ultraviolet.Presentation.Tests.ViewModels;
 
 namespace Ultraviolet.Presentation.Tests.Screens
 {

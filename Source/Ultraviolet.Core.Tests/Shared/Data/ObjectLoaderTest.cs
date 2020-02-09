@@ -29,7 +29,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <StringValue>foo</StringValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -43,7 +43,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1'>
                         <StringValue>foo</StringValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -57,7 +57,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ClassWhichDoesNotExist, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ClassWhichDoesNotExist, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <StringValue>foo</StringValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -74,7 +74,7 @@ namespace Ultraviolet.Core.Tests.Data
                     <Aliases>
                         <Alias>Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests</Alias>
                     </Aliases>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1'>
                         <StringValue>foo</StringValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -91,7 +91,7 @@ namespace Ultraviolet.Core.Tests.Data
                     <Aliases>
                         <Alias Name='Foo'></Alias>
                     </Aliases>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1'>
                         <StringValue>foo</StringValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -106,7 +106,7 @@ namespace Ultraviolet.Core.Tests.Data
             var xml = XDocument.Parse(@"
                 <SimpleModels>
                     <Aliases>
-                        <Alias Name='Foo'>Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests</Alias>
+                        <Alias Name='Foo'>Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"</Alias>
                     </Aliases>
                     <SimpleModel Class='Foo' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <StringValue>Hello, world!</StringValue>
@@ -131,7 +131,7 @@ namespace Ultraviolet.Core.Tests.Data
             var xml = XDocument.Parse(@"
                 <SimpleModels>
                     <Aliases>
-                        <Alias Name='Foo' Default='true'>Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests</Alias>
+                        <Alias Name='Foo' Default='true'>Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"</Alias>
                     </Aliases>
                     <SimpleModel Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <StringValue>Hello, world!</StringValue>
@@ -180,7 +180,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <FooValue>Hello, world!</FooValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -194,7 +194,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel FooValue='Hello, world!' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel FooValue='Hello, world!' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -206,10 +206,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <StringValue>Hello, world!</StringValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <StringValue>Goodbye, world!</StringValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -228,8 +228,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel StringValue='Hello, world!' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel StringValue='Goodbye, world!' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel StringValue='Hello, world!' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel StringValue='Goodbye, world!' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -246,10 +246,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <BooleanValue>true</BooleanValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <BooleanValue>false</BooleanValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -268,8 +268,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel BooleanValue='True' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel BooleanValue='False' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel BooleanValue='True' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel BooleanValue='False' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -286,7 +286,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <BooleanValue>foo</BooleanValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -300,7 +300,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel BooleanValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel BooleanValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -312,10 +312,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <SByteValue>-64</SByteValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <SByteValue>64</SByteValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -334,8 +334,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel SByteValue='-64' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel SByteValue='64' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel SByteValue='-64' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel SByteValue='64' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -352,7 +352,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <SByteValue>foo</SByteValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -366,7 +366,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel SByteValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel SByteValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -378,10 +378,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ByteValue>64</ByteValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <ByteValue>128</ByteValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -400,8 +400,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel ByteValue='64' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel ByteValue='128' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel ByteValue='64' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel ByteValue='128' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -418,7 +418,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ByteValue>foo</ByteValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -432,7 +432,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel ByteValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel ByteValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -444,10 +444,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <CharValue>A</CharValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <CharValue>F</CharValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -466,8 +466,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel CharValue='A' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel CharValue='F' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel CharValue='A' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel CharValue='F' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -484,7 +484,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <CharValue>foo</CharValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -498,7 +498,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel CharValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel CharValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -510,10 +510,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Int16Value>-123</Int16Value>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <Int16Value>456</Int16Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -532,8 +532,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Int16Value='-123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel Int16Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel Int16Value='-123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Int16Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -550,7 +550,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Int16Value>foo</Int16Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -564,7 +564,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Int16Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Int16Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -576,10 +576,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Int32Value>-123</Int32Value>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <Int32Value>456</Int32Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -598,8 +598,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Int32Value='-123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel Int32Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel Int32Value='-123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Int32Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -617,7 +617,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Int32Value>foo</Int32Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -631,7 +631,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Int32Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Int32Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -643,10 +643,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Int64Value>-123</Int64Value>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <Int64Value>456</Int64Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -665,8 +665,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Int64Value='-123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel Int64Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel Int64Value='-123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Int64Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -683,7 +683,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Int64Value>foo</Int64Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -697,7 +697,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Int64Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Int64Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -709,10 +709,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <UInt16Value>123</UInt16Value>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <UInt16Value>456</UInt16Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -731,8 +731,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel UInt16Value='123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel UInt16Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel UInt16Value='123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel UInt16Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -749,7 +749,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <UInt16Value>foo</UInt16Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -763,7 +763,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel UInt16Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel UInt16Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -775,10 +775,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <UInt32Value>123</UInt32Value>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <UInt32Value>456</UInt32Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -797,8 +797,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel UInt32Value='123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel UInt32Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel UInt32Value='123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel UInt32Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -815,7 +815,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <UInt32Value>foo</UInt32Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -829,7 +829,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel UInt32Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel UInt32Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -841,10 +841,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <UInt64Value>123</UInt64Value>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <UInt64Value>456</UInt64Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -863,8 +863,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel UInt64Value='123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel UInt64Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel UInt64Value='123' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel UInt64Value='456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -881,7 +881,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <UInt64Value>foo</UInt64Value>
                     </SimpleModel>
                 </SimpleModels>");
@@ -895,7 +895,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel UInt64Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel UInt64Value='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -907,10 +907,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <SingleValue>-123.456</SingleValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <SingleValue>456.789</SingleValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -929,8 +929,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel SingleValue='-123.456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel SingleValue='456.789' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel SingleValue='-123.456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel SingleValue='456.789' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -947,7 +947,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <SingleValue>foo</SingleValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -961,7 +961,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel SingleValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel SingleValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -973,10 +973,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <DoubleValue>-123.456</DoubleValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <DoubleValue>456.789</DoubleValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -995,8 +995,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel DoubleValue='-123.456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel DoubleValue='456.789' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel DoubleValue='-123.456' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel DoubleValue='456.789' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1013,7 +1013,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <DoubleValue>foo</DoubleValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1027,7 +1027,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel DoubleValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel DoubleValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -1039,10 +1039,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <EnumValue>ValueOne</EnumValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <EnumValue>ValueTwo</EnumValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1061,8 +1061,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel EnumValue='ValueOne' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel EnumValue='ValueTwo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel EnumValue='ValueOne' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel EnumValue='ValueTwo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1079,7 +1079,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <EnumValue>foo</EnumValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1093,7 +1093,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel EnumValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel EnumValue='foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -1105,10 +1105,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <FlagsValue>ValueOne, ValueThree</FlagsValue>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <FlagsValue>ValueTwo</FlagsValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1127,8 +1127,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel FlagsValue='ValueOne, ValueThree' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel FlagsValue='ValueTwo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel FlagsValue='ValueOne, ValueThree' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel FlagsValue='ValueTwo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1145,7 +1145,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <FlagsValue>ValueOne, foo</FlagsValue>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1159,7 +1159,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel FlagsValue='ValueOne, foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel FlagsValue='ValueOne, foo' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             Assert.That(() => ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList(),
@@ -1171,10 +1171,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <StringValueOnBaseClass>Hello</StringValueOnBaseClass>
                     </SimpleModel>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109'>
                         <StringValueOnBaseClass>Goodbye</StringValueOnBaseClass>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1193,8 +1193,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel StringValueOnBaseClass='Hello' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
-                    <SimpleModel StringValueOnBaseClass='Goodbye' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
+                    <SimpleModel StringValueOnBaseClass='Hello' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel StringValueOnBaseClass='Goodbye' Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT2' ID='2dcf947d-6bc4-4f98-85ae-ca8e56db3109' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1212,11 +1212,11 @@ namespace Ultraviolet.Core.Tests.Data
             var xml = XDocument.Parse(@"
                 <SimpleModels>
                     <Defaults>
-                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests'>
+                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                             <StringValue>This is a default!</StringValue>
                         </Default>
                     </Defaults>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1233,11 +1233,11 @@ namespace Ultraviolet.Core.Tests.Data
             var xml = XDocument.Parse(@"
                 <SimpleModels>
                     <Defaults>
-                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModelBase, Ultraviolet.Core.Tests'>
+                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModelBase, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                             <StringValue>This is a default!</StringValue>
                         </Default>
                     </Defaults>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1254,14 +1254,14 @@ namespace Ultraviolet.Core.Tests.Data
             var xml = XDocument.Parse(@"
                 <SimpleModels>
                     <Defaults>
-                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests'>
+                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                             <StringValue>But this overrides it!</StringValue>
                         </Default>
-                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModelBase, Ultraviolet.Core.Tests'>
+                        <Default Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModelBase, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                             <StringValue>This is a default!</StringValue>
                         </Default>
                     </Defaults>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a' />
                 </SimpleModels>");
 
             var results = ObjectLoader.LoadDefinitions<ObjectLoader_SimpleModel>(xml, "SimpleModel").ToList();
@@ -1277,7 +1277,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>Passed in through constructor!</Argument>
                         </Constructor>
@@ -1297,7 +1297,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ReadOnlyProperty>foo</ReadOnlyProperty>
                     </SimpleModel>
                 </SimpleModels>");
@@ -1311,7 +1311,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <KeywordModels>
-                    <KeywordModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ReservedKeywordModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <KeywordModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ReservedKeywordModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>Hello, world!</Argument>
                         </Constructor>
@@ -1337,7 +1337,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <CtorArgModels>
-                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>123</Argument>
                             <Argument>456</Argument>
@@ -1359,7 +1359,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <CtorArgModels>
-                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>
                                 <X>123</X>
@@ -1390,10 +1390,10 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>Hello, world!</Argument>
-                            <Argument Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectDerived, Ultraviolet.Core.Tests'>
+                            <Argument Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectDerived, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                                 <Foobar>Goodbye, world!</Foobar>
                             </Argument>
                         </Constructor>             
@@ -1418,7 +1418,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <CtorArgModels>
-                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModelNoMatch, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModelNoMatch, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>123</Argument>
                             <Argument>456</Argument>
@@ -1435,7 +1435,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <CtorArgModels>
-                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModelAmbiguousMatch, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <CtorArgModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_CtorArgModelAmbiguousMatch, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>123</Argument>
                             <Argument>456</Argument>
@@ -1452,7 +1452,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_IndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_IndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item ix='0'>5</Item>
                         <Item ix='1'>6</Item>
                         <Item ix='3'>8</Item>
@@ -1475,7 +1475,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_MultiIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_MultiIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item x='0' y='0'>5</Item>
                         <Item x='1' y='2'>6</Item>
                         <Item x='3' y='3'>8</Item>
@@ -1498,7 +1498,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item ix='1'>
                             <Items>
                                 <Item>5</Item>
@@ -1527,7 +1527,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item ix='1'>
                             <Items>
                                 <Item>5</Item>
@@ -1556,7 +1556,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item ix='1'>
                             <X>1</X>
                             <Y>2</Y>
@@ -1580,8 +1580,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
-                        <Item Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectDerived, Ultraviolet.Core.Tests' ix='1'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <Item Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectDerived, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' ix='1'>
                             <X>1</X>
                             <Y>2</Y>
                             <Z>3</Z>
@@ -1607,7 +1607,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_MultiIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_MultiIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item x='0'>5</Item>
                     </IndexerModel>
                 </IndexerModels>");
@@ -1621,7 +1621,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <IndexerModels>
-                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_MultiIndexerModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <IndexerModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_MultiIndexerModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Item x='0' y='0' z='0'>5</Item>
                     </IndexerModel>
                 </IndexerModels>");
@@ -1635,7 +1635,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ArrayModels>
-                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ArrayValue>
                             <Items>
                                 <Item>5</Item>
@@ -1660,7 +1660,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ArrayModels>
-                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ArrayValue>
                         </ArrayValue>
                     </ArrayModel>
@@ -1680,7 +1680,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ArrayModels>
-                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>true</Argument>
                         </Constructor>
@@ -1703,7 +1703,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ArrayModels>
-                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayComplexModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayComplexModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ArrayValue>
                             <Items>
                                 <Item>
@@ -1734,7 +1734,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ArrayModels>
-                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ArrayModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ArrayModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ArrayValue>
                             <Items>
                                 <Item>0</Item>
@@ -1753,7 +1753,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ListValue>
                             <Items>
                                 <Item>5</Item>
@@ -1778,7 +1778,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ListValue>
                         </ListValue>
                     </ListModel>
@@ -1798,7 +1798,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>true</Argument>
                         </Constructor>
@@ -1821,7 +1821,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListComplexModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListComplexModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ListValue>
                             <Items>
                                 <Item>
@@ -1852,7 +1852,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ListValue>
                             <Items>
                                 <Item>0</Item>
@@ -1871,7 +1871,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <EnumerableModels>
-                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <EnumerableValue>
                             <Items>
                                 <Item>5</Item>
@@ -1896,7 +1896,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <EnumerableModels>
-                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <EnumerableValue>
                         </EnumerableValue>
                     </EnumerableModel>
@@ -1916,7 +1916,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <EnumerableModels>
-                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <Constructor>
                             <Argument>true</Argument>
                         </Constructor>
@@ -1939,7 +1939,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <EnumerableModels>
-                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableComplexModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <EnumerableModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_EnumerableComplexModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <EnumerableValue>
                             <Items>
                                 <Item>
@@ -1971,7 +1971,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_ListModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ListValue>
                             <Items>
                                 <Item>0</Item>
@@ -1990,7 +1990,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ComplexReference>
                             <X>1</X>
                             <Y>2</Y>
@@ -2014,7 +2014,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ComplexReference>
                             <X>1</X>
                             <Y>2</Y>
@@ -2047,8 +2047,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
-                        <ComplexReference Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectDerived, Ultraviolet.Core.Tests'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <ComplexReference Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectDerived, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                             <X>1</X>
                             <Y>2</Y>
                             <Z>3</Z>
@@ -2077,8 +2077,8 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
-                        <ComplexReference Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectNotDerived, Ultraviolet.Core.Tests'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <ComplexReference Type='Ultraviolet.Core.Tests.Data.ObjectLoader_ComplexRefObjectNotDerived, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"'>
                             <X>1</X>
                             <Y>2</Y>
                             <Z>3</Z>
@@ -2096,7 +2096,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ComplexValue>
                             <X>1</X>
                             <Y>2</Y>
@@ -2120,7 +2120,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <SimpleModels>
-                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ComplexValue>
                             <X>1</X>
                             <Y>2</Y>
@@ -2149,7 +2149,7 @@ namespace Ultraviolet.Core.Tests.Data
         {
             var xml = XDocument.Parse(@"
                 <ListModels>
-                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                    <ListModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                         <ComplexList>
                             <X>1</X>
                             <Y>2</Y>
@@ -2183,7 +2183,7 @@ namespace Ultraviolet.Core.Tests.Data
             {
                 var xml = XDocument.Parse(@"
                     <SimpleModels Culture='fr-FR'>
-                        <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, Ultraviolet.Core.Tests' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
+                        <SimpleModel Class='Ultraviolet.Core.Tests.Data.ObjectLoader_SimpleModel, " + typeof(ObjectLoaderTest).Assembly.GetName().Name + @"' Key='OBJECT1' ID='6610e29a-57b3-4960-8f40-1466ee82f40a'>
                             <ComplexReferenceF>
                                 <X>123,4</X>
                                 <Y>456,7</Y>

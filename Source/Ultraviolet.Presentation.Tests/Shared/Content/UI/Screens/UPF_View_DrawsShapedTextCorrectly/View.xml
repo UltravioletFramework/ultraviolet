@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View FlowDirection="RightToLeft" ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_View_DrawsShapedTextCorrectly_VM, Ultraviolet.Presentation.Tests">
+  <View FlowDirection="RightToLeft" ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_View_DrawsShapedTextCorrectly_VM, Ultraviolet.Presentation.Tests.ViewModels">
     <TextElement.Font>#Global:FreeTypeFonts:FiraGO</TextElement.Font>
     <TextOptions.TextRenderingMode>Shaped</TextOptions.TextRenderingMode>
     <TextOptions.TextScript>Arabic</TextOptions.TextScript>

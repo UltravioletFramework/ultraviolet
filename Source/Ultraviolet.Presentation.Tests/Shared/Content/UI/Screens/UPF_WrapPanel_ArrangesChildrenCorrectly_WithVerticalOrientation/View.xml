@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM, Ultraviolet.Presentation.Tests">
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_WrapPanel_ArrangesChildrenCorrectly_WithVerticalOrientation_VM, Ultraviolet.Presentation.Tests.ViewModels">
 
     <WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <UIPanelDefinition>
-  <View ViewModelType="Ultraviolet.Presentation.Tests.Screens.UPF_KeyNav_Cycle_VM, Ultraviolet.Presentation.Tests">
+  <View ViewModelType="Ultraviolet.Presentation.Tests.ViewModels.UPF_KeyNav_Cycle_VM, Ultraviolet.Presentation.Tests.ViewModels">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
       <StackPanel Name="sp1" Orientation="Vertical">
