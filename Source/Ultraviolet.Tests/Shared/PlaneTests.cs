@@ -194,12 +194,12 @@ namespace Ultraviolet.Tests
             if (Environment.Is64BitProcess)
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(9064.3808f);
+                    .WithinDelta(0.001f).ShouldBe(9064.3808f);
             }
             else
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(9064.3798f);
+                    .WithinDelta(0.001f).ShouldBe(9064.3798f);
             }
         }
 
@@ -214,12 +214,12 @@ namespace Ultraviolet.Tests
             if (Environment.Is64BitProcess)
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(9064.3808f);
+                    .WithinDelta(0.001f).ShouldBe(9064.3808f);
             }
             else
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(9064.3798f);
+                    .WithinDelta(0.001f).ShouldBe(9064.3798f);
             }
         }
 
@@ -234,12 +234,12 @@ namespace Ultraviolet.Tests
             if (Environment.Is64BitProcess)
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(5051.5805f);
+                    .WithinDelta(0.001f).ShouldBe(5051.5805f);
             }
             else
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(5051.5800f);
+                    .WithinDelta(0.001f).ShouldBe(5051.5800f);
             }
         }
 
@@ -254,12 +254,12 @@ namespace Ultraviolet.Tests
             if (Environment.Is64BitProcess)
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(5051.5805f);
+                    .WithinDelta(0.001f).ShouldBe(5051.5805f);
             }
             else
             {
                 TheResultingValue(result)
-                    .WithinDelta(0.0001f).ShouldBe(5051.5800f);
+                    .WithinDelta(0.001f).ShouldBe(5051.5800f);
             }
         }
 
