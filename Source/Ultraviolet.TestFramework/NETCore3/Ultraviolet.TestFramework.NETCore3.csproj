@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Ultraviolet.TestFramework</AssemblyName>
     <RootNamespace>Ultraviolet.TestFramework</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
@@ -15,7 +15,6 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
-    <PackageId>Ultraviolet.TestFramework</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETStandard20\Ultraviolet.Core.TestFramework.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore3\Ultraviolet.Core.TestFramework.NETCore3.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard20\Ultraviolet.SDL2.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />

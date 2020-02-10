@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Core.TestFramework</AssemblyName>
-    <RootNamespace>Ultraviolet.Core.TestFramework</RootNamespace>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Ultraviolet.TestFramework</AssemblyName>
+    <RootNamespace>Ultraviolet.TestFramework</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -15,6 +15,7 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
+    <PackageId>Ultraviolet.TestFramework</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,13 +31,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore2\Ultraviolet.Core.TestFramework.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard20\Ultraviolet.SDL2.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
-
-  <Import Project="..\Shared\Ultraviolet.Core.TestFramework.projitems" Label="Shared" />
+  
+  <Import Project="..\Shared\Ultraviolet.TestFramework.projitems" Label="Shared" />
 
 </Project>

@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Ultraviolet.Presentation.Uvss.TestFramework</AssemblyName>
-    <RootNamespace>Ultraviolet.Presentation.Uvss.TestFramework</RootNamespace>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Ultraviolet.Core.TestFramework</AssemblyName>
+    <RootNamespace>Ultraviolet.Core.TestFramework</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -17,18 +17,12 @@
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DelaySign>false</DelaySign>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DelaySign>false</DelaySign>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;RELEASE</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\..\Version.cs" Link="Properties\Version.cs" />
@@ -37,13 +31,17 @@
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETStandard20\Ultraviolet.Core.TestFramework.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard20\Ultraviolet.Presentation.Uvss.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
   </ItemGroup>
 
-  <Import Project="..\Shared\Ultraviolet.Presentation.Uvss.TestFramework.projitems" Label="Shared" />
+  <Import Project="..\Shared\Ultraviolet.Core.TestFramework.projitems" Label="Shared" />
 
 </Project>

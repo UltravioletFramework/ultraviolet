@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Ultraviolet.Core.Tests.NETStandard21</AssemblyName>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Ultraviolet.Core.Tests.NETStandard20</AssemblyName>
     <RootNamespace>Ultraviolet.Core.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -15,7 +15,7 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\..\Ultraviolet.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;NETSTANDARD;DEBUG</DefineConstants>
   </PropertyGroup>
@@ -30,13 +30,16 @@
 
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETStandard21\Ultraviolet.Core.TestFramework.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore2\Ultraviolet.Core.TestFramework.NETCore2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
   </ItemGroup>
 
   <Import Project="..\Shared\Ultraviolet.Core.Tests.projitems" Label="Shared" />

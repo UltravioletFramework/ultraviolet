@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Ultraviolet.Presentation.Uvss.TestFramework</AssemblyName>
     <RootNamespace>Ultraviolet.Presentation.Uvss.TestFramework</RootNamespace>
-    <PackageId>Ultraviolet.Presentation.Uvss.TestFramework.$(TargetFramework)</PackageId>
+    <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
@@ -37,11 +37,16 @@
 
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETStandard21\Ultraviolet.Core.TestFramework.NETStandard21.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard21\Ultraviolet.Presentation.Uvss.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore2\Ultraviolet.Core.TestFramework.NETCore2.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Uvss\NETStandard20\Ultraviolet.Presentation.Uvss.NETStandard20.csproj" />
   </ItemGroup>
 
   <Import Project="..\Shared\Ultraviolet.Presentation.Uvss.TestFramework.projitems" Label="Shared" />

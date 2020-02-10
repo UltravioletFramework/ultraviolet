@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Ultraviolet.Presentation.Tests.NETStandard20</AssemblyName>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Ultraviolet.Presentation.Tests.NETStandard21</AssemblyName>
     <RootNamespace>Ultraviolet.Presentation.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -27,21 +27,24 @@
 
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard20\Ultraviolet.BASS.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard20\Ultraviolet.FreeType2.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard20\Ultraviolet.Presentation.Compiler.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation.Tests.ViewModels\NETStandard20\Ultraviolet.Presentation.Tests.ViewModels.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard20\Ultraviolet.Presentation.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore2\Ultraviolet.Shims.NETCore2.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.TestApplication\NETCore2\Ultraviolet.TestApplication.NETCore2.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard20\Ultraviolet.TestFramework.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.BASS\NETStandard21\Ultraviolet.BASS.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.FreeType2\NETStandard21\Ultraviolet.FreeType2.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Compiler\NETStandard21\Ultraviolet.Presentation.Compiler.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation.Tests.ViewModels\NETStandard21\Ultraviolet.Presentation.Tests.ViewModels.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Presentation\NETStandard21\Ultraviolet.Presentation.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore3\Ultraviolet.Shims.NETCore3.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.TestApplication\NETCore3\Ultraviolet.TestApplication.NETCore3.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETCore3\Ultraviolet.TestFramework.NETCore3.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>
 
   <ItemGroup>

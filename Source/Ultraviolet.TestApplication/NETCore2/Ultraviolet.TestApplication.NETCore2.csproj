@@ -33,9 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore2\Ultraviolet.Core.TestFramework.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.OpenGL\NETStandard20\Ultraviolet.OpenGL.NETStandard20.csproj" />
     <ProjectReference Include="..\..\Ultraviolet.Shims.NETCore2\Ultraviolet.Shims.NETCore2.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETStandard20\Ultraviolet.TestFramework.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.TestFramework\NETCore2\Ultraviolet.TestFramework.NETCore2.csproj" />
     <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
   </ItemGroup>
 
