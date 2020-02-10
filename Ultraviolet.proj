@@ -19,49 +19,49 @@
   <!-- STANDARD BINARIES -->
   <Target Name="CopyStandardBinaries">
     <CreateItem Include="Source/Ultraviolet.Core/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Core.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Core"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Core"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.OpenGL.Bindings/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL_Bindings"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.BASS/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.BASS.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_BASS"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_BASS"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.FMOD/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FMOD.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_FMOD"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.OpenGL/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.OpenGL.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_OpenGL"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.SDL2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.SDL2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_SDL2"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.ImGuiViewProvider.Bindings/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.ImGuiViewProvider.Bindings.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_ImGuiViewProvider_Bindings"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation.Uvss/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Uvss.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Uvss"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation.Compiler/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.Compiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_Compiler"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Presentation.RoslynCompiler/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.Presentation.RoslynCompiler.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Presentation_RoslynCompiler"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.FreeType2/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/Ultraviolet.FreeType2.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_FreeType2"/>
     </CreateItem>
     <CreateItem Include="Source/Ultraviolet.Tooling/$(UvLibPlatform)/bin/$(Configuration)$(NETStandardSuffix)/publish/Ultraviolet.Tooling.*">
-        <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
+      <Output TaskParameter="Include" ItemName="Ultraviolet_Tooling"/>
     </CreateItem>
     <Copy SourceFiles="@(Ultraviolet_Core)" DestinationFiles="@(Ultraviolet_Core->'Binaries/$(UvAppPlatform)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
     <Copy SourceFiles="@(Ultraviolet)" DestinationFiles="@(Ultraviolet->'Binaries/$(UvAppPlatform)/$(Configuration)/%(RecursiveDir)%(Filename)%(Extension)')"/>
