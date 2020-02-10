@@ -508,7 +508,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WrappedDataSourceAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Commands.xml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings_Commands.xml" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
