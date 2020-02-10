@@ -109,7 +109,7 @@
     <Exec Command="dotnet clean &quot;@(Ultraviolet_NETCore2_Solution)&quot;"/>
   </Target>
   <Target Name="BuildNETCore2" DependsOnTargets="SetNETCore2BuildParameters">
-    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore3_Solution)&quot;"/>
+    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore2_Solution)&quot;"/>
   </Target>
   <Target Name="CopyNETCore2Binaries" AfterTargets="BuildNETCore2">
     <CallTarget Targets="CopyStandardBinaries"/>
