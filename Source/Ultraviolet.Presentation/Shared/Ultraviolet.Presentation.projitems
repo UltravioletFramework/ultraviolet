@@ -49,14 +49,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)IResourceWrapperUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\TextOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Media\TextRenderingMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageBoxViewModel_Impl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Compilation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Diagnostics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Layout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundation.Types.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PresentationFoundationPlugin.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.cs">
-      <DependentUpon>MessageBoxScreen.tt</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Equality.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SourcedImage.Parsing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\CompositeUvssDocumentChild.cs" />
@@ -516,11 +514,6 @@
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Content\Fonts\SegoeUITexture.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Content\UI\Screens\MessageBoxScreen\MessageBoxScreen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)BindingExpressionCompilerTemplate.t4" />

@@ -5,12 +5,6 @@ using Ultraviolet.Presentation.Controls;
 namespace Ultraviolet.Presentation
 {
     /// <summary>
-    /// Represents the view model wrapper for <see cref="MessageBoxViewModel"/>.
-    /// </summary>
-    public partial class MessageBoxViewModel_Impl
-    { }
-
-    /// <summary>
     /// The view model for the <see cref="MessageBoxScreen"/> class.
     /// </summary>
     [ViewModelWrapper(typeof(MessageBoxViewModel_Impl))]

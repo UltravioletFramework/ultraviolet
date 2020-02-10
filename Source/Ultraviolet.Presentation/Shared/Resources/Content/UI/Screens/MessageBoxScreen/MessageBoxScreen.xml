@@ -20,7 +20,7 @@
         <TextBlock Name="PART_TextBlockCaption"
                    Class="msgbox-caption"
                    Text="{{Caption}}"
-                   Visibility="{{HasCaption ? Visibility.Visible : Visibility.Collapsed}}"
+                   Visibility="{{CaptionVisibility}}"
                    HorizontalAlignment="Center"/>
 
         <Grid Class="msgbox-text-panel">
@@ -30,13 +30,13 @@
           </Grid.ColumnDefinitions>
           
           <Image Name="PART_Image" 
-                 Visibility="{{HasImage ? Visibility.Visible : Visibility.Collapsed}}"
+                 Visibility="{{ImageVisibility}}"
                  VerticalAlignment="Center"
                  Grid.Column="0"/>
           <TextBlock Name="PART_TextBlockText"
                      Class="msgbox-text"
                      Text="{{Text}}"
-                     Visibility="{{HasText ? Visibility.Visible : Visibility.Collapsed}}"
+                     Visibility="{{TextVisibility}}"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center"
                      Grid.Column="1"/>
@@ -50,17 +50,17 @@
 
           <Button Name="PART_ButtonYes"
                   Class="msgbox-btn msgbox-btn-yes"
-                  Click="HandleClickYes">{{Localization.Strings.Get("MSGBOX_YES")}}</Button>
+                  Click="HandleClickYes">{{StringYes}}</Button>
           <Button Name="PART_ButtonNo"
                   Class="msgbox-btn msgbox-btn-no"
-                  Click="HandleClickNo">{{Localization.Strings.Get("MSGBOX_NO")}}</Button>
+                  Click="HandleClickNo">{{StringNo}}</Button>
           <Button Name="PART_ButtonOK"
                   Class="msgbox-btn msgbox-btn-ok"
-                  Click="HandleClickOK">{{Localization.Strings.Get("MSGBOX_OK")}}</Button>
+                  Click="HandleClickOK">{{StringOK}}</Button>
           <Button Name="PART_ButtonCancel"
                   Class="msgbox-btn msgbox-btn-cancel"
                   IsCancel="true"
-                  Click="HandleClickCancel">{{Localization.Strings.Get("MSGBOX_CANCEL")}}</Button>
+                  Click="HandleClickCancel">{{StringCancel}}</Button>
 
         </StackPanel>
 
