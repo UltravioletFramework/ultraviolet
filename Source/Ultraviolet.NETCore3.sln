@@ -115,6 +115,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Te
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Tests.Content", "Ultraviolet.Tests.Content\Ultraviolet.Tests.Content.shproj", "{0E2B1BC3-D1C3-4626-8AA3-37BF3039E43F}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Tests.ViewModels", "Ultraviolet.Presentation.Tests.ViewModels\Shared\Ultraviolet.Presentation.Tests.ViewModels.shproj", "{EFBD7CDD-29C3-4C2D-9BFA-7BF43E27A2CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Tests.ViewModels.NETStandard21", "Ultraviolet.Presentation.Tests.ViewModels\NETStandard21\Ultraviolet.Presentation.Tests.ViewModels.NETStandard21.csproj", "{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
@@ -141,6 +145,7 @@ Global
 		Ultraviolet.TestFramework\Shared\Ultraviolet.TestFramework.projitems*{d223f1a9-3445-47fe-b82f-f7aa334f0549}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Compiler\Shared\Ultraviolet.Presentation.Compiler.projitems*{d27ab499-f06f-47ea-8645-285cf2315ec2}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Tests\Shared\Ultraviolet.Presentation.Tests.projitems*{dccf640b-a4d2-4cbd-8b28-bc6a7eb42e71}*SharedItemsImports = 13
+		Ultraviolet.Presentation.Tests.ViewModels\Shared\Ultraviolet.Presentation.Tests.ViewModels.projitems*{efbd7cdd-29c3-4c2d-9bfa-7bf43e27a2cb}*SharedItemsImports = 13
 		Ultraviolet.OpenGL\Shared\Ultraviolet.OpenGL.projitems*{f04e0c37-afc2-4b85-90c7-9d77dcfd074c}*SharedItemsImports = 13
 		Ultraviolet.OpenGL.Bindings\Shared\Ultraviolet.OpenGL.Bindings.projitems*{f2660b00-b04a-4301-9dfb-226dd9d0798b}*SharedItemsImports = 13
 		UvArchive\Shared\UvArchive.projitems*{f6eb09d1-242b-4f29-bdc9-e9288711d7d0}*SharedItemsImports = 13
@@ -320,6 +325,12 @@ Global
 		{F594C143-2991-4655-8B5C-CEB056FC03E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F594C143-2991-4655-8B5C-CEB056FC03E8}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
 		{F594C143-2991-4655-8B5C-CEB056FC03E8}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63BA0DC-D1FC-4F61-BBB8-BFA1FE34D854}.Signed|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
