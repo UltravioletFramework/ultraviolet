@@ -3,7 +3,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>Ultraviolet.Core.Tests.NETStandard20</AssemblyName>
+    <AssemblyName>Ultraviolet.Core.Tests.NETCore2</AssemblyName>
     <RootNamespace>Ultraviolet.Core.Tests</RootNamespace>
     <PackageId>$(AssemblyName).$(TargetFramework)</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
