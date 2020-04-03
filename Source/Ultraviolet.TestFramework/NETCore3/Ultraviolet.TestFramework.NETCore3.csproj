@@ -35,9 +35,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ultraviolet.Core.TestFramework\NETCore3\Ultraviolet.Core.TestFramework.NETCore3.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard20\Ultraviolet.Core.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard20\Ultraviolet.SDL2.NETStandard20.csproj" />
-    <ProjectReference Include="..\..\Ultraviolet\NETStandard20\Ultraviolet.NETStandard20.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.Core\NETStandard21\Ultraviolet.Core.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet.SDL2\NETStandard21\Ultraviolet.SDL2.NETStandard21.csproj" />
+    <ProjectReference Include="..\..\Ultraviolet\NETStandard21\Ultraviolet.NETStandard21.csproj" />
   </ItemGroup>
   
   <Import Project="..\Shared\Ultraviolet.TestFramework.projitems" Label="Shared" />
