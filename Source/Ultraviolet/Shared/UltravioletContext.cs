@@ -784,29 +784,34 @@ namespace Ultraviolet
             if (Disposed)
                 return;
 
-            if (disposing)
+            try
             {
-                SafeDispose.Dispose(GetUI());
-                SafeDispose.Dispose(GetInput());
-                SafeDispose.Dispose(GetContent());
-                SafeDispose.Dispose(GetPlatform());
-                SafeDispose.Dispose(GetGraphics());
-                SafeDispose.Dispose(GetAudio());
+                if (disposing)
+                {
+                    SafeDispose.Dispose(GetUI());
+                    SafeDispose.Dispose(GetInput());
+                    SafeDispose.Dispose(GetContent());
+                    SafeDispose.Dispose(GetPlatform());
+                    SafeDispose.Dispose(GetGraphics());
+                    SafeDispose.Dispose(GetAudio());
+                }
+
+                WaitForPendingTasks(true);
+
+                this.Disposing = true;
+
+                ProcessWorkItems();
+                OnShutdown();
             }
+            finally
+            {
+                ChangeSynchronizationContext(null);
 
-            WaitForPendingTasks(true);
+                this.Disposed = true;
+                this.Disposing = false;
 
-            this.Disposing = true;
-
-            ProcessWorkItems();
-            OnShutdown();
-
-            ChangeSynchronizationContext(null);
-
-            this.Disposed = true;
-            this.Disposing = false;
-
-            ReleaseContext();
+                ReleaseContext();
+            }
         }
 
         /// <summary>
