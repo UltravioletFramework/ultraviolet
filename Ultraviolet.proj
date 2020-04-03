@@ -109,7 +109,7 @@
     <Exec Command="dotnet clean &quot;@(Ultraviolet_NETCore2_Solution)&quot;"/>
   </Target>
   <Target Name="BuildNETCore2" DependsOnTargets="SetNETCore2BuildParameters">
-    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore2_Solution)&quot;"/>
+    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore2_Solution)&quot; -c $(Configuration)"/>
   </Target>
   <Target Name="CopyNETCore2Binaries" AfterTargets="BuildNETCore2">
     <CallTarget Targets="CopyStandardBinaries"/>
@@ -128,7 +128,7 @@
     <Exec Command="dotnet clean &quot;@(Ultraviolet_NETCore3_Solution)&quot;"/>
   </Target>
   <Target Name="BuildNETCore3" DependsOnTargets="SetNETCore3BuildParameters">
-    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore3_Solution)&quot;"/>
+    <Exec Command="dotnet build &quot;@(Ultraviolet_NETCore3_Solution)&quot; -c $(Configuration)"/>
   </Target>
   <Target Name="BuildNETCore3Tools" AfterTargets="BuildNETCore3" Condition="'$(BuildTools)' == 'true' ">
     <Exec Command="dotnet publish &quot;Source/UvFont/NETCore3/UvFont.NETCore3.csproj&quot; -c $(Configuration)" />
