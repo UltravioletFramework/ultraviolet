@@ -425,7 +425,7 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Srgb%29.png">
@@ -697,7 +697,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png">
+    <None Include="Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -1060,7 +1060,7 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28SpriteFont%29.png">
