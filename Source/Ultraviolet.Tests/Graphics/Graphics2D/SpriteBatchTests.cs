@@ -12,7 +12,6 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
     {
         [Test]
         [TestCase(FontKind.SpriteFont, ColorEncoding.Linear)]
-        [TestCase(FontKind.SpriteFont, ColorEncoding.Srgb)]
         [TestCase(FontKind.FreeType2, ColorEncoding.Linear)]
         [TestCase(FontKind.FreeType2, ColorEncoding.Srgb)]
         [Category("Rendering")]
