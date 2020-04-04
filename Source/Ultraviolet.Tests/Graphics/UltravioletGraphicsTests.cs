@@ -72,7 +72,7 @@ namespace Ultraviolet.Tests.Graphics
             if (encoding == ColorEncoding.Linear)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderAColoredTriangle.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/UltravioletGraphics_CanRenderAColoredTriangle(Linear).png");
             }
             else
             {
