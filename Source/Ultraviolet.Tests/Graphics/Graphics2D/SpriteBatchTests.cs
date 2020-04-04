@@ -61,7 +61,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
                 else
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2,sRGB).png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2,Srgb).png");
                 }
             }
         }

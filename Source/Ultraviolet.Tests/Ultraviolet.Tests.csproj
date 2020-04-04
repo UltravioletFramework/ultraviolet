@@ -340,10 +340,10 @@
     <None Include="Content\Effects\NamedVertexElements.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Shaped%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Linear,Shaped%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28sRGB,Shaped%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Srgb,Shaped%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2,Shaped%29.png">
@@ -373,10 +373,10 @@
     <None Include="Resources\Expected\UI\Presentation\UPF_View_DrawsShapedTextCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28sRGB%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersShapedArabicScript.png">
@@ -407,7 +407,7 @@
     <None Include="Content\Textures\ColorBlendBg.uvmeta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2_sRGB%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Textures\ColorBlendBg.png">
@@ -416,13 +416,13 @@
     <None Include="Content\Textures\ColorBlendFg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28sRGB%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28sRGB%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
@@ -677,7 +677,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28SpriteFont,Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
@@ -865,13 +865,13 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderStrokedSimpleStrings.png">
@@ -904,7 +904,7 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2%29.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\DynamicTextureAtlas_FailsToReserveSpace_WhenAtlasIsFull.png">
@@ -964,7 +964,7 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_RendersSpecifiedSubstitutionGlyphForSpriteFont.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\SpriteFont_LoadsAndRendersCorrectly_FromJson.png">
@@ -1054,16 +1054,16 @@
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_GetCorrectLineAtPosition_ForPositionInsideText.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png">
+    <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png">
