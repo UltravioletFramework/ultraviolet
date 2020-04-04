@@ -79,7 +79,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Srgb%29.png">
@@ -214,7 +214,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28FreeType2%29.png">
