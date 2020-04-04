@@ -73,19 +73,19 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\DynamicTextureAtlas_IsConstructedCorrectly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28sRGB%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanBlendColorsCorrectly%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2_sRGB%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28FreeType2,Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings%28SpriteFont,Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CanRenderSimpleStrings_RightToLeft.png">
@@ -97,7 +97,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersEastAsianCharacters%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\SpriteBatch_CorrectlyRendersShapedArabicScript.png">
@@ -160,7 +160,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28FreeType2,Shaped%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2%29.png">
@@ -169,19 +169,19 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28FreeType2,Shaped%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CanAlignTextWithinAnArea.png">
@@ -199,19 +199,19 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyCalculatesBoundingBoxOfFormattedText.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Shaped%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Linear,Shaped%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28sRGB%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28sRGB,Shaped%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Srgb,Shaped%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyPerformsRightToLeftLayout%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28sRGB%29.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersFallbackFonts.png">
@@ -220,7 +220,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersIncompleteSurrogatePairs%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersLinks.png">
@@ -235,7 +235,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28FreeType2%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CorrectlyRendersSurrogatePairs%28SpriteFont%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\Graphics2D\Text\TextRenderer_CutsOffTextThatExceedsVerticalLayoutSpace.png">
@@ -301,7 +301,7 @@
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Srgb%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle.png">
+    <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderAColoredTriangle%28Linear%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="$(MSBuildThisFileDirectory)Resources\Expected\Graphics\UltravioletGraphics_CanRenderATexturedTriangle.png">

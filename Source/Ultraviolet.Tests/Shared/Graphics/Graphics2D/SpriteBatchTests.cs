@@ -49,19 +49,19 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(SpriteFont,Linear).png");
             }
             else
             {
                 if (encoding == ColorEncoding.Linear)
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2).png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2,Linear).png");
                 }
                 else
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2_sRGB).png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanRenderSimpleStrings(FreeType2,Srgb).png");
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CorrectlyRendersEastAsianCharacters(SpriteFont).png");
             }
             else
             {
@@ -347,12 +347,12 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D
             if (encoding == ColorEncoding.Linear)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanBlendColorsCorrectly.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanBlendColorsCorrectly(Linear).png");
             }
             else
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanBlendColorsCorrectly(sRGB).png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/SpriteBatch_CanBlendColorsCorrectly(Srgb).png");
             }
         }
     }

@@ -766,7 +766,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds(SpriteFont).png");
             }
             else
             {
@@ -819,7 +819,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectLineBounds_WhenCommandsAreDisabled(SpriteFont).png");
             }
             else
             {
@@ -898,7 +898,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds(SpriteFont).png");
             }
             else
             {
@@ -967,7 +967,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CalculatesCorrectGlyphBounds_WhenCommandsAreDisabled(SpriteFont).png");
             }
             else
             {
@@ -1346,7 +1346,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersSurrogatePairs.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersSurrogatePairs(SpriteFont).png");
             }
             else
             {
@@ -1392,7 +1392,7 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (fontKind == FontKind.SpriteFont)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersIncompleteSurrogatePairs.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersIncompleteSurrogatePairs(SpriteFont).png");
             }
             else
             {
@@ -1447,12 +1447,12 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
             if (encoding == ColorEncoding.Linear)
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts.png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts(Linear).png");
             }
             else
             {
                 TheResultingImage(result)
-                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts(sRGB).png");
+                    .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyRendersFallbackFonts(Srgb).png");
             }
         }
 
@@ -1535,12 +1535,12 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 if (shaped)
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(Shaped).png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(Linear,Shaped).png");
                 }
                 else
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout.png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(Linear).png");
                 }
             }
             else
@@ -1548,12 +1548,12 @@ namespace Ultraviolet.Tests.Graphics.Graphics2D.Text
                 if (shaped)
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB,Shaped).png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(Srgb,Shaped).png");
                 }
                 else
                 {
                     TheResultingImage(result)
-                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(sRGB).png");
+                        .ShouldMatch(@"Resources/Expected/Graphics/Graphics2D/Text/TextRenderer_CorrectlyPerformsRightToLeftLayout(Srgb).png");
                 }
             }
         }
