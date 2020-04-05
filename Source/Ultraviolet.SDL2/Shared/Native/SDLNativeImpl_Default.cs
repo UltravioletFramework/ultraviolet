@@ -9,7 +9,7 @@ namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
     [SuppressUnmanagedCodeSecurity]
-    public sealed unsafe class SDLNativeImpl_Default : SDLNativeImpl
+    internal sealed unsafe class SDLNativeImpl_Default : SDLNativeImpl
     {
         private static readonly NativeLibrary lib;
         

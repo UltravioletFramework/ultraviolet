@@ -7,7 +7,7 @@ namespace Ultraviolet.SDL2.Native
 {
 #pragma warning disable 1591
     [SuppressUnmanagedCodeSecurity]
-    public sealed unsafe class SDLNativeImpl_iOS : SDLNativeImpl
+    internal sealed unsafe class SDLNativeImpl_iOS : SDLNativeImpl
     {
         [DllImport("__Internal", EntryPoint = "SDL_GetError", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr INTERNAL_SDL_GetError();
