@@ -1,9 +1,6 @@
 using System;
 using System.Security;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Ultraviolet.Core;
-using Ultraviolet.Core.Native;
 
 namespace Ultraviolet.SDL2.Native
 {
