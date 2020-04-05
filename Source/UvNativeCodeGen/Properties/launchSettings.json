@@ -2,7 +2,7 @@
   "profiles": {
     "UvNativeCodeGen": {
       "commandName": "Project",
-      "commandLineArgs": "-i \"C:\\Dev\\Repositories\\Git\\ultraviolet\\Source\\Ultraviolet.SDL2\\Shared\\Native\\_Definitions.xml\""
+      "commandLineArgs": "-i \"C:\\Dev\\Repositories\\Git\\ultraviolet\\Source\\Ultraviolet.BASS\\Shared\\Native\\_Definitions.BASSFX.xml\""
     }
   }
 }

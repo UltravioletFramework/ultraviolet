@@ -250,7 +250,7 @@ namespace UvNativeCodeGen
                 twriter.Indent++;
 
                 twriter.WriteLine($"[SuppressUnmanagedCodeSecurity]");
-                twriter.WriteLine($"public sealed unsafe class {nativeClassName}Impl_{suffix} : {nativeClassName}Impl");
+                twriter.WriteLine($"internal sealed unsafe class {nativeClassName}Impl_{suffix} : {nativeClassName}Impl");
                 twriter.WriteLine($"{{");
                 twriter.Indent++;
 
@@ -319,7 +319,7 @@ namespace UvNativeCodeGen
                 twriter.Indent++;
 
                 twriter.WriteLine($"[SuppressUnmanagedCodeSecurity]");
-                twriter.WriteLine($"public sealed unsafe class {nativeClassName}Impl_{suffix} : {nativeClassName}Impl");
+                twriter.WriteLine($"internal sealed unsafe class {nativeClassName}Impl_{suffix} : {nativeClassName}Impl");
                 twriter.WriteLine($"{{");
                 twriter.Indent++;
 
