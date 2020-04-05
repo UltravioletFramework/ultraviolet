@@ -1,0 +1,638 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.SDL2.Native" ClassName="SDLNative">
+  <Names Default="SDL2" Android="SDL2" Unix="libSDL2"/>
+  <Imports/>
+  <Constants>
+    <Constant Name="SDL_QUERY" Type="Int32" Value="-1"/>
+    <Constant Name="SDL_DISABLE" Type="Int32" Value="0"/>
+    <Constant Name="SDL_ENABLE" Type="Int32" Value="1"/>
+  </Constants>
+  <FunctionPointers CallingConvention="Cdecl">
+    <FunctionPointer Name="SDL_EventFilter" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="userdata" Type="IntPtr"/>
+        <Parameter Name="@event" Type="SDL_Event*" />
+      </Parameters>
+    </FunctionPointer>
+  </FunctionPointers>
+  <Functions CallingConvention="Cdecl">
+    <Function Name="SDL_GetError" ReturnType="IntPtr" MarshalReturnAsString="Ansi"/>
+    <Function Name="SDL_ClearError" ReturnType="void"/>
+    <Function Name="SDL_Init" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="flags" Type="SDL_Init"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_Quit" ReturnType="void"/>
+    <Function Name="SDL_PumpEvents" ReturnType="void"/>
+    <Function Name="SDL_PollEvent" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="@event" Type="SDL_Event" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetEventFilter" ReturnType="void">
+      <Parameters>
+        <Parameter Name="filter" Type="IntPtr"/>
+        <Parameter Name="userdata" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_CreateWindow" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="title" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="x" Type="Int32"/>
+        <Parameter Name="y" Type="Int32"/>
+        <Parameter Name="w" Type="Int32"/>
+        <Parameter Name="h" Type="Int32"/>
+        <Parameter Name="flags" Type="SDL_WindowFlags"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_CreateWindowFrom" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="data" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_DestroyWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowID" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowTitle" ReturnType="IntPtr" MarshalReturnAsString="Ansi">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowTitle" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="title" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowIcon" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="icon" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowPosition" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="x" Type="Int32" TypeModifier="out"/>
+        <Parameter Name="y" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowPosition" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="x" Type="Int32"/>
+        <Parameter Name="y" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32" TypeModifier="out"/>
+        <Parameter Name="h" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32"/>
+        <Parameter Name="h" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowMinimumSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32" TypeModifier="out"/>
+        <Parameter Name="h" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowMinimumSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32"/>
+        <Parameter Name="h" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowMaximumSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32" TypeModifier="out"/>
+        <Parameter Name="h" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowMaximumSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32"/>
+        <Parameter Name="h" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowGrab" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowGrab" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="grabbed" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowBordered" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="bordered" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowFullscreen" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="flags" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowDisplayMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="mode" Type="SDL_DisplayMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowDisplayMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="mode" Type="SDL_DisplayMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowDisplayIndex" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowFlags" ReturnType="SDL_WindowFlags">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_ShowWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_HideWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_MaximizeWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_MinimizeWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_RestoreWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowWMInfo" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="info" Type="SDL_SysWMinfo*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_RWFromFile" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="file" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="mode" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_RWFromMem" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="mem" Type="IntPtr"/>
+        <Parameter Name="size" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_AllocRW" ReturnType="IntPtr"/>
+    <Function Name="SDL_FreeRW" ReturnType="void">
+      <Parameters>
+        <Parameter Name="area" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_LoadBMP_RW" ReturnType="SDL_Surface*">
+      <Parameters>
+        <Parameter Name="src" Type="IntPtr"/>
+        <Parameter Name="freesrc" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SaveBMP_RW" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+        <Parameter Name="dst" Type="IntPtr"/>
+        <Parameter Name="freedst" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetMouseState" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="x" Type="Int32" TypeModifier="out"/>
+        <Parameter Name="y" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetKeyboardState" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="numkeys" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetScancodeFromKey" ReturnType="SDL_Scancode">
+      <Parameters>
+        <Parameter Name="keycode" Type="SDL_Keycode"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetModState" ReturnType="SDL_Keymod"/>
+    <Function Name="SDL_SetHint" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="name" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="value" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_CreateRGBSurface" ReturnType="SDL_Surface*">
+      <Parameters>
+        <Parameter Name="flags" Type="UInt32"/>
+        <Parameter Name="width" Type="Int32"/>
+        <Parameter Name="height" Type="Int32"/>
+        <Parameter Name="depth" Type="Int32"/>
+        <Parameter Name="Rmask" Type="UInt32"/>
+        <Parameter Name="Gmask" Type="UInt32"/>
+        <Parameter Name="Bmask" Type="UInt32"/>
+        <Parameter Name="AMask" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_FreeSurface" ReturnType="void">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_LockSurface" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_UnlockSurface" ReturnType="void">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_UpperBlit" ReturnType="Int32" Alias="SDL_BlitSurface">
+      <Parameters>
+        <Parameter Name="src" Type="SDL_Surface*"/>
+        <Parameter Name="srcrect" Type="SDL_Rect*"/>
+        <Parameter Name="dst" Type="SDL_Surface*"/>
+        <Parameter Name="dstrect" Type="SDL_Rect*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_UpperBlitScaled" ReturnType="Int32" Alias="SDL_BlitScaled">
+      <Parameters>
+        <Parameter Name="src" Type="SDL_Surface*"/>
+        <Parameter Name="srcrect" Type="SDL_Rect*"/>
+        <Parameter Name="dst" Type="SDL_Surface*"/>
+        <Parameter Name="dstrect" Type="SDL_Rect*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetSurfaceBlendMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+        <Parameter Name="blendMode" Type="SDL_BlendMode"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetSurfaceBlendMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+        <Parameter Name="blendMode" Type="SDL_BlendMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_FillRect" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+        <Parameter Name="rect" Type="SDL_Rect*"/>
+        <Parameter Name="color" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_FillRects" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="dst" Type="SDL_Surface*"/>
+        <Parameter Name="rects" Type="SDL_Rect*"/>
+        <Parameter Name="count" Type="Int32"/>
+        <Parameter Name="colors" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_CreateColorCursor" ReturnType="SDL_Cursor*">
+      <Parameters>
+        <Parameter Name="surface" Type="SDL_Surface*"/>
+        <Parameter Name="hot_x" Type="Int32"/>
+        <Parameter Name="hot_y" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_FreeCursor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="cursor" Type="SDL_Cursor*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_ShowCursor" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="toggle" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetCursor" ReturnType="SDL_Cursor*"/>
+    <Function Name="SDL_SetCursor" ReturnType="void">
+      <Parameters>
+        <Parameter Name="cursor" Type="SDL_Cursor*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetDefaultCursor" ReturnType="SDL_Cursor*"/>
+    <Function Name="SDL_GetNumVideoDisplays" ReturnType="Int32"/>
+    <Function Name="SDL_GetDisplayName" ReturnType="IntPtr" MarshalReturnAsString="Ansi">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetDisplayBounds" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+        <Parameter Name="rect" Type="SDL_Rect*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetNumDisplayModes" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetDisplayMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+        <Parameter Name="modeIndex" Type="Int32"/>
+        <Parameter Name="mode" Type="SDL_DisplayMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetCurrentDisplayMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+        <Parameter Name="mode" Type="SDL_DisplayMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetDesktopDisplayMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+        <Parameter Name="mode" Type="SDL_DisplayMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetClosestDisplayMode" ReturnType="SDL_DisplayMode*">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+        <Parameter Name="mode" Type="SDL_DisplayMode*"/>
+        <Parameter Name="closest" Type="SDL_DisplayMode*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_PixelFormatEnumToMasks" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="format" Type="UInt32"/>
+        <Parameter Name="bpp" Type="Int32*"/>
+        <Parameter Name="Rmask" Type="UInt32*"/>
+        <Parameter Name="Gmask" Type="UInt32*"/>
+        <Parameter Name="Bmask" Type="UInt32*"/>
+        <Parameter Name="Amask" Type="UInt32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_GetProcAddress" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="proc" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_CreateContext" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_DeleteContext" ReturnType="void">
+      <Parameters>
+        <Parameter Name="context" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_GetCurrentContext" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="context" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_MakeCurrent" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="context" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_SetAttribute" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="attr" Type="SDL_GLattr"/>
+        <Parameter Name="value" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_GetAttribute" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="attr" Type="SDL_GLattr"/>
+        <Parameter Name="value" Type="Int32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_SwapWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_SetSwapInterval" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="interval" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GL_GetDrawableSize" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="w" Type="Int32" TypeModifier="out"/>
+        <Parameter Name="h" Type="Int32" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_NumJoysticks" ReturnType="Int32"/>
+    <Function Name="SDL_IsGameController" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="joystick_index" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerOpen" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="index" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerClose" ReturnType="void">
+      <Parameters>
+        <Parameter Name="gamecontroller" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerNameForIndex" ReturnType="IntPtr" MarshalReturnAsString="Ansi">
+      <Parameters>
+        <Parameter Name="joystick_index" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerGetButton" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="gamecontroller" Type="IntPtr"/>
+        <Parameter Name="button" Type="SDL_GameControllerButton"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerGetJoystick" ReturnType="IntPtr">
+      <Parameters>
+        <Parameter Name="gamecontroller" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_JoystickInstanceID" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="joystick" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetNumTouchDevices" ReturnType="Int32"/>
+    <Function Name="SDL_GetTouchDevice" ReturnType="Int64">
+      <Parameters>
+        <Parameter Name="index" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetNumTouchFingers" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="touchID" Type="Int64"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetTouchFinger" ReturnType="SDL_Finger*">
+      <Parameters>
+        <Parameter Name="touchID" Type="Int64"/>
+        <Parameter Name="index" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_RecordGesture" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="touchID" Type="Int64"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SaveAllDollarTemplates" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="dst" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SaveDollarTemplate" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="gestureID" Type="Int64"/>
+        <Parameter Name="dst" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_LoadDollarTemplates" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="touchID" Type="Int64"/>
+        <Parameter Name="src" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_StartTextInput" ReturnType="void"/>
+    <Function Name="SDL_StopTextInput" ReturnType="void"/>
+    <Function Name="SDL_SetTextInputRect" ReturnType="void">
+      <Parameters>
+        <Parameter Name="rect" Type="SDL_Rect*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_HasClipboardText" ReturnType="Boolean"/>
+    <Function Name="SDL_GetClipboardText" ReturnType="IntPtr"/>
+    <Function Name="SDL_SetClipboardText" ReturnType="void">
+      <Parameters>
+        <Parameter Name="text" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetPowerInfo" ReturnType="SDL_PowerState">
+      <Parameters>
+        <Parameter Name="secs" Type="Int32*"/>
+        <Parameter Name="pct" Type="Int32*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_ShowSimpleMessageBox" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="flags" Type="UInt32"/>
+        <Parameter Name="title" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="message" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="window" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_SetWindowOpacity" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="opacity" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetWindowOpacity" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="opacity" Type="Single*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerAddMapping" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="mappingString" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerAddMappingsFromRW" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="rw" Type="IntPtr"/>
+        <Parameter Name="freerw" Type="Int32"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerMapping" ReturnType="IntPtr" MarshalReturnAsString="Ansi">
+      <Parameters>
+        <Parameter Name="gamecontroller" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GameControllerMappingForGUID" ReturnType="IntPtr" MarshalReturnAsString="Ansi">
+      <Parameters>
+        <Parameter Name="guid" Type="Guid"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_JoystickGetGUID" ReturnType="Guid">
+      <Parameters>
+        <Parameter Name="pchGUID" Type="String" MarshalAs="LPStr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetDisplayDPI" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="displayIndex" Type="Int32"/>
+        <Parameter Name="ddpi" Type="Single*"/>
+        <Parameter Name="hdpi" Type="Single*"/>
+        <Parameter Name="vdpi" Type="Single*"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_free" ReturnType="void">
+      <Parameters>
+        <Parameter Name="mem" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_GetRelativeMouseMode" ReturnType="Boolean"/>
+    <Function Name="SDL_SetRelativeMouseMode" ReturnType="Int32">
+      <Parameters>
+        <Parameter Name="enabled" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="SDL_WarpMouseInWindow" ReturnType="void">
+      <Parameters>
+        <Parameter Name="window" Type="IntPtr"/>
+        <Parameter Name="x" Type="Int32"/>
+        <Parameter Name="y" Type="Int32"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>

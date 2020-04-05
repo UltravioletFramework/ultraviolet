@@ -27,7 +27,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Messages\SDL2EventMessageData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\IntPtrExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Legacy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Macros.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_Android.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_BlendMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_CommonEvent.cs" />
@@ -117,5 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.xml" />
   </ItemGroup>
 </Project>

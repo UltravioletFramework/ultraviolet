@@ -119,6 +119,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tests.NETCore3", "Ultraviolet.Tests\NETCore3\Ultraviolet.Tests.NETCore3.csproj", "{375D70B8-EEE0-4455-AE7C-897CD57B18EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvNativeCodeGen", "UvNativeCodeGen\UvNativeCodeGen.csproj", "{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
@@ -331,6 +333,12 @@ Global
 		{375D70B8-EEE0-4455-AE7C-897CD57B18EA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{375D70B8-EEE0-4455-AE7C-897CD57B18EA}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
 		{375D70B8-EEE0-4455-AE7C-897CD57B18EA}.Signed|Any CPU.Build.0 = Debug|Any CPU
+		{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}.Signed|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E9A1B4-A4DA-4988-B3FD-E49A1360ABF6}.Signed|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
