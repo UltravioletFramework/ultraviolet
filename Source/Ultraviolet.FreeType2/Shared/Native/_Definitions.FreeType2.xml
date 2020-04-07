@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<NativeLibrary Namespace="Ultraviolet.FreeType2.Native" ClassName="FreeTypeNative">
+<NativeLibrary Namespace="Ultraviolet.FreeType2.Native" ClassName="FreeTypeNative" SharedLibrary="libfreetype">
   <Names Default="freetype" Android="freetype" Unix="libfreetype"/>
   <Imports/>
   <Constants/>

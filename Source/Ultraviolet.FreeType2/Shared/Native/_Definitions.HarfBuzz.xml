@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<NativeLibrary Namespace="Ultraviolet.FreeType2.Native" ClassName="HarfBuzzNative">
+<NativeLibrary Namespace="Ultraviolet.FreeType2.Native" ClassName="HarfBuzzNative" SharedLibrary="libharfbuzz">
   <Names Default="harfbuzz" Android="harfbuzz" Unix="libharfbuzz"/>
   <Imports/>
   <Constants/>

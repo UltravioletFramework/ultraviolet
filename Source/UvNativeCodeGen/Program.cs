@@ -17,21 +17,37 @@ namespace UvNativeCodeGen
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.SDL2", "Shared", "Native", "_Definitions.xml"),
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.BASS", "Shared", "Native", "_Definitions.BASS.xml"),
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.BASS", "Shared", "Native", "_Definitions.BASSFX.xml"),
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_SharedLibraries.xml"),
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_Definitions.HarfBuzz.xml"),
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_Definitions.FreeType2.xml"),
             };
 
             foreach (var file in files)
-                GenerateNativeLibraryFromDefinition(file);
+                ProcessFile(file);
         }
 
-        private static void GenerateNativeLibraryFromDefinition(String inputFile)
+        private static void ProcessFile(String file)
         {
-            var directory = Path.GetDirectoryName(inputFile);
-            var definition = XDocument.Load(inputFile);
-            if (definition.Root.Name.LocalName != "NativeLibrary")
-                throw new InvalidDataException("Not a valid definition file.");
+            var directory = Path.GetDirectoryName(file);
+            var definition = XDocument.Load(file);
+            switch (definition.Root.Name.LocalName)
+            {
+                case "NativeLibrary":
+                    GenerateNativeLibraryFromDefinition(definition, directory);
+                    break;
 
+                case "SharedNativeLibraries":
+                    GenerateSharedNativeLibrariesFromDefinition(definition, directory);
+                    break;
+
+                default:
+                    throw new InvalidDataException("Not a valid definition file.");
+            }
+
+        }
+
+        private static void GenerateNativeLibraryFromDefinition(XDocument definition, String directory)
+        {
             var nativeNamespace = GetAttributeString(definition.Root, "Namespace");
             var nativeClassName = GetAttributeString(definition.Root, "ClassName");
 
@@ -57,6 +73,59 @@ namespace UvNativeCodeGen
             // FooNative - static class which exposes the underlying platform-specific implementation.
             WriteWrapperClass(definition, nativeNamespace, nativeClassName,
                 Path.Combine(directory, $"{nativeClassName}.cs"));
+        }
+
+        private static void GenerateSharedNativeLibrariesFromDefinition(XDocument definition, String directory)
+        {
+            var path = Path.Combine(directory, $"SharedNativeLibraries.cs");
+
+            using (var stream = File.Create(path))
+            using (var swriter = new StreamWriter(stream))
+            using (var twriter = new IndentedTextWriter(swriter))
+            {
+                twriter.WriteLine("using Ultraviolet.Core;");
+                twriter.WriteLine("using Ultraviolet.Core.Native;");
+                twriter.WriteLine();
+
+                var @namespace = GetAttributeString(definition.Root, "Namespace");
+                twriter.WriteLine($"namespace {@namespace}");
+                twriter.WriteLine($"{{");
+                twriter.WriteLine($"#pragma warning disable 1591");
+                twriter.Indent++;
+
+                twriter.WriteLine($"internal sealed class SharedNativeLibraries");
+                twriter.WriteLine($"{{");
+                twriter.Indent++;
+
+                var sharedLibraryElements = definition.Root.Elements("SharedNativeLibrary");
+                foreach (var sharedLibraryElement in sharedLibraryElements)
+                {
+                    var sharedLibraryFieldName = GetAttributeString(sharedLibraryElement, "Name");
+                    twriter.WriteLine($"public static readonly NativeLibrary {sharedLibraryFieldName};");
+                }
+
+                twriter.WriteLine();
+                twriter.WriteLine("static SharedNativeLibraries()");
+                twriter.WriteLine("{");
+                twriter.Indent++;
+
+                foreach (var sharedLibraryElement in sharedLibraryElements)
+                {
+                    var sharedLibraryName = GetAttributeString(sharedLibraryElement, "Name");
+                    var sharedLibraryNames = GetChildElement(sharedLibraryElement, "Names");
+                    WritePlatformSpecificLibInit(twriter, sharedLibraryNames, sharedLibraryName);
+                }
+
+                twriter.Indent--;
+                twriter.WriteLine("}");
+
+                twriter.Indent--;
+                twriter.WriteLine($"}}");
+
+                twriter.Indent--;
+                twriter.WriteLine($"#pragma warning restore 1591");
+                twriter.WriteLine($"}}");
+            }
         }
 
         private static XElement GetChildElement(XElement parent, XName name)
@@ -188,6 +257,49 @@ namespace UvNativeCodeGen
 
                 twriter.WriteLine($"public struct {otName} {{ }}");
             }
+        }
+
+        private static void WritePlatformSelectionCase(IndentedTextWriter twriter, String fieldname, String platform, String names)
+        {
+            if (String.IsNullOrEmpty(names))
+                return;
+
+            twriter.WriteLine(platform == null ? "default:" : $"case UltravioletPlatform.{platform}:");
+            twriter.Indent++;
+
+            var namesArray = names.Split(',').Select(x => $"\"{x.Trim()}\"").ToArray();
+            if (namesArray.Length == 1)
+            {
+                twriter.WriteLine($"{fieldname} = new NativeLibrary({namesArray[0]});");
+            }
+            else
+            {
+                twriter.WriteLine($"{fieldname} = new NativeLibrary(new[] {{ {String.Join(", ", namesArray)} }});");
+            }
+
+            twriter.WriteLine($"break;");
+            twriter.Indent--;
+        }
+
+        private static void WritePlatformSpecificLibInit(IndentedTextWriter twriter, XElement namesElement, String fieldname)
+        {
+            twriter.WriteLine($"switch (UltravioletPlatformInfo.CurrentPlatform)");
+            twriter.WriteLine($"{{");
+            twriter.Indent++;
+
+            var nameWindows = GetOptionalAttributeString(namesElement, "Windows");
+            WritePlatformSelectionCase(twriter, fieldname, "Windows", nameWindows);
+
+            var nameUnix = GetOptionalAttributeString(namesElement, "Unix");
+            var nameLinux = GetOptionalAttributeString(namesElement, "Linux") ?? nameUnix;
+            var nameMacOS = GetOptionalAttributeString(namesElement, "macOS") ?? nameUnix;
+            WritePlatformSelectionCase(twriter, fieldname, "Linux", nameLinux ?? nameUnix);
+            WritePlatformSelectionCase(twriter, fieldname, "macOS", nameMacOS ?? nameUnix);
+
+            WritePlatformSelectionCase(twriter, fieldname, null, GetAttributeString(namesElement, "Default"));
+
+            twriter.Indent--;
+            twriter.WriteLine($"}}");
         }
 
         private static void WriteEachElement(XElement parentElement, String elementName, Action<XElement, Int32, Int32> fn)
@@ -330,6 +442,8 @@ namespace UvNativeCodeGen
 
         private static void WriteImplClass_UltravioletLoader(XDocument definition, XElement namesElement, String nativeNamespace, String nativeClassName, String suffix, String path)
         {
+            var sharedLibraryName = GetOptionalAttributeString(definition.Root, "SharedLibrary");
+
             using (var stream = File.Create(path))
             using (var swriter = new StreamWriter(stream))
             using (var twriter = new IndentedTextWriter(swriter))
@@ -352,56 +466,26 @@ namespace UvNativeCodeGen
                 twriter.WriteLine($"{{");
                 twriter.Indent++;
 
-                twriter.WriteLine($"private static readonly NativeLibrary lib;");
-                twriter.WriteLine();
-
-                twriter.WriteLine($"static {nativeClassName}Impl_{suffix}()");
-                twriter.WriteLine($"{{");
-                twriter.Indent++;
-
-                twriter.WriteLine($"switch (UltravioletPlatformInfo.CurrentPlatform)");
-                twriter.WriteLine($"{{");
-                twriter.Indent++;
-
-                void WritePlatformSelectionCase(String platform, String names)
+                var libref = "lib";
+                if (String.IsNullOrEmpty(sharedLibraryName))
                 {
-                    if (String.IsNullOrEmpty(names))
-                        return;
+                    twriter.WriteLine($"private static readonly NativeLibrary lib;");
+                    twriter.WriteLine();
 
-                    twriter.WriteLine(platform == null ? "default:" : $"case UltravioletPlatform.{platform}:");
+                    twriter.WriteLine($"static {nativeClassName}Impl_{suffix}()");
+                    twriter.WriteLine($"{{");
                     twriter.Indent++;
 
-                    var namesArray = names.Split(',').Select(x => $"\"{x.Trim()}\"").ToArray();
-                    if (namesArray.Length == 1)
-                    {
-                        twriter.WriteLine($"lib = new NativeLibrary({namesArray[0]});");
-                    }
-                    else
-                    {
-                        twriter.WriteLine($"lib = new NativeLibrary(new[] {{ {String.Join(", ", namesArray)} }});");
-                    }
+                    WritePlatformSpecificLibInit(twriter, namesElement, "lib");
 
-                    twriter.WriteLine($"break;");
                     twriter.Indent--;
+                    twriter.WriteLine($"}}");
+                    twriter.WriteLine();
                 }
-
-                var nameWindows = (String)namesElement.Attribute("Windows");
-                WritePlatformSelectionCase("Windows", nameWindows);
-                
-                var nameUnix = (String)namesElement.Attribute("Unix");
-                var nameLinux = (String)namesElement.Attribute("Linux") ?? nameUnix;
-                var nameMacOS = (String)namesElement.Attribute("macOS") ?? nameUnix;
-                WritePlatformSelectionCase("Linux", nameLinux ?? nameUnix);
-                WritePlatformSelectionCase("macOS", nameMacOS ?? nameUnix);
-
-                WritePlatformSelectionCase(null, GetAttributeString(namesElement, "Default"));
-
-                twriter.Indent--;
-                twriter.WriteLine($"}}");
-
-                twriter.Indent--;
-                twriter.WriteLine($"}}");
-                twriter.WriteLine();
+                else
+                {
+                    libref = $"SharedNativeLibraries.{sharedLibraryName}";
+                }
 
                 var functionsElement = definition.Root.Element("Functions");
                 if (functionsElement != null)
@@ -425,7 +509,7 @@ namespace UvNativeCodeGen
                         twriter.WriteLine($"[MonoNativeFunctionWrapper]");
                         twriter.WriteLine($"[UnmanagedFunctionPointer(CallingConvention.{fnCallingConvention})]");
                         twriter.WriteLine($"private delegate {fnReturnType} {fnAlias}{fnSuffix}Delegate({fnParameters});");
-                        twriter.WriteLine($"private readonly {fnAlias}{fnSuffix}Delegate p{fnAlias}{fnSuffix} = lib.LoadFunction<{fnAlias}{fnSuffix}Delegate>(\"{fnName}\");");
+                        twriter.WriteLine($"private readonly {fnAlias}{fnSuffix}Delegate p{fnAlias}{fnSuffix} = {libref}.LoadFunction<{fnAlias}{fnSuffix}Delegate>(\"{fnName}\");");
 
                         if (String.IsNullOrEmpty(fnReturnAsString))
                         {

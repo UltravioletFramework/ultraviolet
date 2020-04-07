@@ -93,7 +93,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_buffer_content_type_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_direction_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_script_t.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\SharedNativeLibraries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextDirectionUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextScriptUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
@@ -104,6 +104,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Native\_SharedLibraries.xml" />
     <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.FreeType2.xml" />
     <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.HarfBuzz.xml" />
   </ItemGroup>
