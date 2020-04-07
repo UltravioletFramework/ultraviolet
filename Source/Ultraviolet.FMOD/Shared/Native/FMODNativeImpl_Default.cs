@@ -1,10 +1,10 @@
 using System;
-using System.Security;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Native;
-using System.Text;
 
 namespace Ultraviolet.FMOD.Native
 {
@@ -19,13 +19,13 @@ namespace Ultraviolet.FMOD.Native
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
                 case UltravioletPlatform.Linux:
-                    lib = new NativeLibrary("libfmodL, libfmod");
+                    lib = new NativeLibrary(new[] { "libfmodL", "libfmod" });
                     break;
                 case UltravioletPlatform.macOS:
-                    lib = new NativeLibrary("libfmodL, libfmod");
+                    lib = new NativeLibrary(new[] { "libfmodL", "libfmod" });
                     break;
                 default:
-                    lib = new NativeLibrary("fmodL, fmod");
+                    lib = new NativeLibrary(new[] { "fmodL", "fmod" });
                     break;
             }
         }

@@ -31,10 +31,11 @@ namespace UvNativeCodeGen
             var nativeClassName = GetAttributeString(definition.Root, "ClassName");
 
             var namesElement = GetChildElement(definition.Root, "Names");
-            var nameAndroid =
+            var namesAndroid =
                 (String)namesElement.Attribute("Android") ??
                 (String)namesElement.Attribute("Unix") ??
                 (String)namesElement.Attribute("Default");
+            var nameAndroid = (namesAndroid ?? String.Empty).Split(',').Select(x => x.Trim()).FirstOrDefault();
 
             // FooNativeImpl - the abstract base class for platform-specific implementations.
             WriteImplClass_Base(definition, nativeNamespace, nativeClassName, 
@@ -357,19 +358,26 @@ namespace UvNativeCodeGen
                 twriter.WriteLine($"{{");
                 twriter.Indent++;
 
-                void WritePlatformSelectionCase(String platform, String name)
+                void WritePlatformSelectionCase(String platform, String names)
                 {
-                    if (String.IsNullOrEmpty(name))
+                    if (String.IsNullOrEmpty(names))
                         return;
 
-                    if (!String.IsNullOrEmpty(name))
+                    twriter.WriteLine(platform == null ? "default:" : $"case UltravioletPlatform.{platform}:");
+                    twriter.Indent++;
+
+                    var namesArray = names.Split(',').Select(x => $"\"{x.Trim()}\"").ToArray();
+                    if (namesArray.Length == 1)
                     {
-                        twriter.WriteLine($"case UltravioletPlatform.{platform}:");
-                        twriter.Indent++;
-                        twriter.WriteLine($"lib = new NativeLibrary(\"{name}\");");
-                        twriter.WriteLine($"break;");
-                        twriter.Indent--;
+                        twriter.WriteLine($"lib = new NativeLibrary({namesArray[0]});");
                     }
+                    else
+                    {
+                        twriter.WriteLine($"lib = new NativeLibrary(new[] {{ {String.Join(", ", namesArray)} }});");
+                    }
+
+                    twriter.WriteLine($"break;");
+                    twriter.Indent--;
                 }
 
                 var nameWindows = (String)namesElement.Attribute("Windows");
@@ -381,11 +389,7 @@ namespace UvNativeCodeGen
                 WritePlatformSelectionCase("Linux", nameLinux ?? nameUnix);
                 WritePlatformSelectionCase("macOS", nameMacOS ?? nameUnix);
 
-                twriter.WriteLine($"default:");
-                twriter.Indent++;
-                twriter.WriteLine($"lib = new NativeLibrary(\"{(String)namesElement.Attribute("Default")}\");");
-                twriter.WriteLine($"break;");
-                twriter.Indent--;
+                WritePlatformSelectionCase(null, GetAttributeString(namesElement, "Default"));
 
                 twriter.Indent--;
                 twriter.WriteLine($"}}");
