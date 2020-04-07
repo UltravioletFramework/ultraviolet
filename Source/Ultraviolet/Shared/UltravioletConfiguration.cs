@@ -45,11 +45,7 @@ namespace Ultraviolet
                     throw new ArgumentException(nameof(impl));
             }
 
-#if SIGNED
             AudioSubsystemAssembly = $"{asmname}, Version={version}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
-#else
-            AudioSubsystemAssembly = $"{asmname}, Version={version}, Culture=neutral, processorArchitecture=MSIL";
-#endif
         }
 
         /// <summary>
