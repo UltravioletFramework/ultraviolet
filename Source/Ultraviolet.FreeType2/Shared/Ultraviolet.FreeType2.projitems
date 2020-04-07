@@ -28,9 +28,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)FreeTypeCalc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HarfBuzzNativeStringBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HarfBuzzTextShaper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_FACE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_LOAD.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.Legacy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_Android.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BBox32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BitmapGlyphRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BitmapGlyphRec32.cs" />
@@ -98,6 +104,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.FreeType2.xml" />
     <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.HarfBuzz.xml" />
   </ItemGroup>
 </Project>
