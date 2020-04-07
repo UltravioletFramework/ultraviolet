@@ -419,18 +419,18 @@ namespace UvNativeCodeGen
 
                         twriter.WriteLine($"[MonoNativeFunctionWrapper]");
                         twriter.WriteLine($"[UnmanagedFunctionPointer(CallingConvention.{fnCallingConvention})]");
-                        twriter.WriteLine($"private delegate {fnReturnType} {fnName}{fnSuffix}Delegate({fnParameters});");
-                        twriter.WriteLine($"private readonly {fnName}{fnSuffix}Delegate p{fnName}{fnSuffix} = lib.LoadFunction<{fnName}{fnSuffix}Delegate>(\"{fnName}\");");
+                        twriter.WriteLine($"private delegate {fnReturnType} {fnAlias}{fnSuffix}Delegate({fnParameters});");
+                        twriter.WriteLine($"private readonly {fnAlias}{fnSuffix}Delegate p{fnAlias}{fnSuffix} = lib.LoadFunction<{fnAlias}{fnSuffix}Delegate>(\"{fnName}\");");
 
                         if (String.IsNullOrEmpty(fnReturnAsString))
                         {
                             twriter.WriteLine($"[MethodImpl(MethodImplOptions.AggressiveInlining)]");
-                            twriter.WriteLine($"{fnVisibility}{fnOverride}{fnReturnType} {fnAlias}{fnSuffix}({fnParameters}) => p{fnName}{fnSuffix}({fnArguments});");
+                            twriter.WriteLine($"{fnVisibility}{fnOverride}{fnReturnType} {fnAlias}{fnSuffix}({fnParameters}) => p{fnAlias}{fnSuffix}({fnArguments});");
                         }
                         else
                         {
                             twriter.WriteLine($"[MethodImpl(MethodImplOptions.AggressiveInlining)]");
-                            twriter.WriteLine($"public override sealed String {fnAlias}({fnParameters}) => Marshal.PtrToString{fnReturnAsString}(p{fnName}{fnSuffix}({fnArguments}));");
+                            twriter.WriteLine($"public override sealed String {fnAlias}({fnParameters}) => Marshal.PtrToString{fnReturnAsString}(p{fnAlias}{fnSuffix}({fnArguments}));");
                         }
 
                         if (i + 1 < total)
