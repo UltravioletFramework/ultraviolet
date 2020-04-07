@@ -20,6 +20,7 @@ namespace UvNativeCodeGen
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_SharedLibraries.xml"),
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_Definitions.HarfBuzz.xml"),
                 Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_Definitions.FreeType2.xml"),
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.ImGuiViewProvider.Bindings", "Shared", "Generated", "_Definitions.xml"),
             };
 
             foreach (var file in files)

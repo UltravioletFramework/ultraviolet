@@ -46,7 +46,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiKey.gen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiListClipper.gen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiMouseCursor.gen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNative.gen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl_Android.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl_Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNavInput.gen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiOnceUponAFrame.gen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiPayload.gen.cs" />
@@ -70,5 +74,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RangeAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Generated\_Definitions.xml" />
   </ItemGroup>
 </Project>
