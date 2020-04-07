@@ -388,17 +388,17 @@ namespace Ultraviolet.SDL2.Native
         
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate Int32 SDL_UpperBlitDelegate(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
-        private readonly SDL_UpperBlitDelegate pSDL_UpperBlit = lib.LoadFunction<SDL_UpperBlitDelegate>("SDL_UpperBlit");
+        private delegate Int32 SDL_BlitSurfaceDelegate(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
+        private readonly SDL_BlitSurfaceDelegate pSDL_BlitSurface = lib.LoadFunction<SDL_BlitSurfaceDelegate>("SDL_UpperBlit");
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override sealed Int32 SDL_BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) => pSDL_UpperBlit(src, srcrect, dst, dstrect);
+        public override sealed Int32 SDL_BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) => pSDL_BlitSurface(src, srcrect, dst, dstrect);
         
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate Int32 SDL_UpperBlitScaledDelegate(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
-        private readonly SDL_UpperBlitScaledDelegate pSDL_UpperBlitScaled = lib.LoadFunction<SDL_UpperBlitScaledDelegate>("SDL_UpperBlitScaled");
+        private delegate Int32 SDL_BlitScaledDelegate(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
+        private readonly SDL_BlitScaledDelegate pSDL_BlitScaled = lib.LoadFunction<SDL_BlitScaledDelegate>("SDL_UpperBlitScaled");
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override sealed Int32 SDL_BlitScaled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) => pSDL_UpperBlitScaled(src, srcrect, dst, dstrect);
+        public override sealed Int32 SDL_BlitScaled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) => pSDL_BlitScaled(src, srcrect, dst, dstrect);
         
         [MonoNativeFunctionWrapper]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

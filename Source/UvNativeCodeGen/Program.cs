@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using CommandLine;
 
 namespace UvNativeCodeGen
 {
@@ -13,11 +12,17 @@ namespace UvNativeCodeGen
     {
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(o =>
-                {
-                    GenerateNativeLibraryFromDefinition(o.InputFile);
-                });
+            var files = new[]
+            {
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.SDL2", "Shared", "Native", "_Definitions.xml"),
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.BASS", "Shared", "Native", "_Definitions.BASS.xml"),
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.BASS", "Shared", "Native", "_Definitions.BASSFX.xml"),
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_Definitions.HarfBuzz.xml"),
+                Path.Combine("..", "..", "..", "..", "Ultraviolet.FreeType2", "Shared", "Native", "_Definitions.FreeType2.xml"),
+            };
+
+            foreach (var file in files)
+                GenerateNativeLibraryFromDefinition(file);
         }
 
         private static void GenerateNativeLibraryFromDefinition(String inputFile)
