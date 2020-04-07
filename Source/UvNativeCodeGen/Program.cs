@@ -479,7 +479,7 @@ namespace UvNativeCodeGen
                 twriter.WriteLine();
 
                 var constants = definition.Root.Element("Constants");
-                if (constants != null)
+                if (constants != null && constants.Elements().Any())
                 {
                     WriteEachElement(constants, "Constant", (constant, i, total) =>
                     {

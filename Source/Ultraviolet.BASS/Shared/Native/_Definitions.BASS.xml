@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<NativeLibrary Namespace="Ultraviolet.BASS.Native" ClassName="BASSNative">
+  <Names Default="bass" Android="bass" Unix="libbass"/>
+  <Imports/>
+  <Constants/>
+  <FunctionPointers/>
+  <Functions CallingConvention="StdCall">
+    <Function Name="BASS_ErrorGetCode" ReturnType="Int32"/>
+    <Function Name="BASS_Init" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="device" Type="Int32"/>
+        <Parameter Name="freq" Type="UInt32"/>
+        <Parameter Name="flags" Type="UInt32"/>
+        <Parameter Name="win" Type="IntPtr"/>
+        <Parameter Name="clsid" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_Free" ReturnType="Boolean"/>
+    <Function Name="BASS_Update" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="length" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SetDevice" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="device" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_GetDevice" ReturnType="UInt32"/>
+    <Function Name="BASS_PluginLoad" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="file" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="flags" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_PluginFree" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_GetConfig" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="option" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SetConfig" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="option" Type="UInt32"/>
+        <Parameter Name="value" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_GetVolume" ReturnType="Single"/>
+    <Function Name="BASS_SetVolume" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="volume" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_StreamCreate" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="freq" Type="UInt32"/>
+        <Parameter Name="chans" Type="UInt32"/>
+        <Parameter Name="flags" Type="UInt32"/>
+        <Parameter Name="proc" Type="IntPtr"/>
+        <Parameter Name="user" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_StreamCreateFile" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="mem" Type="Boolean"/>
+        <Parameter Name="file" Type="String" MarshalAs="LPStr"/>
+        <Parameter Name="offset" Type="UInt64"/>
+        <Parameter Name="length" Type="UInt64"/>
+        <Parameter Name="flags" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_StreamCreateFileUser" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="system" Type="UInt32"/>
+        <Parameter Name="flags" Type="UInt32"/>
+        <Parameter Name="procs" Type="BASS_FILEPROCS*"/>
+        <Parameter Name="user" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_StreamPutData" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="length" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_StreamFree" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelSetDevice" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="device" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelIsActive" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelIsSliding" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="attrib" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelFlags" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="flags" Type="UInt32"/>
+        <Parameter Name="mask" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelGetInfo" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="info" Type="BASS_CHANNELINFO" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelBytes2Seconds" ReturnType="Double">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="pos" Type="UInt64"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelSeconds2Bytes" ReturnType="UInt64">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="pos" Type="Double"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelUpdate" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="length" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelPlay" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="restart" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelStop" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelPause" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelGetData" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="buffer" Type="IntPtr"/>
+        <Parameter Name="length" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelGetAttribute" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="attrib" Type="UInt32"/>
+        <Parameter Name="value" Type="Single*"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelSetAttribute" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="attrib" Type="UInt32"/>
+        <Parameter Name="value" Type="Single"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelSlideAttribute" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="attrib" Type="UInt32"/>
+        <Parameter Name="value" Type="Single"/>
+        <Parameter Name="time" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelGetPosition" ReturnType="UInt64">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="mode" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelSetPosition" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="pos" Type="UInt64"/>
+        <Parameter Name="mode" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelGetLength" ReturnType="UInt64">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="mode" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelSetSync" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="type" Type="UInt32"/>
+        <Parameter Name="param" Type="UInt64"/>
+        <Parameter Name="proc" Type="SyncProc"/>
+        <Parameter Name="user" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelRemoveSync" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="sync" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_ChannelGetTags" ReturnType="void*">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="tags" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SampleLoad" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="mem" Type="Boolean"/>
+        <Parameter Name="file" Type="IntPtr"/>
+        <Parameter Name="offset" Type="UInt64"/>
+        <Parameter Name="length" Type="UInt32"/>
+        <Parameter Name="max" Type="UInt32"/>
+        <Parameter Name="flags" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SampleFree" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SampleGetChannel" ReturnType="UInt32">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="onlynew" Type="Boolean"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SampleGetInfo" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="info" Type="BASS_SAMPLE" TypeModifier="out"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_SampleGetData" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="handle" Type="UInt32"/>
+        <Parameter Name="buffer" Type="IntPtr"/>
+      </Parameters>
+    </Function>
+    <Function Name="BASS_Pause" ReturnType="Boolean"/>
+    <Function Name="BASS_Start" ReturnType="Boolean"/>
+    <Function Name="BASS_GetDeviceInfo" ReturnType="Boolean">
+      <Parameters>
+        <Parameter Name="device" Type="UInt32"/>
+        <Parameter Name="info" Type="BASS_DEVICEINFO*"/>
+      </Parameters>
+    </Function>
+  </Functions>
+</NativeLibrary>
