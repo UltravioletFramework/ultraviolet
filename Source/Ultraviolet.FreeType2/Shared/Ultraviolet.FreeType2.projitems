@@ -77,13 +77,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_Generic.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_GlyphSlotRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_LibraryRec.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl_Android.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl_Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_glyph_position_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_glyph_info_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_buffer_content_type_t.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_direction_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_script_t.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\NativeLibs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextDirectionUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextScriptUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFontProcessorFromFreeType.cs" />
@@ -92,5 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.HarfBuzz.xml" />
   </ItemGroup>
 </Project>
