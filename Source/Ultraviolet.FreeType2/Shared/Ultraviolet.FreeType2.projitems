@@ -31,7 +31,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_FACE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.FT_LOAD.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.Legacy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNative.Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_Android.cs" />

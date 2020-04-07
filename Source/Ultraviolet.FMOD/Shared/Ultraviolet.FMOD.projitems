@@ -25,7 +25,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletAudio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.Legacy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.ErrorString.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNativeImpl_Android.cs" />

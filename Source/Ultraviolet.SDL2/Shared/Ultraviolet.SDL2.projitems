@@ -28,7 +28,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\IntPtrExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Helpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Legacy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNative.Macros.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_Android.cs" />
