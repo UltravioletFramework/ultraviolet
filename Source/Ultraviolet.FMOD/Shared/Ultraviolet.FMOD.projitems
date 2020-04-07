@@ -25,7 +25,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletAudio.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FMODUltravioletFactoryInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.Legacy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNative.ErrorString.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNativeImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNativeImpl_Android.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNativeImpl_Default.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Native\FMODNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_ASYNCREADINFO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_DEBUG_MODE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FMOD_DEBUG_FLAGS.cs" />
@@ -45,5 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Native\_Definitions.xml" />
   </ItemGroup>
 </Project>

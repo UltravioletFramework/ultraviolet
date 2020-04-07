@@ -168,7 +168,19 @@ namespace UvNativeCodeGen
 
                 twriter.WriteLine($"[UnmanagedFunctionPointer(CallingConvention.{fnCallingConvention})]");
                 twriter.WriteLine($"public unsafe delegate {fnReturnType} {fnName}({fnParameters});");
-                twriter.WriteLine();
+            }
+        }
+
+        private static void WriteOpaqueTypes(IndentedTextWriter twriter, XElement opaqueTypesElement)
+        {
+            if (opaqueTypesElement == null)
+                return;
+
+            foreach (var opaqueTypeElement in opaqueTypesElement.Elements("OpaqueType"))
+            {
+                var otName = GetAttributeString(opaqueTypeElement, "Name");
+
+                twriter.WriteLine($"public struct {otName} {{ }}");
             }
         }
 
@@ -202,7 +214,18 @@ namespace UvNativeCodeGen
                 twriter.Indent++;
 
                 var functionPointers = definition.Root.Element("FunctionPointers");
-                WriteFunctionPointers(twriter, functionPointers);
+                if (functionPointers != null && functionPointers.Elements("FunctionPointer").Any())
+                {
+                    WriteFunctionPointers(twriter, functionPointers);
+                    twriter.WriteLine();
+                }
+
+                var opaqueTypes = definition.Root.Element("OpaqueTypes");
+                if (opaqueTypes != null && opaqueTypes.Elements("OpaqueType").Any())
+                {
+                    WriteOpaqueTypes(twriter, opaqueTypes);
+                    twriter.WriteLine();
+                }
 
                 twriter.WriteLine($"[SuppressUnmanagedCodeSecurity]");
                 twriter.WriteLine($"public abstract unsafe class {nativeClassName}Impl");
@@ -483,9 +506,9 @@ namespace UvNativeCodeGen
                 {
                     WriteEachElement(constants, "Constant", (constant, i, total) =>
                     {
-                        var constantType = (String)constant.Attribute("Type");
-                        var constantName = (String)constant.Attribute("Name");
-                        var constantValue = (String)constant.Attribute("Value");
+                        var constantType = GetAttributeString(constant, "Type");
+                        var constantName = GetAttributeString(constant, "Name");
+                        var constantValue = GetAttributeString(constant, "Value");
                         twriter.WriteLine($"public const {constantType} {constantName} = {constantValue};");
                     });
                     twriter.WriteLine();
