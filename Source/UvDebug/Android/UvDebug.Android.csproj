@@ -37,6 +37,11 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidSupportedAbis />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -67,6 +72,48 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass.so">
+      <Link>lib\armeabi-v7a\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\armeabi-v7a\libbass_fx.so">
+      <Link>lib\armeabi-v7a\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libfreetype.so">
+      <Link>lib\armeabi-v7a\libfreetype.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libharfbuzz.so">
+      <Link>lib\armeabi-v7a\libharfbuzz.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\armeabi-v7a\libpng16.so">
+      <Link>lib\armeabi-v7a\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so">
+      <Link>lib\armeabi-v7a\libcimgui.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\armeabi-v7a\libSDL2.so">
+      <Link>lib\armeabi-v7a\libSDL2.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass.so">
+      <Link>lib\x86\libbass.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\BASS\Android\x86\libbass_fx.so">
+      <Link>lib\x86\libbass_fx.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libfreetype.so">
+      <Link>lib\x86\libfreetype.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libharfbuzz.so">
+      <Link>lib\x86\libharfbuzz.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\FreeType2\Android\x86\libpng16.so">
+      <Link>lib\x86\libpng16.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\ImGui\Android\x86\libcimgui.so">
+      <Link>lib\x86\libcimgui.so</Link>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="..\..\..\Dependencies\SDL2\Android\x86\libSDL2.so">
+      <Link>lib\x86\libSDL2.so</Link>
+    </AndroidNativeLibrary>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
