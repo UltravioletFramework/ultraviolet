@@ -104,6 +104,62 @@ namespace Ultraviolet
         }
 
         /// <summary>
+        /// Ensures that the specified function produces a valid instance of <see cref="UltravioletContext"/>. If it does not,
+        /// then the current context is immediately disposed. This method should only be called by Ultraviolet host implementations.
+        /// </summary>
+        /// <param name="fn">The function which will create the Ultraviolet context.</param>
+        /// <returns>The Ultraviolet context that was created.</returns>
+        public static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
+        {
+            Contract.Require(fn, nameof(fn));
+
+            try
+            {
+                var context = fn();
+                if (context == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                return context;
+            }
+            catch (Exception e1)
+            {
+                try
+                {
+                    var current = RequestCurrent();
+                    if (current != null)
+                    {
+                        current.Dispose();
+                    }
+                }
+                catch (Exception e2)
+                {
+                    var error = new StringBuilder();
+                    error.AppendLine(Assembly.GetEntryAssembly().FullName);
+                    error.AppendLine();
+                    error.AppendLine($"An exception occurred while creating the Ultraviolet context, and Ultraviolet failed to cleanly shut down.");
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during context creation:");
+                    error.AppendLine();
+                    error.AppendLine(e1.ToString());
+                    error.AppendLine();
+                    error.AppendLine($"Exception which occurred during shutdown:");
+                    error.AppendLine();
+                    error.AppendLine(e2.ToString());
+
+                    try
+                    {
+                        var errorDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                        var errorPath = $"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt";
+                        File.WriteAllText(Path.Combine(errorDir, errorPath), error.ToString());
+                    }
+                    catch (IOException) { }
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Retrieves the current Ultraviolet context, throwing an exception if it does not exist.
         /// </summary>
         /// <returns>The current Ultraviolet context, or <see langword="null"/> if no contex exists.</returns>
@@ -599,62 +655,6 @@ namespace Ultraviolet
         /// Occurs when the Ultraviolet context is being shut down.
         /// </summary>
         public event UltravioletContextEventHandler Shutdown;
-
-        /// <summary>
-        /// Ensures that the specified function produces a valid instance of <see cref="UltravioletContext"/>. If it does not,
-        /// then the current context is immediately disposed.
-        /// </summary>
-        /// <param name="fn">The function which will create the Ultraviolet context.</param>
-        /// <returns>The Ultraviolet context that was created.</returns>
-        internal static UltravioletContext EnsureSuccessfulCreation(Func<UltravioletContext> fn)
-        {
-            Contract.Require(fn, nameof(fn));
-
-            try
-            {
-                var context = fn();
-                if (context == null)
-                {
-                    throw new InvalidOperationException();
-                }
-                return context;
-            }
-            catch (Exception e1)
-            {
-                try
-                {
-                    var current = RequestCurrent();
-                    if (current != null)
-                    {
-                        current.Dispose();
-                    }
-                }
-                catch (Exception e2)
-                {
-                    var error = new StringBuilder();
-                    error.AppendLine(Assembly.GetEntryAssembly().FullName);
-                    error.AppendLine();
-                    error.AppendLine($"An exception occurred while creating the Ultraviolet context, and Ultraviolet failed to cleanly shut down.");
-                    error.AppendLine();
-                    error.AppendLine($"Exception which occurred during context creation:");
-                    error.AppendLine();
-                    error.AppendLine(e1.ToString());
-                    error.AppendLine();
-                    error.AppendLine($"Exception which occurred during shutdown:");
-                    error.AppendLine();
-                    error.AppendLine(e2.ToString());
-
-                    try
-                    {
-                        var errorDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                        var errorPath = $"uv-error-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}.txt";
-                        File.WriteAllText(Path.Combine(errorDir, errorPath), error.ToString());
-                    }
-                    catch (IOException) { }
-                }
-                throw;
-            }
-        }
         
         /// <summary>
         /// Acquires an exclusive context claim, preventing other instances from being instantiated.
