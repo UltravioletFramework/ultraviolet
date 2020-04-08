@@ -277,11 +277,6 @@ namespace Ultraviolet.Graphics.Graphics2D
             public Boolean TextIsShaped;
 
             /// <summary>
-            /// A value indicating whether the text is being drawn right-to-left.
-            /// </summary>
-            public Boolean TextIsRightToLeft;
-
-            /// <summary>
             /// A value indicating whether the text is being flipped horizontally.
             /// </summary>
             public Boolean TextIsFlippedHorizontally;
