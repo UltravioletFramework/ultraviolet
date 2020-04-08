@@ -30,12 +30,12 @@ namespace Ultraviolet.FMOD
         public FMODUltravioletAudio(UltravioletContext uv, UltravioletConfiguration configuration)
             : base(uv)
         {
-            PlatformSpecificInitialization();
-
-            var result = default(FMOD_RESULT);
+            platformSpecificImpl = FMODPlatformSpecificImplementationDetails.Create();
+            platformSpecificImpl.OnInitialized();
 
             InitializeLogging(configuration);
 
+            FMOD_RESULT result;
             fixed (FMOD_SYSTEM** psystem = &system)
             {
                 result = FMOD_System_Create(psystem);
@@ -73,17 +73,29 @@ namespace Ultraviolet.FMOD
             UpdateFileSource();
             UpdateAudioDevices();
             PlaybackDevice = GetDefaultDevice();
-            
+
+            uv.Messages.Subscribe(this, UltravioletMessages.ApplicationCreated);
+            uv.Messages.Subscribe(this, UltravioletMessages.ApplicationTerminating);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationSuspending);
             uv.Messages.Subscribe(this, UltravioletMessages.ApplicationResumed);
             uv.Messages.Subscribe(this, UltravioletMessages.FileSourceChanged);
-
-            PlatformSpecificMessageSubscriptions(uv);
         }
 
         /// <inheritdoc/>
         void IMessageSubscriber<UltravioletMessageID>.ReceiveMessage(UltravioletMessageID type, MessageData data)
         {
+            if (type == UltravioletMessages.ApplicationCreated)
+            {
+                platformSpecificImpl.OnApplicationCreated();
+                return;
+            }
+
+            if (type == UltravioletMessages.ApplicationTerminating)
+            {
+                platformSpecificImpl.OnApplicationTerminating();
+                return;
+            }
+
             if (type == UltravioletMessages.ApplicationSuspending)
             {
                 if (!suspended)
@@ -109,8 +121,6 @@ namespace Ultraviolet.FMOD
                 UpdateFileSource();
                 return;
             }
-
-            PlatformSpecificMessageHandling(type, data);
         }
 
         /// <inheritdoc/>
@@ -400,21 +410,6 @@ namespace Ultraviolet.FMOD
         }
 
         /// <summary>
-        /// Performs platform-specific initialization steps.
-        /// </summary>
-        partial void PlatformSpecificInitialization();
-
-        /// <summary>
-        /// Performs platform-specific message subscriptions.
-        /// </summary>
-        partial void PlatformSpecificMessageSubscriptions(UltravioletContext uv);
-
-        /// <summary>
-        /// Performs platform-specific message handling.
-        /// </summary>
-        partial void PlatformSpecificMessageHandling(UltravioletMessageID type, MessageData data);
-
-        /// <summary>
         /// Initializes FMOD's logging system.
         /// </summary>
         private void InitializeLogging(UltravioletConfiguration configuration)
@@ -566,5 +561,8 @@ namespace Ultraviolet.FMOD
         // Debug output callbacks.
         private DebugCallback debugCallback;
         private FMOD_DEBUG_CALLBACK debugCallbackFMOD;
+
+        // Platform-specific details.
+        private readonly FMODPlatformSpecificImplementationDetails platformSpecificImpl;
     }
 }

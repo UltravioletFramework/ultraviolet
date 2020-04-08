@@ -10,4 +10,9 @@
       <Variant>That operation is not currently valid on this resource.</Variant>
     </en-US>
   </String>
+  <String Key="CANNOT_FIND_PLATFORM_SHIM_CLASS">
+    <en-US>
+      <Variant>The class which implements this platform's shim for FMOD could not be found within the shim assembly.</Variant>
+    </en-US>
+  </String>
 </LocalizedStrings>

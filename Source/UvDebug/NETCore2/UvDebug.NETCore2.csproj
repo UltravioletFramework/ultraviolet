@@ -36,5 +36,102 @@
   </PropertyGroup>
 
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
-  
+
+  <ItemGroup>
+    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass.dylib" Link="x64\osx\libbass.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\osx\libbass_fx.dylib" Link="x64\osx\libbass_fx.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass.so" Link="x64\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\unix\libbass_fx.so" Link="x64\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x64\win32nt\cimgui.dll" Link="x64\win32nt\cimgui.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass.dll" Link="x64\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x64\win32nt\bass_fx.dll" Link="x64\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass.so" Link="x86\unix\libbass.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\unix\libbass_fx.so" Link="x86\unix\libbass_fx.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass.dll" Link="x86\win32nt\bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\BASS\x86\win32nt\bass_fx.dll" Link="x86\win32nt\bass_fx.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\osx\libSDL2.dylib" Link="x64\osx\libSDL2.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\unix\libSDL2.so" Link="x64\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x64\win32nt\SDL2.dll" Link="x64\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x86\unix\libSDL2.so" Link="x86\unix\libSDL2.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\SDL2\x86\win32nt\SDL2.dll" Link="x86\win32nt\SDL2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\unix\libfreetype.so.6.16.0" Link="x86\unix\libfreetype.so.6.16.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libfreetype.so.6.16.0" Link="x64\unix\libfreetype.so.6.16.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\unix\libharfbuzz.so.0.10706.0" Link="x86\unix\libharfbuzz.so.0.10706.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libharfbuzz.so.0.10706.0" Link="x64\unix\libharfbuzz.so.0.10706.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\unix\libpng16.so.16.34.0" Link="x86\unix\libpng16.so.16.34.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\unix\libpng16.so.16.34.0" Link="x64\unix\libpng16.so.16.34.0">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>    
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\freetype.dll" Link="x64\win32nt\freetype.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\harfbuzz.dll" Link="x64\win32nt\harfbuzz.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\win32nt\libpng16.dll" Link="x64\win32nt\libpng16.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\freetype.dll" Link="x86\win32nt\freetype.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\harfbuzz.dll" Link="x86\win32nt\harfbuzz.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x86\win32nt\libpng16.dll" Link="x86\win32nt\libpng16.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x86\win32nt\cimgui.dll" Link="x86\win32nt\cimgui.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x86\unix\libcimgui.so" Link="x86\unix\libcimgui.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\ImGui\x64\unix\libcimgui.so">
+      <Link>x64\unix\libcimgui.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>  
+
 </Project>
