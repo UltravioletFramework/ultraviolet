@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
@@ -65,6 +66,9 @@
     <Compile Include="UltravioletActivity.cs" />
     <Compile Include="UltravioletActivityAudioSettings.cs" />
     <Compile Include="UltravioletActivitySettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Version.cs" Link="Properties\Version.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
