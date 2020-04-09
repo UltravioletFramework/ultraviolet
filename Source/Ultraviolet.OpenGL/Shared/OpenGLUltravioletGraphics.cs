@@ -29,30 +29,11 @@ namespace Ultraviolet.OpenGL
         public unsafe OpenGLUltravioletGraphics(OpenGLUltravioletContext uv, OpenGLUltravioletConfiguration configuration, Version versionRequested, Version versionRequired)
             : base(uv)
         {
-            var isGLES = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
+            if (this.context == IntPtr.Zero && configuration.Debug)
+                this.context = TryCreateOpenGLContext(uv, versionRequested, versionRequired, true, false) ?? IntPtr.Zero;
 
-            if (configuration.Debug)
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, (int)SDL_GL_CONTEXT_DEBUG_FLAG);
-
-            var masterptr = ((SDL2UltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
-            var versionArray = isGLES ? KnownOpenGLESVersions : KnownOpenGLVersions;
-            var versionMin = versionRequested ?? versionRequired;
-            var versionCurrent = versionRequested ?? versionArray[0];
-            var versionCurrentIndex = Array.IndexOf(versionArray, versionCurrent);
-            do
-            {
-                if (versionCurrent < versionMin)
-                    throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(versionMin.Major, versionMin.Minor));
-
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionCurrent.Major) < 0)
-                    throw new SDL2Exception();
-
-                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionCurrent.Minor) < 0)
-                    throw new SDL2Exception();
-
-                versionCurrent = versionArray[++versionCurrentIndex];
-            }
-            while ((this.context = SDL_GL_CreateContext(masterptr)) == IntPtr.Zero);
+            if (this.context == IntPtr.Zero)
+                this.context = TryCreateOpenGLContext(uv, versionRequested, versionRequired, false, true) ?? IntPtr.Zero;
 
             if (SDL_GL_SetSwapInterval(1) < 0 && uv.Platform != UltravioletPlatform.iOS)
                 throw new SDL2Exception();
@@ -807,6 +788,47 @@ namespace Ultraviolet.OpenGL
             context = IntPtr.Zero;
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Attempts to create an OpenGL context.
+        /// </summary>
+        private static IntPtr? TryCreateOpenGLContext(UltravioletContext uv, Version versionRequested, Version versionRequired, Boolean debug, Boolean throwOnFailure)
+        {
+            if (debug)
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, (int)SDL_GL_CONTEXT_DEBUG_FLAG);
+            else
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+
+            var masterptr = ((SDL2UltravioletWindowInfo)uv.GetPlatform().Windows).GetMasterPointer();
+            var gles = (uv.Platform == UltravioletPlatform.Android || uv.Platform == UltravioletPlatform.iOS);
+            var versionArray = gles ? KnownOpenGLESVersions : KnownOpenGLVersions;
+            var versionMin = versionRequested ?? versionRequired;
+            var versionCurrent = versionRequested ?? versionArray[0];
+            var versionCurrentIndex = Array.IndexOf(versionArray, versionCurrent);
+
+            IntPtr context;
+            do
+            {
+                if (versionCurrent < versionMin)
+                {
+                    if (throwOnFailure)
+                        throw new InvalidOperationException(OpenGLStrings.DoesNotMeetMinimumVersionRequirement.Format(versionMin.Major, versionMin.Minor));
+
+                    return null;
+                }
+
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, versionCurrent.Major) < 0)
+                    throw new SDL2Exception();
+
+                if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, versionCurrent.Minor) < 0)
+                    throw new SDL2Exception();
+
+                versionCurrent = versionArray[++versionCurrentIndex];
+            }
+            while ((context = SDL_GL_CreateContext(masterptr)) == IntPtr.Zero);
+
+            return context;
         }
 
         /// <summary>
