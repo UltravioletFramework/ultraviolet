@@ -116,6 +116,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Tests.NETCore3", "Ultraviolet.Tests\NETCore3\Ultraviolet.Tests.NETCore3.csproj", "{375D70B8-EEE0-4455-AE7C-897CD57B18EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UvDebug.Android", "UvDebug\Android\UvDebug.Android.csproj", "{BFEBD22B-7789-43A8-A1EA-550C316C29FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A52123E-EFA1-4A86-8223-FB7B807C162A} = {0A52123E-EFA1-4A86-8223-FB7B807C162A}
+		{099981E0-206B-4E1E-A806-87761B1D238D} = {099981E0-206B-4E1E-A806-87761B1D238D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Shims.Android", "Ultraviolet.Shims.Android\Ultraviolet.Shims.Android.csproj", "{19BC2D12-6E14-4A15-9F33-5C6DC92BDEAF}"
 EndProject

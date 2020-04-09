@@ -28,7 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIScreenService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletFactoryInitializer.cs" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(IncludeUltravioletContentFiles)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)Content\Cursors\Cursors.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -104,8 +104,6 @@
     <None Include="$(MSBuildThisFileDirectory)Content\UI\Screens\ImGuiScreen\ImGuiScreen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Content\Fonts\Inconsolata.uvmeta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
