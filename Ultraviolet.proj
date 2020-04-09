@@ -167,7 +167,7 @@
     <MSBuild Projects="@(Ultraviolet_Android_Solution)" Targets="Clean"/>
   </Target>
   <Target Name="BuildAndroid" DependsOnTargets="SetAndroidBuildParameters">
-    <MSBuild Projects="@(Ultraviolet_Android_Solution)" Properties="Configuration=$(Configuration)"/>
+    <MSBuild Projects="@(Ultraviolet_Android_Solution)" Properties="Configuration=$(Configuration)" Targets="Restore;Build"/>
   </Target>
   <Target Name="CopyAndroidBinaries" AfterTargets="BuildAndroid">
     <CreateItem Include="Source/Ultraviolet.Shims.Android/bin/$(Configuration)/Ultraviolet.Shims.Android.*">
