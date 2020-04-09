@@ -31,7 +31,7 @@
 	$CoefficientSum = $IncGaussX
 
 	$Shader.Add("	vec4 avgValue = vec4(0.0, 0.0, 0.0, 0.0);")
-	$Shader.Add("	vec4 avgValue += texture(Texture, vTextureCoordinate.xy) * $IncGaussX;")
+	$Shader.Add("	avgValue += texture(Texture, vTextureCoordinate.xy) * $IncGaussX;")
 
 	$IncGaussX *= $IncGaussY;
 	$IncGaussY *= $IncGaussZ;
