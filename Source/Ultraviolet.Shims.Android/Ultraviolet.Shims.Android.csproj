@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidFactoryInitializer.cs" />
     <Compile Include="Graphics\AndroidSurfaceSaver.cs" />
     <Compile Include="Graphics\AndroidSurfaceSource.cs" />
     <Compile Include="Input\AndroidSoftwareKeyboardService.cs" />
