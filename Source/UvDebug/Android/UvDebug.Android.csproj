@@ -32,7 +32,7 @@
     <DebugType>portable</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ANDROID;IMGUI</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ANDROID</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
@@ -49,7 +49,7 @@
     <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ANDROID</DefineConstants>
+    <DefineConstants>TRACE;ANDROID;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -118,7 +118,8 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <EmbeddedResource Include="Content.uvarc" Condition="Exists('Content.uvarc')" />
+    <AndroidAsset Include="Ultraviolet.Presentation.CompiledExpressions.dll" />
+    <EmbeddedResource Include="Content.uvarc" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml">
@@ -208,8 +209,8 @@
   <Import Project="..\Shared\UvDebug.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(SolutionDir)UvArchive\NETCore3"
-dotnet run -pack "$(SolutionDir)UvDebug\Android\Content.uvarc" "$(SolutionDir)UvDebug\Shared\Content"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.
@@ -218,7 +219,15 @@ dotnet run -pack "$(SolutionDir)UvDebug\Android\Content.uvarc" "$(SolutionDir)Uv
     <Target Name="AfterBuild">
     </Target>
   -->
-  <Target Name="AfterBuild">
+  <Target Name="BeforeBuild">
+    <Exec Command="dotnet run -compile:content -compile:expressions" WorkingDirectory="$(SolutionDir)UvDebug\NETCore3" />
+  </Target>
+  <Target Name="BeforeBuildCopyResults" AfterTargets="BeforeBuild">
+    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore3\bin\Debug\netcoreapp3.1\Content.uvarc" DestinationFolder="$(SolutionDir)UvDebug\Android" />
+    <Copy SourceFiles="$(SolutionDir)UvDebug\NETCore3\bin\Debug\netcoreapp3.1\Ultraviolet.Presentation.CompiledExpressions.dll" DestinationFolder="$(SolutionDir)UvDebug\Android" />
+  </Target>
+  <Target Name="BeforeBuildValidation" AfterTargets="BeforeBuildCopyResults">
     <Error Condition="!Exists('Content.uvarc')" Text="Failed to generate content archive for UvDebug.Android." />
+    <Error Condition="!Exists('Ultraviolet.Presentation.CompiledExpressions.dll')" Text="Failed to generate compiled expressions assembly for UvDebug.Android." />
   </Target>
 </Project>

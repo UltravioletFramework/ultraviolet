@@ -76,6 +76,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\SurfaceOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\VertexPositionNormalTexture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IUltravioletTimingLogic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platform\AssemblyLoaderService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetAsset.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIStyleSheetSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UltravioletContextProperties.cs" />
