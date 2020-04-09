@@ -78,4 +78,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+    <Error Text="Cannot find fmod.jar. Define an environment variable called FMOD_JAR which points to this file." Condition=" '$(FMOD_JAR)' == '' "/>
+  </Target>
 </Project>
