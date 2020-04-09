@@ -56,9 +56,9 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <InputJar Include="$(FMOD_JAR)">
+    <EmbeddedJar Include="$(FMOD_JAR)">
       <Link>Jars\fmod.jar</Link>
-    </InputJar>
+    </EmbeddedJar>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultraviolet.FMOD\NETStandard21\Ultraviolet.FMOD.NETStandard21.csproj">
@@ -79,6 +79,6 @@
   </Target>
   -->
   <Target Name="BeforeBuild">
-    <Error Text="Cannot find fmod.jar. Define an environment variable called FMOD_JAR which points to this file." Condition=" '$(FMOD_JAR)' == '' "/>
+    <Error Text="Cannot find fmod.jar. Define an environment variable called FMOD_JAR which points to this file." Condition=" '$(FMOD_JAR)' == '' Or !Exists('$(FMOD_JAR)')" />
   </Target>
 </Project>
