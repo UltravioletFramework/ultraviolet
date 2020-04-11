@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.DotNet.PlatformAbstractions;
@@ -58,12 +59,26 @@ namespace Ultraviolet.Core.Native
                     break;
             }
 
+            var nameFile = Path.GetFileNameWithoutExtension(name);
+            var nameExt = Path.GetExtension(name);
+
             foreach (var file in Directory.GetFiles(dir))
             {
-                if (Path.GetFileName(file) == name || Path.GetFileNameWithoutExtension(file) == name)
+                var fileName = Path.GetFileName(file);
+                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                if (fileName == name || fileNameWithoutExt == name)
                 {
-                    platformResolvedPath = Path.Combine(dir, Path.GetFileName(file));
+                    platformResolvedPath = Path.Combine(dir, fileName);
                     return true;
+                }
+                if (fileName.StartsWith(nameFile) && fileName.EndsWith(nameExt))
+                {
+                    var extra = fileNameWithoutExt.Substring(nameFile.Length, fileNameWithoutExt.Length - nameFile.Length);
+                    if (extra.All(x => Char.IsDigit(x) || x == '.'))
+                    {
+                        platformResolvedPath = Path.Combine(dir, fileName);
+                        return true;
+                    }
                 }
             }
 
