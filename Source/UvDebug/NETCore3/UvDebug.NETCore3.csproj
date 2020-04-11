@@ -132,6 +132,18 @@
       <Link>x64\unix\libcimgui.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libfreetype.6.dylib">
+      <Link>x64\osx\libfreetype.6.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libharfbuzz.0.dylib">
+      <Link>x64\osx\libharfbuzz.0.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\Dependencies\FreeType2\x64\osx\libpng16.16.dylib">
+      <Link>x64\osx\libpng16.16.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>  
 
 </Project>

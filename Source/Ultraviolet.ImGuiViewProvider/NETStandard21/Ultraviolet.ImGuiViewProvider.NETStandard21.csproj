@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\Shared\Resources\Strings.xml" Link="Resources\Strings.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
