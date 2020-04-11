@@ -275,11 +275,11 @@ namespace Ultraviolet.Presentation.Compiler
                 case UltravioletPlatform.Linux:
                 case UltravioletPlatform.macOS:
                     {
-                        refFolderDir = new DirectoryInfo(Path.Combine("usr", "local", "share", "dotnet", "packs", "NETStandard.Library.Ref"));
+                        refFolderDir = new DirectoryInfo(Path.Combine("/", "usr", "local", "share", "dotnet", "packs", "NETStandard.Library.Ref"));
                         if (refFolderDir.Exists)
                             break;
 
-                        refFolderDir = new DirectoryInfo(Path.Combine("usr", "share", "dotnet", "packs", "NETStandard.Library.Ref"));
+                        refFolderDir = new DirectoryInfo(Path.Combine("/", "usr", "share", "dotnet", "packs", "NETStandard.Library.Ref"));
                     }
                     break;
             }
