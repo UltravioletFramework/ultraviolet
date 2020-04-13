@@ -125,8 +125,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Windows.Forms",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Windows.Forms.NETCore3", "Ultraviolet.Windows.Forms\NETCore3\Ultraviolet.Windows.Forms.NETCore3.csproj", "{40C09D4D-7656-406A-A03B-2A22454AD9F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultraviolet.Windows.Forms.NETFramework472", "Ultraviolet.Windows.Forms\NETFramework471\Ultraviolet.Windows.Forms.NETFramework472.csproj", "{3E510F02-5EB5-45F1-8628-0DD662B10289}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.Presentation.Tests", "Ultraviolet.Presentation.Tests\Shared\Ultraviolet.Presentation.Tests.shproj", "{DCCF640B-A4D2-4CBD-8B28-BC6A7EB42E71}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ultraviolet.TestApplication", "Ultraviolet.TestApplication\Shared\Ultraviolet.TestApplication.shproj", "{AF8BB24E-1EF6-4585-9E6B-78EFF64AB44F}"
@@ -179,7 +177,6 @@ Global
 		Ultraviolet.ImGuiViewProvider.Bindings\Shared\Ultraviolet.ImGuiViewProvider.Bindings.projitems*{11742f76-15d2-47b2-a36d-81c9f5699e81}*SharedItemsImports = 13
 		Ultraviolet.Presentation.Uvss\Shared\Ultraviolet.Presentation.Uvss.projitems*{2def7217-0b35-423c-9085-ec46260682c7}*SharedItemsImports = 13
 		UvAssetList\Shared\UvAssetList.projitems*{33752a23-fdd9-493a-a5ce-76f4e953d49d}*SharedItemsImports = 13
-		Ultraviolet.Windows.Forms\Shared\Ultraviolet.Windows.Forms.projitems*{3e510f02-5eb5-45f1-8628-0dd662b10289}*SharedItemsImports = 4
 		UvDebug\Shared\UvDebug.projitems*{41b16059-bfe0-4704-8eee-44339b3834c5}*SharedItemsImports = 13
 		Ultraviolet.Presentation\Shared\Ultraviolet.Presentation.projitems*{4e921721-be4a-4f69-bee4-61e8a18e0774}*SharedItemsImports = 13
 		Ultraviolet.BASS\Shared\Ultraviolet.BASS.projitems*{62e8c883-b858-4fcc-82ec-c313fefbad34}*SharedItemsImports = 13
@@ -353,10 +350,6 @@ Global
 		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40C09D4D-7656-406A-A03B-2A22454AD9F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E510F02-5EB5-45F1-8628-0DD662B10289}.Release|Any CPU.Build.0 = Release|Any CPU
 		{946E750A-1137-4CEF-92F1-8E038A8CBE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{946E750A-1137-4CEF-92F1-8E038A8CBE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{946E750A-1137-4CEF-92F1-8E038A8CBE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
