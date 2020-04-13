@@ -26,6 +26,7 @@
 
   <PropertyGroup>
     <StartupObject>UvDebug.Game</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

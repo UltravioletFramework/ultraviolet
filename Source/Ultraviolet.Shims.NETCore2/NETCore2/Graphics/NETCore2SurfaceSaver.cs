@@ -6,7 +6,7 @@ using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 using GDIRect = System.Drawing.Rectangle;
 
-namespace Ultraviolet.Shims.NETCore3.Graphics
+namespace Ultraviolet.Shims.NETCore2.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSaver"/> class for the .NET Core 2.0 platform.

@@ -2,7 +2,7 @@
 using Ultraviolet.Core;
 using Ultraviolet.Platform;
 
-namespace Ultraviolet.Shims.NETCore3.Platform
+namespace Ultraviolet.Shims.NETCore2.Platform
 {
     /// <summary>
     /// Represents an implementation of the <see cref="ScreenDensityService"/> class for the .NET Core 2.0 platform.

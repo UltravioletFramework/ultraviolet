@@ -1,7 +1,7 @@
 ﻿using System;
 using Ultraviolet.Input;
 
-namespace Ultraviolet.Shims.NETCore3.Input
+namespace Ultraviolet.Shims.NETCore2.Input
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SoftwareKeyboardService"/> class for the .NET Core 2.0 platform.

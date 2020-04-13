@@ -1,4 +1,5 @@
-﻿using Ultraviolet.Graphics;
+﻿using Ultraviolet.Core;
+using Ultraviolet.Graphics;
 using Ultraviolet.Input;
 using Ultraviolet.Platform;
 using Ultraviolet.Shims.NETCore3.Graphics;
@@ -24,7 +25,17 @@ namespace Ultraviolet.Shims.NETCore3
             factory.SetFactoryMethod<IconLoaderFactory>(() => new NETCore3IconLoader());
             factory.SetFactoryMethod<FileSystemServiceFactory>(() => new FileSystemService());
             factory.SetFactoryMethod<ScreenRotationServiceFactory>((display) => new NETCore3ScreenOrientationService(display));
-            factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new NETCore3ScreenDensityService(owner, display));
+
+            switch (UltravioletPlatformInfo.CurrentPlatform)
+            {
+                case UltravioletPlatform.Windows:
+                    factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new NETCore3ScreenDensityService_Windows(owner, display));
+                    break;
+
+                default:
+                    factory.SetFactoryMethod<ScreenDensityServiceFactory>((display) => new NETCore3ScreenDensityService(owner, display));
+                    break;
+            }
 
             var softwareKeyboardService = new NETCore2SoftwareKeyboardService();
             factory.SetFactoryMethod<SoftwareKeyboardServiceFactory>(() => softwareKeyboardService);

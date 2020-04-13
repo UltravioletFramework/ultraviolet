@@ -5,7 +5,7 @@ using System.IO;
 using Ultraviolet.Core;
 using Ultraviolet.Graphics;
 
-namespace Ultraviolet.Shims.NETCore3.Graphics
+namespace Ultraviolet.Shims.NETCore2.Graphics
 {
     /// <summary>
     /// Represents an implementation of the <see cref="SurfaceSource"/> class for the .NET Core 2.0 platform.
