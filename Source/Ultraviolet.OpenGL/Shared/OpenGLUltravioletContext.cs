@@ -169,7 +169,7 @@ namespace Ultraviolet.OpenGL
         private IUltravioletAudio InitializeAudioSubsystem(OpenGLUltravioletConfiguration configuration)
         {
             if (String.IsNullOrEmpty(configuration.AudioSubsystemAssembly))
-                throw new InvalidOperationException(OpenGLStrings.InvalidAudioAssembly);
+                throw new InvalidOperationException(OpenGLStrings.MissingAudioAssembly);
 
             Assembly asm;
             try

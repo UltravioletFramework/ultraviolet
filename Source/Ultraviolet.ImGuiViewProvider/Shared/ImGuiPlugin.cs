@@ -8,7 +8,7 @@ namespace Ultraviolet.ImGuiViewProvider
     public sealed class ImGuiPlugin : UltravioletPlugin
     {
         /// <inheritdoc/>
-        public override void Configure(UltravioletConfiguration ultravioletConfig)
+        public override void Register(UltravioletConfiguration ultravioletConfig)
         {
             Contract.Require(ultravioletConfig, nameof(ultravioletConfig));
 

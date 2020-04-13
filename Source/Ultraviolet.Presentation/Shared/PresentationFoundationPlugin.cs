@@ -15,7 +15,7 @@
         }
 
         /// <inheritdoc/>
-        public override void Configure(UltravioletConfiguration configuration) =>
+        public override void Register(UltravioletConfiguration configuration) =>
             PresentationFoundation.Configure(configuration, presentationConfig);
 
         // UPF configuration settings.

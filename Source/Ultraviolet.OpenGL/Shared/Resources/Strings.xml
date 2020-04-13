@@ -160,6 +160,11 @@
       <Variant>An effect technique must have at least one pass.</Variant>
     </en-US>
   </String>
+  <String Key="MISSING_AUDIO_ASSEMBLY">
+    <en-US>
+      <Variant>No audio subsystem assembly was specified.</Variant>
+    </en-US>
+  </String>
   <String Key="INVALID_AUDIO_ASSEMBLY">
     <en-US>
       <Variant>Invalid audio subsystem assembly.</Variant>

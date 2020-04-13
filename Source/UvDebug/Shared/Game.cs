@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Ultraviolet;
+using Ultraviolet.BASS;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Text;
@@ -66,6 +67,7 @@ namespace UvDebug
             configuration.SrgbDefaultForTexture2D = true;
             configuration.EnableServiceMode = ShouldRunInServiceMode();
             configuration.WatchViewFilesForChanges = ShouldDynamicallyReloadContent();
+            configuration.Plugins.Add(new BASSAudioPlugin());
             configuration.Plugins.Add(new Ultraviolet.FreeType2.FreeTypeFontPlugin());
 #if IMGUI
             configuration.Plugins.Add(new Ultraviolet.ImGuiViewProvider.ImGuiPlugin());

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Ultraviolet.Audio;
 using Ultraviolet.TestApplication;
+using Ultraviolet.TestFramework;
 
 namespace Ultraviolet.Tests.Audio
 {

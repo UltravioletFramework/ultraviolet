@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSSoundEffectProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSUltravioletAudioDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Audio\BASSUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BASSAudioPlugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSStrings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BASSUltravioletAudio.cs" />

@@ -14,7 +14,7 @@ namespace Ultraviolet
         /// </summary>
         public UltravioletConfiguration()
         {
-            SelectAudioImplementation(AudioImplementation.BASS);
+            Plugins = new UltravioletPluginCollection(this);
 
             WindowIsVisible = true;
             WindowIsResizable = true;
@@ -23,35 +23,9 @@ namespace Ultraviolet
         }
 
         /// <summary>
-        /// Selects which implementation of the Audio subsystem to use.
-        /// </summary>
-        /// <param name="impl">A <see cref="AudioImplementation"/> value corresponding to one of 
-        /// the Ultraviolet Framework's Audio subsystem implementations.</param>
-        public void SelectAudioImplementation(AudioImplementation impl)
-        {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var asmname = String.Empty;
-            switch (impl)
-            {
-                case AudioImplementation.BASS:
-                    asmname = "Ultraviolet.BASS";
-                    break;
-
-                case AudioImplementation.FMOD:
-                    asmname = "Ultraviolet.FMOD";
-                    break;
-
-                default:
-                    throw new ArgumentException(nameof(impl));
-            }
-
-            AudioSubsystemAssembly = $"{asmname}, Version={version}, Culture=neutral, PublicKeyToken=78da2f4877323311, processorArchitecture=MSIL";
-        }
-
-        /// <summary>
         /// Gets the list of plugins which will be loaded by the Ultraviolet context.
         /// </summary>
-        public UltravioletPluginCollection Plugins { get; } = new UltravioletPluginCollection();
+        public UltravioletPluginCollection Plugins { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="RenderTargetUsage"/> value which is used by the back buffer.

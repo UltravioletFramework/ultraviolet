@@ -71,8 +71,6 @@ namespace Ultraviolet
 
             AcquireContext();
 
-            ConfigurePlugins(configuration);
-
             this.isRunningInServiceMode = configuration.EnableServiceMode;
 
             this.Properties = new UltravioletContextProperties();
@@ -680,25 +678,6 @@ namespace Ultraviolet
                 {
                     current = null;
                     OnContextInvalidated();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Configures the context's plugins.
-        /// </summary>
-        private void ConfigurePlugins(UltravioletConfiguration configuration)
-        {
-            while (configuration.Plugins.Any(x => !x.Configured))
-            {
-                var plugins = configuration.Plugins.ToList();
-                foreach (var plugin in plugins)
-                {
-                    if (plugin.Configured)
-                        continue;
-
-                    plugin.Configure(configuration);
-                    plugin.Configured = true;
                 }
             }
         }

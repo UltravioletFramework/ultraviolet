@@ -8,10 +8,10 @@ namespace Ultraviolet
     public abstract class UltravioletPlugin
     {
         /// <summary>
-        /// Configures the Ultraviolet context in preparation for use of this plugin.
+        /// Registers the plugin and allows it to modify the Ultraviolet configuration prior to context creation.
         /// </summary>
         /// <param name="configuration">The Ultraviolet configuration.</param>
-        public virtual void Configure(UltravioletConfiguration configuration) { }
+        public virtual void Register(UltravioletConfiguration configuration) { }
 
         /// <summary>
         /// Initializes the plugin for the specified Ultraviolet context.

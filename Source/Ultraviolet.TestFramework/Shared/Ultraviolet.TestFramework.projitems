@@ -9,6 +9,7 @@
     <Import_RootNamespace>Ultraviolet.TestFramework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AudioImplementation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingBoxResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingSphereResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CircleDResult.cs" />

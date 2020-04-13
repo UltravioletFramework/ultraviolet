@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Ultraviolet.BASS;
 using Ultraviolet.Content;
 using Ultraviolet.Core;
+using Ultraviolet.FMOD;
 using Ultraviolet.Graphics;
 using Ultraviolet.Input;
 using Ultraviolet.OpenGL;
@@ -39,8 +41,15 @@ namespace Ultraviolet.TestApplication
         /// <inheritdoc/>
         public IUltravioletTestApplication WithAudioImplementation(AudioImplementation audioImplementation)
         {
-            this.audioImplementation = audioImplementation;
-            return this;
+            switch (audioImplementation)
+            {
+                case AudioImplementation.BASS:
+                    return WithPlugin(new BASSAudioPlugin());
+                case AudioImplementation.FMOD:
+                    return WithPlugin(new FMODAudioPlugin());
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(audioImplementation));
+            }
         }
 
         /// <inheritdoc/>
@@ -195,7 +204,7 @@ namespace Ultraviolet.TestApplication
         {
             RunUntil(() =>
             {
-                return 
+                return
                     !frameActions.Any(x => x.ActionType == FrameActionType.FrameStart && x.ActionIndex >= frameCount) &&
                     !frameActions.Any(x => x.ActionType == FrameActionType.Render && x.ActionIndex >= renderCount) &&
                     !frameActions.Any(x => x.ActionType == FrameActionType.Update && x.ActionIndex >= updateCount);
@@ -211,12 +220,12 @@ namespace Ultraviolet.TestApplication
                 key = new SDL_KeyboardEvent()
                 {
                     type = (uint)SDL_KEYDOWN,
-                    windowID = (uint)Ultraviolet.GetPlatform().Windows.GetPrimary().ID,                     
+                    windowID = (uint)Ultraviolet.GetPlatform().Windows.GetPrimary().ID,
                     keysym = new SDL_Keysym()
                     {
                         keycode = (SDL_Keycode)key,
-                        scancode = (SDL_Scancode)scancode,                      
-                        mod = 
+                        scancode = (SDL_Scancode)scancode,
+                        mod =
                             (ctrl ? KMOD_CTRL : KMOD_NONE) |
                             (alt ? KMOD_ALT : KMOD_NONE) |
                             (shift ? KMOD_SHIFT : KMOD_NONE),
@@ -260,7 +269,7 @@ namespace Ultraviolet.TestApplication
         /// <inheritdoc/>
         protected override UltravioletContext OnCreatingUltravioletContext()
         {
-            var configuration = new OpenGLUltravioletConfiguration();           
+            var configuration = new OpenGLUltravioletConfiguration();
             configuration.Headless = headless;
             configuration.EnableServiceMode = serviceMode;
             configuration.IsHardwareInputDisabled = true;
@@ -271,19 +280,20 @@ namespace Ultraviolet.TestApplication
                 System.Diagnostics.Debug.WriteLine(message);
             };
 
-            if (audioImplementation != null)
-                configuration.SelectAudioImplementation(audioImplementation.Value);
-
             configurer?.Invoke(configuration);
 
-            if (plugins != null)
+            var needsAudioSubsystem = !(plugins?.Any(x => x is BASSAudioPlugin || x is FMODAudioPlugin) ?? false);
+            if (needsAudioSubsystem)
             {
-                foreach (var plugin in plugins)
-                    configuration.Plugins.Add(plugin);
+                plugins = plugins ?? new List<UltravioletPlugin>();
+                plugins.Add(new BASSAudioPlugin());
             }
 
+            foreach (var plugin in plugins)
+                configuration.Plugins.Add(plugin);
+
             return new OpenGLUltravioletContext(this, configuration);
-        }        
+        }
 
         /// <inheritdoc/>
         protected override void OnInitialized()
@@ -486,7 +496,6 @@ namespace Ultraviolet.TestApplication
         // State values.
         private readonly Boolean headless;
         private readonly Boolean serviceMode;
-        private AudioImplementation? audioImplementation;
         private Func<Boolean> shouldExit;
         private ContentManager content;
         private Action<UltravioletConfiguration> configurer;
