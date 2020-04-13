@@ -19,9 +19,6 @@ namespace Ultraviolet.Shims.NETCore3.Platform
         {
             Contract.Require(uv, nameof(uv));
 
-            this.uv = uv;
-            this.display = display;
-
             Refresh();
         }
 
@@ -67,8 +64,6 @@ namespace Ultraviolet.Shims.NETCore3.Platform
         }
 
         // State values.
-        private readonly UltravioletContext uv;
-        private readonly IUltravioletDisplay display;
         private Single densityX;
         private Single densityY;
         private Single densityScale;
