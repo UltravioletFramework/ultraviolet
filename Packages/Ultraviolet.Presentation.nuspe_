@@ -12,8 +12,6 @@
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet Presentation Foundation, a WPF-like framework for building user interfaces in the Ultraviolet Framework.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the Ultraviolet Presentation Foundation, a WPF-like framework for building user interfaces in the Ultraviolet Framework.
 
-This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the appropriate Ultraviolet.Game.* package for your target platform.
-
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
   <dependencies>
@@ -22,39 +20,20 @@ Quick start guides for development using the Ultraviolet Framework are available
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.dll" target="lib\net461\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.XML" target="lib\net461\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.pdb" target="lib\net461\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\net461\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\net461\"/>
-    <file src="..\Binaries\AnyCPU\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\net461\"/>
+    <!-- .NET Standard 2.0 -->
+    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.XML" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.pdb" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.Uvss.dll" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.Uvss.XML" target="lib\netstandard2.0\"/>
+    <file src="..\Binaries\NETCore2\Release\Ultraviolet.Presentation.Uvss.pdb" target="lib\netstandard2.0\"/>
 
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Presentation.dll" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Presentation.XML" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Presentation.pdb" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\netstandard2.0\"/>
-    <file src="..\Binaries\netstandard2.0\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\netstandard2.0\"/>
-    
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.dll" target="lib\MonoAndroid80\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.XML" target="lib\MonoAndroid80\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.pdb" target="lib\MonoAndroid80\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\MonoAndroid80\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\MonoAndroid80\"/>
-    <file src="..\Binaries\Android\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\MonoAndroid80\"/>
-
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.pdb" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.XML" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\Xamarin.iOS10\"/>
-    <file src="..\Binaries\iOS\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\Xamarin.iOS10\"/>
-    
-    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.Presentation.dll" target="lib\Xamarin.Mac20\"/>
-    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.Presentation.pdb" target="lib\Xamarin.Mac20\"/>
-    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.Presentation.XML" target="lib\Xamarin.Mac20\"/>
-    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.Presentation.Uvss.dll" target="lib\Xamarin.Mac20\"/>
-    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.Presentation.Uvss.pdb" target="lib\Xamarin.Mac20\"/>
-    <file src="..\Binaries\macOSModern\Signed\Ultraviolet.Presentation.Uvss.XML" target="lib\Xamarin.Mac20\"/>
+    <!-- .NET Standard 2.1 -->
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.dll" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.XML" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.pdb" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.Uvss.dll" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.Uvss.XML" target="lib\netstandard2.1\"/>
+    <file src="..\Binaries\NETCore3\Release\Ultraviolet.Presentation.Uvss.pdb" target="lib\netstandard2.1\"/>
   </files>  
 </package>

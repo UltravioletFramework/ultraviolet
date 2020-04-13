@@ -13,28 +13,33 @@
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the Dear ImGui Plugin for Ultraviolet.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the Dear ImGui Plugin for Ultraviolet.
 
-This package shouldn't be referenced directly unless you know what you're doing. Instead, reference the Ultraviolet.ImGuiViewProvider package.
-
 Quick start guides for development using the Ultraviolet Framework are available on the project's wiki at https://github.com/tlgkccampbell/ultraviolet/wiki</description>
     <tags>ultraviolet gamedev</tags>	
   </metadata>
   <files>
-    <file src="Ultraviolet.ImGuiViewProvider.Native\build\net461\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\net461\Ultraviolet.ImGuiViewProvider.Native.targets"/>
-    <file src="..\Dependencies\ImGui\x86\unix\libcimgui.so" target="build\net461\x86\unix\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\x64\unix\libcimgui.so" target="build\net461\x64\unix\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\x86\win32nt\cimgui.dll" target="build\net461\x86\win32nt\cimgui.dll"/>
-    <file src="..\Dependencies\ImGui\x64\win32nt\cimgui.dll" target="build\net461\x64\win32nt\cimgui.dll"/>
-    <file src="..\Dependencies\ImGui\x64\osx\libcimgui.dylib" target="build\net461\x64\osx\libcimgui.dylib"/>
-  
-    <file src="Ultraviolet.ImGuiViewProvider.Native\build\netcoreapp2.1\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\netcoreapp2.1\Ultraviolet.ImGuiViewProvider.Native.targets"/>
-    <file src="..\Dependencies\ImGui\x86\unix\libcimgui.so" target="build\netcoreapp2.1\x86\unix\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\x64\unix\libcimgui.so" target="build\netcoreapp2.1\x64\unix\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\x86\win32nt\cimgui.dll" target="build\netcoreapp2.1\x86\win32nt\cimgui.dll"/>
-    <file src="..\Dependencies\ImGui\x64\win32nt\cimgui.dll" target="build\netcoreapp2.1\x64\win32nt\cimgui.dll"/>
-    <file src="..\Dependencies\ImGui\x64\osx\libcimgui.dylib" target="build\netcoreapp2.1\x64\osx\libcimgui.dylib"/>
-    
-    <file src="Ultraviolet.ImGuiViewProvider.Native\build\MonoAndroid80\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\MonoAndroid80\Ultraviolet.ImGuiViewProvider.Native.targets"/>
-    <file src="..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so" target="build\MonoAndroid80\lib\armeabi-v7a\libcimgui.so"/>
-    <file src="..\Dependencies\ImGui\Android\x86\libcimgui.so" target="build\MonoAndroid80\lib\x86\libcimgui.so"/>
+    <!-- .NET Core 2.2  -->  
+    <file src="Ultraviolet.ImGuiViewProvider.Native\build\netcoreapp2.2\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\netcoreapp2.2\Ultraviolet.ImGuiViewProvider.Native.targets"/>
+    <!-- x86 -->
+    <file src="..\Dependencies\ImGui\x86\unix\libcimgui.so" target="build\netcoreapp2.2\x86\unix\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\x86\win32nt\cimgui.dll" target="build\netcoreapp2.2\x86\win32nt\cimgui.dll"/>
+    <!-- x64 -->
+    <file src="..\Dependencies\ImGui\x64\win32nt\cimgui.dll" target="build\netcoreapp2.2\x64\win32nt\cimgui.dll"/>
+    <file src="..\Dependencies\ImGui\x64\unix\libcimgui.so" target="build\netcoreapp2.2\x64\unix\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\x64\osx\libcimgui.dylib" target="build\netcoreapp2.2\x64\osx\libcimgui.dylib"/>
+
+    <!-- .NET Core 3.1  -->  
+    <file src="Ultraviolet.ImGuiViewProvider.Native\build\netcoreapp3.1\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\netcoreapp3.1\Ultraviolet.ImGuiViewProvider.Native.targets"/>
+    <!-- x86 -->
+    <file src="..\Dependencies\ImGui\x86\unix\libcimgui.so" target="build\netcoreapp3.1\x86\unix\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\x86\win32nt\cimgui.dll" target="build\netcoreapp3.1\x86\win32nt\cimgui.dll"/>
+    <!-- x64 -->
+    <file src="..\Dependencies\ImGui\x64\win32nt\cimgui.dll" target="build\netcoreapp3.1\x64\win32nt\cimgui.dll"/>
+    <file src="..\Dependencies\ImGui\x64\unix\libcimgui.so" target="build\netcoreapp3.1\x64\unix\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\x64\osx\libcimgui.dylib" target="build\netcoreapp3.1\x64\osx\libcimgui.dylib"/>
+
+    <!-- Android -->  
+    <file src="Ultraviolet.ImGuiViewProvider.Native\build\MonoAndroid90\Ultraviolet.ImGuiViewProvider.Native.targets" target="build\MonoAndroid90\Ultraviolet.ImGuiViewProvider.Native.targets"/>
+    <file src="..\Dependencies\ImGui\Android\armeabi-v7a\libcimgui.so" target="build\MonoAndroid90\lib\armeabi-v7a\libcimgui.so"/>
+    <file src="..\Dependencies\ImGui\Android\x86\libcimgui.so" target="build\MonoAndroid90\lib\x86\libcimgui.so"/>
   </files>  
 </package>
