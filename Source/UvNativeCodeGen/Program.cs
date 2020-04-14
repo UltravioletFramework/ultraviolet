@@ -68,8 +68,6 @@ namespace UvNativeCodeGen
                 Path.Combine(directory, $"{nativeClassName}Impl_Default.cs"));
             WriteImplClass_PInvoke(definition, nativeNamespace, nativeClassName, "Android", nameAndroid,
                 Path.Combine(directory, $"{nativeClassName}Impl_Android.cs"));
-            WriteImplClass_PInvoke(definition, nativeNamespace, nativeClassName, "iOS", "__Internal",
-                Path.Combine(directory, $"{nativeClassName}Impl_iOS.cs"));
 
             // FooNative - static class which exposes the underlying platform-specific implementation.
             WriteWrapperClass(definition, nativeNamespace, nativeClassName,

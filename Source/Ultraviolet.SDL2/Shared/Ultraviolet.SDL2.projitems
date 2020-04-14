@@ -32,7 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_Android.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_Default.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\SDLNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_BlendMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\SDL_CommonEvent.cs" />

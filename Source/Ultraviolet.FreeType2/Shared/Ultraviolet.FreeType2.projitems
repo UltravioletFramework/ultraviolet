@@ -35,7 +35,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_Android.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_Default.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\FreeTypeNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BBox32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BitmapGlyphRec64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\FT_BitmapGlyphRec32.cs" />
@@ -86,7 +85,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl_Android.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl_Default.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Native\HarfBuzzNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_glyph_position_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_glyph_info_t.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Native\hb_buffer_content_type_t.cs" />
