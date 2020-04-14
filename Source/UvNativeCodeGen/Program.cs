@@ -573,13 +573,6 @@ namespace UvNativeCodeGen
                 twriter.WriteLine();
                 twriter.Indent--;
 
-                twriter.WriteLine($"case UltravioletPlatform.iOS:");
-                twriter.Indent++;
-                twriter.WriteLine($"impl = new {nativeClassName}Impl_iOS();");
-                twriter.WriteLine($"break;");
-                twriter.WriteLine();
-                twriter.Indent--;
-
                 twriter.WriteLine($"default:");
                 twriter.Indent++;
                 twriter.WriteLine($"impl = new {nativeClassName}Impl_Default();");

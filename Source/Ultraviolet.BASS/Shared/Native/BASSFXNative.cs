@@ -17,10 +17,6 @@ namespace Ultraviolet.BASS.Native
                     impl = new BASSFXNativeImpl_Android();
                     break;
                     
-                case UltravioletPlatform.iOS:
-                    impl = new BASSFXNativeImpl_iOS();
-                    break;
-                    
                 default:
                     impl = new BASSFXNativeImpl_Default();
                     break;

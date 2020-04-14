@@ -17,10 +17,6 @@ namespace Ultraviolet.SDL2.Native
                     impl = new SDLNativeImpl_Android();
                     break;
                     
-                case UltravioletPlatform.iOS:
-                    impl = new SDLNativeImpl_iOS();
-                    break;
-                    
                 default:
                     impl = new SDLNativeImpl_Default();
                     break;

@@ -17,10 +17,6 @@ namespace Ultraviolet.FreeType2.Native
                     impl = new FreeTypeNativeImpl_Android();
                     break;
                     
-                case UltravioletPlatform.iOS:
-                    impl = new FreeTypeNativeImpl_iOS();
-                    break;
-                    
                 default:
                     impl = new FreeTypeNativeImpl_Default();
                     break;

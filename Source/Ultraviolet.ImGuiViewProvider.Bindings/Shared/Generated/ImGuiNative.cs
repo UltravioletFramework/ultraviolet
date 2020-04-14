@@ -17,10 +17,6 @@ namespace Ultraviolet.ImGuiViewProvider.Bindings
                     impl = new ImGuiNativeImpl_Android();
                     break;
                     
-                case UltravioletPlatform.iOS:
-                    impl = new ImGuiNativeImpl_iOS();
-                    break;
-                    
                 default:
                     impl = new ImGuiNativeImpl_Default();
                     break;

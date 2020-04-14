@@ -17,10 +17,6 @@ namespace Ultraviolet.FreeType2.Native
                     impl = new HarfBuzzNativeImpl_Android();
                     break;
                     
-                case UltravioletPlatform.iOS:
-                    impl = new HarfBuzzNativeImpl_iOS();
-                    break;
-                    
                 default:
                     impl = new HarfBuzzNativeImpl_Default();
                     break;

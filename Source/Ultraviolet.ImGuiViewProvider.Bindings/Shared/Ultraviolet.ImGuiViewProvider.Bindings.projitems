@@ -50,7 +50,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl_Android.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl_Default.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNativeImpl_iOS.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiNavInput.gen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiOnceUponAFrame.gen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generated\ImGuiPayload.gen.cs" />
