@@ -18,10 +18,6 @@ namespace Ultraviolet.FMOD.Native
                     impl = new FMODNativeImpl_Android();
                     break;
                     
-                case UltravioletPlatform.iOS:
-                    impl = new FMODNativeImpl_iOS();
-                    break;
-                    
                 default:
                     impl = new FMODNativeImpl_Default();
                     break;

@@ -1,10 +1,10 @@
 using System;
+using System.Security;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
 using Ultraviolet.Core;
 using Ultraviolet.Core.Native;
+using System.Text;
 
 namespace Ultraviolet.FMOD.Native
 {
