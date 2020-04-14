@@ -10,12 +10,12 @@ if [%BAMBOO_NuGetPush%] == [] (
     set _apikey=%NuGetAPIKey%
     
     for %%f in (*.nupkg) do (
-        "nuget.exe" push %%~nf.nupkg -ApiKey !_apikey!
+        "nuget.exe" push %%~nf.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey !_apikey!
         @if %errorlevel% neq 0 @exit /b %errorlevel%
     )
         
     for %%f in (*.snupkg) do (
-        "..\nuget.exe" push %%~nf.snupkg -ApiKey !_apikey!
+        "nuget.exe" push %%~nf.snupkg -Source https://api.nuget.org/v3/index.json -ApiKey !_apikey!
         @if %errorlevel% neq 0 @exit /b %errorlevel%
     )
 )
