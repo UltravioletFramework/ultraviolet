@@ -25,8 +25,8 @@ Quick start guides for development using the Ultraviolet Framework are available
     <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\netcoreapp2.2\x86\unix\libbass.so"/>
     <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\netcoreapp2.2\x86\unix\libbass_fx.so"/>
     <!-- x64 -->
-    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\netcoreapp2.2\x64\win32nt\libbass.dll"/>
-    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\netcoreapp2.2\x64\win32nt\libbass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\netcoreapp2.2\x64\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\netcoreapp2.2\x64\win32nt\bass_fx.dll"/>
     <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\netcoreapp2.2\x64\unix\libbass.so"/>
     <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\netcoreapp2.2\x64\unix\libbass_fx.so"/>
     <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\netcoreapp2.2\x64\osx\libbass.dylib"/>
@@ -40,8 +40,8 @@ Quick start guides for development using the Ultraviolet Framework are available
     <file src="..\Dependencies\BASS\x86\unix\libbass.so" target="build\netcoreapp3.1\x86\unix\libbass.so"/>
     <file src="..\Dependencies\BASS\x86\unix\libbass_fx.so" target="build\netcoreapp3.1\x86\unix\libbass_fx.so"/>
     <!-- x64 -->
-    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\netcoreapp3.1\x64\win32nt\libbass.dll"/>
-    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\netcoreapp3.1\x64\win32nt\libbass_fx.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass.dll" target="build\netcoreapp3.1\x64\win32nt\bass.dll"/>
+    <file src="..\Dependencies\BASS\x64\win32nt\bass_fx.dll" target="build\netcoreapp3.1\x64\win32nt\bass_fx.dll"/>
     <file src="..\Dependencies\BASS\x64\unix\libbass.so" target="build\netcoreapp3.1\x64\unix\libbass.so"/>
     <file src="..\Dependencies\BASS\x64\unix\libbass_fx.so" target="build\netcoreapp3.1\x64\unix\libbass_fx.so"/>
     <file src="..\Dependencies\BASS\x64\osx\libbass.dylib" target="build\netcoreapp3.1\x64\osx\libbass.dylib"/>
