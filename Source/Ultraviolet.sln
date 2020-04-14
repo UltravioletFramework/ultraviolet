@@ -169,6 +169,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ultraviolet.Presentation.Uvss.Tests.NETCore3", "Ultraviolet.Presentation.Uvss.Tests\NETCore3\Ultraviolet.Presentation.Uvss.Tests.NETCore3.csproj", "{7BD23C6D-6571-4912-9B93-1FA1F7EE5EA0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UvNativeCodeGen", "UvNativeCodeGen\UvNativeCodeGen.csproj", "{9478C868-C8DC-4693-8B87-E222DE17CEEE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Ultraviolet.Core.Tests\Shared\Ultraviolet.Core.Tests.projitems*{073bb428-13a0-4812-baad-a18e7326cc52}*SharedItemsImports = 13
@@ -422,6 +424,10 @@ Global
 		{7BD23C6D-6571-4912-9B93-1FA1F7EE5EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BD23C6D-6571-4912-9B93-1FA1F7EE5EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BD23C6D-6571-4912-9B93-1FA1F7EE5EA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9478C868-C8DC-4693-8B87-E222DE17CEEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9478C868-C8DC-4693-8B87-E222DE17CEEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9478C868-C8DC-4693-8B87-E222DE17CEEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9478C868-C8DC-4693-8B87-E222DE17CEEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

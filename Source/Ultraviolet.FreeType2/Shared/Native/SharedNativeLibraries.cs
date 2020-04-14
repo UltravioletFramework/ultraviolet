@@ -14,12 +14,6 @@ namespace Ultraviolet.FreeType2.Native
         {
             switch (UltravioletPlatformInfo.CurrentPlatform)
             {
-                case UltravioletPlatform.Linux:
-                    libpng = new NativeLibrary("libpng");
-                    break;
-                case UltravioletPlatform.macOS:
-                    libpng = new NativeLibrary("libpng");
-                    break;
                 default:
                     libpng = new NativeLibrary("libpng16");
                     break;
