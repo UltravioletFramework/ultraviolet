@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\armeabi-v7a\libSDL2.so">
+      <Link>lib\armeabi-v7a\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
+    <AndroidNativeLibrary Include="$(MSBuildThisFileDirectory)lib\x86\libSDL2.so">
+      <Link>lib\x86\libSDL2.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidNativeLibrary>
+  </ItemGroup>
+  <PropertyGroup>  
+    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
+  </PropertyGroup>
+</Project>
