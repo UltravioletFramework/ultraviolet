@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <icon>images\uv.ico</icon>
+    <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet.BASS Native Dependencies</title>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the native dependencies required by the BASS implementation of the Framework's audio subsystem.</summary>
@@ -24,7 +24,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Images\uv.ico" target="images\"/>
+    <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
 
     <!-- .NET Core 2.2 -->
     <file src="Ultraviolet.BASS.Native\build\netcoreapp2.2\Ultraviolet.BASS.Native.targets" target="build\netcoreapp2.2\Ultraviolet.BASS.Native.targets"/>

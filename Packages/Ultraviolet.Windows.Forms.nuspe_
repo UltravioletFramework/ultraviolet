@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <icon>images\uv.ico</icon>
+    <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Ultraviolet.Windows.Forms</title>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains an Ultraviolet host implementation which is embeddable within a Windows Forms application.</summary>
@@ -25,7 +25,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Images\uv.ico" target="images\"/>
+    <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
     <file src="..\Binaries\NETCore3\Release\Ultraviolet.Windows.Forms.dll" target="lib\netcoreapp3.1\"/>
     <file src="..\Binaries\NETCore3\Release\Ultraviolet.Windows.Forms.pdb" target="lib\netcoreapp3.1\"/>
   </files>  

@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <icon>images\uv.ico</icon>
+    <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package implements the Dear ImGui Plugin for Ultraviolet, which allows user interfaces to be constructed using the immediate-mode Dear ImGui library.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package implements the Dear ImGui Plugin for Ultraviolet, which allows user interfaces to be constructed using the immediate-mode Dear ImGui library.
@@ -32,7 +32,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Images\uv.ico" target="images\"/>
+    <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
 
     <!-- .NET Standard 2.0 -->
     <file src="..\Binaries\NETCore2\Release\Ultraviolet.ImGuiViewProvider.dll" target="lib\netstandard2.0\"/>

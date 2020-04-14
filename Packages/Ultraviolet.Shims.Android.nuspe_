@@ -7,7 +7,7 @@
     <owners>Cole Campbell</owners>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/tlgkccampbell/ultraviolet</projectUrl>
-    <icon>images\uv.ico</icon>
+    <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for Android.</summary>
     <description>The Ultraviolet Framework is a .NET game development framework written in C#. This package contains the platform compatibility shim for Android.
@@ -24,7 +24,7 @@ Additional licensing information is available at https://www.ultraviolet.tl/lice
   </dependencies>
   </metadata>
   <files>
-    <file src="..\Images\uv.ico" target="images\"/>
+    <file src="..\Images\desktop_uv128.png" target="images\icon.png"/>
     <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.dll" target="lib\MonoAndroid80\Ultraviolet.Shims.Android.dll"/>
     <file src="..\Binaries\Android\Release\Ultraviolet.Shims.Android.pdb" target="lib\MonoAndroid80\Ultraviolet.Shims.Android.pdb"/>
   </files>  
